@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topBarEmpty"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/transparent" >
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_translucent"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textViewBanner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:gravity="center_horizontal"
+            android:padding="35px"
+            android:text="Message"
+            android:textColor="@color/black_light"
+            android:textSize="28px" />
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/dialog_banner.xml -->

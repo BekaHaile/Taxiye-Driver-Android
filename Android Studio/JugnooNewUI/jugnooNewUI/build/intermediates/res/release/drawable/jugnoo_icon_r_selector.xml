@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:drawable="@drawable/jugnoo_icon_r_pressed" android:state_pressed="true"/>
+    <item android:drawable="@drawable/jugnoo_icon_r_normal"/>
+    
+</selector>
+<!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/jugnoo_icon_r_selector.xml -->

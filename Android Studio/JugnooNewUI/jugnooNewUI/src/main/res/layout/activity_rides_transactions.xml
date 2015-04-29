@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topBar"
+            android:layout_width="720px"
+            android:layout_height="96px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/yellow" >
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="TRANSACTIONS"
+                android:textColor="@color/white"
+                android:textSize="30.6px" />
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="60.7px"
+                android:layout_height="76.9px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:padding="20px"
+                android:src="@drawable/back_white_selector" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white_light_grey"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+
+            <ListView
+                android:id="@+id/listViewRideTransactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewRecentTransactions"
+                android:divider="@drawable/background_transparent"
+                android:dividerHeight="0px"
+                android:listSelector="@drawable/background_transparent"
+                android:splitMotionEvents="false" >
+            </ListView>
+
+            <TextView
+                android:id="@+id/textViewInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="TextView"
+                android:textColor="@color/black_text"
+                android:textSize="30px" />
+
+            <ProgressBar
+                android:id="@+id/progressBarList"
+                android:layout_width="100px"
+                android:layout_height="100px"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</RelativeLayout>

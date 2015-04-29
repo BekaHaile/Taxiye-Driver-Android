@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="15px"
+        />
+        
+        
+    
+    <RelativeLayout 
+        android:id="@+id/relativeLayoutShowMore"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:visibility="visible"
+        android:background="@drawable/background_white_selector"
+        
+        >
+        
+        <ImageView 
+            android:layout_width="12px"
+            android:layout_height="12px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        <ImageView 
+            android:layout_width="12px"
+            android:layout_height="12px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="53px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        <ImageView 
+            android:layout_width="12px"
+            android:layout_height="12px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="76px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        
+       <TextView
+                android:id="@+id/textViewShowMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="106px"
+                android:text="Show More"
+                android:textColor="@color/grey_black_light"
+                android:textSize="26px" />
+        
+        
+    </RelativeLayout>
+    
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/list_item_show_more.xml -->

@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string-array name="CountryCodes">
+<item>93,AF</item>
+<item>355,AL</item>
+<item>213,DZ</item>
+<item>376,AD</item>
+<item>244,AO</item>
+<item>672,AQ</item>
+<item>54,AR</item>
+<item>374,AM</item>
+<item>297,AW</item>
+<item>61,AU</item>
+<item>43,AT</item>
+<item>994,AZ</item>
+<item>973,BH</item>
+<item>880,BD</item>
+<item>375,BY</item>
+<item>32,BE</item>
+<item>501,BZ</item>
+<item>229,BJ</item>
+<item>975,BT</item>
+<item>591,BO</item>
+<item>387,BA</item>
+<item>267,BW</item>
+<item>55,BR</item>
+<item>673,BN</item>
+<item>359,BG</item>
+<item>226,BF</item>
+<item>95,MM</item>
+<item>257,BI</item>
+<item>855,KH</item>
+<item>237,CM</item>
+<item>1,CA</item>
+<item>238,CV</item>
+<item>236,CF</item>
+<item>235,TD</item>
+<item>56,CL</item>
+<item>86,CN</item>
+<item>61,CX</item>
+<item>61,CC</item>
+<item>57,CO</item>
+<item>269,KM</item>
+<item>242,CG</item>
+<item>243,CD</item>
+<item>682,CK</item>
+<item>506,CR</item>
+<item>385,HR</item>
+<item>53,CU</item>
+<item>357,CY</item>
+<item>420,CZ</item>
+<item>45,DK</item>
+<item>253,DJ</item>
+<item>670,TL</item>
+<item>593,EC</item>
+<item>20,EG</item>
+<item>503,SV</item>
+<item>240,GQ</item>
+<item>291,ER</item>
+<item>372,EE</item>
+<item>251,ET</item>
+<item>500,FK</item>
+<item>298,FO</item>
+<item>679,FJ</item>
+<item>358,FI</item>
+<item>33,FR</item>
+<item>689,PF</item>
+<item>241,GA</item>
+<item>220,GM</item>
+<item>995,GE</item>
+<item>49,DE</item>
+<item>233,GH</item>
+<item>350,GI</item>
+<item>30,GR</item>
+<item>299,GL</item>
+<item>502,GT</item>
+<item>224,GN</item>
+<item>245,GW</item>
+<item>592,GY</item>
+<item>509,HT</item>
+<item>504,HN</item>
+<item>852,HK</item>
+<item>36,HU</item>
+<item>91,IN</item>
+<item>62,ID</item>
+<item>98,IR</item>
+<item>964,IQ</item>
+<item>353,IE</item>
+<item>44,IM</item>
+<item>972,IL</item>
+<item>39,IT</item>
+<item>225,CI</item>
+<item>81,JP</item>
+<item>962,JO</item>
+<item>7,KZ</item>
+<item>254,KE</item>
+<item>686,KI</item>
+<item>965,KW</item>
+<item>996,KG</item>
+<item>856,LA</item>
+<item>371,LV</item>
+<item>961,LB</item>
+<item>266,LS</item>
+<item>231,LR</item>
+<item>218,LY</item>
+<item>423,LI</item>
+<item>370,LT</item>
+<item>352,LU</item>
+<item>853,MO</item>
+<item>389,MK</item>
+<item>261,MG</item>
+<item>265,MW</item>
+<item>60,MY</item>
+<item>960,MV</item>
+<item>223,ML</item>
+<item>356,MT</item>
+<item>692,MH</item>
+<item>222,MR</item>
+<item>230,MU</item>
+<item>262,YT</item>
+<item>52,MX</item>
+<item>691,FM</item>
+<item>373,MD</item>
+<item>377,MC</item>
+<item>976,MN</item>
+<item>382,ME</item>
+<item>212,MA</item>
+<item>258,MZ</item>
+<item>264,NA</item>
+<item>674,NR</item>
+<item>977,NP</item>
+<item>31,NL</item>
+<item>599,AN</item>
+<item>687,NC</item>
+<item>64,NZ</item>
+<item>505,NI</item>
+<item>227,NE</item>
+<item>234,NG</item>
+<item>683,NU</item>
+<item>850,KP</item>
+<item>47,NO</item>
+<item>968,OM</item>
+<item>92,PK</item>
+<item>680,PW</item>
+<item>507,PA</item>
+<item>675,PG</item>
+<item>595,PY</item>
+<item>51,PE</item>
+<item>63,PH</item>
+<item>870,PN</item>
+<item>48,PL</item>
+<item>351,PT</item>
+<item>1,PR</item>
+<item>974,QA</item>
+<item>40,RO</item>
+<item>7,RU</item>
+<item>250,RW</item>
+<item>590,BL</item>
+<item>685,WS</item>
+<item>378,SM</item>
+<item>239,ST</item>
+<item>966,SA</item>
+<item>221,SN</item>
+<item>381,RS</item>
+<item>248,SC</item>
+<item>232,SL</item>
+<item>65,SG</item>
+<item>421,SK</item>
+<item>386,SI</item>
+<item>677,SB</item>
+<item>252,SO</item>
+<item>27,ZA</item>
+<item>82,KR</item>
+<item>34,ES</item>
+<item>94,LK</item>
+<item>290,SH</item>
+<item>508,PM</item>
+<item>249,SD</item>
+<item>597,SR</item>
+<item>268,SZ</item>
+<item>46,SE</item>
+<item>41,CH</item>
+<item>963,SY</item>
+<item>886,TW</item>
+<item>992,TJ</item>
+<item>255,TZ</item>
+<item>66,TH</item>
+<item>228,TG</item>
+<item>690,TK</item>
+<item>676,TO</item>
+<item>216,TN</item>
+<item>90,TR</item>
+<item>993,TM</item>
+<item>688,TV</item>
+<item>971,AE</item>
+<item>256,UG</item>
+<item>44,GB</item>
+<item>380,UA</item>
+<item>598,UY</item>
+<item>1,US</item>
+<item>998,UZ</item>
+<item>678,VU</item>
+<item>39,VA</item>
+<item>58,VE</item>
+<item>84,VN</item>
+<item>681,WF</item>
+<item>967,YE</item>
+<item>260,ZM</item>
+<item>263,ZW</item>
+</string-array>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="bg_grey">#D8242930</color>
+    <color name="bg_grey_opaque">#242930</color>
+    <color name="bg_white_translucent">#AAFFFFFF</color>
+    <color name="black">#202020</color>
+    <color name="black_alpha">#88202020</color>
+    <color name="black_light">#505050</color>
+    <color name="black_text">#242424</color>
+    <color name="black_text_alpha">#99242424</color>
+    <color name="black_text_grey">#4C4C4C</color>
+    <color name="black_text_shop">#1C1C1C</color>
+    <color name="black_translucent">#77000000</color>
+    <color name="black_translucent_level_2">#44000000</color>
+    <color name="blue_btn">#4CC1D2</color>
+    <color name="blue_btn_alpha">#774CC1D2</color>
+    <color name="blue_btn_pressed">#2CA1B2</color>
+    <color name="blue_dark_btn">#3B5999</color>
+    <color name="blue_dark_btn_pressed">#1B3979</color>
+    <color name="blue_light">#4E75D8</color>
+    <color name="blue_light_alpha">#994E75D8</color>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/JugnooNewUI/facebookSDK/unspecified/res/values/values.xml -->
+    <eat-comment/>
+    <color name="com_facebook_blue">#3B5998</color>
+    <color name="com_facebook_loginview_text_color">#FFFFFF</color>
+    <color name="com_facebook_picker_search_bar_background">#f5f5f7</color>
+    <color name="com_facebook_picker_search_bar_text">#bcbdc2</color>
+    <color name="com_facebook_usersettingsfragment_connected_shadow_color">#000000</color>
+    <color name="com_facebook_usersettingsfragment_connected_text_color">#FFFFFF</color>
+    <color name="com_facebook_usersettingsfragment_not_connected_text_color">#A6AED7</color>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/common_colors.xml -->
+    <eat-comment/>
+    <color name="common_action_bar_splitter">#d2d2d2</color>
+    <color name="common_signin_btn_dark_text_default">@android:color/white</color>
+    <color name="common_signin_btn_dark_text_disabled">#FFAAAAAA</color>
+    <color name="common_signin_btn_dark_text_focused">@android:color/white</color>
+    <color name="common_signin_btn_dark_text_pressed">@android:color/white</color>
+    <color name="common_signin_btn_default_background">#FFDD4B39</color>
+    <color name="common_signin_btn_light_text_default">#FF737373</color>
+    <color name="common_signin_btn_light_text_disabled">#FFAAAAAA</color>
+    <color name="common_signin_btn_light_text_focused">#FF737373</color>
+    <color name="common_signin_btn_light_text_pressed">@android:color/white</color>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="dialog_border_color">#AA7E7D78</color>
+    <color name="favorite_bg">#393E44</color>
+    <color name="favorite_div">#97989C</color>
+    <color name="green_btn">#66BB66</color>
+    <color name="green_btn_pressed">#669966</color>
+    <color name="green_status">#2EA058</color>
+    <color name="green_transaction_type">#46B82F</color>
+    <color name="grey_black">#232323</color>
+    <color name="grey_black_light">#3E3E3E</color>
+    <color name="grey_btn">#8E8E8E</color>
+    <color name="grey_btn_pressed">#7E7E7E</color>
+    <color name="grey_dark">#838383</color>
+    <color name="grey_dark_less">#A3A3A3</color>
+    <color name="grey_dark_more">#5D5D5D</color>
+    <color name="grey_light">#DDDDDD</color>
+    <color name="grey_light_alpha">#99DDDDDD</color>
+    <color name="grey_light_more">#BBBBBB</color>
+    <color name="grey_text">#232323</color>
+    <color name="orange_btn">#F99613</color>
+    <color name="orange_btn_pressed">#E98603</color>
+    <color name="orange_dark">#F96f01</color>
+    <color name="orange_text">#FBBC12</color>
+    <color name="red_banner">#9B3A26</color>
+    <color name="red_btn">#8E8E8E</color>
+    <color name="red_btn_pressed">#7E7E7E</color>
+    <color name="red_status">#F53C37</color>
+    <color name="transparent">#0000</color>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/wallet_colors.xml -->
+    <eat-comment/>
+    <color name="wallet_bright_foreground_disabled_holo_light">#ffb2b2b2</color>
+    <color name="wallet_bright_foreground_holo_dark">#fff3f3f3</color>
+    <color name="wallet_bright_foreground_holo_light">#ff000000</color>
+    <color name="wallet_dim_foreground_disabled_holo_dark">#80bebebe</color>
+    <color name="wallet_dim_foreground_holo_dark">#bebebe</color>
+    <color name="wallet_dim_foreground_inverse_disabled_holo_dark">#80323232</color>
+    <color name="wallet_dim_foreground_inverse_holo_dark">#323232</color>
+    <color name="wallet_highlighted_text_holo_dark">#6633b5e5</color>
+    <color name="wallet_highlighted_text_holo_light">#6633b5e5</color>
+    <color name="wallet_hint_foreground_holo_dark">#808080</color>
+    <color name="wallet_hint_foreground_holo_light">#808080</color>
+    <color name="wallet_holo_blue_light">#ff33b5e5</color>
+    <color name="wallet_link_text_light">#0000ee</color>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/color.xml -->
+    <eat-comment/>
+    <color name="white">#FFFFFF</color>
+    <color name="white_alpha">#99FFFFFF</color>
+    <color name="white_dark">#AFAFAF</color>
+    <color name="white_dark1">#EFEFEF</color>
+    <color name="white_less_dark">#F1F1F1</color>
+    <color name="white_light_grey">#FAFAFA</color>
+    <color name="white_light_more_grey">#F3F3F3</color>
+    <color name="white_more_translucent">#66FFFFFF</color>
+    <color name="white_translucent">#D8FFFFFF</color>
+    <color name="yellow">#F9BC14</color>
+    <color name="yellow_alpha">#99F9BC14</color>
+    <color name="yellow_jugnoo">#FAA31C</color>
+    <color name="yellow_orange">#F48C27</color>
+    <color name="yellow_pure">#FAF82A</color>
+    <color name="yellow_status">#F89414</color>
+    <color name="yellow_text">#FABB15</color>
+    <declare-styleable name="AdsAttrs"><attr format="string" name="adSize"/><attr format="string" name="adSizes"/><attr format="string" name="adUnitId"/></declare-styleable>
+    <declare-styleable name="MapAttrs"><attr format="enum" name="mapType"><enum name="none" value="0"/><enum name="normal" value="1"/><enum name="satellite" value="2"/><enum name="terrain" value="3"/><enum name="hybrid" value="4"/></attr><attr format="float" name="cameraBearing"/><attr format="float" name="cameraTargetLat"/><attr format="float" name="cameraTargetLng"/><attr format="float" name="cameraTilt"/><attr format="float" name="cameraZoom"/><attr format="boolean" name="uiCompass"/><attr format="boolean" name="uiRotateGestures"/><attr format="boolean" name="uiScrollGestures"/><attr format="boolean" name="uiTiltGestures"/><attr format="boolean" name="uiZoomControls"/><attr format="boolean" name="uiZoomGestures"/><attr format="boolean" name="useViewLifecycle"/><attr format="boolean" name="zOrderOnTop"/></declare-styleable>
+    <declare-styleable name="WalletFragmentOptions"><attr format="enum" name="appTheme"><enum name="holo_dark" value="0"/><enum name="holo_light" value="1"/></attr><attr format="enum" name="environment"><enum name="production" value="1"/><enum name="sandbox" value="0"/><enum name="strict_sandbox" value="2"/></attr><attr format="reference" name="fragmentStyle"/><attr format="enum" name="fragmentMode"><enum name="buyButton" value="1"/><enum name="selectionDetails" value="2"/></attr></declare-styleable>
+    <declare-styleable name="WalletFragmentStyle"><attr format="dimension" name="buyButtonHeight"><enum name="match_parent" value="-1"/><enum name="wrap_content" value="-2"/></attr><attr format="dimension" name="buyButtonWidth"><enum name="match_parent" value="-1"/><enum name="wrap_content" value="-2"/></attr><attr format="enum" name="buyButtonText"><enum name="buy_with_google" value="1"/><enum name="buy_now" value="2"/><enum name="book_now" value="3"/></attr><attr format="enum" name="buyButtonAppearance"><enum name="classic" value="1"/><enum name="grayscale" value="2"/><enum name="monochrome" value="3"/></attr><attr format="reference" name="maskedWalletDetailsTextAppearance"/><attr format="reference" name="maskedWalletDetailsHeaderTextAppearance"/><attr format="reference|color" name="maskedWalletDetailsBackground"/><attr format="reference" name="maskedWalletDetailsButtonTextAppearance"/><attr format="reference|color" name="maskedWalletDetailsButtonBackground"/><attr format="color" name="maskedWalletDetailsLogoTextColor"/><attr format="enum" name="maskedWalletDetailsLogoImageType"><enum name="classic" value="1"/><enum name="monochrome" value="2"/></attr></declare-styleable>
+    <declare-styleable name="com_facebook_friend_picker_fragment"><attr format="boolean" name="multi_select"/></declare-styleable>
+    <declare-styleable name="com_facebook_login_view"><attr format="boolean" name="confirm_logout"/><attr format="boolean" name="fetch_user_info"/><attr format="string" name="login_text"/><attr format="string" name="logout_text"/></declare-styleable>
+    <declare-styleable name="com_facebook_picker_fragment"><attr format="boolean" name="show_pictures"/><attr format="string" name="extra_fields"/><attr format="boolean" name="show_title_bar"/><attr format="string" name="title_text"/><attr format="string" name="done_button_text"/><attr format="reference" name="title_bar_background"/><attr format="reference" name="done_button_background"/></declare-styleable>
+    <declare-styleable name="com_facebook_place_picker_fragment"><attr format="integer" name="radius_in_meters"/><attr format="integer" name="results_limit"/><attr format="string" name="search_text"/><attr format="boolean" name="show_search_box"/></declare-styleable>
+    <declare-styleable name="com_facebook_profile_picture_view"><attr name="preset_size"><enum name="small" value="-2"/><enum name="normal" value="-3"/><enum name="large" value="-4"/></attr><attr format="boolean" name="is_cropped"/></declare-styleable>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="actionbar_home_width">30dp</dimen>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="button_corner_radius">5dp</dimen>
+    <dimen name="button_text_size">38px</dimen>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/JugnooNewUI/facebookSDK/unspecified/res/values/values.xml -->
+    <eat-comment/>
+    <dimen name="com_facebook_loginview_compound_drawable_padding">12dp</dimen>
+    <dimen name="com_facebook_loginview_padding_bottom">12dp</dimen>
+    <dimen name="com_facebook_loginview_padding_left">12dip</dimen>
+    <dimen name="com_facebook_loginview_padding_right">16dp</dimen>
+    <dimen name="com_facebook_loginview_padding_top">12dp</dimen>
+    <dimen name="com_facebook_loginview_text_size">16.0sp</dimen>
+    <dimen name="com_facebook_picker_place_image_size">64dp</dimen>
+    <dimen name="com_facebook_profilepictureview_preset_size_large">180dp</dimen>
+    <dimen name="com_facebook_profilepictureview_preset_size_normal">100dp</dimen>
+    <dimen name="com_facebook_profilepictureview_preset_size_small">50dp</dimen>
+    <dimen name="com_facebook_usersettingsfragment_profile_picture_height">64dp</dimen>
+    <dimen name="com_facebook_usersettingsfragment_profile_picture_width">64dp</dimen>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="image_bg_corner_radius">5dp</dimen>
+    <dimen name="image_bg_stroke">1dp</dimen>
+    <dimen name="menu_width">495px</dimen>
+    <dimen name="shadow_width">30dp</dimen>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/JugnooNewUI/facebookSDK/unspecified/res/values/values.xml -->
+    <eat-comment/>
+    <drawable name="com_facebook_picker_default_separator_color">#33464c59</drawable>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/version.xml -->
+    <eat-comment/>
+    <integer name="google_play_services_version">6171000</integer>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="about">About</string>
+    <string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
+    <string name="about_2_text">Rate card</string>
+    <string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/admob_strings.xml -->
+    <eat-comment/>
+    <string name="accept">Accept</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="accept_ride">Accept Ride</string>
+    <string name="action_settings">Settings</string>
+    <string name="alert">Alert</string>
+    <string name="app_name">Jugnoo</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="assigning_driver">Assigning driver...</string>
+    <string name="away">away.</string>
+    <string name="away_and_will_arrive"> away and will arrive in approximately </string>
+    <string name="call">Call</string>
+    <string name="call_driver">Call Driver</string>
+    <string name="cancel">Cancel</string>
+    <string name="cancel_request">Cancel Request</string>
+    <string name="cancel_request_in">Cancel request in </string>
+    <string name="cancel_ride">Cancel Ride</string>
+    <string name="check_all">Check All</string>
+    <string name="check_internet_message">Check your internet connection.</string>
+    <string name="check_your_registered_email_phone_number_for_otp">Check your registered email/phone number for OTP</string>
+    <string name="click_to_view">Click to view</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/com_crashlytics_export_strings.xml -->
+    <eat-comment/>
+    <string name="com.crashlytics.android.build_id" translatable="false">f8d5c0cf-2971-43ef-a9ca-2fc43768d073</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/JugnooNewUI/facebookSDK/unspecified/res/values/values.xml -->
+    <eat-comment/>
+    <string name="com_facebook_choose_friends">Choose Friends</string>
+    <string name="com_facebook_dialogloginactivity_ok_button">OK</string>
+    <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
+    <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
+    <string name="com_facebook_loading">Loading...</string>
+    <string name="com_facebook_loginview_cancel_action">Cancel</string>
+    <string name="com_facebook_loginview_log_in_button">Log in with Facebook</string>
+    <string name="com_facebook_loginview_log_out_action">Log out</string>
+    <string name="com_facebook_loginview_log_out_button">Log out</string>
+    <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
+    <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
+    <string name="com_facebook_logo_content_description">Facebook Logo</string>
+    <string name="com_facebook_nearby">Nearby</string>
+    <string name="com_facebook_picker_done_button_text">Done</string>
+    <string name="com_facebook_placepicker_subtitle_catetory_only_format">%1$s</string>
+    <string name="com_facebook_placepicker_subtitle_format">%1$s • %2$,d were here</string>
+    <string name="com_facebook_placepicker_subtitle_were_here_only_format">%1$,d were here</string>
+    <string name="com_facebook_requesterror_password_changed">Your Facebook password has changed. Please log into this app again to reconnect your Facebook account.</string>
+    <string name="com_facebook_requesterror_permissions">This app doesn’t have permission to do this. To change permissions, try logging into the app again.</string>
+    <string name="com_facebook_requesterror_reconnect">Please log into this app again to reconnect your Facebook account.</string>
+    <string name="com_facebook_requesterror_relogin">Please log into this app again to reconnect your Facebook account.</string>
+    <string name="com_facebook_requesterror_web_login">Your Facebook account is locked. Please log into www.facebook.com to continue.</string>
+    <string name="com_facebook_usersettingsfragment_log_in_button">Log in…</string>
+    <string name="com_facebook_usersettingsfragment_logged_in">Logged in</string>
+    <string name="com_facebook_usersettingsfragment_not_logged_in">Not logged in</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/common_strings.xml -->
+    <eat-comment/>
+    <string name="common_android_wear_notification_needs_update_text">An application requires an update to the Android Wear app.</string>
+    <string name="common_android_wear_update_text">This app won\'t run unless you update the Android Wear app.</string>
+    <string msgid="6006316683626838685" name="common_android_wear_update_title">Update Android Wear</string>
+    <string msgid="2523291102206661146" name="common_google_play_services_enable_button">Enable Google Play services</string>
+    <string msgid="227660514972886228" name="common_google_play_services_enable_text">This app won\'t work unless you enable Google Play services.</string>
+    <string msgid="5122002158466380389" name="common_google_play_services_enable_title">Enable Google Play services</string>
+    <string name="common_google_play_services_error_notification_requested_by_msg">Requested by <ns1:g id="app_name">%1$s</ns1:g></string>
+    <string msgid="7153882981874058840" name="common_google_play_services_install_button">Get Google Play services</string>
+    <string msgid="2122112764540849864" name="common_google_play_services_install_text_phone">This app won\'t run without Google Play services, which are missing from your phone.</string>
+    <string msgid="7351599665250191022" name="common_google_play_services_install_text_tablet">This app won\'t run without Google Play services, which are missing from your tablet.</string>
+    <string msgid="7215213145546190223" name="common_google_play_services_install_title">Get Google Play services</string>
+    <string name="common_google_play_services_invalid_account_text">The specified account does not exist on this device. Please choose a different account.</string>
+    <string name="common_google_play_services_invalid_account_title">Invalid Account</string>
+    <string name="common_google_play_services_needs_enabling_title">An application requires Google Play services to be enabled.</string>
+    <string name="common_google_play_services_network_error_text">A data connection is required to connect to Google Play services.</string>
+    <string name="common_google_play_services_network_error_title">Network Error</string>
+    <string name="common_google_play_services_notification_needs_installation_title">An application requires installation of Google Play services.</string>
+    <string name="common_google_play_services_notification_needs_update_title">An application requires an update for Google Play services.</string>
+    <string name="common_google_play_services_notification_ticker">Google Play services error</string>
+    <string name="common_google_play_services_unknown_issue">Unknown issue with Google Play services.</string>
+    <string name="common_google_play_services_unsupported_text">Google Play services, which some of your applications rely on, is not supported by your device. Please contact the manufacturer for assistance.</string>
+    <string name="common_google_play_services_unsupported_title">Google Play services</string>
+    <string msgid="6556509956452265614" name="common_google_play_services_update_button">Update</string>
+    <string msgid="9053896323427875356" name="common_google_play_services_update_text">This app won\'t run unless you update Google Play services.</string>
+    <string msgid="6006316683626838685" name="common_google_play_services_update_title">Update Google Play services</string>
+    <string name="common_open_on_phone">Open on phone</string>
+    <string name="common_signin_button_text">Sign in</string>
+    <string name="common_signin_button_text_long">Sign in with Google</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="confirmation_code">Confirmation Code</string>
+    <string name="could_not_find_nearest_driver_distance">Could not find nearest driver\'s distance.</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/admob_strings.xml -->
+    <eat-comment/>
+    <string name="create_calendar_message">Allow Ad to create a calendar event?</string>
+    <string name="create_calendar_title">Create calendar event</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="customer_rating">Customer Rating</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/admob_strings.xml -->
+    <eat-comment/>
+    <string name="decline">Decline</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="distance">Distance</string>
+    <string name="done">Done</string>
+    <string name="driver_mode">Driver Mode</string>
+    <string name="driver_rating">Driver Rating</string>
+    <string name="driver_type">Driver Type</string>
+    <string name="email_id">Email ID</string>
+    <string name="end_ride">End Ride</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_name_for_favorite">Enter Name for Favorite</string>
+    <string name="fare">Fare</string>
+    <string name="favorites">Favorites</string>
+    <string name="fb_app_id">782131025144439</string>
+    <string name="first_name">First Name</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="from">From: </string>
+    <string name="google_maps_api_key">AIzaSyCq8gpxpimVz88o9K0FnLTWRjpgEPy2eW0</string>
+    <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="history">History</string>
+    <string name="invite_friends">Invite Friends</string>
+    <string name="jugnoo_on">Jugnoo ON</string>
+    <string name="language_english_text">English</string>
+    <string name="language_hindi_text">हिंदी</string>
+    <string name="language_preferences">Language Preferences</string>
+    <string name="last_name">Last Name</string>
+    <string name="logout">Logout</string>
+    <string name="missed">Missed</string>
+    <string name="nearest_driver_is">Nearest driver is</string>
+    <string name="no_driver_available">No Driver Available</string>
+    <string name="no_driver_available_message">Currently there are no drivers available nearby within 3km. We will look into it</string>
+    <string name="no_drivers_nearby">No drivers nearby.</string>
+    <string name="no_favorite_locations_added">No favorite locations added.</string>
+    <string name="no_missed_rides_currently">No missed rides currently.</string>
+    <string name="no_rides_currently">No rides currently.</string>
+    <string name="ok">OK</string>
+    <string name="or">OR</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone number</string>
+    <string name="rating"> Rating</string>
+    <string name="reached_destination">Reached Destination</string>
+    <string name="request_ride">Request Ride</string>
+    <string name="ride_in_progress">Ride in progress...</string>
+    <string name="ride_request"> ride request</string>
+    <string name="ride_time">Ride Time</string>
+    <string name="ride_type">Ride Type</string>
+    <string name="rides">Rides</string>
+    <string name="rupee">\u20B9</string>
+    <string name="rupee_0">\u20B9 0.0</string>
+    <string name="save_to_favorite">Save To Favorite</string>
+    <string name="search">Search</string>
+    <string name="search_results">Search results</string>
+    <string name="select_language">Select Language</string>
+    <string name="send_email">Send Email</string>
+    <string name="server_error">Server error. Please try again later.</string>
+    <string name="server_not_responding">Oops!! Server not responding. Please try again later.</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sos">SOS</string>
+    <string name="start_ride">Start Ride</string>
+    <string name="start_ride_error">You must be present near the customer pickup location to start ride.</string>
+    <string name="start_wait">Start wait</string>
+    <string name="stop_wait">Stop wait</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/admob_strings.xml -->
+    <eat-comment/>
+    <string name="store_picture_message">"Allow Ad to store image in Picture gallery?"</string>
+    <string name="store_picture_title">Save image</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="submit">Submit</string>
+    <string name="support">Support</string>
+    <string name="to">To: </string>
+    <string name="uncheck_all">Uncheck All</string>
+    <string name="update">Update</string>
+    <string name="wait_time">Wait Time</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/wallet_strings.xml -->
+    <eat-comment/>
+    <string name="wallet_buy_button_place_holder" translation_description="Text on a button that allows a user to make a payment with Google Wallet [CHAR LIMIT=30]">Buy with Google</string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="will_arrive_in">Will arrive in </string>
+    <string name="you_have">You have </string>
+    <string name="your_login_session_expired">Your Login session has expired. Please login again.</string>
+    <string name="your_ride_is">Your ride is </string>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="Animations"/>
+    <style name="Animations.LoadingDialogFade">
+        <item name="@android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="@android:windowExitAnimation">@anim/fade_out</item>
+    </style>
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.NoActionBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/admob_iap_style.xml -->
+    <eat-comment/>
+    <style name="Theme.IAPTheme" parent="android:Theme">
+    <item name="android:windowIsTranslucent">true</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:backgroundDimEnabled">false</item>
+  </style>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.1.71/res/values/wallet_styles.xml -->
+    <eat-comment/>
+    <style name="WalletFragmentDefaultButtonTextAppearance">
+        <item name="android:textColor">@color/wallet_primary_text_holo_light</item>
+        <item name="android:textColorHighlight">@color/wallet_highlighted_text_holo_light</item>
+        <item name="android:textColorHint">@color/wallet_hint_foreground_holo_light</item>
+        <item name="android:textColorLink">@color/wallet_link_text_light</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="WalletFragmentDefaultDetailsHeaderTextAppearance" parent="WalletFragmentDefaultDetailsTextAppearance">
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="WalletFragmentDefaultDetailsTextAppearance">
+        <item name="android:textColor">@color/wallet_secondary_text_holo_dark</item>
+        <item name="android:textColorHighlight">@color/wallet_highlighted_text_holo_dark</item>
+        <item name="android:textColorHint">@color/wallet_hint_foreground_holo_dark</item>
+        <item name="android:textColorLink">@color/wallet_holo_blue_light</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+    <style name="WalletFragmentDefaultStyle">
+        <item name="buyButtonHeight">48dp</item>
+        <item name="buyButtonWidth">match_parent</item>
+        <item name="buyButtonText">buy_with_google</item>
+        <item name="buyButtonAppearance">classic</item>
+        <item name="maskedWalletDetailsTextAppearance">@style/WalletFragmentDefaultDetailsTextAppearance</item>
+        <item name="maskedWalletDetailsHeaderTextAppearance">@style/WalletFragmentDefaultDetailsHeaderTextAppearance</item>
+        <item name="maskedWalletDetailsBackground">@color/wallet_bright_foreground_holo_light</item>
+        <item name="maskedWalletDetailsButtonBackground">@android:drawable/btn_default</item>
+        <item name="maskedWalletDetailsButtonTextAppearance">@style/WalletFragmentDefaultButtonTextAppearance</item>
+        <item name="maskedWalletDetailsLogoTextColor">@color/wallet_bright_foreground_holo_dark</item>
+        <item name="maskedWalletDetailsLogoImageType">classic</item>
+    </style>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="YellowRatingBarNew" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_star_yellow_new_selector</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:maxHeight">50dp</item>
+    </style>
+    <!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/build/intermediates/exploded-aar/JugnooNewUI/facebookSDK/unspecified/res/values/values.xml -->
+    <eat-comment/>
+    <style name="com_facebook_loginview_default_style" parent="@android:style/Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/com_facebook_button_blue</item>
+        <item name="android:textColor">@color/com_facebook_loginview_text_color</item>
+        <item name="android:textSize">@dimen/com_facebook_loginview_text_size</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/com_facebook_loginview_padding_left</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <style name="com_facebook_loginview_silver_style" parent="@android:style/Widget.Button">
+        <item name="android:width">205dp</item>
+        <item name="android:height">44dp</item>
+        <item name="android:background">@drawable/com_facebook_loginbutton_silver</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#4B5164</item>
+        <item name="android:gravity">center</item>
+    </style>
+</resources>

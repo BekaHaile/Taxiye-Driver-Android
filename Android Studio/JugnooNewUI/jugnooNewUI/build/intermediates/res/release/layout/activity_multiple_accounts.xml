@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white_light_grey"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topRl"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:splitMotionEvents="false" >
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="SIGN UP"
+                android:textColor="@color/black_text"
+                android:textSize="30.6px" />
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="70.7px"
+                android:layout_height="86.9px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:padding="25px"
+                android:src="@drawable/back_orange_selector"
+                android:tag="mwar" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/mainLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <TextView
+                    android:id="@+id/textViewMultipleAccountsCreated"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="40px"
+                    android:gravity="center"
+                    android:text="Two accounts have already been created on this device"
+                    android:textColor="@color/black_text"
+                    android:textSize="27px" />
+
+                <TextView
+                    android:id="@+id/textViewPleaseLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="10px"
+                    android:gravity="center"
+                    android:text="Please login through one of these accounts"
+                    android:textColor="@color/black_text"
+                    android:textSize="27px" />
+
+
+
+                <ListView
+                    android:id="@+id/listViewPreviousAccounts"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_marginBottom="10px"
+                    android:divider="@drawable/background_transparent"
+                    android:dividerHeight="1px"
+                    android:listSelector="@drawable/background_transparent"
+                    android:splitMotionEvents="false" >
+                </ListView>
+
+
+
+                <TextView
+                    android:id="@+id/textViewLikeToCreate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="30px"
+                    android:gravity="center"
+                    android:text="If you would still like to create a new account"
+                    android:textColor="@color/black_text"
+                    android:textSize="27px" />
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutMailUs"
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:layout_marginTop="30px"
+                    android:layout_marginBottom="40px"
+                    android:background="@color/white" >
+
+                    <TextView
+                        android:id="@+id/textViewContactUs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20px"
+                        android:gravity="center"
+                        android:text="Please contact our customer care"
+                        android:textColor="@color/black_text"
+                        android:textSize="27px" />
+
+                    <TextView
+                        android:id="@+id/textViewMailUs"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="80px"
+                        android:gravity="center"
+                        android:text="MAIL US"
+                        android:textColor="@drawable/text_color_black_alpha_selector"
+                        android:textSize="26px" />
+
+                    <ImageView
+                        android:layout_width="13px"
+                        android:layout_height="26px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40px"
+                        android:src="@drawable/arrow_icon_selector"
+                        android:tag="mwar" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@color/yellow_alpha" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_multiple_accounts.xml -->

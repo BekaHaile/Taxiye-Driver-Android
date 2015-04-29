@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/yellow" >
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="PROMOTIONS"
+            android:textColor="@color/white"
+            android:textSize="30.6px" />
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="60.7px"
+            android:layout_height="76.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="20px"
+            android:src="@drawable/back_white_selector" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutPromoCode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white" 
+        android:orientation="vertical"
+        >
+
+            <EditText
+                    android:id="@+id/editTextPromoCode"
+                    android:layout_width="628px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="60px"
+                    android:background="#0000"
+                    android:gravity="center_vertical"
+                    android:hint="Enter Promo Code"
+                    android:capitalize="words"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textSize="30px" />
+
+                <ImageView
+                    android:layout_width="628px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@color/yellow_alpha" />
+            
+            <Button
+                    android:id="@+id/buttonApplyPromo"
+                    android:layout_width="648px"
+                    android:layout_height="100px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="70px"
+                    android:background="@drawable/button_yellow_selector"
+                    android:text="APPLY"
+                    android:textColor="@drawable/text_color_white_alpha_selector"
+                    android:textSize="@dimen/button_text_size" />
+            
+            
+                    <TextView
+            android:id="@+id/textViewCouponsAvailable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36px"
+            android:layout_marginLeft="36px"
+            android:layout_marginRight="36px"
+            android:layout_marginTop="70px"
+            android:text="Coupons Available"
+            android:textColor="@color/grey_black_light"
+            android:textSize="34px" />
+            
+            
+            
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20px"
+        android:orientation="vertical"
+        android:splitMotionEvents="false" >
+
+        <ListView
+            android:id="@+id/listViewCoupons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0px"
+            android:divider="@drawable/background_transparent"
+            android:dividerHeight="0px"
+            android:listSelector="@drawable/background_transparent"
+            android:splitMotionEvents="false" >
+        </ListView>
+
+        <TextView
+            android:id="@+id/textViewInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="34px" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_promotions.xml -->

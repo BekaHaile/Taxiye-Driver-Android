@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/bg_grey_opaque"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_inv_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="CHECKOUT"
+            android:textColor="@color/orange_text"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="932px"
+        android:orientation="vertical"
+        android:splitMotionEvents="false" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textViewUserName"
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:gravity="left"
+                    android:text="NAME"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="30px" />
+
+                <EditText
+                    android:id="@+id/editTextUserName"
+                    android:layout_width="660px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:background="@drawable/background_transparent"
+                    android:capitalize="words"
+                    android:gravity="center_vertical"
+                    android:hint="Name"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="34px" />
+
+                <ImageView
+                    android:layout_width="660px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5px"
+                    android:background="@color/grey_btn" />
+
+                <TextView
+                    android:id="@+id/textViewContactNumber"
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px"
+                    android:gravity="left"
+                    android:text="CONTACT NUMBER"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="30px" />
+
+                <EditText
+                    android:id="@+id/editTextContactNumber"
+                    android:layout_width="660px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:background="@drawable/background_transparent"
+                    android:gravity="center_vertical"
+                    android:hint="Contact number"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="34px" />
+
+                <ImageView
+                    android:layout_width="660px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5px"
+                    android:background="@color/grey_btn" />
+
+                <RelativeLayout
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px" >
+
+                    <TextView
+                        android:id="@+id/textViewAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="ADDRESS"
+                        android:textColor="@color/black_text_shop"
+                        android:textSize="30px" />
+
+
+                    <TextView
+                        android:id="@+id/textViewEdit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:singleLine="true"
+                        android:text="Edit"
+                        android:textColor="@color/orange_btn"
+                        android:textSize="28px" />
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/editTextAddressLine1"
+                    android:layout_width="660px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:background="@drawable/background_transparent"
+                    android:gravity="center_vertical"
+                    android:hint="Address Line 1"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/editTextAddressLine2"
+                    android:layout_width="660px"
+                    android:layout_height="50px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:background="@drawable/background_transparent"
+                    android:gravity="center_vertical"
+                    android:hint="Address Line 2"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text_shop"
+                    android:textSize="34px" />
+
+                <ImageView
+                    android:layout_width="660px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="5px"
+                    android:background="@color/grey_btn" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutListHeader"
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px" >
+
+                    <TextView
+                        android:id="@+id/textViewProductName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="PRODUCT NAME"
+                        android:textColor="@color/black_light"
+                        android:textSize="28px" />
+
+                    <TextView
+                        android:id="@+id/textViewQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="350px"
+                        android:text="QUANTITY"
+                        android:textColor="@color/black_light"
+                        android:textSize="28px" />
+
+                    <TextView
+                        android:id="@+id/textViewPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_gravity="center_horizontal"
+                        android:text="PRICE"
+                        android:textColor="@color/black_light"
+                        android:textSize="28px" />
+                </RelativeLayout>
+
+                <ListView
+                    android:id="@+id/listViewSelectedItems"
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:divider="@color/transparent"
+                    android:dividerHeight="10px"
+                    android:listSelector="@drawable/background_transparent"
+                    android:splitMotionEvents="false" >
+                </ListView>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+                    android:background="@color/black_translucent_level_2" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutTotal"
+                    android:layout_width="660px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="30px" >
+
+                    <TextView
+                        android:id="@+id/textViewTotal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TOTAL"
+                        android:textColor="@color/black_text_shop"
+                        android:textSize="30px" />
+
+                    <TextView
+                        android:id="@+id/textViewTotaValue"
+                        android:layout_width="500px"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="right"
+                        android:text="Rs. 0"
+                        android:textColor="@color/black_text_shop"
+                        android:textSize="30px" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20px"
+                    android:gravity="left"
+                    android:text="   "
+                    android:textColor="@color/black"
+                    android:textSize="4px" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutContinue"
+        android:layout_width="match_parent"
+        android:layout_height="112px"
+        android:background="@drawable/orange_bg_selector" >
+
+        <TextView
+            android:id="@+id/textViewContinue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
+            android:text="CONTINUE"
+            android:textColor="@drawable/text_color_white_dark_selector"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_items_checkout.xml -->

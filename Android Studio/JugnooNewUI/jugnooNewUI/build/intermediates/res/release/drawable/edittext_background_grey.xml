@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:shape="rectangle"
+    android:visible="true"  >
+
+    <corners 
+        android:radius="@dimen/button_corner_radius"
+        />  
+
+    <solid 
+        android:color="#EFEFEF"
+        />
+    
+    <stroke 
+        android:width="2px" 
+        android:color="#B7B7B7"
+        />
+    
+    
+    
+   </shape>
+<!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/edittext_background_grey.xml -->

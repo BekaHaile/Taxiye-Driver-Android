@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<set xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<translate
+    android:duration="600"
+        android:fromXDelta="0%"
+        android:fromYDelta="0%"
+        android:toXDelta="0%"
+        android:toYDelta="100%">
+
+</translate>
+
+
+</set><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/anim/top_out.xml -->

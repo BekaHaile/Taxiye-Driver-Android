@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="15px" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutSeeMore"
+        android:layout_width="match_parent"
+        android:layout_height="100px"
+        android:background="@drawable/background_white_selector"
+        android:visibility="visible" >
+
+        <ImageView
+            android:id="@+id/imageViewSeeMore"
+            android:layout_width="13px"
+            android:layout_height="26px"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="30px"
+            android:src="@drawable/arrow_icon_selector"
+            android:tag="mwar" />
+
+
+        <TextView
+            android:id="@+id/textViewSeeMore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60px"
+            android:text="See More Transactions"
+            android:textColor="@color/grey_black_light"
+            android:textSize="26px" />
+        
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/yellow_alpha"
+        android:layout_alignParentBottom="true"
+         />
+    
+    </RelativeLayout>
+    
+
+</LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/list_item_see_more.xml -->
