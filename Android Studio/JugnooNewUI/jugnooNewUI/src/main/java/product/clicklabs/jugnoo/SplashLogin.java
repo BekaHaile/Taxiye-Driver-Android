@@ -1,24 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.EmailRegisterData;
-import product.clicklabs.jugnoo.datastructure.FacebookRegisterData;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DeviceTokenGenerator;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.FacebookLoginCallback;
-import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
-import product.clicklabs.jugnoo.utils.FacebookUserData;
-import product.clicklabs.jugnoo.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -51,6 +32,28 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.EmailRegisterData;
+import product.clicklabs.jugnoo.datastructure.FacebookRegisterData;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.FacebookLoginCallback;
+import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
+import product.clicklabs.jugnoo.utils.FacebookUserData;
+import product.clicklabs.jugnoo.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class SplashLogin extends Activity implements LocationUpdate{
 	
@@ -105,8 +108,8 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 		FlurryAgent.onEvent("Login started");
 	}
 
@@ -128,18 +131,18 @@ public class SplashLogin extends Activity implements LocationUpdate{
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashLogin.this, relative, 1134, 720, false);
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
-		buttonFacebookLogin = (Button) findViewById(R.id.buttonFacebookLogin); buttonFacebookLogin.setTypeface(Data.latoRegular(this));
+		buttonFacebookLogin = (Button) findViewById(R.id.buttonFacebookLogin); buttonFacebookLogin.setTypeface(Fonts.latoRegular(this));
 
-		orText = (TextView) findViewById(R.id.orText); orText.setTypeface(Data.latoRegular(this));
+		orText = (TextView) findViewById(R.id.orText); orText.setTypeface(Fonts.latoRegular(this));
 		
-		editTextEmail = (AutoCompleteTextView) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Data.latoRegular(this));
-		editTextPassword = (EditText) findViewById(R.id.editTextPassword); editTextPassword.setTypeface(Data.latoRegular(this));
+		editTextEmail = (AutoCompleteTextView) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Fonts.latoRegular(this));
+		editTextPassword = (EditText) findViewById(R.id.editTextPassword); editTextPassword.setTypeface(Fonts.latoRegular(this));
 		
-		buttonEmailLogin = (Button) findViewById(R.id.buttonEmailLogin); buttonEmailLogin.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewForgotPassword = (TextView) findViewById(R.id.textViewForgotPassword); textViewForgotPassword.setTypeface(Data.latoRegular(getApplicationContext()));
+		buttonEmailLogin = (Button) findViewById(R.id.buttonEmailLogin); buttonEmailLogin.setTypeface(Fonts.latoRegular(getApplicationContext()));
+		textViewForgotPassword = (TextView) findViewById(R.id.textViewForgotPassword); textViewForgotPassword.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
@@ -471,7 +474,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			params.put("unique_device_id", Data.uniqueDeviceId);
 			params.put("latitude", ""+Data.latitude);
 			params.put("longitude", ""+Data.longitude);
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			
 
 			Log.i("email", emailId);
@@ -485,11 +488,11 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			Log.i("unique_device_id", Data.uniqueDeviceId);
 			Log.i("latitude", ""+Data.latitude);
 			Log.i("longitude", ""+Data.longitude);
-			Log.i("client_id", Data.CLIENT_ID);
+			Log.i("client_id", Config.getClientId());
 			
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/login_using_email", params,
+			client.post(Config.getServerUrl() + "/login_using_email", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -593,7 +596,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			params.put("unique_device_id", Data.uniqueDeviceId);
 			params.put("latitude", ""+Data.latitude);
 			params.put("longitude", ""+Data.longitude);
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			
 
 			Log.i("user_fb_id", Data.facebookUserData.fbId);
@@ -611,12 +614,12 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			Log.i("unique_device_id", Data.uniqueDeviceId);
 			Log.i("latitude", ""+Data.latitude);
 			Log.i("longitude", ""+Data.longitude);
-			Log.i("client_id", Data.CLIENT_ID);
+			Log.i("client_id", Config.getClientId());
 			
 			
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/login_using_facebook", params,
+			client.post(Config.getServerUrl() + "/login_using_facebook", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

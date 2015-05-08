@@ -13,45 +13,55 @@ int array CountryCodes 0x7f050000
 int attr adSize 0x7f010000
 int attr adSizes 0x7f010001
 int attr adUnitId 0x7f010002
-int attr appTheme 0x7f010011
-int attr buyButtonAppearance 0x7f010018
-int attr buyButtonHeight 0x7f010015
-int attr buyButtonText 0x7f010017
-int attr buyButtonWidth 0x7f010016
+int attr appTheme 0x7f01001b
+int attr buyButtonAppearance 0x7f010022
+int attr buyButtonHeight 0x7f01001f
+int attr buyButtonText 0x7f010021
+int attr buyButtonWidth 0x7f010020
 int attr cameraBearing 0x7f010004
 int attr cameraTargetLat 0x7f010005
 int attr cameraTargetLng 0x7f010006
 int attr cameraTilt 0x7f010007
 int attr cameraZoom 0x7f010008
-int attr confirm_logout 0x7f010021
-int attr done_button_background 0x7f01002b
-int attr done_button_text 0x7f010029
-int attr environment 0x7f010012
-int attr extra_fields 0x7f010026
-int attr fetch_user_info 0x7f010022
-int attr fragmentMode 0x7f010014
-int attr fragmentStyle 0x7f010013
-int attr is_cropped 0x7f010031
-int attr login_text 0x7f010023
-int attr logout_text 0x7f010024
+int attr confirm_logout 0x7f01002b
+int attr done_button_background 0x7f010035
+int attr done_button_text 0x7f010033
+int attr environment 0x7f01001c
+int attr extra_fields 0x7f010030
+int attr fetch_user_info 0x7f01002c
+int attr fragmentMode 0x7f01001e
+int attr fragmentStyle 0x7f01001d
+int attr is_cropped 0x7f01003b
+int attr login_text 0x7f01002d
+int attr logout_text 0x7f01002e
 int attr mapType 0x7f010003
-int attr maskedWalletDetailsBackground 0x7f01001b
-int attr maskedWalletDetailsButtonBackground 0x7f01001d
-int attr maskedWalletDetailsButtonTextAppearance 0x7f01001c
-int attr maskedWalletDetailsHeaderTextAppearance 0x7f01001a
-int attr maskedWalletDetailsLogoImageType 0x7f01001f
-int attr maskedWalletDetailsLogoTextColor 0x7f01001e
-int attr maskedWalletDetailsTextAppearance 0x7f010019
-int attr multi_select 0x7f010020
-int attr preset_size 0x7f010030
-int attr radius_in_meters 0x7f01002c
-int attr results_limit 0x7f01002d
-int attr search_text 0x7f01002e
-int attr show_pictures 0x7f010025
-int attr show_search_box 0x7f01002f
-int attr show_title_bar 0x7f010027
-int attr title_bar_background 0x7f01002a
-int attr title_text 0x7f010028
+int attr maskedWalletDetailsBackground 0x7f010025
+int attr maskedWalletDetailsButtonBackground 0x7f010027
+int attr maskedWalletDetailsButtonTextAppearance 0x7f010026
+int attr maskedWalletDetailsHeaderTextAppearance 0x7f010024
+int attr maskedWalletDetailsLogoImageType 0x7f010029
+int attr maskedWalletDetailsLogoTextColor 0x7f010028
+int attr maskedWalletDetailsTextAppearance 0x7f010023
+int attr matProg_barColor 0x7f010012
+int attr matProg_barSpinCycleTime 0x7f010016
+int attr matProg_barWidth 0x7f010019
+int attr matProg_circleRadius 0x7f010017
+int attr matProg_fillRadius 0x7f010018
+int attr matProg_linearProgress 0x7f01001a
+int attr matProg_progressIndeterminate 0x7f010011
+int attr matProg_rimColor 0x7f010013
+int attr matProg_rimWidth 0x7f010014
+int attr matProg_spinSpeed 0x7f010015
+int attr multi_select 0x7f01002a
+int attr preset_size 0x7f01003a
+int attr radius_in_meters 0x7f010036
+int attr results_limit 0x7f010037
+int attr search_text 0x7f010038
+int attr show_pictures 0x7f01002f
+int attr show_search_box 0x7f010039
+int attr show_title_bar 0x7f010031
+int attr title_bar_background 0x7f010034
+int attr title_text 0x7f010032
 int attr uiCompass 0x7f010009
 int attr uiRotateGestures 0x7f01000a
 int attr uiScrollGestures 0x7f01000b
@@ -536,6 +546,7 @@ int id com_facebook_usersettingsfragment_logo_image 0x7f0b016b
 int id com_facebook_usersettingsfragment_profile_name 0x7f0b016c
 int id container 0x7f0b0061
 int id customerInRideMyLocationBtn 0x7f0b0087
+int id dlgProgress 0x7f0b017e
 int id drawerLayout 0x7f0b0060
 int id editTextAddressLine1 0x7f0b00f0
 int id editTextAddressLine2 0x7f0b00f1
@@ -667,11 +678,11 @@ int id paymentWebview 0x7f0b0158
 int id picker_subtitle 0x7f0b0168
 int id production 0x7f0b0007
 int id progressBar 0x7f0b005f
-int id progressBar1 0x7f0b0180
 int id progressBarInitialSearch 0x7f0b006e
 int id progressBarList 0x7f0b0040
 int id progressBarProfileUpdate 0x7f0b002b
 int id progressBarSearch 0x7f0b0081
+int id progress_wheel 0x7f0b017f
 int id ratingBarFeedback 0x7f0b0054
 int id relative 0x7f0b0016
 int id relativeLayoutAD 0x7f0b00fc
@@ -730,7 +741,6 @@ int id relativeLayoutTo 0x7f0b019d
 int id relativeLayoutTotal 0x7f0b00f7
 int id requestFinalLayout 0x7f0b0083
 int id rl1 0x7f0b0173
-int id rlt 0x7f0b017e
 int id rv 0x7f0b0170
 int id sandbox 0x7f0b0008
 int id satellite 0x7f0b0003
@@ -745,7 +755,6 @@ int id terrain 0x7f0b0004
 int id textExtra 0x7f0b017d
 int id textHead 0x7f0b0174
 int id textMessage 0x7f0b0175
-int id textView1 0x7f0b017f
 int id textViewAbout 0x7f0b0023
 int id textViewAccountBalance 0x7f0b014a
 int id textViewAccountBalanceValue 0x7f0b014b
@@ -900,6 +909,7 @@ int id topBar 0x7f0b0017
 int id topBarEmpty 0x7f0b0171
 int id topRl 0x7f0b0050
 int id topRlOuter 0x7f0b00be
+int id tvProgress 0x7f0b0180
 int id webview 0x7f0b005e
 int id wrap_content 0x7f0b000d
 int integer google_play_services_version 0x7f080000
@@ -1159,12 +1169,23 @@ int styleable MapAttrs_uiZoomControls 10
 int styleable MapAttrs_uiZoomGestures 11
 int styleable MapAttrs_useViewLifecycle 12
 int styleable MapAttrs_zOrderOnTop 13
-int[] styleable WalletFragmentOptions { 0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014 }
+int[] styleable ProgressWheel { 0x7f010011, 0x7f010012, 0x7f010013, 0x7f010014, 0x7f010015, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a }
+int styleable ProgressWheel_matProg_barColor 1
+int styleable ProgressWheel_matProg_barSpinCycleTime 5
+int styleable ProgressWheel_matProg_barWidth 8
+int styleable ProgressWheel_matProg_circleRadius 6
+int styleable ProgressWheel_matProg_fillRadius 7
+int styleable ProgressWheel_matProg_linearProgress 9
+int styleable ProgressWheel_matProg_progressIndeterminate 0
+int styleable ProgressWheel_matProg_rimColor 2
+int styleable ProgressWheel_matProg_rimWidth 3
+int styleable ProgressWheel_matProg_spinSpeed 4
+int[] styleable WalletFragmentOptions { 0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e }
 int styleable WalletFragmentOptions_appTheme 0
 int styleable WalletFragmentOptions_environment 1
 int styleable WalletFragmentOptions_fragmentMode 3
 int styleable WalletFragmentOptions_fragmentStyle 2
-int[] styleable WalletFragmentStyle { 0x7f010015, 0x7f010016, 0x7f010017, 0x7f010018, 0x7f010019, 0x7f01001a, 0x7f01001b, 0x7f01001c, 0x7f01001d, 0x7f01001e, 0x7f01001f }
+int[] styleable WalletFragmentStyle { 0x7f01001f, 0x7f010020, 0x7f010021, 0x7f010022, 0x7f010023, 0x7f010024, 0x7f010025, 0x7f010026, 0x7f010027, 0x7f010028, 0x7f010029 }
 int styleable WalletFragmentStyle_buyButtonAppearance 3
 int styleable WalletFragmentStyle_buyButtonHeight 0
 int styleable WalletFragmentStyle_buyButtonText 2
@@ -1176,14 +1197,14 @@ int styleable WalletFragmentStyle_maskedWalletDetailsHeaderTextAppearance 5
 int styleable WalletFragmentStyle_maskedWalletDetailsLogoImageType 10
 int styleable WalletFragmentStyle_maskedWalletDetailsLogoTextColor 9
 int styleable WalletFragmentStyle_maskedWalletDetailsTextAppearance 4
-int[] styleable com_facebook_friend_picker_fragment { 0x7f010020 }
+int[] styleable com_facebook_friend_picker_fragment { 0x7f01002a }
 int styleable com_facebook_friend_picker_fragment_multi_select 0
-int[] styleable com_facebook_login_view { 0x7f010021, 0x7f010022, 0x7f010023, 0x7f010024 }
+int[] styleable com_facebook_login_view { 0x7f01002b, 0x7f01002c, 0x7f01002d, 0x7f01002e }
 int styleable com_facebook_login_view_confirm_logout 0
 int styleable com_facebook_login_view_fetch_user_info 1
 int styleable com_facebook_login_view_login_text 2
 int styleable com_facebook_login_view_logout_text 3
-int[] styleable com_facebook_picker_fragment { 0x7f010025, 0x7f010026, 0x7f010027, 0x7f010028, 0x7f010029, 0x7f01002a, 0x7f01002b }
+int[] styleable com_facebook_picker_fragment { 0x7f01002f, 0x7f010030, 0x7f010031, 0x7f010032, 0x7f010033, 0x7f010034, 0x7f010035 }
 int styleable com_facebook_picker_fragment_done_button_background 6
 int styleable com_facebook_picker_fragment_done_button_text 4
 int styleable com_facebook_picker_fragment_extra_fields 1
@@ -1191,11 +1212,11 @@ int styleable com_facebook_picker_fragment_show_pictures 0
 int styleable com_facebook_picker_fragment_show_title_bar 2
 int styleable com_facebook_picker_fragment_title_bar_background 5
 int styleable com_facebook_picker_fragment_title_text 3
-int[] styleable com_facebook_place_picker_fragment { 0x7f01002c, 0x7f01002d, 0x7f01002e, 0x7f01002f }
+int[] styleable com_facebook_place_picker_fragment { 0x7f010036, 0x7f010037, 0x7f010038, 0x7f010039 }
 int styleable com_facebook_place_picker_fragment_radius_in_meters 0
 int styleable com_facebook_place_picker_fragment_results_limit 1
 int styleable com_facebook_place_picker_fragment_search_text 2
 int styleable com_facebook_place_picker_fragment_show_search_box 3
-int[] styleable com_facebook_profile_picture_view { 0x7f010030, 0x7f010031 }
+int[] styleable com_facebook_profile_picture_view { 0x7f01003a, 0x7f01003b }
 int styleable com_facebook_profile_picture_view_is_cropped 1
 int styleable com_facebook_profile_picture_view_preset_size 0

@@ -1,13 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -29,6 +21,17 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
+
 public class ChangePasswordActivity extends Activity {
 
 	LinearLayout relative;
@@ -48,8 +51,8 @@ public class ChangePasswordActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 		FlurryAgent.onEvent("Login started");
 	}
 
@@ -67,14 +70,14 @@ public class ChangePasswordActivity extends Activity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(ChangePasswordActivity.this, relative, 1134, 720, false);
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
-		editTextOldPassword = (EditText) findViewById(R.id.editTextOldPassword); editTextOldPassword.setTypeface(Data.latoRegular(this));
-		editTextNewPassword = (EditText) findViewById(R.id.editTextNewPassword); editTextNewPassword.setTypeface(Data.latoRegular(this));
-		editTextRetypeNewPassword = (EditText) findViewById(R.id.editTextRetypeNewPassword); editTextRetypeNewPassword.setTypeface(Data.latoRegular(this));
+		editTextOldPassword = (EditText) findViewById(R.id.editTextOldPassword); editTextOldPassword.setTypeface(Fonts.latoRegular(this));
+		editTextNewPassword = (EditText) findViewById(R.id.editTextNewPassword); editTextNewPassword.setTypeface(Fonts.latoRegular(this));
+		editTextRetypeNewPassword = (EditText) findViewById(R.id.editTextRetypeNewPassword); editTextRetypeNewPassword.setTypeface(Fonts.latoRegular(this));
 
-		buttonChangePassword = (Button) findViewById(R.id.buttonChangePassword); buttonChangePassword.setTypeface(Data.latoRegular(this));
+		buttonChangePassword = (Button) findViewById(R.id.buttonChangePassword); buttonChangePassword.setTypeface(Fonts.latoRegular(this));
 
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
@@ -282,7 +285,7 @@ public class ChangePasswordActivity extends Activity {
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			params.put("old_password", oldPassword);
@@ -290,7 +293,7 @@ public class ChangePasswordActivity extends Activity {
 			
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/update_user_profile", params,
+			client.post(Config.getServerUrl() + "/update_user_profile", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

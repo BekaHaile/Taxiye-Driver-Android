@@ -1,9 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.datastructure.FeedbackMode;
-import product.clicklabs.jugnoo.datastructure.HelpSection;
-import product.clicklabs.jugnoo.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,6 +12,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.FeedbackMode;
+import product.clicklabs.jugnoo.datastructure.HelpSection;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Utils;
+import rmn.androidscreenlibrary.ASSL;
 
 public class SupportActivity extends Activity {
 
@@ -42,7 +45,7 @@ public class SupportActivity extends Activity {
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, (ViewGroup) relative, 1134, 720, false);
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
 		relativeLayoutSendUsEmail = (RelativeLayout) findViewById(R.id.relativeLayoutSendUsEmail);
@@ -50,10 +53,10 @@ public class SupportActivity extends Activity {
 		relativeLayoutFAQ = (RelativeLayout) findViewById(R.id.relativeLayoutFAQ);
 		relativeLayoutFeedback = (RelativeLayout) findViewById(R.id.relativeLayoutFeedback);
 		
-		textViewSendUsEmail = (TextView) findViewById(R.id.textViewSendUsEmail); textViewSendUsEmail.setTypeface(Data.latoRegular(this));
-		textViewCallUs = (TextView) findViewById(R.id.textViewCallUs); textViewCallUs.setTypeface(Data.latoRegular(this));
-		textViewFAQ = (TextView) findViewById(R.id.textViewFAQ); textViewFAQ.setTypeface(Data.latoRegular(this));
-		textViewFeedback = (TextView) findViewById(R.id.textViewFeedback); textViewFeedback.setTypeface(Data.latoRegular(this));
+		textViewSendUsEmail = (TextView) findViewById(R.id.textViewSendUsEmail); textViewSendUsEmail.setTypeface(Fonts.latoRegular(this));
+		textViewCallUs = (TextView) findViewById(R.id.textViewCallUs); textViewCallUs.setTypeface(Fonts.latoRegular(this));
+		textViewFAQ = (TextView) findViewById(R.id.textViewFAQ); textViewFAQ.setTypeface(Fonts.latoRegular(this));
+		textViewFeedback = (TextView) findViewById(R.id.textViewFeedback); textViewFeedback.setTypeface(Fonts.latoRegular(this));
 
 		
 		relativeLayoutSendUsEmail.setOnClickListener(new View.OnClickListener() {
@@ -78,7 +81,7 @@ public class SupportActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-		        Utils.openCallIntent(SupportActivity.this, Data.SUPPORT_NUMBER);
+		        Utils.openCallIntent(SupportActivity.this, Config.getSupportNumber());
 			}
 		});
 		

@@ -1,30 +1,23 @@
 package product.clicklabs.jugnoo;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -38,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.datastructure.AppMode;
 import product.clicklabs.jugnoo.datastructure.EmailRegisterData;
@@ -51,6 +45,7 @@ import product.clicklabs.jugnoo.utils.FacebookLoginCallback;
 import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
 import product.clicklabs.jugnoo.utils.FacebookUserData;
 import product.clicklabs.jugnoo.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.Utils;
@@ -68,8 +63,8 @@ public class RegisterScreen extends Activity implements LocationUpdate {
     TextView textViewPolicy;
     Button buttonEmailSignup;
 
-    TextView textViewScroll;
-    ScrollView scrollView;
+//    TextView textViewScroll;
+//    ScrollView scrollView;
 
     LinearLayout relative;
 
@@ -88,8 +83,8 @@ public class RegisterScreen extends Activity implements LocationUpdate {
     @Override
     protected void onStart() {
         super.onStart();
-        FlurryAgent.init(this, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+        FlurryAgent.init(this, Config.getFlurryKey());
+        FlurryAgent.onStartSession(this, Config.getFlurryKey());
         FlurryAgent.onEvent("Register started");
     }
 
@@ -109,33 +104,33 @@ public class RegisterScreen extends Activity implements LocationUpdate {
         new ASSL(RegisterScreen.this, relative, 1134, 720, false);
 
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+        textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
         imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 
         buttonFacebookSignup = (Button) findViewById(R.id.buttonFacebookSignup);
-        buttonFacebookSignup.setTypeface(Data.latoRegular(this));
+        buttonFacebookSignup.setTypeface(Fonts.latoRegular(this));
         orText = (TextView) findViewById(R.id.orText);
-        orText.setTypeface(Data.latoRegular(getApplicationContext()));
+        orText.setTypeface(Fonts.latoRegular(getApplicationContext()));
 
         editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-        editTextUserName.setTypeface(Data.latoRegular(this));
+        editTextUserName.setTypeface(Fonts.latoRegular(this));
         editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextEmail.setTypeface(Data.latoRegular(this));
+        editTextEmail.setTypeface(Fonts.latoRegular(this));
         editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-        editTextPhone.setTypeface(Data.latoRegular(this));
+        editTextPhone.setTypeface(Fonts.latoRegular(this));
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        editTextPassword.setTypeface(Data.latoRegular(this));
+        editTextPassword.setTypeface(Fonts.latoRegular(this));
         editTextReferralCode = (EditText) findViewById(R.id.editTextReferralCode);
-        editTextReferralCode.setTypeface(Data.latoRegular(this));
+        editTextReferralCode.setTypeface(Fonts.latoRegular(this));
 
         textViewPolicy = (TextView) findViewById(R.id.textViewPolicy);
-        textViewPolicy.setTypeface(Data.latoLight(this), Typeface.BOLD);
+        textViewPolicy.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 
         buttonEmailSignup = (Button) findViewById(R.id.buttonEmailSignup);
-        buttonEmailSignup.setTypeface(Data.latoRegular(this));
+        buttonEmailSignup.setTypeface(Fonts.latoRegular(this));
 
-        scrollView = (ScrollView) findViewById(R.id.scrollView);
-        textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+//        scrollView = (ScrollView) findViewById(R.id.scrollView);
+//        textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 
 
         buttonFacebookSignup.setOnClickListener(new View.OnClickListener() {
@@ -159,9 +154,11 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.smoothScrollTo(0, editTextUserName.getBottom());
+//                    scrollView.smoothScrollTo(0, editTextUserName.getBottom());
                 }
-                editTextUserName.setError(null);
+                else {
+                    editTextUserName.setError(null);
+                }
             }
         });
 
@@ -170,9 +167,11 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.smoothScrollTo(0, editTextEmail.getBottom());
+//                    scrollView.smoothScrollTo(0, editTextEmail.getBottom());
                 }
-                editTextEmail.setError(null);
+                else {
+                    editTextEmail.setError(null);
+                }
             }
         });
 
@@ -182,9 +181,11 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.smoothScrollTo(0, editTextPhone.getBottom());
+//                    scrollView.smoothScrollTo(0, editTextPhone.getBottom());
                 }
-                editTextPhone.setError(null);
+                else {
+                    editTextPhone.setError(null);
+                }
             }
         });
 
@@ -193,9 +194,11 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.smoothScrollTo(0, editTextPassword.getBottom());
+//                    scrollView.smoothScrollTo(0, editTextPassword.getBottom());
                 }
-                editTextPassword.setError(null);
+                else {
+                    editTextPassword.setError(null);
+                }
             }
         });
 
@@ -204,9 +207,11 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
-                    scrollView.smoothScrollTo(0, editTextReferralCode.getBottom());
+//                    scrollView.smoothScrollTo(0, editTextReferralCode.getBottom());
                 }
-                editTextReferralCode.setError(null);
+                else {
+                    editTextReferralCode.setError(null);
+                }
             }
         });
 
@@ -237,7 +242,12 @@ public class RegisterScreen extends Activity implements LocationUpdate {
                 if ("".equalsIgnoreCase(name)) {
                     editTextUserName.requestFocus();
                     editTextUserName.setError("Please enter name");
-                } else {
+                }
+                else if(!Utils.hasAlphabets(name)) {
+                    editTextUserName.requestFocus();
+                    editTextUserName.setError("Please enter at least one alphabet");
+                }
+                else {
                     if ("".equalsIgnoreCase(emailId)) {
                         editTextEmail.requestFocus();
                         editTextEmail.setError("Please enter email id");
@@ -373,43 +383,43 @@ public class RegisterScreen extends Activity implements LocationUpdate {
         }
 
 
-        final View activityRootView = findViewById(R.id.linearLayoutMain);
-        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
-            new OnGlobalLayoutListener() {
-
-                @Override
-                public void onGlobalLayout() {
-                    Rect r = new Rect();
-                    // r will be populated with the coordinates of your view
-                    // that area still visible.
-                    activityRootView.getWindowVisibleDisplayFrame(r);
-
-                    int heightDiff = activityRootView.getRootView()
-                        .getHeight() - (r.bottom - r.top);
-                    if (heightDiff > 100) { // if more than 100 pixels, its
-                        // probably a keyboard...
-
-                        /************** Adapter for the parent List *************/
-
-                        ViewGroup.LayoutParams params_12 = textViewScroll
-                            .getLayoutParams();
-
-                        params_12.height = (int) (heightDiff);
-
-                        textViewScroll.setLayoutParams(params_12);
-                        textViewScroll.requestLayout();
-
-                    } else {
-
-                        ViewGroup.LayoutParams params = textViewScroll
-                            .getLayoutParams();
-                        params.height = 0;
-                        textViewScroll.setLayoutParams(params);
-                        textViewScroll.requestLayout();
-
-                    }
-                }
-            });
+//        final View activityRootView = findViewById(R.id.linearLayoutMain);
+//        activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
+//            new OnGlobalLayoutListener() {
+//
+//                @Override
+//                public void onGlobalLayout() {
+//                    Rect r = new Rect();
+//                    // r will be populated with the coordinates of your view
+//                    // that area still visible.
+//                    activityRootView.getWindowVisibleDisplayFrame(r);
+//
+//                    int heightDiff = activityRootView.getRootView()
+//                        .getHeight() - (r.bottom - r.top);
+//                    if (heightDiff > 100) { // if more than 100 pixels, its
+//                        // probably a keyboard...
+//
+//                        /************** Adapter for the parent List *************/
+//
+//                        ViewGroup.LayoutParams params_12 = textViewScroll
+//                            .getLayoutParams();
+//
+//                        params_12.height = (int) (heightDiff);
+//
+//                        textViewScroll.setLayoutParams(params_12);
+//                        textViewScroll.requestLayout();
+//
+//                    } else {
+//
+//                        ViewGroup.LayoutParams params = textViewScroll
+//                            .getLayoutParams();
+//                        params.height = 0;
+//                        textViewScroll.setLayoutParams(params);
+//                        textViewScroll.requestLayout();
+//
+//                    }
+//                }
+//            });
 
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -528,10 +538,10 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             params.put("os_version", Data.osVersion);
             params.put("country", Data.country);
 
-            params.put("client_id", Data.CLIENT_ID);
+            params.put("client_id", Config.getClientId());
             params.put("referral_code", referralCode);
 
-            if(Data.DEFAULT_SERVER_URL.contains(Data.DEV_SERVER_URL)){
+            if(Config.getServerUrl().contains(Config.getDevServerUrl().substring(0, Config.getDevServerUrl().length() - 5))){
                 if(AppMode.DEBUG == SplashNewActivity.appMode){
                     params.put("device_token", "");
                     params.put("unique_device_id", "");
@@ -553,7 +563,7 @@ public class RegisterScreen extends Activity implements LocationUpdate {
 
 
             AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/register_using_email", params,
+            client.post(Config.getServerUrl() + "/register_using_email", params,
                 new CustomAsyncHttpResponseHandler() {
                     private JSONObject jObj;
 
@@ -652,14 +662,14 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             params.put("os_version", Data.osVersion);
             params.put("country", Data.country);
             params.put("unique_device_id", Data.uniqueDeviceId);
-            params.put("client_id", Data.CLIENT_ID);
+            params.put("client_id", Config.getClientId());
 
 
             Log.e("register_using_facebook params", params.toString());
 
 
             AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/register_using_facebook", params,
+            client.post(Config.getServerUrl() + "/register_using_facebook", params,
                 new CustomAsyncHttpResponseHandler() {
                     private JSONObject jObj;
 

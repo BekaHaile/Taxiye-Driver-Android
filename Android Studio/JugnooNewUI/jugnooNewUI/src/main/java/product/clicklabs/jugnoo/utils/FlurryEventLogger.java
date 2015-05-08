@@ -1,14 +1,16 @@
 package product.clicklabs.jugnoo.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import product.clicklabs.jugnoo.Data;
 import android.content.Context;
 import android.location.Location;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import product.clicklabs.jugnoo.Data;
+import product.clicklabs.jugnoo.config.Config;
 
 public class FlurryEventLogger {
 
@@ -24,7 +26,7 @@ public class FlurryEventLogger {
 	
 	public static void requestPushReceived(Context context, String engagementId, String startTime, String receivedTime){
 		try{
-			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
+			FlurryAgent.onStartSession(context, Config.getFlurryKey());
 			Map<String, String> articleParams = new HashMap<String, String>();
 			articleParams.put("engagement_id", engagementId);
 			articleParams.put("start_time", startTime);
@@ -529,5 +531,7 @@ public class FlurryEventLogger {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+
 }

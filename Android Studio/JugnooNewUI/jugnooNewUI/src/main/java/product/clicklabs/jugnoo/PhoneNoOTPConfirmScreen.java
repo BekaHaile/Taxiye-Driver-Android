@@ -1,13 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -26,6 +18,17 @@ import android.widget.TextView.OnEditorActionListener;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class PhoneNoOTPConfirmScreen extends Activity{
 	
@@ -48,8 +51,8 @@ public class PhoneNoOTPConfirmScreen extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -67,17 +70,17 @@ public class PhoneNoOTPConfirmScreen extends Activity{
 		new ASSL(PhoneNoOTPConfirmScreen.this, relative, 1134, 720, false);
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		
-		otpHelpText = (TextView) findViewById(R.id.otpHelpText); otpHelpText.setTypeface(Data.latoRegular(this));
+		otpHelpText = (TextView) findViewById(R.id.otpHelpText); otpHelpText.setTypeface(Fonts.latoRegular(this));
 		
-		editTextOTP = (EditText) findViewById(R.id.editTextOTP); editTextOTP.setTypeface(Data.latoRegular(this));
+		editTextOTP = (EditText) findViewById(R.id.editTextOTP); editTextOTP.setTypeface(Fonts.latoRegular(this));
 		
-		buttonVerify = (Button) findViewById(R.id.buttonVerify); buttonVerify.setTypeface(Data.latoRegular(this));
+		buttonVerify = (Button) findViewById(R.id.buttonVerify); buttonVerify.setTypeface(Fonts.latoRegular(this));
 		
 		relativeLayoutOTPThroughCall = (RelativeLayout) findViewById(R.id.relativeLayoutOTPThroughCall);
-		textViewOTPNotReceived = (TextView) findViewById(R.id.textViewOTPNotReceived); textViewOTPNotReceived.setTypeface(Data.latoLight(this));
-		textViewCallMe = (TextView) findViewById(R.id.textViewCallMe); textViewCallMe.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewOTPNotReceived = (TextView) findViewById(R.id.textViewOTPNotReceived); textViewOTPNotReceived.setTypeface(Fonts.latoLight(this));
+		textViewCallMe = (TextView) findViewById(R.id.textViewCallMe); textViewCallMe.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		
 		
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
@@ -178,7 +181,7 @@ public class PhoneNoOTPConfirmScreen extends Activity{
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			params.put("phone_no", phoneNo);
@@ -187,7 +190,7 @@ public class PhoneNoOTPConfirmScreen extends Activity{
 			Log.i("params", ">"+params);
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/verify_my_contact_number", params,
+			client.post(Config.getServerUrl() + "/verify_my_contact_number", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -247,14 +250,14 @@ public class PhoneNoOTPConfirmScreen extends Activity{
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			params.put("phone_no", phoneNo);
 			Log.i("params", ">"+params);
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/send_new_number_otp_via_call", params,
+			client.post(Config.getServerUrl() + "/send_new_number_otp_via_call", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

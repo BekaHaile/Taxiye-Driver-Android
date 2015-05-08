@@ -1,26 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.EmailVerificationStatus;
-import product.clicklabs.jugnoo.datastructure.FutureSchedule;
-import product.clicklabs.jugnoo.datastructure.PassengerScreenMode;
-import product.clicklabs.jugnoo.datastructure.ProfileUpdateMode;
-import product.clicklabs.jugnoo.datastructure.RideInfoNew;
-import product.clicklabs.jugnoo.datastructure.ScheduleCancelListener;
-import product.clicklabs.jugnoo.datastructure.UserMode;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
-import product.clicklabs.jugnoo.utils.Log;
-import product.clicklabs.jugnoo.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -56,6 +35,30 @@ import com.squareup.picasso.BlurTransform;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.EmailVerificationStatus;
+import product.clicklabs.jugnoo.datastructure.FutureSchedule;
+import product.clicklabs.jugnoo.datastructure.PassengerScreenMode;
+import product.clicklabs.jugnoo.datastructure.ProfileUpdateMode;
+import product.clicklabs.jugnoo.datastructure.RideInfoNew;
+import product.clicklabs.jugnoo.datastructure.ScheduleCancelListener;
+import product.clicklabs.jugnoo.datastructure.UserMode;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import product.clicklabs.jugnoo.utils.Utils;
+import rmn.androidscreenlibrary.ASSL;
 
 public class AccountActivity extends Activity {
 
@@ -116,7 +119,7 @@ public class AccountActivity extends Activity {
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
 		imageViewUserImageBlur = (ImageView) findViewById(R.id.imageViewUserImageBlur);
@@ -128,9 +131,9 @@ public class AccountActivity extends Activity {
 		linearLayoutMain = (LinearLayout) findViewById(R.id.linearLayoutMain);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 		
-		editTextUserName = (EditText) findViewById(R.id.editTextUserName); editTextUserName.setTypeface(Data.latoRegular(this));
-		editTextEmail = (EditText) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Data.latoRegular(this));
-		editTextPhone = (EditText) findViewById(R.id.editTextPhone); editTextPhone.setTypeface(Data.latoRegular(this));
+		editTextUserName = (EditText) findViewById(R.id.editTextUserName); editTextUserName.setTypeface(Fonts.latoRegular(this));
+		editTextEmail = (EditText) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Fonts.latoRegular(this));
+		editTextPhone = (EditText) findViewById(R.id.editTextPhone); editTextPhone.setTypeface(Fonts.latoRegular(this));
 		
 		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditEmail = (ImageView) findViewById(R.id.imageViewEditEmail);
@@ -139,16 +142,16 @@ public class AccountActivity extends Activity {
 		
 		imageViewEmailVerifyStatus = (ImageView) findViewById(R.id.imageViewEmailVerifyStatus);
 		relativeLayoutEmailVerify = (RelativeLayout) findViewById(R.id.relativeLayoutEmailVerify);
-		textViewEmailVerifyMessage = (TextView) findViewById(R.id.textViewEmailVerifyMessage); textViewEmailVerifyMessage.setTypeface(Data.latoRegular(this));
-		textViewEmailVerify = (TextView) findViewById(R.id.textViewEmailVerify); textViewEmailVerify.setTypeface(Data.latoRegular(this));
+		textViewEmailVerifyMessage = (TextView) findViewById(R.id.textViewEmailVerifyMessage); textViewEmailVerifyMessage.setTypeface(Fonts.latoRegular(this));
+		textViewEmailVerify = (TextView) findViewById(R.id.textViewEmailVerify); textViewEmailVerify.setTypeface(Fonts.latoRegular(this));
 		
 		relativeLayoutChangePassword = (RelativeLayout) findViewById(R.id.relativeLayoutChangePassword);
-		textViewChangePassword = (TextView) findViewById(R.id.textViewChangePassword); textViewChangePassword.setTypeface(Data.latoRegular(this));
+		textViewChangePassword = (TextView) findViewById(R.id.textViewChangePassword); textViewChangePassword.setTypeface(Fonts.latoRegular(this));
 		
 		relativeLayoutRideTransactions = (RelativeLayout) findViewById(R.id.relativeLayoutRideTransactions);
-		textViewRecentTransactions = (TextView) findViewById(R.id.textViewRecentTransactions); textViewRecentTransactions.setTypeface(Data.latoRegular(this));
+		textViewRecentTransactions = (TextView) findViewById(R.id.textViewRecentTransactions); textViewRecentTransactions.setTypeface(Fonts.latoRegular(this));
 		listViewRideTransactions = (ListView) findViewById(R.id.listViewRideTransactions);
-		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Data.latoRegular(this));
+		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(this));
 		progressBarList = (ProgressBar) findViewById(R.id.progressBarList);
 		
 		LinearLayout viewF = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_see_more, null);
@@ -157,15 +160,15 @@ public class AccountActivity extends Activity {
 		ASSL.DoMagic(viewF);
 		
 		relativeLayoutSeeMore = (RelativeLayout) viewF.findViewById(R.id.relativeLayoutSeeMore);
-		textViewSeeMore = (TextView) viewF.findViewById(R.id.textViewSeeMore); textViewSeeMore.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewSeeMore = (TextView) viewF.findViewById(R.id.textViewSeeMore); textViewSeeMore.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		relativeLayoutSeeMore.setVisibility(View.GONE);
 		
 		rideTransactionAdapter = new RideTransactionAdapter(this);
 		listViewRideTransactions.setAdapter(rideTransactionAdapter);
 		
 		relativeLayoutNotTriedJugnoo = (RelativeLayout) findViewById(R.id.relativeLayoutNotTriedJugnoo);
-		textViewNotTriedJugnoo = (TextView) findViewById(R.id.textViewNotTriedJugnoo); textViewNotTriedJugnoo.setTypeface(Data.latoRegular(this));
-		textViewGetARide = (TextView) findViewById(R.id.textViewGetARide); textViewGetARide.setTypeface(Data.latoRegular(this));
+		textViewNotTriedJugnoo = (TextView) findViewById(R.id.textViewNotTriedJugnoo); textViewNotTriedJugnoo.setTypeface(Fonts.latoRegular(this));
+		textViewGetARide = (TextView) findViewById(R.id.textViewGetARide); textViewGetARide.setTypeface(Fonts.latoRegular(this));
 		
 
 		relativeLayoutRideTransactions.setVisibility(View.VISIBLE);
@@ -173,7 +176,7 @@ public class AccountActivity extends Activity {
 		textViewRecentTransactions.setVisibility(View.GONE);
 		
 		
-		buttonLogout = (Button) findViewById(R.id.buttonLogout); buttonLogout.setTypeface(Data.latoRegular(this));
+		buttonLogout = (Button) findViewById(R.id.buttonLogout); buttonLogout.setTypeface(Fonts.latoRegular(this));
 		
 		
 		
@@ -640,7 +643,7 @@ public class AccountActivity extends Activity {
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			
@@ -656,7 +659,7 @@ public class AccountActivity extends Activity {
 			
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/update_user_profile", params,
+			client.post(Config.getServerUrl() + "/update_user_profile", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -726,12 +729,12 @@ public class AccountActivity extends Activity {
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/reload_my_profile", params,
+			client.post(Config.getServerUrl() + "/reload_my_profile", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -791,12 +794,12 @@ public class AccountActivity extends Activity {
 			
 			RequestParams params = new RequestParams();
 		
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/send_verify_email_link", params,
+			client.post(Config.getServerUrl() + "/send_verify_email_link", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -850,12 +853,12 @@ public class AccountActivity extends Activity {
 			
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
-			params.put("client_id", Data.CLIENT_ID);
+			params.put("client_id", Config.getClientId());
 
 			Log.i("access_token", "="+Data.userData.accessToken);
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL+"/logout_user", params,
+			client.post(Config.getServerUrl()+"/logout_user", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -932,7 +935,7 @@ public class AccountActivity extends Activity {
 			params.put("start_from", "0");
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/get_recent_rides", params,
+			client.post(Config.getServerUrl() + "/get_recent_rides", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -1125,15 +1128,15 @@ public class AccountActivity extends Activity {
 				holder = new ViewHolderRideTransaction();
 				convertView = mInflater.inflate(R.layout.list_item_ride_transaction, null);
 				
-				holder.textViewPickupAt = (TextView) convertView.findViewById(R.id.textViewPickupAt); holder.textViewPickupAt.setTypeface(Data.latoRegular(context));
-				holder.textViewFrom = (TextView) convertView.findViewById(R.id.textViewFrom); holder.textViewFrom.setTypeface(Data.latoRegular(context));
-				holder.textViewFromValue = (TextView) convertView.findViewById(R.id.textViewFromValue); holder.textViewFromValue.setTypeface(Data.latoRegular(context));
-				holder.textViewTo = (TextView) convertView.findViewById(R.id.textViewTo); holder.textViewTo.setTypeface(Data.latoRegular(context));
-				holder.textViewToValue = (TextView) convertView.findViewById(R.id.textViewToValue); holder.textViewToValue.setTypeface(Data.latoRegular(context));
-				holder.textViewDetails = (TextView) convertView.findViewById(R.id.textViewDetails); holder.textViewDetails.setTypeface(Data.latoRegular(context));
-				holder.textViewDetailsValue = (TextView) convertView.findViewById(R.id.textViewDetailsValue); holder.textViewDetailsValue.setTypeface(Data.latoRegular(context));
-				holder.textViewAmount = (TextView) convertView.findViewById(R.id.textViewAmount); holder.textViewAmount.setTypeface(Data.latoRegular(context));
-				holder.textViewCancel = (TextView) convertView.findViewById(R.id.textViewCancel); holder.textViewCancel.setTypeface(Data.latoRegular(context));
+				holder.textViewPickupAt = (TextView) convertView.findViewById(R.id.textViewPickupAt); holder.textViewPickupAt.setTypeface(Fonts.latoRegular(context));
+				holder.textViewFrom = (TextView) convertView.findViewById(R.id.textViewFrom); holder.textViewFrom.setTypeface(Fonts.latoRegular(context));
+				holder.textViewFromValue = (TextView) convertView.findViewById(R.id.textViewFromValue); holder.textViewFromValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewTo = (TextView) convertView.findViewById(R.id.textViewTo); holder.textViewTo.setTypeface(Fonts.latoRegular(context));
+				holder.textViewToValue = (TextView) convertView.findViewById(R.id.textViewToValue); holder.textViewToValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewDetails = (TextView) convertView.findViewById(R.id.textViewDetails); holder.textViewDetails.setTypeface(Fonts.latoRegular(context));
+				holder.textViewDetailsValue = (TextView) convertView.findViewById(R.id.textViewDetailsValue); holder.textViewDetailsValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewAmount = (TextView) convertView.findViewById(R.id.textViewAmount); holder.textViewAmount.setTypeface(Fonts.latoRegular(context));
+				holder.textViewCancel = (TextView) convertView.findViewById(R.id.textViewCancel); holder.textViewCancel.setTypeface(Fonts.latoRegular(context));
 				
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 				holder.relativeLayoutCancel = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutCancel);
@@ -1282,7 +1285,7 @@ public class AccountActivity extends Activity {
 			Log.i("remove_pickup_schedule api params", ">"+params);
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/remove_pickup_schedule", params,
+			client.post(Config.getServerUrl() + "/remove_pickup_schedule", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

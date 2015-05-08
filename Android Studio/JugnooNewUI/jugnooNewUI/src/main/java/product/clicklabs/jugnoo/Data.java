@@ -1,10 +1,14 @@
 package product.clicklabs.jugnoo;
 
+import android.content.Context;
+
+import com.google.android.gms.maps.model.LatLng;
+import com.loopj.android.http.AsyncHttpClient;
+
 import java.security.KeyStore;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.CancelOptionsList;
 import product.clicklabs.jugnoo.datastructure.DriverInfo;
 import product.clicklabs.jugnoo.datastructure.EndRideData;
@@ -12,20 +16,9 @@ import product.clicklabs.jugnoo.datastructure.FareStructure;
 import product.clicklabs.jugnoo.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.datastructure.ReferralMessages;
 import product.clicklabs.jugnoo.datastructure.UserData;
-import product.clicklabs.jugnoo.utils.Config;
 import product.clicklabs.jugnoo.utils.FacebookUserData;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.MySSLSocketFactory;
-import android.content.Context;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.Signature;
-import android.graphics.Typeface;
-import android.util.Base64;
-
-import com.google.android.gms.maps.model.LatLng;
-import com.loopj.android.http.AsyncHttpClient;
 
 /**
  * Stores common static data for access for all activities across the application
@@ -34,23 +27,11 @@ import com.loopj.android.http.AsyncHttpClient;
  */
 public class Data {
 	
-	public static final String SUPPORT_NUMBER = "+919023121121";
-	
-	
-	public static final String CLIENT_ID = "EEBUOvQq7RRJBxJm";
-	public static final String CLIENT_SHARED_SECRET = "nqaK7HTwDT3epcpR5JuMWwojFv0KJnIv";
-	
-	
-	//TODO change flurry key
-	//H8Y94ND8GPQTKKG5R2VY
-	public static final String STATIC_FLURRY_KEY = "H8Y94ND8GPQTKKG5R2VY";
-	
-	public static String FLURRY_KEY = "H8Y94ND8GPQTKKG5R2VY";
-	
+
+
+
 	public static final String INVALID_ACCESS_TOKEN = "invalid access token";
-	
-	public static final String DEBUG_PASSWORD = "3131";
-	
+
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token",
 			
@@ -147,28 +128,8 @@ public class Data {
 	// Dev new dispatcher :   https://54.81.229.172:8012
 	
 	//https://test.jugnoo.in:8012 to http://54.173.65.120:9000
-	
-	//TODO
-	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-	public static final String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
-	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
-	
-	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	public static String SERVER_URL = DEFAULT_SERVER_URL;
-	
-	
+
+
 	
 	public static final String SERVER_ERROR_MSG = "Connection lost. Please try again later.";
 	public static final String SERVER_NOT_RESOPNDING_MSG = "Connection lost. Please try again later.";
@@ -176,16 +137,8 @@ public class Data {
 	
 	
 	
-	public static final String GOOGLE_PROJECT_ID = "506849624961";
 
-	public static final String MAPS_BROWSER_KEY = "AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY";
-	
-	//AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY autos
-	
-	public static final String FACEBOOK_APP_ID = "782131025144439";
-	
-	
-	
+
 	public static double latitude, longitude;
 	
 	
@@ -259,59 +212,8 @@ public class Data {
 	
 	
 	
-	
-	
-	
-	public static void generateKeyHash(Context context){
-		try { // single sign-on for fb application
-			PackageInfo info = context.getPackageManager().getPackageInfo(
-					"product.clicklabs.jugnoo",
-					PackageManager.GET_SIGNATURES);
-			for (Signature signature : info.signatures) {
-				MessageDigest md = MessageDigest.getInstance("SHA");
-				md.update(signature.toByteArray());
-				Log.e("KeyHash:", ","
-								+ Base64.encodeToString(md.digest(),
-										Base64.DEFAULT));
-			}
-		} catch (NameNotFoundException e) {
-			Log.e("error:", "," + e.toString());
-		} catch (NoSuchAlgorithmException e) {
-			Log.e("error:", "," + e.toString());
-		}
-	}
-	
-	
-	
-	private static Typeface latoRegular, museoSlab, latoLight;																// fonts declaration
-	
 
-	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
-		if (latoRegular == null) {
-			latoRegular = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_regular.ttf");
-		}
-		return latoRegular;
-	}
-	
-	
-	public static Typeface museoSlab(Context appContext) {
-		if (museoSlab == null) {
-			museoSlab = Typeface.createFromAsset(appContext.getAssets(), "fonts/museo_slab.otf");
-		}
-		return museoSlab;
-	}
-	
-	public static Typeface latoLight(Context appContext) {											// accessing fonts functions
-		if (latoLight == null) {
-			latoLight = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_light.ttf");
-		}
-		return latoLight;
-	}
-	
-	
-	
-	
-	
+
 	
 	public static AsyncHttpClient mainClient;
 	

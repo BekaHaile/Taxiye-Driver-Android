@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.utils;
 
+import org.apache.http.conn.ssl.SSLSocketFactory;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -11,8 +13,6 @@ import java.security.UnrecoverableKeyException;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
-
-import org.apache.http.conn.ssl.SSLSocketFactory;
 
 public class CustomSSLSocketFactory extends SSLSocketFactory {
     SSLContext sslContext = SSLContext.getInstance("TLS");

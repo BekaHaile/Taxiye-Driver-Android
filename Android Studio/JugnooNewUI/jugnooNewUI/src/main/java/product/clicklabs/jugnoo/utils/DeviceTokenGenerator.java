@@ -1,13 +1,14 @@
 package product.clicklabs.jugnoo.utils;
 
-import product.clicklabs.jugnoo.Data;
-import product.clicklabs.jugnoo.SplashLogin;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import product.clicklabs.jugnoo.SplashLogin;
+import product.clicklabs.jugnoo.config.Config;
 
 public class DeviceTokenGenerator {
 
@@ -62,7 +63,7 @@ public class DeviceTokenGenerator {
 				@Override
 				public void run() {
 					try {
-						regId = gcm.register(Data.GOOGLE_PROJECT_ID);
+						regId = gcm.register(Config.getGoogleProjectId());
 						setRegistrationId(context, regId);
 					} catch(Exception e){
 						e.printStackTrace();

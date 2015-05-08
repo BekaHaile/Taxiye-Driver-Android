@@ -1,11 +1,5 @@
 package product.clicklabs.jugnoo.utils;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import product.clicklabs.jugnoo.Data;
-import product.clicklabs.jugnoo.R;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -23,6 +17,12 @@ import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import product.clicklabs.jugnoo.R;
 
 public class CustomDateTimePicker implements OnClickListener {
 	private DatePicker datePicker;
@@ -168,7 +168,7 @@ public class CustomDateTimePicker implements OnClickListener {
 		btn_set.setText("Set");
 		btn_set.setId(SET);
 		btn_set.setOnClickListener(this);
-		btn_set.setTypeface(Data.latoRegular(activity));
+		btn_set.setTypeface(Fonts.latoRegular(activity));
 		btn_set.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
 		btn_set.setTextColor(activity.getResources().getColor(R.drawable.text_color_white_alpha_selector));
 		btn_set.setBackgroundResource(R.drawable.button_yellow_selector);
@@ -180,7 +180,7 @@ public class CustomDateTimePicker implements OnClickListener {
 		btn_cancel.setText("Cancel");
 		btn_cancel.setId(CANCEL);
 		btn_cancel.setOnClickListener(this);
-		btn_cancel.setTypeface(Data.latoRegular(activity));
+		btn_cancel.setTypeface(Fonts.latoRegular(activity));
 		btn_cancel.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 15);
 		btn_cancel.setTextColor(activity.getResources().getColor(R.drawable.text_color_white_alpha_selector));
 		btn_cancel.setBackgroundResource(R.drawable.grey_btn_selector);

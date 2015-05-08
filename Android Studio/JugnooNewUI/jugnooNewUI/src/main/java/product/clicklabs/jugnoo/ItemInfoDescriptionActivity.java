@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +10,10 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.squareup.picasso.Picasso;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.utils.Fonts;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ItemInfoDescriptionActivity extends Activity{
 	
@@ -27,8 +30,8 @@ public class ItemInfoDescriptionActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -53,15 +56,15 @@ public class ItemInfoDescriptionActivity extends Activity{
 		
 		
 		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		imageViewItem = (ImageView) findViewById(R.id.imageViewItem);
 		
-		textViewItemName = (TextView) findViewById(R.id.textViewItemName); textViewItemName.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewItemPrice = (TextView) findViewById(R.id.textViewItemPrice); textViewItemPrice.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewItemDescription = (TextView) findViewById(R.id.textViewItemDescription); textViewItemDescription.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewItemName = (TextView) findViewById(R.id.textViewItemName); textViewItemName.setTypeface(Fonts.latoRegular(getApplicationContext()));
+		textViewItemPrice = (TextView) findViewById(R.id.textViewItemPrice); textViewItemPrice.setTypeface(Fonts.latoRegular(getApplicationContext()));
+		textViewItemDescription = (TextView) findViewById(R.id.textViewItemDescription); textViewItemDescription.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
-		buttonAddToCart = (Button) findViewById(R.id.buttonAddToCart); buttonAddToCart.setTypeface(Data.latoRegular(getApplicationContext()));
+		buttonAddToCart = (Button) findViewById(R.id.buttonAddToCart); buttonAddToCart.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 		

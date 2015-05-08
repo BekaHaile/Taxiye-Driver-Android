@@ -1,20 +1,21 @@
 package product.clicklabs.jugnoo.utils;
 
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.Data;
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.AutoCompleteSearchResult;
 import product.clicklabs.jugnoo.datastructure.GAPIAddress;
 import product.clicklabs.jugnoo.datastructure.SearchResult;
-import android.location.Location;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class MapUtils {
 
@@ -255,7 +256,7 @@ public class MapUtils {
 					+ "&radius=50"
 					+ "&query="
 					+ searchText
-					+ "&sensor=true&key="+Data.MAPS_BROWSER_KEY;
+					+ "&sensor=true&key="+ Config.getMapsBrowserKey();
 			// "https://maps.googleapis.com/maps/api/place/textsearch/json?location=%f,%f&radius=2bb0000&query=%@&sensor=true&key=%@";
 
 			ignr2 = ignr2.replaceAll(" ", "%20");
@@ -286,7 +287,7 @@ public class MapUtils {
 					"input="+ URLEncoder.encode(searchText, "utf8")
 					+"&type=address&location=" 
 					+ latLng.latitude + "," + latLng.longitude + "&radius=50"
-					+"&key="+Data.MAPS_BROWSER_KEY;
+					+"&key="+Config.getMapsBrowserKey();
 			//https://maps.googleapis.com/maps/api/place/autocomplete/json?input=pizza&type=address&location=30.75,76.78&radius=500&key=
 			//AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY
 			ignr2 = ignr2.replaceAll(" ", "%20");
@@ -321,7 +322,7 @@ public class MapUtils {
 	
 	public static SearchResult getSearchResultsFromPlaceIdGooglePlaces(String placeId) {
 		try{
-			String ignr2 = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId +"&key="+Data.MAPS_BROWSER_KEY;
+			String ignr2 = "https://maps.googleapis.com/maps/api/place/details/json?placeid=" + placeId +"&key="+Config.getMapsBrowserKey();
 			//https://maps.googleapis.com/maps/api/place/details/json?placeid=ChIJqX9P5SDtDzkR2oUORhzrAhs&key=AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY
 			ignr2 = ignr2.replaceAll(" ", "%20");
 			JSONObject jsonObj = new JSONObject(new HttpRequester().getJSONFromUrl(ignr2));

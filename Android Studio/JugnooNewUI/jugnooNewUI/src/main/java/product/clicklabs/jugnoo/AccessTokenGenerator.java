@@ -1,22 +1,28 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.utils.AuthKeySaver;
-import product.clicklabs.jugnoo.utils.SHA256Convertor;
-import product.clicklabs.jugnoo.utils.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.util.Pair;
 
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.utils.AuthKeySaver;
+import product.clicklabs.jugnoo.utils.SHA256Convertor;
+import product.clicklabs.jugnoo.utils.Utils;
+
 public class AccessTokenGenerator {
 
 	
 	public static final String LOGOUT = "logout";
-	
-	public static final String MEALS_PACKAGE = "com.cdk23.nlk";
-	public static final String FATAFAT_PACKAGE = "com.cdk23.nlkf";
-	
-	
+
+    public static final String AUTOS_PACKAGE = "product.clicklabs.jugnoo";
+	public static final String MEALS_PACKAGE = "com.cdk23.nlk", MEALS_CLIENT_ID = "QNrWRzMToQNnxrQ5";
+	public static final String FATAFAT_PACKAGE = "com.cdk23.nlkf", FATAFAT_CLIENT_ID = "g3Ql58Kx2VCDYVk3";
+
+
+
+
+
 	private static final String[] OTHER_JUGNOO_APP_PACKAGES = new String[]{ MEALS_PACKAGE, FATAFAT_PACKAGE };
 	
 	@SuppressWarnings("deprecation")
@@ -129,7 +135,7 @@ public class AccessTokenGenerator {
 			return pair;
 		}
 		try {																										// auth key present
-			String authSecret = authKey + Data.CLIENT_SHARED_SECRET;
+			String authSecret = authKey + Config.getClientSharedSecret();
 			String accessToken = SHA256Convertor.getSHA256String(authSecret);
 			
 			pair = new Pair<String, Integer>(accessToken, 1);

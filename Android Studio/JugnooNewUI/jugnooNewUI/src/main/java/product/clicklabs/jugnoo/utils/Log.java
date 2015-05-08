@@ -1,9 +1,9 @@
 package product.clicklabs.jugnoo.utils;
 
+import android.os.Environment;
+
 import java.io.File;
 import java.io.FileWriter;
-
-import android.os.Environment;
 
 /**
  * Custom log class overrides Android Log
@@ -13,7 +13,7 @@ import android.os.Environment;
 public class Log {
 	
 	
-	public static boolean PRINT = false; 											// true for printing and false for not
+	public static boolean PRINT = true; 											// true for printing and false for not
 	private static final boolean WRITE_TO_FILE = false; 									// true for writing log to file and false for not 
 	private static final boolean WRITE_TO_FILE_IN = false; 									// true for writing log to file and false for not 
 	

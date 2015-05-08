@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.utils.Log;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -8,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import product.clicklabs.jugnoo.utils.Log;
 
 /**
  * Handles database related work

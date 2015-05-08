@@ -1,21 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.CouponInfo;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DateComparator;
-import product.clicklabs.jugnoo.utils.DateOperations;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -40,6 +24,25 @@ import android.widget.TextView.OnEditorActionListener;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DateComparator;
+import product.clicklabs.jugnoo.utils.DateOperations;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class PromotionsActivity extends Activity{
 	
@@ -70,8 +73,8 @@ public class PromotionsActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -96,11 +99,11 @@ public class PromotionsActivity extends Activity{
 		
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 
-		editTextPromoCode = (EditText) findViewById(R.id.editTextPromoCode); editTextPromoCode.setTypeface(Data.latoRegular(this));
-		buttonApplyPromo = (Button) findViewById(R.id.buttonApplyPromo); buttonApplyPromo.setTypeface(Data.latoRegular(this));
-		textViewCouponsAvailable = (TextView) findViewById(R.id.textViewCouponsAvailable); textViewCouponsAvailable.setTypeface(Data.latoRegular(this));
+		editTextPromoCode = (EditText) findViewById(R.id.editTextPromoCode); editTextPromoCode.setTypeface(Fonts.latoRegular(this));
+		buttonApplyPromo = (Button) findViewById(R.id.buttonApplyPromo); buttonApplyPromo.setTypeface(Fonts.latoRegular(this));
+		textViewCouponsAvailable = (TextView) findViewById(R.id.textViewCouponsAvailable); textViewCouponsAvailable.setTypeface(Fonts.latoRegular(this));
 		textViewCouponsAvailable.setVisibility(View.GONE);
 		
 		couponInfosList.clear();
@@ -109,7 +112,7 @@ public class PromotionsActivity extends Activity{
 		couponsListAdapter = new CouponsListAdapter(PromotionsActivity.this);
 		listViewCoupons.setAdapter(couponsListAdapter);
 		
-		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Data.latoRegular(this));
+		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(this));
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		
 		
@@ -266,8 +269,8 @@ public class PromotionsActivity extends Activity{
 				holder = new ViewHolderCoupon();
 				convertView = mInflater.inflate(R.layout.list_item_coupon, null);
 				
-				holder.textViewCouponTitle = (TextView) convertView.findViewById(R.id.textViewCouponTitle); holder.textViewCouponTitle.setTypeface(Data.latoRegular(context));
-				holder.textViewExpiryDate = (TextView) convertView.findViewById(R.id.textViewExpiryDate); holder.textViewExpiryDate.setTypeface(Data.latoLight(context), Typeface.BOLD);
+				holder.textViewCouponTitle = (TextView) convertView.findViewById(R.id.textViewCouponTitle); holder.textViewCouponTitle.setTypeface(Fonts.latoRegular(context));
+				holder.textViewExpiryDate = (TextView) convertView.findViewById(R.id.textViewExpiryDate); holder.textViewExpiryDate.setTypeface(Fonts.latoLight(context), Typeface.BOLD);
 				
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
 				
@@ -319,7 +322,7 @@ public class PromotionsActivity extends Activity{
                     RequestParams params = new RequestParams();
                     params.put("access_token", Data.userData.accessToken);
                     fetchAccountInfoClient = Data.getClient();
-                    fetchAccountInfoClient.post(Data.SERVER_URL + "/get_coupons", params,
+                    fetchAccountInfoClient.post(Config.getServerUrl() + "/get_coupons", params,
                         new CustomAsyncHttpResponseHandler() {
                             private JSONObject jObj;
 
@@ -428,7 +431,7 @@ public class PromotionsActivity extends Activity{
                 params.put("code", promoCode);
 
                 AsyncHttpClient asyncHttpClient = Data.getClient();
-                asyncHttpClient.post(Data.SERVER_URL + "/enter_code", params,
+                asyncHttpClient.post(Config.getServerUrl() + "/enter_code", params,
                     new CustomAsyncHttpResponseHandler() {
                         private JSONObject jObj;
 

@@ -1,9 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.datastructure.AddPaymentPath;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -19,6 +15,13 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.AddPaymentPath;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import rmn.androidscreenlibrary.ASSL;
 
 public class WalletAddPaymentActivity extends Activity{
 	
@@ -37,8 +40,8 @@ public class WalletAddPaymentActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -63,19 +66,19 @@ public class WalletAddPaymentActivity extends Activity{
 		
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		
-		textViewHelp = (TextView) findViewById(R.id.textViewHelp); textViewHelp.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewHelp = (TextView) findViewById(R.id.textViewHelp); textViewHelp.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		
-		editTextAmount = (EditText) findViewById(R.id.editTextAmount); editTextAmount.setTypeface(Data.latoRegular(this));
+		editTextAmount = (EditText) findViewById(R.id.editTextAmount); editTextAmount.setTypeface(Fonts.latoRegular(this));
 		
-		button100 = (Button) findViewById(R.id.button100); button100.setTypeface(Data.latoRegular(this));
-		button200 = (Button) findViewById(R.id.button200); button200.setTypeface(Data.latoRegular(this));
-		button500 = (Button) findViewById(R.id.button500); button500.setTypeface(Data.latoRegular(this));
-		buttonMakePayment = (Button) findViewById(R.id.buttonMakePayment); buttonMakePayment.setTypeface(Data.latoRegular(this));
+		button100 = (Button) findViewById(R.id.button100); button100.setTypeface(Fonts.latoRegular(this));
+		button200 = (Button) findViewById(R.id.button200); button200.setTypeface(Fonts.latoRegular(this));
+		button500 = (Button) findViewById(R.id.button500); button500.setTypeface(Fonts.latoRegular(this));
+		buttonMakePayment = (Button) findViewById(R.id.buttonMakePayment); buttonMakePayment.setTypeface(Fonts.latoRegular(this));
 		
-		textViewCurrentBalance = (TextView) findViewById(R.id.textViewCurrentBalance); textViewCurrentBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewCurrentBalanceValue = (TextView) findViewById(R.id.textViewCurrentBalanceValue); textViewCurrentBalanceValue.setTypeface(Data.latoRegular(this));
+		textViewCurrentBalance = (TextView) findViewById(R.id.textViewCurrentBalance); textViewCurrentBalance.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
+		textViewCurrentBalanceValue = (TextView) findViewById(R.id.textViewCurrentBalanceValue); textViewCurrentBalanceValue.setTypeface(Fonts.latoRegular(this));
 		
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
 		

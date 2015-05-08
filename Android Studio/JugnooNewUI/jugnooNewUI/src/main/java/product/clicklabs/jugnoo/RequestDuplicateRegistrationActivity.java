@@ -16,17 +16,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.utils.AppStatus;
 import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.Log;
 import rmn.androidscreenlibrary.ASSL;
 
@@ -59,22 +60,22 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 
-        textViewRegisterNameValue = (TextView) findViewById(R.id.textViewRegisterNameValue); textViewRegisterNameValue.setTypeface(Data.latoLight(this), Typeface.BOLD);
-        textViewRegisterEmailValue = (TextView) findViewById(R.id.textViewRegisterEmailValue); textViewRegisterEmailValue.setTypeface(Data.latoLight(this), Typeface.BOLD);
-        textViewRegisterPhoneValue = (TextView) findViewById(R.id.textViewRegisterPhoneValue); textViewRegisterPhoneValue.setTypeface(Data.latoLight(this), Typeface.BOLD);
-        textViewRegisterHelp = (TextView) findViewById(R.id.textViewRegisterHelp); textViewRegisterHelp.setTypeface(Data.latoLight(this), Typeface.BOLD);
+        textViewRegisterNameValue = (TextView) findViewById(R.id.textViewRegisterNameValue); textViewRegisterNameValue.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
+        textViewRegisterEmailValue = (TextView) findViewById(R.id.textViewRegisterEmailValue); textViewRegisterEmailValue.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
+        textViewRegisterPhoneValue = (TextView) findViewById(R.id.textViewRegisterPhoneValue); textViewRegisterPhoneValue.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
+        textViewRegisterHelp = (TextView) findViewById(R.id.textViewRegisterHelp); textViewRegisterHelp.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 
-        ((TextView) findViewById(R.id.textViewRegistration)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
-        ((TextView) findViewById(R.id.textViewRegisterName)).setTypeface(Data.latoRegular(this));
-        ((TextView) findViewById(R.id.textViewRegisterEmail)).setTypeface(Data.latoRegular(this));
-        ((TextView) findViewById(R.id.textViewRegisterPhone)).setTypeface(Data.latoRegular(this));
+        ((TextView) findViewById(R.id.textViewRegistration)).setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
+        ((TextView) findViewById(R.id.textViewRegisterName)).setTypeface(Fonts.latoRegular(this));
+        ((TextView) findViewById(R.id.textViewRegisterEmail)).setTypeface(Fonts.latoRegular(this));
+        ((TextView) findViewById(R.id.textViewRegisterPhone)).setTypeface(Fonts.latoRegular(this));
 
-        editTextMessage = (EditText) findViewById(R.id.editTextMessage); editTextMessage.setTypeface(Data.latoLight(this), Typeface.BOLD);
+        editTextMessage = (EditText) findViewById(R.id.editTextMessage); editTextMessage.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 
-        buttonSubmitRequest = (Button) findViewById(R.id.buttonSubmitRequest); buttonSubmitRequest.setTypeface(Data.latoRegular(this));
+        buttonSubmitRequest = (Button) findViewById(R.id.buttonSubmitRequest); buttonSubmitRequest.setTypeface(Fonts.latoRegular(this));
 
 		scrollView = (ScrollView) findViewById(R.id.scrollView);
 		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
@@ -224,7 +225,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/request_dup_registration", params,
+			client.post(Config.getServerUrl() + "/request_dup_registration", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 	

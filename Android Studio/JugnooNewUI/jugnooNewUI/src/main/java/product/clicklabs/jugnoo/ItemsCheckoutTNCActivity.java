@@ -1,16 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.ItemInfo;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +13,20 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.ItemInfo;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ItemsCheckoutTNCActivity extends Activity{
 	
@@ -41,8 +44,8 @@ public class ItemsCheckoutTNCActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -62,14 +65,14 @@ public class ItemsCheckoutTNCActivity extends Activity{
 		
 		
 		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		title.setText("TERMS & CONDITIONS");
 		
 		webview = (WebView) findViewById(R.id.webview);
 		
 		relativeLayoutAD = (RelativeLayout) findViewById(R.id.relativeLayoutAD);
-		buttonAgree = (Button) findViewById(R.id.buttonAgree); buttonAgree.setTypeface(Data.latoRegular(getApplicationContext()));
-		buttonDisagree = (Button) findViewById(R.id.buttonDisagree); buttonDisagree.setTypeface(Data.latoRegular(getApplicationContext()));
+		buttonAgree = (Button) findViewById(R.id.buttonAgree); buttonAgree.setTypeface(Fonts.latoRegular(getApplicationContext()));
+		buttonDisagree = (Button) findViewById(R.id.buttonDisagree); buttonDisagree.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {

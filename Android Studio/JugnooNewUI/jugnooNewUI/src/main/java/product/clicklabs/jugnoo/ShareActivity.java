@@ -1,10 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.utils.FacebookLoginCallback;
-import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
-import product.clicklabs.jugnoo.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -26,6 +21,14 @@ import android.widget.Toast;
 
 import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.utils.FacebookLoginCallback;
+import product.clicklabs.jugnoo.utils.FacebookLoginHelper;
+import product.clicklabs.jugnoo.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ShareActivity extends Activity{
 	
@@ -51,8 +54,8 @@ public class ShareActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -77,14 +80,14 @@ public class ShareActivity extends Activity{
 		
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		
 		imageViewFacebook = (ImageView) findViewById(R.id.imageViewFacebook);
 		imageViewWhatsapp = (ImageView) findViewById(R.id.imageViewWhatsapp);
 		imageViewSMS = (ImageView) findViewById(R.id.imageViewSMS);
 		imageViewEmail = (ImageView) findViewById(R.id.imageViewEmail);
 		
-		textViewReferralCode = (TextView) findViewById(R.id.textViewReferralCode); textViewReferralCode.setTypeface(Data.latoRegular(this));
+		textViewReferralCode = (TextView) findViewById(R.id.textViewReferralCode); textViewReferralCode.setTypeface(Fonts.latoRegular(this));
 		
 		try {
 			if(Data.referralMessages.referralMessage.contains(Data.userData.referralCode)){
@@ -172,6 +175,7 @@ public class ShareActivity extends Activity{
 						Data.referralMessages.fbShareDescription,
 						"https://jugnoo.in",
 						Data.userData.jugnooFbBanner);
+
 			}
 		}
 	};

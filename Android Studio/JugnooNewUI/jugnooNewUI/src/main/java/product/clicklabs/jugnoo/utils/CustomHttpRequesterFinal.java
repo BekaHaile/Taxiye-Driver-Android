@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.utils;
 
-import java.util.ArrayList;
-
 import org.apache.http.NameValuePair;
+
+import java.util.ArrayList;
 
 public class CustomHttpRequesterFinal extends HttpRequesterFinal{
 

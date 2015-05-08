@@ -35,10 +35,10 @@
                 android:tag="mwar" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <!--<ScrollView-->
+        <!--android:id="@+id/scrollView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" >-->
 
         <LinearLayout
             android:id="@+id/linearLayoutMain"
@@ -258,6 +258,6 @@
                 android:layout_height="20px"
                 android:text=" " />
         </LinearLayout>
-    </ScrollView>
+    <!--</ScrollView>-->
 
 </LinearLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_register.xml -->

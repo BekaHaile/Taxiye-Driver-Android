@@ -1,11 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.apache.http.util.EncodingUtils;
-
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +9,14 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import org.apache.http.util.EncodingUtils;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class WalletWebviewActivity extends Activity{
 	
@@ -61,7 +63,7 @@ public class WalletWebviewActivity extends Activity{
 					
 					String urlStart = "https://www.dev.jugnoo.in/jugnoo-phpfiles/wallet/payments.php";
 					
-					if(Data.SERVER_URL.contains(Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-5))){
+					if(Config.getServerUrl().contains(Config.getLiveServerUrl().substring(0, Config.getLiveServerUrl().length()-5))){
 						urlStart = "https://www.dev.jugnoo.in/jugnoo-phpfiles/wallet/payments.php";
 					}
 					else{
@@ -76,7 +78,7 @@ public class WalletWebviewActivity extends Activity{
 					String postData = "access_token=" + Data.userData.accessToken 
 							+ "&is_access_token_new=1"
 							+ "&amount=" + amount
-							+ "&client_id=" + Data.CLIENT_ID;
+							+ "&client_id=" + Config.getClientId();
 					
 					Log.e("urlStart", "="+urlStart);
 					Log.e("postData", "="+postData);

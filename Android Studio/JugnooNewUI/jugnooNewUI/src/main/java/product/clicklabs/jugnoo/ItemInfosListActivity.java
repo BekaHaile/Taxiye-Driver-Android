@@ -1,16 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.ItemInfo;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +24,20 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.ItemInfo;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ItemInfosListActivity extends Activity{
 	
@@ -61,13 +64,13 @@ public class ItemInfosListActivity extends Activity{
 	public static ItemInfo selectedItemInfo = null;
 	
 	//TODO
-	public static String SERVER_URL = Data.SERVER_URL.substring(0, Data.SERVER_URL.length()-4)+"5000";
+	public static String SERVER_URL = Config.getServerUrl().substring(0, Config.getServerUrl().length() - 4)+"5000";
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -85,14 +88,14 @@ public class ItemInfosListActivity extends Activity{
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(ItemInfosListActivity.this, relative, 1134, 720, false);
 		
-		SERVER_URL = Data.SERVER_URL.substring(0, Data.SERVER_URL.length()-4)+"5000";
+		SERVER_URL = Config.getServerUrl().substring(0, Config.getServerUrl().length() - 4)+"5000";
 		
 		
 		backBtn = (Button) findViewById(R.id.backBtn);
 		infoBtn = (Button) findViewById(R.id.infoBtn);
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title); title.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
-		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		
 		itemInfosList.clear();
@@ -103,8 +106,8 @@ public class ItemInfosListActivity extends Activity{
 		
 		relativeLayoutCheckout = (RelativeLayout) findViewById(R.id.relativeLayoutCheckout);
 		
-		textViewSelectedItemsCount = (TextView) findViewById(R.id.textViewSelectedItemsCount); textViewSelectedItemsCount.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewCheckout = (TextView) findViewById(R.id.textViewCheckout); textViewCheckout.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewSelectedItemsCount = (TextView) findViewById(R.id.textViewSelectedItemsCount); textViewSelectedItemsCount.setTypeface(Fonts.latoRegular(getApplicationContext()));
+		textViewCheckout = (TextView) findViewById(R.id.textViewCheckout); textViewCheckout.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		textViewInfo.setVisibility(View.GONE);
 		progressBar.setVisibility(View.GONE);
@@ -271,9 +274,9 @@ public class ItemInfosListActivity extends Activity{
 				holder = new ViewHolderItemInfo();
 				convertView = mInflater.inflate(R.layout.list_item_item_info, null);
 				
-				holder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName); holder.textViewItemName.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-				holder.textViewItemPrice = (TextView) convertView.findViewById(R.id.textViewItemPrice); holder.textViewItemPrice.setTypeface(Data.latoRegular(context));
-				holder.textViewItemCount = (TextView) convertView.findViewById(R.id.textViewItemCount); holder.textViewItemCount.setTypeface(Data.latoRegular(context));
+				holder.textViewItemName = (TextView) convertView.findViewById(R.id.textViewItemName); holder.textViewItemName.setTypeface(Fonts.latoRegular(context), Typeface.BOLD);
+				holder.textViewItemPrice = (TextView) convertView.findViewById(R.id.textViewItemPrice); holder.textViewItemPrice.setTypeface(Fonts.latoRegular(context));
+				holder.textViewItemCount = (TextView) convertView.findViewById(R.id.textViewItemCount); holder.textViewItemCount.setTypeface(Fonts.latoRegular(context));
 				
 				holder.imageViewItem = (ImageView) convertView.findViewById(R.id.imageViewItem);
 				holder.imageViewMinus = (ImageView) convertView.findViewById(R.id.imageViewMinus);

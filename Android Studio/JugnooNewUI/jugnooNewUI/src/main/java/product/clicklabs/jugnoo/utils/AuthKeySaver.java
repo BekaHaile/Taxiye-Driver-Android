@@ -1,12 +1,12 @@
 package product.clicklabs.jugnoo.utils;
 
+import android.os.Environment;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import android.os.Environment;
 
 public class AuthKeySaver {
 	

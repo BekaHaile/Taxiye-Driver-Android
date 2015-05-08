@@ -1,13 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -30,6 +22,17 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
+
 public class ForgotPasswordScreen extends Activity{
 	
 	TextView textViewTitle;
@@ -49,8 +52,8 @@ public class ForgotPasswordScreen extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -75,14 +78,14 @@ public class ForgotPasswordScreen extends Activity{
 		new ASSL(ForgotPasswordScreen.this, relative, 1134, 720, false);
 		
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
-		textViewForgotPasswordHelp = (TextView) findViewById(R.id.textViewForgotPasswordHelp); textViewForgotPasswordHelp.setTypeface(Data.latoRegular(this));
+		textViewForgotPasswordHelp = (TextView) findViewById(R.id.textViewForgotPasswordHelp); textViewForgotPasswordHelp.setTypeface(Fonts.latoRegular(this));
 		
-		editTextEmail = (EditText) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Data.latoRegular(this));
+		editTextEmail = (EditText) findViewById(R.id.editTextEmail); editTextEmail.setTypeface(Fonts.latoRegular(this));
 		
-		buttonSendEmail = (Button) findViewById(R.id.buttonSendEmail); buttonSendEmail.setTypeface(Data.latoRegular(getApplicationContext()));
+		buttonSendEmail = (Button) findViewById(R.id.buttonSendEmail); buttonSendEmail.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
 		extraTextForScroll = (TextView) findViewById(R.id.extraTextForScroll);
 
@@ -216,7 +219,7 @@ public class ForgotPasswordScreen extends Activity{
 			Log.i("email", "=" + email);
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/forgot_password", params,
+			client.post(Config.getServerUrl() + "/forgot_password", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

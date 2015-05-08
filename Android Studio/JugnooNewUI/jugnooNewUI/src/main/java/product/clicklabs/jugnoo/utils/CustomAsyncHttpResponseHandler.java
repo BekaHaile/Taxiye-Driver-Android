@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.utils;
 
-import org.apache.http.Header;
-
 import com.loopj.android.http.AsyncHttpResponseHandler;
+
+import org.apache.http.Header;
 
 public abstract class CustomAsyncHttpResponseHandler extends AsyncHttpResponseHandler{
 

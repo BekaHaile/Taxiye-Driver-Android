@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.utils;
 
-import java.util.Arrays;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -22,6 +20,8 @@ import com.facebook.model.GraphUser;
 import com.facebook.widget.WebDialog;
 import com.facebook.widget.WebDialog.Builder;
 import com.facebook.widget.WebDialog.OnCompleteListener;
+
+import java.util.Arrays;
 
 public class FacebookLoginHelper {
 
@@ -284,18 +284,9 @@ public class FacebookLoginHelper {
 	
 	
 	public void logoutFacebook(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try{
-					if(Session.getActiveSession() != null){
-						Session.getActiveSession().closeAndClearTokenInformation();
-					}
-				} catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-		}).start();
+        if(Session.getActiveSession() != null){
+            Session.getActiveSession().closeAndClearTokenInformation();
+        }
 	}
 	
 }

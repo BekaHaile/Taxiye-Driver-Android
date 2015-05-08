@@ -21,11 +21,12 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.utils.AppStatus;
 import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
@@ -44,8 +45,8 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -63,11 +64,11 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
 		new ASSL(ChangePhoneBeforeOTPActivity.this, relative, 1134, 720, false);
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 
-        textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp); textViewChangePhoneNoHelp.setTypeface(Data.latoRegular(this));
-        editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber); editTextNewPhoneNumber.setTypeface(Data.latoRegular(this));
-        buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber); buttonChangePhoneNumber.setTypeface(Data.latoRegular(this));
+        textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp); textViewChangePhoneNoHelp.setTypeface(Fonts.latoRegular(this));
+        editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber); editTextNewPhoneNumber.setTypeface(Fonts.latoRegular(this));
+        buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber); buttonChangePhoneNumber.setTypeface(Fonts.latoRegular(this));
 		
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
@@ -172,14 +173,14 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
 
             RequestParams params = new RequestParams();
 
-            params.put("client_id", Data.CLIENT_ID);
+            params.put("client_id", Config.getClientId());
             params.put("access_token", accessToken);
             params.put("is_access_token_new", "1");
             params.put("updated_phone_no", updatedField);
 
 
             AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/update_user_profile", params,
+            client.post(Config.getServerUrl() + "/update_user_profile", params,
                 new CustomAsyncHttpResponseHandler() {
                     private JSONObject jObj;
 

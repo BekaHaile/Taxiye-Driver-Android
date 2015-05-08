@@ -1,12 +1,13 @@
 package product.clicklabs.jugnoo.utils;
 
-import product.clicklabs.jugnoo.R;
 import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
+
+import product.clicklabs.jugnoo.R;
 
 /**
  * Class for displaying custom info window for marker

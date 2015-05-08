@@ -1,9 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import product.clicklabs.jugnoo.datastructure.HelpSection;
-import product.clicklabs.jugnoo.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import product.clicklabs.jugnoo.datastructure.HelpSection;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Utils;
+import rmn.androidscreenlibrary.ASSL;
 
 public class AboutActivity extends Activity {
 
@@ -46,7 +47,7 @@ public class AboutActivity extends Activity {
         new ASSL(this, (ViewGroup) relative, 1134, 720, false);
 
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
-        textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+        textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
         imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 
         relativeLayoutRateUs = (RelativeLayout) findViewById(R.id.relativeLayoutRateUs);
@@ -56,15 +57,15 @@ public class AboutActivity extends Activity {
         relativeLayoutAbout = (RelativeLayout) findViewById(R.id.relativeLayoutAbout);
 
         textViewRateUs = (TextView) findViewById(R.id.textViewRateUs);
-        textViewRateUs.setTypeface(Data.latoRegular(this));
+        textViewRateUs.setTypeface(Fonts.latoRegular(this));
         textViewLikeUs = (TextView) findViewById(R.id.textViewLikeUs);
-        textViewLikeUs.setTypeface(Data.latoRegular(this));
+        textViewLikeUs.setTypeface(Fonts.latoRegular(this));
         textViewTNC = (TextView) findViewById(R.id.textViewTNC);
-        textViewTNC.setTypeface(Data.latoRegular(this));
+        textViewTNC.setTypeface(Fonts.latoRegular(this));
         textViewPrivacy = (TextView) findViewById(R.id.textViewPrivacy);
-        textViewPrivacy.setTypeface(Data.latoRegular(this));
+        textViewPrivacy.setTypeface(Fonts.latoRegular(this));
         textViewAbout = (TextView) findViewById(R.id.textViewAbout);
-        textViewAbout.setTypeface(Data.latoRegular(this));
+        textViewAbout.setTypeface(Fonts.latoRegular(this));
 
 
         relativeLayoutRateUs.setOnClickListener(new View.OnClickListener() {
@@ -72,7 +73,7 @@ public class AboutActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo"));
+                intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=product.clicklabs.jugnoo"));
                 startActivity(intent);
             }
         });

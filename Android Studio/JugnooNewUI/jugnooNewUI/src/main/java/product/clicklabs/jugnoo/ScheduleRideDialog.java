@@ -1,24 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.PromoCoupon;
-import product.clicklabs.jugnoo.datastructure.PromotionApplyMode;
-import product.clicklabs.jugnoo.datastructure.PromotionDialogEventHandler;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.CustomDateTimePicker;
-import product.clicklabs.jugnoo.utils.DateOperations;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import product.clicklabs.jugnoo.utils.MapUtils;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Typeface;
@@ -33,6 +14,28 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.PromoCoupon;
+import product.clicklabs.jugnoo.datastructure.PromotionApplyMode;
+import product.clicklabs.jugnoo.datastructure.PromotionDialogEventHandler;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.CustomDateTimePicker;
+import product.clicklabs.jugnoo.utils.DateOperations;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import product.clicklabs.jugnoo.utils.MapUtils;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ScheduleRideDialog {
 
@@ -114,12 +117,12 @@ public class ScheduleRideDialog {
 			relativeLayoutPickupLoaction = (RelativeLayout) dialog.findViewById(R.id.relativeLayoutPickupLoaction);
 			relativeLayoutPickupTime = (RelativeLayout) dialog.findViewById(R.id.relativeLayoutPickupTime);
 			
-			textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(activity));
-			textViewPickupLocation = (TextView) dialog.findViewById(R.id.textViewPickupLocation); textViewPickupLocation.setTypeface(Data.latoRegular(activity));
-			textViewPickupTime = (TextView) dialog.findViewById(R.id.textViewPickupTime); textViewPickupTime.setTypeface(Data.latoRegular(activity));
+			textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(activity));
+			textViewPickupLocation = (TextView) dialog.findViewById(R.id.textViewPickupLocation); textViewPickupLocation.setTypeface(Fonts.latoRegular(activity));
+			textViewPickupTime = (TextView) dialog.findViewById(R.id.textViewPickupTime); textViewPickupTime.setTypeface(Fonts.latoRegular(activity));
 			
-			btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD); btnOk.setText("Schedule Ride");
-			btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+			btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD); btnOk.setText("Schedule Ride");
+			btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Fonts.latoRegular(activity));
 
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -254,11 +257,11 @@ public class ScheduleRideDialog {
 			params.put("longitude", ""+selectedLatLng.longitude);
 			params.put("pickup_time", ""+DateOperations.getTimeStampfromCalendar(selectedCalendar));
 
-			Log.e("Server hit=", "=" + Data.SERVER_URL + "/insert_pickup_schedule");
+			Log.e("Server hit=", "=" + Config.getServerUrl() + "/insert_pickup_schedule");
 			Log.i("params", "=" + params);
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/insert_pickup_schedule", params,
+			client.post(Config.getServerUrl() + "/insert_pickup_schedule", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 

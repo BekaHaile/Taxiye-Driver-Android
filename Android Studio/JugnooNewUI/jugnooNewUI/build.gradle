@@ -26,4 +26,5 @@ dependencies {
     compile files('libs/assl_sdk_rmn_jugnoo.jar')
     compile files('libs/crashlytics.jar')
     compile files('libs/picasso-2.4.0.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
 }

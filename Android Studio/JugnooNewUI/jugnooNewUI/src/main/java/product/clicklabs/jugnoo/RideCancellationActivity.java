@@ -1,15 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ActivityCloser;
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.CancelOption;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -30,6 +20,19 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ActivityCloser;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.CancelOption;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class RideCancellationActivity extends Activity implements ActivityCloser{
 	
@@ -54,8 +57,8 @@ public class RideCancellationActivity extends Activity implements ActivityCloser
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -85,17 +88,17 @@ public class RideCancellationActivity extends Activity implements ActivityCloser
 		
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 
-		textViewWantToCancel = (TextView) findViewById(R.id.textViewWantToCancel); textViewWantToCancel.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewWantToCancel = (TextView) findViewById(R.id.textViewWantToCancel); textViewWantToCancel.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		
 		listViewCancelOptions = (ListView) findViewById(R.id.listViewCancelOptions);
 		cancelOptionsListAdapter = new CancelOptionsListAdapter(RideCancellationActivity.this);
 		listViewCancelOptions.setAdapter(cancelOptionsListAdapter);
 		
-		buttonCancelRide = (Button) findViewById(R.id.buttonCancelRide); buttonCancelRide.setTypeface(Data.latoRegular(this));
+		buttonCancelRide = (Button) findViewById(R.id.buttonCancelRide); buttonCancelRide.setTypeface(Fonts.latoRegular(this));
 		
-		textViewCancelInfo = (TextView) findViewById(R.id.textViewCancelInfo); textViewCancelInfo.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewCancelInfo = (TextView) findViewById(R.id.textViewCancelInfo); textViewCancelInfo.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
 		
@@ -200,7 +203,7 @@ public class RideCancellationActivity extends Activity implements ActivityCloser
 				holder = new ViewHolderCancelOption();
 				convertView = mInflater.inflate(R.layout.list_item_cancel_option, null);
 				
-				holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption); holder.textViewCancelOption.setTypeface(Data.latoRegular(context));
+				holder.textViewCancelOption = (TextView) convertView.findViewById(R.id.textViewCancelOption); holder.textViewCancelOption.setTypeface(Fonts.latoRegular(context));
 				holder.imageViewCancelOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewCancelOptionCheck);
 				
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
@@ -263,7 +266,7 @@ public class RideCancellationActivity extends Activity implements ActivityCloser
 				params.put("reasons", reasons);
 			
 				AsyncHttpClient asyncHttpClient = Data.getClient();
-				asyncHttpClient.post(Data.SERVER_URL + "/cancel_ride_by_customer", params,
+				asyncHttpClient.post(Config.getServerUrl() + "/cancel_ride_by_customer", params,
 						new CustomAsyncHttpResponseHandler() {
 						private JSONObject jObj;
 	

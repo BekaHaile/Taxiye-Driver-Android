@@ -1,21 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.CouponInfo;
-import product.clicklabs.jugnoo.datastructure.PromoCoupon;
-import product.clicklabs.jugnoo.datastructure.PromotionApplyMode;
-import product.clicklabs.jugnoo.datastructure.PromotionDialogEventHandler;
-import product.clicklabs.jugnoo.datastructure.PromotionInfo;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -40,6 +24,25 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.datastructure.PromoCoupon;
+import product.clicklabs.jugnoo.datastructure.PromotionApplyMode;
+import product.clicklabs.jugnoo.datastructure.PromotionDialogEventHandler;
+import product.clicklabs.jugnoo.datastructure.PromotionInfo;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class PromotionDialog {
 
@@ -97,21 +100,21 @@ public class PromotionDialog {
 			dialog.setCancelable(false);
 			dialog.setCanceledOnTouchOutside(false);
 
-			textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(activity));
-			textViewMessage = (TextView) dialog.findViewById(R.id.textViewMessage); textViewMessage.setTypeface(Data.latoRegular(activity));
-			textViewRequestConfirm = (TextView) dialog.findViewById(R.id.textViewRequestConfirm); textViewRequestConfirm.setTypeface(Data.latoRegular(activity));
+			textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(activity));
+			textViewMessage = (TextView) dialog.findViewById(R.id.textViewMessage); textViewMessage.setTypeface(Fonts.latoRegular(activity));
+			textViewRequestConfirm = (TextView) dialog.findViewById(R.id.textViewRequestConfirm); textViewRequestConfirm.setTypeface(Fonts.latoRegular(activity));
 
 			listViewPromotions = (ListView) dialog.findViewById(R.id.listViewPromotions);
 			promotionsListAdapter = new PromotionsListAdapter(activity);
 			listViewPromotions.setAdapter(promotionsListAdapter);
 			
 			btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			btnOk.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
 			
 			btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setTypeface(Fonts.latoRegular(activity));
 			
-			btnOkOnly = (Button) dialog.findViewById(R.id.btnOkOnly); btnOkOnly.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			btnOkOnly = (Button) dialog.findViewById(R.id.btnOkOnly); btnOkOnly.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
 					
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -319,8 +322,8 @@ public class PromotionDialog {
 				holder = new ViewHolderPromotion();
 				convertView = mInflater.inflate(R.layout.list_item_promo_coupon, null);
 				
-				holder.textViewCouponTitle = (TextView) convertView.findViewById(R.id.textViewCouponTitle); holder.textViewCouponTitle.setTypeface(Data.latoRegular(context));
-				holder.textViewTNC = (TextView) convertView.findViewById(R.id.textViewTNC); holder.textViewTNC.setTypeface(Data.latoLight(context), Typeface.BOLD);
+				holder.textViewCouponTitle = (TextView) convertView.findViewById(R.id.textViewCouponTitle); holder.textViewCouponTitle.setTypeface(Fonts.latoRegular(context));
+				holder.textViewTNC = (TextView) convertView.findViewById(R.id.textViewTNC); holder.textViewTNC.setTypeface(Fonts.latoLight(context), Typeface.BOLD);
 				
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
 				
@@ -415,7 +418,7 @@ public class PromotionDialog {
 			Log.i("params", "=" + params);
 			
 			AsyncHttpClient fetchPromotionClient = Data.getClient();
-			fetchPromotionClient.post(Data.SERVER_URL + "/show_available_promotions", params,
+			fetchPromotionClient.post(Config.getServerUrl() + "/show_available_promotions", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 					

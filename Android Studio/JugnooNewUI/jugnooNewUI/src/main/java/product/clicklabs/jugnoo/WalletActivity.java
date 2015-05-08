@@ -1,22 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.AddPaymentPath;
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.HelpSection;
-import product.clicklabs.jugnoo.datastructure.TransactionInfo;
-import product.clicklabs.jugnoo.datastructure.TransactionType;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import product.clicklabs.jugnoo.utils.Log;
-import product.clicklabs.jugnoo.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +21,26 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.AddPaymentPath;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.HelpSection;
+import product.clicklabs.jugnoo.datastructure.TransactionInfo;
+import product.clicklabs.jugnoo.datastructure.TransactionType;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import product.clicklabs.jugnoo.utils.Log;
+import product.clicklabs.jugnoo.utils.Utils;
+import rmn.androidscreenlibrary.ASSL;
 
 public class WalletActivity extends Activity{
 	
@@ -67,13 +70,14 @@ public class WalletActivity extends Activity{
 	public String promoBanner = "";
 	ArrayList<TransactionInfo> transactionInfoList = new ArrayList<TransactionInfo>();
 	
-	DecimalFormat decimalFormat = new DecimalFormat("#.##");
+//	DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    DecimalFormat decimalFormat = new DecimalFormat("####0.00");
 	
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.init(this, Config.getFlurryKey());
+		FlurryAgent.onStartSession(this, Config.getFlurryKey());
 	}
 
 	@Override
@@ -100,17 +104,17 @@ public class WalletActivity extends Activity{
 		
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		
-		textViewPromotion = (TextView) findViewById(R.id.textViewPromotion); textViewPromotion.setTypeface(Data.latoRegular(this));
-		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance); textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewAccountBalanceValue = (TextView) findViewById(R.id.textViewAccountBalanceValue); textViewAccountBalanceValue.setTypeface(Data.latoRegular(this));
-		textViewRecentTransactions = (TextView) findViewById(R.id.textViewRecentTransactions); textViewRecentTransactions.setTypeface(Data.latoRegular(this));
+		textViewPromotion = (TextView) findViewById(R.id.textViewPromotion); textViewPromotion.setTypeface(Fonts.latoRegular(this));
+		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance); textViewAccountBalance.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalanceValue = (TextView) findViewById(R.id.textViewAccountBalanceValue); textViewAccountBalanceValue.setTypeface(Fonts.latoRegular(this));
+		textViewRecentTransactions = (TextView) findViewById(R.id.textViewRecentTransactions); textViewRecentTransactions.setTypeface(Fonts.latoRegular(this));
 		textViewRecentTransactions.setText("");
 		textViewPromotion.setVisibility(View.GONE);
 		
 		
-		buttonAddPayment = (Button) findViewById(R.id.buttonAddPayment); buttonAddPayment.setTypeface(Data.latoRegular(this));
+		buttonAddPayment = (Button) findViewById(R.id.buttonAddPayment); buttonAddPayment.setTypeface(Fonts.latoRegular(this));
 		
 		listViewTransactions = (ListView) findViewById(R.id.listViewTransactions);
 		
@@ -121,14 +125,14 @@ public class WalletActivity extends Activity{
 		ASSL.DoMagic(viewF);
 		
 		relativeLayoutShowMore = (RelativeLayout) viewF.findViewById(R.id.relativeLayoutShowMore);
-		textViewShowMore = (TextView) viewF.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewShowMore = (TextView) viewF.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		relativeLayoutShowMore.setVisibility(View.GONE);
 		
 		
 		transactionListAdapter = new TransactionListAdapter(this);
 		listViewTransactions.setAdapter(transactionListAdapter);
 		
-		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		
 		textViewInfo.setVisibility(View.GONE);
@@ -213,7 +217,7 @@ public class WalletActivity extends Activity{
 		
 		try{
 			if(Data.userData != null){
-				textViewAccountBalanceValue.setText(getResources().getString(R.string.rupee)+" "+Data.userData.jugnooBalance);
+				textViewAccountBalanceValue.setText(getResources().getString(R.string.rupee)+" "+decimalFormat.format(Data.userData.jugnooBalance));
 			}
 		} catch(Exception e){
 			e.printStackTrace();
@@ -272,7 +276,7 @@ public class WalletActivity extends Activity{
 				textViewInfo.setVisibility(View.GONE);
 			}
 			transactionListAdapter.notifyDataSetChanged();
-			textViewAccountBalanceValue.setText(getResources().getString(R.string.rupee)+" "+jugnooBalance);
+			textViewAccountBalanceValue.setText(getResources().getString(R.string.rupee)+" "+decimalFormat.format(jugnooBalance));
 		}
 		Utils.expandListForVariableHeight(listViewTransactions);
 	}
@@ -314,10 +318,10 @@ public class WalletActivity extends Activity{
 				holder = new ViewHolderTransaction();
 				convertView = mInflater.inflate(R.layout.list_item_transaction, null);
 				
-				holder.textViewTransactionDate = (TextView) convertView.findViewById(R.id.textViewTransactionDate); holder.textViewTransactionDate.setTypeface(Data.latoRegular(context));
-				holder.textViewTransactionAmount = (TextView) convertView.findViewById(R.id.textViewTransactionAmount); holder.textViewTransactionAmount.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-				holder.textViewTransactionTime = (TextView) convertView.findViewById(R.id.textViewTransactionTime); holder.textViewTransactionTime.setTypeface(Data.latoLight(context), Typeface.BOLD);
-				holder.textViewTransactionType = (TextView) convertView.findViewById(R.id.textViewTransactionType); holder.textViewTransactionType.setTypeface(Data.latoLight(context), Typeface.BOLD);
+				holder.textViewTransactionDate = (TextView) convertView.findViewById(R.id.textViewTransactionDate); holder.textViewTransactionDate.setTypeface(Fonts.latoRegular(context));
+				holder.textViewTransactionAmount = (TextView) convertView.findViewById(R.id.textViewTransactionAmount); holder.textViewTransactionAmount.setTypeface(Fonts.latoRegular(context), Typeface.BOLD);
+				holder.textViewTransactionTime = (TextView) convertView.findViewById(R.id.textViewTransactionTime); holder.textViewTransactionTime.setTypeface(Fonts.latoLight(context), Typeface.BOLD);
+				holder.textViewTransactionType = (TextView) convertView.findViewById(R.id.textViewTransactionType); holder.textViewTransactionType.setTypeface(Fonts.latoLight(context), Typeface.BOLD);
 				
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
 				
@@ -377,13 +381,13 @@ public class WalletActivity extends Activity{
 
                         RequestParams params = new RequestParams();
                         params.put("access_token", Data.userData.accessToken);
-                        params.put("client_id", Data.CLIENT_ID);
+                        params.put("client_id", Config.getClientId());
                         params.put("is_access_token_new", "1");
                         params.put("start_from", "" + getTransactionInfoList().size());
 
 
                         fetchTransactionInfoClient = Data.getClient();
-                        fetchTransactionInfoClient.post(Data.SERVER_URL + "/get_transaction_history", params,
+                        fetchTransactionInfoClient.post(Config.getServerUrl() + "/get_transaction_history", params,
                             new CustomAsyncHttpResponseHandler() {
                                 private JSONObject jObj;
 

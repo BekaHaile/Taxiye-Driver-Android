@@ -1,15 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.PassengerScreenMode;
-import product.clicklabs.jugnoo.datastructure.PushFlags;
-import product.clicklabs.jugnoo.utils.HttpRequester;
-import product.clicklabs.jugnoo.utils.Log;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,8 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -27,6 +19,18 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Pair;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.PassengerScreenMode;
+import product.clicklabs.jugnoo.datastructure.PushFlags;
+import product.clicklabs.jugnoo.utils.HttpRequester;
+import product.clicklabs.jugnoo.utils.Log;
 
 public class GCMIntentService extends IntentService {
 	
@@ -179,6 +183,57 @@ public class GCMIntentService extends IntentService {
 			}
 			
 		}
+
+    @SuppressWarnings("deprecation")
+    private void notificationManagerCustomIDAnotherApp(Context context, String message, int notificationId, String packageName) {
+
+        try {
+            long when = System.currentTimeMillis();
+
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            Log.v("message",","+message);
+
+            Intent appOpenIntent;
+            try {
+                PackageManager manager = context.getPackageManager();
+                appOpenIntent = manager.getLaunchIntentForPackage(packageName);
+                if (appOpenIntent == null){
+                    throw new PackageManager.NameNotFoundException();
+                }
+                appOpenIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+            } catch (Exception e) {
+                appOpenIntent = new Intent(Intent.ACTION_VIEW);
+                appOpenIntent.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + packageName));
+            }
+
+            appOpenIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent intent = PendingIntent.getActivity(context, 0, appOpenIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+            builder.setAutoCancel(true);
+            builder.setContentTitle("Jugnoo");
+            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+            builder.setContentText(message);
+            builder.setTicker(message);
+            builder.setDefaults(Notification.DEFAULT_ALL);
+            builder.setWhen(when);
+            builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.jugnoo_icon));
+            builder.setSmallIcon(R.drawable.notification_icon);
+            builder.setContentIntent(intent);
+
+            Notification notification = builder.build();
+            notificationManager.notify(notificationId, notification);
+
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+            wl.acquire(15000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 		
 	    
 	    public static void clearNotifications(Context context){
@@ -231,7 +286,7 @@ public class GCMIntentService extends IntentService {
 	    	    				 JSONObject jObj = new JSONObject(message);
 	    	    				 
 	    	    				 int flag = jObj.getInt("flag");
-	    	    				 
+
 	    	    				 if(PushFlags.RIDE_ACCEPTED.getOrdinal() == flag){
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.rideRequestAcceptedInterrupt(jObj);
@@ -302,7 +357,23 @@ public class GCMIntentService extends IntentService {
 								}
 	    	    				else if(PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag){
 	    	    					 String message1 = jObj.getString("message");
-	    	    					 notificationManagerCustomID(this, message1, PROMOTION_NOTIFICATION_ID);
+
+                                     if(jObj.has("client_id")){
+                                         Log.e("jObj=", "="+jObj);
+                                            String clientId = jObj.getString("client_id");
+                                            if(AccessTokenGenerator.MEALS_CLIENT_ID.equalsIgnoreCase(clientId)){
+                                                notificationManagerCustomIDAnotherApp(this, message1, PROMOTION_NOTIFICATION_ID, AccessTokenGenerator.MEALS_PACKAGE);
+                                            }
+                                            else if(AccessTokenGenerator.FATAFAT_CLIENT_ID.equalsIgnoreCase(clientId)){
+                                                notificationManagerCustomIDAnotherApp(this, message1, PROMOTION_NOTIFICATION_ID, AccessTokenGenerator.FATAFAT_PACKAGE);
+                                            }
+                                            else{
+                                                notificationManagerCustomIDAnotherApp(this, message1, PROMOTION_NOTIFICATION_ID, AccessTokenGenerator.AUTOS_PACKAGE);
+                                            }
+                                     }
+                                     else{
+	    	    					     notificationManagerCustomID(this, message1, PROMOTION_NOTIFICATION_ID);
+                                     }
 	    	    				}
 	    	    				else if(PushFlags.CHANGE_PORT.getOrdinal() == flag){
 	    	    					sendChangePortAckToServer(this, jObj);
@@ -349,10 +420,10 @@ public class GCMIntentService extends IntentService {
 						nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenPair.first));
 						
 						Log.i("nameValuePairs", "="+nameValuePairs);
-						Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
+						Log.e("Config.getServerUrl()", "="+ Config.getServerUrl());
 						
 						HttpRequester simpleJSONParser = new HttpRequester();
-						String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL+"/acknowledge_port_change", nameValuePairs);
+						String result = simpleJSONParser.getJSONFromUrlParams(Config.getServerUrl()+"/acknowledge_port_change", nameValuePairs);
 						
 						Log.e("result ","="+result);
 						

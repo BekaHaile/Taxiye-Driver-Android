@@ -3,14 +3,20 @@ package product.clicklabs.jugnoo.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import product.clicklabs.jugnoo.R;
 
@@ -249,5 +255,33 @@ public class Utils {
         return "";
     }
 
+
+
+
+    public static void generateKeyHash(Context context){
+        try { // single sign-on for fb application
+            PackageInfo info = context.getPackageManager().getPackageInfo(
+                context.getPackageName(),
+                PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.e("KeyHash:", ","
+                    + Base64.encodeToString(md.digest(),
+                    Base64.DEFAULT));
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("error:", "," + e.toString());
+        } catch (NoSuchAlgorithmException e) {
+            Log.e("error:", "," + e.toString());
+        }
+    }
+
+
+
+
+    public static boolean hasAlphabets(String name){
+        return name.matches(".*[a-zA-Z]+.*");
+    }
 
 }

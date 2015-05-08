@@ -1,18 +1,5 @@
 package product.clicklabs.jugnoo;
 
-import java.text.DecimalFormat;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.FutureSchedule;
-import product.clicklabs.jugnoo.datastructure.RideInfoNew;
-import product.clicklabs.jugnoo.datastructure.ScheduleCancelListener;
-import product.clicklabs.jugnoo.utils.AppStatus;
-import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.utils.DialogPopup;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -34,6 +21,22 @@ import android.widget.TextView;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+
+import product.clicklabs.jugnoo.config.Config;
+import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.datastructure.FutureSchedule;
+import product.clicklabs.jugnoo.datastructure.RideInfoNew;
+import product.clicklabs.jugnoo.datastructure.ScheduleCancelListener;
+import product.clicklabs.jugnoo.utils.AppStatus;
+import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.utils.DialogPopup;
+import product.clicklabs.jugnoo.utils.Fonts;
+import rmn.androidscreenlibrary.ASSL;
 
 public class RideTransactionsActivity extends Activity {
 
@@ -68,11 +71,11 @@ public class RideTransactionsActivity extends Activity {
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, (ViewGroup) relative, 1134, 720, false);
 		
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		
 		listViewRideTransactions = (ListView) findViewById(R.id.listViewRideTransactions);
-		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Data.latoRegular(this));
+		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(this));
 		progressBarList = (ProgressBar) findViewById(R.id.progressBarList);
 		textViewInfo.setVisibility(View.GONE);
 		progressBarList.setVisibility(View.GONE);
@@ -84,7 +87,7 @@ public class RideTransactionsActivity extends Activity {
 		ASSL.DoMagic(viewF);
 		
 		relativeLayoutShowMore = (RelativeLayout) viewF.findViewById(R.id.relativeLayoutShowMore);
-		textViewShowMore = (TextView) viewF.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewShowMore = (TextView) viewF.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		textViewShowMore.setText("Show More");
 		relativeLayoutShowMore.setVisibility(View.GONE);
 		
@@ -159,7 +162,7 @@ public class RideTransactionsActivity extends Activity {
 			params.put("start_from", ""+AccountActivity.rideInfosList.size());
 			
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/get_recent_rides", params,
+			client.post(Config.getServerUrl() + "/get_recent_rides", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -301,15 +304,15 @@ public class RideTransactionsActivity extends Activity {
 				holder = new ViewHolderRideTransaction();
 				convertView = mInflater.inflate(R.layout.list_item_ride_transaction, null);
 				
-				holder.textViewPickupAt = (TextView) convertView.findViewById(R.id.textViewPickupAt); holder.textViewPickupAt.setTypeface(Data.latoRegular(context));
-				holder.textViewFrom = (TextView) convertView.findViewById(R.id.textViewFrom); holder.textViewFrom.setTypeface(Data.latoRegular(context));
-				holder.textViewFromValue = (TextView) convertView.findViewById(R.id.textViewFromValue); holder.textViewFromValue.setTypeface(Data.latoRegular(context));
-				holder.textViewTo = (TextView) convertView.findViewById(R.id.textViewTo); holder.textViewTo.setTypeface(Data.latoRegular(context));
-				holder.textViewToValue = (TextView) convertView.findViewById(R.id.textViewToValue); holder.textViewToValue.setTypeface(Data.latoRegular(context));
-				holder.textViewDetails = (TextView) convertView.findViewById(R.id.textViewDetails); holder.textViewDetails.setTypeface(Data.latoRegular(context));
-				holder.textViewDetailsValue = (TextView) convertView.findViewById(R.id.textViewDetailsValue); holder.textViewDetailsValue.setTypeface(Data.latoRegular(context));
-				holder.textViewAmount = (TextView) convertView.findViewById(R.id.textViewAmount); holder.textViewAmount.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-				holder.textViewCancel = (TextView) convertView.findViewById(R.id.textViewCancel); holder.textViewCancel.setTypeface(Data.latoRegular(context));
+				holder.textViewPickupAt = (TextView) convertView.findViewById(R.id.textViewPickupAt); holder.textViewPickupAt.setTypeface(Fonts.latoRegular(context));
+				holder.textViewFrom = (TextView) convertView.findViewById(R.id.textViewFrom); holder.textViewFrom.setTypeface(Fonts.latoRegular(context));
+				holder.textViewFromValue = (TextView) convertView.findViewById(R.id.textViewFromValue); holder.textViewFromValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewTo = (TextView) convertView.findViewById(R.id.textViewTo); holder.textViewTo.setTypeface(Fonts.latoRegular(context));
+				holder.textViewToValue = (TextView) convertView.findViewById(R.id.textViewToValue); holder.textViewToValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewDetails = (TextView) convertView.findViewById(R.id.textViewDetails); holder.textViewDetails.setTypeface(Fonts.latoRegular(context));
+				holder.textViewDetailsValue = (TextView) convertView.findViewById(R.id.textViewDetailsValue); holder.textViewDetailsValue.setTypeface(Fonts.latoRegular(context));
+				holder.textViewAmount = (TextView) convertView.findViewById(R.id.textViewAmount); holder.textViewAmount.setTypeface(Fonts.latoRegular(context), Typeface.BOLD);
+				holder.textViewCancel = (TextView) convertView.findViewById(R.id.textViewCancel); holder.textViewCancel.setTypeface(Fonts.latoRegular(context));
 				
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 				holder.relativeLayoutCancel = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutCancel);

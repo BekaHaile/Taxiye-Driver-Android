@@ -1,8 +1,8 @@
 package product.clicklabs.jugnoo.datastructure;
 
-import product.clicklabs.jugnoo.utils.Utils;
-
 import com.google.android.gms.maps.model.LatLng;
+
+import product.clicklabs.jugnoo.utils.Utils;
 
 public class LatLngPair {
 

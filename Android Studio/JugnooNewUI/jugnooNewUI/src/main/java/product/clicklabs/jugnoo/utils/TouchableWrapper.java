@@ -32,23 +32,27 @@ public class TouchableWrapper extends FrameLayout {
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent event) {
-		gestureDetector.onTouchEvent(event);
-		twoFingerTapDetector.onTouchEvent(event);
-		scaleGestureDetector.onTouchEvent(event);
-		switch (event.getAction()) {
-		case MotionEvent.ACTION_DOWN:
-			onTouchListener.onTouch();
-			break;
-		case MotionEvent.ACTION_MOVE:
-			if (event.getPointerCount() >= 2) {
-				return true;
-			} else {
-				return super.dispatchTouchEvent(event);
-			}
-		case MotionEvent.ACTION_UP:
-			onTouchListener.onRelease();
-			break;
-		}
+        try {
+            gestureDetector.onTouchEvent(event);
+            twoFingerTapDetector.onTouchEvent(event);
+            scaleGestureDetector.onTouchEvent(event);
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    onTouchListener.onTouch();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (event.getPointerCount() >= 2) {
+                        return true;
+                    } else {
+                        return super.dispatchTouchEvent(event);
+                    }
+                case MotionEvent.ACTION_UP:
+                    onTouchListener.onRelease();
+                    break;
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
 		return super.dispatchTouchEvent(event);
 	}
 

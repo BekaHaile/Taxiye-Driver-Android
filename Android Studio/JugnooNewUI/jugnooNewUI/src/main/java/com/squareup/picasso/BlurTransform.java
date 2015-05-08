@@ -6,24 +6,22 @@ package com.squareup.picasso;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
-import com.squareup.picasso.Transformation;
  
 public class BlurTransform implements Transformation {
 	@Override
 	public Bitmap transform(Bitmap source) {
 		try {
-			Bitmap dest = fastblur(source, 3);
+			Bitmap dest = fastBlur(source, 3);
 			source.recycle();
 			return dest;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
+			return source;
 		}
 	}
 	
 	
-	public Bitmap fastblur(Bitmap sentBitmap, int radius) {
+	public Bitmap fastBlur(Bitmap sentBitmap, int radius) {
 
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 

@@ -22,11 +22,13 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.utils.AppStatus;
 import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.utils.DialogPopup;
 import product.clicklabs.jugnoo.utils.EnglishNumberToWords;
+import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
@@ -57,21 +59,21 @@ public class MultipleAccountsActivity extends Activity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Fonts.latoRegular(this), Typeface.BOLD);
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 
         scrollView = (ScrollView) findViewById(R.id.scrollView);
 
-        textViewMultipleAccountsCreated = (TextView) findViewById(R.id.textViewMultipleAccountsCreated); textViewMultipleAccountsCreated.setTypeface(Data.latoRegular(this));
-        textViewPleaseLogin = (TextView) findViewById(R.id.textViewPleaseLogin); textViewPleaseLogin.setTypeface(Data.latoLight(this), Typeface.BOLD);
+        textViewMultipleAccountsCreated = (TextView) findViewById(R.id.textViewMultipleAccountsCreated); textViewMultipleAccountsCreated.setTypeface(Fonts.latoRegular(this));
+        textViewPleaseLogin = (TextView) findViewById(R.id.textViewPleaseLogin); textViewPleaseLogin.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 
         listViewPreviousAccounts = (ListView) findViewById(R.id.listViewPreviousAccounts);
 
-        textViewLikeToCreate = (TextView) findViewById(R.id.textViewLikeToCreate); textViewLikeToCreate.setTypeface(Data.latoRegular(this));
+        textViewLikeToCreate = (TextView) findViewById(R.id.textViewLikeToCreate); textViewLikeToCreate.setTypeface(Fonts.latoRegular(this));
 
         relativeLayoutMailUs = (RelativeLayout) findViewById(R.id.relativeLayoutMailUs);
-        textViewContactUs = (TextView) findViewById(R.id.textViewContactUs); textViewContactUs.setTypeface(Data.latoLight(this), Typeface.BOLD);
-        textViewMailUs = (TextView) findViewById(R.id.textViewMailUs); textViewMailUs.setTypeface(Data.latoRegular(this));
+        textViewContactUs = (TextView) findViewById(R.id.textViewContactUs); textViewContactUs.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
+        textViewMailUs = (TextView) findViewById(R.id.textViewMailUs); textViewMailUs.setTypeface(Fonts.latoRegular(this));
 
 
         previousAccountsAdapter = new PreviousAccountsAdapter(this);
@@ -187,9 +189,9 @@ public class MultipleAccountsActivity extends Activity {
 				holder = new ViewHolderPreviousAccount();
 				convertView = mInflater.inflate(R.layout.list_item_previous_account, null);
 				
-				holder.textViewAccountEmail = (TextView) convertView.findViewById(R.id.textViewAccountEmail); holder.textViewAccountEmail.setTypeface(Data.latoRegular(context));
-				holder.textViewAccountPhone = (TextView) convertView.findViewById(R.id.textViewAccountPhone); holder.textViewAccountPhone.setTypeface(Data.latoLight(context), Typeface.BOLD);
-				holder.textViewLogin = (TextView) convertView.findViewById(R.id.textViewLogin); holder.textViewLogin.setTypeface(Data.latoRegular(context));
+				holder.textViewAccountEmail = (TextView) convertView.findViewById(R.id.textViewAccountEmail); holder.textViewAccountEmail.setTypeface(Fonts.latoRegular(context));
+				holder.textViewAccountPhone = (TextView) convertView.findViewById(R.id.textViewAccountPhone); holder.textViewAccountPhone.setTypeface(Fonts.latoLight(context), Typeface.BOLD);
+				holder.textViewLogin = (TextView) convertView.findViewById(R.id.textViewLogin); holder.textViewLogin.setTypeface(Fonts.latoRegular(context));
 
 				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 
@@ -246,14 +248,14 @@ public class MultipleAccountsActivity extends Activity {
 
             RequestParams params = new RequestParams();
 
-            params.put("client_id", Data.CLIENT_ID);
+            params.put("client_id", Config.getClientId());
             params.put("access_token", Data.userData.accessToken);
             params.put("is_access_token_new", "1");
             params.put("phone_no", phoneNo);
             Log.i("params", ">" + params);
 
             AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/send_new_number_otp_via_call", params,
+            client.post(Config.getServerUrl() + "/send_new_number_otp_via_call", params,
                 new CustomAsyncHttpResponseHandler() {
                     private JSONObject jObj;
 

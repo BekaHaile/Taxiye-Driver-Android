@@ -1,11 +1,12 @@
 package product.clicklabs.jugnoo.utils;
 
-import product.clicklabs.jugnoo.R;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+
+import product.clicklabs.jugnoo.R;
+import rmn.androidscreenlibrary.ASSL;
 
 @SuppressWarnings("static-access")
 public class CustomMapMarkerCreator {
