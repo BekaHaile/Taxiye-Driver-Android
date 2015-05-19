@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.http.SslError;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.webkit.JsResult;
@@ -220,7 +221,18 @@ public class HelpParticularActivity extends Activity{
 										exception.printStackTrace();
 										openHelpData("Some error occured. Tap to retry.", true);
 									}
-									progressBar.setVisibility(View.GONE);
+
+                                    if(HelpSection.FARE_DETAILS == helpSection){
+                                        new Handler().postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                progressBar.setVisibility(View.GONE);
+                                            }
+                                        }, 1000);
+                                    }
+                                    else{
+                                        progressBar.setVisibility(View.GONE);
+                                    }
 								}
 								
 								@Override

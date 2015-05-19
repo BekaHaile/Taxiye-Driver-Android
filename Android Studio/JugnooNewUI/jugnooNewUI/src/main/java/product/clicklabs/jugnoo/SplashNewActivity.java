@@ -60,6 +60,7 @@ import product.clicklabs.jugnoo.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.HttpRequester;
 import product.clicklabs.jugnoo.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.utils.LocationInit;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.UniqueIMEIID;
 import product.clicklabs.jugnoo.utils.Utils;
@@ -350,8 +351,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
                         Data.deviceToken = regId;
                         Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
                         accessTokenLogin(SplashNewActivity.this);
-//                        accessTokenLoginRetrofit(SplashNewActivity.this);
+//                      accessTokenLoginRetrofit(SplashNewActivity.this);
                         progressBar.setVisibility(View.GONE);
+
+                        FlurryEventLogger.appStarted(regId);
                     }
                 });
 
@@ -374,7 +377,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			DialogPopup.showGooglePlayErrorAlert(SplashNewActivity.this);
 		}
 		else{
-			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
+//			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
+            LocationInit.showLocationAlertDialog(this);
 		}
 
 		
@@ -403,8 +407,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		}
 		super.onPause();
 	}
-	
-	
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(LocationInit.LOCATION_REQUEST_CODE == requestCode){
+            if(0 == resultCode){
+                loginDataFetched = false;
+                ActivityCompat.finishAffinity(this);
+            }
+        }
+    }
+
+
 	
 	
 	
@@ -505,78 +520,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		}
 	}
 
-
-//    public void accessTokenLoginRetrofit(final Activity activity) {
-//
-//        Pair<String, Integer> pair = AccessTokenGenerator.getAccessTokenPair(activity);
-//
-//        relativeLayoutLoginSignupButtons.setVisibility(View.GONE);
-//        linearLayoutNoNet.setVisibility(View.GONE);
-//
-//        if(!"".equalsIgnoreCase(pair.first)){
-//            String accessToken = pair.first;
-//
-//            if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-//
-//                DialogPopup.showLoadingDialog(activity, "Loading...");
-//
-//                if(Data.locationFetcher != null){
-//                    Data.latitude = Data.locationFetcher.getLatitude();
-//                    Data.longitude = Data.locationFetcher.getLongitude();
-//                }
-//
-//                RequestParams params = new RequestParams();
-//                params.put("access_token", accessToken);
-//                params.put("device_token", Data.deviceToken);
-//
-//
-//                params.put("latitude", ""+Data.latitude);
-//                params.put("longitude", ""+Data.longitude);
-//
-//
-//                params.put("app_version", ""+Data.appVersion);
-//                params.put("device_type", Data.DEVICE_TYPE);
-//                params.put("unique_device_id", Data.uniqueDeviceId);
-//                params.put("client_id", Config.getClientId());
-//                params.put("is_access_token_new", ""+pair.second);
-//
-//                Log.e("params login_using_access_token", "="+params);
-//
-//                RestClient.getApiService().loginUsingAccessToken(accessToken,
-//                    Data.deviceToken,
-//                    ""+Data.latitude,
-//                    ""+Data.longitude,
-//                    ""+Data.appVersion,
-//                    Data.DEVICE_TYPE,
-//                    Data.uniqueDeviceId,
-//                    Config.getClientId(),
-//                    ""+pair.second,
-//                    new Callback<String>() {
-//                        @Override
-//                        public void success(String s, Response response) {
-//                            Log.e("response of access_token", "response = " + response);
-//                            Log.e("Server response of access_token", "s = " + s);
-//                            performLoginSuccess(activity, s);
-//                        }
-//
-//                        @Override
-//                        public void failure(RetrofitError error) {
-//                            Log.e("request fail", error.toString());
-//                            performLoginFailure(activity);
-//                        }
-//                    });
-//            }
-//            else {
-//                linearLayoutNoNet.setVisibility(View.VISIBLE);
-//            }
-//        }
-//        else{
-//            relativeLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
-//            if(!AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-//                linearLayoutNoNet.setVisibility(View.VISIBLE);
-//            }
-//        }
-//    }
 
 
     public void performLoginSuccess(Activity activity, String response){
@@ -736,9 +679,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
 			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
-			
+
+            textHead.setText(title);
 			textMessage.setText(message);
-			
+
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
 			
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Fonts.latoRegular(activity));

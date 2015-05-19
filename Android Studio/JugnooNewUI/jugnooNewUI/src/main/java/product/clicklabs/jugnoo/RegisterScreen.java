@@ -434,9 +434,9 @@ public class RegisterScreen extends Activity implements LocationUpdate {
         });
 
 
-//		editTextUserName.setText("Support Fatafat 1");
-//		editTextEmail.setText("support+f1@jugnoo.in");
-//		editTextPhone.setText("+919000000201");
+//		editTextUserName.setText("Support Meals 31");
+//		editTextEmail.setText("support+m31@jugnoo.in");
+//		editTextPhone.setText("+919000000231");
 //		editTextPassword.setText("jugnoopass");
 
 

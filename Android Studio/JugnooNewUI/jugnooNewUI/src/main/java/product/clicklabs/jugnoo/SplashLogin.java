@@ -229,7 +229,9 @@ public class SplashLogin extends Activity implements LocationUpdate{
 				if(hasFocus){
 					scrollView.smoothScrollTo(0, editTextEmail.getBottom());
 				}
-				editTextEmail.setError(null);
+                else {
+                    editTextEmail.setError(null);
+                }
 			}
 		});
 		
@@ -240,10 +242,32 @@ public class SplashLogin extends Activity implements LocationUpdate{
 				if(hasFocus){
 					scrollView.smoothScrollTo(0, editTextPassword.getBottom());
 				}
-				editTextPassword.setError(null);
+                else {
+                    editTextPassword.setError(null);
+                }
 			}
 		});
-		
+
+        editTextEmail.setOnEditorActionListener(new OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                int result = actionId & EditorInfo.IME_MASK_ACTION;
+                switch (result) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        editTextPassword.requestFocus();
+                        break;
+
+                    case EditorInfo.IME_ACTION_NEXT:
+                        editTextPassword.requestFocus();
+                        break;
+
+                    default:
+                }
+                return true;
+            }
+        });
+
 		editTextPassword.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override

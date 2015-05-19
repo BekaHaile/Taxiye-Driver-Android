@@ -6,6 +6,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import product.clicklabs.jugnoo.utils.CustomAsyncHttpClient;
 import product.clicklabs.jugnoo.utils.CustomHttpRequesterFinal;
 import product.clicklabs.jugnoo.utils.HttpRequesterFinal;
+import product.clicklabs.jugnoo.utils.Log;
 
 
 public class Config {
@@ -25,6 +26,7 @@ public class Config {
 
 
     private static final String STATIC_FLURRY_KEY = "H8Y94ND8GPQTKKG5R2VY";
+
     private static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
     private static final String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
     private static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
@@ -33,9 +35,20 @@ public class Config {
 
 
 
+
+
+
     private static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
     private static ConfigMode configMode = ConfigMode.LIVE;
+
+
+
+
+
+
+
+
 
 
 
@@ -58,6 +71,7 @@ public class Config {
 
                 FLURRY_KEY = "abcd";
                 SERVER_URL = DEV_SERVER_URL;
+                Log.PRINT = true;
 
                 break;
 
@@ -65,6 +79,7 @@ public class Config {
 
                 FLURRY_KEY = "abcd";
                 SERVER_URL = TRIAL_SERVER_URL;
+                Log.PRINT = false;
 
                 break;
 
@@ -72,6 +87,7 @@ public class Config {
 
                 FLURRY_KEY = STATIC_FLURRY_KEY;
                 SERVER_URL = LIVE_SERVER_URL;
+                Log.PRINT = false;
 
                 break;
 
@@ -104,6 +120,15 @@ public class Config {
         return SERVER_URL;
     }
 
+    public static String getServerUrlName() {
+        init(configMode);
+        if(SERVER_URL.equalsIgnoreCase(LIVE_SERVER_URL)){
+            return "LIVE";
+        }
+        else{
+            return "DEV";
+        }
+    }
 
 
 

@@ -42,6 +42,7 @@ public class FeedbackActivity extends Activity {
 	ImageView imageViewBack;
 	
 	RatingBar ratingBarFeedback;
+    TextView textViewRateText;
 	EditText editTextFeedback;
 	Button buttonSubmitFeedback;
 	
@@ -72,7 +73,8 @@ public class FeedbackActivity extends Activity {
 		
 		ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
 		ratingBarFeedback.setRating(0);
-		
+        textViewRateText = (TextView) findViewById(R.id.textViewRateText); textViewRateText.setTypeface(Fonts.latoRegular(this));
+        textViewRateText.setText("Hated it");
 		editTextFeedback = (EditText) findViewById(R.id.editTextFeedback); editTextFeedback.setTypeface(Fonts.latoRegular(this));
 		buttonSubmitFeedback = (Button) findViewById(R.id.buttonSubmitFeedback); buttonSubmitFeedback.setTypeface(Fonts.latoRegular(this));
 		
@@ -90,6 +92,27 @@ public class FeedbackActivity extends Activity {
 				performBackPressed();
 			}
 		});
+
+        ratingBarFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(rating <= 1){
+                    textViewRateText.setText("Hated it");
+                }
+                else if(rating > 1 && rating <= 2){
+                    textViewRateText.setText("Disliked it");
+                }
+                else if(rating > 2 && rating <= 3){
+                    textViewRateText.setText("It's OK");
+                }
+                else if(rating > 3 && rating <= 4){
+                    textViewRateText.setText("Liked it");
+                }
+                else if(rating > 4 && rating <= 5){
+                    textViewRateText.setText("Loved it");
+                }
+            }
+        });
 		
 		
 		buttonSubmitFeedback.setOnClickListener(new View.OnClickListener() {

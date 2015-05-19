@@ -40,39 +40,8 @@ public class Data {
 			SP_RIDE_TIME = "ride_time", 
 			SP_RIDE_START_TIME = "ride_start_time", 
 			SP_LAST_LATITUDE = "last_latitude",
-			SP_LAST_LONGITUDE = "last_longitude",
-			
-			SP_DRIVER_SCREEN_MODE = "driver_screen_mode", 
-			
-			SP_D_ENGAGEMENT_ID = "d_engagement_id", 
-			SP_D_LATITUDE = "d_latitude",
-			SP_D_LONGITUDE = "d_longitude",
-			SP_D_CUSTOMER_ID = "d_customer_id",
-			SP_D_CUSTOMER_NAME = "d_customer_name", 
-			SP_D_CUSTOMER_IMAGE = "d_customer_image", 
-			SP_D_CUSTOMER_PHONE = "d_customer_phone", 
-			SP_D_CUSTOMER_RATING = "d_customer_rating", 
-			
-			
-			
-			
-			SP_CUSTOMER_SCREEN_MODE = "customer_screen_mode",
-			
-			SP_C_SESSION_ID = "c_session_id",
-			SP_C_ENGAGEMENT_ID = "c_engagement_id",
-			SP_C_DRIVER_ID = "c_driver_id",
-			SP_C_LATITUDE = "c_latitude",
-			SP_C_LONGITUDE = "c_longitude",
-			SP_C_DRIVER_NAME = "c_driver_name",
-			SP_C_DRIVER_IMAGE = "c_driver_image",
-			SP_C_DRIVER_CAR_IMAGE = "c_driver_car_image",
-			SP_C_DRIVER_PHONE = "c_driver_phone",
-			SP_C_DRIVER_RATING = "c_driver_rating",
-			
-			SP_C_TOTAL_DISTANCE = "c_total_distance",
-			SP_C_TOTAL_FARE = "c_total_fare",
-			SP_C_WAIT_TIME = "c_wait_time",
-			SP_C_RIDE_TIME = "c_ride_time"
+			SP_LAST_LONGITUDE = "last_longitude"
+
 			
 			;
 	

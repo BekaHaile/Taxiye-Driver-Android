@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
@@ -53,7 +54,11 @@ public class RideTransactionsActivity extends Activity {
 	
 	RelativeLayout relativeLayoutShowMore;
 	TextView textViewShowMore;
-	
+
+    FutureSchedule futureSchedule = null;
+    ArrayList<RideInfoNew> rideInfosList = new ArrayList<RideInfoNew>();
+    int totalRides = 0;
+
 	DecimalFormat decimalFormat = new DecimalFormat("#.#");
 	DecimalFormat decimalFormatNoDec = new DecimalFormat("#");
 	
@@ -67,7 +72,11 @@ public class RideTransactionsActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rides_transactions);
-		
+
+        futureSchedule = null;
+        rideInfosList = new ArrayList<RideInfoNew>();
+        totalRides = 0;
+
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(this, (ViewGroup) relative, 1134, 720, false);
 		
@@ -89,11 +98,12 @@ public class RideTransactionsActivity extends Activity {
 		relativeLayoutShowMore = (RelativeLayout) viewF.findViewById(R.id.relativeLayoutShowMore);
 		textViewShowMore = (TextView) viewF.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Fonts.latoLight(this), Typeface.BOLD);
 		textViewShowMore.setText("Show More");
-		relativeLayoutShowMore.setVisibility(View.GONE);
-		
+
 		rideTransactionAdapter = new RideTransactionAdapter(this);
 		listViewRideTransactions.setAdapter(rideTransactionAdapter);
 		rideTransactionAdapter.notifyDataSetChanged();
+
+        relativeLayoutShowMore.setVisibility(View.GONE);
 		
 		
 		imageViewBack.setOnClickListener(new OnClickListener() {
@@ -120,8 +130,10 @@ public class RideTransactionsActivity extends Activity {
 				getRecentRidesAPI(RideTransactionsActivity.this, false);
 			}
 		});
-		
-		
+
+
+        getRecentRidesAPI(RideTransactionsActivity.this, true);
+
 	}
 
 	
@@ -149,8 +161,8 @@ public class RideTransactionsActivity extends Activity {
 		if(AppStatus.getInstance(activity).isOnline(activity)) {
 			
 			if(refresh){
-				AccountActivity.rideInfosList.clear();
-				AccountActivity.futureSchedule = null;
+				rideInfosList.clear();
+				futureSchedule = null;
 			}
 			
 			progressBarList.setVisibility(View.VISIBLE);
@@ -159,7 +171,7 @@ public class RideTransactionsActivity extends Activity {
 			RequestParams params = new RequestParams();
 		
 			params.put("access_token", Data.userData.accessToken);
-			params.put("start_from", ""+AccountActivity.rideInfosList.size());
+			params.put("start_from", ""+rideInfosList.size());
 			
 			AsyncHttpClient client = Data.getClient();
 			client.post(Config.getServerUrl() + "/get_recent_rides", params,
@@ -183,22 +195,22 @@ public class RideTransactionsActivity extends Activity {
 									int flag = jObj.getInt("flag");
 									if(ApiResponseFlags.RECENT_RIDES.getOrdinal() == flag){
 										
-										AccountActivity.totalRides = jObj.getInt("num_rides");
+										totalRides = jObj.getInt("num_rides");
 										
 										if(jObj.has("schedule")){
 											JSONObject jSchedule = jObj.getJSONObject("schedule");
-											AccountActivity.futureSchedule = new FutureSchedule(jSchedule.getString("pickup_id"), 
+											futureSchedule = new FutureSchedule(jSchedule.getString("pickup_id"),
 													jSchedule.getString("address"), 
 													jSchedule.getString("pickup_date"), 
 													jSchedule.getString("pickup_time"), 
 													new LatLng(jSchedule.getDouble("latitude"), jSchedule.getDouble("longitude")), 
 													jSchedule.getInt("modifiable"),
 													jSchedule.getInt("status"));
-											AccountActivity.totalRides = AccountActivity.totalRides + 1;
+											totalRides = totalRides + 1;
 										}
 										else{
-											if(AccountActivity.rideInfosList.size() == 0){
-												AccountActivity.futureSchedule = null;
+											if(rideInfosList.size() == 0){
+												futureSchedule = null;
 											}
 										}
 										
@@ -207,7 +219,7 @@ public class RideTransactionsActivity extends Activity {
 											JSONArray jRidesArr = jObj.getJSONArray("rides");
 											for(int i=0; i<jRidesArr.length(); i++){
 												JSONObject jRide = jRidesArr.getJSONObject(i);
-												AccountActivity.rideInfosList.add(new RideInfoNew(jRide.getString("pickup_address"), 
+												rideInfosList.add(new RideInfoNew(jRide.getString("pickup_address"),
 														jRide.getString("drop_address"), 
 														jRide.getDouble("amount"), 
 														jRide.getDouble("distance"), 
@@ -215,8 +227,8 @@ public class RideTransactionsActivity extends Activity {
 														jRide.getString("date")));
 											}
 										}
-										
-										updateListData("No rides currently", false);
+
+										updateListData("No transactions currently", false);
 										
 									}
 									else{
@@ -245,11 +257,11 @@ public class RideTransactionsActivity extends Activity {
 			textViewInfo.setText(message);
 			textViewInfo.setVisibility(View.VISIBLE);
 			
-			AccountActivity.rideInfosList.clear();
+			rideInfosList.clear();
 			rideTransactionAdapter.notifyDataSetChanged();
 		}
 		else{
-			if(AccountActivity.rideInfosList.size() == 0 && AccountActivity.futureSchedule == null){
+			if(rideInfosList.size() == 0 && futureSchedule == null){
 				textViewInfo.setVisibility(View.VISIBLE);
 				textViewInfo.setText(message);
 			}
@@ -280,11 +292,11 @@ public class RideTransactionsActivity extends Activity {
 
 		@Override
 		public int getCount() {
-			if(AccountActivity.futureSchedule == null){
-				return AccountActivity.rideInfosList.size();
+			if(futureSchedule == null){
+				return rideInfosList.size();
 			}
 			else{
-				return AccountActivity.rideInfosList.size()+1;
+				return rideInfosList.size()+1;
 			}
 		}
 
@@ -332,17 +344,17 @@ public class RideTransactionsActivity extends Activity {
 			
 			holder.id = position;
 			
-			if(AccountActivity.futureSchedule != null){
+			if(futureSchedule != null){
 				if(position == 0){
 					holder.textViewPickupAt.setVisibility(View.VISIBLE);
 					holder.relativeLayoutTo.setVisibility(View.GONE);
 					holder.textViewAmount.setVisibility(View.GONE);
 						
-					holder.textViewFromValue.setText(AccountActivity.futureSchedule.pickupAddress);
+					holder.textViewFromValue.setText(futureSchedule.pickupAddress);
 					holder.textViewDetails.setText("Date: ");
-					holder.textViewDetailsValue.setText(AccountActivity.futureSchedule.pickupDate + ", " + AccountActivity.futureSchedule.pickupTime);
+					holder.textViewDetailsValue.setText(futureSchedule.pickupDate + ", " + futureSchedule.pickupTime);
 						
-					if(AccountActivity.futureSchedule.modifiable == 1){
+					if(futureSchedule.modifiable == 1){
 						holder.relativeLayoutCancel.setVisibility(View.VISIBLE);
 					}
 					else{
@@ -350,7 +362,7 @@ public class RideTransactionsActivity extends Activity {
 					}
 				}
 				else{
-					RideInfoNew rideInfoNew = AccountActivity.rideInfosList.get(position-1);
+					RideInfoNew rideInfoNew = rideInfosList.get(position-1);
 					
 					holder.textViewPickupAt.setVisibility(View.GONE);
 					holder.relativeLayoutTo.setVisibility(View.VISIBLE);
@@ -372,7 +384,7 @@ public class RideTransactionsActivity extends Activity {
 				}
 			}
 			else{
-				RideInfoNew rideInfoNew = AccountActivity.rideInfosList.get(position);
+				RideInfoNew rideInfoNew = rideInfosList.get(position);
 				
 				holder.textViewPickupAt.setVisibility(View.GONE);
 				holder.relativeLayoutTo.setVisibility(View.VISIBLE);
@@ -397,14 +409,14 @@ public class RideTransactionsActivity extends Activity {
 				
 				@Override
 				public void onClick(View v) {
-					if(AccountActivity.futureSchedule != null){
+					if(futureSchedule != null){
 						DialogPopup.alertPopupTwoButtonsWithListeners(RideTransactionsActivity.this, "Cancel Scheduled Ride", "Are you sure you want to cancel the scheduled ride?", "OK", "Cancel",
 								new View.OnClickListener() {
 									
 									@Override
 									public void onClick(View v) {
-										if(AccountActivity.futureSchedule != null){
-											AccountActivity.removeScheduledRideAPI(RideTransactionsActivity.this, AccountActivity.futureSchedule.pickupId, new ScheduleCancelListener() {
+										if(futureSchedule != null){
+											removeScheduledRideAPI(RideTransactionsActivity.this, futureSchedule.pickupId, new ScheduleCancelListener() {
 												
 												@Override
 												public void onCancelSuccess() {
@@ -433,7 +445,7 @@ public class RideTransactionsActivity extends Activity {
 		@Override
 		public void notifyDataSetChanged() {
 			super.notifyDataSetChanged();
-			if(AccountActivity.totalRides > getCount()){
+			if(totalRides > getCount()){
 				relativeLayoutShowMore.setVisibility(View.VISIBLE);
 			}
 			else{
@@ -442,5 +454,78 @@ public class RideTransactionsActivity extends Activity {
 		}
 		
 	}
+
+
+
+    /**
+     * ASync for removing scheduled ride from server
+     */
+    public static void removeScheduledRideAPI(final Activity activity, String pickupId, final ScheduleCancelListener scheduleCancelListener) {
+        if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+            DialogPopup.showLoadingDialog(activity, "Loading...");
+
+            RequestParams params = new RequestParams();
+
+            params.put("access_token", Data.userData.accessToken);
+            params.put("pickup_id", pickupId);
+
+            product.clicklabs.jugnoo.utils.Log.i("remove_pickup_schedule api params", ">" + params);
+
+            AsyncHttpClient client = Data.getClient();
+            client.post(Config.getServerUrl() + "/remove_pickup_schedule", params,
+                new CustomAsyncHttpResponseHandler() {
+                    private JSONObject jObj;
+
+                    @Override
+                    public void onFailure(Throwable arg3) {
+                        product.clicklabs.jugnoo.utils.Log.e("request fail", arg3.toString());
+                        DialogPopup.dismissLoadingDialog();
+                        DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+                    }
+
+                    @Override
+                    public void onSuccess(String response) {
+                        product.clicklabs.jugnoo.utils.Log.i("Server response", "response = " + response);
+
+                        try {
+                            jObj = new JSONObject(response);
+
+                            if(!jObj.isNull("error")){
+                                String errorMessage = jObj.getString("error");
+                                int flag = jObj.getInt("flag");
+                                if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
+                                    HomeActivity.logoutUser(activity);
+                                }
+                                else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
+                                    DialogPopup.alertPopup(activity, "", errorMessage);
+                                }
+                                else{
+                                    DialogPopup.alertPopup(activity, "", errorMessage);
+                                }
+                                DialogPopup.dismissLoadingDialog();
+                            }
+                            else{
+                                int flag = jObj.getInt("flag");
+                                if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
+                                    String message = jObj.getString("message");
+                                    DialogPopup.alertPopup(activity, "", message);
+                                    scheduleCancelListener.onCancelSuccess();
+                                }
+                                DialogPopup.dismissLoadingDialog();
+                            }
+                        }  catch (Exception exception) {
+                            exception.printStackTrace();
+                            DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                            DialogPopup.dismissLoadingDialog();
+                        }
+                    }
+                });
+        }
+        else {
+            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+        }
+
+    }
 	
 }

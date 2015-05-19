@@ -697,41 +697,12 @@ public class JSONParser {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();
 
-		editor.putString(Data.SP_DRIVER_SCREEN_MODE, "");
-
-		editor.putString(Data.SP_D_ENGAGEMENT_ID, "");
-		editor.putString(Data.SP_D_CUSTOMER_ID, "");
-		editor.putString(Data.SP_D_LATITUDE, "0");
-		editor.putString(Data.SP_D_LONGITUDE, "0");
-		editor.putString(Data.SP_D_CUSTOMER_NAME, "");
-		editor.putString(Data.SP_D_CUSTOMER_IMAGE, "");
-		editor.putString(Data.SP_D_CUSTOMER_PHONE, "");
-		editor.putString(Data.SP_D_CUSTOMER_RATING, "");
-
 		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
 		editor.putString(Data.SP_WAIT_TIME, "0");
 		editor.putString(Data.SP_RIDE_TIME, "0");
 		editor.putString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis());
 		editor.putString(Data.SP_LAST_LATITUDE, "0");
 		editor.putString(Data.SP_LAST_LONGITUDE, "0");
-
-		editor.putString(Data.SP_CUSTOMER_SCREEN_MODE, "");
-
-		editor.putString(Data.SP_C_SESSION_ID, "");
-		editor.putString(Data.SP_C_ENGAGEMENT_ID, "");
-		editor.putString(Data.SP_C_DRIVER_ID, "");
-		editor.putString(Data.SP_C_LATITUDE, "0");
-		editor.putString(Data.SP_C_LONGITUDE, "0");
-		editor.putString(Data.SP_C_DRIVER_NAME, "");
-		editor.putString(Data.SP_C_DRIVER_IMAGE, "");
-		editor.putString(Data.SP_C_DRIVER_CAR_IMAGE, "");
-		editor.putString(Data.SP_C_DRIVER_PHONE, "");
-		editor.putString(Data.SP_C_DRIVER_RATING, "");
-
-		editor.putString(Data.SP_C_TOTAL_DISTANCE, "0");
-		editor.putString(Data.SP_C_TOTAL_FARE, "0");
-		editor.putString(Data.SP_C_WAIT_TIME, "0");
-		editor.putString(Data.SP_C_RIDE_TIME, "0");
 
 		editor.commit();
 

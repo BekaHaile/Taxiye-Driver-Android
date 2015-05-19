@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.utils.DialogPopup;
 import product.clicklabs.jugnoo.utils.Fonts;
 import product.clicklabs.jugnoo.utils.Log;
+import product.clicklabs.jugnoo.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
 public class PromotionDialog {
@@ -193,6 +194,15 @@ public class PromotionDialog {
 				startDismissHandler();
 				
 				promotionsListAdapter.notifyDataSetChanged();
+
+                if(promoCouponList.size() == 2){
+                    Utils.expandListForVariableHeight(listViewPromotions);
+                }
+                else{
+                    LinearLayout.LayoutParams paramsList = (LinearLayout.LayoutParams) listViewPromotions.getLayoutParams();
+                    paramsList.height = (int)(300.0 * ASSL.Yscale());
+                    listViewPromotions.setLayoutParams(paramsList);
+                }
 			}
 			else{
 				selectedCoupon = new CouponInfo(0, "");

@@ -211,6 +211,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 			}
 		});
+
 	}
 	
 	
@@ -221,7 +222,25 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			Data.locationFetcher = new LocationFetcher(OTPConfirmScreen.this, 1000, 1);
 		}
 		HomeActivity.checkForAccessTokenChange(this);
+
+        checkIfRegisterDataNull(this);
+
 	}
+
+
+
+    public static void checkIfRegisterDataNull(Activity activity){
+        try {
+            if(emailRegisterData == null && facebookRegisterData == null){
+                activity.startActivity(new Intent(activity, SplashNewActivity.class));
+                activity.finish();
+                activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 	
 	@Override
 	protected void onPause() {
@@ -270,20 +289,8 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			params.put("otp", otp);
 			
 
-			Log.i("email", emailRegisterData.emailId);
-			Log.i("password", emailRegisterData.password);
-			Log.i("device_token", Data.deviceToken);
-			Log.i("device_type", Data.DEVICE_TYPE);
-			Log.i("device_name", Data.deviceName);
-			Log.i("app_version", ""+Data.appVersion);
-			Log.i("os_version", Data.osVersion);
-			Log.i("country", Data.country);
-			Log.i("unique_device_id", Data.uniqueDeviceId);
-			Log.i("latitude", ""+Data.latitude);
-			Log.i("longitude", ""+Data.longitude);
-			Log.i("client_id", Config.getClientId());
-			Log.i("otp", otp);
-			
+			Log.i("params", ""+params.toString());
+
 		
 			AsyncHttpClient client = Data.getClient();
 			client.post(Config.getServerUrl() + "/verify_otp", params,
@@ -388,26 +395,9 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			params.put("otp", otp);
 			
 
-			Log.i("user_fb_id", Data.facebookUserData.fbId);
-			Log.i("user_fb_name", Data.facebookUserData.firstName + " " + Data.facebookUserData.lastName);
-			Log.i("fb_access_token", Data.facebookUserData.accessToken);
-			Log.i("fb_mail", Data.facebookUserData.userEmail);
-			Log.i("username", Data.facebookUserData.userName);
-			
-			Log.i("device_token", Data.deviceToken);
-			Log.i("device_type", Data.DEVICE_TYPE);
-			Log.i("device_name", Data.deviceName);
-			Log.i("app_version", ""+Data.appVersion);
-			Log.i("os_version", Data.osVersion);
-			Log.i("country", Data.country);
-			Log.i("unique_device_id", Data.uniqueDeviceId);
-			Log.i("latitude", ""+Data.latitude);
-			Log.i("longitude", ""+Data.longitude);
-			Log.i("client_id", Config.getClientId());
-			Log.i("otp", otp);
-			
-			
-		
+			Log.i("params", ""+params);
+
+
 			AsyncHttpClient client = Data.getClient();
 			client.post(Config.getServerUrl() + "/verify_otp", params,
 					new CustomAsyncHttpResponseHandler() {

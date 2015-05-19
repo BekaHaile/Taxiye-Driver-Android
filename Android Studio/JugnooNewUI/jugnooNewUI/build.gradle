@@ -20,7 +20,7 @@ android {
 
 dependencies {
     compile project(':facebookSDK')
-    compile 'com.google.android.gms:play-services:6.1.71'
+    compile 'com.google.android.gms:play-services:+'
     compile files('libs/FlurryAnalytics-5.0.0.jar')
     compile files('libs/android-async-http.jar')
     compile files('libs/assl_sdk_rmn_jugnoo.jar')
