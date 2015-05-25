@@ -13,11 +13,12 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
 import android.view.KeyEvent;
-import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -30,7 +31,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -47,10 +47,11 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
+import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.config.ConfigMode;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.AppMode;
+import product.clicklabs.jugnoo.datastructure.SPLabels;
 import product.clicklabs.jugnoo.utils.AppStatus;
 import product.clicklabs.jugnoo.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.utils.DeviceTokenGenerator;
@@ -62,6 +63,7 @@ import product.clicklabs.jugnoo.utils.HttpRequester;
 import product.clicklabs.jugnoo.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.utils.LocationInit;
 import product.clicklabs.jugnoo.utils.Log;
+import product.clicklabs.jugnoo.utils.Prefs;
 import product.clicklabs.jugnoo.utils.UniqueIMEIID;
 import product.clicklabs.jugnoo.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
@@ -70,7 +72,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	
 	LinearLayout relative;
 	
-	ImageView imageViewJugnooLogo, imageViewDebug;
+	ImageView imageViewJugnooLogo;
+    ImageView imageViewDebug1, imageViewDebug2;
 	
 	ProgressBar progressBar;
 	
@@ -81,9 +84,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	TextView textViewNoNet;
 	Button buttonNoNetCall;
 	
-	boolean loginDataFetched = false, resumed = false, cracked = false;
+	boolean loginDataFetched = false, resumed = false;
 
-    public static AppMode appMode = AppMode.NORMAL;
+    boolean touchedDown1 = false, touchedDown2 = false;
+    int debugState = 0;
+
 	
 	// *****************************Used for flurry work***************//
 	@Override
@@ -102,15 +107,17 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	
 	
 	public static void initializeServerURL(Context context){
-		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String link = preferences.getString(Data.SP_SERVER_LINK, Config.getDefaultServerUrl());
+		String link = Prefs.with(context).getString(SPLabels.SERVER_SELECTED, Config.getDefaultServerUrl());
 
-		if(link.equalsIgnoreCase(Config.getTrialServerUrl())){
-            Config.setConfigMode(ConfigMode.TRIAL);
-		}
-		else if(link.equalsIgnoreCase(Config.getDevServerUrl())){
+		if(link.equalsIgnoreCase(Config.getDevServerUrl())){
             Config.setConfigMode(ConfigMode.DEV);
 		}
+        else if(link.equalsIgnoreCase(Config.getDev1ServerUrl())){
+            Config.setConfigMode(ConfigMode.DEV_1);
+        }
+        else if(link.equalsIgnoreCase(Config.getDev2ServerUrl())){
+            Config.setConfigMode(ConfigMode.DEV_2);
+        }
 		else{
             Config.setConfigMode(ConfigMode.LIVE);
 		}
@@ -120,42 +127,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Crashlytics.start(this);
+		Fabric.with(this, new Crashlytics());
 
 
-		
-//		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-//		String languageSelected = preferences.getString(Data.LANGUAGE_SELECTED, "default");
-//		if(!"default".equalsIgnoreCase(languageSelected)){
-//			Locale locale = new Locale(languageSelected); 
-//		    Locale.setDefault(locale);
-//		    Configuration config = new Configuration();
-//		    config.locale = locale;
-//		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//		}
-		
-		
-		
-//		try {
-//			Uri targetUri = getIntent().getData();
-//			Log.e("targetUri =======********", "="+targetUri);
-//			if(targetUri != null){
-//				String autoShare = targetUri.getQueryParameter("autoshare");
-//				if("1".equalsIgnoreCase(autoShare)){
-//					Data.autoShare = 1;
-//				}
-//				else{
-//					Data.autoShare = 0;
-//				}
-//			}
-//			else{
-//				Data.autoShare = 0;
-//			}
-//		} catch (Exception e1) {
-//			e1.printStackTrace();
-//			Data.autoShare = 0;
-//		}
-		
 		
 		Data.userData = null;
 		
@@ -169,6 +143,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	    Configuration config = new Configuration();
 	    config.locale = locale;
 	    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+
+
+
+
+
+
 		
 		setContentView(R.layout.activity_splash_new);
 		
@@ -179,14 +159,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		
 		loginDataFetched = false;
 		resumed = false;
-		
+
+        touchedDown1 = false;
+        touchedDown2 = false;
+        debugState = 0;
+
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashNewActivity.this, relative, 1134, 720, false);
 		
 		
 		imageViewJugnooLogo = (ImageView) findViewById(R.id.imageViewJugnooLogo);
 
-        imageViewDebug = (ImageView) findViewById(R.id.imageViewDebug);
+        imageViewDebug1 = (ImageView) findViewById(R.id.imageViewDebug1);
+        imageViewDebug2 = (ImageView) findViewById(R.id.imageViewDebug2);
 
 		
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -245,26 +230,112 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			}
 		});
 		
-		imageViewJugnooLogo.setOnLongClickListener(new View.OnLongClickListener() {
-			
-			@Override
-			public boolean onLongClick(View v) {
-				confirmDebugPasswordPopup(SplashNewActivity.this);
-				FlurryEventLogger.debugPressed("no_token");
-				return false;
-			}
-		});
+//		imageViewJugnooLogo.setOnLongClickListener(new View.OnLongClickListener() {
+//
+//			@Override
+//			public boolean onLongClick(View v) {
+//				confirmDebugPasswordPopup(SplashNewActivity.this);
+//				FlurryEventLogger.debugPressed("no_token");
+//				return false;
+//			}
+//		});
+//
+//        imageViewJugnooLogo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
-        imageViewJugnooLogo.setOnClickListener(new View.OnClickListener() {
+
+        imageViewDebug1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                touchedDown1 = false;
+            }
+        });
 
+        imageViewDebug1.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if(touchedDown1){
+                        debugState = 1;
+                        relative.setBackgroundColor(getResources().getColor(R.color.yellow_alpha));
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                relative.setBackgroundColor(getResources().getColor(R.color.yellow));
+                            }
+                        }, 200);
+                    }
+                }
+            };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        debugState = 0;
+                        touchedDown1 = true;
+                        handler.removeCallbacks(runnable);
+                        handler.postDelayed(runnable, 4000);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        touchedDown1 = false;
+                        break;
+                }
+
+                return false;
+            }
+        });
+
+
+        imageViewDebug2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                touchedDown2 = false;
+            }
+        });
+
+        imageViewDebug2.setOnTouchListener(new View.OnTouchListener() {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    if(touchedDown2 && debugState == 1){
+                        debugState = 0;
+                        confirmDebugPasswordPopup(SplashNewActivity.this);
+                    }
+                }
+            };
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                if(debugState == 1) {
+                    switch (action) {
+                        case MotionEvent.ACTION_DOWN:
+                            touchedDown2 = true;
+                            handler.removeCallbacks(runnable);
+                            handler.postDelayed(runnable, 4000);
+                            break;
+
+                        case MotionEvent.ACTION_UP:
+                            touchedDown2 = false;
+                            debugState = 0;
+                            break;
+                    }
+                }
+
+                return false;
             }
         });
 		
-		
-		
-		
+
 		
 		try {																						// to get AppVersion, OS version, country code and device name
 			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
@@ -278,6 +349,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			Log.i("deviceName", Data.deviceName + "..");
 			Data.uniqueDeviceId = UniqueIMEIID.getUniqueIMEIId(this);
 			Log.e("Data.uniqueDeviceId = ", "="+Data.uniqueDeviceId);
+
+			Utils.generateKeyHash(this);
 			
 		} catch (Exception e) {
 			Log.e("error in fetching appVersion and gcm key", ".." + e.toString());
@@ -302,36 +375,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		}
 
 
-        appMode = AppMode.NORMAL;
-        cracked = false;
-
-        imageViewDebug.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(Config.getServerUrl().contains(Config.getDevServerUrl().substring(0, Config.getDevServerUrl().length() - 5))) {
-                    if (cracked) {
-
-                        PopupMenu popupMenu = new PopupMenu(SplashNewActivity.this, imageViewDebug);
-                        popupMenu.getMenu().add(0, 0, 0, "AppMode = " + appMode);
-                        popupMenu.show();
-
-                        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                            public boolean onMenuItemClick(MenuItem item) {
-                                if (0 == item.getItemId()) {
-                                    if (AppMode.NORMAL == appMode) {
-                                        appMode = AppMode.DEBUG;
-                                    } else {
-                                        appMode = AppMode.NORMAL;
-                                    }
-                                }
-                                return true;
-                            }
-                        });
-
-                    }
-                }
-            }
-        });
 
 
     }
@@ -351,7 +394,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
                         Data.deviceToken = regId;
                         Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
                         accessTokenLogin(SplashNewActivity.this);
-//                      accessTokenLoginRetrofit(SplashNewActivity.this);
                         progressBar.setVisibility(View.GONE);
 
                         FlurryEventLogger.appStarted(regId);
@@ -749,13 +791,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
-		if(hasFocus && loginDataFetched){
-			loginDataFetched = false;
-			startActivity(new Intent(SplashNewActivity.this, HomeActivity.class));
-			ActivityCompat.finishAffinity(this);
-			overridePendingTransition(R.anim.right_in, R.anim.right_out);
-		}
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(SplashNewActivity.this.hasWindowFocus() && loginDataFetched){
+                    loginDataFetched = false;
+                    startActivity(new Intent(SplashNewActivity.this, HomeActivity.class));
+                    ActivityCompat.finishAffinity(SplashNewActivity.this);
+                    overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                }
+            }
+        }, 500);
+
 	}
 	
 	
@@ -814,8 +862,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 						else{
 							if(Config.getDebugPassword().equalsIgnoreCase(code)){
 								dialog.dismiss();
-								changeServerLinkPopup(activity);
-                                cracked = true;
+                                activity.startActivity(new Intent(activity, DebugOptionsActivity.class));
+                                activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+                                activity.finish();
 							}
 							else{
 								etCode.requestFocus();
@@ -868,138 +917,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			}
 		
 		}
-	
-	
-		void changeServerLinkPopup(final Activity activity) {
-				try {
-					final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-					dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-					dialog.setContentView(R.layout.dialog_custom_three_buttons);
 
-					FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
-					new ASSL(activity, frameLayout, 1134, 720, true);
-					
-					WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-					layoutParams.dimAmount = 0.6f;
-					dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-					dialog.setCancelable(true);
-					dialog.setCanceledOnTouchOutside(true);
-					
-					
-					frameLayout.setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-					
-					RelativeLayout innerRl = (RelativeLayout) dialog.findViewById(R.id.innerRl);
-					innerRl.setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-						}
-					});
-					
-					
-					TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
-					TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.latoRegular(activity));
-					
-					
-					SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-					String link = preferences.getString(Data.SP_SERVER_LINK, Config.getDefaultServerUrl());
-					
-					if(link.equalsIgnoreCase(Config.getTrialServerUrl())){
-						textMessage.setText("Current server is SALES.\nChange to:");
-					}
-					else if(link.equalsIgnoreCase(Config.getLiveServerUrl())){
-						textMessage.setText("Current server is LIVE.\nChange to:");
-					}
-					else if(link.equalsIgnoreCase(Config.getDevServerUrl())){
-						textMessage.setText("Current server is DEV.\nChange to:");
-					}
-					
-					
-					
-					Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
-					btnOk.setText("LIVE");
-					
-					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral); btnNeutral.setTypeface(Fonts.latoRegular(activity));
-					btnNeutral.setText("DEV");
-					
-					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Fonts.latoRegular(activity));
-					btnCancel.setText("SALES");
-					
-					
-					btnOk.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-							SharedPreferences.Editor editor = preferences.edit();
-							editor.putString(Data.SP_SERVER_LINK, Config.getLiveServerUrl());
-							editor.commit();
-							
-							initializeServerURL(activity);
-							
-							dialog.dismiss();
-						}
-					});
-					
-					btnNeutral.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-							SharedPreferences.Editor editor = preferences.edit();
-							editor.putString(Data.SP_SERVER_LINK, Config.getDevServerUrl());
-							editor.commit();
-							
-							initializeServerURL(activity);
-
-							dialog.dismiss();
-						}
-					});
-					
-					btnCancel.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(View view) {
-							
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-							SharedPreferences.Editor editor = preferences.edit();
-							editor.putString(Data.SP_SERVER_LINK, Config.getTrialServerUrl());
-							editor.commit();
-							
-							initializeServerURL(activity);
-
-							dialog.dismiss();
-						}
-					});
-
-					dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-						}
-					});
-
-					frameLayout.setOnClickListener(new View.OnClickListener() {
-						
-						@Override
-						public void onClick(View v) {
-							dialog.dismiss();
-						}
-					});
-					
-					
-					
-					dialog.show();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-	
-	
-	
 
 	@Override
 	public void onLocationChanged(Location location, int priority) {

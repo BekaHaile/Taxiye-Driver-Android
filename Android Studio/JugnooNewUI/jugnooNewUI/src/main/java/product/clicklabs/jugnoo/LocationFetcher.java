@@ -249,6 +249,9 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks, Goo
 		Log.e(TAG, "onConnected");
 		Location loc = getLocation();
 		if(loc != null){
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("cached", true);
+            loc.setExtras(bundle);
 			locationUpdate.onLocationChanged(loc, priority);
 		}
 		startRequest();

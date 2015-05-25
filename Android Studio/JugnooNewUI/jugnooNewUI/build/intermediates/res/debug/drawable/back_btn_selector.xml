@@ -4,4 +4,4 @@
     <item android:drawable="@drawable/back_btn_on" android:state_focused="false" android:state_pressed="true"/>
     <item android:drawable="@drawable/back_btn_off"/>
 
-</selector><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/back_btn_selector.xml -->
+</selector><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/back_btn_selector.xml -->

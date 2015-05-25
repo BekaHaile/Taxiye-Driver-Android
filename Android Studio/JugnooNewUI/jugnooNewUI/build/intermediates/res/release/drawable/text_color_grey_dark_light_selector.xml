@@ -4,4 +4,4 @@
     <item android:color="@color/grey_light" android:state_pressed="true"/>
     <item android:color="@color/grey_dark"/>
 
-</selector><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/text_color_grey_dark_light_selector.xml -->
+</selector><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/text_color_grey_dark_light_selector.xml -->

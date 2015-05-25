@@ -1,11 +1,13 @@
 package product.clicklabs.jugnoo.utils;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -286,28 +288,15 @@ public class Utils {
     }
 
 
-
-    public static void turnGPSOn(Context context){
-        String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if(!provider.contains("gps")){ //if gps is disabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            context.sendBroadcast(poke);
-        }
-    }
-
-    public static void turnGPSOff(Context context){
-        String provider = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if(provider.contains("gps")){ //if gps is enabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            context.sendBroadcast(poke);
+    public static boolean isLocationEnabled(Context context) {
+        try{
+            ContentResolver contentResolver = context.getContentResolver();
+            boolean gpsStatus = Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.GPS_PROVIDER);
+            boolean netStatus = Settings.Secure.isLocationProviderEnabled(contentResolver, LocationManager.NETWORK_PROVIDER);
+            return gpsStatus || netStatus;
+        } catch(Exception e){
+            e.printStackTrace();
+            return false;
         }
     }
 

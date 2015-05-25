@@ -251,10 +251,8 @@ public class JSONParser {
 		else if(currentUserStatus == 1){
 			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
 		}
-		
-		parsePortNumber(context, jLoginObject);
-		
-		
+
+
 		//Fetching user current status
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
@@ -299,32 +297,7 @@ public class JSONParser {
 	}
 	
 	
-	public void parsePortNumber(Context context, JSONObject jLoginObject){
-		try {
-			if(jLoginObject.has("port_number")){
-				String port = jLoginObject.getString("port_number");
-				updatePortNumber(context, port);
-				SplashNewActivity.initializeServerURL(context);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void updatePortNumber(Context context, String port){
-		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String link = preferences.getString(Data.SP_SERVER_LINK, Config.getDefaultServerUrl());
-		
-		if(link.equalsIgnoreCase(Config.getTrialServerUrl())){
-			Database2.getInstance(context).updateSalesPortNumber(port);
-		}
-		else if(link.equalsIgnoreCase(Config.getDevServerUrl())){
-			Database2.getInstance(context).updateDevPortNumber(port);
-		}
-		else{
-			Database2.getInstance(context).updateLivePortNumber(port);
-		}
-	}
+
 	
 	//TODO
 	public void parseLastRideData(JSONObject jObj){

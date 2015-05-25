@@ -4,4 +4,4 @@
     <item android:color="@color/black_text_alpha" android:state_pressed="true"/>
     <item android:color="@color/black_text"/>
 
-</selector><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/text_color_black_alpha_selector.xml -->
+</selector><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/text_color_black_alpha_selector.xml -->

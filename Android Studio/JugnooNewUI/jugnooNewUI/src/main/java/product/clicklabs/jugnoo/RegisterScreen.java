@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.AppMode;
 import product.clicklabs.jugnoo.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.datastructure.FacebookRegisterData;
 import product.clicklabs.jugnoo.datastructure.PreviousAccountInfo;
@@ -542,14 +541,9 @@ public class RegisterScreen extends Activity implements LocationUpdate {
             params.put("referral_code", referralCode);
 
             if(Config.getServerUrl().contains(Config.getDevServerUrl().substring(0, Config.getDevServerUrl().length() - 5))){
-                if(AppMode.DEBUG == SplashNewActivity.appMode){
-                    params.put("device_token", "");
-                    params.put("unique_device_id", "");
-                }
-                else{
+
                     params.put("device_token", Data.deviceToken);
                     params.put("unique_device_id", Data.uniqueDeviceId);
-                }
             }
             else{
                 params.put("device_token", Data.deviceToken);

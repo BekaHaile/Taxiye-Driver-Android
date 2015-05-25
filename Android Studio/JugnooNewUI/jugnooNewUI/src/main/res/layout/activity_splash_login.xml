@@ -36,12 +36,7 @@
     </RelativeLayout>
     
     
-    <ScrollView 
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:splitMotionEvents="false"
-        >
+
         <LinearLayout
         android:id="@+id/linearLayoutMain"
         android:layout_width="match_parent"
@@ -191,17 +186,10 @@
             android:textColor="@drawable/text_color_yellow_alpha_selector"
             android:textSize="28px" />
         
-        <TextView 
-            android:id="@+id/textViewScroll"
-            android:layout_width="20px"
-            android:layout_height="20px"
-            android:text=" "
-            />
+
         
     </LinearLayout>    
-        
-        
-    </ScrollView>
+
     
    
 

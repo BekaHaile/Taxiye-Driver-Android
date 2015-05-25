@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -49,6 +50,7 @@ public class RideTransactionsActivity extends Activity {
 	ListView listViewRideTransactions;
 	TextView textViewInfo;
 	ProgressBar progressBarList;
+	Button buttonGetRide;
 	
 	RideTransactionAdapter rideTransactionAdapter;
 	
@@ -86,8 +88,10 @@ public class RideTransactionsActivity extends Activity {
 		listViewRideTransactions = (ListView) findViewById(R.id.listViewRideTransactions);
 		textViewInfo = (TextView) findViewById(R.id.textViewInfo); textViewInfo.setTypeface(Fonts.latoRegular(this));
 		progressBarList = (ProgressBar) findViewById(R.id.progressBarList);
+		buttonGetRide = (Button) findViewById(R.id.buttonGetRide); buttonGetRide.setTypeface(Fonts.latoRegular(this));
 		textViewInfo.setVisibility(View.GONE);
 		progressBarList.setVisibility(View.GONE);
+		buttonGetRide.setVisibility(View.GONE);
 		
 		
 		LinearLayout viewF = (LinearLayout) getLayoutInflater().inflate(R.layout.list_item_show_more, null);
@@ -108,6 +112,13 @@ public class RideTransactionsActivity extends Activity {
 		
 		imageViewBack.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				performBackPressed();
+			}
+		});
+
+		buttonGetRide.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
@@ -228,7 +239,7 @@ public class RideTransactionsActivity extends Activity {
 											}
 										}
 
-										updateListData("No transactions currently", false);
+										updateListData("You haven't tried Jugnoo yet.", false);
 										
 									}
 									else{
@@ -256,6 +267,7 @@ public class RideTransactionsActivity extends Activity {
 		if(errorOccurred){
 			textViewInfo.setText(message);
 			textViewInfo.setVisibility(View.VISIBLE);
+			buttonGetRide.setVisibility(View.GONE);
 			
 			rideInfosList.clear();
 			rideTransactionAdapter.notifyDataSetChanged();
@@ -264,9 +276,11 @@ public class RideTransactionsActivity extends Activity {
 			if(rideInfosList.size() == 0 && futureSchedule == null){
 				textViewInfo.setVisibility(View.VISIBLE);
 				textViewInfo.setText(message);
+				buttonGetRide.setVisibility(View.VISIBLE);
 			}
 			else{
 				textViewInfo.setVisibility(View.GONE);
+				buttonGetRide.setVisibility(View.GONE);
 			}
 			rideTransactionAdapter.notifyDataSetChanged();
 		}

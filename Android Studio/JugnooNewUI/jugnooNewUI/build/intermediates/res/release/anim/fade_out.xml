@@ -7,4 +7,4 @@
         android:fromAlpha="1.0"
         android:interpolator="@android:anim/decelerate_interpolator"
         android:toAlpha="0.0" />
-    </set><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/anim/fade_out.xml -->
+    </set><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/anim/fade_out.xml -->

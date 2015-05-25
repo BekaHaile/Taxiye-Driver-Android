@@ -24,7 +24,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,7 +36,6 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,7 +47,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.facebook.Session;
@@ -82,7 +79,6 @@ import java.util.TimerTask;
 import product.clicklabs.jugnoo.config.Config;
 import product.clicklabs.jugnoo.datastructure.AddPaymentPath;
 import product.clicklabs.jugnoo.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.datastructure.AppMode;
 import product.clicklabs.jugnoo.datastructure.AutoCompleteSearchResult;
 import product.clicklabs.jugnoo.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.datastructure.DriverInfo;
@@ -95,6 +91,7 @@ import product.clicklabs.jugnoo.datastructure.PromoCoupon;
 import product.clicklabs.jugnoo.datastructure.PromotionApplyMode;
 import product.clicklabs.jugnoo.datastructure.PromotionDialogEventHandler;
 import product.clicklabs.jugnoo.datastructure.PromotionInfo;
+import product.clicklabs.jugnoo.datastructure.SPLabels;
 import product.clicklabs.jugnoo.datastructure.SearchResult;
 import product.clicklabs.jugnoo.datastructure.UserMode;
 import product.clicklabs.jugnoo.utils.AppStatus;
@@ -112,6 +109,7 @@ import product.clicklabs.jugnoo.utils.LocationInit;
 import product.clicklabs.jugnoo.utils.Log;
 import product.clicklabs.jugnoo.utils.MapStateListener;
 import product.clicklabs.jugnoo.utils.MapUtils;
+import product.clicklabs.jugnoo.utils.Prefs;
 import product.clicklabs.jugnoo.utils.TouchableMapFragment;
 import product.clicklabs.jugnoo.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
@@ -203,7 +201,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView textViewNearestDriverETA;
     RelativeLayout relativeLayoutInitialFareFactor;
     TextView textViewCurrentFareFactor;
-	Button initialMyLocationBtn, changeLocalityBtn;
+	Button initialMyLocationBtn, initialMyLocationBtnChangeLoc, changeLocalityBtn;
 
     ImageView imageViewRideLater, imageViewRideNow;
     RelativeLayout relativeLayoutJugnooAnim;
@@ -369,9 +367,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	//TODO check final variables
-	public static AppMode appMode;
-
-	
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 6 * 10000; //in milliseconds
 	
 	
@@ -395,13 +390,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public ASSL assl;
 
 
+    private int showAllDrivers = 0, showDriverInfo = 0;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
 		
 		HomeActivity.appInterruptHandler = HomeActivity.this;
-		
+
+
+        showAllDrivers = Prefs.with(this).getInt(SPLabels.SHOW_ALL_DRIVERS, 0);
+        showDriverInfo = Prefs.with(this).getInt(SPLabels.SHOW_DRIVER_INFO, 0);
+
 		activity = this;
 		
 		activityResumed = false;
@@ -415,7 +417,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		mealsAnimating1 = false;
 		fatafatAnimating1 = false;
 
-		appMode = AppMode.NORMAL;
 		
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -520,11 +521,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		((TextView) findViewById(R.id.textViewCurrentRatesInfo)).setTypeface(Fonts.latoRegular(this));
 
 		initialMyLocationBtn = (Button) findViewById(R.id.initialMyLocationBtn);
+        initialMyLocationBtnChangeLoc = (Button) findViewById(R.id.initialMyLocationBtnChangeLoc);
         changeLocalityBtn = (Button) findViewById(R.id.changeLocalityBtn); changeLocalityBtn.setTypeface(Fonts.latoRegular(this));
+
+        initialMyLocationBtn.setVisibility(View.VISIBLE);
         changeLocalityBtn.setVisibility(View.GONE);
+        initialMyLocationBtnChangeLoc.setVisibility(View.GONE);
 
         imageViewRideLater = (ImageView) findViewById(R.id.imageViewRideLater);
         imageViewRideNow = (ImageView) findViewById(R.id.imageViewRideNow);
+        imageViewRideLater.setVisibility(View.GONE);
 
         relativeLayoutJugnooAnim = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooAnim);
         imageViewMeals1 = (ImageView) findViewById(R.id.imageViewMeals1);
@@ -898,36 +904,34 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				try {
                     hideAnims();
 					if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-						if (myLocation != null) {
-							if(map != null){
-								promoCouponSelectedForRide = null;
-								final LatLng requestLatLng = map.getCameraPosition().target;
+                        if(Utils.isLocationEnabled(HomeActivity.this)) {
+                                if (map != null) {
+                                    promoCouponSelectedForRide = null;
+                                    final LatLng requestLatLng = map.getCameraPosition().target;
 
-								final PromotionDialog promotionDialog = new PromotionDialog(requestLatLng, PromotionApplyMode.BEFORE_RIDE);
-								promotionDialog.fetchPromotionsAPI(HomeActivity.this, new PromotionDialogEventHandler() {
-	
-											@Override
-											public void onOkPressed(PromoCoupon promoCoupon, int totalPromoCoupons) {
-												promoCouponSelectedForRide = promoCoupon;
-                                                Data.pickupLatLng = requestLatLng;
-												callAnAutoPopup(HomeActivity.this, totalPromoCoupons);
-											}
-											
-											@Override
-											public void onOkOnlyPressed(PromotionDialog promotionDialog, PromoCoupon promoCoupon, String pickupId) {
-											}
-	
-											@Override
-											public void onCancelPressed() {
-												promoCouponSelectedForRide = null;
-											}
-										});
-							}
-						} else {
-							Toast.makeText(getApplicationContext(),
-									"Waiting for your location...",
-									Toast.LENGTH_LONG).show();
-						}
+                                    final PromotionDialog promotionDialog = new PromotionDialog(requestLatLng, PromotionApplyMode.BEFORE_RIDE);
+                                    promotionDialog.fetchPromotionsAPI(HomeActivity.this, new PromotionDialogEventHandler() {
+
+                                        @Override
+                                        public void onOkPressed(PromoCoupon promoCoupon, int totalPromoCoupons) {
+                                            promoCouponSelectedForRide = promoCoupon;
+                                            callAnAutoPopup(HomeActivity.this, totalPromoCoupons, requestLatLng);
+                                        }
+
+                                        @Override
+                                        public void onOkOnlyPressed(PromotionDialog promotionDialog, PromoCoupon promoCoupon, String pickupId) {
+                                        }
+
+                                        @Override
+                                        public void onCancelPressed() {
+                                            promoCouponSelectedForRide = null;
+                                        }
+                                    });
+                                }
+                        }
+                        else{
+                            LocationInit.showLocationAlertDialog(HomeActivity.this);
+                        }
 					} else {
 						DialogPopup.alertPopup(HomeActivity.this, "",
 								Data.CHECK_INTERNET_MSG);
@@ -1300,7 +1304,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						return false;
 					}
 					else if(arg0.getTitle().equalsIgnoreCase("driver shown to customer")){
-						if(appMode == AppMode.DEBUG){
+						if(1 == showDriverInfo){
 							String driverId = arg0.getSnippet();
 							try{
 								final DriverInfo driverInfo = Data.driverInfos.get(Data.driverInfos.indexOf(new DriverInfo(driverId)));
@@ -1375,6 +1379,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			
 			
 			initialMyLocationBtn.setOnClickListener(mapMyLocationClick);
+            initialMyLocationBtnChangeLoc.setOnClickListener(mapMyLocationClick);
             assigningMyLocationBtn.setOnClickListener(mapMyLocationClick);
 			customerInRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
 
@@ -2038,9 +2043,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     textViewNearestDriverETA.setText("Finding nearby drivers...");
 
                     imageViewRideNow.setVisibility(View.VISIBLE);
-                    imageViewRideLater.setVisibility(View.VISIBLE);
+                    imageViewRideLater.setVisibility(View.GONE);
                     relativeLayoutJugnooAnim.setVisibility(View.VISIBLE);
+
+                    initialMyLocationBtn.setVisibility(View.VISIBLE);
                     changeLocalityBtn.setVisibility(View.GONE);
+                    initialMyLocationBtnChangeLoc.setVisibility(View.GONE);
 
                     setFareFactorToInitialState();
 
@@ -2874,7 +2882,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		    			nameValuePairs.add(new BasicNameValuePair("latitude", ""+destination.latitude));
 		    			nameValuePairs.add(new BasicNameValuePair("longitude", ""+destination.longitude));
 
-                        if(AppMode.DEBUG == appMode){
+                        if(1 == showAllDrivers){
                             nameValuePairs.add(new BasicNameValuePair("show_all", "1"));
                         }
 		    			
@@ -2965,13 +2973,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                                 imageViewRideLater.setVisibility(View.GONE);
                                 relativeLayoutJugnooAnim.setVisibility(View.GONE);
 
+                                initialMyLocationBtn.setVisibility(View.GONE);
                                 changeLocalityBtn.setVisibility(View.VISIBLE);
+                                initialMyLocationBtnChangeLoc.setVisibility(View.VISIBLE);
                             } else {
                                 imageViewRideNow.setVisibility(View.VISIBLE);
-                                imageViewRideLater.setVisibility(View.VISIBLE);
+                                imageViewRideLater.setVisibility(View.GONE);
                                 relativeLayoutJugnooAnim.setVisibility(View.VISIBLE);
 
+                                initialMyLocationBtn.setVisibility(View.VISIBLE);
                                 changeLocalityBtn.setVisibility(View.GONE);
+                                initialMyLocationBtnChangeLoc.setVisibility(View.GONE);
                             }
 
                             setFareFactorToInitialState();
@@ -3839,7 +3851,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	
-	void callAnAutoPopup(final Activity activity, int totalPromoCoupons) {
+	void callAnAutoPopup(final Activity activity, int totalPromoCoupons, LatLng pickupLatLng) {
 		try {
 			
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -3899,22 +3911,51 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					dialog.dismiss();
 				}
 			});
-			
-			Data.pickupLatLng = map.getCameraPosition().target;
-			double distance = MapUtils.distance(Data.pickupLatLng, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-			if(distance > MAP_PAN_DISTANCE_CHECK){
-				textMessage.setText("The pickup location you have set is different from your current location. Are you sure you want an auto at this pickup location?");
-				dialog.show();
-			}
-			else{
-				if(totalPromoCoupons == 0){
-					textMessage.setText("Do you want an auto to pick you up?");
-					dialog.show();
-				}
-				else{
-					initiateRequestRide(true);
-				}
-			}
+
+            Data.pickupLatLng = pickupLatLng;
+
+
+            if(myLocation == null){
+                //We could not detect your location. Are you sure you want to request and auto to pick you at this location
+                myLocation = new Location(LocationManager.GPS_PROVIDER);
+                myLocation.setLatitude(Data.pickupLatLng.latitude);
+                myLocation.setLongitude(Data.pickupLatLng.longitude);
+                myLocation.setAccuracy(100);
+                myLocation.setTime(System.currentTimeMillis());
+                textMessage.setText("We could not detect your location. Are you sure you want to request and auto to pick you at this location?");
+                dialog.show();
+            }
+            else{
+                boolean cached = false;
+                try {
+                    Bundle bundle = myLocation.getExtras();
+                    cached = bundle.getBoolean("cached");
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+                if(cached){
+                    //Location accuracy is low. Are you sure you want to request an auto to pick you at this location
+                    textMessage.setText("Location accuracy is low. Are you sure you want to request an auto to pick you at this location?");
+                    dialog.show();
+                }
+                else{
+                    double distance = MapUtils.distance(Data.pickupLatLng, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+                    if(distance > MAP_PAN_DISTANCE_CHECK){
+                        textMessage.setText("The pickup location you have set is different from your current location. Are you sure you want an auto at this pickup location?");
+                        dialog.show();
+                    }
+                    else{
+                        if(totalPromoCoupons == 0){
+                            textMessage.setText("Do you want an auto to pick you up?");
+                            dialog.show();
+                        }
+                        else{
+                            initiateRequestRide(true);
+                        }
+                    }
+                }
+            }
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4033,134 +4074,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		
 		
-		
-		public void confirmDebugPasswordPopup(final Activity activity){
 
-			try {
-				final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-				dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-				dialog.setContentView(R.layout.dialog_edittext_confirm);
-
-				FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
-				new ASSL(activity, frameLayout, 1134, 720, true);
-				
-				WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-				layoutParams.dimAmount = 0.6f;
-				dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-				dialog.setCancelable(true);
-				dialog.setCanceledOnTouchOutside(true);
-				
-				
-				TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Fonts.latoRegular(activity), Typeface.BOLD);
-				TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Fonts.latoRegular(activity));
-				final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Fonts.latoRegular(activity));
-				
-				textHead.setText("Confirm Debug Password");
-				textMessage.setText("Please enter password to continue.");
-				
-				textHead.setVisibility(View.GONE);
-				textMessage.setVisibility(View.GONE);
-				
-				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Fonts.latoRegular(activity));
-				
-				btnConfirm.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View view) {
-						String code = etCode.getText().toString().trim();
-						if("".equalsIgnoreCase(code)){
-							etCode.requestFocus();
-							etCode.setError("Code can't be empty.");
-						}
-						else{
-							if(Config.getDebugPassword().equalsIgnoreCase(code)){
-								dialog.dismiss();
-								changeDebugModePopup(activity);
-							}
-							else{
-								etCode.requestFocus();
-								etCode.setError("Code not matched.");
-							}
-						}
-					}
-					
-				});
-				
-				
-				etCode.setOnEditorActionListener(new OnEditorActionListener() {
-
-                    @Override
-                    public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                        int result = actionId & EditorInfo.IME_MASK_ACTION;
-                        switch (result) {
-                            case EditorInfo.IME_ACTION_DONE:
-                                btnConfirm.performClick();
-                                break;
-
-                            case EditorInfo.IME_ACTION_NEXT:
-                                break;
-
-                            default:
-                        }
-                        return true;
-                    }
-                });
-				
-				dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-					}
-				});
-
-				frameLayout.setOnClickListener(new View.OnClickListener() {
-					
-					@Override
-					public void onClick(View v) {
-						dialog.dismiss();
-					}
-				});
-
-				dialog.show();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		
-		}
-		
-		void changeDebugModePopup(final Activity activity) {
-			try {
-				String message = "";
-				if(appMode == AppMode.DEBUG){
-					message = "App is in DEBUG mode.\nChange to:";
-				}
-				else{
-					message = "App is in NORMAL mode.\nChange to:";
-				}
-				DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message, "NORMAL", "DEBUG", 
-						new View.OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								appMode = AppMode.NORMAL;
-							}
-						}, 
-						new View.OnClickListener() {
-							
-							@Override
-							public void onClick(View v) {
-								appMode = AppMode.DEBUG;
-							}
-						}, true, false);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		
-		
-
-		
 		
 		
 	

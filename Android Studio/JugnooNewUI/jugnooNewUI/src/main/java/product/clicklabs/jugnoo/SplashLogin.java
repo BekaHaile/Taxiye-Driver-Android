@@ -4,15 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
@@ -21,7 +18,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
@@ -69,11 +65,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 	Button buttonEmailLogin;
 	TextView textViewForgotPassword;
-	
-	ScrollView scrollView;
-	
-	TextView textViewScroll;
-	
+
 	LinearLayout relative;
 	
 	
@@ -144,10 +136,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 		buttonEmailLogin = (Button) findViewById(R.id.buttonEmailLogin); buttonEmailLogin.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		textViewForgotPassword = (TextView) findViewById(R.id.textViewForgotPassword); textViewForgotPassword.setTypeface(Fonts.latoRegular(getApplicationContext()));
 		
-		scrollView = (ScrollView) findViewById(R.id.scrollView);
-		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-		
-		
+
 		
 		String[] emails = Database.getInstance(this).getEmails();
 		Database.getInstance(this).close();
@@ -226,10 +215,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					scrollView.smoothScrollTo(0, editTextEmail.getBottom());
-				}
-                else {
+				if(!hasFocus){
                     editTextEmail.setError(null);
                 }
 			}
@@ -239,10 +225,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					scrollView.smoothScrollTo(0, editTextPassword.getBottom());
-				}
-                else {
+				if(!hasFocus){
                     editTextPassword.setError(null);
                 }
 			}
@@ -296,46 +279,6 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			}
 		});
 		
-		
-		
-		
-		final View activityRootView = findViewById(R.id.linearLayoutMain);
-		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
-				new OnGlobalLayoutListener() {
-
-					@Override
-					public void onGlobalLayout() {
-						Rect r = new Rect();
-						// r will be populated with the coordinates of your view
-						// that area still visible.
-						activityRootView.getWindowVisibleDisplayFrame(r);
-
-						int heightDiff = activityRootView.getRootView()
-								.getHeight() - (r.bottom - r.top);
-						if (heightDiff > 100) { // if more than 100 pixels, its
-												// probably a keyboard...
-
-							/************** Adapter for the parent List *************/
-
-							ViewGroup.LayoutParams params_12 = textViewScroll
-									.getLayoutParams();
-
-							params_12.height = (int)(heightDiff);
-
-							textViewScroll.setLayoutParams(params_12);
-							textViewScroll.requestLayout();
-
-						} else {
-
-							ViewGroup.LayoutParams params = textViewScroll
-									.getLayoutParams();
-							params.height = 0;
-							textViewScroll.setLayoutParams(params);
-							textViewScroll.requestLayout();
-
-						}
-					}
-				});
 		
 		
 

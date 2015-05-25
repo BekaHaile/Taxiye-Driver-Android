@@ -12,6 +12,9 @@ public class UniqueIMEIID {
 			if(imei != null && !imei.isEmpty()){
 				return imei;
 			}
+            else{
+                return android.os.Build.SERIAL;
+            }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

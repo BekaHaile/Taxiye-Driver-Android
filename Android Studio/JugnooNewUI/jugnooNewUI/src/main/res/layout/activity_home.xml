@@ -152,12 +152,15 @@
                         android:id="@+id/initialMyLocationBtn"
                         android:layout_width="80px"
                         android:layout_height="80px"
-                        android:layout_marginTop="140px"
-                        android:layout_marginRight="20px"
+                        android:layout_above="@+id/relativeLayoutRequestInfo"
+                        android:layout_marginBottom="77px"
+                        android:layout_marginLeft="92px"
                         android:background="@drawable/mylocation_btn_selector"
                         android:tag="mwar"
-                        android:layout_alignParentRight="true"
                         />
+
+
+
 
 
                     <ImageView
@@ -169,6 +172,7 @@
                         android:layout_marginLeft="65px"
                         android:src="@drawable/time_icon_r_selector"
                         android:tag="mwar"
+                        android:visibility="gone"
                         />
 
 
@@ -192,6 +196,7 @@
                         android:layout_marginBottom="50px"
                         android:layout_marginRight="65px"
                         android:layout_above="@+id/relativeLayoutRequestInfo"
+
                         >
 
                         <ImageView
@@ -234,6 +239,19 @@
 
                     </RelativeLayout>
 
+
+
+                    <Button
+                        android:id="@+id/initialMyLocationBtnChangeLoc"
+                        android:layout_width="80px"
+                        android:layout_height="80px"
+                        android:layout_above="@+id/changeLocalityBtn"
+                        android:layout_marginBottom="40px"
+                        android:layout_marginLeft="50px"
+                        android:background="@drawable/mylocation_btn_selector"
+                        android:tag="mwar"
+                        android:visibility="gone"
+                        />
 
                     <Button
                         android:id="@+id/changeLocalityBtn"
@@ -286,10 +304,10 @@
                         android:id="@+id/assigningMyLocationBtn"
                         android:layout_width="80px"
                         android:layout_height="80px"
-                        android:layout_marginTop="140px"
-                        android:layout_marginRight="20px"
                         android:background="@drawable/mylocation_btn_selector"
-                        android:layout_alignParentRight="true"
+                        android:layout_above="@+id/relativeLayoutAssigningButtons"
+                        android:layout_marginBottom="40px"
+                        android:layout_marginLeft="50px"
                         android:tag="mwar"/>
 
                     <RelativeLayout
@@ -380,7 +398,9 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="96px"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible"
+
+                    >
 
                     <RelativeLayout
                         android:id="@+id/relativeLayoutInRideInfo"
@@ -418,9 +438,9 @@
                         android:id="@+id/customerInRideMyLocationBtn"
                         android:layout_width="80px"
                         android:layout_height="80px"
-                        android:layout_marginTop="140px"
-                        android:layout_marginRight="20px"
-                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="40px"
+                        android:layout_marginLeft="50px"
+                        android:layout_above="@+id/linearLayoutInRideDriverInfo"
                         android:background="@drawable/mylocation_btn_selector"
                         android:tag="mwar"/>
 
@@ -1596,7 +1616,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="35px"
                         android:layout_toRightOf="@+id/imageViewTransactions"
-                        android:text="Transactions"
+                        android:text="Ride History"
                         android:textColor="@drawable/text_color_grey_dark_white_selector"
                         android:textSize="30px"/>
 

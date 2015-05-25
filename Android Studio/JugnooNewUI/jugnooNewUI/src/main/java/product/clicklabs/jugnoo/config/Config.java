@@ -16,7 +16,9 @@ public class Config {
 
     // final variables
     private static final String SUPPORT_NUMBER = "+919023121121";
-    private static final String DEBUG_PASSWORD = "3131";
+    private static final String DEBUG_PASSWORD = "4343";
+
+
     private static final String CLIENT_ID = "EEBUOvQq7RRJBxJm";
     private static final String CLIENT_SHARED_SECRET = "nqaK7HTwDT3epcpR5JuMWwojFv0KJnIv";
     public static final String GOOGLE_PROJECT_ID = "506849624961";
@@ -29,9 +31,9 @@ public class Config {
 
     private static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
     private static final String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
-    private static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
-
+    private static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
+    private static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
 
 
 
@@ -75,18 +77,28 @@ public class Config {
 
                 break;
 
-            case TRIAL:
-
-                FLURRY_KEY = "abcd";
-                SERVER_URL = TRIAL_SERVER_URL;
-                Log.PRINT = false;
-
-                break;
 
             case LIVE:
 
                 FLURRY_KEY = STATIC_FLURRY_KEY;
                 SERVER_URL = LIVE_SERVER_URL;
+                Log.PRINT = false;
+
+                break;
+
+
+            case DEV_1:
+
+                FLURRY_KEY = "abcd";
+                SERVER_URL = DEV_1_SERVER_URL;
+                Log.PRINT = false;
+
+                break;
+
+            case DEV_2:
+
+                FLURRY_KEY = "abcd";
+                SERVER_URL = DEV_2_SERVER_URL;
                 Log.PRINT = false;
 
                 break;
@@ -124,6 +136,12 @@ public class Config {
         init(configMode);
         if(SERVER_URL.equalsIgnoreCase(LIVE_SERVER_URL)){
             return "LIVE";
+        }
+        else if(SERVER_URL.equalsIgnoreCase(DEV_1_SERVER_URL)){
+            return "DEV_1";
+        }
+        else if(SERVER_URL.equalsIgnoreCase(DEV_2_SERVER_URL)){
+            return "DEV_2";
         }
         else{
             return "DEV";
@@ -176,12 +194,16 @@ public class Config {
         return DEV_SERVER_URL;
     }
 
-    public static String getLiveServerUrl() {
-        return LIVE_SERVER_URL;
+    public static String getDev1ServerUrl() {
+        return DEV_1_SERVER_URL;
     }
 
-    public static String getTrialServerUrl() {
-        return TRIAL_SERVER_URL;
+    public static String getDev2ServerUrl() {
+        return DEV_2_SERVER_URL;
+    }
+
+    public static String getLiveServerUrl() {
+        return LIVE_SERVER_URL;
     }
 
     public static String getDefaultServerUrl() {

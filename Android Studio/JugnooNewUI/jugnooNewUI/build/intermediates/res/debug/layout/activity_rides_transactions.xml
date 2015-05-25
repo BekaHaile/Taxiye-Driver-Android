@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="TRANSACTIONS"
+                android:text="RIDE HISTORY"
                 android:textColor="@color/white"
                 android:textSize="30.6px" />
 
@@ -63,14 +63,35 @@
                 android:layout_centerInParent="true"
                 android:text="TextView"
                 android:textColor="@color/black_text"
-                android:textSize="30px" />
+                android:textSize="34px"
+                android:visibility="gone"
+                />
 
             <ProgressBar
                 android:id="@+id/progressBarList"
                 android:layout_width="100px"
                 android:layout_height="100px"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                />
+
+
+            <Button
+                android:id="@+id/buttonGetRide"
+                android:layout_width="648px"
+                android:layout_height="100px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="70px"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/button_yellow_selector"
+                android:text="GET A RIDE"
+                android:textColor="@drawable/text_color_white_alpha_selector"
+                android:textSize="@dimen/button_text_size"
+                android:visibility="gone"
+                />
+
+
         </RelativeLayout>
     </LinearLayout>
 
-</RelativeLayout><!-- From: file:/Users/shankar/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_rides_transactions.xml -->
+</RelativeLayout><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/layout/activity_rides_transactions.xml -->
