@@ -50,8 +50,8 @@ public class SplashLogin extends Activity implements LocationUpdate{
 
 	LinearLayout relative;
 	
-	boolean loginDataFetched = false, sendToOtpScreen = false;
-	String phoneNoOfLoginAccount = "";
+	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
+	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
 	
 
 
@@ -127,34 +127,31 @@ public class SplashLogin extends Activity implements LocationUpdate{
 		
 		
 		signInBtn.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				String email = emailEt.getText().toString().trim();
-				String password = passwordEt.getText().toString().trim();
-				if("".equalsIgnoreCase(email)){
-					emailEt.requestFocus();
-					emailEt.setError("Please enter email");
-				}
-				else{
-					if("".equalsIgnoreCase(password)){
-						passwordEt.requestFocus();
-						passwordEt.setError("Please enter password");
-					}
-					else{
-						if(isEmailValid(email)){
-							enteredEmail = email;
-							sendLoginValues(SplashLogin.this, email, password);
-							FlurryEventLogger.emailLoginClicked(email);
-						}
-						else{
-							emailEt.requestFocus();
-							emailEt.setError("Please enter valid email");
-						}
-					}
-				}
-			}
-		});
+
+            @Override
+            public void onClick(View v) {
+                String email = emailEt.getText().toString().trim();
+                String password = passwordEt.getText().toString().trim();
+                if ("".equalsIgnoreCase(email)) {
+                    emailEt.requestFocus();
+                    emailEt.setError("Please enter email");
+                } else {
+                    if ("".equalsIgnoreCase(password)) {
+                        passwordEt.requestFocus();
+                        passwordEt.setError("Please enter password");
+                    } else {
+                        if (isEmailValid(email)) {
+                            enteredEmail = email;
+                            sendLoginValues(SplashLogin.this, email, password);
+                            FlurryEventLogger.emailLoginClicked(email);
+                        } else {
+                            emailEt.requestFocus();
+                            emailEt.setError("Please enter valid email");
+                        }
+                    }
+                }
+            }
+        });
 		
 		
 		
@@ -182,22 +179,22 @@ public class SplashLogin extends Activity implements LocationUpdate{
 		
 		passwordEt.setOnEditorActionListener(new OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				int result = actionId & EditorInfo.IME_MASK_ACTION;
-				switch (result) {
-					case EditorInfo.IME_ACTION_DONE:
-						signInBtn.performClick();
-					break;
+            @Override
+            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+                int result = actionId & EditorInfo.IME_MASK_ACTION;
+                switch (result) {
+                    case EditorInfo.IME_ACTION_DONE:
+                        signInBtn.performClick();
+                        break;
 
-					case EditorInfo.IME_ACTION_NEXT:
-					break;
+                    case EditorInfo.IME_ACTION_NEXT:
+                        break;
 
-					default:
-				}
-				return true;
-			}
-		});
+                    default:
+                }
+                return true;
+            }
+        });
 		
 		
 
@@ -231,13 +228,38 @@ public class SplashLogin extends Activity implements LocationUpdate{
 		
 		
 		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-			
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				Data.deviceToken = regId;
-				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-			}
-		});
+
+            @Override
+            public void deviceTokenReceived(final String regId) {
+                Data.deviceToken = regId;
+                Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+            }
+        });
+
+        try {
+            if (getIntent().hasExtra("previous_login_email")) {
+                String previousLoginEmail = getIntent().getStringExtra("previous_login_email");
+                emailEt.setText(previousLoginEmail);
+                emailEt.setSelection(emailEt.getText().length());
+                fromPreviousAccounts = true;
+            }
+            else{
+                fromPreviousAccounts = false;
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+            fromPreviousAccounts = false;
+        }
+
+        try {
+            if (getIntent().hasExtra("forgot_login_email")) {
+                String forgotLoginEmail = getIntent().getStringExtra("forgot_login_email");
+                emailEt.setText(forgotLoginEmail);
+                emailEt.setSelection(emailEt.getText().length());
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
 		
 		
 	}
@@ -291,23 +313,33 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 	
 	public void performBackPressed(){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try{
-					if(Session.getActiveSession() != null){
-						Session.getActiveSession().closeAndClearTokenInformation();
-					}
-				} catch(Exception e){
-					e.printStackTrace();
-				}
-			}
-		}).start();
-		Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
-		intent.putExtra("no_anim", "yes");
-		startActivity(intent);
-		finish();
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (Session.getActiveSession() != null) {
+                        Session.getActiveSession().closeAndClearTokenInformation();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        if(fromPreviousAccounts){
+            Intent intent = new Intent(SplashLogin.this, MultipleAccountsActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        }
+        else {
+
+            Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
+            intent.putExtra("no_anim", "yes");
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        }
 	}
 
 	
@@ -375,38 +407,53 @@ public class SplashLogin extends Activity implements LocationUpdate{
 							Log.i("Server response", "response = " + response);
 							try {
 								jObj = new JSONObject(response);
-								boolean newUpdate = SplashNewActivity.checkIfUpdate(jObj, activity);
-								if(!newUpdate){
-									int flag = jObj.getInt("flag");
-									if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
-										HomeActivity.logoutUser(activity);
-									}
-									else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
-										String errorMessage = jObj.getString("error");
-										DialogPopup.alertPopup(activity, "", errorMessage);
-									}
-									else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
-										String message = jObj.getString("message");
-										DialogPopup.alertPopup(activity, "", message);
-									}
-									else if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
-										String errorMessage = jObj.getString("error");
-										DialogPopup.alertPopup(activity, "", errorMessage);
-									}
-									else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
-										String errorMessage = jObj.getString("error");
-										SplashNewActivity.sendToCustomerAppPopup("Alert", errorMessage, activity);
-									}
-									else if(ApiResponseFlags.LOGIN_SUCCESSFUL.getOrdinal() == flag){
-										new JSONParser().parseLoginData(activity, response);
-										Database.getInstance(SplashLogin.this).insertEmail(emailId);
-										Database.getInstance(SplashLogin.this).close();
-										loginDataFetched = true;
-									}
-									else{
-										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-									}
-								}
+
+                                int flag = jObj.getInt("flag");
+                                String message = JSONParser.getServerMessage(jObj);
+                                if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+                                    if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
+                                        DialogPopup.alertPopup(activity, "", message);
+                                    }
+                                    else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+                                        SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+                                    }
+                                    else if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+                                        DialogPopup.alertPopup(activity, "", message);
+                                    }
+                                    else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+                                        DialogPopup.alertPopup(activity, "", message);
+                                    }
+                                    else if(ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag){
+                                        enteredEmail = emailId;
+                                        phoneNoOfLoginAccount = jObj.getString("phone_no");
+                                        accessToken = jObj.getString("access_token");
+                                        otpErrorMsg = jObj.getString("error");
+                                        sendToOtpScreen = true;
+                                    }
+                                    else if(ApiResponseFlags.LOGIN_SUCCESSFUL.getOrdinal() == flag){
+                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+                                            new JSONParser().parseLoginData(activity, response);
+                                            Database.getInstance(SplashLogin.this).insertEmail(emailId);
+                                            Database.getInstance(SplashLogin.this).close();
+                                            loginDataFetched = true;
+                                        }
+                                    }
+                                    else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+                                            new JSONParser().parseLoginData(activity, response);
+                                            Database.getInstance(SplashLogin.this).insertEmail(emailId);
+                                            Database.getInstance(SplashLogin.this).close();
+                                            loginDataFetched = true;
+                                        }
+                                    }
+                                    else{
+                                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                    }
+                                    DialogPopup.dismissLoadingDialog();
+                                }
+                                else{
+                                    DialogPopup.dismissLoadingDialog();
+                                }
 							}  catch (Exception exception) {
 								exception.printStackTrace();
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -424,11 +471,17 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 
 	public void sendIntentToOtpScreen() {
-        OTPConfirmScreen.intentFromRegister = false;
-        OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "");
-        startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
-        finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+        DialogPopup.alertPopupWithListener(SplashLogin.this, "", otpErrorMsg, new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                OTPConfirmScreen.intentFromRegister = false;
+                OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
+                startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
+                finish();
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
     }
 
 

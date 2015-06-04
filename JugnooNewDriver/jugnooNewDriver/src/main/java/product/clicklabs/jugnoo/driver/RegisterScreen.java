@@ -1,11 +1,9 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,6 +20,10 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -41,12 +43,14 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 	LinearLayout relative;
 	
-	String name = "", emailId = "", phoneNo = "", password = "";
+	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "";
 	
-	boolean loginDataFetched = false, sendToOtpScreen = false;
+	boolean sendToOtpScreen = false;
+
+    public static JSONObject multipleCaseJSON;
+
 
 	public void resetFlags(){
-		loginDataFetched = false;
 		sendToOtpScreen = false;
 	}
 	
@@ -70,9 +74,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
-		
-		loginDataFetched = false;
-		
+
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
@@ -275,6 +277,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 				passwordEt.setText(OTPConfirmScreen.emailRegisterData.password);
 				confirmPasswordEt.setText(OTPConfirmScreen.emailRegisterData.password);
 			}
+            nameEt.setSelection(nameEt.getText().length());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -308,30 +311,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	}
 	
 
-	
-	
-	String GetCountryZipCode() {
 
-		String CountryID = "";
-		String CountryZipCode = "";
-
-		TelephonyManager manager = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
-		// getNetworkCountryIso
-		CountryID = manager.getSimCountryIso().toUpperCase();
-		Log.e("CountryID", "=" + CountryID);
-		String[] rl = this.getResources().getStringArray(R.array.CountryCodes);
-		for (int i = 0; i < rl.length; i++) {
-			String[] g = rl[i].split(",");
-			if (g[1].trim().equals(CountryID.trim())) {
-				CountryZipCode = g[0];
-				return CountryZipCode;
-			}
-		}
-		return "";
-	}
-	
-	
-	
 	@Override
 	protected void onResume() {
 		super.onResume();
@@ -381,42 +361,33 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
 
-		
-			params.put("user_name", name);
-			params.put("ph_no", phoneNo);
-			params.put("email", emailId);
-			params.put("password", password);
-			params.put("otp", "");
-			params.put("device_type", Data.DEVICE_TYPE);
-			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put("device_token", Data.deviceToken);
-			params.put("latitude", ""+Data.latitude);
-			params.put("longitude", ""+Data.longitude);
-			params.put("country", Data.country);
-			params.put("device_name", Data.deviceName);
-			params.put("app_version", Data.appVersion);
-			params.put("os_version", Data.osVersion);
-			params.put("referral_code", "");
+
+            params.put("user_name", name);
+            params.put("phone_no", phoneNo);
+            params.put("email", emailId);
+            params.put("password", password);
+            params.put("latitude", "" + Data.latitude);
+            params.put("longitude", "" + Data.longitude);
+
+            params.put("device_type", Data.DEVICE_TYPE);
+            params.put("device_name", Data.deviceName);
+            params.put("app_version", "" + Data.appVersion);
+            params.put("os_version", Data.osVersion);
+            params.put("country", Data.country);
+
+            params.put("client_id", Data.CLIENT_ID);
+            params.put("referral_code", "");
+
+            params.put("device_token", Data.deviceToken);
+            params.put("unique_device_id", Data.uniqueDeviceId);
+
+            Log.i("register_using_email params", params.toString());
 
 
-			Log.i("user_name", "=" + name);
-			Log.i("ph_no", "=" + phoneNo);
-			Log.i("email", "=" + emailId);
-			Log.i("password", "=" + password);
-			Log.i("otp", "=" + "");
-			Log.i("device_token", "=" + Data.deviceToken);
-			Log.i("latitude", "=" + Data.latitude);
-			Log.i("longitude", "=" + Data.longitude);
-			Log.i("country", "=" + Data.country);
-			Log.i("device_name", "=" + Data.deviceName);
-			Log.i("app_version", "=" + Data.appVersion);
-			Log.i("os_version", "=" + Data.osVersion);
-			Log.i("unique_device_id", "=" + Data.uniqueDeviceId);
-			
-			
+
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/customer_registeration", params,
+			client.post(Data.SERVER_URL + "/register_using_email", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -433,46 +404,39 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	
 							try {
 								jObj = new JSONObject(response);
-								
 
-								boolean newUpdate = SplashNewActivity.checkIfUpdate(jObj, activity);
-								
-								if(!newUpdate){
-								
-								if(!jObj.isNull("error")){
-									int flag = jObj.getInt("flag");	
-									String errorMessage = jObj.getString("error");
-									
-									if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-										HomeActivity.logoutUser(activity);
-									}
-									else if(0 == flag){ // {"error": 'Please enter otp',"flag":0} //error
-										RegisterScreen.this.name = name;
-										RegisterScreen.this.emailId = emailId;
-										RegisterScreen.this.phoneNo = jObj.getString("phone_no");;
-										RegisterScreen.this.password = password;
-										sendToOtpScreen = true;
-									}
-									else{
-										DialogPopup.alertPopup(activity, "", errorMessage);
-									}
-									DialogPopup.dismissLoadingDialog();
-								}
-								else{
-									new JSONParser().parseLoginData(activity, response);
-									
-									Database.getInstance(RegisterScreen.this).insertEmail(emailId);
-									Database.getInstance(RegisterScreen.this).close();
-									
-									loginDataFetched = true;
-									
-									DialogPopup.dismissLoadingDialog();
-									
-								}
-								}
-								else{
-									DialogPopup.dismissLoadingDialog();
-								}
+                                if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+                                    int flag = jObj.getInt("flag");
+                                    String message = JSONParser.getServerMessage(jObj);
+
+                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+                                        if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
+                                            DialogPopup.alertPopup(activity, "", message);
+                                        } else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
+                                            DialogPopup.alertPopup(activity, "", message);
+                                        } else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
+                                            RegisterScreen.this.name = name;
+                                            RegisterScreen.this.emailId = emailId;
+                                            RegisterScreen.this.phoneNo = jObj.getString("phone_no");
+                                            RegisterScreen.this.password = password;
+                                            RegisterScreen.this.accessToken = jObj.getString("access_token");
+                                            sendToOtpScreen = true;
+                                        } else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
+                                            RegisterScreen.this.name = name;
+                                            RegisterScreen.this.emailId = emailId;
+                                            RegisterScreen.this.phoneNo = phoneNo;
+                                            RegisterScreen.this.password = password;
+                                            RegisterScreen.this.accessToken = "";
+                                            parseDataSendToMultipleAccountsScreen(activity, jObj);
+                                        } else {
+                                            DialogPopup.alertPopup(activity, "", message);
+                                        }
+                                        DialogPopup.dismissLoadingDialog();
+                                    }
+                                } else {
+                                    DialogPopup.dismissLoadingDialog();
+                                }
 							}  catch (Exception exception) {
 								exception.printStackTrace();
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -493,25 +457,32 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	
 	public void sendIntentToOtpScreen() {
 		OTPConfirmScreen.intentFromRegister = true;
-		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password);
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
 		startActivity(new Intent(RegisterScreen.this, OTPConfirmScreen.class));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
-	
+
+
+    public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
+        OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
+        RegisterScreen.multipleCaseJSON = jObj;
+        if (Data.previousAccountInfoList == null) {
+            Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+        }
+        Data.previousAccountInfoList.clear();
+        Data.previousAccountInfoList.addAll(JSONParser.parsePreviousAccounts(jObj));
+        startActivity(new Intent(activity, MultipleAccountsActivity.class));
+        finish();
+        overridePendingTransition(R.anim.right_in, R.anim.right_out);
+    }
 	
 	
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
 		
-		if(hasFocus && loginDataFetched){
-			loginDataFetched = false;
-			startActivity(new Intent(RegisterScreen.this, HomeActivity.class));
-			overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			finish();
-		}
-		else if(hasFocus && sendToOtpScreen){
+		if(hasFocus && sendToOtpScreen){
 			sendIntentToOtpScreen();
 		}
 		
