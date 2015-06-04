@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_white_selector"
+    android:splitMotionEvents="false"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:splitMotionEvents="false">
+
+        <RelativeLayout
+            android:id="@+id/dateTimeRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:gravity="center_vertical"
+            android:splitMotionEvents="false">
+
+            <ImageView
+                android:id="@+id/imageViewTime"
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:src="@drawable/time"
+                android:tag="mwar"/>
+
+            <TextView
+                android:id="@+id/dateTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5px"
+                android:layout_toRightOf="@+id/imageViewTime"
+                android:singleLine="true"
+                android:text="23 June, 2014 18:88 AM"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"
+                />
+
+            <ImageView
+                android:id="@+id/couponImg"
+                android:layout_width="72px"
+                android:layout_height="47px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20px"
+                android:layout_toRightOf="@+id/dateTimeValue"
+                android:src="@drawable/free_ride_icon"
+                android:tag="mwar"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/jugnooCashImg"
+                android:layout_width="72px"
+                android:layout_height="47px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="120px"
+                android:layout_toRightOf="@+id/dateTimeValue"
+                android:src="@drawable/jugnoo_cash_icon"
+                android:tag="mwar"
+                android:visibility="visible"/>
+
+            <ImageView
+                android:id="@+id/imageViewRequestType"
+                android:layout_width="68px"
+                android:layout_height="68px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20px"
+                android:src="@drawable/request_autos"
+                android:tag="mwar"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewRideId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Ride ID: 1111"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"/>
+
+        <TextView
+            android:id="@+id/textViewBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Bal. from Jugnoo: Rs. 0"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="36px"/>
+
+        <TextView
+            android:id="@+id/textViewFare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Fare: Rs. 0"
+            android:textColor="@color/blue_btn"
+            android:textSize="30px"/>
+
+        <TextView
+            android:id="@+id/textViewJugnooSubsidy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Jugnoo Subsidy: Rs. 0"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"/>
+
+        <TextView
+            android:id="@+id/textViewCustomerPaid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Paid by Customer: Rs. 0"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"/>
+
+
+        <TextView
+            android:id="@+id/textViewPaidToMerchant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Paid to Merchant: Rs. 0"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"/>
+
+        <TextView
+            android:id="@+id/textViewPaidByCustomer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="10px"
+            android:singleLine="true"
+            android:text="Paid by Customer: Rs. 0"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"/>
+
+
+
+
+        <LinearLayout
+            android:id="@+id/distTimeRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:splitMotionEvents="false">
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_marginLeft="10px"
+                android:src="@drawable/location"
+                android:tag="mwar"/>
+
+            <TextView
+                android:id="@+id/distanceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5px"
+                android:singleLine="true"
+                android:text="5.6 Km"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:layout_marginLeft="30px"
+                android:src="@drawable/time"
+                android:tag="mwar"/>
+
+            <TextView
+                android:id="@+id/rideTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5px"
+                android:singleLine="true"
+                android:text="10 min"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"/>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="10px"
+            android:layout_marginTop="10px"
+            android:background="@drawable/shadow_up"/>
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="40px"
+        android:layout_height="38px"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20px"
+        android:src="@drawable/arrow_selector"
+        android:tag="mwar"
+        />
+
+
+</RelativeLayout>

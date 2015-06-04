@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/transparent"
+            android:text="Back"
+            android:textColor="@drawable/blue_alpha_color_selector"
+            android:textSize="@dimen/button_text_size" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="REGISTER"
+            android:textColor="@color/blue_btn"
+            android:textSize="@dimen/button_text_size" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:splitMotionEvents="false" >
+
+        <LinearLayout
+            android:id="@+id/mainLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+
+            <Button
+                android:id="@+id/registerWithFacebookBtn"
+                android:layout_width="648px"
+                android:layout_height="99px"
+                android:layout_marginTop="20px"
+                android:background="@drawable/blue_dark_btn_selector"
+                android:text="REGISTER WITH FACEBOOK"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/orDivRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:splitMotionEvents="false"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:layout_width="248px"
+                    android:layout_height="3px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="36px"
+                    android:background="@drawable/divider_small" />
+
+                <TextView
+                    android:id="@+id/orText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50px"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:text="@string/or"
+                    android:textColor="@color/white"
+                    android:textSize="30px" />
+
+                <ImageView
+                    android:layout_width="248px"
+                    android:layout_height="3px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="36px"
+                    android:background="@drawable/divider_small" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/etLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20px"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <EditText
+                    android:id="@+id/nameEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:capitalize="words"
+                    android:hint="Name"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/emailIdEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="5px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/phoneNoEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="5px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
+                    android:maxLength="14"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/passwordEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="5px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/confirmPasswordEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="5px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+
+                <EditText
+                    android:id="@+id/autoNumberEt"
+                    android:layout_width="650px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="5px"
+                    android:background="@drawable/white_bg_rounded"
+                    android:capitalize="words"
+                    android:hint="Auto Number"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/signUpBtn"
+                android:layout_width="648px"
+                android:layout_height="99px"
+                android:layout_marginTop="45px"
+                android:background="@drawable/blue_btn_selector"
+                android:text="REGISTER"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size" />
+
+            <TextView
+                android:id="@+id/extraTextForScroll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20px"
+                android:text="      "
+                android:textColor="@color/white"
+                android:textSize="10px" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

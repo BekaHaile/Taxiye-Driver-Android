@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:color="@color/white" android:state_pressed="true"/>
-    <item android:color="@color/grey_dark_more"/>
-
-</selector><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/text_color_grey_dark_white_selector.xml -->

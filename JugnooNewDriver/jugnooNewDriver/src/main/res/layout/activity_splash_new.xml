@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical"
+        android:splitMotionEvents="false" >
+    
+    
+    <RelativeLayout 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:splitMotionEvents="false"
+        >
+    
+    <ImageView 
+        android:id="@+id/jugnooImg"
+        android:layout_width="288px"
+        android:layout_height="288px"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/jugnoo_img"
+        android:tag="mwar"
+        android:layout_marginTop="-288px"
+        
+        />
+    
+   <!--  android:layout_marginTop="150px" -->
+    
+    <RelativeLayout 
+        android:id="@+id/jugnooTextImgRl"
+        android:layout_width="420px"
+        android:layout_height="136px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="450px"
+        android:tag="mwar"
+        >
+    
+        
+        
+    <ImageView 
+        android:id="@+id/jugnooTextImg"
+        android:layout_width="420px"
+        android:layout_height="136px"
+        android:src="@drawable/jugnoo_text"
+        android:tag="mwar"
+        
+        />
+    
+    
+    <ImageView 
+        android:id="@+id/jugnooTextImg2"
+        android:layout_width="100px"
+        android:layout_height="match_parent"
+        android:src="@drawable/transparent"
+        
+        />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="620px"
+         />
+    
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="117px"
+        android:layout_alignParentBottom="true"
+        >
+        
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="288px"
+            android:layout_height="96px"
+            android:background="@drawable/grey_btn_selector"
+            android:text="LOGIN"
+            android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"  />
+        
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="288px"
+            android:layout_height="96px"
+            android:background="@drawable/blue_btn_selector"
+            android:text="REGISTER"
+            android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"
+                        android:layout_marginLeft="57px" 
+                        android:visibility="gone" 
+                        />
+        
+        
+    </LinearLayout>
+    
+    
+</RelativeLayout>
+</LinearLayout>

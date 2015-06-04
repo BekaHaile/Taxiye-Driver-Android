@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/bg_grey_opaque"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Share"
+            android:textColor="@color/white"
+            android:textSize="48px" />
+    </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+                
+                <RelativeLayout 
+                    android:id="@+id/shareImgRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="740px"
+                    >
+                
+                    <ImageView 
+        android:id="@+id/jugnooImg"
+        android:layout_width="288px"
+        android:layout_height="288px"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/jugnoo_img"
+        android:tag="mwar"
+        android:layout_marginTop="60px"
+        
+        />
+                    
+                    <ImageView 
+        android:id="@+id/jugnooTextImg"
+        android:layout_width="420px"
+        android:layout_height="136px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10px"
+        android:src="@drawable/jugnoo_text"
+        android:tag="mwar"
+        android:layout_below="@+id/jugnooImg"
+        
+        />
+                    
+                    
+                    <TextView
+                        android:id="@+id/textViewReferralCodeDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/linearLayoutShareBtns"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginBottom="30px"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:text="Your Referral Code is 12345678"
+                        android:textColor="@color/white"
+                        android:textSize="36px"
+                        />
+                    
+                    
+                
+                <LinearLayout 
+                    android:id="@+id/linearLayoutShareBtns"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="30px"
+                    android:layout_centerHorizontal="true"
+                    android:splitMotionEvents="false"
+                    
+                    >
+                    
+                    <ImageView 
+                        android:id="@+id/shareFacebookImg"
+                    android:layout_width="88px"
+                    android:layout_height="88px"
+                    android:src="@drawable/share_fb_selector"
+                    android:tag="mwar"
+                        />
+                    
+                    
+                    <ImageView 
+                        android:id="@+id/shareWhatsappImg"
+                    android:layout_width="88px"
+                    android:layout_height="88px"
+                    android:src="@drawable/share_whatsapp_selector"
+                    android:tag="mwar"
+                    android:layout_marginLeft="80px"
+                        />
+                    
+                    <ImageView 
+                        android:id="@+id/shareSMSImg"
+                    android:layout_width="88px"
+                    android:layout_height="88px"
+                    android:src="@drawable/share_sms_selector"
+                    android:tag="mwar"
+                    android:layout_marginLeft="80px"
+                        />
+                    
+                    <ImageView 
+                        android:id="@+id/shareEMailImg"
+                    android:layout_width="80px"
+                    android:layout_height="80px"
+                    android:src="@drawable/share_mail_selector"
+                    android:tag="mwar"
+                    android:layout_marginLeft="80px"
+                        />
+                    
+                </LinearLayout>
+                
+                </RelativeLayout>
+                
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@color/white"
+                    >
+                
+                <TextView
+                        android:id="@+id/textViewShareReferral"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewReferUs"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginTop="30px"
+                        android:gravity="center"
+                        android:text="Share your referral code 12345678"
+                        android:textColor="@color/black"
+                        android:textSize="36px"
+                        />
+                
+                </LinearLayout>
+                
+                
+            </LinearLayout>
+
+</LinearLayout>

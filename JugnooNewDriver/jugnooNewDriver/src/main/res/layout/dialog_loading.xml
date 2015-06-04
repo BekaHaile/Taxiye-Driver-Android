@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/transparent"
+        android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:splitMotionEvents="false"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rlt"
+            android:layout_width="240px"
+            android:layout_height="240px"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/loading_corner"
+        android:splitMotionEvents="false" 
+        android:tag="mwar"
+        >
+
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                >
+            
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:text="Creating Game ... "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:textSize="26px"
+                android:textStyle="bold" 
+                android:layout_gravity="center_horizontal"
+                />
+
+            <ProgressBar
+                android:id="@+id/progressBar1"
+                android:layout_width="86px"
+                android:layout_height="86px"
+                android:layout_marginTop="15px"
+                android:layout_gravity="center_horizontal"
+                />
+            </LinearLayout>
+            
+            
+        </RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>

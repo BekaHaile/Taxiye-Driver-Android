@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="30px"
+    android:splitMotionEvents="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_bg_bordered_selector"
+        android:padding="30px"
+        android:splitMotionEvents="false"
+
+        >
+
+        <TextView
+            android:id="@+id/textViewRequestAddress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Sector 28, Chandigarh"
+            android:textColor="@color/black"
+            android:textSize="30px"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewRequestAddress"
+            android:layout_marginTop="10px"
+            android:orientation="vertical"
+            android:paddingRight="60px"
+            android:splitMotionEvents="false"
+
+            >
+
+            <TextView
+                android:id="@+id/textViewRequestDistance"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="10 km away"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewRequestTime"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:singleLine="true"
+                android:text="30 sec ago"
+                android:textColor="@color/black_translucent"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewOtherRequestDetails"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+
+            <Button
+                android:id="@+id/buttonAcceptRide"
+                android:layout_width="300px"
+                android:layout_height="69px"
+                android:background="@drawable/blue_btn_selector"
+                android:layout_marginTop="10px"
+                android:text="ACCEPT"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                />
+
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/imageViewRequestType"
+            android:layout_width="68px"
+            android:layout_height="68px"
+            android:layout_above="@+id/textViewRequestNumber"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="0px"
+            android:src="@drawable/request_autos"
+            android:tag="mwar"
+            />
+
+
+        <TextView
+            android:id="@+id/textViewRequestNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/linearLayoutDist"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10px"
+            android:text="1"
+            android:textColor="@color/black_translucent_level_2"
+            android:textSize="40px"
+            />
+
+    </RelativeLayout>
+
+</RelativeLayout>

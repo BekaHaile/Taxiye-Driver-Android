@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/back_btn_off" android:state_focused="false" android:state_pressed="true"/>
-    <item android:drawable="@drawable/back_btn_on"/>
-
-</selector><!-- From: file:/Users/socomo20/Documents/android_studio_workspace/JugnooNewUI/jugnooNewUI/src/main/res/drawable/back_inv_btn_selector.xml -->
