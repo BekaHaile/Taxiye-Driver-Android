@@ -52,15 +52,13 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
-	
 
 
-	
+
 	
 	String enteredEmail = "";
 	
-	String jugnooPhoneNumber = "+919023121121";
-	
+
 	public void resetFlags(){
 		loginDataFetched = false;
 		sendToOtpScreen = false;
@@ -160,8 +158,10 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onClick(View v) {
-				ForgotPasswordScreen.emailAlready = emailEt.getText().toString();
-				startActivity(new Intent(SplashLogin.this, ForgotPasswordScreen.class));
+                Intent intent = new Intent(SplashLogin.this, ForgotPasswordScreen.class);
+                intent.putExtra("forgotEmail", emailEt.getText().toString());
+                intent.putExtra("fromPreviousAccounts", fromPreviousAccounts);
+                startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				finish();
 			}
@@ -260,9 +260,9 @@ public class SplashLogin extends Activity implements LocationUpdate{
         } catch(Exception e){
             e.printStackTrace();
         }
-		
-		
-	}
+
+
+    }
 	
 	
 	@Override

@@ -40,9 +40,10 @@ public class ForgotPasswordScreen extends Activity{
 	TextView extraTextForScroll, forgotPasswordHelpText;
 	
 	LinearLayout relative;
-	
-	static String emailAlready = "";
-	
+
+	String emailAlready = "";
+    boolean fromPreviousAccounts = false;
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -83,9 +84,7 @@ public class ForgotPasswordScreen extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(ForgotPasswordScreen.this, SplashLogin.class));
-				overridePendingTransition(R.anim.left_in, R.anim.left_out);
-				finish();
+                performBackPressed();
 			}
 		});
 		
@@ -144,7 +143,24 @@ public class ForgotPasswordScreen extends Activity{
 				return true;
 			}
 		});
-		
+
+
+        try {
+            if(getIntent().hasExtra("forgotEmail")){
+                emailAlready = getIntent().getStringExtra("forgotEmail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(getIntent().hasExtra("fromPreviousAccounts")){
+                fromPreviousAccounts = getIntent().getBooleanExtra("fromPreviousAccounts", false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 		emailEt.setText(emailAlready);
 		emailEt.setSelection(emailEt.getText().toString().length());
 		
@@ -243,11 +259,7 @@ public class ForgotPasswordScreen extends Activity{
 
 										@Override
 										public void onClick(View v) {
-											Intent intent = new Intent(ForgotPasswordScreen.this, SplashLogin.class);
-											intent.putExtra("forgot_login_email", email);
-											startActivity(intent);
-											overridePendingTransition(R.anim.left_in, R.anim.left_out);
-											finish();
+                                            performBackPressed();
 										}
 									});
 								}
@@ -285,12 +297,22 @@ public class ForgotPasswordScreen extends Activity{
 	
 	@Override
 	public void onBackPressed() {
-		startActivity(new Intent(ForgotPasswordScreen.this, SplashLogin.class));
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		finish();
-		super.onBackPressed();
+        performBackPressed();
 	}
-	
+
+
+    public void performBackPressed(){
+        Intent intent = new Intent(ForgotPasswordScreen.this, SplashLogin.class);
+        if(fromPreviousAccounts){
+            intent.putExtra("previous_login_email", emailEt.getText().toString().trim());
+        }
+        else{
+            intent.putExtra("forgot_login_email", emailEt.getText().toString().trim());
+        }
+        startActivity(intent);
+        overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        finish();
+    }
 	
 	
 	@Override

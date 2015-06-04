@@ -943,6 +943,20 @@ public class JSONParser {
 //            ]
 //        }
 
+//        {
+//            "flag": 400,
+//            "users": [
+//            {
+//                "user_id": 145,
+//                "user_name": "Shankar16",
+//                "user_email": "shankar+16@jugnoo.in",
+//                "phone_no": "+919780111116",
+//                "date_registered": "2015-01-26T13:55:58.000Z",
+//                "allow_dup_regis": 0
+//            }
+//            ]
+//        }
+
         try{
 
             JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
