@@ -156,11 +156,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 //	    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 		
 		setContentView(R.layout.activity_splash_new);
-		
-		if(Data.locationFetcher == null){
-			Data.locationFetcher = new LocationFetcher(SplashNewActivity.this, 1000, 1);
-		}
-		
+
+		Data.locationFetcher = null;
+
+
 		loginDataFetched = false;
 		loginFailed = false;
 		
@@ -200,7 +199,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onClick(View v) {
-				RegisterScreen.facebookLogin = false;
 				startActivity(new Intent(SplashNewActivity.this, RegisterScreen.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -289,7 +287,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 				}
 			}
 		});
-		
+
+
+        buttonRegister.setVisibility(View.VISIBLE);
 		
 	}
 	

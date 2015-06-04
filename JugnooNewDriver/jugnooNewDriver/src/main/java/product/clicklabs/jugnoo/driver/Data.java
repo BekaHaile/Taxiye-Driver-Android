@@ -22,6 +22,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
+import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MySSLSocketFactory;
@@ -123,16 +124,17 @@ public class Data {
 	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	public static String SERVER_URL = DEFAULT_SERVER_URL;
+
+
+
+
+
+	public static final String CLIENT_ID = "EEBUOvQq7RRJBxJm";
+	public static final String CLIENT_SHARED_SECRET = "nqaK7HTwDT3epcpR5JuMWwojFv0KJnIv";
+
 	
 	
 	
@@ -198,6 +200,8 @@ public class Data {
 	public static FareStructure fareStructure;
 
 	public static EndRideData endRideData;
+
+    public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
 	
 	
 	
@@ -245,7 +249,7 @@ public class Data {
 	
 	
 	
-	private static Typeface latoRegular, museoSlab;																// fonts declaration
+	private static Typeface latoRegular, museoSlab, latoLight;																// fonts declaration
 	
 
 	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
@@ -262,13 +266,21 @@ public class Data {
 		}
 		return museoSlab;
 	}
-	
-	
-	
-	
-	
-	
-	public static AsyncHttpClient mainClient;
+
+    public static Typeface latoLight(Context appContext) {											// accessing fonts functions
+        if (latoLight == null) {
+            latoLight = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato_light.ttf");
+        }
+        return latoLight;
+    }
+
+
+
+
+
+
+
+    public static AsyncHttpClient mainClient;
 	
 	public static final int SOCKET_TIMEOUT = 30000;
 	public static final int CONNECTION_TIMEOUT = 30000;

@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
+import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -42,7 +43,26 @@ public class JSONParser {
 	public JSONParser(){
 		
 	}
-	
+
+	public static String getServerMessage(JSONObject jObj){
+		String message = Data.SERVER_ERROR_MSG;
+		try{
+            if(jObj.has("message")){
+                message = jObj.getString("message");
+            }
+            else if(jObj.has("log")){
+				message = jObj.getString("log");
+			}
+			else if(jObj.has("error")){
+				message = jObj.getString("error");
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+
 	public void parseLoginData(Context context, String response) throws Exception{
 		JSONObject jObj = new JSONObject(response);
 		JSONObject userData = jObj.getJSONObject("user_data");
@@ -151,7 +171,7 @@ public class JSONParser {
 					couponObject.getDouble("capped_fare_maximum"));
 			return couponInfo;
 		} catch(Exception e){
-			Log.w("couponInfo", "e="+e.toString());
+			Log.w("couponInfo", "e=" + e.toString());
 			return null;
 		}
 	}
@@ -902,6 +922,61 @@ public class JSONParser {
 					PaymentMode.CASH.getOrdinal());
 		}
 	}
+
+
+
+
+
+    public static ArrayList<PreviousAccountInfo> parsePreviousAccounts(JSONObject jsonObject){
+        ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+
+//        {
+//            "flag": 400,
+//            "users": [
+//            {
+//                "user_id": 145,
+//                "user_name": "Shankar16",
+//                "user_email": "shankar+16@jugnoo.in",
+//                "phone_no": "+919780111116",
+//                "date_registered": "2015-01-26T13:55:58.000Z"
+//            }
+//            ]
+//        }
+
+//        {
+//            "flag": 400,
+//            "users": [
+//            {
+//                "user_id": 145,
+//                "user_name": "Shankar16",
+//                "user_email": "shankar+16@jugnoo.in",
+//                "phone_no": "+919780111116",
+//                "date_registered": "2015-01-26T13:55:58.000Z",
+//                "allow_dup_regis": 0
+//            }
+//            ]
+//        }
+
+        try{
+
+            JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
+            for(int i=0; i<jPreviousAccountsArr.length(); i++){
+                JSONObject jPreviousAccount = jPreviousAccountsArr.getJSONObject(i);
+                previousAccountInfoList.add(new PreviousAccountInfo(jPreviousAccount.getInt("user_id"),
+                    jPreviousAccount.getString("user_name"),
+                    jPreviousAccount.getString("user_email"),
+                    jPreviousAccount.getString("phone_no"),
+                    jPreviousAccount.getString("date_registered")));
+            }
+
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+        return previousAccountInfoList;
+    }
 	
 	
 }
