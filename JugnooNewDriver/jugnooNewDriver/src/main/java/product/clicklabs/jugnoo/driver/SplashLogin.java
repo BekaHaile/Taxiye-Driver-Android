@@ -431,7 +431,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
                                         sendToOtpScreen = true;
                                     }
                                     else if(ApiResponseFlags.LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+                                        if(!SplashNewActivity.checkIfUpdate(jObj, activity)) {
                                             new JSONParser().parseLoginData(activity, response);
                                             Database.getInstance(SplashLogin.this).insertEmail(emailId);
                                             Database.getInstance(SplashLogin.this).close();
@@ -439,7 +439,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
                                         }
                                     }
                                     else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+                                        if(!SplashNewActivity.checkIfUpdate(jObj, activity)) {
                                             new JSONParser().parseLoginData(activity, response);
                                             Database.getInstance(SplashLogin.this).insertEmail(emailId);
                                             Database.getInstance(SplashLogin.this).close();
