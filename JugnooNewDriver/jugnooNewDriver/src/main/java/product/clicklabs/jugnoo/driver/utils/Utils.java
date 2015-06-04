@@ -1,14 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import product.clicklabs.jugnoo.driver.Data;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +10,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.Data;
 
 
 public class Utils {
@@ -185,5 +185,64 @@ public class Utils {
         callIntent.setData(Uri.parse("tel:"+phoneNumber));
         activity.startActivity(callIntent);
 	}
-	
+
+
+	public static String hidePhoneNoString(String phoneNo){
+		String returnPhoneNo = "";
+		if(phoneNo.length() > 0){
+			int charLength = phoneNo.length();
+			int stars = (charLength < 3) ? 0 : (charLength - 3);
+			StringBuilder stringBuilder = new StringBuilder();
+			for(int i=0; i<stars; i++){
+				stringBuilder.append("*");
+			}
+			returnPhoneNo = stringBuilder.toString() + phoneNo.substring(stars, phoneNo.length());
+		}
+		return returnPhoneNo;
+	}
+
+
+    public static String retrievePhoneNumberTenChars(String phoneNo){
+        phoneNo = phoneNo.replace(" ", "");
+        phoneNo = phoneNo.replace("(", "");
+        phoneNo = phoneNo.replace("/", "");
+        phoneNo = phoneNo.replace(")", "");
+        phoneNo = phoneNo.replace("N", "");
+        phoneNo = phoneNo.replace(",", "");
+        phoneNo = phoneNo.replace("*", "");
+        phoneNo = phoneNo.replace(";", "");
+        phoneNo = phoneNo.replace("#", "");
+        phoneNo = phoneNo.replace("-", "");
+        phoneNo = phoneNo.replace(".", "");
+        if(phoneNo.length() >= 10){
+            phoneNo = phoneNo.substring(phoneNo.length()-10, phoneNo.length());
+        }
+        return phoneNo;
+    }
+
+    public static boolean validPhoneNumber(String phoneNo){
+        if(phoneNo.length() >= 10){
+            if(phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")){
+                return false;
+            }
+            else{
+                return isPhoneValid(phoneNo);
+            }
+        }
+        else{
+            return false;
+        }
+    }
+
+
+    public static boolean isPhoneValid(CharSequence phone) {
+        return android.util.Patterns.PHONE.matcher(phone).matches();
+    }
+
+
+    public static boolean isEmailValid(CharSequence email) {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+
 }

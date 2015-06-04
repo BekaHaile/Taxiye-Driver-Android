@@ -1,19 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
@@ -33,6 +19,21 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
+
 public class OTPConfirmScreen extends Activity implements LocationUpdate{
 	
 	Button backBtn;
@@ -49,8 +50,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 	
 	public static boolean intentFromRegister = true;
 	public static EmailRegisterData emailRegisterData;
-	public static FacebookRegisterData facebookRegisterData;
-	
+
 	String otpHelpStr = "Please enter the One Time Password you just received via SMS at ";
 	String waitStr = "Please wait for ";
 	
@@ -115,14 +115,8 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 				if(otpCode.length() > 0){
 					stopWaitingTimer();
 					callMeBtn.setBackgroundResource(R.drawable.blue_btn_selector);
-					if(RegisterScreen.facebookLogin){
-						sendFacebookSignupValues(OTPConfirmScreen.this, otpCode);
-						FlurryEventLogger.otpConfirmClick(otpCode);
-					}
-					else{
-						sendSignupValues(OTPConfirmScreen.this, otpCode);
-						FlurryEventLogger.otpConfirmClick(otpCode);
-					}
+					sendSignupValues(OTPConfirmScreen.this, otpCode);
+					FlurryEventLogger.otpConfirmClick(otpCode);
 				}
 				else{
 					otpEt.requestFocus();
@@ -157,13 +151,8 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			@Override
 			public void onClick(View v) {
 				stopWaitingTimer();
-				if (RegisterScreen.facebookLogin) {
-					initiateOTPCallAsync(OTPConfirmScreen.this, facebookRegisterData.phoneNo);
-					FlurryEventLogger.otpThroughCall(facebookRegisterData.phoneNo);
-				} else {
-					initiateOTPCallAsync(OTPConfirmScreen.this, emailRegisterData.phoneNo);
-					FlurryEventLogger.otpThroughCall(emailRegisterData.phoneNo);
-				}
+				initiateOTPCallAsync(OTPConfirmScreen.this, emailRegisterData.phoneNo);
+				FlurryEventLogger.otpThroughCall(emailRegisterData.phoneNo);
 			}
 		});
 		
@@ -171,12 +160,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
 		try {
-			if(RegisterScreen.facebookLogin){
-				otpHelpText.setText(otpHelpStr + " " + facebookRegisterData.phoneNo);
-			}
-			else{
-				otpHelpText.setText(otpHelpStr + " " + emailRegisterData.phoneNo);
-			}
+			otpHelpText.setText(otpHelpStr + " " + emailRegisterData.phoneNo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -337,8 +321,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			params.put("app_version", Data.appVersion);
 			params.put("os_version", Data.osVersion);
 			params.put("referral_code", "");
-			params.put("auto_number", emailRegisterData.autoNumber);
-			
+
 
 			Log.i("user_name", "=" + emailRegisterData.name);
 			Log.i("ph_no", "=" + emailRegisterData.phoneNo);
@@ -352,7 +335,6 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 			Log.i("device_name", "=" + Data.deviceName);
 			Log.i("app_version", "=" + Data.appVersion);
 			Log.i("os_version", "=" + Data.osVersion);
-			Log.i("auto_number", "=" + emailRegisterData.autoNumber);
 			Log.i("unique_device_id", "=" + Data.uniqueDeviceId);
 			
 			
@@ -422,130 +404,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 	}
 	
 	
-	
-	
 
-	/**
-	 * ASync for login from server
-	 */
-	public void sendFacebookSignupValues(final Activity activity, String otp) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-			
-			RequestParams params = new RequestParams();
-		
-			if(Data.locationFetcher != null){
-				Data.latitude = Data.locationFetcher.getLatitude();
-				Data.longitude = Data.locationFetcher.getLongitude();
-			}
-
-		
-			params.put("user_fb_id", Data.fbId);
-			params.put("user_fb_name", Data.fbFirstName + " " + Data.fbLastName);
-			params.put("fb_access_token", Data.fbAccessToken);
-			params.put("username", Data.fbUserName);
-			params.put("fb_mail", Data.fbUserEmail);
-			params.put("latitude", ""+Data.latitude);
-			params.put("longitude", ""+Data.longitude);
-			params.put("device_token", Data.deviceToken);
-			params.put("country", Data.country);
-			params.put("app_version", Data.appVersion);
-			params.put("os_version", Data.osVersion);
-			params.put("device_name", Data.deviceName);
-			params.put("device_type", Data.DEVICE_TYPE);
-			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put("otp", otp);
-			params.put("ph_no", facebookRegisterData.phoneNo);
-			params.put("password", facebookRegisterData.password);
-			params.put("referral_code", "");
-			params.put("auto_number", facebookRegisterData.autoNumber);
-			
-
-			Log.i("user_fb_id", "="+Data.fbId);
-			Log.i("user_fb_name", "="+Data.fbFirstName + " " + Data.fbLastName);
-			Log.i("fb_access_token", "="+Data.fbAccessToken);
-			Log.i("username", "="+Data.fbUserName);
-			Log.i("fb_mail", "="+Data.fbUserEmail);
-			Log.i("latitude", "="+Data.latitude);
-			Log.i("longitude", "="+Data.longitude);
-			Log.i("device_token", "="+Data.deviceToken);
-			Log.i("country", "="+Data.country);
-			Log.i("app_version", "="+Data.appVersion);
-			Log.i("os_version", "="+Data.osVersion);
-			Log.i("device_name", "="+Data.deviceName);
-			Log.i("device_type", "="+Data.DEVICE_TYPE);
-			Log.i("otp", "="+otp);
-			Log.i("ph_no", "="+facebookRegisterData.phoneNo);
-			Log.i("password", "="+facebookRegisterData.password);
-			Log.i("auto_number", "="+facebookRegisterData.autoNumber);
-			Log.i("unique_device_id", "=" + Data.uniqueDeviceId);
-			
-			
-		
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/customer_fb_registeration_form", params,
-					new CustomAsyncHttpResponseHandler() {
-					private JSONObject jObj;
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-
-						@Override
-						public void onSuccess(String response) {
-							Log.v("Server response", "response = " + response);
-	
-							try {
-								jObj = new JSONObject(response);
-								
-
-								boolean newUpdate = SplashNewActivity.checkIfUpdate(jObj, activity);
-								
-								if(!newUpdate){
-								
-								if(!jObj.isNull("error")){
-									DialogPopup.dismissLoadingDialog();
-									String errorMessage = jObj.getString("error");
-									if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-										HomeActivity.logoutUser(activity);
-									}
-									else{
-										DialogPopup.alertPopup(activity, "", errorMessage);
-									}
-								}
-								else{
-									new JSONParser().parseLoginData(activity, response);
-									loginDataFetched = true;
-									
-									Database.getInstance(OTPConfirmScreen.this).insertEmail(Data.fbUserEmail);
-									Database.getInstance(OTPConfirmScreen.this).close();
-									
-									DialogPopup.dismissLoadingDialog();
-								}
-								}
-								else{
-									DialogPopup.dismissLoadingDialog();
-								}
-							}  catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.dismissLoadingDialog();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-							}
-	
-							
-						}
-					});
-		}
-		else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-		}
-
-	}
-	
 	
 	/**
 	 * ASync for initiating OTP Call from server
@@ -684,21 +543,11 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 
 
 class EmailRegisterData{
-	String name, emailId, phoneNo, password, autoNumber;
-	public EmailRegisterData(String name, String emailId, String phoneNo, String password, String autoNumber){
+	String name, emailId, phoneNo, password;
+	public EmailRegisterData(String name, String emailId, String phoneNo, String password){
 		this.name = name;
 		this.emailId = emailId;
 		this.phoneNo = phoneNo;
 		this.password = password;
-		this.autoNumber = autoNumber;
-	}
-}
-
-class FacebookRegisterData{
-	String phoneNo, password, autoNumber;
-	public FacebookRegisterData(String phoneNo, String password, String autoNumber){
-		this.phoneNo = phoneNo;
-		this.password = password;
-		this.autoNumber = autoNumber;
 	}
 }
