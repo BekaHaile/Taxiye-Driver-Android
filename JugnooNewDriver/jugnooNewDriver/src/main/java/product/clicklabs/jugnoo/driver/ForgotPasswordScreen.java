@@ -161,6 +161,7 @@ public class ForgotPasswordScreen extends Activity{
             e.printStackTrace();
         }
 
+
 		emailEt.setText(emailAlready);
 		emailEt.setSelection(emailEt.getText().toString().length());
 		
