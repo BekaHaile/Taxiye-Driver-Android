@@ -165,6 +165,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
             RequestParams params = new RequestParams();
 
             params.put("client_id", Data.CLIENT_ID);
+            params.put("login_type", Data.LOGIN_TYPE);
             params.put("access_token", accessToken);
             params.put("is_access_token_new", "1");
             params.put("updated_phone_no", updatedField);
@@ -192,13 +193,12 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                             if(jObj.has("flag")){
                                 flag = jObj.getInt("flag");
                             }
+                            String message = JSONParser.getServerMessage(jObj);
                             if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
                                 if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-                                    String error = jObj.getString("error");
-                                    DialogPopup.alertPopup(activity, "", error);
+                                    DialogPopup.alertPopup(activity, "", message);
                                 }
                                 else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-                                    String message = jObj.getString("message");
                                     OTPConfirmScreen.emailRegisterData.phoneNo = updatedField;
                                     DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 
@@ -209,7 +209,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                                     });
                                 }
                                 else{
-                                    DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                    DialogPopup.alertPopup(activity, "", message);
                                 }
                             }
                         }  catch (Exception exception) {

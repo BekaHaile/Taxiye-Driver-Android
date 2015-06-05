@@ -447,7 +447,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
                                         }
                                     }
                                     else{
-                                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
                                     DialogPopup.dismissLoadingDialog();
                                 }

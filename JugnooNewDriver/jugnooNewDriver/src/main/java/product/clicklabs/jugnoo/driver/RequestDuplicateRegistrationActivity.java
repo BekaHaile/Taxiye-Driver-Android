@@ -196,6 +196,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
             params.put("phone_no", phone);
 			params.put("user_message", ""+messageStr);
 			params.put("client_id", Data.CLIENT_ID);
+            params.put("login_type", Data.LOGIN_TYPE);
 
             try {
                 if (RegisterScreen.multipleCaseJSON != null) {
@@ -226,13 +227,12 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 							try {
 								jObj = new JSONObject(response);
 								int flag = jObj.getInt("flag");
+								String message = JSONParser.getServerMessage(jObj);
 								if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
                                     if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-                                        String error = jObj.getString("error");
-                                        DialogPopup.alertPopup(activity, "", error);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
 									else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-                                        String message = jObj.getString("message");
                                         DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener(){
                                             @Override
                                             public void onClick(View v) {
@@ -243,7 +243,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
                                         });
 									}
 									else{
-										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+										DialogPopup.alertPopup(activity, "", message);
 									}
 								}
 							}  catch (Exception exception) {

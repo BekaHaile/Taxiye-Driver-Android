@@ -289,8 +289,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		});
 
 
-        buttonRegister.setVisibility(View.VISIBLE);
-		
 	}
 	
 	public void getDeviceToken(){
