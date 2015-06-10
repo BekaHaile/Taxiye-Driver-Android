@@ -154,7 +154,22 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 //	    Configuration config = new Configuration();
 //	    config.locale = locale;
 //	    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-		
+
+//        String language = Locale.getDefault().getLanguage()       ;//---> en
+//        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
+//        String country = Locale.getDefault().getCountry()        ;//---> US
+//        String iso3Country = Locale.getDefault().getISO3Country()    ;//---> USA
+//        String displayCountry = Locale.getDefault().getDisplayCountry(); //---> United States
+//        String displayName = Locale.getDefault().getDisplayName() ;   //---> English (United States)
+//        String toString = Locale.getDefault().toString()    ;      //---> en_US
+//        String displayLanguage = Locale.getDefault().getDisplayLanguage();//---> English
+//
+//        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
+//
+//        Log.e("Locale info", "="+localeInfo);
+
+
+
 		setContentView(R.layout.activity_splash_new);
 
 		Data.locationFetcher = null;
