@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -307,6 +306,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	Location lastLocation;
 	long lastLocationTime;
+
+	public String language = "";
 	
 	
 	DecimalFormat decimalFormat = new DecimalFormat("#.#");
@@ -389,16 +390,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        String languageToLoad = "hi_IN";
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-            getBaseContext().getResources().getDisplayMetrics());
-
 		setContentView(R.layout.activity_home);
 
+//        String languageToLoad = "hi";
+//        Locale locale = new Locale(languageToLoad);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,
+//            getBaseContext().getResources().getDisplayMetrics());
 
 		
 		initializeGPSForegroundLocationFetcher();
@@ -413,6 +413,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		mapTouchedOnce = false;
 		
 		appMode = AppMode.NORMAL;
+
+        language = Locale.getDefault().getLanguage();
+
+//        String language = Locale.getDefault().getLanguage()       ;//---> en
+//        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
+//        String country = Locale.getDefault().getCountry()        ;//---> US
+//        String iso3Country = Locale.getDefault().getISO3Country()    ;//---> USA
+//        String displayCountry = Locale.getDefault().getDisplayCountry(); //---> United States
+//        String displayName = Locale.getDefault().getDisplayName() ;   //---> English (United States)
+//        String toString = Locale.getDefault().toString()    ;      //---> en_US
+//        String displayLanguage = Locale.getDefault().getDisplayLanguage();//---> English
+//
+//        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
+//
+//        Log.e("Locale info", "="+localeInfo);
+
 		
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -2262,7 +2278,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             @Override
             public void run() {
                 try{
-                    final String address = MapUtils.getGAPIAddress(latLng);
+                    final String address = MapUtils.getGAPIAddress(latLng, language);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -2446,6 +2462,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		    
 		}
+
+		language = Locale.getDefault().getLanguage();
+
 	}
 	
 	

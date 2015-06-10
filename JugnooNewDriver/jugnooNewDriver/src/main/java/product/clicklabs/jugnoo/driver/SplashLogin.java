@@ -364,33 +364,37 @@ public class SplashLogin extends Activity implements LocationUpdate{
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
 			
+//			params.put("email", emailId);
+//			params.put("password", password);
+//			params.put("device_type", Data.DEVICE_TYPE);
+//			params.put("unique_device_id", Data.uniqueDeviceId);
+//			params.put("device_token", Data.deviceToken);
+//			params.put("latitude", ""+Data.latitude);
+//			params.put("longitude", ""+Data.longitude);
+//			params.put("country", Data.country);
+//			params.put("device_name", Data.deviceName);
+//			params.put("app_version", Data.appVersion);
+//			params.put("os_version", Data.osVersion);
+
 			params.put("email", emailId);
 			params.put("password", password);
-			params.put("device_type", Data.DEVICE_TYPE);
-			params.put("unique_device_id", Data.uniqueDeviceId);
 			params.put("device_token", Data.deviceToken);
-			params.put("latitude", ""+Data.latitude);
-			params.put("longitude", ""+Data.longitude);
-			params.put("country", Data.country);
+			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
-			params.put("app_version", Data.appVersion);
+			params.put("app_version", "" + Data.appVersion);
 			params.put("os_version", Data.osVersion);
+			params.put("country", Data.country);
+			params.put("unique_device_id", Data.uniqueDeviceId);
+			params.put("latitude", "" + Data.latitude);
+			params.put("longitude", "" + Data.longitude);
+			params.put("client_id", Data.CLIENT_ID);
+            params.put("login_type", Data.LOGIN_TYPE);
 
-			Log.i("Server uRL", "=" + Data.SERVER_URL);
-			Log.i("email", "=" + emailId);
-			Log.i("password", "=" + password);
-			Log.e("device_token", "=" + Data.deviceToken);
-			Log.i("latitude", "=" + Data.latitude);
-			Log.i("longitude", "=" + Data.longitude);
-			Log.i("country", "=" + Data.country);
-			Log.i("device_name", "=" + Data.deviceName);
-			Log.i("app_version", "=" + Data.appVersion);
-			Log.i("os_version", "=" + Data.osVersion);
-			Log.i("unique_device_id", "=" + Data.uniqueDeviceId);
-			
+			Log.i("paramsS", "=" + params);
+
 		
 			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/login_driver_via_email", params,
+			client.post(Data.SERVER_URL + "/login_using_email", params,
 					new CustomAsyncHttpResponseHandler() {
 					private JSONObject jObj;
 
@@ -410,6 +414,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
 
                                 int flag = jObj.getInt("flag");
                                 String message = JSONParser.getServerMessage(jObj);
+
                                 if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
                                     if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
                                         DialogPopup.alertPopup(activity, "", message);
@@ -430,24 +435,16 @@ public class SplashLogin extends Activity implements LocationUpdate{
                                         otpErrorMsg = jObj.getString("error");
                                         sendToOtpScreen = true;
                                     }
-                                    else if(ApiResponseFlags.LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
-                                            new JSONParser().parseLoginData(activity, response);
-                                            Database.getInstance(SplashLogin.this).insertEmail(emailId);
-                                            Database.getInstance(SplashLogin.this).close();
-                                            loginDataFetched = true;
-                                        }
-                                    }
                                     else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
-                                            new JSONParser().parseLoginData(activity, response);
+                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+                                            new JSONParser().parseAccessTokenLoginData(activity, response);
+                                            new DriverServiceOperations().startDriverService(activity);
                                             Database.getInstance(SplashLogin.this).insertEmail(emailId);
-                                            Database.getInstance(SplashLogin.this).close();
                                             loginDataFetched = true;
                                         }
                                     }
                                     else{
-                                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
                                     DialogPopup.dismissLoadingDialog();
                                 }

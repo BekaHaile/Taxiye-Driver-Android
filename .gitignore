@@ -87,3 +87,4 @@ Thumbs.db
 
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 build/
+.gradle/

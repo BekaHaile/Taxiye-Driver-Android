@@ -286,9 +286,15 @@ public class JSONParser {
 				Database2.getInstance(context).updateDriverGcmIntent(userData.getInt("gcm_intent"));
 			}
 		} catch(Exception e){}
+
+
+        String accessToken = userData.getString("access_token");
+
+		Data.termsAgreed = 1;
+		saveAccessToken(context, accessToken);
+
 		
-		
-		return new UserData(userData.getString("access_token"), userData.getString("user_name"), 
+		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), 
 				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable);
 	}
@@ -301,13 +307,12 @@ public class JSONParser {
 		
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
-		JSONObject userData = jLoginObject.getJSONObject("user_data");
-		
-		Data.userData = parseUserData(context, userData);
+
+		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
 		
 		//current_user_status = 1 driver or 2 user
-		int currentUserStatus = userData.getInt("current_user_status");
+		int currentUserStatus = jLoginObject.getInt("current_user_status");
 		if(currentUserStatus == 1){
 			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
 		}

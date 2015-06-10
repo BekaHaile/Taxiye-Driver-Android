@@ -154,7 +154,22 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 //	    Configuration config = new Configuration();
 //	    config.locale = locale;
 //	    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-		
+
+//        String language = Locale.getDefault().getLanguage()       ;//---> en
+//        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
+//        String country = Locale.getDefault().getCountry()        ;//---> US
+//        String iso3Country = Locale.getDefault().getISO3Country()    ;//---> USA
+//        String displayCountry = Locale.getDefault().getDisplayCountry(); //---> United States
+//        String displayName = Locale.getDefault().getDisplayName() ;   //---> English (United States)
+//        String toString = Locale.getDefault().toString()    ;      //---> en_US
+//        String displayLanguage = Locale.getDefault().getDisplayLanguage();//---> English
+//
+//        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
+//
+//        Log.e("Locale info", "="+localeInfo);
+
+
+
 		setContentView(R.layout.activity_splash_new);
 
 		Data.locationFetcher = null;
@@ -289,8 +304,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		});
 
 
-        buttonRegister.setVisibility(View.VISIBLE);
-		
 	}
 	
 	public void getDeviceToken(){
@@ -539,33 +552,62 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				
-				if("not_found".equalsIgnoreCase(accPair.second)){
-					params.put("is_access_token_new", "0");
-				} else{
-					params.put("is_access_token_new", accPair.second);
-				}
-				
+//				if("not_found".equalsIgnoreCase(accPair.second)){
+//					params.put("is_access_token_new", "0");
+//				} else{
+//					params.put("is_access_token_new", accPair.second);
+//				}
+//
+//				params.put("device_token", Data.deviceToken);
+//
+//				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
+//				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
+//					params.put("latitude", "0");
+//					params.put("longitude", "0");
+//				}
+//				else{
+//					params.put("latitude", ""+Data.latitude);
+//					params.put("longitude", ""+Data.longitude);
+//				}
+//
+//
+//				params.put("app_version", ""+Data.appVersion);
+//				params.put("device_type", Data.DEVICE_TYPE);
+//				params.put("unique_device_id", Data.uniqueDeviceId);
+
+
+
+
+
+
+
+				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				
-				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-					params.put("latitude", "0");
-					params.put("longitude", "0");
-				}
-				else{
-					params.put("latitude", ""+Data.latitude);
-					params.put("longitude", ""+Data.longitude);
-				}
-				
-				
+
+
+                final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
+                if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
+                    params.put("latitude", "0");
+                    params.put("longitude", "0");
+                }
+                else{
+                    params.put("latitude", ""+Data.latitude);
+                    params.put("longitude", ""+Data.longitude);
+                }
+
+
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
 				params.put("unique_device_id", Data.uniqueDeviceId);
+				params.put("is_access_token_new", "1");
+                params.put("client_id", Data.CLIENT_ID);
+                params.put("login_type", Data.LOGIN_TYPE);
+
 
 				Log.i("accessTokenlongi params", "=" + params);
 				
 				AsyncHttpClient client = Data.getClient();
-				client.post(Data.SERVER_URL + "/login_driver_via_access_token", params,
+				client.post(Data.SERVER_URL + "/login_using_access_token", params,
 						new CustomAsyncHttpResponseHandler() {
 						private JSONObject jObj;
 
@@ -584,23 +626,34 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 								try {
 									jObj = new JSONObject(response);
 									int flag = jObj.getInt("flag");
-									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-										boolean newUpdate = SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity);
-										if(!newUpdate){
-											if(ApiResponseFlags.LOGIN_SUCCESSFUL.getOrdinal() == flag){
-												new AccessTokenDataParseAsync(activity, response).execute();
-											}
-											else{
-												DialogPopup.dismissLoadingDialog();
-												DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-											}
-										}
-										else{
-											DialogPopup.dismissLoadingDialog();
-										}
-									} else{
-										DialogPopup.dismissLoadingDialog();
-									}
+                                    String message = JSONParser.getServerMessage(jObj);
+
+                                    if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+                                        if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+                                            DialogPopup.alertPopup(activity, "", message);
+                                            DialogPopup.dismissLoadingDialog();
+                                        }
+                                        else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+                                            DialogPopup.alertPopup(activity, "", message);
+                                            DialogPopup.dismissLoadingDialog();
+                                        }
+                                        else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+                                            if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+                                                new AccessTokenDataParseAsync(activity, response, message).execute();
+                                            }
+                                            else{
+                                                DialogPopup.dismissLoadingDialog();
+                                            }
+                                        }
+                                        else{
+                                            DialogPopup.alertPopup(activity, "", message);
+                                            DialogPopup.dismissLoadingDialog();
+                                        }
+                                    }
+                                    else{
+                                        DialogPopup.dismissLoadingDialog();
+                                    }
+
 								}  catch (Exception exception) {
 									exception.printStackTrace();
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -624,11 +677,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	class AccessTokenDataParseAsync extends AsyncTask<String, Integer, String>{
 		
 		Activity activity;
-		String response, accessToken;
+		String response, accessToken, message;
 		
-		public AccessTokenDataParseAsync(Activity activity, String response){
+		public AccessTokenDataParseAsync(Activity activity, String response, String message){
 			this.activity = activity;
 			this.response = response;
+            this.message = message;
 		}
 		
 		@Override
@@ -648,7 +702,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 
 			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
 				loginDataFetched = false;
-				DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+				DialogPopup.alertPopup(activity, "", message);
 			}
 			else{
 

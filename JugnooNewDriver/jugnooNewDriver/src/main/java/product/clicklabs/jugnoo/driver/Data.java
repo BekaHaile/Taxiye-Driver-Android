@@ -133,7 +133,7 @@ public class Data {
 
 
 	public static final String CLIENT_ID = "EEBUOvQq7RRJBxJm";
-	public static final String CLIENT_SHARED_SECRET = "nqaK7HTwDT3epcpR5JuMWwojFv0KJnIv";
+	public static final String LOGIN_TYPE = "1";
 
 	
 	

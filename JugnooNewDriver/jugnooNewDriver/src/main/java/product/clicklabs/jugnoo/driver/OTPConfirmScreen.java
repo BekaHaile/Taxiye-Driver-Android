@@ -260,6 +260,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
             params.put("latitude", ""+Data.latitude);
             params.put("longitude", ""+Data.longitude);
             params.put("client_id", Data.CLIENT_ID);
+            params.put("login_type", Data.LOGIN_TYPE);
             params.put("otp", otp);
 
             Log.i("params", "" + params.toString());
@@ -284,30 +285,22 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate{
 								jObj = new JSONObject(response);
 
                                 int flag = jObj.getInt("flag");
-
+                                String message = JSONParser.getServerMessage(jObj);
                                 if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
                                     if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-                                        String error = jObj.getString("error");
-                                        DialogPopup.alertPopup(activity, "", error);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
                                     else if(ApiResponseFlags.AUTH_VERIFICATION_FAILURE.getOrdinal() == flag){
-                                        String error = jObj.getString("error");
-                                        DialogPopup.alertPopup(activity, "", error);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
-                                    else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj, activity)){
-                                            new JSONParser().parseLoginData(activity, response);
-                                            Database.getInstance(OTPConfirmScreen.this).insertEmail(emailRegisterData.emailId);
-                                            Database.getInstance(OTPConfirmScreen.this).close();
-                                            loginDataFetched = true;
-                                        }
-                                    }
+									else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+                                        DialogPopup.alertPopup(activity, "", message);
+									}
                                     else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-                                        String error = jObj.getString("error");
-                                        DialogPopup.alertPopup(activity, "", error);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
                                     else{
-                                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                        DialogPopup.alertPopup(activity, "", message);
                                     }
                                     DialogPopup.dismissLoadingDialog();
                                 }
