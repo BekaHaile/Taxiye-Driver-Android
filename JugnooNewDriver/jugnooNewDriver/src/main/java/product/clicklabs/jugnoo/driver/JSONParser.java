@@ -63,6 +63,7 @@ public class JSONParser {
 	}
 
 
+
 	public void parseLoginData(Context context, String response) throws Exception{
 		JSONObject jObj = new JSONObject(response);
 		JSONObject userData = jObj.getJSONObject("user_data");
