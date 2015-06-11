@@ -180,18 +180,31 @@ public class JSONParser {
 	public static PromoInfo parsePromoInfo(JSONObject jPromoObject){
 		try{
 			
-//			"promotion": {
-//	        	"title": "After 18th Flat 40% off",
-//	        	"discount_percentage": 40,
-//	        	"discount_maximum": 40,
-//	        	"capped_fare": -1,
-//	        	"capped_fare_maximum": -1
-//	    	}	
-			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"), 
-					jPromoObject.getDouble("discount_percentage"), 
+//            "promotion": {
+//                    "title": "CDCL pickup 10% cashback",
+//                    "promo_type": 2,
+//                    "benefit_type": 3,
+//                    "discount_percentage": 0,
+//                    "discount_maximum": 0,
+//                    "capped_fare": 0,
+//                    "capped_fare_maximum": 0,
+//                    "cashback_percentage": 10,
+//                    "drop_latitude": 0,
+//                    "drop_longitude": 0,
+//                    "drop_radius": 0
+//            }
+
+			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"),
+                    jPromoObject.getInt("promo_type"),
+                    jPromoObject.getInt("benefit_type"),
+                    jPromoObject.getDouble("discount_percentage"),
 					jPromoObject.getDouble("discount_maximum"), 
 					jPromoObject.getDouble("capped_fare"), 
-					jPromoObject.getDouble("capped_fare_maximum"));
+					jPromoObject.getDouble("capped_fare_maximum"),
+                    jPromoObject.getDouble("cashback_percentage"),
+                    jPromoObject.getDouble("drop_latitude"),
+                    jPromoObject.getDouble("drop_longitude"),
+                    jPromoObject.getDouble("drop_radius"));
 			
 			return promoInfo;
 		} catch(Exception e){
