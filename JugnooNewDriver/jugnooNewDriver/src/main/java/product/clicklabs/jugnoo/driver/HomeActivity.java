@@ -81,6 +81,7 @@ import java.util.TimerTask;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
@@ -2094,7 +2095,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							endRideInfoRl.setVisibility(View.GONE);
 							relativeLayoutCoupon.setVisibility(View.VISIBLE);
 							relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
-							
+
 							if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){					// wallet
 								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
 								textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
@@ -2109,25 +2110,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                             textViewCouponPayTakeText.setText("Take");
 						}
-						else if(autoCustomerInfo.promoInfo != null){
-							endRideInfoRl.setVisibility(View.GONE);
-							relativeLayoutCoupon.setVisibility(View.VISIBLE);
-							relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
-							
-							if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){					// wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
-								textViewCouponSubTitle.setVisibility(View.GONE);
-							}
-							else{																			// no wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
-								textViewCouponSubTitle.setVisibility(View.GONE);
-							}
+						else if(autoCustomerInfo.promoInfo != null) {
+                            if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
+                                endRideInfoRl.setVisibility(View.GONE);
+                                relativeLayoutCoupon.setVisibility(View.VISIBLE);
+                                relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
-                            textViewCouponPayTakeText.setText("Take");
-						}
-						else{
+
+                                if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
+                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
+                                    textViewCouponSubTitle.setVisibility(View.GONE);
+                                } else {                                                                            // no wallet
+                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
+                                    textViewCouponSubTitle.setVisibility(View.GONE);
+                                }
+
+                                textViewCouponPayTakeText.setText("Take");
+                            }
+                            else{
+                                throw new Exception();
+                            }
+                        } else{
 							throw new Exception();
 						}
 					}
