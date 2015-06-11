@@ -3632,6 +3632,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if(Data.assignedCustomerInfo != null){
 			params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
 		}
+
 		
 		params.put("business_id", ""+businessType.getOrdinal());
 
