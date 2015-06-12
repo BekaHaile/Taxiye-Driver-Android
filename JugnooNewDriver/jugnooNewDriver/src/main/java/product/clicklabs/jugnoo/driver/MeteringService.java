@@ -1,9 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.text.DecimalFormat;
-
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,6 +14,15 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MeteringService extends Service {
 	
@@ -56,8 +61,59 @@ public class MeteringService extends Service {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
     	restartServiceViaAlarm();
     }
-    
-    
+
+
+
+
+    Timer timerFetchCurrentPath;
+    TimerTask timerTaskFetchCurrentPath;
+
+    public void startTimerFetchCurrentPath() {
+        cancelTimerFetchCurrentPath();
+        try {
+            timerFetchCurrentPath = new Timer();
+
+            timerTaskFetchCurrentPath = new TimerTask() {
+
+                @Override
+                public void run() {
+                    try {
+                        ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(MeteringService.this).getCurrentPathItemsValid();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+
+            timerFetchCurrentPath.scheduleAtFixedRate(timerTaskFetchCurrentPath, 1000, 30000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void cancelTimerFetchCurrentPath(){
+        try{
+            if(timerTaskFetchCurrentPath != null){
+                timerTaskFetchCurrentPath.cancel();
+                timerTaskFetchCurrentPath = null;
+            }
+
+            if(timerFetchCurrentPath != null){
+                timerFetchCurrentPath.cancel();
+                timerFetchCurrentPath.purge();
+                timerFetchCurrentPath = null;
+            }
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
     
     
     public void restartServiceViaAlarm(){

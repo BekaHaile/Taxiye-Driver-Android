@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,6 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 /**
  * Handles database related work
@@ -182,7 +182,7 @@ public class Database {																	// class for handling database related a
 
 	
 	
-	public void insertPolyLine(LatLng slatLng, LatLng dlatLng){
+	public void insertPolyLine1(LatLng slatLng, LatLng dlatLng){
 		try{
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database.SLAT, slatLng.latitude);
