@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -82,6 +81,7 @@ import java.util.TimerTask;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
@@ -307,6 +307,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	Location lastLocation;
 	long lastLocationTime;
+
+	public String language = "";
 	
 	
 	DecimalFormat decimalFormat = new DecimalFormat("#.#");
@@ -389,16 +391,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-        String languageToLoad = "hi_IN";
-        Locale locale = new Locale(languageToLoad);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getBaseContext().getResources().updateConfiguration(config,
-            getBaseContext().getResources().getDisplayMetrics());
-
 		setContentView(R.layout.activity_home);
 
+//        String languageToLoad = "hi";
+//        Locale locale = new Locale(languageToLoad);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,
+//            getBaseContext().getResources().getDisplayMetrics());
 
 		
 		initializeGPSForegroundLocationFetcher();
@@ -413,6 +414,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		mapTouchedOnce = false;
 		
 		appMode = AppMode.NORMAL;
+
+        language = Locale.getDefault().getLanguage();
+
+//        String language = Locale.getDefault().getLanguage()       ;//---> en
+//        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
+//        String country = Locale.getDefault().getCountry()        ;//---> US
+//        String iso3Country = Locale.getDefault().getISO3Country()    ;//---> USA
+//        String displayCountry = Locale.getDefault().getDisplayCountry(); //---> United States
+//        String displayName = Locale.getDefault().getDisplayName() ;   //---> English (United States)
+//        String toString = Locale.getDefault().toString()    ;      //---> en_US
+//        String displayLanguage = Locale.getDefault().getDisplayLanguage();//---> English
+//
+//        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
+//
+//        Log.e("Locale info", "="+localeInfo);
+
 		
 		
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -2078,7 +2095,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							endRideInfoRl.setVisibility(View.GONE);
 							relativeLayoutCoupon.setVisibility(View.VISIBLE);
 							relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
-							
+
 							if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){					// wallet
 								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
 								textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
@@ -2093,25 +2110,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                             textViewCouponPayTakeText.setText("Take");
 						}
-						else if(autoCustomerInfo.promoInfo != null){
-							endRideInfoRl.setVisibility(View.GONE);
-							relativeLayoutCoupon.setVisibility(View.VISIBLE);
-							relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
-							
-							if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){					// wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
-								textViewCouponSubTitle.setVisibility(View.GONE);
-							}
-							else{																			// no wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
-								textViewCouponSubTitle.setVisibility(View.GONE);
-							}
+						else if(autoCustomerInfo.promoInfo != null) {
+                            if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
+                                endRideInfoRl.setVisibility(View.GONE);
+                                relativeLayoutCoupon.setVisibility(View.VISIBLE);
+                                relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
-                            textViewCouponPayTakeText.setText("Take");
-						}
-						else{
+
+                                if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
+                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
+                                    textViewCouponSubTitle.setVisibility(View.GONE);
+                                } else {                                                                            // no wallet
+                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
+                                    textViewCouponSubTitle.setVisibility(View.GONE);
+                                }
+
+                                textViewCouponPayTakeText.setText("Take");
+                            }
+                            else{
+                                throw new Exception();
+                            }
+                        } else{
 							throw new Exception();
 						}
 					}
@@ -2262,7 +2283,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             @Override
             public void run() {
                 try{
-                    final String address = MapUtils.getGAPIAddress(latLng);
+                    final String address = MapUtils.getGAPIAddress(latLng, language);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -2446,6 +2467,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		    
 		}
+
+		language = Locale.getDefault().getLanguage();
+
 	}
 	
 	
@@ -3608,6 +3632,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if(Data.assignedCustomerInfo != null){
 			params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
 		}
+
 		
 		params.put("business_id", ""+businessType.getOrdinal());
 

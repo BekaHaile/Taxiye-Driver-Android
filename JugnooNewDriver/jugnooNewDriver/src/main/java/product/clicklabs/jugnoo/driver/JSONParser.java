@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
+import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -42,7 +43,27 @@ public class JSONParser {
 	public JSONParser(){
 		
 	}
-	
+
+	public static String getServerMessage(JSONObject jObj){
+		String message = Data.SERVER_ERROR_MSG;
+		try{
+            if(jObj.has("message")){
+                message = jObj.getString("message");
+            }
+            else if(jObj.has("log")){
+				message = jObj.getString("log");
+			}
+			else if(jObj.has("error")){
+				message = jObj.getString("error");
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return message;
+	}
+
+
+
 	public void parseLoginData(Context context, String response) throws Exception{
 		JSONObject jObj = new JSONObject(response);
 		JSONObject userData = jObj.getJSONObject("user_data");
@@ -151,7 +172,7 @@ public class JSONParser {
 					couponObject.getDouble("capped_fare_maximum"));
 			return couponInfo;
 		} catch(Exception e){
-			Log.w("couponInfo", "e="+e.toString());
+			Log.w("couponInfo", "e=" + e.toString());
 			return null;
 		}
 	}
@@ -159,18 +180,31 @@ public class JSONParser {
 	public static PromoInfo parsePromoInfo(JSONObject jPromoObject){
 		try{
 			
-//			"promotion": {
-//	        	"title": "After 18th Flat 40% off",
-//	        	"discount_percentage": 40,
-//	        	"discount_maximum": 40,
-//	        	"capped_fare": -1,
-//	        	"capped_fare_maximum": -1
-//	    	}	
-			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"), 
-					jPromoObject.getDouble("discount_percentage"), 
+//            "promotion": {
+//                    "title": "CDCL pickup 10% cashback",
+//                    "promo_type": 2,
+//                    "benefit_type": 3,
+//                    "discount_percentage": 0,
+//                    "discount_maximum": 0,
+//                    "capped_fare": 0,
+//                    "capped_fare_maximum": 0,
+//                    "cashback_percentage": 10,
+//                    "drop_latitude": 0,
+//                    "drop_longitude": 0,
+//                    "drop_radius": 0
+//            }
+
+			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"),
+                    jPromoObject.getInt("promo_type"),
+                    jPromoObject.getInt("benefit_type"),
+                    jPromoObject.getDouble("discount_percentage"),
 					jPromoObject.getDouble("discount_maximum"), 
 					jPromoObject.getDouble("capped_fare"), 
-					jPromoObject.getDouble("capped_fare_maximum"));
+					jPromoObject.getDouble("capped_fare_maximum"),
+                    jPromoObject.getDouble("cashback_percentage"),
+                    jPromoObject.getDouble("drop_latitude"),
+                    jPromoObject.getDouble("drop_longitude"),
+                    jPromoObject.getDouble("drop_radius"));
 			
 			return promoInfo;
 		} catch(Exception e){
@@ -266,9 +300,15 @@ public class JSONParser {
 				Database2.getInstance(context).updateDriverGcmIntent(userData.getInt("gcm_intent"));
 			}
 		} catch(Exception e){}
+
+
+        String accessToken = userData.getString("access_token");
+
+		Data.termsAgreed = 1;
+		saveAccessToken(context, accessToken);
+
 		
-		
-		return new UserData(userData.getString("access_token"), userData.getString("user_name"), 
+		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), 
 				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable);
 	}
@@ -281,13 +321,12 @@ public class JSONParser {
 		
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
-		JSONObject userData = jLoginObject.getJSONObject("user_data");
-		
-		Data.userData = parseUserData(context, userData);
+
+		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
 		
 		//current_user_status = 1 driver or 2 user
-		int currentUserStatus = userData.getInt("current_user_status");
+		int currentUserStatus = jLoginObject.getInt("current_user_status");
 		if(currentUserStatus == 1){
 			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
 		}
@@ -902,6 +941,61 @@ public class JSONParser {
 					PaymentMode.CASH.getOrdinal());
 		}
 	}
+
+
+
+
+
+    public static ArrayList<PreviousAccountInfo> parsePreviousAccounts(JSONObject jsonObject){
+        ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+
+//        {
+//            "flag": 400,
+//            "users": [
+//            {
+//                "user_id": 145,
+//                "user_name": "Shankar16",
+//                "user_email": "shankar+16@jugnoo.in",
+//                "phone_no": "+919780111116",
+//                "date_registered": "2015-01-26T13:55:58.000Z"
+//            }
+//            ]
+//        }
+
+//        {
+//            "flag": 400,
+//            "users": [
+//            {
+//                "user_id": 145,
+//                "user_name": "Shankar16",
+//                "user_email": "shankar+16@jugnoo.in",
+//                "phone_no": "+919780111116",
+//                "date_registered": "2015-01-26T13:55:58.000Z",
+//                "allow_dup_regis": 0
+//            }
+//            ]
+//        }
+
+        try{
+
+            JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
+            for(int i=0; i<jPreviousAccountsArr.length(); i++){
+                JSONObject jPreviousAccount = jPreviousAccountsArr.getJSONObject(i);
+                previousAccountInfoList.add(new PreviousAccountInfo(jPreviousAccount.getInt("user_id"),
+                    jPreviousAccount.getString("user_name"),
+                    jPreviousAccount.getString("user_email"),
+                    jPreviousAccount.getString("phone_no"),
+                    jPreviousAccount.getString("date_registered")));
+            }
+
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+        return previousAccountInfoList;
+    }
 	
 	
 }

@@ -1,16 +1,17 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.location.Location;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
-import android.location.Location;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class MapUtils {
 
@@ -124,16 +125,27 @@ public class MapUtils {
 	
 	
 	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
-	public static String getGAPIAddress(LatLng latLng) {
+	//Locale.getDefault().getLanguage(
+	public static String getGAPIAddress(LatLng latLng, String language) {
 		String fullAddress = "Unnamed";
 		try {
 
+            String url = "http://maps.googleapis.com/maps/api/geocode/json?"
+                + "latlng="
+                + latLng.latitude
+                + ","
+                + latLng.longitude + "&sensor=true";
+
+            Log.e("language ", "="+language);
+            if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
+                url = url + "&language=hi";
+            }
+            Log.e("getGAPIAddress url", "="+url);
+
 			JSONObject jsonObj = new JSONObject(
-					new HttpRequester().getJSONFromUrl("http://maps.googleapis.com/maps/api/geocode/json?"
-									+ "latlng="
-									+ latLng.latitude
-									+ ","
-									+ latLng.longitude + "&sensor=true"));
+					new HttpRequester().getJSONFromUrl(url));
+
+            Log.e("jsonObj", "="+jsonObj);
 
 			
 			String status = jsonObj.getString("status");

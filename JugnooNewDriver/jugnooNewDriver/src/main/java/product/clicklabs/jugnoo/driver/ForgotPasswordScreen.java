@@ -1,14 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -29,6 +20,16 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
+
 public class ForgotPasswordScreen extends Activity{
 	
 	TextView title;
@@ -39,9 +40,10 @@ public class ForgotPasswordScreen extends Activity{
 	TextView extraTextForScroll, forgotPasswordHelpText;
 	
 	LinearLayout relative;
-	
-	static String emailAlready = "";
-	
+
+	String emailAlready = "";
+    boolean fromPreviousAccounts = false;
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -82,9 +84,7 @@ public class ForgotPasswordScreen extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(ForgotPasswordScreen.this, SplashLogin.class));
-				overridePendingTransition(R.anim.left_in, R.anim.left_out);
-				finish();
+                performBackPressed();
 			}
 		});
 		
@@ -143,7 +143,25 @@ public class ForgotPasswordScreen extends Activity{
 				return true;
 			}
 		});
-		
+
+
+        try {
+            if(getIntent().hasExtra("forgotEmail")){
+                emailAlready = getIntent().getStringExtra("forgotEmail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(getIntent().hasExtra("fromPreviousAccounts")){
+                fromPreviousAccounts = getIntent().getBooleanExtra("fromPreviousAccounts", false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 		emailEt.setText(emailAlready);
 		emailEt.setSelection(emailEt.getText().toString().length());
 		
@@ -218,35 +236,36 @@ public class ForgotPasswordScreen extends Activity{
 							try {
 								jObj = new JSONObject(response);
 								int flag = jObj.getInt("flag");
+                                String message = JSONParser.getServerMessage(jObj);
 								if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
 									HomeActivity.logoutUser(activity);
 								}
 								else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
-									String errorMessage = jObj.getString("error");
-									DialogPopup.alertPopup(activity, "", errorMessage);
+									DialogPopup.alertPopup(activity, "", message);
 								}
 								else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
-									String message = jObj.getString("message");
 									DialogPopup.alertPopup(activity, "", message);
 								}
 								else if(ApiResponseFlags.NO_SUCH_USER.getOrdinal() == flag){
-									String errorMessage = jObj.getString("error");
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-								else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
-									String errorMessage = jObj.getString("error");
-									SplashNewActivity.sendToCustomerAppPopup("Alert", errorMessage, activity);
-								}
-								else if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-									String errorMessage = jObj.getString("error");
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-								else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-									String message = jObj.getString("message");
 									DialogPopup.alertPopup(activity, "", message);
 								}
+								else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+									SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+								}
+								else if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+									DialogPopup.alertPopup(activity, "", message);
+								}
+								else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+                                            performBackPressed();
+										}
+									});
+								}
 								else{
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+									DialogPopup.alertPopup(activity, "", message);
 								}
 							}  catch (Exception exception) {
 								exception.printStackTrace();
@@ -279,12 +298,22 @@ public class ForgotPasswordScreen extends Activity{
 	
 	@Override
 	public void onBackPressed() {
-		startActivity(new Intent(ForgotPasswordScreen.this, SplashLogin.class));
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		finish();
-		super.onBackPressed();
+        performBackPressed();
 	}
-	
+
+
+    public void performBackPressed(){
+        Intent intent = new Intent(ForgotPasswordScreen.this, SplashLogin.class);
+        if(fromPreviousAccounts){
+            intent.putExtra("previous_login_email", emailEt.getText().toString().trim());
+        }
+        else{
+            intent.putExtra("forgot_login_email", emailEt.getText().toString().trim());
+        }
+        startActivity(intent);
+        overridePendingTransition(R.anim.left_in, R.anim.left_out);
+        finish();
+    }
 	
 	
 	@Override

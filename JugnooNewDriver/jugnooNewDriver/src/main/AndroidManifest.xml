@@ -112,6 +112,24 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
         </activity>
+
+
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.MultipleAccountsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
         
         <activity
             android:name="product.clicklabs.jugnoo.driver.RideDetailsActivity"
