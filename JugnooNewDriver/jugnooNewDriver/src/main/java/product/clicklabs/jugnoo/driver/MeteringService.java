@@ -64,7 +64,7 @@ public class MeteringService extends Service {
 
     public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
     public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
-    public static final long ALARM_REPEAT_INTERVAL = 30000;
+    public static final long ALARM_REPEAT_INTERVAL = 120000;
 
 
     public void startUploadPathAlarm() {
@@ -108,52 +108,6 @@ public class MeteringService extends Service {
 
 
 
-
-//    Timer timerFetchCurrentPath;
-//    TimerTask timerTaskFetchCurrentPath;
-//
-//    public void startTimerFetchCurrentPath() {
-//        cancelTimerFetchCurrentPath();
-//        try {
-//            timerFetchCurrentPath = new Timer();
-//
-//            timerTaskFetchCurrentPath = new TimerTask() {
-//
-//                @Override
-//                public void run() {
-//                    try {
-//                        ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(MeteringService.this).getCurrentPathItemsValid();
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            };
-//
-//            timerFetchCurrentPath.scheduleAtFixedRate(timerTaskFetchCurrentPath, 1000, 30000);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
-//
-//    public void cancelTimerFetchCurrentPath(){
-//        try{
-//            if(timerTaskFetchCurrentPath != null){
-//                timerTaskFetchCurrentPath.cancel();
-//                timerTaskFetchCurrentPath = null;
-//            }
-//
-//            if(timerFetchCurrentPath != null){
-//                timerFetchCurrentPath.cancel();
-//                timerFetchCurrentPath.purge();
-//                timerFetchCurrentPath = null;
-//            }
-//
-//        } catch(Exception e){
-//            e.printStackTrace();
-//        }
-//    }
 
 
 

@@ -39,4 +39,9 @@ public class CurrentPathItem {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return id+","+parentId+","+sectionIncomplete+","+googlePath+","+acknowledged;
+    }
 }

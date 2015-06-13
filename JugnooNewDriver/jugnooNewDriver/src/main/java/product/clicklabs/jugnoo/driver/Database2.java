@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -1219,6 +1220,7 @@ public class Database2 {																	// class for handling database related 
             ContentValues contentValues = new ContentValues();
             contentValues.put(ACKNOWLEDGED, acknowledged);
             int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
+            Log.e("rowsAffected", "="+rowsAffected);
             return rowsAffected;
         } catch(Exception e){
             e.printStackTrace();
@@ -1228,11 +1230,11 @@ public class Database2 {																	// class for handling database related 
 
 
 
-    public ArrayList<CurrentPathItem> getCurrentPathItemsAll(){
+    public ArrayList<CurrentPathItem> getCurrentPathItemsUploaded(){
         ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
-            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, null, null, null, null, null);
+            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=1", null, null, null, null);
             if (cursor.getCount() > 0) {
                 int in0 = cursor.getColumnIndex(ID);
                 int in1 = cursor.getColumnIndex(PARENT_ID);
@@ -1246,15 +1248,17 @@ public class Database2 {																	// class for handling database related 
 
                 for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
                     try {
-                        currentPathItems.add(new CurrentPathItem(cursor.getLong(in0),
-                            cursor.getLong(in1),
-                            cursor.getDouble(in2),
-                            cursor.getDouble(in3),
-                            cursor.getDouble(in4),
-                            cursor.getDouble(in5),
-                            cursor.getInt(in6),
-                            cursor.getInt(in7),
-                            cursor.getInt(in8)));
+                        if (1 != cursor.getInt(in7)) {
+                            currentPathItems.add(new CurrentPathItem(cursor.getLong(in0),
+                                cursor.getLong(in1),
+                                cursor.getDouble(in2),
+                                cursor.getDouble(in3),
+                                cursor.getDouble(in4),
+                                cursor.getDouble(in5),
+                                cursor.getInt(in6),
+                                cursor.getInt(in7),
+                                cursor.getInt(in8)));
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1268,7 +1272,7 @@ public class Database2 {																	// class for handling database related 
 
 
 
-    public ArrayList<CurrentPathItem> getCurrentPathItemsValid(){
+    public ArrayList<CurrentPathItem> getCurrentPathItemsToUpload(){
         ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };

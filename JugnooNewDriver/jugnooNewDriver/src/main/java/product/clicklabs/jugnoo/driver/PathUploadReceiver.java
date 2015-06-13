@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.utils.Log;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
@@ -33,7 +34,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                     public void run() {
                         try {
 
-                            ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(context).getCurrentPathItemsValid();
+                            ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(context).getCurrentPathItemsToUpload();
 
                             if(validCurrentPathItems.size() > 0){
 
@@ -68,6 +69,8 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                     nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
                                     nameValuePairs.add(new BasicNameValuePair("locations", locations));
 
+                                    Log.e("", "");
+
                                     HttpRequester simpleJSONParser = new HttpRequester();
                                     String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/log_ongoing_ride_path", nameValuePairs);
 
@@ -84,7 +87,9 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                     PolylineOptions polylineOptions = new PolylineOptions();
                                                     for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                                         rowIds.add(currentPathItem.id);
-                                                        polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
+                                                        if(1 != currentPathItem.googlePath) {
+                                                            polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
+                                                        }
                                                     }
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
                                                     if(HomeActivity.appInterruptHandler != null){
