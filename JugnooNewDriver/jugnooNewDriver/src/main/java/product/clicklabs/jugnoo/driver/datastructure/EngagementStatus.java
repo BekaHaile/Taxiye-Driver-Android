@@ -22,8 +22,10 @@ public enum EngagementStatus {
 	// request was accepted and then rejected
 	CLOSED(9),
 	// request was closed when the driver accepted other request
-	CANCELLED_ACCEPTED_REQUEST(10);
+	CANCELLED_ACCEPTED_REQUEST(10),
 	// request was cancelled after it was accepted by a driver
+    ARRIVED(14);
+    // request was cancelled after it was accepted by a driver
 
 	
 	

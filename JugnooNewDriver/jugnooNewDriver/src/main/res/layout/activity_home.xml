@@ -392,6 +392,21 @@
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size" />
 
+
+                        <Button
+                            android:id="@+id/buttonMarkArrived"
+                            android:layout_width="648px"
+                            android:layout_height="99px"
+                            android:layout_above="@+id/driverCancelRideBtn"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="27px"
+                            android:background="@drawable/blue_btn_selector"
+                            android:text="Arrived"
+                            android:textColor="@drawable/white_color_selector"
+                            android:textSize="@dimen/button_text_size"
+                            android:visibility="gone"
+                            />
+
                         <Button
                             android:id="@+id/driverCancelRideBtn"
                             android:layout_width="648px"
