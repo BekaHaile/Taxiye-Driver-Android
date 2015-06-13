@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="product.clicklabs.jugnoo.driver"
-    android:versionCode="177"
-    android:versionName="1.7.7" >
+    android:versionCode="180"
+    android:versionName="1.8.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -188,6 +188,16 @@
                 <action android:name="product.clicklabs.jugnoo.driver.START_SERVICE" />
             </intent-filter>
         </receiver>
+
+
+
+        <receiver android:name="product.clicklabs.jugnoo.driver.PathUploadReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
+            </intent-filter>
+        </receiver>
+
+
 
         <meta-data
             android:name="com.google.android.gms.version"

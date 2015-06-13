@@ -1,10 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-
-import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
-import product.clicklabs.jugnoo.driver.datastructure.RideData;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +9,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.RequestParams;
+
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Handles database related work
@@ -104,9 +107,26 @@ public class Database2 {																	// class for handling database related 
 	
 	private static final String TABLE_METERING_STATE = "table_metering_state";
 	private static final String METERING_STATE = "metering_state";
-	
-	
-	/**
+
+
+
+
+    // ***************** // table_current_path table columns  // **********************//
+    private static final String TABLE_CURRENT_PATH = "table_current_path";
+    private static final String ID = "id";
+    private static final String PARENT_ID = "parent_id";
+    private static final String SLAT = "slat";
+    private static final String SLNG = "slng";
+    private static final String DLAT = "dlat";
+    private static final String DLNG = "dlng";
+    private static final String SECTION_INCOMPLETE = "section_incomplete";
+    private static final String GOOGLE_PATH = "google_path";
+    private static final String ACKNOWLEDGED = "acknowledged";
+
+
+
+
+    /**
 	 * Creates and opens database for the application use 
 	 * @author shankar
 	 *
@@ -195,6 +215,20 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
 				+ METERING_STATE + " TEXT" + ");");
+
+
+        database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CURRENT_PATH + " ("
+            + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + PARENT_ID + " INTEGER, "
+            + SLAT + " REAL, "
+            + SLNG + " REAL, "
+            + DLAT + " REAL, "
+            + DLNG + " REAL, "
+            + SECTION_INCOMPLETE + " INTEGER, "
+            + GOOGLE_PATH + " INTEGER, "
+            + ACKNOWLEDGED + " INTEGER"
+            + ");");
+
 		
 	}
 	
@@ -209,10 +243,7 @@ public class Database2 {																	// class for handling database related 
 		return dbInstance;
 	}
 	
-	public static void nullify() {
-		dbInstance = null;
-	}
-	
+
 	private Database2(Context context) {
 		dbHelper = new DbHelper(context);
 		database = dbHelper.getWritableDatabase();
@@ -1098,6 +1129,236 @@ public class Database2 {																	// class for handling database related 
 			return 0;
 		}
 	}
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//        + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+//        + PARENT_ID + " INTEGER, "
+//        + SLAT + " REAL, "
+//        + SLNG + " REAL, "
+//        + DLAT + " REAL, "
+//        + DLNG + " REAL, "
+//        + SECTION_INCOMPLETE + " INTEGER, "
+//        + GOOGLE_PATH + " INTEGER, "
+//        + ACKNOWLEDGED + " INTEGER"
+
+
+    //------- Current path table
+
+    public long insertCurrentPathItem(long parentId, double slat, double slng, double dlat, double dlng, int sectionIncomplete, int googlePath) {
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(PARENT_ID, parentId);
+            contentValues.put(SLAT, slat);
+            contentValues.put(SLNG, slng);
+            contentValues.put(DLAT, dlat);
+            contentValues.put(DLNG, dlng);
+            contentValues.put(SECTION_INCOMPLETE, sectionIncomplete);
+            contentValues.put(GOOGLE_PATH, googlePath);
+            contentValues.put(ACKNOWLEDGED, 0);
+
+            return database.insert(TABLE_CURRENT_PATH, null, contentValues);
+        } catch(Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int updateCurrentPathItemSectionIncomplete(long rowId, int sectionIncomplete){
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SECTION_INCOMPLETE, sectionIncomplete);
+            int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
+            return rowsAffected;
+        } catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateCurrentPathItemSectionIncompleteAndGooglePath(long rowId, int sectionIncomplete, int googlePath){
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(SECTION_INCOMPLETE, sectionIncomplete);
+            contentValues.put(GOOGLE_PATH, googlePath);
+            int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
+            return rowsAffected;
+        } catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public int updateCurrentPathItemAcknowledged(long rowId, int acknowledged){
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ACKNOWLEDGED, acknowledged);
+            int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + "=" + rowId, null);
+            return rowsAffected;
+        } catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+    public int updateCurrentPathItemAcknowledgedForArray(ArrayList<Long> rowId, int acknowledged){
+        try{
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(ACKNOWLEDGED, acknowledged);
+            int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
+            Log.e("rowsAffected", "="+rowsAffected);
+            return rowsAffected;
+        } catch(Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
+
+    public ArrayList<CurrentPathItem> getCurrentPathItemsUploaded(){
+        ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+        try {
+            String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
+            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=1", null, null, null, null);
+            if (cursor.getCount() > 0) {
+                int in0 = cursor.getColumnIndex(ID);
+                int in1 = cursor.getColumnIndex(PARENT_ID);
+                int in2 = cursor.getColumnIndex(SLAT);
+                int in3 = cursor.getColumnIndex(SLNG);
+                int in4 = cursor.getColumnIndex(DLAT);
+                int in5 = cursor.getColumnIndex(DLNG);
+                int in6 = cursor.getColumnIndex(SECTION_INCOMPLETE);
+                int in7 = cursor.getColumnIndex(GOOGLE_PATH);
+                int in8 = cursor.getColumnIndex(ACKNOWLEDGED);
+
+                for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+                    try {
+                        if (1 != cursor.getInt(in7)) {
+                            currentPathItems.add(new CurrentPathItem(cursor.getLong(in0),
+                                cursor.getLong(in1),
+                                cursor.getDouble(in2),
+                                cursor.getDouble(in3),
+                                cursor.getDouble(in4),
+                                cursor.getDouble(in5),
+                                cursor.getInt(in6),
+                                cursor.getInt(in7),
+                                cursor.getInt(in8)));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return currentPathItems;
+    }
+
+
+
+    public ArrayList<CurrentPathItem> getCurrentPathItemsToUpload(){
+        ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+        try {
+            String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
+            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
+            if (cursor.getCount() > 0) {
+                int in0 = cursor.getColumnIndex(ID);
+                int in1 = cursor.getColumnIndex(PARENT_ID);
+                int in2 = cursor.getColumnIndex(SLAT);
+                int in3 = cursor.getColumnIndex(SLNG);
+                int in4 = cursor.getColumnIndex(DLAT);
+                int in5 = cursor.getColumnIndex(DLNG);
+                int in6 = cursor.getColumnIndex(SECTION_INCOMPLETE);
+                int in7 = cursor.getColumnIndex(GOOGLE_PATH);
+                int in8 = cursor.getColumnIndex(ACKNOWLEDGED);
+
+
+                int currentCursorPosition = -1;
+                long parentId = 0;
+                for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+                    try {
+                        if(0 == cursor.getInt(in6)) {
+                            CurrentPathItem currentPathItem = new CurrentPathItem(cursor.getLong(in0),
+                                cursor.getLong(in1),
+                                cursor.getDouble(in2),
+                                cursor.getDouble(in3),
+                                cursor.getDouble(in4),
+                                cursor.getDouble(in5),
+                                cursor.getInt(in6),
+                                cursor.getInt(in7),
+                                cursor.getInt(in8));
+
+                            currentPathItems.add(currentPathItem);
+                            if (1 == currentPathItem.googlePath) {
+                                parentId = currentPathItem.id;
+                                currentCursorPosition = cursor.getPosition();
+                                for (cursor.moveToPosition(currentCursorPosition); !cursor.isAfterLast(); cursor.moveToNext()) {
+                                    try {
+                                        if(0 == cursor.getInt(in6)) {
+                                            CurrentPathItem currentPathItemChild = new CurrentPathItem(cursor.getLong(in0),
+                                                cursor.getLong(in1),
+                                                cursor.getDouble(in2),
+                                                cursor.getDouble(in3),
+                                                cursor.getDouble(in4),
+                                                cursor.getDouble(in5),
+                                                cursor.getInt(in6),
+                                                cursor.getInt(in7),
+                                                cursor.getInt(in8));
+                                            if (parentId == currentPathItemChild.parentId) {
+                                                currentPathItems.add(currentPathItemChild);
+                                            }
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                cursor.moveToPosition(currentCursorPosition);
+                            }
+                        }
+                        else{
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return currentPathItems;
+    }
+
+
+
+    public void deleteAllCurrentPathItems(){
+        try{
+            database.delete(Database2.TABLE_CURRENT_PATH, null, null);
+            database.execSQL("DROP TABLE " + Database2.TABLE_CURRENT_PATH);
+            createAllTables(database);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 	
 }

@@ -1,17 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -20,6 +8,19 @@ import android.os.Handler;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class GpsDistanceCalculator {
 	
@@ -291,13 +292,16 @@ public class GpsDistanceCalculator {
 			if(Utils.compareDouble(displacement, MAX_DISPLACEMENT_THRESHOLD) == -1){
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if(validDistance){
+                    Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
+                        currentLatLng.latitude, currentLatLng.longitude, 0, 0);
 					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(lastLatLng, currentLatLng));
-					Database.getInstance(context).insertPolyLine(lastLatLng, currentLatLng);
 				}
 			}
 			else{
-				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation);
+                long rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
+                    currentLatLng.latitude, currentLatLng.longitude, 1, 1);
+				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -335,11 +339,11 @@ public class GpsDistanceCalculator {
 	
 	
 	
-	private synchronized void callGoogleDirectionsAPI(LatLng lastLatLng, LatLng currentLatLng, double displacement, Location currentLocation){
+	private synchronized void callGoogleDirectionsAPI(LatLng lastLatLng, LatLng currentLatLng, double displacement, Location currentLocation, long rowId){
 		if(directionsAsyncTasks == null){
 			directionsAsyncTasks = new ArrayList<DirectionsAsyncTask>();
 		}
-		DirectionsAsyncTask directionsAsyncTask = new DirectionsAsyncTask(lastLatLng, currentLatLng, displacement, currentLocation);
+		DirectionsAsyncTask directionsAsyncTask = new DirectionsAsyncTask(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
 		if(!directionsAsyncTasks.contains(directionsAsyncTask)){
 			directionsAsyncTasks.add(directionsAsyncTask);
 			directionsAsyncTask.execute();
@@ -351,12 +355,14 @@ public class GpsDistanceCalculator {
 	    double displacementToCompare;
 	    LatLng source, destination;
 	    Location currentLocation;
-	    public DirectionsAsyncTask(LatLng source, LatLng destination, double displacementToCompare, Location currentLocation){
+        long rowId;
+	    public DirectionsAsyncTask(LatLng source, LatLng destination, double displacementToCompare, Location currentLocation, long rowId){
 	    	this.source = source;
 	    	this.destination = destination;
 	        this.url = MapUtils.makeDirectionsURL(source, destination);
 	        this.displacementToCompare = displacementToCompare;
 	        this.currentLocation = currentLocation;
+            this.rowId = rowId;
 	    }
 	    
 	    @Override
@@ -371,7 +377,7 @@ public class GpsDistanceCalculator {
 	    protected void onPostExecute(String result) {
 	        super.onPostExecute(result);   
 	        if(result!=null){
-	            updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation);
+	            updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
 	        }
 	        directionsAsyncTasks.remove(this);
 	    }
@@ -391,7 +397,7 @@ public class GpsDistanceCalculator {
 	}
 	
 	
-	private synchronized void updateGAPIDistance(String result, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation) {
+	private synchronized void updateGAPIDistance(String result, double displacementToCompare, LatLng source, LatLng destination, Location currentLocation, long rowId) {
 	    try {
 	    	double distanceOfPath = Double.MAX_VALUE;
 	    	JSONObject jsonObject = new JSONObject(result);
@@ -417,9 +423,13 @@ public class GpsDistanceCalculator {
 		                LatLng src= list.get(z);
 		                LatLng dest= list.get(z+1);
 		                polylineOptions.add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude));
-		                Database.getInstance(context).insertPolyLine(src, dest);
+
+                        Database2.getInstance(context).insertCurrentPathItem(rowId, src.latitude, src.longitude,
+                            dest.latitude, dest.longitude, 0, 0);
 		            }
-					
+
+                    Database2.getInstance(context).updateCurrentPathItemSectionIncomplete(rowId, 0);
+
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(polylineOptions);
 		        }
 		        Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "gapi case successful");
@@ -434,7 +444,9 @@ public class GpsDistanceCalculator {
 	    	if(validDistance){
 	    		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
 	    		GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(source, destination));
-				Database.getInstance(context).insertPolyLine(source, destination);
+
+                Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
+
 	    	}
 	    	Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "gapi case unsuccessful");
 	    }

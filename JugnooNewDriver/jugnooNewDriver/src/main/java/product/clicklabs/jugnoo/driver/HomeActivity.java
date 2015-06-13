@@ -27,7 +27,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -84,6 +83,7 @@ import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
@@ -366,7 +366,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//TODO check final variables
 	public static AppMode appMode;
 	
-	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
+	public static final int MAP_PATH_COLOR = Color.BLUE;
 	public static final int D_TO_C_MAP_PATH_COLOR = Color.RED;
 	public static final int DRIVER_TO_STATION_MAP_PATH_COLOR = Color.BLUE;
 	
@@ -2656,39 +2656,36 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	public synchronized void displayOldPath(){
-		
+
 		try {
-			ArrayList<Pair<LatLng, LatLng>> path = Database.getInstance(HomeActivity.this).getSavedPath();
-			Database.getInstance(HomeActivity.this).close();
-			
-			LatLng firstLatLng = null;
-			
-			PolylineOptions polylineOptions = new PolylineOptions();
-			polylineOptions.width(5);
-			polylineOptions.color(MAP_PATH_COLOR);
-			polylineOptions.geodesic(true);
-			
-			for(Pair<LatLng, LatLng> pair : path){
-				LatLng src = pair.first;
-			    LatLng dest = pair.second;
-			    
-				if(firstLatLng == null){
-					firstLatLng = src;
-				}
-				
-				polylineOptions.add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude));
-			}
-			
+            ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsUploaded();
+
+            LatLng firstLatLng = null;
+
+            PolylineOptions polylineOptions = new PolylineOptions();
+            polylineOptions.width(5);
+            polylineOptions.color(MAP_PATH_COLOR);
+            polylineOptions.geodesic(true);
+
+            for(CurrentPathItem currentPathItem : currentPathItemsArr){
+                if(1 != currentPathItem.googlePath) {
+                    polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
+                    if (firstLatLng == null) {
+                        firstLatLng = currentPathItem.sLatLng;
+                    }
+                }
+            }
+
+
 			if(Color.TRANSPARENT != MAP_PATH_COLOR){
 				map.addPolyline(polylineOptions);
 			}
-			
-			
-			
+
+
 			if(firstLatLng == null){
 				firstLatLng = Data.startRidePreviousLatLng;
 			}
-			
+
 			if(firstLatLng != null){
 				MarkerOptions markerOptions = new MarkerOptions();
 				markerOptions.snippet("");
@@ -6043,11 +6040,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void onStationChangedPushReceived() {
 		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				initializeStationDataProcedure();
-			}
-		});
+            @Override
+            public void run() {
+                initializeStationDataProcedure();
+            }
+        });
 		
 	}
 	
@@ -6122,5 +6119,5 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 	}
-	
+
 }
