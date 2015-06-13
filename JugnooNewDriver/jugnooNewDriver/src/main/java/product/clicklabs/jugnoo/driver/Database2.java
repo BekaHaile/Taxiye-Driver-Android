@@ -1272,7 +1272,7 @@ public class Database2 {																	// class for handling database related 
         ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
-            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, SECTION_INCOMPLETE + "=0 & " + ACKNOWLEDGED + "=0", null, null, null, null);
+            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
             if (cursor.getCount() > 0) {
                 int in0 = cursor.getColumnIndex(ID);
                 int in1 = cursor.getColumnIndex(PARENT_ID);
@@ -1285,37 +1285,11 @@ public class Database2 {																	// class for handling database related 
                 int in8 = cursor.getColumnIndex(ACKNOWLEDGED);
 
 
-                int position = -1;
+                int currentCursorPosition = -1;
                 long parentId = 0;
-                boolean research = false;
                 for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
                     try {
-                        CurrentPathItem currentPathItem = new CurrentPathItem(cursor.getLong(in0),
-                            cursor.getLong(in1),
-                            cursor.getDouble(in2),
-                            cursor.getDouble(in3),
-                            cursor.getDouble(in4),
-                            cursor.getDouble(in5),
-                            cursor.getInt(in6),
-                            cursor.getInt(in7),
-                            cursor.getInt(in8));
-
-                        currentPathItems.add(currentPathItem);
-                        if(1 == currentPathItem.googlePath){
-                            parentId = currentPathItem.id;
-                            research = true;
-                            position = cursor.getPosition();
-                            break;
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-
-                if(research) {
-                    for (cursor.moveToPosition(position); !cursor.isAfterLast(); cursor.moveToNext()) {
-                        try {
+                        if(0 == cursor.getInt(in6)) {
                             CurrentPathItem currentPathItem = new CurrentPathItem(cursor.getLong(in0),
                                 cursor.getLong(in1),
                                 cursor.getDouble(in2),
@@ -1325,12 +1299,42 @@ public class Database2 {																	// class for handling database related 
                                 cursor.getInt(in6),
                                 cursor.getInt(in7),
                                 cursor.getInt(in8));
-                            if(parentId == currentPathItem.parentId){
-                                currentPathItems.add(currentPathItem);
+
+                            currentPathItems.add(currentPathItem);
+                            if (1 == currentPathItem.googlePath) {
+                                parentId = currentPathItem.id;
+                                currentCursorPosition = cursor.getPosition();
+                                for (cursor.moveToPosition(currentCursorPosition); !cursor.isAfterLast(); cursor.moveToNext()) {
+                                    try {
+                                        if(0 == cursor.getInt(in6)) {
+                                            CurrentPathItem currentPathItemChild = new CurrentPathItem(cursor.getLong(in0),
+                                                cursor.getLong(in1),
+                                                cursor.getDouble(in2),
+                                                cursor.getDouble(in3),
+                                                cursor.getDouble(in4),
+                                                cursor.getDouble(in5),
+                                                cursor.getInt(in6),
+                                                cursor.getInt(in7),
+                                                cursor.getInt(in8));
+                                            if (parentId == currentPathItemChild.parentId) {
+                                                currentPathItems.add(currentPathItemChild);
+                                            }
+                                        }
+                                        else{
+                                            break;
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                cursor.moveToPosition(currentCursorPosition);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
                         }
+                        else{
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
@@ -1343,13 +1347,14 @@ public class Database2 {																	// class for handling database related 
 
 
 
-    public int deleteCurrentPathItem(long rowId){
+    public void deleteAllCurrentPathItems(){
         try{
-            return database.delete(Database2.TABLE_CURRENT_PATH, ID + "=" + rowId, null);
+            database.delete(Database2.TABLE_CURRENT_PATH, null, null);
+            database.execSQL("DROP TABLE " + Database2.TABLE_CURRENT_PATH);
+            createAllTables(database);
         } catch(Exception e){
             e.printStackTrace();
         }
-        return 0;
     }
 	
 }

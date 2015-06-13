@@ -2656,50 +2656,50 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	public synchronized void displayOldPath(){
-		
-		try {
-			ArrayList<Pair<LatLng, LatLng>> path = Database.getInstance(HomeActivity.this).getSavedPath();
-			Database.getInstance(HomeActivity.this).close();
-			
-			LatLng firstLatLng = null;
-			
-			PolylineOptions polylineOptions = new PolylineOptions();
-			polylineOptions.width(5);
-			polylineOptions.color(MAP_PATH_COLOR);
-			polylineOptions.geodesic(true);
-			
-			for(Pair<LatLng, LatLng> pair : path){
-				LatLng src = pair.first;
-			    LatLng dest = pair.second;
-			    
-				if(firstLatLng == null){
-					firstLatLng = src;
-				}
-				
-				polylineOptions.add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude));
-			}
-			
-			if(Color.TRANSPARENT != MAP_PATH_COLOR){
-				map.addPolyline(polylineOptions);
-			}
-			
-			
-			
-			if(firstLatLng == null){
-				firstLatLng = Data.startRidePreviousLatLng;
-			}
-			
-			if(firstLatLng != null){
-				MarkerOptions markerOptions = new MarkerOptions();
-				markerOptions.snippet("");
-				markerOptions.title("start ride location");
-				markerOptions.position(firstLatLng);
-				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
-				rideStartPositionMarker = map.addMarker(markerOptions);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//
+//		try {
+//			ArrayList<Pair<LatLng, LatLng>> path = Database.getInstance(HomeActivity.this).getSavedPath();
+//			Database.getInstance(HomeActivity.this).close();
+//
+//			LatLng firstLatLng = null;
+//
+//			PolylineOptions polylineOptions = new PolylineOptions();
+//			polylineOptions.width(5);
+//			polylineOptions.color(MAP_PATH_COLOR);
+//			polylineOptions.geodesic(true);
+//
+//			for(Pair<LatLng, LatLng> pair : path){
+//				LatLng src = pair.first;
+//			    LatLng dest = pair.second;
+//
+//				if(firstLatLng == null){
+//					firstLatLng = src;
+//				}
+//
+//				polylineOptions.add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude));
+//			}
+//
+//			if(Color.TRANSPARENT != MAP_PATH_COLOR){
+//				map.addPolyline(polylineOptions);
+//			}
+//
+//
+//
+//			if(firstLatLng == null){
+//				firstLatLng = Data.startRidePreviousLatLng;
+//			}
+//
+//			if(firstLatLng != null){
+//				MarkerOptions markerOptions = new MarkerOptions();
+//				markerOptions.snippet("");
+//				markerOptions.title("start ride location");
+//				markerOptions.position(firstLatLng);
+//				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
+//				rideStartPositionMarker = map.addMarker(markerOptions);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	

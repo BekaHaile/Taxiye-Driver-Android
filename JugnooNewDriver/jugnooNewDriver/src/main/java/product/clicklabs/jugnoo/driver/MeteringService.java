@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -16,11 +17,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -45,7 +42,8 @@ public class MeteringService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
     	cancelAlarm();
-    	gpsInstance(this).start();
+        gpsInstance(this).start();
+        startUploadPathAlarm();
     }
     
     
@@ -64,52 +62,98 @@ public class MeteringService extends Service {
 
 
 
+    public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
+    public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
+    public static final long ALARM_REPEAT_INTERVAL = 30000;
 
-    Timer timerFetchCurrentPath;
-    TimerTask timerTaskFetchCurrentPath;
 
-    public void startTimerFetchCurrentPath() {
-        cancelTimerFetchCurrentPath();
-        try {
-            timerFetchCurrentPath = new Timer();
+    public void startUploadPathAlarm() {
+        // check task is scheduled or not
+        boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH).putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this)),
+            PendingIntent.FLAG_NO_CREATE) != null);
 
-            timerTaskFetchCurrentPath = new TimerTask() {
-
-                @Override
-                public void run() {
-                    try {
-                        ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(MeteringService.this).getCurrentPathItemsValid();
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            };
-
-            timerFetchCurrentPath.scheduleAtFixedRate(timerTaskFetchCurrentPath, 1000, 30000);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (alarmUp) {
+            cancelUploadPathAlarm();
         }
+
+        Intent intent = new Intent(this, PathUploadReceiver.class);
+        intent.setAction(UPOLOAD_PATH);
+        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
 
     }
 
-    public void cancelTimerFetchCurrentPath(){
-        try{
-            if(timerTaskFetchCurrentPath != null){
-                timerTaskFetchCurrentPath.cancel();
-                timerTaskFetchCurrentPath = null;
-            }
-
-            if(timerFetchCurrentPath != null){
-                timerFetchCurrentPath.cancel();
-                timerFetchCurrentPath.purge();
-                timerFetchCurrentPath = null;
-            }
-
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+    public void cancelUploadPathAlarm() {
+        Intent intent = new Intent(this, PathUploadReceiver.class);
+        intent.setAction(UPOLOAD_PATH);
+        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
     }
+
+
+
+
+
+
+
+
+
+
+
+//    Timer timerFetchCurrentPath;
+//    TimerTask timerTaskFetchCurrentPath;
+//
+//    public void startTimerFetchCurrentPath() {
+//        cancelTimerFetchCurrentPath();
+//        try {
+//            timerFetchCurrentPath = new Timer();
+//
+//            timerTaskFetchCurrentPath = new TimerTask() {
+//
+//                @Override
+//                public void run() {
+//                    try {
+//                        ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(MeteringService.this).getCurrentPathItemsValid();
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            };
+//
+//            timerFetchCurrentPath.scheduleAtFixedRate(timerTaskFetchCurrentPath, 1000, 30000);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
+//
+//    public void cancelTimerFetchCurrentPath(){
+//        try{
+//            if(timerTaskFetchCurrentPath != null){
+//                timerTaskFetchCurrentPath.cancel();
+//                timerTaskFetchCurrentPath = null;
+//            }
+//
+//            if(timerFetchCurrentPath != null){
+//                timerFetchCurrentPath.cancel();
+//                timerFetchCurrentPath.purge();
+//                timerFetchCurrentPath = null;
+//            }
+//
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
+//    }
 
 
 
@@ -188,9 +232,9 @@ public class MeteringService extends Service {
 				
 				@Override
 				public void addPathToMap(PolylineOptions polylineOptions) {
-					if(HomeActivity.appInterruptHandler != null){
-						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
-					}
+//					if(HomeActivity.appInterruptHandler != null){
+//						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
+//					}
 				}
 				
 			};
