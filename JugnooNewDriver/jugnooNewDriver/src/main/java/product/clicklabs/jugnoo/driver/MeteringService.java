@@ -131,6 +131,8 @@ public class MeteringService extends Service {
     		}
     		else{
     			gpsInstance(this).stop();
+                Database2.getInstance(this).deleteAllCurrentPathItems();
+                cancelUploadPathAlarm();
     		}
 		} catch (Exception e) {
 			e.printStackTrace();

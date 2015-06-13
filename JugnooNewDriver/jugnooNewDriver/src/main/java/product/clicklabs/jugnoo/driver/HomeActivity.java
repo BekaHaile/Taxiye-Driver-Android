@@ -1775,6 +1775,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				displayCouponApplied();
 				
 				reviewSubmitBtn.setText("OK");
+
+                Database2.getInstance(this).deleteAllCurrentPathItems();
 				
 			}
 			else{
@@ -3304,6 +3306,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		lastLocationTime = System.currentTimeMillis();
 		
 		Database2.getInstance(this).deleteRideData();
+        Database2.getInstance(this).deleteAllCurrentPathItems();
 		
 		Database.getInstance(this).deleteSavedPath();
 		
