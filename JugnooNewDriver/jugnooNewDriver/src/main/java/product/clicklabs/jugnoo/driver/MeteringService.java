@@ -1,9 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.text.DecimalFormat;
-
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,6 +14,11 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.text.DecimalFormat;
+
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MeteringService extends Service {
 	
