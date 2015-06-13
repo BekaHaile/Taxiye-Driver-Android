@@ -64,7 +64,7 @@ public class MeteringService extends Service {
 
     public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
     public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
-    public static final long ALARM_REPEAT_INTERVAL = 120000;
+    public static final long ALARM_REPEAT_INTERVAL = 30000;
 
 
     public void startUploadPathAlarm() {
@@ -186,9 +186,9 @@ public class MeteringService extends Service {
 				
 				@Override
 				public void addPathToMap(PolylineOptions polylineOptions) {
-//					if(HomeActivity.appInterruptHandler != null){
-//						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
-//					}
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
+					}
 				}
 				
 			};

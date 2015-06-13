@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.google.android.gms.maps.model.PolylineOptions;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -84,17 +82,10 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                 int flag = jObj.getInt("flag");
                                                 if(ApiResponseFlags.RIDE_PATH_RECEIVED.getOrdinal() == flag){
                                                     ArrayList<Long> rowIds = new ArrayList<Long>();
-                                                    PolylineOptions polylineOptions = new PolylineOptions();
                                                     for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                                         rowIds.add(currentPathItem.id);
-                                                        if(1 != currentPathItem.googlePath) {
-                                                            polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
-                                                        }
                                                     }
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
-                                                    if(HomeActivity.appInterruptHandler != null){
-                                                        HomeActivity.appInterruptHandler.addPathToMap(polylineOptions);
-                                                    }
                                                 }
                                             }
                                         } catch(Exception e){

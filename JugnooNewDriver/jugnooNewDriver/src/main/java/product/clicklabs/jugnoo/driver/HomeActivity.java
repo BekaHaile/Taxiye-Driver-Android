@@ -6040,11 +6040,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void onStationChangedPushReceived() {
 		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				initializeStationDataProcedure();
-			}
-		});
+            @Override
+            public void run() {
+                initializeStationDataProcedure();
+            }
+        });
 		
 	}
 	
@@ -6119,5 +6119,5 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 	}
-	
+
 }

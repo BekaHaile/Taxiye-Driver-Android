@@ -27,6 +27,5 @@ public interface AppInterruptHandler {
 	public void drawOldPath();
 	
 	public void addPathToMap(PolylineOptions polylineOptions);
-	
-	
+
 }
