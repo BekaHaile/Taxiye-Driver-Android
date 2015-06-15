@@ -474,6 +474,8 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+
+
 			
 			if(jLastRideData.has("promotion")){
 				try{
