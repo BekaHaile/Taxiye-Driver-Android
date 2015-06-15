@@ -241,7 +241,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
-	Button driverStartRideMyLocationBtn, driverStartRideBtn;
+	Button driverStartRideMyLocationBtn, driverStartRideBtn, buttonMarkArrived;
 	Button driverCancelRideBtn;
 	
 	
@@ -588,6 +588,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
 		driverStartRideMyLocationBtn = (Button) findViewById(R.id.driverStartRideMyLocationBtn);
 		driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn); driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+        buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived); buttonMarkArrived.setTypeface(Data.latoRegular(this));
 		driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn); driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		
@@ -715,16 +716,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		
 		checkServerBtn.setOnLongClickListener(new View.OnLongClickListener() {
-			
-			@Override
-			public boolean onLongClick(View v) {
 
-				Toast.makeText(getApplicationContext(), "url = "+Data.SERVER_URL, Toast.LENGTH_SHORT).show();
-				FlurryEventLogger.checkServerPressed(Data.userData.accessToken);
-				
-				return false;
-			}
-		});
+            @Override
+            public boolean onLongClick(View v) {
+
+                Toast.makeText(getApplicationContext(), "url = " + Data.SERVER_URL, Toast.LENGTH_SHORT).show();
+                FlurryEventLogger.checkServerPressed(Data.userData.accessToken);
+
+                return false;
+            }
+        });
 		
 		
 		
@@ -998,7 +999,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 				if(Data.assignedCustomerInfo != null){
 					if(BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType){
-						if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+						if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode){
 							callPhoneNumber = Data.assignedCustomerInfo.phoneNumber;
 						}
 						else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
@@ -1032,8 +1033,48 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				else{
 					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.");
 				}
-	        }
+	           }
 		});
+
+
+        buttonMarkArrived.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getBatteryPercentage() >= 10){
+                    DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if(myLocation != null){
+                                    LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+                                    double displacement = MapUtils.distance(driverAtPickupLatLng, Data.dCustLatLng);
+
+                                    if(displacement <= DRIVER_START_RIDE_CHECK_METERS){
+                                        buildAlertMessageNoGps();
+                                        GCMIntentService.clearNotifications(activity);
+                                        driverMarkArriveRideAsync(activity, driverAtPickupLatLng);
+                                    }
+                                    else{
+                                        DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to mark ride arrived.");
+                                    }
+                                }
+                                else{
+                                    Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        },
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                            }
+                        }, false, false);
+                }
+                else{
+                    DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.");
+                }
+            }
+        });
+
 		
 		
 		
@@ -1593,7 +1634,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
     public boolean isDriverEngaged(){
         return (UserMode.DRIVER == userMode
-            && (DriverScreenMode.D_START_RIDE == driverScreenMode
+            && (DriverScreenMode.D_ARRIVED == driverScreenMode
+            || DriverScreenMode.D_START_RIDE == driverScreenMode
             ||  DriverScreenMode.D_IN_RIDE == driverScreenMode));
     }
 
@@ -1866,7 +1908,41 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				break;
 				
 				
-				
+            case D_ARRIVED:
+
+                updateDriverServiceFast("yes");
+
+                stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+                startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+                if(map != null){
+                    map.clear();
+                    customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.assignedCustomerInfo.requestlLatLng));
+                }
+
+
+                setAssignedCustomerInfoToViews(mode);
+
+
+                driverInitialLayout.setVisibility(View.GONE);
+                driverRequestAcceptLayout.setVisibility(View.GONE);
+                driverEngagedLayout.setVisibility(View.VISIBLE);
+
+                driverStartRideMainRl.setVisibility(View.VISIBLE);
+                driverInRideMainRl.setVisibility(View.GONE);
+
+                driverStartRideBtn.setVisibility(View.GONE);
+                buttonMarkArrived.setVisibility(View.VISIBLE);
+
+
+                startCustomerPathUpdateTimer();
+                cancelMapAnimateAndUpdateRideDataTimer();
+
+                cancelStationPathUpdateTimer();
+
+
+                break;
+
 			case D_START_RIDE:
 				
 				updateDriverServiceFast("yes");
@@ -1889,7 +1965,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 				driverStartRideMainRl.setVisibility(View.VISIBLE);
 				driverInRideMainRl.setVisibility(View.GONE);
-				
+
+                driverStartRideBtn.setVisibility(View.VISIBLE);
+                buttonMarkArrived.setVisibility(View.GONE);
+
 				
 				startCustomerPathUpdateTimer();
 				cancelMapAnimateAndUpdateRideDataTimer();
@@ -2227,7 +2306,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
-                    if(DriverScreenMode.D_START_RIDE == mode){
+                    if(DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode){
                         textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
                         updateCustomerPickupAddress(Data.assignedCustomerInfo.requestlLatLng);
                     }
@@ -2249,7 +2328,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					textViewAfterAcceptRequestInfo.setVisibility(View.VISIBLE);
 					textViewAfterAcceptAmount.setVisibility(View.VISIBLE);
 
-					if (DriverScreenMode.D_START_RIDE == mode) {
+					if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
                         textViewCustomerPickupAddress.setVisibility(View.GONE);
 						driverPassengerName.setText(Data.assignedCustomerInfo.name);
 						textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).address);
@@ -2289,7 +2368,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+                            if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode){
                                 textViewCustomerPickupAddress.setText(address);
                             }
                         }
@@ -2504,7 +2583,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void onBackPressed() {
 		try{
 			if(userMode == UserMode.DRIVER){
-				if(driverScreenMode == DriverScreenMode.D_IN_RIDE || driverScreenMode == DriverScreenMode.D_START_RIDE){
+				if(driverScreenMode == DriverScreenMode.D_IN_RIDE
+                    || driverScreenMode == DriverScreenMode.D_START_RIDE
+                    || driverScreenMode == DriverScreenMode.D_ARRIVED){
 					Intent intent = new Intent(Intent.ACTION_MAIN);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 					intent.addCategory(Intent.CATEGORY_HOME);
@@ -3117,7 +3198,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 									        GCMIntentService.clearNotifications(getApplicationContext());
 									        
-											driverScreenMode = DriverScreenMode.D_START_RIDE;
+											driverScreenMode = DriverScreenMode.D_ARRIVED;
 											switchDriverScreen(driverScreenMode);
 											
 										}
@@ -3159,7 +3240,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											
 									        GCMIntentService.clearNotifications(getApplicationContext());
 									        
-											driverScreenMode = DriverScreenMode.D_START_RIDE;
+											driverScreenMode = DriverScreenMode.D_ARRIVED;
 											switchDriverScreen(driverScreenMode);
 											
 										}
@@ -3297,7 +3378,87 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		
 	}
-	
+
+
+
+    /**
+     * ASync for start ride in  driver mode from server
+     */
+    public void driverMarkArriveRideAsync(final Activity activity, final LatLng driverAtPickupLatLng) {
+
+        if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+            DialogPopup.showLoadingDialog(activity, "Loading...");
+
+            RequestParams params = new RequestParams();
+
+
+            params.put("access_token", Data.userData.accessToken);
+            params.put("engagement_id", Data.dEngagementId);
+            params.put("customer_id", Data.dCustomerId);
+            params.put("pickup_latitude", ""+driverAtPickupLatLng.latitude);
+            params.put("pickup_longitude", ""+driverAtPickupLatLng.longitude);
+
+            if(Data.assignedCustomerInfo != null){
+                params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
+            }
+
+            Log.i("params", "=" + params);
+
+
+            AsyncHttpClient client = Data.getClient();
+            client.post(Data.SERVER_URL + "/mark_arrived", params,
+                new CustomAsyncHttpResponseHandler() {
+                    private JSONObject jObj;
+
+                    @Override
+                    public void onFailure(Throwable arg3) {
+//							Log.e("request fail", arg3.toString());
+                        DialogPopup.dismissLoadingDialog();
+                        callAndHandleStateRestoreAPI();
+                    }
+
+                    @Override
+                    public void onSuccess(String response) {
+                        Log.v("Server response", "response = " + response);
+
+                        try {
+                            jObj = new JSONObject(response);
+
+                            int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
+                            if(jObj.has("flag")){
+                                flag = jObj.getInt("flag");
+                            }
+
+                            if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+                                if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+                                    String error = jObj.getString("error");
+                                    DialogPopup.alertPopup(activity, "", error);
+                                }
+                                else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+                                    driverScreenMode = DriverScreenMode.D_START_RIDE;
+                                    switchDriverScreen(driverScreenMode);
+                                }
+                                else{
+                                    DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                                }
+                            }
+                        }  catch (Exception exception) {
+                            exception.printStackTrace();
+                            DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                        }
+
+                        DialogPopup.dismissLoadingDialog();
+                    }
+                });
+        }
+        else {
+            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+        }
+
+    }
+
+
 	
 	
 	public void initializeStartRideVariables(){
@@ -4466,7 +4627,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 				@Override
 				public void run() {
-					if((driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)){
+					if((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)){
 						getCustomerPathAndDisplay(Data.assignedCustomerInfo.requestlLatLng);
 					}
 					else if (((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType))) {
@@ -4500,7 +4661,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 	
 	public boolean toShowPathToCustomer(){
-		return ((driverScreenMode == DriverScreenMode.D_START_RIDE) || 
+		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE) ||
 		((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType)));
 	}
 	
@@ -5170,7 +5331,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					});
 				}
-				else if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_START_RIDE){
+				else if(userMode == UserMode.DRIVER && (driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE)){
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -5541,7 +5702,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	public void showManualPatchPushReceivedDialog(){
 		try {
-			if(UserMode.DRIVER == userMode && DriverScreenMode.D_START_RIDE == driverScreenMode){
+			if(UserMode.DRIVER == userMode && (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode)){
 				if(Data.assignedCustomerInfo != null){
 					String manualPatchPushReceived = Database2.getInstance(HomeActivity.this).getDriverManualPatchPushReceived();
 					if(Database2.YES.equalsIgnoreCase(manualPatchPushReceived)){

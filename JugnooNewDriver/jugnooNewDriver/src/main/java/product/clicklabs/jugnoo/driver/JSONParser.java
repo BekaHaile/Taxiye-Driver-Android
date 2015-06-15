@@ -689,7 +689,8 @@ public class JSONParser {
 										engagementStatus = jObject.getInt("status");
 										
 										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus)){
+												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
 											engagementId = jObject.getString("engagement_id");
 											userId = jObject.getString("user_id");
 											pickupLatitude = jObject.getDouble("pickup_latitude");
@@ -745,7 +746,8 @@ public class JSONParser {
 										engagementStatus = jObject.getInt("status");
 										
 										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus)){
+												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
 											
 											engagementId = jObject.getString("engagement_id");
 											storeOrderAmount = jObject.getInt("order_amount");
@@ -800,8 +802,11 @@ public class JSONParser {
 			
 			// 0 for request, 1 for accepted,2 for started,3 for ended, 4 for rejected by driver, 5 for rejected by user,6 for timeout, 7 for nullified by chrone
 			if(EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus){
-				screenMode = Data.D_START_RIDE;
+				screenMode = Data.D_ARRIVED;
 			}
+            else if(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus){
+                screenMode = Data.D_START_RIDE;
+            }
 			else if(EngagementStatus.STARTED.getOrdinal() == engagementStatus){
 				screenMode = Data.D_IN_RIDE;
 			}
@@ -840,8 +845,10 @@ public class JSONParser {
 				}
 				
 				
-				
-				if(Data.D_START_RIDE.equalsIgnoreCase(screenMode)){
+				if(Data.D_ARRIVED.equalsIgnoreCase(screenMode)){
+                    HomeActivity.driverScreenMode = DriverScreenMode.D_ARRIVED;
+                }
+				else if(Data.D_START_RIDE.equalsIgnoreCase(screenMode)){
 					HomeActivity.driverScreenMode = DriverScreenMode.D_START_RIDE;
 				}
 				else if(Data.D_IN_RIDE.equalsIgnoreCase(screenMode)){
