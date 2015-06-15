@@ -1041,8 +1041,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             @Override
             public void onClick(View v) {
                 if(getBatteryPercentage() >= 10){
-                    startRidePopup(HomeActivity.this);
-
                     DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
                         new OnClickListener() {
                             @Override
@@ -3427,22 +3425,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                         try {
                             jObj = new JSONObject(response);
 
-                            if(!jObj.isNull("error")){
-
-                                String errorMessage = jObj.getString("error");
-
-                                if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-                                    HomeActivity.logoutUser(activity);
-                                }
-                                else{
-                                    DialogPopup.alertPopup(activity, "", errorMessage);
-                                }
+                            int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
+                            if(jObj.has("flag")){
+                                flag = jObj.getInt("flag");
                             }
-                            else{
-                                int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
-                                if(jObj.has("flag")){
-                                    flag = jObj.getInt("flag");
-                                }
+
+                            if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
                                 if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
                                     String error = jObj.getString("error");
                                     DialogPopup.alertPopup(activity, "", error);

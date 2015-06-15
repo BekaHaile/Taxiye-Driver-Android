@@ -802,10 +802,10 @@ public class JSONParser {
 			
 			// 0 for request, 1 for accepted,2 for started,3 for ended, 4 for rejected by driver, 5 for rejected by user,6 for timeout, 7 for nullified by chrone
 			if(EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus){
-				screenMode = Data.D_START_RIDE;
+				screenMode = Data.D_ARRIVED;
 			}
             else if(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus){
-                screenMode = Data.D_ARRIVED;
+                screenMode = Data.D_START_RIDE;
             }
 			else if(EngagementStatus.STARTED.getOrdinal() == engagementStatus){
 				screenMode = Data.D_IN_RIDE;
