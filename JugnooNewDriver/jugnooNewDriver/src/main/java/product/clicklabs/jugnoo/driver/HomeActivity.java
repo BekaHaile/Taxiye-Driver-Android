@@ -2746,7 +2746,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             LatLng firstLatLng = null;
 
             PolylineOptions polylineOptions = new PolylineOptions();
-            polylineOptions.width(5);
+            polylineOptions.width(ASSL.Xscale() * 5);
             polylineOptions.color(MAP_PATH_COLOR);
             polylineOptions.geodesic(true);
 
@@ -4692,7 +4692,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 										customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(customerLatLng));
 										
 										PolylineOptions polylineOptions = new PolylineOptions();
-										polylineOptions.width(5).color(D_TO_C_MAP_PATH_COLOR).geodesic(true);
+										polylineOptions.width(ASSL.Xscale() * 5).color(D_TO_C_MAP_PATH_COLOR).geodesic(true);
 										for (int z = 0; z < list.size(); z++) {
 											polylineOptions.add(list.get(z));
 										}
@@ -6114,7 +6114,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 																		    LatLng dest= list.get(z+1);
 																		    map.addPolyline(new PolylineOptions()
 																		    .add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude))
-																		    .width(5)
+																		    .width(ASSL.Xscale() * 5)
 																		    .color(DRIVER_TO_STATION_MAP_PATH_COLOR).geodesic(true));
 																		}
 																	}
@@ -6272,16 +6272,43 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void addPathToMap(final PolylineOptions polylineOptions) {
 		runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
 					if(Color.TRANSPARENT != MAP_PATH_COLOR){
-						map.addPolyline(polylineOptions.width(5).color(MAP_PATH_COLOR).geodesic(true));
+						map.addPolyline(polylineOptions.width(ASSL.Xscale() * 5).color(MAP_PATH_COLOR).geodesic(true));
 					}
 				}
 			}
 		});
 	}
 
+
+    @Override
+    public void addPathNew(final ArrayList<CurrentPathItem> currentPathItems) {
+        runOnUiThread(new Runnable() {
+
+            @Override
+            public void run() {
+                if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+
+                    PolylineOptions polylineOptions = new PolylineOptions();
+                    polylineOptions.width(ASSL.Xscale() * 5);
+                    polylineOptions.color(MAP_PATH_COLOR);
+                    polylineOptions.geodesic(false);
+
+                    for(CurrentPathItem currentPathItem : currentPathItems){
+                        if(1 != currentPathItem.googlePath) {
+                            polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
+                        }
+                    }
+
+                    if(Color.TRANSPARENT != MAP_PATH_COLOR){
+                        map.addPolyline(polylineOptions);
+                    }
+                }
+            }
+        });
+    }
 }

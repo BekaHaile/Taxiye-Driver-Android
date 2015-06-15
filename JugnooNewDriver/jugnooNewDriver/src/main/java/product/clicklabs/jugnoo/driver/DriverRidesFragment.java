@@ -126,7 +126,7 @@ public class DriverRidesFragment extends Fragment {
 
 	
 	class ViewHolderDriverRides {
-		TextView dateTimeValue, textViewRideId, textViewBalance, textViewJugnooSubsidy, 
+		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance, textViewJugnooSubsidy,
 			textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue;
 		ImageView couponImg, jugnooCashImg, imageViewRequestType;
         RelativeLayout relative;
@@ -163,6 +163,7 @@ public class DriverRidesFragment extends Fragment {
 
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue); holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId); holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
+                holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString); holder.textViewStatusString.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewBalance = (TextView) convertView.findViewById(R.id.textViewBalance); holder.textViewBalance.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
 				holder.textViewJugnooSubsidy = (TextView) convertView.findViewById(R.id.textViewJugnooSubsidy); holder.textViewJugnooSubsidy.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewCustomerPaid = (TextView) convertView.findViewById(R.id.textViewCustomerPaid); holder.textViewCustomerPaid.setTypeface(Data.latoRegular(getActivity()));
@@ -193,8 +194,24 @@ public class DriverRidesFragment extends Fragment {
 			
 			holder.id = position;
 
+            if(0 == rideInfo.driverPaymentStatus){
+                holder.relative.setBackgroundResource(R.drawable.list_white_selector);
+            }
+            else{
+                holder.relative.setBackgroundResource(R.drawable.list_white_inv_selector);
+            }
+
+
 			holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-			holder.textViewRideId.setText("Ride ID: "+rideInfo.id); 
+			holder.textViewRideId.setText("Ride ID: "+rideInfo.id);
+
+            if("".equalsIgnoreCase(rideInfo.statusString)){
+                holder.textViewStatusString.setVisibility(View.GONE);
+            }
+            else{
+                holder.textViewStatusString.setVisibility(View.VISIBLE);
+                holder.textViewStatusString.setText(rideInfo.statusString);
+            }
 			
 			double balance = Double.parseDouble(rideInfo.balance);
 			if(balance < 0){
@@ -319,20 +336,25 @@ public class DriverRidesFragment extends Fragment {
 									else{
 //										{
 //										    "booking_data": [
-//										        {
-//										            "id": 0,
-//										            "from": "1097, Madhya Marg, 28B, Sector 28, Chandigarh 160101, India",
-//										            "to": "1097, Madhya Marg, 28B, Sector 28, Chandigarh 160101, India",
-//										            "fare": 26,
-//										            "distance": 0,
-//										            "ride_time": 1,
-//										            "wait_time": 0,
-//										            "customer_paid": 26,
-//										            "time": "2015-02-05 15:16:59",
-//										            "subsidy": 0,
-//										            "balance": 4,
-//										            "coupon_used": 0
-//										        }
+//                                        {
+//                                            "id": 13279,
+//                                            "engagement_id": 13279,
+//                                            "business_id": 1,
+//                                            "from": "2387, Sector 19C, Chandigarh 160019, India",
+//                                            "to": "SCO 27, Madhya Marg, Sector 26, Chandigarh 160019, India",
+//                                            "fare": 47,
+//                                            "distance": 1.6,
+//                                            "ride_time": 3,
+//                                            "wait_time": 0,
+//                                            "customer_paid": 44,
+//                                            "time": "2015-06-15 15:08:23",
+//                                            "subsidy": 0,
+//                                            "balance": 3,
+//                                            "coupon_used": 0,
+//                                            "payment_mode": 2,
+//                                            "driver_payment_status": 0,
+//                                            "status_string": "Ride Completed"
+//                                        }
 //										    ]
 //										}
 										
@@ -365,11 +387,24 @@ public class DriverRidesFragment extends Fragment {
                                                 if(booData.has("paid_by_customer")){
                                                     paidByCustomer = booData.getString("paid_by_customer");
                                                 }
+
+                                                int paymentStatus = 0;
+                                                if(booData.has("driver_payment_status")){
+                                                    paymentStatus = booData.getInt("driver_payment_status");
+                                                }
+
+                                                String statusString = "";
+                                                if(booData.has("status_string")){
+                                                    statusString = booData.getString("status_string");
+                                                }
+
 												
 												RideInfo rideInfo = new RideInfo(booData.getString("id"), booData.getString("from"), booData.getString("to"), 
 														booData.getString("fare"), customerPaid,  booData.getString("balance"), booData.getString("subsidy"),
-														decimalFormat.format(booData.getDouble("distance")), booData.getString("ride_time"), booData.getString("wait_time"), booData.getString("time"), 
-														booData.getInt("coupon_used"), paymentMode, businessId, paidToMerchant, paidByCustomer);
+														decimalFormat.format(booData.getDouble("distance")), booData.getString("ride_time"), booData.getString("wait_time"),
+                                                    booData.getString("time"),
+														booData.getInt("coupon_used"), paymentMode, businessId, paidToMerchant, paidByCustomer,
+                                                    paymentStatus, statusString);
 												rides.add(rideInfo);
 											}
 										}
@@ -393,7 +428,7 @@ public class DriverRidesFragment extends Fragment {
 						});
 			}
 			else {
-				updateListData("No Internet connection. Tap to retry", true);
+                updateListData("No Internet connection. Tap to retry", true);
 			}
 		}
 

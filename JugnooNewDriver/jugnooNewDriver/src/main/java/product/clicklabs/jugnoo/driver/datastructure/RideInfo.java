@@ -18,12 +18,16 @@ public class RideInfo {
     public int businessId;
     public String paidToMerchant;
     public String paidByCustomer;
+    public int driverPaymentStatus;
+    public String statusString;
+
 	
 	
 	public RideInfo(String id, String fromLocation, String toLocation, 
 			String fare, String customerPaid, String balance, String subsidy, 
 			String distance, String rideTime, String waitTime, String dateTime, 
-			int couponUsed, int paymentMode, int businessId, String paidToMerchant, String paidByCustomer){
+			int couponUsed, int paymentMode, int businessId, String paidToMerchant, String paidByCustomer,
+                    int paymentStatus, String statusString){
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -47,6 +51,9 @@ public class RideInfo {
         this.businessId = businessId;
         this.paidToMerchant = paidToMerchant;
         this.paidByCustomer = paidByCustomer;
+
+        this.driverPaymentStatus = paymentStatus;
+        this.statusString = statusString;
 	}
 	
 	@Override
