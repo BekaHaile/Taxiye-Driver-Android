@@ -32,7 +32,8 @@ public class PathUploadReceiver extends BroadcastReceiver {
                     public void run() {
                         try {
 
-                            ArrayList<CurrentPathItem> validCurrentPathItems = Database2.getInstance(context).getCurrentPathItemsToUpload();
+                            ArrayList<CurrentPathItem> validCurrentPathItems = new ArrayList<CurrentPathItem>();
+                            validCurrentPathItems.addAll(Database2.getInstance(context).getCurrentPathItemsToUpload());
 
                             if(validCurrentPathItems.size() > 0){
 
@@ -40,7 +41,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                 for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                     if(1 == currentPathItem.googlePath){
-//                                        Database2.getInstance(context).deleteCurrentPathItem(currentPathItem.id);
                                     }
                                     else{
                                         try{
@@ -86,6 +86,9 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                         rowIds.add(currentPathItem.id);
                                                     }
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
+//                                                    if(HomeActivity.appInterruptHandler != null){
+//                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
+//                                                    }
                                                 }
                                             }
                                         } catch(Exception e){

@@ -1249,7 +1249,7 @@ public class Database2 {																	// class for handling database related 
                 for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
                     try {
                         if (1 != cursor.getInt(in7)) {
-                            currentPathItems.add(new CurrentPathItem(cursor.getLong(in0),
+                            CurrentPathItem currentPathItem = new CurrentPathItem(cursor.getLong(in0),
                                 cursor.getLong(in1),
                                 cursor.getDouble(in2),
                                 cursor.getDouble(in3),
@@ -1257,7 +1257,9 @@ public class Database2 {																	// class for handling database related 
                                 cursor.getDouble(in5),
                                 cursor.getInt(in6),
                                 cursor.getInt(in7),
-                                cursor.getInt(in8)));
+                                cursor.getInt(in8));
+
+                            currentPathItems.add(currentPathItem);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -1277,6 +1279,7 @@ public class Database2 {																	// class for handling database related 
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
             Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
+            int count = cursor.getCount();
             if (cursor.getCount() > 0) {
                 int in0 = cursor.getColumnIndex(ID);
                 int in1 = cursor.getColumnIndex(PARENT_ID);
@@ -1304,7 +1307,10 @@ public class Database2 {																	// class for handling database related 
                                 cursor.getInt(in7),
                                 cursor.getInt(in8));
 
-                            currentPathItems.add(currentPathItem);
+                            if (-1 == currentPathItem.parentId) {
+                                currentPathItems.add(currentPathItem);
+                            }
+
                             if (1 == currentPathItem.googlePath) {
                                 parentId = currentPathItem.id;
                                 currentCursorPosition = cursor.getPosition();
@@ -1332,6 +1338,9 @@ public class Database2 {																	// class for handling database related 
                                     }
                                 }
                                 cursor.moveToPosition(currentCursorPosition);
+                            }
+                            else{
+
                             }
                         }
                         else{
