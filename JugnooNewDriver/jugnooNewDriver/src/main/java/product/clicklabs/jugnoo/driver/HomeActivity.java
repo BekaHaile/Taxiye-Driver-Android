@@ -2741,7 +2741,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public synchronized void displayOldPath(){
 
 		try {
-            ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsUploaded();
+            ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsSaved();
 
             LatLng firstLatLng = null;
 

@@ -69,8 +69,15 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                     Log.e("", "");
 
+
+                                    HttpRequester.TIMEOUT_CONNECTION = 10000;
+                                    HttpRequester.TIMEOUT_SOCKET = 10000;
+
                                     HttpRequester simpleJSONParser = new HttpRequester();
                                     String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/log_ongoing_ride_path", nameValuePairs);
+
+                                    HttpRequester.TIMEOUT_CONNECTION = 30000;
+                                    HttpRequester.TIMEOUT_SOCKET = 30000;
 
                                     if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
 

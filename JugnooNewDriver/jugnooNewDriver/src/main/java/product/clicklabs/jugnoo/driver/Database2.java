@@ -1230,11 +1230,11 @@ public class Database2 {																	// class for handling database related 
 
 
 
-    public ArrayList<CurrentPathItem> getCurrentPathItemsUploaded(){
+    public ArrayList<CurrentPathItem> getCurrentPathItemsSaved(){
         ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
-            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=1", null, null, null, null);
+            Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, null, null, null, null, null);
             if (cursor.getCount() > 0) {
                 int in0 = cursor.getColumnIndex(ID);
                 int in1 = cursor.getColumnIndex(PARENT_ID);
