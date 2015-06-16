@@ -3435,6 +3435,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                                     String error = jObj.getString("error");
                                     DialogPopup.alertPopup(activity, "", error);
                                 }
+                                else if(ApiResponseFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag){
+                                    String message = jObj.getString("message");
+                                    callAndHandleStateRestoreAPI();
+                                    DialogPopup.alertPopup(activity, "", message);
+                                }
                                 else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
                                     driverScreenMode = DriverScreenMode.D_START_RIDE;
                                     switchDriverScreen(driverScreenMode);
