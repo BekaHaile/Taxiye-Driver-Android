@@ -286,9 +286,9 @@ public class GpsDistanceCalculator {
 		}, 2000);
 	}
 	
-	private synchronized void addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, Location currentLocation){
+	private synchronized void addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation){
 		try {
-			double displacement = MapUtils.distance(lastLatLng, currentLatLng);
+			final double displacement = MapUtils.distance(lastLatLng, currentLatLng);
 			if(Utils.compareDouble(displacement, MAX_DISPLACEMENT_THRESHOLD) == -1){
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if(validDistance){
@@ -299,9 +299,9 @@ public class GpsDistanceCalculator {
 				}
 			}
 			else{
-                long rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
+                final long rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
                     currentLatLng.latitude, currentLatLng.longitude, 1, 1);
-				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
+                callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -375,7 +375,7 @@ public class GpsDistanceCalculator {
 	    }
 	    @Override
 	    protected void onPostExecute(String result) {
-	        super.onPostExecute(result);   
+	        super.onPostExecute(result);
 	        if(result!=null){
 	            updateGAPIDistance(result, displacementToCompare, source, destination, currentLocation, rowId);
 	        }

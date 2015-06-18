@@ -1235,37 +1235,7 @@ public class Database2 {																	// class for handling database related 
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
             Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, null, null, null, null, null);
-            if (cursor.getCount() > 0) {
-                int in0 = cursor.getColumnIndex(ID);
-                int in1 = cursor.getColumnIndex(PARENT_ID);
-                int in2 = cursor.getColumnIndex(SLAT);
-                int in3 = cursor.getColumnIndex(SLNG);
-                int in4 = cursor.getColumnIndex(DLAT);
-                int in5 = cursor.getColumnIndex(DLNG);
-                int in6 = cursor.getColumnIndex(SECTION_INCOMPLETE);
-                int in7 = cursor.getColumnIndex(GOOGLE_PATH);
-                int in8 = cursor.getColumnIndex(ACKNOWLEDGED);
-
-                for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-                    try {
-                        if (1 != cursor.getInt(in7)) {
-                            CurrentPathItem currentPathItem = new CurrentPathItem(cursor.getLong(in0),
-                                cursor.getLong(in1),
-                                cursor.getDouble(in2),
-                                cursor.getDouble(in3),
-                                cursor.getDouble(in4),
-                                cursor.getDouble(in5),
-                                cursor.getInt(in6),
-                                cursor.getInt(in7),
-                                cursor.getInt(in8));
-
-                            currentPathItems.add(currentPathItem);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1279,7 +1249,17 @@ public class Database2 {																	// class for handling database related 
         try {
             String[] columns = new String[] { ID, PARENT_ID, SLAT, SLNG, DLAT, DLNG, SECTION_INCOMPLETE, GOOGLE_PATH, ACKNOWLEDGED };
             Cursor cursor = database.query(TABLE_CURRENT_PATH, columns, ACKNOWLEDGED + "=0", null, null, null, null);
-            int count = cursor.getCount();
+            currentPathItems.addAll(getCurrentPathItemsFromCursor(cursor));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return currentPathItems;
+    }
+
+
+    public ArrayList<CurrentPathItem> getCurrentPathItemsFromCursor(Cursor cursor){
+        ArrayList<CurrentPathItem> currentPathItems = new ArrayList<CurrentPathItem>();
+        try {
             if (cursor.getCount() > 0) {
                 int in0 = cursor.getColumnIndex(ID);
                 int in1 = cursor.getColumnIndex(PARENT_ID);
@@ -1340,7 +1320,6 @@ public class Database2 {																	// class for handling database related 
                                 cursor.moveToPosition(currentCursorPosition);
                             }
                             else{
-
                             }
                         }
                         else{

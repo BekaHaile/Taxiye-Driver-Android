@@ -119,7 +119,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
             }
         }
     }
