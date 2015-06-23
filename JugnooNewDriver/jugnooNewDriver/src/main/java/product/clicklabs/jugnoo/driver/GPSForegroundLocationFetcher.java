@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
 
+import product.clicklabs.jugnoo.driver.utils.Utils;
+
 public class GPSForegroundLocationFetcher implements LocationListener{
 	
 	private LocationManager locationManager;
@@ -70,11 +72,11 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 	public synchronized void destroyWaitAndConnect(){
 		destroy();
 		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				connect();
-			}
-		}, 2000);
+            @Override
+            public void run() {
+                connect();
+            }
+        }, 2000);
 	}
 	
 	public synchronized void destroy(){
@@ -122,10 +124,12 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 	@Override
 	public void onLocationChanged(Location location) {
 		try{
-			if(location!=null){
-				this.location = location;
-				gpsLocationUpdate.onGPSLocationChanged(location);
-			}
+            if(!Utils.mockLocationEnabled(context)) {
+                if (location != null) {
+                    this.location = location;
+                    gpsLocationUpdate.onGPSLocationChanged(location);
+                }
+            }
 		}catch(Exception e){
 			e.printStackTrace();
 		}
