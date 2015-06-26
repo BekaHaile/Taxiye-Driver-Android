@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-public enum PromoType {
+public enum PromotionType {
     LOCATION_INSENSITIVE(1),
     PICKUP_BASED(2),
     DROP_BASED(3)
@@ -8,7 +8,7 @@ public enum PromoType {
 
 	private int ordinal;
 
-	private PromoType(int ordinal) {
+	private PromotionType(int ordinal) {
 		this.ordinal = ordinal;
 	}
 

@@ -143,6 +143,8 @@
             android:exported="true"
             android:process=":DriverLocationUpdateService" >
         </service>
+
+
         <service
             android:name="product.clicklabs.jugnoo.driver.PushPendingCallsService"
             android:enabled="true"

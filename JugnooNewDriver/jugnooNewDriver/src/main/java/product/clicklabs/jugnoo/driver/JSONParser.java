@@ -169,7 +169,13 @@ public class JSONParser {
 					couponObject.getDouble("discount"), 
 					couponObject.getDouble("maximum"),
 					couponObject.getDouble("capped_fare"), 
-					couponObject.getDouble("capped_fare_maximum"));
+					couponObject.getDouble("capped_fare_maximum"),
+                    couponObject.getInt("coupon_type"),
+                    couponObject.getInt("benefit_type"),
+                    couponObject.getDouble("drop_latitude"),
+                    couponObject.getDouble("drop_longitude"),
+                    couponObject.getDouble("drop_radius")
+                    );
 			return couponInfo;
 		} catch(Exception e){
 			Log.w("couponInfo", "e=" + e.toString());
