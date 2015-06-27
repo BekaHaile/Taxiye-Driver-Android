@@ -28,7 +28,7 @@ public class GpsDistanceCalculator {
 	
 	private static final long LOCATION_UPDATE_INTERVAL = 5000; // in milliseconds
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
-	public static final double MAX_SPEED_THRESHOLD = 28; //in meters per second
+	public static final double MAX_SPEED_THRESHOLD = 1000; //in meters per second
 	public static final double MAX_ACCURACY = 500;
 	
 	public double totalDistance;

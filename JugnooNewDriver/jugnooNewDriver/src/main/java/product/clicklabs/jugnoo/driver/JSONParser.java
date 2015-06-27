@@ -162,12 +162,11 @@ public class JSONParser {
 //					50, 
 //					100);
 			
-			CouponInfo couponInfo = new CouponInfo(couponObject.getInt("type"), 
-					couponObject.getString("title"), 
+			CouponInfo couponInfo = new CouponInfo(couponObject.getString("title"),
 					couponObject.getString("subtitle"), 
 					couponObject.getString("description"), 
-					couponObject.getDouble("discount"), 
-					couponObject.getDouble("maximum"),
+					couponObject.getDouble("discount_percentage"),
+					couponObject.getDouble("discount_maximum"),
 					couponObject.getDouble("capped_fare"), 
 					couponObject.getDouble("capped_fare_maximum"),
                     couponObject.getInt("coupon_type"),

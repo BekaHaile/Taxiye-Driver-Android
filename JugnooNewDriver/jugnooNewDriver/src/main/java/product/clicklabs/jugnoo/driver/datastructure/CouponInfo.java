@@ -6,7 +6,6 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 
 public class CouponInfo {
 	
-	public int type;
 	public int status;
 	public String title;
 	public String subtitle;
@@ -20,12 +19,12 @@ public class CouponInfo {
     public int couponType, benefitType;
     public double dropRadius;
     public LatLng droplLatLng;
+    public boolean couponApplied;
 
 	
-	public CouponInfo(int type, String title, String subtitle, String description,
+	public CouponInfo(String title, String subtitle, String description,
 			double discountPrecent, double maximumDiscountValue, double cappedFare, double cappedFareMaximum,
                       int couponType, int benefitType, double dropLatitude, double dropLongitude, double dropRadius){
-		this.type = type;
 		this.status = CouponStatus.ACTIVE.getOrdinal();
 		this.title = title;
 		this.subtitle = subtitle;
@@ -44,13 +43,13 @@ public class CouponInfo {
         this.benefitType = benefitType;
         this.droplLatLng = new LatLng(dropLatitude, dropLongitude);
         this.dropRadius = dropRadius;
-
+        this.couponApplied = false;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		try{
-			if((((CouponInfo)o).type == this.type) && (((CouponInfo)o).expiryDate.equalsIgnoreCase(this.expiryDate))){
+			if((((CouponInfo)o).couponType == this.couponType) && (((CouponInfo)o).expiryDate.equalsIgnoreCase(this.expiryDate))){
 				return true;
 			}
 			else{
