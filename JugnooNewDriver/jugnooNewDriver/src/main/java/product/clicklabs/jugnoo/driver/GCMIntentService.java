@@ -283,6 +283,13 @@ public class GCMIntentService extends IntentService {
                                         }
                                     }
 
+
+                                    double fareFactor = 1;
+                                    if(jObj.has("fare_factor")) {
+                                        fareFactor = jObj.getDouble("fare_factor");
+                                    }
+
+
                                     sendRequestAckToServer(this, engagementId, currentTimeUTC);
 
                                     FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
@@ -300,18 +307,18 @@ public class GCMIntentService extends IntentService {
                                                 if (BusinessType.AUTOS.getOrdinal() == businessId) {
                                                     Data.driverRideRequests.add(new AutoRideRequest(engagementId, userId,
                                                         new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId));
+                                                        businessId, referenceId, fareFactor));
                                                 } else if (BusinessType.MEALS.getOrdinal() == businessId) {
                                                     String rideTime = jObj.getString("ride_time");
                                                     Data.driverRideRequests.add(new MealRideRequest(engagementId, userId,
                                                         new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId, rideTime));
+                                                        businessId, referenceId, rideTime, fareFactor));
                                                 } else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
                                                     int orderAmount = jObj.getInt("order_amount");
                                                     Log.e("orderAmount", "=" + orderAmount);
                                                     Data.driverRideRequests.add(new FatafatRideRequest(engagementId, userId,
                                                         new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId, orderAmount));
+                                                        businessId, referenceId, orderAmount, fareFactor));
                                                 }
 
                                                 startRing(this);

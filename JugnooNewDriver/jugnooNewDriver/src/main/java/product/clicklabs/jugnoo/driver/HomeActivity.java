@@ -234,13 +234,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	// Driver Engaged layout
 	RelativeLayout driverEngagedLayout;
 	
-	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount;
+	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount, textViewInRideFareFactor;
 	TextView driverPassengerRatingValue;
 	RelativeLayout driverPassengerCallRl;
 	TextView driverPassengerCallText;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
-	
+
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
 	Button driverStartRideMyLocationBtn, driverStartRideBtn, buttonMarkArrived;
@@ -577,8 +577,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
         textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress); textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo); textViewAfterAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewAfterAcceptAmount = (TextView) findViewById(R.id.textViewAfterAcceptAmount); textViewAfterAcceptAmount.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		
-		driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue); driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
+        textViewInRideFareFactor = (TextView) findViewById(R.id.textViewInRideFareFactor); textViewInRideFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+
+        driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue); driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
 		driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText); driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText); driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -2282,12 +2284,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+    private void updateFareFactorInEngagedState(){
+        try{
+            if(Data.fareStructure != null){
+                if (Data.fareStructure.fareFactor > 1 || Data.fareStructure.fareFactor < 1) {
+                    textViewInRideFareFactor.setVisibility(View.VISIBLE);
+                    textViewInRideFareFactor.setText("Rate: " + decimalFormat.format(Data.fareStructure.fareFactor) + "x");
+                } else {
+                    textViewInRideFareFactor.setVisibility(View.GONE);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 	
 	
 	public void setAssignedCustomerInfoToViews(DriverScreenMode mode){
 		try {
+            updateFareFactorInEngagedState();
+
 			if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
 				driverPassengerName.setText(Data.assignedCustomerInfo.name);
+
 
 				try {
 					double rateingD = 4;
@@ -2809,7 +2828,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	class ViewHolderDriverRequest {
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime, textViewRequestNumber, 
-			textViewOtherRequestDetails;
+			textViewOtherRequestDetails, textViewRequestFareFactor;
         Button buttonAcceptRide;
         ImageView imageViewRequestType;
 		RelativeLayout relative;
@@ -2853,6 +2872,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestNumber = (TextView) convertView.findViewById(R.id.textViewRequestNumber); holder.textViewRequestNumber.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails); holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
+                holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor); holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide); holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative); 
@@ -2910,10 +2930,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
 				holder.textViewOtherRequestDetails.setText("Cash Needed: Rs. "+((FatafatRideRequest)driverRideRequest).orderAmount);
 			}
-			
-			
-			
-			holder.relative.setOnClickListener(new OnClickListener() {
+
+
+            if (driverRideRequest.fareFactor > 1 || driverRideRequest.fareFactor < 1) {
+                holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
+                holder.textViewRequestFareFactor.setText("Rate: " + decimalFormat.format(driverRideRequest.fareFactor) + "x");
+            } else {
+                holder.textViewRequestFareFactor.setVisibility(View.GONE);
+            }
+
+
+            holder.relative.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -3809,7 +3836,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		final String url = Data.SERVER_URL + "/end_ride";
 	
 		AsyncHttpClient client = Data.getClient();
-		client.post(url+"1", params,
+		client.post(url, params,
 				new CustomAsyncHttpResponseHandler() {
 				private JSONObject jObj;
 

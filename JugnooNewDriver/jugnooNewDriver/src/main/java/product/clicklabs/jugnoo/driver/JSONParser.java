@@ -639,24 +639,29 @@ public class JSONParser {
 		    	    					 }
 		    	    					 
 		    	    					 int referenceId = jActiveRequest.getInt("reference_id");
+
+                                        double fareFactor = 1;
+                                        if(jActiveRequest.has("fare_factor")) {
+                                            fareFactor = jActiveRequest.getDouble("fare_factor");
+                                        }
 		    	    					 
 		    	    					 if(BusinessType.AUTOS.getOrdinal() == businessId){
 		    	    						 Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId));
+			    	    								businessId, referenceId, fareFactor));
 	    								 }
 	    								 else if(BusinessType.MEALS.getOrdinal() == businessId){
 	    									 String rideTime = jActiveRequest.getString("ride_time");
 	    									
 	    									 Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, rideTime));
+			    	    								businessId, referenceId, rideTime, fareFactor));
 	    								 }
 	    								 else if(BusinessType.FATAFAT.getOrdinal() == businessId){
 	    									 int orderAmount = jActiveRequest.getInt("order_amount");
 	    									 Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, orderAmount));
+			    	    								businessId, referenceId, orderAmount, fareFactor));
 	    								 }
 		    	    					 
 		    	    					 Log.i("inserter in db", "insertDriverRequest = "+requestEngagementId);

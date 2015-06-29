@@ -13,6 +13,7 @@ public class DriverRideRequest {
 	public int referenceId;
 	public LatLng latLng;
 	public BusinessType businessType;
+    public double fareFactor;
 	
 	/**
 	 * generic constructor
@@ -25,7 +26,7 @@ public class DriverRideRequest {
 	 * @param referenceId
 	 */
 	public DriverRideRequest(String engagementId, String customerId, LatLng latLng, String startTime, String address, int businessId,
-			int referenceId){
+			int referenceId, double fareFactor){
 		this.engagementId = engagementId;
 		this.customerId = customerId;
 		this.latLng = latLng;
@@ -43,6 +44,8 @@ public class DriverRideRequest {
 		}
 		
 		this.referenceId = referenceId;
+
+        this.fareFactor = fareFactor;
 	}
 	
 	

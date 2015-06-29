@@ -7,8 +7,8 @@ public class FatafatRideRequest extends DriverRideRequest{
 	public int orderAmount;
 	
 	public FatafatRideRequest(String engagementId, String customerId, LatLng latLng, String startTime, String address, int businessId,
-			int referenceId, int orderAmount){
-		super(engagementId, customerId, latLng, startTime, address, businessId, referenceId);
+			int referenceId, int orderAmount, double fareFactor){
+		super(engagementId, customerId, latLng, startTime, address, businessId, referenceId, fareFactor);
 		this.orderAmount = orderAmount;
 	}
 	
