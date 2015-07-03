@@ -118,6 +118,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
             Data.SERVER_URL = Data.DEV_2_SERVER_URL;
             Data.FLURRY_KEY = "abcd";
         }
+        else if(link.equalsIgnoreCase(Data.DEV_3_SERVER_URL)){
+            Data.SERVER_URL = Data.DEV_3_SERVER_URL;
+            Data.FLURRY_KEY = "abcd";
+        }
 		else{
 			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
 			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
@@ -949,7 +953,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
                                 else if(Data.DEBUG_PASSWORD_TEST.equalsIgnoreCase(code)){
                                     dialog.dismiss();
 
-                                    DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", "Current server is "+Data.SERVER_URL+"\n change to:", "DEV_1(8013)", "DEV_2(8014)",
+                                    DialogPopup.alertPopupThreeButtonsWithListeners(activity, "", "Current server is " + Data.SERVER_URL + "\n change to:",
+                                        "DEV_1(8013)", "DEV_2(8014)", "DEV_3(8015)",
                                         new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -971,7 +976,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 
                                                 initializeServerURL(activity);
                                             }
+                                        },
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+                                                SharedPreferences.Editor editor = preferences.edit();
+                                                editor.putString(Data.SP_SERVER_LINK, Data.DEV_3_SERVER_URL);
+                                                editor.commit();
+
+                                                initializeServerURL(activity);
+                                            }
                                         }, true, false);
+
                                 }
 								else{
 									etCode.requestFocus();

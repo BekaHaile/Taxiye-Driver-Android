@@ -81,6 +81,7 @@ public class DriverLocationUpdateService extends Service {
 
         String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
+        String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
 		String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 		
@@ -106,6 +107,9 @@ public class DriverLocationUpdateService extends Service {
         }
         else if(link.equalsIgnoreCase(DEV_2_SERVER_URL)){
             SERVER_URL = DEV_2_SERVER_URL;
+        }
+        else if(link.equalsIgnoreCase(DEV_3_SERVER_URL)){
+            SERVER_URL = DEV_3_SERVER_URL;
         }
 		else{
 			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();

@@ -14,6 +14,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 	public CouponInfo couponInfo;
 	public PromoInfo promoInfo;
 	public double jugnooBalance;
+    public LatLng dropLatLng;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String image, String rating, String schedulePickupTime, int freeRide,
@@ -29,6 +30,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.jugnooBalance = jugnooBalance;
 		
 		this.image = this.image.replace("http://graph.facebook", "https://graph.facebook");
+        this.dropLatLng = null;
 	}
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
@@ -43,6 +45,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.couponInfo = couponInfo;
 		this.promoInfo = promoInfo;
 		this.jugnooBalance = 0;
+        this.dropLatLng = null;
 	}
 	
 	@Override

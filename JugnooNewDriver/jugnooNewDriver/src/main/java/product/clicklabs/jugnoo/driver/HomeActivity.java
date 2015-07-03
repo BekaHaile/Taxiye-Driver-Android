@@ -2053,8 +2053,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverEndRideBtn.setText("Mark Delivered");
                     inrideFareInfoRl.setVisibility(View.GONE);
 				}
-				else{
-					cancelCustomerPathUpdateTimer();
+				else if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
+                    startCustomerPathUpdateTimer();
 					driverEndRideBtn.setText("End Ride");
                     inrideFareInfoRl.setVisibility(View.VISIBLE);
 				}
@@ -3630,6 +3630,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											
 											((FatafatOrderInfo)Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
 										}
+                                        else if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())){
+                                            double dropLatitude = 0, dropLongitude = 0;
+                                            if(jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
+                                                dropLatitude = jObj.getDouble("op_drop_latitude");
+                                                dropLongitude = jObj.getDouble("op_drop_longitude");
+                                            }
+                                            if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
+                                            }
+                                            else{
+                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                                            }
+                                        }
 									}
 									
 									
@@ -4737,6 +4750,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)){
 						getCustomerPathAndDisplay(Data.assignedCustomerInfo.requestlLatLng);
 					}
+                    else if((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.assignedCustomerInfo != null) && (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType)){
+                        if(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng != null){
+                            getCustomerPathAndDisplay(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng);
+                        }
+                    }
 					else if (((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType))) {
 						if (((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
 							getCustomerPathAndDisplay(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryLatLng);

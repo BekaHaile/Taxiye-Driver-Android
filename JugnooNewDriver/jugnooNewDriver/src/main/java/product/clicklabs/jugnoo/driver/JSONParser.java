@@ -37,6 +37,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class JSONParser {
 
@@ -541,7 +542,7 @@ public class JSONParser {
 			int freeRide = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
-			double jugnooBalance = 0;
+			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
 			int dBusinessId = BusinessType.AUTOS.getOrdinal();
 			int dReferenceId = 0;
 			String storeAddress = "";
@@ -721,10 +722,10 @@ public class JSONParser {
 												}
 											}
 											if(jObject.has("jugnoo_balance")){
-												jugnooBalance = jObject.getDouble("jugnoo_balance");
+                                                jugnooBalance = jObject.getDouble("jugnoo_balance");
 											}
 											if(jObject.has("free_ride")){
-												freeRide = jObject.getInt("free_ride");
+                                                freeRide = jObject.getInt("free_ride");
 											}
 											if(jObject.has("coupon")){
 												try{
@@ -735,11 +736,16 @@ public class JSONParser {
 											}
 											if(jObject.has("promotion")){
 												try{
-													promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
+                                                    promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
 												} catch(Exception e){
 													e.printStackTrace();
 												}
 											}
+
+                                            if(jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
+                                                dropLatitude = jObject.getDouble("op_drop_latitude");
+                                                dropLongitude = jObject.getDouble("op_drop_longitude");
+                                            }
 										}
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -839,10 +845,16 @@ public class JSONParser {
 				Data.dCustLatLng = new LatLng(pickupLatitude, pickupLongitude);
 				
 				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
-					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId), 
+					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
 							couponInfo, promoInfo, jugnooBalance);
+                    if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
+                    }
+                    else{
+                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                    }
 				}
 				else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
 					
