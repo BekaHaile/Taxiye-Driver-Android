@@ -1,10 +1,11 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 
 public class CouponInfo {
 	
-	public int type;
 	public int status;
 	public String title;
 	public String subtitle;
@@ -15,28 +16,15 @@ public class CouponInfo {
 	public double discountPrecent, maximumDiscountValue, cappedFare, cappedFareMaximum;
 	public int count;
 	public boolean enabled;
+    public int couponType, benefitType;
+    public double dropRadius;
+    public LatLng droplLatLng;
+    public boolean couponApplied;
+
 	
-	public CouponInfo(int type, int status, String title, String subtitle, String description, String image, 
-			String redeemedOn, String expiryDate, double discountPrecent, double maximumDiscountValue){
-		this.type = type;
-		this.status = status;
-		this.title = title;
-		this.subtitle = subtitle;
-		this.description = description;
-		this.image = image;
-		this.redeemedOn = redeemedOn;
-		this.expiryDate = expiryDate;
-		this.discountPrecent = discountPrecent;
-		this.maximumDiscountValue = maximumDiscountValue;
-		this.cappedFare = 0;
-		this.cappedFareMaximum = 0;
-		this.count = 1;
-		this.enabled = true;
-	}
-	
-	public CouponInfo(int type, String title, String subtitle, String description, 
-			double discountPrecent, double maximumDiscountValue, double cappedFare, double cappedFareMaximum){
-		this.type = type;
+	public CouponInfo(String title, String subtitle, String description,
+			double discountPrecent, double maximumDiscountValue, double cappedFare, double cappedFareMaximum,
+                      int couponType, int benefitType, double dropLatitude, double dropLongitude, double dropRadius){
 		this.status = CouponStatus.ACTIVE.getOrdinal();
 		this.title = title;
 		this.subtitle = subtitle;
@@ -50,12 +38,18 @@ public class CouponInfo {
 		this.cappedFareMaximum = cappedFareMaximum;
 		this.count = 1;
 		this.enabled = true;
+
+        this.couponType = couponType;
+        this.benefitType = benefitType;
+        this.droplLatLng = new LatLng(dropLatitude, dropLongitude);
+        this.dropRadius = dropRadius;
+        this.couponApplied = false;
 	}
 	
 	@Override
 	public boolean equals(Object o) {
 		try{
-			if((((CouponInfo)o).type == this.type) && (((CouponInfo)o).expiryDate.equalsIgnoreCase(this.expiryDate))){
+			if((((CouponInfo)o).couponType == this.couponType) && (((CouponInfo)o).expiryDate.equalsIgnoreCase(this.expiryDate))){
 				return true;
 			}
 			else{
@@ -69,7 +63,7 @@ public class CouponInfo {
 	@Override
 	public String toString() {
 		return status+","+title+", "+discountPrecent+", "+maximumDiscountValue
-				+", "+cappedFare+", "+cappedFareMaximum;
+				+", "+cappedFare+", "+cappedFareMaximum+", "+couponType+", "+benefitType+", "+droplLatLng+", "+dropRadius;
 	}
 	
 }

@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +15,10 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener,LocationListener {
 	
@@ -233,11 +235,13 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 	@Override
 	public void onLocationChanged(Location location) {
 		try{
-			if(location!=null){
-				this.location = location;
-				locationUpdate.onLocationChanged(location, priority);
-				saveLatLngToSP(location.getLatitude(), location.getLongitude());
-			}
+            if(!Utils.mockLocationEnabled(context)) {
+                if (location != null) {
+                    this.location = location;
+                    locationUpdate.onLocationChanged(location, priority);
+                    saveLatLngToSP(location.getLatitude(), location.getLongitude());
+                }
+            }
 		}catch(Exception e){
 			e.printStackTrace();
 		}

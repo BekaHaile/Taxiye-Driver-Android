@@ -83,6 +83,7 @@ import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.driver.datastructure.CouponType;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
@@ -96,6 +97,7 @@ import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
+import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -232,13 +234,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	// Driver Engaged layout
 	RelativeLayout driverEngagedLayout;
 	
-	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount;
+	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount, textViewInRideFareFactor;
 	TextView driverPassengerRatingValue;
 	RelativeLayout driverPassengerCallRl;
 	TextView driverPassengerCallText;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
-	
+
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
 	Button driverStartRideMyLocationBtn, driverStartRideBtn, buttonMarkArrived;
@@ -575,8 +577,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
         textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress); textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo); textViewAfterAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewAfterAcceptAmount = (TextView) findViewById(R.id.textViewAfterAcceptAmount); textViewAfterAcceptAmount.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		
-		driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue); driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
+        textViewInRideFareFactor = (TextView) findViewById(R.id.textViewInRideFareFactor); textViewInRideFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+
+        driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue); driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
 		driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText); driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText); driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -2173,42 +2177,54 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                         reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
 						AutoCustomerInfo autoCustomerInfo = (AutoCustomerInfo)Data.assignedCustomerInfo;
 						if(autoCustomerInfo.couponInfo != null){
-							endRideInfoRl.setVisibility(View.GONE);
-							relativeLayoutCoupon.setVisibility(View.VISIBLE);
-							relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
+                            if(autoCustomerInfo.couponInfo.couponApplied) {
+                                if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.couponInfo.benefitType) {
+                                    endRideInfoRl.setVisibility(View.GONE);
+                                    relativeLayoutCoupon.setVisibility(View.VISIBLE);
+                                    relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
-							if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){					// wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
-								textViewCouponSubTitle.setVisibility(View.GONE);
-							}
-							else{																			// no wallet
-								textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
-								textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
-								textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
-								textViewCouponSubTitle.setVisibility(View.VISIBLE);
-							}
+                                    if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
+                                        textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                        textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
+                                        textViewCouponSubTitle.setVisibility(View.GONE);
+                                    } else {                                                                            // no wallet
+                                        textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                        textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
+                                        textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
+                                        textViewCouponSubTitle.setVisibility(View.VISIBLE);
+                                    }
 
-                            textViewCouponPayTakeText.setText("Take");
+                                    textViewCouponPayTakeText.setText("Take");
+                                } else {
+                                    throw new Exception();
+                                }
+                            }
+                            else{
+                                throw new Exception();
+                            }
 						}
 						else if(autoCustomerInfo.promoInfo != null) {
-                            if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
-                                endRideInfoRl.setVisibility(View.GONE);
-                                relativeLayoutCoupon.setVisibility(View.VISIBLE);
-                                relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
+                            if(autoCustomerInfo.promoInfo.promoApplied) {
+                                if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
+                                    endRideInfoRl.setVisibility(View.GONE);
+                                    relativeLayoutCoupon.setVisibility(View.VISIBLE);
+                                    relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 
-                                if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
-                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
-                                    textViewCouponSubTitle.setVisibility(View.GONE);
-                                } else {                                                                            // no wallet
-                                    textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
-                                    textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
-                                    textViewCouponSubTitle.setVisibility(View.GONE);
+                                    if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
+                                        textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                        textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
+                                        textViewCouponSubTitle.setVisibility(View.GONE);
+                                    } else {                                                                            // no wallet
+                                        textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+                                        textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
+                                        textViewCouponSubTitle.setVisibility(View.GONE);
+                                    }
+
+                                    textViewCouponPayTakeText.setText("Take");
+                                } else {
+                                    throw new Exception();
                                 }
-
-                                textViewCouponPayTakeText.setText("Take");
                             }
                             else{
                                 throw new Exception();
@@ -2268,12 +2284,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+    private void updateFareFactorInEngagedState(){
+        try{
+            if(Data.fareStructure != null){
+                if (Data.fareStructure.fareFactor > 1 || Data.fareStructure.fareFactor < 1) {
+                    textViewInRideFareFactor.setVisibility(View.VISIBLE);
+                    textViewInRideFareFactor.setText("Rate: " + decimalFormat.format(Data.fareStructure.fareFactor) + "x");
+                } else {
+                    textViewInRideFareFactor.setVisibility(View.GONE);
+                }
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 	
 	
 	public void setAssignedCustomerInfoToViews(DriverScreenMode mode){
 		try {
+            updateFareFactorInEngagedState();
+
 			if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
 				driverPassengerName.setText(Data.assignedCustomerInfo.name);
+
 
 				try {
 					double rateingD = 4;
@@ -2795,7 +2828,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	class ViewHolderDriverRequest {
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime, textViewRequestNumber, 
-			textViewOtherRequestDetails;
+			textViewOtherRequestDetails, textViewRequestFareFactor;
         Button buttonAcceptRide;
         ImageView imageViewRequestType;
 		RelativeLayout relative;
@@ -2839,6 +2872,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestNumber = (TextView) convertView.findViewById(R.id.textViewRequestNumber); holder.textViewRequestNumber.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails); holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
+                holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor); holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide); holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative); 
@@ -2896,10 +2930,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
 				holder.textViewOtherRequestDetails.setText("Cash Needed: Rs. "+((FatafatRideRequest)driverRideRequest).orderAmount);
 			}
-			
-			
-			
-			holder.relative.setOnClickListener(new OnClickListener() {
+
+
+            if (driverRideRequest.fareFactor > 1 || driverRideRequest.fareFactor < 1) {
+                holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
+                holder.textViewRequestFareFactor.setText("Rate: " + decimalFormat.format(driverRideRequest.fareFactor) + "x");
+            } else {
+                holder.textViewRequestFareFactor.setVisibility(View.GONE);
+            }
+
+
+            holder.relative.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -3291,9 +3332,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	
-	/**
-	 * ASync for change driver mode from server
-	 */
 	public void driverRejectRequestAsync(final Activity activity) {
 
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -3381,9 +3419,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-    /**
-     * ASync for start ride in  driver mode from server
-     */
     public void driverMarkArriveRideAsync(final Activity activity, final LatLng driverAtPickupLatLng) {
 
         if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -3496,9 +3531,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	
-	/**
-	 * ASync for start ride in  driver mode from server
-	 */
 	public void driverStartRideAsync(final Activity activity, final LatLng driverAtPickupLatLng) {
 		initializeStartRideVariables();
 		
@@ -3640,9 +3672,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	
-	/**
-	 * ASync for change driver mode from server
-	 */
 	public void driverCancelRideAsync(final Activity activity) {
 
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -3757,7 +3786,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 	
 	
-	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude, 
+	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 			double waitMinutes, double rideMinutes, 
 			int flagDistanceTravelled, final BusinessType businessType){
 		DialogPopup.showLoadingDialog(activity, "Loading...");
@@ -3815,7 +3844,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					public void onFailure(Throwable arg3) {
 						Log.e("request fail", arg3.toString());
 						
-						endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo);
+						endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude);
 						
 					}
 
@@ -3849,7 +3878,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								}
 								
 								JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
-								
+
+                                applyCouponAndPromoOnSuccess();
 								
 								
 								if(map != null){
@@ -3882,15 +3912,102 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 				});
 	}
-	
-	
-	
-	
-	
-	
+
+    private void applyCouponAndPromoOnSuccess() {
+        if (Data.assignedCustomerInfo != null) {
+            if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
+                if (((AutoCustomerInfo) Data.assignedCustomerInfo).couponInfo != null) {
+                    ((AutoCustomerInfo) Data.assignedCustomerInfo).couponInfo.couponApplied = true;
+                } else if (((AutoCustomerInfo) Data.assignedCustomerInfo).promoInfo != null) {
+                    ((AutoCustomerInfo) Data.assignedCustomerInfo).promoInfo.promoApplied = true;
+                }
+            }
+        }
+    }
+
+
+
+
+    private double calculateCouponDiscount(double totalFare, CouponInfo couponInfo){
+        double finalDiscount = 0;
+
+        if(BenefitType.DISCOUNTS.getOrdinal() == couponInfo.benefitType){		//coupon discount
+            finalDiscount = ((totalFare * couponInfo.discountPrecent) / 100) < couponInfo.maximumDiscountValue ?
+                Math.ceil(((totalFare * couponInfo.discountPrecent) / 100)) : couponInfo.maximumDiscountValue;
+
+            Log.i("coupon case discount", "((totalFare * assignedCustomerInfo.couponInfo.discountPrecent) / 100) = "
+                +((totalFare * couponInfo.discountPrecent) / 100));
+            Log.i("coupon case discount", "assignedCustomerInfo.couponInfo.maximumDiscountValue = "+couponInfo.maximumDiscountValue);
+        }
+        else if(BenefitType.CAPPED_FARE.getOrdinal() == couponInfo.benefitType){		// coupon capped fare
+            Log.i("coupon case capped", "assignedCustomerInfo.couponInfo.cappedFare = "+couponInfo.cappedFare);
+            Log.i("coupon case capped", "assignedCustomerInfo.couponInfo.cappedFareMaximum = "+couponInfo.cappedFareMaximum);
+            if(totalFare < couponInfo.cappedFare){		// fare less than capped fare
+                finalDiscount = 0;
+            }
+            else{																// fare greater than capped fare
+                double maxDiscount = couponInfo.cappedFareMaximum - couponInfo.cappedFare;
+                finalDiscount = totalFare - couponInfo.cappedFare;
+                finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
+                Log.i("coupon case capped", "maxDiscount = "+maxDiscount);
+            }
+        }
+        else{
+            finalDiscount = 0;
+        }
+        couponInfo.couponApplied = true;
+
+        return finalDiscount;
+    }
+
+
+    private double calculatePromoDiscount(double totalFare, PromoInfo promoInfo){
+        double finalDiscount = 0;
+
+        if(BenefitType.DISCOUNTS.getOrdinal() == promoInfo.benefitType){		//promotion discount
+            finalDiscount = ((totalFare * promoInfo.discountPercentage) / 100) < promoInfo.discountMaximum ?
+                Math.ceil(((totalFare * promoInfo.discountPercentage) / 100)) : promoInfo.discountMaximum;
+
+            Log.i("promo case discount", "((totalFare * assignedCustomerInfo.promoInfo.discountPercentage) / 100) = "
+                +((totalFare * promoInfo.discountPercentage) / 100));
+            Log.i("promo case discount", "assignedCustomerInfo.promoInfo.discountMaximum = "+promoInfo.discountMaximum);
+
+        }
+        else if(BenefitType.CAPPED_FARE.getOrdinal() == promoInfo.benefitType){		// promotion capped fare
+            Log.i("promo case capped", "assignedCustomerInfo.promoInfo.cappedFare = "+promoInfo.cappedFare);
+            Log.i("promo case capped", "assignedCustomerInfo.promoInfo.cappedFareMaximum = "+promoInfo.cappedFareMaximum);
+            if(totalFare < promoInfo.cappedFare){		// fare less than capped fare
+                finalDiscount = 0;
+            }
+            else{																// fare greater than capped fare
+                double maxDiscount = promoInfo.cappedFareMaximum - promoInfo.cappedFare;
+                finalDiscount = totalFare - promoInfo.cappedFare;
+                finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
+                Log.i("promo case capped", "maxDiscount = "+maxDiscount);
+            }
+        }
+        else{
+            finalDiscount = 0;
+        }
+        promoInfo.promoApplied = true;
+
+        return finalDiscount;
+    }
+
+
+
+    /**
+     * Calculating discounted fare and other values in case of offline end ride (no internet)
+     * @param activity
+     * @param url
+     * @param params
+     * @param rideTime
+     * @param waitTime
+     * @param assignedCustomerInfo
+     */
 	//TODO end ride offline
 	public void endRideOffline(Activity activity, String url, RequestParams params, double rideTime, double waitTime, 
-			AutoCustomerInfo assignedCustomerInfo){
+			AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude){
 		try{
 			
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
@@ -3931,68 +4048,40 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("endRideOffline assignedCustomerInfo.promoInfo=", "="+assignedCustomerInfo.promoInfo);
 			
 			
-			
+			LatLng dropLatLng = new LatLng(dropLatitude, dropLongitude);
+
 			if(assignedCustomerInfo.couponInfo != null){		// coupon
-					if(assignedCustomerInfo.couponInfo.discountPrecent > 0){		//coupon discount
-						finalDiscount = ((totalFare * assignedCustomerInfo.couponInfo.discountPrecent) / 100) < assignedCustomerInfo.couponInfo.maximumDiscountValue ?
-				            Math.ceil(((totalFare * assignedCustomerInfo.couponInfo.discountPrecent) / 100)) : assignedCustomerInfo.couponInfo.maximumDiscountValue;
-				            
-				            Log.i("coupon case discount", "((totalFare * assignedCustomerInfo.couponInfo.discountPrecent) / 100) = "
-								    +((totalFare * assignedCustomerInfo.couponInfo.discountPrecent) / 100));
-						Log.i("coupon case discount", "assignedCustomerInfo.couponInfo.maximumDiscountValue = "+assignedCustomerInfo.couponInfo.maximumDiscountValue);
-								            
-					}
-				    else if(assignedCustomerInfo.couponInfo.cappedFare > 0){		// coupon capped fare
-				    	Log.i("coupon case capped", "assignedCustomerInfo.couponInfo.cappedFare = "+assignedCustomerInfo.couponInfo.cappedFare);
-				        Log.i("coupon case capped", "assignedCustomerInfo.couponInfo.cappedFareMaximum = "+assignedCustomerInfo.couponInfo.cappedFareMaximum);
-				        if(totalFare < assignedCustomerInfo.couponInfo.cappedFare){		// fare less than capped fare
-				        	finalDiscount = 0;
-				        }
-				        else{																// fare greater than capped fare
-				            double maxDiscount = assignedCustomerInfo.couponInfo.cappedFareMaximum - assignedCustomerInfo.couponInfo.cappedFare;
-				            finalDiscount = totalFare - assignedCustomerInfo.couponInfo.cappedFare;
-				            finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
-				            Log.i("coupon case capped", "maxDiscount = "+maxDiscount);
-				        }
-				    }
-				    else{
-				    	finalDiscount = 0;
-				    }
+                if(CouponType.DROP_BASED.getOrdinal() == assignedCustomerInfo.couponInfo.couponType){
+                    double distanceFromDrop = MapUtils.distance(dropLatLng, assignedCustomerInfo.couponInfo.droplLatLng);
+                    if(distanceFromDrop <= assignedCustomerInfo.couponInfo.dropRadius){                                     // drop condition satisfied
+                        finalDiscount = calculateCouponDiscount(totalFare, assignedCustomerInfo.couponInfo);
+                    }
+                    else{
+                        finalDiscount = 0;
+                    }
+                }
+                else{
+                    finalDiscount = calculateCouponDiscount(totalFare, assignedCustomerInfo.couponInfo);
+                }
 			}
 			else if(assignedCustomerInfo.promoInfo != null){		// promotion
-				
-				if(assignedCustomerInfo.promoInfo.discountPercentage > 0){		//promotion discount
-					finalDiscount = ((totalFare * assignedCustomerInfo.promoInfo.discountPercentage) / 100) < assignedCustomerInfo.promoInfo.discountMaximum ?
-			            Math.ceil(((totalFare * assignedCustomerInfo.promoInfo.discountPercentage) / 100)) : assignedCustomerInfo.promoInfo.discountMaximum;
-			            
-			            Log.i("promo case discount", "((totalFare * assignedCustomerInfo.promoInfo.discountPercentage) / 100) = "
-							    +((totalFare * assignedCustomerInfo.promoInfo.discountPercentage) / 100));
-					Log.i("promo case discount", "assignedCustomerInfo.promoInfo.discountMaximum = "+assignedCustomerInfo.promoInfo.discountMaximum);
-							            
-				}
-			    else if(assignedCustomerInfo.promoInfo.cappedFare > 0){		// promotion capped fare
-			    	Log.i("promo case capped", "assignedCustomerInfo.promoInfo.cappedFare = "+assignedCustomerInfo.promoInfo.cappedFare);
-			        Log.i("promo case capped", "assignedCustomerInfo.promoInfo.cappedFareMaximum = "+assignedCustomerInfo.promoInfo.cappedFareMaximum);
-			        if(totalFare < assignedCustomerInfo.promoInfo.cappedFare){		// fare less than capped fare
-			        	finalDiscount = 0;
-			        }
-			        else{																// fare greater than capped fare
-			            double maxDiscount = assignedCustomerInfo.promoInfo.cappedFareMaximum - assignedCustomerInfo.promoInfo.cappedFare;
-			            finalDiscount = totalFare - assignedCustomerInfo.promoInfo.cappedFare;
-			            finalDiscount = finalDiscount > maxDiscount ? maxDiscount : finalDiscount;
-			            Log.i("promo case capped", "maxDiscount = "+maxDiscount);
-			        }
-			    }
-			    else{
-			    	finalDiscount = 0;
-			    }
-				
-				Log.i("finalDiscount == endride offline ", "="+finalDiscount);
+                if(PromotionType.DROP_BASED.getOrdinal() == assignedCustomerInfo.promoInfo.promoType){
+                    double distanceFromDrop = MapUtils.distance(dropLatLng, assignedCustomerInfo.promoInfo.droplLatLng);
+                    if(distanceFromDrop <= assignedCustomerInfo.promoInfo.dropRadius){                                     // drop condition satisfied
+                        finalDiscount = calculatePromoDiscount(totalFare, assignedCustomerInfo.promoInfo);
+                    }
+                    else{
+                        finalDiscount = 0;
+                    }
+                }
+                else{
+                    finalDiscount = calculatePromoDiscount(totalFare, assignedCustomerInfo.promoInfo);
+                }
 			}
 			else{
 				finalDiscount = 0;
 			}
-			
+            Log.i("finalDiscount == endride offline ", "="+finalDiscount);
 			
 			if(totalFare > finalDiscount){									// final toPay (totalFare - discount)
 				finalToPay = totalFare - finalDiscount;
@@ -4006,14 +4095,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("finalToPay == endride offline ", "="+finalToPay);
 			
 			
-																			// wallet application (no split fare)
-			if(assignedCustomerInfo.jugnooBalance > 0 && finalToPay > 0 && assignedCustomerInfo.jugnooBalance >= finalToPay){	// wallet
-				finalPaidUsingWallet = finalToPay;
-				finalToPay = 0;
+																			// wallet application (with split fare)
+			if(assignedCustomerInfo.jugnooBalance > 0 && finalToPay > 0){	// wallet
+
+                if(assignedCustomerInfo.jugnooBalance >= finalToPay){
+                    finalPaidUsingWallet = finalToPay;
+                }
+                else{
+                    finalPaidUsingWallet = assignedCustomerInfo.jugnooBalance;
+                }
+
+				finalToPay = finalToPay - finalPaidUsingWallet;
 					
 				paymentMode = PaymentMode.WALLET.getOrdinal();
 				
 				params.put("payment_mode", ""+PaymentMode.WALLET.getOrdinal());
+                params.put("paid_using_wallet", ""+decimalFormat.format(finalPaidUsingWallet));
 			}
 			else{																			// no wallet
 				finalPaidUsingWallet = 0;
@@ -4021,6 +4118,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				paymentMode = PaymentMode.CASH.getOrdinal();
 				
 				params.put("payment_mode", ""+PaymentMode.CASH.getOrdinal());
+                params.put("paid_using_wallet", ""+decimalFormat.format(finalPaidUsingWallet));
 			}
 			
 			
@@ -4069,9 +4167,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+    /**
+     * API for uploading ride path data csv string to server
+     * @param activity
+     * @param engagementId
+     */
 	public void driverUploadPathDataFileAsync(final Activity activity, String engagementId) {
 		String rideDataStr = Database2.getInstance(activity).getRideData();
 		if(!"".equalsIgnoreCase(rideDataStr)){
@@ -4090,7 +4192,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						@Override
 						public void onFailure(Throwable arg3) {
 							Log.e("request fail", arg3.toString());
-//							Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
+							Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
 						}
 
 						@Override
