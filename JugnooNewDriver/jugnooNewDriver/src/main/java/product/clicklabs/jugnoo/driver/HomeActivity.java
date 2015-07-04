@@ -368,8 +368,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//TODO check final variables
 	public static AppMode appMode;
 	
-	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
-	public static final int D_TO_C_MAP_PATH_COLOR = Color.RED;
+	public static final int MAP_PATH_COLOR = Color.RED;
+	public static final int D_TO_C_MAP_PATH_COLOR = Color.BLUE;
 	public static final int DRIVER_TO_STATION_MAP_PATH_COLOR = Color.BLUE;
 	
 	public static final long DRIVER_START_RIDE_CHECK_METERS = 600; //in meters
@@ -4786,7 +4786,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 	
 	public boolean toShowPathToCustomer(){
-		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE) ||
+		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE || driverScreenMode == DriverScreenMode.D_IN_RIDE) ||
 		((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType)));
 	}
 	
