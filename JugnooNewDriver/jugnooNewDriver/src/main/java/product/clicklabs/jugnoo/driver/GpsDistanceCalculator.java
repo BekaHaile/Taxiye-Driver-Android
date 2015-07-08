@@ -164,7 +164,6 @@ public class GpsDistanceCalculator {
 							}
 						}
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
-						Database2.getInstance(context).insertRideData(""+location.getLatitude(), ""+location.getLongitude(), ""+System.currentTimeMillis());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -241,7 +240,8 @@ public class GpsDistanceCalculator {
 				} else {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.drawOldPath();
 					lastLatLng = getSavedLatLngFromSP(context);
-					Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "first time lastLatLng ="+lastLatLng);
+                    Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
 				}
 				
 				long millisDiff = newLocationTime - lastLocationTime;
@@ -320,7 +320,9 @@ public class GpsDistanceCalculator {
 				totalDistance = totalDistance + deltaDistance;
 				deltaLatLngPairs.add(latLngPair);
 				validDistance = true;
-				
+
+                Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+
 				Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", 
 						DateOperations.getTimeStampFromMillis(currentLocation.getTime())+","
 						+currentLatLng.latitude+","

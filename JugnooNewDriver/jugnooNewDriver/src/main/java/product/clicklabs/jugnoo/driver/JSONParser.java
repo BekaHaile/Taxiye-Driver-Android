@@ -742,11 +742,15 @@ public class JSONParser {
 												}
 											}
 
-                                            if(jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
-                                                dropLatitude = jObject.getDouble("op_drop_latitude");
-                                                dropLongitude = jObject.getDouble("op_drop_longitude");
+                                            try {
+                                                if(jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
+                                                    dropLatitude = jObject.getDouble("op_drop_latitude");
+                                                    dropLongitude = jObject.getDouble("op_drop_longitude");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-										}
+                                        }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
 										

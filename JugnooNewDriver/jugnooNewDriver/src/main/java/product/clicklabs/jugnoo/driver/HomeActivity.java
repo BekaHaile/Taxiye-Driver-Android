@@ -65,6 +65,7 @@ import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -3632,12 +3633,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 										}
                                         else if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())){
                                             double dropLatitude = 0, dropLongitude = 0;
-                                            if(jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
-                                                dropLatitude = jObj.getDouble("op_drop_latitude");
-                                                dropLongitude = jObj.getDouble("op_drop_longitude");
+                                            try {
+                                                if(jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
+                                                    dropLatitude = jObj.getDouble("op_drop_latitude");
+                                                    dropLongitude = jObj.getDouble("op_drop_longitude");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
                                             if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
-                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
+                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = null;
                                             }
                                             else{
                                                 ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);

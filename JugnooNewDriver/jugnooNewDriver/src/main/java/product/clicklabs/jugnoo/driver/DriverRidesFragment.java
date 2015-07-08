@@ -210,6 +210,12 @@ public class DriverRidesFragment extends Fragment {
             }
             else{
                 holder.textViewStatusString.setVisibility(View.VISIBLE);
+                if("Ride Cancelled".equalsIgnoreCase(rideInfo.statusString)){
+                    holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+                }
+                else{
+                    holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+                }
                 holder.textViewStatusString.setText(rideInfo.statusString);
             }
 			
