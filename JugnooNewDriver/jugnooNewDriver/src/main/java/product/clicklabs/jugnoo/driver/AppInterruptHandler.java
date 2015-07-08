@@ -4,6 +4,10 @@ import android.location.Location;
 
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+
 public interface AppInterruptHandler {
 	
 	public void onNewRideRequest();
@@ -27,6 +31,7 @@ public interface AppInterruptHandler {
 	public void drawOldPath();
 	
 	public void addPathToMap(PolylineOptions polylineOptions);
-	
-	
+
+    public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
+
 }

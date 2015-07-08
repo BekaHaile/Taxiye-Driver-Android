@@ -1,9 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.text.DecimalFormat;
-
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -18,6 +15,11 @@ import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.text.DecimalFormat;
+
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MeteringService extends Service {
 	
@@ -40,7 +42,8 @@ public class MeteringService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
     	cancelAlarm();
-    	gpsInstance(this).start();
+        gpsInstance(this).start();
+        startUploadPathAlarm();
     }
     
     
@@ -56,8 +59,59 @@ public class MeteringService extends Service {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
     	restartServiceViaAlarm();
     }
-    
-    
+
+
+
+    public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
+    public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
+    public static final long ALARM_REPEAT_INTERVAL = 15000;
+
+
+    public void startUploadPathAlarm() {
+        // check task is scheduled or not
+        boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH).putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this)),
+            PendingIntent.FLAG_NO_CREATE) != null);
+
+        if (alarmUp) {
+            cancelUploadPathAlarm();
+        }
+
+        Intent intent = new Intent(this, PathUploadReceiver.class);
+        intent.setAction(UPOLOAD_PATH);
+        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
+
+    }
+
+    public void cancelUploadPathAlarm() {
+        Intent intent = new Intent(this, PathUploadReceiver.class);
+        intent.setAction(UPOLOAD_PATH);
+        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     
     public void restartServiceViaAlarm(){
@@ -77,6 +131,8 @@ public class MeteringService extends Service {
     		}
     		else{
     			gpsInstance(this).stop();
+                Database2.getInstance(this).deleteAllCurrentPathItems();
+                cancelUploadPathAlarm();
     		}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -81,6 +81,7 @@ public class DriverLocationUpdateService extends Service {
 
         String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
+        String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
 		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 		
@@ -106,6 +107,9 @@ public class DriverLocationUpdateService extends Service {
         }
         else if(link.equalsIgnoreCase(DEV_2_SERVER_URL)){
             SERVER_URL = DEV_2_SERVER_URL;
+        }
+        else if(link.equalsIgnoreCase(DEV_3_SERVER_URL)){
+            SERVER_URL = DEV_3_SERVER_URL;
         }
 		else{
 			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
@@ -194,35 +198,35 @@ public class DriverLocationUpdateService extends Service {
 	private static final long ALARM_REPEAT_INTERVAL = 3 * 60000;
 	
 	
-	public void setupLocationUpdateAlarm(){
-	    // check task is scheduled or not
-	    boolean alarmUp = (PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE, 
-	    		new Intent(this, DriverLocationUpdateAlarmReceiver.class).setAction(SEND_LOCATION), 
-	    		PendingIntent.FLAG_NO_CREATE) != null);
+	public void setupLocationUpdateAlarm() {
+        // check task is scheduled or not
+        boolean alarmUp = (PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE,
+            new Intent(this, DriverLocationUpdateAlarmReceiver.class).setAction(SEND_LOCATION),
+            PendingIntent.FLAG_NO_CREATE) != null);
 
-	    if(alarmUp){
-	    	cancelLocationUpdateAlarm();
-	    }
-	    
-	        Intent intent = new Intent(this, DriverLocationUpdateAlarmReceiver.class);
-	        intent.setAction(SEND_LOCATION);
-	        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE, 
-	        		intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	        
-	        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-	        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
+        if (alarmUp) {
+            cancelLocationUpdateAlarm();
+        }
 
-	}
-	
-	public void cancelLocationUpdateAlarm(){
-		Intent intent = new Intent(this, DriverLocationUpdateAlarmReceiver.class);
-		intent.setAction(SEND_LOCATION);
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE, 
-        		intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
-		pendingIntent.cancel();
-	}
-	
-    
+        Intent intent = new Intent(this, DriverLocationUpdateAlarmReceiver.class);
+        intent.setAction(SEND_LOCATION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
+
+    }
+
+    public void cancelLocationUpdateAlarm() {
+        Intent intent = new Intent(this, DriverLocationUpdateAlarmReceiver.class);
+        intent.setAction(SEND_LOCATION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, DRIVER_LOCATION_PI_REQUEST_CODE,
+            intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+    }
+
+
 }

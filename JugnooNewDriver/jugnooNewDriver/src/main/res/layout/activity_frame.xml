@@ -4,4 +4,166 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <!-- customer info layout -->
+    <LinearLayout
+        android:id="@+id/driverPassengerInfoRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_translucent"
+        android:orientation="vertical"
+        android:splitMotionEvents="false" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:layout_marginTop="20px" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="30px"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/driverPassengerName"
+                    android:layout_width="380px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:singleLine="true"
+                    android:text="Passenger"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/textViewCustomerPickupAddress"
+                    android:layout_width="380px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Pickup Address"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="30px"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textViewAfterAcceptRequestInfo"
+                    android:layout_width="380px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Money To take: Rs 0"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="30px"
+                    android:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/textViewAfterAcceptAmount"
+                    android:layout_width="380px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Money To take: Rs 0"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="34px"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="40px"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/driverPassengerCallRl"
+                    android:layout_width="250px"
+                    android:layout_height="70px"
+                    android:background="@drawable/blue_btn_selector" >
+
+                    <ImageView
+                        android:id="@+id/driverCallIcon"
+                        android:layout_width="45px"
+                        android:layout_height="45px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="35px"
+                        android:src="@drawable/call_icon_selector" />
+
+                    <TextView
+                        android:id="@+id/driverPassengerCallText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="115px"
+                        android:text="@string/call"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="42px" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textViewInRideFareFactor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rate: 1.2x"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="34px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10px"
+
+                    />
+
+            </LinearLayout>
+
+
+
+
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/driverPassengerRatingRl"
+            android:layout_width="420px"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_marginLeft="40px"
+            android:splitMotionEvents="false"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/driverPassengerRatingStar"
+                android:layout_width="46px"
+                android:layout_height="46px"
+                android:background="@drawable/star_empty" />
+
+            <TextView
+                android:id="@+id/driverPassengerRatingValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:layout_toRightOf="@+id/driverPassengerRatingStar"
+                android:singleLine="true"
+                android:text="4.3 Rating"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="38px" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/driverScheduledRideText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_marginLeft="40px"
+            android:layout_marginRight="40px"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="Scheduled Ride Pickup: "
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="40px"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
     </FrameLayout>

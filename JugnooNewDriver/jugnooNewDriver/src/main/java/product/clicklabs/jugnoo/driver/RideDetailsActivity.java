@@ -24,7 +24,7 @@ public class RideDetailsActivity extends Activity{
 	Button backBtn;
 	TextView title;
 	
-	TextView dateTimeValue, textViewRideId, textViewBalance, textViewJugnooSubsidy, 
+	TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance, textViewJugnooSubsidy,
 		textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue, textViewFromValue, textViewToValue;
 	ImageView couponImg, jugnooCashImg, imageViewRequestType;
 	
@@ -61,6 +61,7 @@ public class RideDetailsActivity extends Activity{
 		
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue); dateTimeValue.setTypeface(Data.latoRegular(this));
 		textViewRideId = (TextView) findViewById(R.id.textViewRideId); textViewRideId.setTypeface(Data.latoRegular(this));
+        textViewStatusString = (TextView) findViewById(R.id.textViewStatusString); textViewStatusString.setTypeface(Data.latoRegular(this));
 		textViewBalance = (TextView) findViewById(R.id.textViewBalance); textViewBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewJugnooSubsidy = (TextView) findViewById(R.id.textViewJugnooSubsidy); textViewJugnooSubsidy.setTypeface(Data.latoRegular(this));
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid); textViewCustomerPaid.setTypeface(Data.latoRegular(this));
@@ -92,6 +93,16 @@ public class RideDetailsActivity extends Activity{
 		if(openedRideInfo != null){
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
 			textViewRideId.setText("Ride ID: "+openedRideInfo.id);
+
+            if("".equalsIgnoreCase(openedRideInfo.statusString)){
+                textViewStatusString.setVisibility(View.GONE);
+            }
+            else{
+                textViewStatusString.setVisibility(View.VISIBLE);
+                textViewStatusString.setText(openedRideInfo.statusString);
+            }
+
+
 			
 			double balance = Double.parseDouble(openedRideInfo.balance);
 			if(balance < 0){

@@ -37,6 +37,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class JSONParser {
 
@@ -162,14 +163,19 @@ public class JSONParser {
 //					50, 
 //					100);
 			
-			CouponInfo couponInfo = new CouponInfo(couponObject.getInt("type"), 
-					couponObject.getString("title"), 
+			CouponInfo couponInfo = new CouponInfo(couponObject.getString("title"),
 					couponObject.getString("subtitle"), 
 					couponObject.getString("description"), 
-					couponObject.getDouble("discount"), 
-					couponObject.getDouble("maximum"),
+					couponObject.getDouble("discount_percentage"),
+					couponObject.getDouble("discount_maximum"),
 					couponObject.getDouble("capped_fare"), 
-					couponObject.getDouble("capped_fare_maximum"));
+					couponObject.getDouble("capped_fare_maximum"),
+                    couponObject.getInt("coupon_type"),
+                    couponObject.getInt("benefit_type"),
+                    couponObject.getDouble("drop_latitude"),
+                    couponObject.getDouble("drop_longitude"),
+                    couponObject.getDouble("drop_radius")
+                    );
 			return couponInfo;
 		} catch(Exception e){
 			Log.w("couponInfo", "e=" + e.toString());
@@ -474,6 +480,8 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+
+
 			
 			if(jLastRideData.has("promotion")){
 				try{
@@ -534,7 +542,7 @@ public class JSONParser {
 			int freeRide = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
-			double jugnooBalance = 0;
+			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
 			int dBusinessId = BusinessType.AUTOS.getOrdinal();
 			int dReferenceId = 0;
 			String storeAddress = "";
@@ -632,24 +640,29 @@ public class JSONParser {
 		    	    					 }
 		    	    					 
 		    	    					 int referenceId = jActiveRequest.getInt("reference_id");
+
+                                        double fareFactor = 1;
+                                        if(jActiveRequest.has("fare_factor")) {
+                                            fareFactor = jActiveRequest.getDouble("fare_factor");
+                                        }
 		    	    					 
 		    	    					 if(BusinessType.AUTOS.getOrdinal() == businessId){
 		    	    						 Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId));
+			    	    								businessId, referenceId, fareFactor));
 	    								 }
 	    								 else if(BusinessType.MEALS.getOrdinal() == businessId){
 	    									 String rideTime = jActiveRequest.getString("ride_time");
 	    									
 	    									 Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, rideTime));
+			    	    								businessId, referenceId, rideTime, fareFactor));
 	    								 }
 	    								 else if(BusinessType.FATAFAT.getOrdinal() == businessId){
 	    									 int orderAmount = jActiveRequest.getInt("order_amount");
 	    									 Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId, 
 			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, orderAmount));
+			    	    								businessId, referenceId, orderAmount, fareFactor));
 	    								 }
 		    	    					 
 		    	    					 Log.i("inserter in db", "insertDriverRequest = "+requestEngagementId);
@@ -689,7 +702,8 @@ public class JSONParser {
 										engagementStatus = jObject.getInt("status");
 										
 										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus)){
+												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
 											engagementId = jObject.getString("engagement_id");
 											userId = jObject.getString("user_id");
 											pickupLatitude = jObject.getDouble("pickup_latitude");
@@ -708,10 +722,10 @@ public class JSONParser {
 												}
 											}
 											if(jObject.has("jugnoo_balance")){
-												jugnooBalance = jObject.getDouble("jugnoo_balance");
+                                                jugnooBalance = jObject.getDouble("jugnoo_balance");
 											}
 											if(jObject.has("free_ride")){
-												freeRide = jObject.getInt("free_ride");
+                                                freeRide = jObject.getInt("free_ride");
 											}
 											if(jObject.has("coupon")){
 												try{
@@ -722,12 +736,21 @@ public class JSONParser {
 											}
 											if(jObject.has("promotion")){
 												try{
-													promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
+                                                    promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
 												} catch(Exception e){
 													e.printStackTrace();
 												}
 											}
-										}
+
+                                            try {
+                                                if(jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
+                                                    dropLatitude = jObject.getDouble("op_drop_latitude");
+                                                    dropLongitude = jObject.getDouble("op_drop_longitude");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
 										
@@ -745,7 +768,8 @@ public class JSONParser {
 										engagementStatus = jObject.getInt("status");
 										
 										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus)){
+												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
 											
 											engagementId = jObject.getString("engagement_id");
 											storeOrderAmount = jObject.getInt("order_amount");
@@ -800,8 +824,11 @@ public class JSONParser {
 			
 			// 0 for request, 1 for accepted,2 for started,3 for ended, 4 for rejected by driver, 5 for rejected by user,6 for timeout, 7 for nullified by chrone
 			if(EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus){
-				screenMode = Data.D_START_RIDE;
+				screenMode = Data.D_ARRIVED;
 			}
+            else if(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus){
+                screenMode = Data.D_START_RIDE;
+            }
 			else if(EngagementStatus.STARTED.getOrdinal() == engagementStatus){
 				screenMode = Data.D_IN_RIDE;
 			}
@@ -822,10 +849,16 @@ public class JSONParser {
 				Data.dCustLatLng = new LatLng(pickupLatitude, pickupLongitude);
 				
 				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
-					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId), 
+					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
 							couponInfo, promoInfo, jugnooBalance);
+                    if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
+                    }
+                    else{
+                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                    }
 				}
 				else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
 					
@@ -840,8 +873,10 @@ public class JSONParser {
 				}
 				
 				
-				
-				if(Data.D_START_RIDE.equalsIgnoreCase(screenMode)){
+				if(Data.D_ARRIVED.equalsIgnoreCase(screenMode)){
+                    HomeActivity.driverScreenMode = DriverScreenMode.D_ARRIVED;
+                }
+				else if(Data.D_START_RIDE.equalsIgnoreCase(screenMode)){
 					HomeActivity.driverScreenMode = DriverScreenMode.D_START_RIDE;
 				}
 				else if(Data.D_IN_RIDE.equalsIgnoreCase(screenMode)){

@@ -70,7 +70,7 @@ public class Data {
 	public static final String LANGUAGE_SELECTED = "language_selected";
 	
 	
-	public static String D_START_RIDE = "D_START_RIDE", D_IN_RIDE = "D_IN_RIDE";
+	public static String D_ARRIVED = "D_ARRIVED", D_START_RIDE = "D_START_RIDE", D_IN_RIDE = "D_IN_RIDE";
 	public static String P_RIDE_END = "P_RIDE_END", P_IN_RIDE = "P_IN_RIDE", P_REQUEST_FINAL = "P_REQUEST_FINAL", 
 			P_ASSIGNING = "P_ASSIGNING";
 	
@@ -120,6 +120,7 @@ public class Data {
 
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
+    public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 	

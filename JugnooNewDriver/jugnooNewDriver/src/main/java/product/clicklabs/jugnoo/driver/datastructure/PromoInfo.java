@@ -9,6 +9,7 @@ public class PromoInfo {
     public int promoType, benefitType;
 	public double discountPercentage, discountMaximum, cappedFare, cappedFareMaximum, cashbackPercentage, dropRadius;
     public LatLng droplLatLng;
+    public boolean promoApplied;
 	
 	public PromoInfo(String title, int promoType, int benefitType, double discountPercentage, double discountMaximum, double cappedFare, double cappedFareMaximum,
                      double cashbackPercentage, double dropLatitude, double dropLongitude, double dropRadius){
@@ -22,6 +23,7 @@ public class PromoInfo {
         this.cashbackPercentage = cashbackPercentage;
         this.droplLatLng = new LatLng(dropLatitude, dropLongitude);
         this.dropRadius = dropRadius;
+        this.promoApplied = false;
 	}
 	
 	

@@ -123,6 +123,18 @@
 
 
             <TextView
+                android:id="@+id/textViewStatusString"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="10px"
+                android:singleLine="true"
+                android:text="Status"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"/>
+
+
+            <TextView
                 android:id="@+id/textViewBalance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

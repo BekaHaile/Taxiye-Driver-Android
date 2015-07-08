@@ -17,5 +17,5 @@ public enum BenefitType {
 	}
 }
 
-//promo_type` int(11) NOT NULL COMMENT '1 for location insensitive, 2 for pickup based,\n3 for drop based',
-//    `benefit_type` int(11) NOT NULL COMMENT '1 for discounts, 2 for capped fare, 3 for\ncashbacks',
+//      promo_type` int(11) NOT NULL COMMENT '1 for location insensitive, 2 for pickup based,\n3 for drop based',
+//      benefit_type` int(11) NOT NULL COMMENT '1 for discounts, 2 for capped fare, 3 for\ncashbacks',

@@ -67,16 +67,37 @@
                 android:textSize="30px"/>
 
 
-            <Button
-                android:id="@+id/buttonAcceptRide"
-                android:layout_width="300px"
-                android:layout_height="69px"
-                android:background="@drawable/blue_btn_selector"
-                android:layout_marginTop="10px"
-                android:text="ACCEPT"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10px">
+                <Button
+                    android:id="@+id/buttonAcceptRide"
+                    android:layout_width="300px"
+                    android:layout_height="69px"
+                    android:background="@drawable/blue_btn_selector"
+                    android:text="ACCEPT"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewRequestFareFactor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rate: 144.2x"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="34px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="40px"
+
+                    />
+
+
+            </LinearLayout>
+
+
 
 
         </LinearLayout>
