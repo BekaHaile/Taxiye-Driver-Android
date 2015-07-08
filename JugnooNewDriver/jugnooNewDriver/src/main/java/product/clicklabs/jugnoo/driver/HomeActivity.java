@@ -65,6 +65,7 @@ import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -369,7 +370,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public static AppMode appMode;
 	
 	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
-	public static final int D_TO_C_MAP_PATH_COLOR = Color.RED;
+	public static final int D_TO_C_MAP_PATH_COLOR = Color.BLUE;
 	public static final int DRIVER_TO_STATION_MAP_PATH_COLOR = Color.BLUE;
 	
 	public static final long DRIVER_START_RIDE_CHECK_METERS = 600; //in meters
@@ -2053,8 +2054,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverEndRideBtn.setText("Mark Delivered");
                     inrideFareInfoRl.setVisibility(View.GONE);
 				}
-				else{
-					cancelCustomerPathUpdateTimer();
+				else if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
+                    startCustomerPathUpdateTimer();
 					driverEndRideBtn.setText("End Ride");
                     inrideFareInfoRl.setVisibility(View.VISIBLE);
 				}
@@ -3630,6 +3631,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											
 											((FatafatOrderInfo)Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
 										}
+                                        else if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())){
+                                            double dropLatitude = 0, dropLongitude = 0;
+                                            try {
+                                                if(jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
+                                                    dropLatitude = jObj.getDouble("op_drop_latitude");
+                                                    dropLongitude = jObj.getDouble("op_drop_longitude");
+                                                }
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = null;
+                                            }
+                                            else{
+                                                ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                                            }
+                                        }
 									}
 									
 									
@@ -4737,6 +4755,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)){
 						getCustomerPathAndDisplay(Data.assignedCustomerInfo.requestlLatLng);
 					}
+                    else if((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.assignedCustomerInfo != null) && (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType)){
+                        if(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng != null){
+                            getCustomerPathAndDisplay(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng);
+                        }
+                    }
 					else if (((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType))) {
 						if (((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
 							getCustomerPathAndDisplay(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryLatLng);
@@ -4768,7 +4791,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 	
 	public boolean toShowPathToCustomer(){
-		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE) ||
+		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE || driverScreenMode == DriverScreenMode.D_IN_RIDE) ||
 		((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType)));
 	}
 	

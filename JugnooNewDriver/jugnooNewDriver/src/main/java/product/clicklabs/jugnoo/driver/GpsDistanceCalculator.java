@@ -28,7 +28,7 @@ public class GpsDistanceCalculator {
 	
 	private static final long LOCATION_UPDATE_INTERVAL = 5000; // in milliseconds
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
-	public static final double MAX_SPEED_THRESHOLD = 1000; //in meters per second
+	public static final double MAX_SPEED_THRESHOLD = 28; //in meters per second
 	public static final double MAX_ACCURACY = 500;
 	
 	public double totalDistance;
@@ -164,7 +164,6 @@ public class GpsDistanceCalculator {
 							}
 						}
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
-						Database2.getInstance(context).insertRideData(""+location.getLatitude(), ""+location.getLongitude(), ""+System.currentTimeMillis());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -241,7 +240,8 @@ public class GpsDistanceCalculator {
 				} else {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.drawOldPath();
 					lastLatLng = getSavedLatLngFromSP(context);
-					Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "first time lastLatLng ="+lastLatLng);
+                    Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
 				}
 				
 				long millisDiff = newLocationTime - lastLocationTime;
@@ -320,7 +320,9 @@ public class GpsDistanceCalculator {
 				totalDistance = totalDistance + deltaDistance;
 				deltaLatLngPairs.add(latLngPair);
 				validDistance = true;
-				
+
+                Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+
 				Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", 
 						DateOperations.getTimeStampFromMillis(currentLocation.getTime())+","
 						+currentLatLng.latitude+","
