@@ -3503,7 +3503,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	public void initializeStartRideVariables(){
-		
+
+        Utils.deleteCache(this);
+
 		lastLocation = null;
 		lastLocationTime = System.currentTimeMillis();
 		
