@@ -1,10 +1,16 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -26,14 +32,15 @@ public class GpsDistanceCalculator {
 	
 	private static GpsDistanceCalculator instance;
 	
-	private static final long LOCATION_UPDATE_INTERVAL = 5000; // in milliseconds
+	private static long LOCATION_UPDATE_INTERVAL = 2000; // in milliseconds
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 28; //in meters per second
 	public static final double MAX_ACCURACY = 500;
-	
+	public static final double BEST_ACCURACY = 10;
+
 	public double totalDistance;
 	public Location lastGPSLocation, lastFusedLocation;
-	public long lastLocationTime;
+	public static long lastLocationTime;
 	
 	private FusedLocationFetcherBackgroundHigh gpsForegroundLocationFetcher;
 	private FusedLocationFetcherBackgroundBalanced fusedLocationFetcherBackgroundBalanced;
@@ -44,6 +51,7 @@ public class GpsDistanceCalculator {
 	
 	private ArrayList<LatLngPair> deltaLatLngPairs = new ArrayList<LatLngPair>();
 	private ArrayList<DirectionsAsyncTask> directionsAsyncTasks = new ArrayList<DirectionsAsyncTask>();
+
 	
 	private static final String LOCATION_SP = "metering_sp",
 			LOCATION_LAT = "location_lat",
@@ -96,6 +104,7 @@ public class GpsDistanceCalculator {
 			saveTrackingToSP(context, 1);
 		}
 		connectGPSListener(context);
+		setupMeteringAlarm(context);
 
 		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
 		Log.e("GpsDistanceCalculator start", "=totalDistance="+totalDistance);
@@ -123,6 +132,8 @@ public class GpsDistanceCalculator {
 	
 	public void stop(){
 		disconnectGPSListener();
+		cancelMeteringAlarm(context);
+
 		saveStartTimeToSP(context, System.currentTimeMillis());
 		saveLatLngToSP(context, 0, 0);
 		saveTotalDistanceToSP(context, -1);
@@ -133,9 +144,48 @@ public class GpsDistanceCalculator {
 		instance.lastGPSLocation = null;
 		instance.lastFusedLocation = null;
 
-		Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "totalDistance at stop ="+totalDistance);
-		Log.e("stop instance=", "="+instance);
+
+		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at stop =" + totalDistance);
+		Log.e("stop instance=", "=" + instance);
 	}
+
+
+
+	private static int METERING_PI_REQUEST_CODE = 112;
+	private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
+	private static final long ALARM_REPEAT_INTERVAL = 60000;
+
+
+	public void setupMeteringAlarm(Context context) {
+		// check task is scheduled or not
+		boolean alarmUp = (PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
+				new Intent(context, DriverLocationUpdateAlarmReceiver.class).setAction(CHECK_LOCATION),
+				PendingIntent.FLAG_NO_CREATE) != null);
+		if (alarmUp) {
+			cancelMeteringAlarm(context);
+		}
+
+		Intent intent = new Intent(context, MeteringAlarmReceiver.class);
+		intent.setAction(CHECK_LOCATION);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
+				ALARM_REPEAT_INTERVAL, pendingIntent);
+	}
+
+	public void cancelMeteringAlarm(Context context) {
+		Intent intent = new Intent(context, MeteringAlarmReceiver.class);
+		intent.setAction(CHECK_LOCATION);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
+		pendingIntent.cancel();
+	}
+
+
 	
 	private void initializeGPSForegroundLocationFetcher(Context context){
 		if(gpsForegroundLocationFetcher == null){
@@ -147,7 +197,7 @@ public class GpsDistanceCalculator {
 	
 	private void initializeFusedLocationFetcherBackgroundBalanced(Context context){
 		if(fusedLocationFetcherBackgroundBalanced == null){
-			fusedLocationFetcherBackgroundBalanced = new FusedLocationFetcherBackgroundBalanced(context, LOCATION_UPDATE_INTERVAL*2);
+			fusedLocationFetcherBackgroundBalanced = new FusedLocationFetcherBackgroundBalanced(context, LOCATION_UPDATE_INTERVAL);
 		}
 	}
 	
@@ -157,16 +207,42 @@ public class GpsDistanceCalculator {
 				
 				@Override
 				public void onGPSLocationChanged(Location location) {
+					long lastUpdateTime = System.currentTimeMillis();
 					try {
 						if(location.getAccuracy() < MAX_ACCURACY){
+//							if(location.getAccuracy() <= BEST_ACCURACY && LOCATION_UPDATE_INTERVAL == 1000){
+//								LOCATION_UPDATE_INTERVAL = 5000;
+//								connectGPSListener(context);
+//							}
+//							else if(location.getAccuracy() > BEST_ACCURACY && LOCATION_UPDATE_INTERVAL == 5000){
+//								LOCATION_UPDATE_INTERVAL = 1000;
+//								connectGPSListener(context);
+//							}
+
 							if((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)){
 								drawLocationChanged(location);
 							}
 						}
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+
+						Log.v("diff", String.valueOf(System.currentTimeMillis() - lastUpdateTime));
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+				}
+
+				@Override
+				public void refreshLocationFetchers(final Context context) {
+					reconnectGPSHandler();
+
+					Handler mainHandler = new Handler(context.getMainLooper());
+					mainHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
+						}
+					});
 				}
 			};
 		}
@@ -240,6 +316,8 @@ public class GpsDistanceCalculator {
 				} else {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.drawOldPath();
 					lastLatLng = getSavedLatLngFromSP(context);
+                    Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
 				}
 				
 				long millisDiff = newLocationTime - lastLocationTime;
@@ -257,12 +335,6 @@ public class GpsDistanceCalculator {
 				if(speedMPS < MAX_SPEED_THRESHOLD){
 					if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 						addLatLngPathToDistance(lastLatLng, currentLatLng, location);
-
-                        if(lastGPSLocation == null){
-                            Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
-                            Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
-                        }
-
 					}
 					lastGPSLocation = location;
 					lastLocationTime = System.currentTimeMillis();
@@ -287,7 +359,7 @@ public class GpsDistanceCalculator {
 			public void run() {
 				connectGPSListener(context);
 			}
-		}, 2000);
+		}, 5000);
 	}
 	
 	private synchronized void addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation){

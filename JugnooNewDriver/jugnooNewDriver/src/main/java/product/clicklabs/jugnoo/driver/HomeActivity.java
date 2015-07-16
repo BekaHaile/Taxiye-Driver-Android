@@ -377,6 +377,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
+	public static final double FUSED_DISTANCE_MAX_ADDITION = 10000;
 	
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 1000;  //in meters
 
@@ -2453,13 +2454,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             zoomToCurrentLocationAtFirstLocationFix(location);
         }
 	}
-	
-	
 
-	
-	
-	
-	
+	@Override
+	public void refreshLocationFetchers(Context context) {
+
+	}
+
+
 	void buildAlertMessageNoGps() {
 		if(!((LocationManager) getSystemService(Context.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)){
 			if(gpsDialogAlert != null && gpsDialogAlert.isShowing()){
@@ -5207,7 +5208,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				    		distanceOfPath = element0.getJSONObject("distance").getDouble("value") ;
 				    	}
 				    	Log.e("calculateFusedLocationDistance distanceOfPath ", "="+distanceOfPath);
-				    	if(distanceOfPath > 0.0001){
+				    	if(distanceOfPath > 0.0001 && distanceOfPath <= FUSED_DISTANCE_MAX_ADDITION){
 				    		totalDistance = totalDistance + distanceOfPath;
 				    		Log.writePathLogToFile(Data.dEngagementId+"m", "GAPI distanceOfPath="+distanceOfPath+" and totalDistance="+totalDistance);
 				    	}
@@ -5217,10 +5218,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				    } 
 				    catch (Exception e) {
 				    	e.printStackTrace();
-				    	totalDistance = totalDistance + displacement;
-				    	flagDistanceTravelled = 2;
-				    	Log.writePathLogToFile(Data.dEngagementId+"m", "GAPI excep displacement="+displacement+" and totalDistance="+totalDistance);
-				    }
+						if(displacement > 0.0001 && displacement <= FUSED_DISTANCE_MAX_ADDITION){
+							totalDistance = totalDistance + displacement;
+							flagDistanceTravelled = 2;
+							Log.writePathLogToFile(Data.dEngagementId+"m", "GAPI excep displacement="+displacement+" and totalDistance="+totalDistance);
+						}
+					}
 				  Log.e("calculateFusedLocationDistance totalDistance ", "="+totalDistance);
 				  
 				  activity.runOnUiThread(new Runnable() {
