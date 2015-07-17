@@ -6,8 +6,6 @@ package product.clicklabs.jugnoo.driver.datastructure;
 public class SPLabels {
 
     public static final String SETTINGS_SP = "settingsPref",
-        RECEIVE_REQUESTS = "receiveRequests"
-
-            ;
-
+        RECEIVE_REQUESTS = "receiveRequests",
+        GPS_STATE = "deviceRestart";
 }

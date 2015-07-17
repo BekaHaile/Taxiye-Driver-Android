@@ -93,6 +93,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
+import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
@@ -394,6 +395,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+
 
 		setContentView(R.layout.activity_home);
 
@@ -2167,6 +2170,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else{
 				Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
 			}
+			Prefs.with(this).save(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal());
 		}
 	}
 	

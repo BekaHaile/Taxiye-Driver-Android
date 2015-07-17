@@ -153,7 +153,7 @@ public class GpsDistanceCalculator {
 
 	private static int METERING_PI_REQUEST_CODE = 112;
 	private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
-	private static final long ALARM_REPEAT_INTERVAL = 60000;
+	private static final long ALARM_REPEAT_INTERVAL = 30000;
 
 
 	public void setupMeteringAlarm(Context context) {
@@ -171,7 +171,7 @@ public class GpsDistanceCalculator {
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
+		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+30000,
 				ALARM_REPEAT_INTERVAL, pendingIntent);
 	}
 
@@ -240,7 +240,7 @@ public class GpsDistanceCalculator {
 					mainHandler.post(new Runnable() {
 						@Override
 						public void run() {
-							try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
+							//try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
 						}
 					});
 				}
