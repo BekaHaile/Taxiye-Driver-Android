@@ -6,6 +6,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Looper;
+import android.support.v4.app.ActivityCompat;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
@@ -14,6 +17,7 @@ import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -21,20 +25,18 @@ import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 
 public class MeteringAlarmReceiver extends BroadcastReceiver {
 
-	private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
+    private static final String CHECK_LOCATION = "product.clicklabs.jugnoo.driver.CHECK_LOCATION";
 
-	private static final long MINUTE = 60 * 1000;
-	private static final long HALF_MINUTE = 30 * 1000;
-	private static final long MAX_TIME_BEFORE_LOCATION_UPDATE = 2 * MINUTE;
-
-
-	@Override
-	public void onReceive(final Context context, Intent intent) {
-		String action = intent.getAction();
-		if (CHECK_LOCATION.equals(action)) {
-			long timeDiff = System.currentTimeMillis() - GpsDistanceCalculator.lastLocationTime;
+    private static final long MINUTE = 60 * 1000;
+    private static final long HALF_MINUTE = 30 * 1000;
+    private static final long MAX_TIME_BEFORE_LOCATION_UPDATE = 2 * MINUTE;
 
 
+    @Override
+    public void onReceive(final Context context, Intent intent) {
+        String action = intent.getAction();
+        if (CHECK_LOCATION.equals(action)) {
+            long timeDiff = System.currentTimeMillis() - GpsDistanceCalculator.lastLocationTime;
 
 
 //			if(timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE && timeDiff <= 7*HALF_MINUTE){
@@ -56,66 +58,60 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 //			}
 
 
-			if(timeDiff >= 6*MINUTE){
-				SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true, true);
 
-				FlurryAgent.init(context, Data.FLURRY_KEY);
-				FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
-				FlurryEventLogger.gpsStatus("Device Restar");
-				FlurryAgent.onEndSession(context);
+            if (timeDiff >= 6 * MINUTE) {
+                Database2.getInstance(context).updateGpsState(GpsState.GREATER_SIX.getOrdinal());
+                SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true, true);
 
-				Toast.makeText(context, "Please Restart Your Phone", Toast.LENGTH_LONG).show();
-				Prefs.with(context).save(SPLabels.GPS_STATE, GpsState.GREATER_SIX.getOrdinal());
-			}
-			else if(timeDiff > 7*HALF_MINUTE){
-				if(Prefs.with(context).getInt(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal())
-						== GpsState.TWO_LESS_FOUR.getOrdinal()){
-					Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-//					Intent i = new Intent(context,SplashNewActivity.class);
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					context.startActivity(i);
-//					((Activity)context).finish();
+                FlurryEventLogger.gpsStatus(context, "Device Restart");
+
+                Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
+                dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                dialogIntent.putExtra("message", "Please Restart Your Phone");
+                context.startActivity(dialogIntent);
 
 
-					FlurryAgent.init(context, Data.FLURRY_KEY);
-					FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
-					FlurryEventLogger.gpsStatus("App restart");
-					FlurryAgent.onEndSession(context);
+            } else if (timeDiff > 7 * HALF_MINUTE) {
+                if (Database2.getInstance(context).getGpsState()
+                        == GpsState.TWO_LESS_FOUR.getOrdinal()) {
+                    if(HomeActivity.activity != null) {
+                        ActivityCompat.finishAffinity(HomeActivity.activity);
+                        Intent i = new Intent(HomeActivity.activity, SplashNewActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        HomeActivity.activity.startActivity(i);
+                    }
 
-				}
-				else{
-					GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+                    FlurryEventLogger.gpsStatus(context, "App restart");
 
-					FlurryAgent.init(context, Data.FLURRY_KEY);
-					FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
-					FlurryEventLogger.gpsStatus("Old Location Afer");
-					FlurryAgent.onEndSession(context);
+                } else {
+                    GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
 
-					Toast.makeText(context, "Old Location after", Toast.LENGTH_LONG).show();
-				}
-				Prefs.with(context).save(SPLabels.GPS_STATE, GpsState.GREATER_FOUR.getOrdinal());
-			}
-			else if(timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE){
-//				Intent i = new Intent(context,SplashNewActivity.class);
-//                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//				context.startActivity(i);
-//				((Activity)context).finish();
-				GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
-				Toast.makeText(context, "Old Location", Toast.LENGTH_LONG).show();
+                    FlurryEventLogger.gpsStatus(context, "Old Location After");
 
-				FlurryAgent.init(context, Data.FLURRY_KEY);
-				FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
-				FlurryEventLogger.gpsStatus("Old Location");
-				FlurryAgent.onEndSession(context);
+                    Toast.makeText(context, "Old Location after", Toast.LENGTH_LONG).show();
+                }
+                Database2.getInstance(context).updateGpsState(GpsState.GREATER_FOUR.getOrdinal());
+            } else if (timeDiff > MAX_TIME_BEFORE_LOCATION_UPDATE) {
+                GpsDistanceCalculator.gpsLocationUpdate.refreshLocationFetchers(context);
+                Toast.makeText(context, "Old Location", Toast.LENGTH_LONG).show();
+                Database2.getInstance(context).updateGpsState(GpsState.TWO_LESS_FOUR.getOrdinal());
+                FlurryEventLogger.gpsStatus(context, "Old Location");
 
-				Prefs.with(context).save(SPLabels.GPS_STATE, GpsState.TWO_LESS_FOUR.getOrdinal());
-			}
-			else{
-				Prefs.with(context).save(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal());
-			}
+            } else {
+                Database2.getInstance(context).updateGpsState(GpsState.ZERO_TWO.getOrdinal());
+            }
+
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context, "" + (Database2.getInstance(context).getGpsState()), Toast.LENGTH_LONG).show();
+                }
+            });
 
 
-		}
-	}
-	
+        }
+    }
+
 }

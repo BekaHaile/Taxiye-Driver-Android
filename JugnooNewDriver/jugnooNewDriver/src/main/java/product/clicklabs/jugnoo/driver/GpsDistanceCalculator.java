@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class GpsDistanceCalculator {
@@ -36,7 +38,6 @@ public class GpsDistanceCalculator {
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 28; //in meters per second
 	public static final double MAX_ACCURACY = 500;
-	public static final double BEST_ACCURACY = 10;
 
 	public double totalDistance;
 	public Location lastGPSLocation, lastFusedLocation;
@@ -53,14 +54,14 @@ public class GpsDistanceCalculator {
 	private ArrayList<DirectionsAsyncTask> directionsAsyncTasks = new ArrayList<DirectionsAsyncTask>();
 
 	
-	private static final String LOCATION_SP = "metering_sp",
-			LOCATION_LAT = "location_lat",
-			LOCATION_LNG = "location_lng",
-			TOTAL_DISTANCE = "total_distance",
-			LOCATION_TIME = "location_time",
-			START_TIME = "start_time",
-			TRACKING = "tracking",
-			ENGAGEMENT_ID = "engagement_id";
+//	private static final String LOCATION_SP = "metering_sp",
+//			LOCATION_LAT = "location_lat",
+//			LOCATION_LNG = "location_lng",
+//			TOTAL_DISTANCE = "total_distance",
+//			LOCATION_TIME = "location_time",
+//			START_TIME = "start_time",
+//			TRACKING = "tracking",
+//			ENGAGEMENT_ID = "engagement_id";
 	
 	
 	private GpsDistanceCalculator(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater,
@@ -82,16 +83,17 @@ public class GpsDistanceCalculator {
 		Log.e("GpsDistanceCalculator constructor", "=totalDistance="+totalDistance);
 	}
 	
-	public static GpsDistanceCalculator getInstance(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater, 
-			double totalDistance, long lastLocationTime){
-		if(instance == null){
+	public static GpsDistanceCalculator getInstance(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater,
+			double totalDistance, long lastLocationTime) {
+		if (instance == null) {
 			instance = new GpsDistanceCalculator(context, gpsDistanceUpdater, totalDistance, lastLocationTime);
 		}
+
 		instance.context = context;
 		instance.gpsDistanceUpdater = gpsDistanceUpdater;
 		instance.totalDistance = totalDistance;
 		instance.lastLocationTime = lastLocationTime;
-		
+
 		return instance;
 	}
 	
@@ -171,7 +173,7 @@ public class GpsDistanceCalculator {
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+30000,
+		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 20000,
 				ALARM_REPEAT_INTERVAL, pendingIntent);
 	}
 
@@ -236,13 +238,13 @@ public class GpsDistanceCalculator {
 				public void refreshLocationFetchers(final Context context) {
 					reconnectGPSHandler();
 
-					Handler mainHandler = new Handler(context.getMainLooper());
-					mainHandler.post(new Runnable() {
-						@Override
-						public void run() {
-							//try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
-						}
-					});
+//					Handler mainHandler = new Handler(context.getMainLooper());
+//					mainHandler.post(new Runnable() {
+//						@Override
+//						public void run() {
+//							//try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
+//						}
+//					});
 				}
 			};
 		}
@@ -336,10 +338,10 @@ public class GpsDistanceCalculator {
 					if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 						addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					}
-					lastGPSLocation = location;
-					lastLocationTime = System.currentTimeMillis();
-						
-					saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+//					lastGPSLocation = location;
+//					lastLocationTime = System.currentTimeMillis();
+//
+//					saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
 				}
 				else{
 					reconnectGPSHandler();
@@ -396,6 +398,9 @@ public class GpsDistanceCalculator {
 				totalDistance = totalDistance + deltaDistance;
 				deltaLatLngPairs.add(latLngPair);
 				validDistance = true;
+
+				lastGPSLocation = currentLocation;
+				lastLocationTime = System.currentTimeMillis();
 
                 Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
 
@@ -551,23 +556,14 @@ public class GpsDistanceCalculator {
 	}
 	
 	
-	
-	
-	public Location getLastGPSLocation(){
-		return lastGPSLocation;
-	}
-	
-	public Location getLastFusedLocation(){
-		return lastFusedLocation;
-	}
+
 	
 	
 	
 	
 	
 	
-	
-	public void saveData(Context context, Location location, double totalDistance, long lastLocationTime){
+	public static void saveData(Context context, Location location, double totalDistance, long lastLocationTime){
 		if(location != null){
 			saveLatLngToSP(context, location.getLatitude(), location.getLongitude());
 			saveTotalDistanceToSP(context, totalDistance);
@@ -575,84 +571,56 @@ public class GpsDistanceCalculator {
 		}
 	}
 	
-	
-	private SharedPreferences getMeteringSharedPref(Context context){
-		return context.getSharedPreferences(LOCATION_SP, Context.MODE_MULTI_PROCESS);
+
+	public static synchronized void saveLatLngToSP(Context context, double latitude, double longitude){
+		Prefs.with(context).save(SPLabels.LOCATION_LAT, "" + latitude);
+		Prefs.with(context).save(SPLabels.LOCATION_LNG, "" + longitude);
 	}
 	
-	public synchronized void saveLatLngToSP(Context context, double latitude, double longitude){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(LOCATION_LAT, ""+latitude);
-		editor.putString(LOCATION_LNG, ""+longitude);
-		editor.commit();
-	}
-	
-	public synchronized LatLng getSavedLatLngFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String latitude = preferences.getString(LOCATION_LAT, ""+ 0);
-		String longitude = preferences.getString(LOCATION_LNG, ""+ 0);
-		return new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
+	public static synchronized LatLng getSavedLatLngFromSP(Context context){
+		return new LatLng(Double.parseDouble(Prefs.with(context).getString(SPLabels.LOCATION_LAT, "" + 0)),
+				Double.parseDouble(Prefs.with(context).getString(SPLabels.LOCATION_LNG, ""+ 0)));
 	}
 	
 	
-	public synchronized void saveTotalDistanceToSP(Context context, double totalDistance){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(TOTAL_DISTANCE, ""+totalDistance);
-		editor.commit();
+	public static synchronized void saveTotalDistanceToSP(Context context, double totalDistance){
+		Prefs.with(context).save(SPLabels.TOTAL_DISTANCE, ""+totalDistance);
 	}
 
-	public synchronized double getTotalDistanceFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String totalDistance = preferences.getString(TOTAL_DISTANCE, ""+ -1);
-		return Double.parseDouble(totalDistance);
-	}
-	
-	public synchronized void saveLastLocationTimeToSP(Context context, long lastLocationTime){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(LOCATION_TIME, ""+lastLocationTime);
-		editor.commit();
+	public static synchronized double getTotalDistanceFromSP(Context context){
+		return Double.parseDouble(Prefs.with(context).getString(SPLabels.TOTAL_DISTANCE, "" + -1));
 	}
 
-	public synchronized long getLastLocationTimeFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String lastLocationTime = preferences.getString(LOCATION_TIME, ""+ System.currentTimeMillis());
-		return Long.parseLong(lastLocationTime);
-	}
-	
-	public synchronized void saveStartTimeToSP(Context context, long startTime){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(START_TIME, ""+startTime);
-		editor.commit();
+	public static synchronized void saveLastLocationTimeToSP(Context context, long lastLocationTime){
+		Prefs.with(context).save(SPLabels.LOCATION_TIME, ""+lastLocationTime);
 	}
 
-	public synchronized long getStartTimeFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String startTime = preferences.getString(START_TIME, ""+ 0);
-		return Long.parseLong(startTime);
+	public static synchronized long getLastLocationTimeFromSP(Context context){
+		return Long.parseLong(Prefs.with(context).getString(SPLabels.LOCATION_TIME, ""+ System.currentTimeMillis()));
 	}
 	
-	public synchronized void saveTrackingToSP(Context context, int tracking){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(TRACKING, ""+tracking);
-		editor.commit();
+	public static synchronized void saveStartTimeToSP(Context context, long startTime){
+		Prefs.with(context).save(SPLabels.START_TIME, ""+startTime);
 	}
 
-	public synchronized int getTrackingFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String tracking = preferences.getString(TRACKING, ""+ 0);
-		return Integer.parseInt(tracking);
+	public static synchronized long getStartTimeFromSP(Context context){
+		return Long.parseLong(Prefs.with(context).getString(SPLabels.START_TIME, "0"));
 	}
 	
-	public synchronized void saveEngagementIdToSP(Context context, String engagementId){
-		SharedPreferences.Editor editor = getMeteringSharedPref(context).edit();
-		editor.putString(ENGAGEMENT_ID, engagementId);
-		editor.commit();
+	public static synchronized void saveTrackingToSP(Context context, int tracking){
+		Prefs.with(context).save(SPLabels.TRACKING, "" + tracking);
 	}
 
-	public synchronized String getEngagementIdFromSP(Context context){
-		SharedPreferences preferences = getMeteringSharedPref(context);
-		String engagementId = preferences.getString(ENGAGEMENT_ID, ""+ 0);
-		return engagementId;
+	public static synchronized int getTrackingFromSP(Context context){
+		return Integer.parseInt(Prefs.with(context).getString(SPLabels.TRACKING, "0"));
+	}
+	
+	public static synchronized void saveEngagementIdToSP(Context context, String engagementId){
+		Prefs.with(context).save(SPLabels.ENGAGEMENT_ID, engagementId);
+	}
+
+	public static synchronized String getEngagementIdFromSP(Context context){
+		return Prefs.with(context).getString(SPLabels.ENGAGEMENT_ID, "0");
 	}
 	
 }

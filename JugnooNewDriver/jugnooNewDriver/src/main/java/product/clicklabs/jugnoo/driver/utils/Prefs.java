@@ -27,7 +27,7 @@ public class Prefs {
 
 
 	Prefs(Context context) {
-		preferences = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+		preferences = context.getSharedPreferences(TAG, Context.MODE_MULTI_PROCESS);
 		editor = preferences.edit();
 	}
 

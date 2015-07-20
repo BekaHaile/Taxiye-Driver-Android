@@ -13,6 +13,7 @@ import com.loopj.android.http.RequestParams;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -126,6 +127,11 @@ public class Database2 {																	// class for handling database related 
 
 
 
+	private static final String TABLE_GPS_STATE = "table_gps_state";
+	private static final String GPS_STATE = "gps_state";
+
+
+
     /**
 	 * Creates and opens database for the application use 
 	 * @author shankar
@@ -229,7 +235,9 @@ public class Database2 {																	// class for handling database related 
             + ACKNOWLEDGED + " INTEGER"
             + ");");
 
-		
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
+				+ GPS_STATE + " INTEGER" + ");");
+
 	}
 	
 	public static Database2 getInstance(Context context) {
@@ -1348,5 +1356,54 @@ public class Database2 {																	// class for handling database related 
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public int getGpsState() {
+		try {
+			String[] columns = new String[] { Database2.GPS_STATE };
+			Cursor cursor = database.query(Database2.TABLE_GPS_STATE, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int choice = cursor.getInt(cursor.getColumnIndex(Database2.GPS_STATE));
+                return choice;
+            } else {
+                return GpsState.ZERO_TWO.getOrdinal();
+            }
+		} catch (Exception e) {
+			return GpsState.ZERO_TWO.getOrdinal();
+		}
+	}
+
+
+	public int updateGpsState(int choice){
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.GPS_STATE, choice);
+			int rowsAffected = database.update(Database2.TABLE_GPS_STATE, contentValues, null, null);
+			if(rowsAffected == 0){
+				database.insert(Database2.TABLE_GPS_STATE, null, contentValues);
+				return 1;
+			}
+			else{
+				return rowsAffected;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	
 }

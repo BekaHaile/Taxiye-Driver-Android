@@ -124,11 +124,11 @@ import rmn.androidscreenlibrary.ASSL;
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate {
 
-	
-	
+
+
 	DrawerLayout drawerLayout;																		// views declaration
 	
-	
+
 	
 	//menu bar 
 	LinearLayout menuLayout;
@@ -163,10 +163,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	
-	
-	
-	
-	
+
 	
 	
 	
@@ -185,21 +182,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout mapLayout;
 	GoogleMap map;
 	TouchableMapFragment mapFragment;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -369,6 +352,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	//TODO check final variables
 	public static AppMode appMode;
+
+
 	
 	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
 	public static final int D_TO_C_MAP_PATH_COLOR = Color.BLUE;
@@ -389,7 +374,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public ASSL assl;
-	
+
 //	public GPSForegroundLocationFetcher gpsForegroundLocationFetcher;
 	
 	@Override
@@ -2170,7 +2155,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else{
 				Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
 			}
-			Prefs.with(this).save(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal());
+//			Prefs.with(this).save(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal());
 		}
 	}
 	

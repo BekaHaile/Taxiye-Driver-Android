@@ -208,6 +208,13 @@
 
 
 
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.BlankActivityForDialog"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
