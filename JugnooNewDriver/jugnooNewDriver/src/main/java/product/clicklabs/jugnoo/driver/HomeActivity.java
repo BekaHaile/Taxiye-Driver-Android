@@ -93,7 +93,6 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
-import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
@@ -370,13 +369,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
 	
-//	public static final double MAX_WAIT_TIME_ALLOWED_DISTANCE = 200; //in meters
 
 
 	public ASSL assl;
 
-//	public GPSForegroundLocationFetcher gpsForegroundLocationFetcher;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

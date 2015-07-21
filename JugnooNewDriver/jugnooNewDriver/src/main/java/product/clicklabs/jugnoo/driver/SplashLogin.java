@@ -496,8 +496,8 @@ public class SplashLogin extends Activity implements LocationUpdate{
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 		else if(hasFocus && sendToOtpScreen){
-			sendIntentToOtpScreen();
-		}
+            sendIntentToOtpScreen();
+        }
 		
 	}
 	

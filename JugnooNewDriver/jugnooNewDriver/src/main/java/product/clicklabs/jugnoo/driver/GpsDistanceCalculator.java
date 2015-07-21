@@ -5,12 +5,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -304,13 +302,9 @@ public class GpsDistanceCalculator {
 					totalDistance = 0;
 					lastGPSLocation = null;
 					lastLocationTime = System.currentTimeMillis();
-//					Log.i("lastLocation made null", "=" + lastLocation);
 				}
 	
-//				Log.i("lastGPSLocation", "=" + lastGPSLocation);
-//				Log.i("totalDistance", "=" + totalDistance);
-//				Log.i("lastLocationTime", "=" + lastLocationTime);
-	
+
 				LatLng lastLatLng = null;
 				
 				if (lastGPSLocation != null) {
@@ -324,24 +318,23 @@ public class GpsDistanceCalculator {
 				
 				long millisDiff = newLocationTime - lastLocationTime;
 				long secondsDiff = millisDiff / 1000;
-//				Log.i("secondsDiff", "=" + secondsDiff);
-				
+
 				double displacement = MapUtils.distance(lastLatLng, currentLatLng);
-//				Log.i("displacement", "=" + displacement);
 				double speedMPS = 0;
 				if(secondsDiff > 0){
 					speedMPS = displacement / secondsDiff;
 				}
-//				Log.i("speedMPS", "=" + speedMPS);
-				
+
 				if(speedMPS < MAX_SPEED_THRESHOLD){
 					if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 						addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					}
-//					lastGPSLocation = location;
-//					lastLocationTime = System.currentTimeMillis();
-//
-//					saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+                    else{
+                        lastGPSLocation = location;
+                        lastLocationTime = System.currentTimeMillis();
+
+                        saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+                    }
 				}
 				else{
 					reconnectGPSHandler();
