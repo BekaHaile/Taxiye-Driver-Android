@@ -6,7 +6,8 @@ public enum DriverScreenMode {
     D_ARRIVED(2),
     D_START_RIDE(3),
 	D_IN_RIDE(4),
-	D_RIDE_END(5);
+	D_RIDE_END(5),
+    D_ENTER_METER_FARE(6);
 	
 	
 	private int ordinal;

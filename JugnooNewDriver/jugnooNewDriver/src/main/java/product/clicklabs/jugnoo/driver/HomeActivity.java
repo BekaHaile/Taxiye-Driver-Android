@@ -35,6 +35,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -248,7 +249,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button driverCancelRideBtn;
 	
 	
-	//End ride layout
+	//In ride layout
 	RelativeLayout driverInRideMainRl;
 	Button driverEndRideMyLocationBtn;
 	TextView driverIRDistanceText, driverIRDistanceValue, driverIRDistanceKmText;
@@ -274,10 +275,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout endRideReviewRl;
 		
 	ImageView reviewUserImgBlured, reviewUserImage;
+    RelativeLayout reviewReachedDistanceRl;
+    LinearLayout linearLayoutMeterFare;
 	TextView reviewUserName, reviewReachedDestinationText, 
 	reviewDistanceText, reviewDistanceValue, 
 	reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 	reviewFareText, reviewFareValue;
+    EditText editTextEnterMeterFare;
+
+    RelativeLayout relativeLayoutEndRideCustomerAmount;
 	
 	LinearLayout endRideInfoRl;
 	TextView jugnooRideOverText, takeFareText;
@@ -651,7 +657,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue); reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		reviewFareText = (TextView) findViewById(R.id.reviewFareText); reviewFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		reviewFareValue = (TextView) findViewById(R.id.reviewFareValue); reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+
+
+
+        reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
+        linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
+        ((TextView)findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+        editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare); editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+        relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
+
+
+
 		endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
 		jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText); 
 		jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -1191,9 +1208,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			
 			@Override
 			public void onClick(View v) {
-				MeteringService.clearNotifications(HomeActivity.this);
-				driverScreenMode = DriverScreenMode.D_INITIAL;
-				switchDriverScreen(driverScreenMode);
+                if(DriverScreenMode.D_ENTER_METER_FARE == driverScreenMode
+                    && Data.assignedCustomerInfo != null
+                    && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareEnable){
+
+                    String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
+                    if("".equalsIgnoreCase(enteredMeterFare)){
+                        editTextEnterMeterFare.requestFocus();
+                        editTextEnterMeterFare.setError("Please enter some fare");
+                    }
+                    else{
+                        endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+                    }
+                }
+                else{
+                    MeteringService.clearNotifications(HomeActivity.this);
+                    driverScreenMode = DriverScreenMode.D_INITIAL;
+                    switchDriverScreen(driverScreenMode);
+                }
 			}
 		});
 		
@@ -1786,8 +1819,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 				
 				double totalDistanceInKm = Math.abs(totalDistance/1000.0);
-				
-				
 				String kmsStr = "";
 				if(totalDistanceInKm > 1){
 					kmsStr = "kms";
@@ -1795,9 +1826,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				else{
 					kmsStr = "km";
 				}
-				
-				
-				
+
 				reviewDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 				reviewWaitValue.setText(waitTime+" min");
 				reviewRideTimeValue.setText(rideTime+" min");
@@ -1805,32 +1834,60 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 				reviewUserName.setText(Data.assignedCustomerInfo.name);
 				
-				try{
-					Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);
-				}catch(Exception e){}
-				try{
-					Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);
-				}catch(Exception e){}
-				
-				
+				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
+				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
+
 				setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText);
-				
 				
 				jugnooRideOverText.setText("The Jugnoo ride is over.");
 				takeFareText.setText("Please take the fare as shown above from the customer.");
 				
 				displayCouponApplied();
-				
+
+
+
+                reviewReachedDistanceRl.setVisibility(View.VISIBLE);
+                linearLayoutMeterFare.setVisibility(View.GONE);
+
+                relativeLayoutEndRideCustomerAmount.setVisibility(View.VISIBLE);
+
+                RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
+                layoutParams.setMargins(0, 0, 0, (int) (20 * ASSL.Yscale()));
+                reviewSubmitBtn.setLayoutParams(layoutParams);
+
+
+
 				reviewSubmitBtn.setText("OK");
 
                 Database2.getInstance(this).deleteAllCurrentPathItems();
-				
 			}
 			else{
 				driverScreenMode = DriverScreenMode.D_INITIAL;
 				switchDriverScreen(driverScreenMode);
 			}
 		}
+        else if(mode == DriverScreenMode.D_ENTER_METER_FARE){
+            mapLayout.setVisibility(View.GONE);
+            endRideReviewRl.setVisibility(View.VISIBLE);
+            topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+            reviewUserName.setText(Data.assignedCustomerInfo.name);
+
+            try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
+            try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
+
+            setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText);
+
+            reviewReachedDistanceRl.setVisibility(View.GONE);
+            linearLayoutMeterFare.setVisibility(View.VISIBLE);
+
+            relativeLayoutEndRideCustomerAmount.setVisibility(View.GONE);
+
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
+            layoutParams.setMargins(0, 0, 0, (int)(150 * ASSL.Yscale()));
+            reviewSubmitBtn.setLayoutParams(layoutParams);
+
+        }
 		else{
 			mapLayout.setVisibility(View.VISIBLE);
 			endRideReviewRl.setVisibility(View.GONE);
@@ -2064,8 +2121,24 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				
 			
 				break;
-				
-				
+
+
+            case D_ENTER_METER_FARE:
+
+                updateDriverServiceFast("no");
+
+                driverInitialLayout.setVisibility(View.GONE);
+                driverRequestAcceptLayout.setVisibility(View.GONE);
+                driverEngagedLayout.setVisibility(View.GONE);
+
+                cancelCustomerPathUpdateTimer();
+                cancelMapAnimateAndUpdateRideDataTimer();
+                cancelStationPathUpdateTimer();
+
+                break;
+
+
+
 			case D_RIDE_END:
 				
 				updateDriverServiceFast("no");
@@ -2100,7 +2173,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
             updateReceiveRequestsFlag();
 
-		startMeteringService();
+            if(mode != DriverScreenMode.D_ENTER_METER_FARE) {
+                startMeteringService();
+            }
 		
 		new Thread(new Runnable() {
 			@Override
@@ -3230,12 +3305,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 													Log.w("promoInfo", "e="+e.toString());
 												}
 											}
+
+                                            int meterFareEnable = jObj.optInt("meter_fare_enable", 0);
 											
 											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), 
 													Integer.parseInt(Data.dCustomerId), referenceId,
 													userName, phoneNo, pickuplLatLng, 
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance);
-											
+													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareEnable);
+
 											Data.driverRideRequests.clear();
 		
 									        GCMIntentService.clearNotifications(getApplicationContext());
@@ -3804,8 +3881,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
-	
-	
+
+    double enteredMeterFare = 0;
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 			double waitMinutes, double rideMinutes, 
 			int flagDistanceTravelled, final BusinessType businessType){
@@ -3843,10 +3920,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		params.put("flag_distance_travelled", ""+flagDistanceTravelled);
 		params.put("last_accurate_latitude", ""+lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", ""+lastAccurateLatLng.longitude);
-		
+
+        enteredMeterFare = 0;
+
 		if(Data.assignedCustomerInfo != null){
-			params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
-		}
+			params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
+
+            try {
+                if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareEnable){
+                    enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
+                    params.put("meter_fare", enteredMeterFare);
+                }
+            } catch (Exception e) {
+            }
+
+        }
 
 		
 		params.put("business_id", ""+businessType.getOrdinal());
@@ -3857,80 +3946,78 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 		AsyncHttpClient client = Data.getClient();
 		client.post(url, params,
-				new CustomAsyncHttpResponseHandler() {
-				private JSONObject jObj;
+            new CustomAsyncHttpResponseHandler() {
+                private JSONObject jObj;
 
-					@Override
-					public void onFailure(Throwable arg3) {
-						Log.e("request fail", arg3.toString());
-						
-						endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude);
-						
-					}
+                @Override
+                public void onFailure(Throwable arg3) {
+                    Log.e("request fail", arg3.toString());
 
-					@Override
-					public void onSuccess(String response) {
-						Log.e("Server response", "response = " + response);
+                    endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare);
 
-						try {
-							jObj = new JSONObject(response);
-							
-							if(!jObj.isNull("error")){
-								
-								String errorMessage = jObj.getString("error");
-								
-								if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-									HomeActivity.logoutUser(activity);
-								}
-								else{
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-								driverScreenMode = DriverScreenMode.D_IN_RIDE;
-								rideTimeChronometer.start();
-							}
-							else{
-								
-								try{
-									totalFare = jObj.getDouble("fare");
-								} catch(Exception e){
-									e.printStackTrace();
-									totalFare = 0;
-								}
-								
-								JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
+                }
 
-                                applyCouponAndPromoOnSuccess();
-								
-								
-								if(map != null){
-									map.clear();
-								}
-								
-								waitStart = 2;
-								waitChronometer.stop();
-								rideTimeChronometer.stop();
-								
-								
-								clearSPData();
-								
-					        	driverScreenMode = DriverScreenMode.D_RIDE_END;
-								switchDriverScreen(driverScreenMode);
-								
-								driverUploadPathDataFileAsync(activity, Data.dEngagementId);
-								
-								initializeStartRideVariables();
-								
-							}
-						}  catch (Exception exception) {
-							exception.printStackTrace();
-							driverScreenMode = DriverScreenMode.D_IN_RIDE;
-							rideTimeChronometer.start();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-						}
+                @Override
+                public void onSuccess(String response) {
+                    Log.e("Server response", "response = " + response);
 
-						DialogPopup.dismissLoadingDialog();
-					}
-				});
+                    try {
+                        jObj = new JSONObject(response);
+
+                        if (!jObj.isNull("error")) {
+
+                            String errorMessage = jObj.getString("error");
+
+                            if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+                                HomeActivity.logoutUser(activity);
+                            } else {
+                                DialogPopup.alertPopup(activity, "", errorMessage);
+                            }
+                            driverScreenMode = DriverScreenMode.D_IN_RIDE;
+                            rideTimeChronometer.start();
+                        } else {
+
+                            try {
+                                totalFare = jObj.getDouble("fare");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                totalFare = 0;
+                            }
+
+                            JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
+
+                            applyCouponAndPromoOnSuccess();
+
+
+                            if (map != null) {
+                                map.clear();
+                            }
+
+                            waitStart = 2;
+                            waitChronometer.stop();
+                            rideTimeChronometer.stop();
+
+
+                            clearSPData();
+
+                            driverScreenMode = DriverScreenMode.D_RIDE_END;
+                            switchDriverScreen(driverScreenMode);
+
+                            driverUploadPathDataFileAsync(activity, Data.dEngagementId);
+
+                            initializeStartRideVariables();
+
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        driverScreenMode = DriverScreenMode.D_IN_RIDE;
+                        rideTimeChronometer.start();
+                        DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+                    }
+
+                    DialogPopup.dismissLoadingDialog();
+                }
+            });
 	}
 
     private void applyCouponAndPromoOnSuccess() {
@@ -4027,7 +4114,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
      */
 	//TODO end ride offline
 	public void endRideOffline(Activity activity, String url, RequestParams params, double rideTime, double waitTime, 
-			AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude){
+			AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare){
 		try{
 			
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
@@ -4039,7 +4126,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("rideTime", "="+rideTime);
 			
 			try{
-				totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTime, waitTime);
+                if(1 == assignedCustomerInfo.meterFareEnable){
+                    totalFare = enteredMeterFare;
+                }
+                else{
+                    totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTime, waitTime);
+                }
 			} catch(Exception e){
 				e.printStackTrace();
 				totalFare = 0;
@@ -5052,117 +5144,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@SuppressWarnings("unused")
 					@Override
 					public void onClick(View view) {
-						//TODO end ride location check 
-						
-						if(distanceUpdateFromService){
-							Location locationToUse;
-							boolean fusedLocationUsed = false;
-							
-							long currentTime = System.currentTimeMillis();
-							long threeMinuteMillis = 3 * 60 * 1000;
-							
-							Log.e("lastGPSLocation on end ride", "======="+lastGPSLocation);
-							Log.e("lastFusedLocation on end ride", "======="+lastFusedLocation);
-							
-							Log.writePathLogToFile(Data.dEngagementId+"m", "lastGPSLocation on end ride = "+lastGPSLocation);
-							Log.writePathLogToFile(Data.dEngagementId+"m", "lastFusedLocation on end ride = "+lastFusedLocation);
-							
-							LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
-							
-							Log.e("oldGPSLatLng on end ride", "======="+oldGPSLatLng);
-							Log.writePathLogToFile(Data.dEngagementId+"m", "oldGPSLatLng on end ride = "+oldGPSLatLng);
-							
-							if(lastGPSLocation != null && lastFusedLocation != null){
-								long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
-								long fusedLocTimeDiff = currentTime - lastFusedLocation.getTime();
-	
-								Log.e("gpsLocTimeDiff on end ride", "======="+gpsLocTimeDiff);
-								Log.e("fusedLocTimeDiff on end ride", "======="+fusedLocTimeDiff);
-								
-								Log.writePathLogToFile(Data.dEngagementId+"m", "gpsLocTimeDiff="+gpsLocTimeDiff+" and fusedLocTimeDiff="+fusedLocTimeDiff);
-								
-								if(gpsLocTimeDiff <= threeMinuteMillis){								// gps location is fine
-									locationToUse = lastGPSLocation;
-									fusedLocationUsed = false;
-								}
-								else{
-									if(fusedLocTimeDiff <= threeMinuteMillis){							//�fused to use
-										locationToUse = lastFusedLocation;
-										fusedLocationUsed = true;
-									}
-									else{
-										locationToUse = lastGPSLocation;
-										fusedLocationUsed = false;
-									}
-								}
-							}
-							else if(lastGPSLocation != null && lastFusedLocation == null){
-								locationToUse = lastGPSLocation;
-								fusedLocationUsed = false;
-							}
-							else{
-								locationToUse = myLocation;
-								fusedLocationUsed = true;
-								Log.e("locationToUse on end ride from myLocation", "======="+locationToUse);
-								Log.writePathLogToFile(Data.dEngagementId+"m", "locationToUse on end ride from myLocation="+locationToUse);
-							}
-							
-							
-							if((Utils.compareDouble(oldGPSLatLng.latitude, 0.0) == 0) && (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)){
-								oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
-							}
-							Log.writePathLogToFile(Data.dEngagementId+"m", "oldGPSLatLng after on end ride = "+oldGPSLatLng);
-							
-							
-							Log.e("locationToUse on end ride", "======="+locationToUse);
-							Log.e("fusedLocationUsed on end ride", "======="+fusedLocationUsed);
-							
-							Log.writePathLogToFile(Data.dEngagementId+"m", "locationToUse on end ride="+locationToUse);
-							Log.writePathLogToFile(Data.dEngagementId+"m", "fusedLocationUsed on end ride="+fusedLocationUsed);
-							
-							if(locationToUse != null){
-								
-								dialog.dismiss();
-								
-								GCMIntentService.clearNotifications(activity);
-								
-								driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
-								driverWaitText.setText(getResources().getString(R.string.start_wait));
-								waitStart = 0;
-								
-								long waitSeconds = waitChronometer.eclipsedTime / 1000;
-								double waitMinutes = Math.ceil(((double)waitSeconds) / 60.0);
-								
-								long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-								double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
-								
-								if(BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType){
-									
-									waitChronometer.stop();
-									rideTimeChronometer.stop();
-									
-									driverScreenMode = DriverScreenMode.D_RIDE_END;
-									
-									if(fusedLocationUsed){
-										calculateFusedLocationDistance(activity, oldGPSLatLng, 
-												new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()), rideTimeMinutes, businessType);
-									}
-									else{								
-										driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(), 0, rideTimeMinutes, 0, businessType);
-									}
-								}
-								else{
-									
-								}
-
-							}
-							else{
-								Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
-							}
-						}
-						else{
-							Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
-						}
+                        if(DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+                            if (Data.assignedCustomerInfo != null
+                                && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+                                && 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareEnable) {
+                                driverScreenMode = DriverScreenMode.D_ENTER_METER_FARE;
+                                switchDriverScreen(driverScreenMode);
+                                dialog.dismiss();
+                            } else {
+                                boolean success = endRideGPSCorrection(businessType);
+                                if (success) {
+                                    dialog.dismiss();
+                                }
+                            }
+                        }
 					}
 				});
 				
@@ -5179,7 +5174,114 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				e.printStackTrace();
 			}
 		}
-	
+
+
+    public boolean endRideGPSCorrection(BusinessType businessType){
+        //TODO end ride location check
+        if (distanceUpdateFromService) {
+            Location locationToUse;
+            boolean fusedLocationUsed = false;
+
+            long currentTime = System.currentTimeMillis();
+            long threeMinuteMillis = 3 * 60 * 1000;
+
+            Log.e("lastGPSLocation on end ride", "=======" + lastGPSLocation);
+            Log.e("lastFusedLocation on end ride", "=======" + lastFusedLocation);
+
+            Log.writePathLogToFile(Data.dEngagementId + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
+            Log.writePathLogToFile(Data.dEngagementId + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
+
+            LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
+
+            Log.e("oldGPSLatLng on end ride", "=======" + oldGPSLatLng);
+            Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
+
+            if (lastGPSLocation != null && lastFusedLocation != null) {
+                long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
+                long fusedLocTimeDiff = currentTime - lastFusedLocation.getTime();
+
+                Log.e("gpsLocTimeDiff on end ride", "=======" + gpsLocTimeDiff);
+                Log.e("fusedLocTimeDiff on end ride", "=======" + fusedLocTimeDiff);
+
+                Log.writePathLogToFile(Data.dEngagementId + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
+
+                if (gpsLocTimeDiff <= threeMinuteMillis) {                                // gps location is fine
+                    locationToUse = lastGPSLocation;
+                    fusedLocationUsed = false;
+                } else {
+                    if (fusedLocTimeDiff <= threeMinuteMillis) {                            //�fused to use
+                        locationToUse = lastFusedLocation;
+                        fusedLocationUsed = true;
+                    } else {
+                        locationToUse = lastGPSLocation;
+                        fusedLocationUsed = false;
+                    }
+                }
+            } else if (lastGPSLocation != null && lastFusedLocation == null) {
+                locationToUse = lastGPSLocation;
+                fusedLocationUsed = false;
+            } else {
+                locationToUse = myLocation;
+                fusedLocationUsed = true;
+                Log.e("locationToUse on end ride from myLocation", "=======" + locationToUse);
+                Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride from myLocation=" + locationToUse);
+            }
+
+
+            if ((Utils.compareDouble(oldGPSLatLng.latitude, 0.0) == 0) && (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)) {
+                oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
+            }
+            Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
+
+
+            Log.e("locationToUse on end ride", "=======" + locationToUse);
+            Log.e("fusedLocationUsed on end ride", "=======" + fusedLocationUsed);
+
+            Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride=" + locationToUse);
+            Log.writePathLogToFile(Data.dEngagementId + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
+
+            if (locationToUse != null) {
+
+                GCMIntentService.clearNotifications(activity);
+
+                driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
+                driverWaitText.setText(getResources().getString(R.string.start_wait));
+                waitStart = 0;
+
+                long waitSeconds = waitChronometer.eclipsedTime / 1000;
+                double waitMinutes = Math.ceil(((double) waitSeconds) / 60.0);
+
+                long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+                double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+
+                if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
+
+                    waitChronometer.stop();
+                    rideTimeChronometer.stop();
+
+                    driverScreenMode = DriverScreenMode.D_RIDE_END;
+
+                    if (fusedLocationUsed) {
+                        calculateFusedLocationDistance(activity, oldGPSLatLng,
+                            new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()), rideTimeMinutes, businessType);
+                    } else {
+                        driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(), 0, rideTimeMinutes, 0, businessType);
+                    }
+                } else {
+
+                }
+                return true;
+            } else {
+                Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        } else {
+            Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+
 	
 	int flagDistanceTravelled = 1;
 	public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination, final double rideTimeMinutes, 

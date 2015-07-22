@@ -823,7 +823,9 @@
                         android:layout_height="180px"
                         android:layout_alignParentBottom="true"
                         android:background="@color/black_translucent"
-                        android:splitMotionEvents="false" >
+                        android:splitMotionEvents="false"
+                        android:visibility="visible"
+                        >
 
                         <TextView
                             android:id="@+id/reviewReachedDestinationText"
@@ -991,6 +993,47 @@
                                 android:textSize="36px" />
                         </RelativeLayout>
                     </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutMeterFare"
+                        android:layout_width="match_parent"
+                        android:layout_height="180px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/black_translucent"
+                        android:splitMotionEvents="false"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        >
+
+                        <TextView
+                            android:id="@+id/textViewEnterMeterFare"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="40px"
+                            android:textColor="@color/white"
+                            android:text="ENTER"
+                            />
+
+                        <EditText
+                            android:id="@+id/editTextEnterMeterFare"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10px"
+                            android:layout_marginRight="10px"
+                            android:textColor="@color/white"
+                            android:textColorHint="@color/white_dark1"
+                            android:hint="@string/rupee"
+                            android:textSize="84px"
+                            android:background="@drawable/transparent"
+                            android:gravity="center"
+                            android:textCursorDrawable="@drawable/background_black"
+                            android:inputType="numberDecimal"
+                            android:singleLine="true"
+                            />
+
+                    </LinearLayout>
+
                 </RelativeLayout>
 
                 <ImageView
@@ -1003,7 +1046,9 @@
                     android:id="@+id/relativeLayoutEndRideCustomerAmount"
                     android:layout_width="match_parent"
                     android:layout_height="310px"
-                    android:layout_below="@+id/upLayout" >
+                    android:layout_below="@+id/upLayout"
+                    android:visibility="visible"
+                    >
 
                     <LinearLayout
                         android:id="@+id/endRideInfoRl"
@@ -1308,80 +1353,80 @@
                         android:visibility="visible"
                         >
 
-                    <LinearLayout
-                        android:id="@+id/reviewMinFareLinear"
-                        android:layout_width="235px"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20px"
-                        android:orientation="vertical" >
-
-                        <TextView
-                            android:id="@+id/reviewMinFareText"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/reviewMinFareLinear"
+                            android:layout_width="235px"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="Min Fare"
-                            android:textColor="@color/black"
-                            android:textSize="26px"
-                            android:textStyle="bold" />
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="20px"
+                            android:orientation="vertical" >
 
-                        <TextView
-                            android:id="@+id/reviewMinFareValue"
-                            android:layout_width="wrap_content"
+                            <TextView
+                                android:id="@+id/reviewMinFareText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="Min Fare"
+                                android:textColor="@color/black"
+                                android:textSize="26px"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/reviewMinFareValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10px"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="Rs 25 for 2 km"
+                                android:textColor="@color/black"
+                                android:textSize="28px" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/reviewFareAfterLinear"
+                            android:layout_width="360px"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10px"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="Rs 25 for 2 km"
-                            android:textColor="@color/black"
-                            android:textSize="28px" />
-                    </LinearLayout>
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="25px"
+                            android:layout_toRightOf="@+id/reviewMinFareLinear"
+                            android:orientation="vertical" >
 
-                    <LinearLayout
-                        android:id="@+id/reviewFareAfterLinear"
-                        android:layout_width="360px"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="25px"
-                        android:layout_toRightOf="@+id/reviewMinFareLinear"
-                        android:orientation="vertical" >
+                            <TextView
+                                android:id="@+id/reviewFareAfterText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="Fare (after 2 km)"
+                                android:textColor="@color/black"
+                                android:textSize="26px"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/reviewFareAfterText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="Fare (after 2 km)"
-                            android:textColor="@color/black"
-                            android:textSize="26px"
-                            android:textStyle="bold" />
+                            <TextView
+                                android:id="@+id/reviewFareAfterValue"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10px"
+                                android:gravity="center"
+                                android:singleLine="true"
+                                android:text="Rs 6 per km + Re 1 per min"
+                                android:textColor="@color/black"
+                                android:textSize="28px" />
+                        </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/reviewFareAfterValue"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10px"
-                            android:gravity="center"
-                            android:singleLine="true"
-                            android:text="Rs 6 per km + Re 1 per min"
-                            android:textColor="@color/black"
-                            android:textSize="28px" />
-                    </LinearLayout>
+                        <Button
+                            android:id="@+id/reviewFareInfoBtn"
+                            android:layout_width="60px"
+                            android:layout_height="60px"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="20px"
+                            android:background="@drawable/info_btn"
+                            android:tag="mwar" />
 
-                    <Button
-                        android:id="@+id/reviewFareInfoBtn"
-                        android:layout_width="60px"
-                        android:layout_height="60px"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="20px"
-                        android:background="@drawable/info_btn"
-                        android:tag="mwar" />
-
-                        </RelativeLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
             </RelativeLayout>
