@@ -142,7 +142,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	ImageView profileImg;
-	TextView userName;
+	TextView userName, textViewDEI, textViewWallet;
+    LinearLayout linearLayoutDEI;
 	
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle;
@@ -476,7 +477,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		userName = (TextView) findViewById(R.id.userName); userName.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+
+        linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
+        textViewDEI = (TextView) findViewById(R.id.textViewDEI); textViewDEI.setTypeface(Data.latoRegular(this));
+        textViewWallet = (TextView) findViewById(R.id.textViewWallet); textViewWallet.setTypeface(Data.latoRegular(this));
 		
 		
 		relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
@@ -810,6 +814,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		
 		// menu events
+        profileImg.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(linearLayoutDEI.getVisibility() == View.VISIBLE){
+                    linearLayoutDEI.setVisibility(View.GONE);
+                }
+                else{
+                    linearLayoutDEI.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
 		imageViewAutosOnToggle.setOnClickListener(new View.OnClickListener() {
 			
 			@Override

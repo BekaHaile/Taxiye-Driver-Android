@@ -1673,28 +1673,30 @@
             android:background="@color/bg_grey"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:splitMotionEvents="false" >
+            android:splitMotionEvents="false"
+            android:animateLayoutChanges="true"
+            >
 
             <RelativeLayout
                 android:id="@+id/profileRl"
-                android:layout_width="300px"
-                android:layout_height="300px"
+                android:layout_width="220px"
+                android:layout_height="220px"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="70px"
+                android:layout_marginTop="50px"
                 android:splitMotionEvents="false"
                 android:tag="mwar" >
 
                 <ImageView
                     android:id="@+id/profileBack"
-                    android:layout_width="300px"
-                    android:layout_height="300px"
+                    android:layout_width="220px"
+                    android:layout_height="220px"
                     android:background="@drawable/ring"
                     android:tag="mwar" />
 
                 <ImageView
                     android:id="@+id/profileImg"
-                    android:layout_width="270px"
-                    android:layout_height="270px"
+                    android:layout_width="200px"
+                    android:layout_height="200px"
                     android:layout_centerInParent="true"
                     android:tag="mwar" />
             </RelativeLayout>
@@ -1707,14 +1709,81 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10px"
                 android:gravity="center"
-                android:text="    "
+                android:text="Dr"
                 android:textColor="@color/white"
                 android:textSize="34px" />
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDEI"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20px"
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_width="53px"
+                        android:layout_height="53px"
+                        android:src="@drawable/ic_dei"
+                        android:tag="mwar"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewDEI"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10px"
+                        android:gravity="center"
+                        android:text="4.5"
+                        android:textColor="@color/white"
+                        android:textSize="38px" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="90px"
+                    android:gravity="center_horizontal"
+                    >
+
+                    <ImageView
+                        android:layout_width="48px"
+                        android:layout_height="48px"
+                        android:src="@drawable/ic_wallet"
+                        android:tag="mwar"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewWallet"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10px"
+                        android:gravity="center"
+                        android:text="100"
+                        android:textColor="@color/white"
+                        android:textSize="38px" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="30px" >
+                android:layout_marginTop="20px" >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1967,5 +2036,6 @@
             </ScrollView>
         </LinearLayout>
     </LinearLayout>
+
 
 </android.support.v4.widget.DrawerLayout>
