@@ -156,6 +156,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	RelativeLayout fareDetailsRl;
 	TextView fareDetailsText;
+    RelativeLayout relativeLayoutSuperDrivers;
+    TextView textViewSuperDrivers;
 	
 	RelativeLayout helpRl;
 	TextView helpText;
@@ -505,6 +507,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+        relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
+        ((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
 		
 		helpRl = (RelativeLayout) findViewById(R.id.helpRl);
 		helpText = (TextView) findViewById(R.id.helpText); helpText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -879,6 +884,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				sendToFareDetails();
 			}
 		});
+
+        relativeLayoutSuperDrivers.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 		
 		
 		helpRl.setOnClickListener(new View.OnClickListener() {
@@ -5558,7 +5571,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				    	else{
 				    		throw new Exception();
 				    	}
-				    } 
+				    }
 				    catch (Exception e) {
 				    	e.printStackTrace();
 				    	totalDistance = totalDistance + displacement;
