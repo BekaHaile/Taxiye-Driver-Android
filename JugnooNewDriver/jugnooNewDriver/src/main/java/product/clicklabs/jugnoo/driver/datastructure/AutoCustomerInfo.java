@@ -15,11 +15,11 @@ public class AutoCustomerInfo extends CustomerInfo{
 	public PromoInfo promoInfo;
 	public double jugnooBalance;
     public LatLng dropLatLng;
-    public int meterFareEnable;
+    public int meterFareApplicable;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String image, String rating, String schedulePickupTime, int freeRide,
-			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareEnable){
+			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
@@ -33,7 +33,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.image = this.image.replace("http://graph.facebook", "https://graph.facebook");
         this.dropLatLng = null;
 
-        this.meterFareEnable = meterFareEnable;
+        this.meterFareApplicable = meterFareApplicable;
 	}
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
@@ -49,7 +49,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.promoInfo = promoInfo;
 		this.jugnooBalance = 0;
         this.dropLatLng = null;
-        this.meterFareEnable = 0;
+        this.meterFareApplicable = 0;
 	}
 	
 	@Override

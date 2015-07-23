@@ -1211,7 +1211,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 if(DriverScreenMode.D_ENTER_METER_FARE == driverScreenMode
                     && Data.assignedCustomerInfo != null
                     && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareEnable){
+                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable){
 
                     String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
                     if("".equalsIgnoreCase(enteredMeterFare)){
@@ -1870,6 +1870,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             mapLayout.setVisibility(View.GONE);
             endRideReviewRl.setVisibility(View.VISIBLE);
             topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+            editTextEnterMeterFare.setText("");
 
             reviewUserName.setText(Data.assignedCustomerInfo.name);
 
@@ -3306,12 +3308,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 												}
 											}
 
-                                            int meterFareEnable = jObj.optInt("meter_fare_enable", 0);
+                                            int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
 											
 											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), 
 													Integer.parseInt(Data.dCustomerId), referenceId,
 													userName, phoneNo, pickuplLatLng, 
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareEnable);
+													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable);
 
 											Data.driverRideRequests.clear();
 		
@@ -3928,7 +3930,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
             try {
                 if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareEnable){
+                    && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable){
                     enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
                     params.put("meter_fare", enteredMeterFare);
                 }
@@ -4126,7 +4128,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("rideTime", "="+rideTime);
 			
 			try{
-                if(1 == assignedCustomerInfo.meterFareEnable){
+                if(1 == assignedCustomerInfo.meterFareApplicable){
                     totalFare = enteredMeterFare;
                 }
                 else{
@@ -5147,7 +5149,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                         if(DriverScreenMode.D_IN_RIDE == driverScreenMode) {
                             if (Data.assignedCustomerInfo != null
                                 && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-                                && 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareEnable) {
+                                && 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
                                 driverScreenMode = DriverScreenMode.D_ENTER_METER_FARE;
                                 switchDriverScreen(driverScreenMode);
                                 dialog.dismiss();
