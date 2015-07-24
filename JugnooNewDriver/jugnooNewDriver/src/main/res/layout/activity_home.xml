@@ -1747,35 +1747,6 @@
                         android:textSize="38px" />
 
                 </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="90px"
-                    android:gravity="center_horizontal"
-                    >
-
-                    <ImageView
-                        android:layout_width="48px"
-                        android:layout_height="48px"
-                        android:src="@drawable/ic_wallet"
-                        android:tag="mwar"
-                        />
-
-                    <TextView
-                        android:id="@+id/textViewWallet"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10px"
-                        android:gravity="center"
-                        android:text="100"
-                        android:textColor="@color/white"
-                        android:textSize="38px" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
 
