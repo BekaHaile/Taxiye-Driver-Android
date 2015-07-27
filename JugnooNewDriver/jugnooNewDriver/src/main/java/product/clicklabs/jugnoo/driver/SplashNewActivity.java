@@ -104,23 +104,23 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
 			Data.SERVER_URL = Data.TRIAL_SERVER_URL.substring(0, Data.TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
-			Data.FLURRY_KEY = "abcd";
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
 			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
-			Data.FLURRY_KEY = "abcd";
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_1_SERVER_URL;
-            Data.FLURRY_KEY = "abcd";
+            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
         }
         else if(link.equalsIgnoreCase(Data.DEV_2_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_2_SERVER_URL;
-            Data.FLURRY_KEY = "abcd";
+            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
         }
         else if(link.equalsIgnoreCase(Data.DEV_3_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_3_SERVER_URL;
-            Data.FLURRY_KEY = "abcd";
+            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
         }
 		else{
 			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();

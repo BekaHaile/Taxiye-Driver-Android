@@ -34,7 +34,7 @@ public class GpsDistanceCalculator {
 	
 	private static long LOCATION_UPDATE_INTERVAL = 2000; // in milliseconds
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
-	public static final double MAX_SPEED_THRESHOLD = 28; //in meters per second
+	public static final double MAX_SPEED_THRESHOLD = 19; //in meters per second
 	public static final double MAX_ACCURACY = 500;
 
 	public double totalDistance;
@@ -326,15 +326,16 @@ public class GpsDistanceCalculator {
 				}
 
 				if(speedMPS < MAX_SPEED_THRESHOLD){
-					if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
-						addLatLngPathToDistance(lastLatLng, currentLatLng, location);
-					}
-                    else{
-                        lastGPSLocation = location;
-                        lastLocationTime = System.currentTimeMillis();
-
-                        saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
-                    }
+//					if(totalDistance < 1000) {
+						if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
+							addLatLngPathToDistance(lastLatLng, currentLatLng, location);
+						}
+						else{
+							lastLocationTime = System.currentTimeMillis();
+							saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+						}
+						lastGPSLocation = location;
+//					}
 				}
 				else{
 					reconnectGPSHandler();
@@ -392,7 +393,6 @@ public class GpsDistanceCalculator {
 				deltaLatLngPairs.add(latLngPair);
 				validDistance = true;
 
-				lastGPSLocation = currentLocation;
 				lastLocationTime = System.currentTimeMillis();
 
                 Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
@@ -462,13 +462,19 @@ public class GpsDistanceCalculator {
 	    @Override
 	    public boolean equals(Object o) {
 	    	try{
-	    		if((((DirectionsAsyncTask)o).source == this.source) && (((DirectionsAsyncTask)o).destination == this.destination)){
-	    			return true;
-	    		}
+				DirectionsAsyncTask matchO = (DirectionsAsyncTask) o;
+				if (((Utils.compareDouble(matchO.source.latitude, this.source.latitude) == 0)
+						&& (Utils.compareDouble(matchO.source.longitude, this.source.longitude) == 0)) ||
+						((Utils.compareDouble(matchO.destination.latitude, this.destination.latitude) == 0)
+								&& (Utils.compareDouble(matchO.destination.longitude, this.destination.longitude) == 0))) {
+					return true;
+				} else {
+					return false;
+				}
 	    	} catch(Exception e){
 	    		e.printStackTrace();
+				return false;
 	    	}
-	    	return false;
 	    }
 	}
 	
@@ -482,7 +488,7 @@ public class GpsDistanceCalculator {
 	    		JSONObject leg0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
 		    	distanceOfPath = leg0.getJSONObject("distance").getDouble("value");
 	    	}
-	    	if(Utils.compareDouble(distanceOfPath, (displacementToCompare*1.8)) <= 0){														// distance would be approximately correct
+	    	if(Utils.compareDouble(distanceOfPath, (displacementToCompare*1.5)) <= 0){														// distance would be approximately correct
 		        boolean validDistance = updateTotalDistance(source, destination, distanceOfPath, currentLocation);
 		        if(validDistance){
 		        	GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
