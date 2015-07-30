@@ -268,7 +268,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
     DecimalFormat decimalFormat = new DecimalFormat("#.#");
     DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
 
-    static double totalDistance = -1, totalFare = 0;
+    static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
     public static ArrayList<LatLngPair> deltaLatLngPairs = new ArrayList<LatLngPair>();
 
 
@@ -3434,6 +3434,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
         double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
 
+        double totalHaversineDistanceInKm = Math.abs(totalHaversineDistance/1000.0);
+
         params.put("access_token", Data.userData.accessToken);
         params.put("engagement_id", Data.dEngagementId);
         params.put("customer_id", Data.dCustomerId);
@@ -3446,6 +3448,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
         params.put("flag_distance_travelled", "" + flagDistanceTravelled);
         params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
         params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
+
+        params.put("ride_distance_using_haversine", ""+decimalFormat.format(totalHaversineDistanceInKm));
 
         if (Data.assignedCustomerInfo != null) {
             params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
@@ -3517,7 +3521,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                                 driverScreenMode = DriverScreenMode.D_RIDE_END;
                                 switchDriverScreen(driverScreenMode);
 
-                                driverUploadPathDataFileAsync(activity, Data.dEngagementId);
+                                driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
                                 initializeStartRideVariables();
 
@@ -3759,7 +3763,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 e.printStackTrace();
             }
 
-            driverUploadPathDataFileAsync(activity, Data.dEngagementId);
+            driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
             initializeStartRideVariables();
 
@@ -3775,9 +3779,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
      * @param activity
      * @param engagementId
      */
-    public void driverUploadPathDataFileAsync(final Activity activity, String engagementId) {
+    public void driverUploadPathDataFileAsync(final Activity activity, String engagementId, double totalHaversineDistance) {
         String rideDataStr = Database2.getInstance(activity).getRideData();
         if (!"".equalsIgnoreCase(rideDataStr)) {
+            totalHaversineDistance = totalHaversineDistance / 1000;
+            rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
+
             final RequestParams params = new RequestParams();
 
             params.put("access_token", Data.userData.accessToken);
@@ -3940,7 +3947,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                                         driverScreenMode = DriverScreenMode.D_RIDE_END;
                                         switchDriverScreen(driverScreenMode);
 
-                                        driverUploadPathDataFileAsync(activity, Data.dEngagementId);
+                                        driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
                                         initializeStartRideVariables();
 
@@ -4047,7 +4054,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 e.printStackTrace();
             }
 
-            driverUploadPathDataFileAsync(activity, Data.dEngagementId);
+            driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
             initializeStartRideVariables();
 
@@ -5835,9 +5842,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
     @Override
-    public void updateMeteringUI(final double distance, final long elapsedTime, final Location lastGPSLocation, final Location lastFusedLocation) {
+    public void updateMeteringUI(final double distance, final long elapsedTime, final Location lastGPSLocation,
+                                 final Location lastFusedLocation, final double totalHaversineDistance) {
         if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
             totalDistance = distance;
+            HomeActivity.totalHaversineDistance = totalHaversineDistance;
             HomeActivity.this.lastGPSLocation = lastGPSLocation;
             HomeActivity.this.lastFusedLocation = lastFusedLocation;
             HomeActivity.this.distanceUpdateFromService = true;

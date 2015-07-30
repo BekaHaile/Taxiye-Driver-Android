@@ -38,6 +38,7 @@ public class GpsDistanceCalculator {
 	public static final double MAX_ACCURACY = 500;
 
 	public double totalDistance;
+	public double totalHaversineDistance;
 	public Location lastGPSLocation, lastFusedLocation;
 	public static long lastLocationTime;
 	
@@ -63,10 +64,11 @@ public class GpsDistanceCalculator {
 	
 	
 	private GpsDistanceCalculator(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater,
-			double totalDistance, long lastLocationTime){
+			double totalDistance, long lastLocationTime, double totalHaversineDistance){
 		this.context = context;
 		this.totalDistance = totalDistance;
 		this.lastGPSLocation = null;
+		this.totalHaversineDistance = totalHaversineDistance;
 		this.lastFusedLocation = null;
 		this.lastLocationTime = lastLocationTime;
 		this.gpsDistanceUpdater = gpsDistanceUpdater;
@@ -82,14 +84,15 @@ public class GpsDistanceCalculator {
 	}
 	
 	public static GpsDistanceCalculator getInstance(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater,
-			double totalDistance, long lastLocationTime) {
+			double totalDistance, long lastLocationTime, double totalHaversineDistance) {
 		if (instance == null) {
-			instance = new GpsDistanceCalculator(context, gpsDistanceUpdater, totalDistance, lastLocationTime);
+			instance = new GpsDistanceCalculator(context, gpsDistanceUpdater, totalDistance, lastLocationTime, totalHaversineDistance);
 		}
 
 		instance.context = context;
 		instance.gpsDistanceUpdater = gpsDistanceUpdater;
 		instance.totalDistance = totalDistance;
+		instance.totalHaversineDistance = totalHaversineDistance;
 		instance.lastLocationTime = lastLocationTime;
 
 		return instance;
@@ -106,7 +109,8 @@ public class GpsDistanceCalculator {
 		connectGPSListener(context);
 		setupMeteringAlarm(context);
 
-		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+				lastFusedLocation, totalHaversineDistance, true);
 		Log.e("GpsDistanceCalculator start", "=totalDistance="+totalDistance);
 		Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "totalDistance at start ="+totalDistance);
 	}
@@ -119,7 +123,7 @@ public class GpsDistanceCalculator {
 	
 	public void pause(){
 		if(1 == getTrackingFromSP(context)){
-			saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+			saveData(context, lastGPSLocation, lastLocationTime);
 			disconnectGPSListener();
 		}
 	}
@@ -127,7 +131,7 @@ public class GpsDistanceCalculator {
 	
 	
 	public void saveState(){
-		saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+		saveData(context, lastGPSLocation, lastLocationTime);
 	}
 	
 	public void stop(){
@@ -140,6 +144,7 @@ public class GpsDistanceCalculator {
 		saveLastLocationTimeToSP(context, System.currentTimeMillis());
 		saveTrackingToSP(context, 0);
 		instance.totalDistance = -1;
+		instance.totalHaversineDistance = -1;
 		instance.lastLocationTime = System.currentTimeMillis();
 		instance.lastGPSLocation = null;
 		instance.lastFusedLocation = null;
@@ -223,7 +228,8 @@ public class GpsDistanceCalculator {
 								drawLocationChanged(location);
 							}
 						}
-						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+								lastFusedLocation, totalHaversineDistance, true);
 
 						Log.v("diff", String.valueOf(System.currentTimeMillis() - lastUpdateTime));
 
@@ -256,7 +262,8 @@ public class GpsDistanceCalculator {
 				@Override
 				public void onFusedLocationChanged(Location location) {
 					lastFusedLocation = location;
-					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, false);
+					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+							lastFusedLocation, totalHaversineDistance, false);
 				}
 			};
 		}
@@ -300,6 +307,7 @@ public class GpsDistanceCalculator {
 	
 				if (Utils.compareDouble(totalDistance, -1.0) == 0) {
 					totalDistance = 0;
+					totalHaversineDistance = 0;
 					lastGPSLocation = null;
 					lastLocationTime = System.currentTimeMillis();
 				}
@@ -312,14 +320,17 @@ public class GpsDistanceCalculator {
 				} else {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.drawOldPath();
 					lastLatLng = getSavedLatLngFromSP(context);
-                    Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
-					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
 				}
 				
 				long millisDiff = newLocationTime - lastLocationTime;
 				long secondsDiff = millisDiff / 1000;
 
 				double displacement = MapUtils.distance(lastLatLng, currentLatLng);
+				if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)) {
+					totalHaversineDistance = totalHaversineDistance + displacement;
+					saveTotalHaversineDistanceToSP(context, totalHaversineDistance);
+				}
+
 				double speedMPS = 0;
 				if(secondsDiff > 0){
 					speedMPS = displacement / secondsDiff;
@@ -329,10 +340,14 @@ public class GpsDistanceCalculator {
 //					if(totalDistance < 1000) {
 						if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 							addLatLngPathToDistance(lastLatLng, currentLatLng, location);
+							if(lastGPSLocation == null){
+								Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+								Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
+							}
 						}
 						else{
 							lastLocationTime = System.currentTimeMillis();
-							saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+							saveData(context, lastGPSLocation, lastLocationTime);
 						}
 						lastGPSLocation = location;
 //					}
@@ -340,7 +355,7 @@ public class GpsDistanceCalculator {
 				else{
 					reconnectGPSHandler();
 				}
-				Log.writePathLogToFile(getEngagementIdFromSP(context)+"m", "speedMPS="+speedMPS+" currentLatLng ="+currentLatLng);
+				Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "speedMPS=" + speedMPS + " currentLatLng =" + currentLatLng);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -366,7 +381,8 @@ public class GpsDistanceCalculator {
 				if(validDistance){
                     Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
                         currentLatLng.latitude, currentLatLng.longitude, 0, 0);
-					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+							lastFusedLocation, totalHaversineDistance, true);
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(lastLatLng, currentLatLng));
 				}
 			}
@@ -406,9 +422,10 @@ public class GpsDistanceCalculator {
 						+deltaDistance+","
 						+lastLatLng.latitude+","
 						+lastLatLng.longitude+","
-						+DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime));
+						+DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime)+","
+								+ totalHaversineDistance);
 			}
-			saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+			saveData(context, lastGPSLocation, lastLocationTime);
 		}
 		return validDistance;
 	}
@@ -491,7 +508,8 @@ public class GpsDistanceCalculator {
 	    	if(Utils.compareDouble(distanceOfPath, (displacementToCompare*1.5)) <= 0){														// distance would be approximately correct
 		        boolean validDistance = updateTotalDistance(source, destination, distanceOfPath, currentLocation);
 		        if(validDistance){
-		        	GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+		        	GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+							lastFusedLocation, totalHaversineDistance, true);
 		        	
 					JSONArray routeArray = jsonObject.getJSONArray("routes");
 					JSONObject routes = routeArray.getJSONObject(0);
@@ -524,7 +542,8 @@ public class GpsDistanceCalculator {
 	    	e.printStackTrace(); 																		// displacement would be correct
 	    	boolean validDistance = updateTotalDistance(source, destination, displacementToCompare, currentLocation);
 	    	if(validDistance){
-	    		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation, lastFusedLocation, true);
+	    		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(), lastGPSLocation,
+						lastFusedLocation, totalHaversineDistance, true);
 	    		GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(source, destination));
 
                 Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
@@ -559,13 +578,18 @@ public class GpsDistanceCalculator {
 	
 	
 	
-	
-	
-	
-	public static void saveData(Context context, Location location, double totalDistance, long lastLocationTime){
-		if(location != null){
+	public void saveData(Context context, Location location, long lastLocationTime){
+		if(location != null) {
 			saveLatLngToSP(context, location.getLatitude(), location.getLongitude());
-			saveTotalDistanceToSP(context, totalDistance);
+
+			double savedTotalDist = getTotalDistanceFromSP(context);
+			if(totalDistance < savedTotalDist){
+				totalDistance = savedTotalDist;
+			}
+			else{
+				saveTotalDistanceToSP(context, totalDistance);
+			}
+
 			saveLastLocationTimeToSP(context, lastLocationTime);
 		}
 	}
@@ -589,6 +613,15 @@ public class GpsDistanceCalculator {
 	public static synchronized double getTotalDistanceFromSP(Context context){
 		return Double.parseDouble(Prefs.with(context).getString(SPLabels.TOTAL_DISTANCE, "" + -1));
 	}
+
+	public static synchronized void saveTotalHaversineDistanceToSP(Context context, double totalHaversineDistance){
+		Prefs.with(context).save(SPLabels.TOTAL_HAVERSINE_DISTANCE, ""+totalHaversineDistance);
+	}
+
+	public static synchronized double getTotalHaversineDistanceFromSP(Context context){
+		return Double.parseDouble(Prefs.with(context).getString(SPLabels.TOTAL_HAVERSINE_DISTANCE, "" + -1));
+	}
+
 
 	public static synchronized void saveLastLocationTimeToSP(Context context, long lastLocationTime){
 		Prefs.with(context).save(SPLabels.LOCATION_TIME, ""+lastLocationTime);

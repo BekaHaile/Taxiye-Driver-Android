@@ -169,13 +169,15 @@ public class MeteringService extends Service {
 			gpsDistanceTimeUpdater = new GpsDistanceTimeUpdater() {
 				
 				@Override
-				public void updateDistanceTime(double distance, long elapsedTime, Location lastGPSLocation, Location lastFusedLocation, boolean fromGPS) {
+				public void updateDistanceTime(double distance, long elapsedTime, Location lastGPSLocation,
+											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					if(fromGPS){
 						generateNotification(context, "Total distance = "+getDecimalFormat().format(Math.abs(distance) / 1000) 
 								+ " km"+" time = "+Utils.getElapsedTimeFromMillis(elapsedTime));
 					}
 					if(HomeActivity.appInterruptHandler != null){
-						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, lastGPSLocation, lastFusedLocation);
+						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, lastGPSLocation,
+								lastFusedLocation, totalHaversineDistance);
 					}
 				}
 				
@@ -199,9 +201,10 @@ public class MeteringService extends Service {
 	}
 	
     public static GpsDistanceCalculator gpsInstance(Context context){
-		return GpsDistanceCalculator.getInstance(context, getGpsDistanceTimeUpdater(context), 
+		return GpsDistanceCalculator.getInstance(context, getGpsDistanceTimeUpdater(context),
 				GpsDistanceCalculator.getTotalDistanceFromSP(context),
-				GpsDistanceCalculator.getLastLocationTimeFromSP(context));
+				GpsDistanceCalculator.getLastLocationTimeFromSP(context),
+				GpsDistanceCalculator.getTotalHaversineDistanceFromSP(context));
 	}
     
     

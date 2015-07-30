@@ -1031,7 +1031,7 @@ public class Database2 {																	// class for handling database related 
 	
 	public String getRideData() {
 		String rideDataStr = "";
-		String template = "i,lat,lng,t";
+		String template = "i,lat,long,t";
 		String newLine = "\n";
 		boolean hasValues = false;
 		try {
