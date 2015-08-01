@@ -9,8 +9,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:splitMotionEvents="false"
-        android:visibility="visible" >
+        android:visibility="visible"
+        android:animateLayoutChanges="true"
+        >
 
+        <!-- up layout -->
         <RelativeLayout
             android:id="@+id/upLayout"
             android:layout_width="match_parent"
@@ -68,6 +71,7 @@
                 android:textColor="@color/white"
                 android:textSize="34px" />
 
+            <!-- reached distance km, time, fare layout -->
             <RelativeLayout
                 android:id="@+id/reviewReachedDistanceRl"
                 android:layout_width="match_parent"
@@ -75,7 +79,7 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/black_translucent"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <TextView
@@ -245,6 +249,7 @@
                 </RelativeLayout>
             </RelativeLayout>
 
+            <!-- meter fare layout-->
             <LinearLayout
                 android:id="@+id/linearLayoutMeterFare"
                 android:layout_width="match_parent"
@@ -254,7 +259,7 @@
                 android:splitMotionEvents="false"
                 android:orientation="vertical"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
                 <TextView
@@ -263,25 +268,51 @@
                     android:layout_height="wrap_content"
                     android:textSize="40px"
                     android:textColor="@color/white"
-                    android:text="ENTER"
+                    android:text="ENTER FARE"
                     />
 
-                <EditText
-                    android:id="@+id/editTextEnterMeterFare"
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutMeterFareEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="10px"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white_dark1"
-                    android:hint="@string/rupee"
-                    android:textSize="84px"
-                    android:background="@drawable/transparent"
-                    android:gravity="center"
-                    android:textCursorDrawable="@drawable/background_black"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true"
-                    />
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/textViewMeterFareRupee"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginRight="10px"
+                        android:text="@string/rupee"
+                        android:textSize="84px"
+                        android:background="@drawable/transparent"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        />
+
+                    <EditText
+                        android:id="@+id/editTextEnterMeterFare"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white_dark1"
+                        android:hint="@string/rupee"
+                        android:text=""
+                        android:textSize="84px"
+                        android:background="@drawable/transparent"
+                        android:gravity="center"
+                        android:textCursorDrawable="@drawable/background_white"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true"
+                        android:maxLength="6"
+                        />
+
+                </LinearLayout>
+
 
             </LinearLayout>
 
@@ -293,14 +324,16 @@
             android:layout_below="@+id/upLayout"
             android:background="@drawable/shadow_down" />
 
+        <!-- customer amount layout -->
         <RelativeLayout
             android:id="@+id/relativeLayoutEndRideCustomerAmount"
             android:layout_width="match_parent"
             android:layout_height="310px"
             android:layout_below="@+id/upLayout"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
+            <!-- no coupon, no wallet layout-->
             <LinearLayout
                 android:id="@+id/endRideInfoRl"
                 android:layout_width="wrap_content"
@@ -337,6 +370,7 @@
                     android:textSize="40px" />
             </LinearLayout>
 
+            <!-- coupon layout-->
             <RelativeLayout
                 android:id="@+id/relativeLayoutCoupon"
                 android:layout_width="644px"
@@ -412,11 +446,14 @@
                 </LinearLayout>
             </RelativeLayout>
 
+
+            <!-- fatafat customer amount layout-->
             <RelativeLayout
                 android:id="@+id/relativeLayoutFatafatCustomerAmount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
+                <!-- fatafat bill layout-->
                 <LinearLayout
                     android:id="@+id/linearLayoutFatafatBill"
                     android:layout_width="400px"
@@ -536,6 +573,7 @@
                     </RelativeLayout>
                 </LinearLayout>
 
+                <!-- fatafat to pay-->
                 <LinearLayout
                     android:id="@+id/linearLayoutFatafatBillToPay"
                     android:layout_width="match_parent"
@@ -571,20 +609,20 @@
             android:id="@+id/reviewSubmitBtn"
             android:layout_width="648px"
             android:layout_height="99px"
-            android:layout_above="@+id/reviewFareInfoRl"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20px"
+            android:layout_marginBottom="150px"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/blue_btn_selector"
             android:text="@string/submit"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="6px"
-            android:layout_above="@+id/reviewFareInfoRl"
-            android:background="@drawable/shadow_up" />
 
+
+
+
+
+        <!-- below layout-->
         <LinearLayout
             android:id="@+id/reviewFareInfoRl"
             android:layout_width="match_parent"
@@ -592,16 +630,106 @@
             android:layout_alignParentBottom="true"
             android:background="@color/white_translucent"
             android:orientation="vertical"
+            android:animateLayoutChanges="true"
 
             >
 
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutUseJugnooFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:id="@+id/textViewUseJugnooFare"
+                    android:layout_width="260px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:gravity="center"
+                    android:text="USE JUGNOO FARE"
+                    android:textColor="@drawable/blue_btn_color_selector"
+                    android:textSize="@dimen/button_small_text_size"
+                    android:visibility="visible"/>
+
+                <ImageView
+                    android:layout_width="250px"
+                    android:layout_height="4px"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/blue_btn_selector"
+                    android:layout_below="@+id/textViewUseJugnooFare"
+                    android:layout_marginBottom="20px"
+
+                    />
+
+            </RelativeLayout>
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="6px"
+                android:background="@drawable/shadow_up" />
+
+            <!-- jugnoo fare values -->
+            <RelativeLayout
+                android:id="@+id/relativeLayoutJugnooCalculatedFare"
+                android:layout_width="match_parent"
+                android:layout_height="120px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/white_translucent"
+                android:visibility="visible"
+                >
+
+                <TextView
+                    android:id="@+id/textViewCalculatedDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance:\n10km"
+                    android:textSize="30px"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20px"
+                    />
+
+
+                <TextView
+                    android:id="@+id/textViewCalculatedTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time:\n10min"
+                    android:textSize="30px"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewCalculatedFare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fare:\nRs. 20"
+                    android:textSize="30px"
+                    android:textColor="@color/black"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20px"
+                    android:layout_alignParentRight="true"
+                    />
+
+
+                </RelativeLayout>
+
+
+            <!-- fare structure info layout-->
             <RelativeLayout
                 android:id="@+id/reviewFareInfoInnerRl"
                 android:layout_width="match_parent"
                 android:layout_height="120px"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white_translucent"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
                 <LinearLayout

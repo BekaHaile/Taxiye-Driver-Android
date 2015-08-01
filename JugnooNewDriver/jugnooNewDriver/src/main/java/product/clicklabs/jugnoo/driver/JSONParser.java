@@ -539,7 +539,7 @@ public class JSONParser {
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0;
+			int freeRide = 0; int meterFareApplicable = 0, jugnooFareButton = 1;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -752,6 +752,7 @@ public class JSONParser {
                                             }
 
                                             meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
+                                            jugnooFareButton = jObject.optInt("jugnoo_fare_button", 1);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -854,7 +855,7 @@ public class JSONParser {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, jugnooFareButton);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }

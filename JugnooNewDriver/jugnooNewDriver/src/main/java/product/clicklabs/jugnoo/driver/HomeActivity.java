@@ -24,9 +24,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.StyleSpan;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -95,7 +98,6 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
-import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
@@ -281,7 +283,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	reviewDistanceText, reviewDistanceValue, 
 	reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 	reviewFareText, reviewFareValue;
+
+    LinearLayout linearLayoutMeterFareEditText;
+    TextView textViewMeterFareRupee;
     EditText editTextEnterMeterFare;
+    RelativeLayout relativeLayoutUseJugnooFare;
+    RelativeLayout relativeLayoutJugnooCalculatedFare;
+    TextView textViewCalculatedDistance, textViewCalculatedTime, textViewCalculatedFare;
 
     RelativeLayout relativeLayoutEndRideCustomerAmount;
 	
@@ -297,9 +305,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		textViewFatafatBillFinalAmountValue, textViewFatafatBillJugnooCashValue, textViewFatafatBillToPay;
 	
 	Button reviewSubmitBtn;
+    RelativeLayout reviewFareInfoInnerRl;
 	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue;
 	Button reviewFareInfoBtn;
-    RelativeLayout reviewFareInfoInnerRl;
 	
 	
 	
@@ -324,8 +332,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
 	
 	static double totalDistance = -1, totalFare = 0;
-	public static ArrayList<LatLngPair> deltaLatLngPairs = new ArrayList<LatLngPair>();
-	
+    int getFareFromJugnoo = 0;
+
 	
 	static long previousWaitTime = 0, previousRideTime = 0;
 	
@@ -661,9 +669,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
         reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
+
         linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
         ((TextView)findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+        linearLayoutMeterFareEditText = (LinearLayout) findViewById(R.id.linearLayoutMeterFareEditText);
+        textViewMeterFareRupee = (TextView) findViewById(R.id.textViewMeterFareRupee); textViewMeterFareRupee.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+        textViewMeterFareRupee.setVisibility(View.GONE);
         editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare); editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+        relativeLayoutUseJugnooFare = (RelativeLayout) findViewById(R.id.relativeLayoutUseJugnooFare);
+        ((TextView) findViewById(R.id.textViewUseJugnooFare)).setTypeface(Data.latoRegular(this));
+        relativeLayoutJugnooCalculatedFare = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCalculatedFare);
+        textViewCalculatedDistance = (TextView) findViewById(R.id.textViewCalculatedDistance); textViewCalculatedDistance.setTypeface(Data.latoRegular(this));
+        textViewCalculatedTime = (TextView) findViewById(R.id.textViewCalculatedTime); textViewCalculatedTime.setTypeface(Data.latoRegular(this));
+        textViewCalculatedFare = (TextView) findViewById(R.id.textViewCalculatedFare); textViewCalculatedFare.setTypeface(Data.latoRegular(this));
+
 
         relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
 
@@ -1215,11 +1236,32 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                     String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
                     if("".equalsIgnoreCase(enteredMeterFare)){
-                        editTextEnterMeterFare.requestFocus();
-                        editTextEnterMeterFare.setError("Please enter some fare");
+                        DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        linearLayoutMeterFareEditText.performClick();
+                                    }
+                                }, 200);
+                            }
+                        });
                     }
                     else{
-                        endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+                        DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "The amount entered is "+getResources().getString(R.string.rupee)+" "+enteredMeterFare, "OK", "Cancel",
+                            new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+                                }
+                            },
+                            new OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            }, false, false);
                     }
                 }
                 else{
@@ -1229,6 +1271,63 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 }
 			}
 		});
+
+        editTextEnterMeterFare.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() > 0) {
+                    if (textViewMeterFareRupee.getVisibility() == View.GONE) {
+                        textViewMeterFareRupee.setVisibility(View.VISIBLE);
+                    }
+                    if(!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())){
+                        getFareFromJugnoo = 0;
+                    }
+                } else {
+                    if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
+                        textViewMeterFareRupee.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
+
+        editTextEnterMeterFare.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                reviewSubmitBtn.performClick();
+                return true;
+            }
+        });
+
+        linearLayoutMeterFareEditText.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTextEnterMeterFare.requestFocus();
+                Utils.showSoftKeyboard(HomeActivity.this, editTextEnterMeterFare);
+            }
+        });
+
+        relativeLayoutUseJugnooFare.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(relativeLayoutJugnooCalculatedFare.getVisibility() == View.GONE){
+                    relativeLayoutJugnooCalculatedFare.setVisibility(View.VISIBLE);
+                    editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
+                    getFareFromJugnoo = 1;
+                }
+            }
+        });
+
+
 		
 		reviewFareInfoBtn.setOnClickListener(new View.OnClickListener() {
 			
@@ -1708,8 +1807,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				if(map.getCameraPosition().zoom < 12){
 					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12));
 				}
-				else if(map.getCameraPosition().zoom < 17){
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 17));
+				else if(map.getCameraPosition().zoom < 15){
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 15));
 				}
 				else{
 					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
@@ -1852,12 +1951,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 relativeLayoutEndRideCustomerAmount.setVisibility(View.VISIBLE);
 
                 RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
-                layoutParams.setMargins(0, 0, 0, (int) (20 * ASSL.Yscale()));
+                layoutParams.setMargins(0, 0, 0, (int) (150 * ASSL.Yscale()));
                 reviewSubmitBtn.setLayoutParams(layoutParams);
-
-
-
 				reviewSubmitBtn.setText("OK");
+
+                relativeLayoutUseJugnooFare.setVisibility(View.GONE);
+                relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
+                reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+
 
                 Database2.getInstance(this).deleteAllCurrentPathItems();
 			}
@@ -1886,8 +1987,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             relativeLayoutEndRideCustomerAmount.setVisibility(View.GONE);
 
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
-            layoutParams.setMargins(0, 0, 0, (int)(150 * ASSL.Yscale()));
+            layoutParams.setMargins(0, 0, 0, (int) (350 * ASSL.Yscale()));
             reviewSubmitBtn.setLayoutParams(layoutParams);
+            reviewSubmitBtn.setText("OK");
+
+            try {
+                if(Data.assignedCustomerInfo instanceof AutoCustomerInfo){
+                    if(((AutoCustomerInfo)Data.assignedCustomerInfo).jugnooFareButton == 1){
+                        relativeLayoutUseJugnooFare.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        relativeLayoutUseJugnooFare.setVisibility(View.GONE);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            setCalculatedFareValuesAtEndRide();
+            relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
+            reviewFareInfoInnerRl.setVisibility(View.GONE);
 
         }
 		else{
@@ -2200,7 +2318,64 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		}
 	}
-	
+
+
+
+    public void setCalculatedFareValuesAtEndRide(){
+        try {
+            double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+            String kmsStr = (totalDistanceInKm > 1) ? "kms" : "km";
+
+            long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+            double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+            String rideTime = decimalFormatNoDecimal.format(getElapsedRideTime(HomeActivity.this, rideTimeMinutes));
+
+            double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
+
+
+            SpannableString distSS = new SpannableString(decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
+            final StyleSpan distBSS = new StyleSpan(Typeface.BOLD);
+            distSS.setSpan(distBSS, 0, distSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textViewCalculatedDistance.setText("");
+            textViewCalculatedDistance.append("Distance: \n");
+            textViewCalculatedDistance.append(distSS);
+
+            SpannableString timeSS = new SpannableString(rideTime + " min");
+            final StyleSpan timeBSS = new StyleSpan(Typeface.BOLD);
+            timeSS.setSpan(timeBSS, 0, timeSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textViewCalculatedTime.setText("");
+            textViewCalculatedTime.append("Time: \n");
+            textViewCalculatedTime.append(timeSS);
+
+            SpannableString fareSS = new SpannableString("Rs. " + decimalFormat.format(totalFare));
+            final StyleSpan fareBSS = new StyleSpan(Typeface.BOLD);
+            fareSS.setSpan(fareBSS, 0, fareSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textViewCalculatedFare.setText("");
+            textViewCalculatedFare.append("Fare: \n");
+            textViewCalculatedFare.append(fareSS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            textViewCalculatedDistance.setText("Sorry, we could not calculate your distance right now");
+            textViewCalculatedTime.setText("");
+            textViewCalculatedFare.setText("");
+        }
+    }
+
+
+    private String getJugnooCalculatedFare(){
+        try {
+            double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+
+            long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+            double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+
+            double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
+            return decimalFormatNoDecimal.format(totalFare);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 	
 	
 	public void startMeteringService(){
@@ -3309,11 +3484,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											}
 
                                             int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
+                                            int jugnooFareButton = jObj.optInt("jugnoo_fare_button", 1);
 											
 											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), 
 													Integer.parseInt(Data.dCustomerId), referenceId,
 													userName, phoneNo, pickuplLatLng, 
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable);
+													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, jugnooFareButton);
 
 											Data.driverRideRequests.clear();
 		
@@ -3597,11 +3773,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		HomeActivity.previousRideTime = 0;
 		HomeActivity.totalDistance = -1;
 		
-		if(HomeActivity.deltaLatLngPairs == null){
-			HomeActivity.deltaLatLngPairs = new ArrayList<LatLngPair>();
-		}
-		HomeActivity.deltaLatLngPairs.clear();
-		
 		clearSPData();
 
 		MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.dEngagementId);
@@ -3884,6 +4055,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	}
 
+
+
+    private double getElapsedRideTime(Activity activity, double rideMinutes){
+        SharedPreferences pref = activity.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+        long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
+        long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
+        long rideTimeSeconds = timeDiffToAdd / 1000;
+        double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
+        Log.e("timeDiffToAdd", "="+rideTimeMinutes);
+        if(rideTimeMinutes > 0){
+            rideMinutes = rideTimeMinutes;
+        }
+        return rideMinutes;
+    }
+
     double enteredMeterFare = 0;
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 			double waitMinutes, double rideMinutes, 
@@ -3891,16 +4077,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		DialogPopup.showLoadingDialog(activity, "Loading...");
 		
 		final RequestParams params = new RequestParams();
-	
-		SharedPreferences pref = activity.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
-		long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
-		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-		long rideTimeSeconds = timeDiffToAdd / 1000;
-		double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
-		Log.e("timeDiffToAdd", "="+rideTimeMinutes);
-		if(rideTimeMinutes > 0){
-			rideMinutes = rideTimeMinutes;
-		}
+
+        rideMinutes = getElapsedRideTime(activity, rideMinutes);
 		
 		rideTime = decimalFormatNoDecimal.format(rideMinutes);
 		waitTime = decimalFormatNoDecimal.format(waitMinutes);
@@ -3933,10 +4111,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable){
                     enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
                     params.put("meter_fare", enteredMeterFare);
+                    params.put("get_fare_from_jugnoo", ""+getFareFromJugnoo);
                 }
             } catch (Exception e) {
             }
-
         }
 
 		
