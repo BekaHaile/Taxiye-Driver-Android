@@ -240,8 +240,6 @@ public class GpsDistanceCalculator {
 				} else {
 					GpsDistanceCalculator.this.gpsDistanceUpdater.drawOldPath();
 					lastLatLng = getSavedLatLngFromSP(context);
-                    Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
-					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
 				}
 				
 				long millisDiff = newLocationTime - lastLocationTime;
@@ -259,6 +257,12 @@ public class GpsDistanceCalculator {
 				if(speedMPS < MAX_SPEED_THRESHOLD){
 					if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 						addLatLngPathToDistance(lastLatLng, currentLatLng, location);
+
+                        if(lastGPSLocation == null){
+                            Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+                            Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
+                        }
+
 					}
 					lastGPSLocation = location;
 					lastLocationTime = System.currentTimeMillis();

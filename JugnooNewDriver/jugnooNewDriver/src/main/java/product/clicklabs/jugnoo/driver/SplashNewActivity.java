@@ -258,7 +258,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 			Log.i("countryCode", Data.country + "..");
 			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
 			Log.i("deviceName", Data.deviceName + "..");
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this)+"321";
+			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
 			
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());

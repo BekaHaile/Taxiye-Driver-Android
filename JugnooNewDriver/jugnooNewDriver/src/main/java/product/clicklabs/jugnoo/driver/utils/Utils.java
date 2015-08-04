@@ -14,6 +14,7 @@ import android.widget.ListView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -104,22 +105,25 @@ public class Utils {
 	}
 	
 	
-	
-	
-	/**
-	 * Hides keyboard
-	 * 
-	 * @param activity
-	 */
-	public static void hideSoftKeyboard(Activity activity, View searchET) {
-		try {
-			InputMethodManager mgr = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-			mgr.hideSoftInputFromWindow(searchET.getWindowToken(), 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
-	}
+    public static void hideSoftKeyboard(Activity activity, View searchET) {
+        try {
+            InputMethodManager mgr = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(searchET.getWindowToken(), 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void showSoftKeyboard(Activity activity, View searchET){
+        try {
+            InputMethodManager keyboard = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            keyboard.showSoftInput(searchET, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 	
 	public static ArrayList<NameValuePair> convertQueryToNameValuePairArr(String query) throws UnsupportedEncodingException {
@@ -246,26 +250,26 @@ public class Utils {
 
 
 
-//    public static void deleteCache(Context context) {
-//        try {
-//            File dir = context.getCacheDir();
-//            if (dir != null && dir.isDirectory()) {
-//                deleteDir(dir);
-//            }
-//        } catch (Exception e) {}
-//    }
-//
-//    public static boolean deleteDir(File dir) {
-//        if (dir != null && dir.isDirectory()) {
-//            String[] children = dir.list();
-//            for (int i = 0; i < children.length; i++) {
-//                boolean success = deleteDir(new File(dir, children[i]));
-//                if (!success) {
-//                    return false;
-//                }
-//            }
-//        }
-//        return dir.delete();
-//    }
+    public static void deleteCache(Context context) {
+        try {
+            File dir = context.getCacheDir();
+            if (dir != null && dir.isDirectory()) {
+                deleteDir(dir);
+            }
+        } catch (Exception e) {}
+    }
+
+    public static boolean deleteDir(File dir) {
+        if (dir != null && dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i = 0; i < children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+        return dir.delete();
+    }
 
 }
