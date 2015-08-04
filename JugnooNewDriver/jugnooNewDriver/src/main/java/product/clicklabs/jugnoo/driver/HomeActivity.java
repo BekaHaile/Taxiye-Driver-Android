@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,6 +114,8 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
+import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapStateListener;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -308,6 +311,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
     RelativeLayout reviewFareInfoInnerRl;
 	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue;
 	Button reviewFareInfoBtn;
+
+    ScrollView scrollViewEndRide;
+    LinearLayout linearLayoutEndRideMain;
+    TextView textViewScroll;
 	
 	
 	
@@ -332,7 +339,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
 	
 	static double totalDistance = -1, totalFare = 0;
-    int getFareFromJugnoo = 0;
 
 	
 	static long previousWaitTime = 0, previousRideTime = 0;
@@ -368,6 +374,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			zoomedToMyLocation = false, 
 			mapTouchedOnce = false;
 	boolean dontCallRefreshDriver = false;
+    int fareFetchedFromJugnoo = 0;
 	
 	
 	AlertDialog gpsDialogAlert;
@@ -724,10 +731,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		reviewFareAfterValue = (TextView) findViewById(R.id.reviewFareAfterValue); reviewFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		reviewFareInfoBtn = (Button) findViewById(R.id.reviewFareInfoBtn);
         reviewFareInfoInnerRl = (RelativeLayout) findViewById(R.id.reviewFareInfoInnerRl);
-		
 
-		
-		
+        scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
+        linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
+		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+        linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll, new KeyBoardStateHandler() {
+            @Override
+            public void keyboardOpened() {
+
+            }
+
+            @Override
+            public void keyBoardClosed() {
+
+            }
+        }));
 				 
 		
 		
@@ -1289,13 +1307,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     if (textViewMeterFareRupee.getVisibility() == View.GONE) {
                         textViewMeterFareRupee.setVisibility(View.VISIBLE);
                     }
-                    if(!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())){
-                        getFareFromJugnoo = 0;
-                    }
                 } else {
                     if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
                         textViewMeterFareRupee.setVisibility(View.GONE);
                     }
+                }
+                if(!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())){
+                    fareFetchedFromJugnoo = 0;
                 }
             }
         });
@@ -1312,7 +1330,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             @Override
             public void onClick(View v) {
                 editTextEnterMeterFare.requestFocus();
+                editTextEnterMeterFare.setSelection(editTextEnterMeterFare.getText().length());
                 Utils.showSoftKeyboard(HomeActivity.this, editTextEnterMeterFare);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        scrollViewEndRide.smoothScrollTo(0, editTextEnterMeterFare.getBottom());
+                    }
+                }, 300);
             }
         });
 
@@ -1321,8 +1346,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             public void onClick(View v) {
                 if(relativeLayoutJugnooCalculatedFare.getVisibility() == View.GONE){
                     relativeLayoutJugnooCalculatedFare.setVisibility(View.VISIBLE);
+                    reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
                     editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
-                    getFareFromJugnoo = 1;
+                    fareFetchedFromJugnoo = 1;
                 }
             }
         });
@@ -1957,8 +1983,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                 relativeLayoutUseJugnooFare.setVisibility(View.GONE);
                 relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
-                reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
-
+                try {
+                    if(Data.assignedCustomerInfo instanceof AutoCustomerInfo){
+                        if(((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable == 1 && ((AutoCustomerInfo) Data.assignedCustomerInfo).getJugnooFareEnabled != 1) {
+                            reviewFareInfoInnerRl.setVisibility(View.GONE);
+                        }
+                        else{
+                            reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else{
+                        reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+                    }
+                } catch (Exception e) {
+                    reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+                }
 
                 Database2.getInstance(this).deleteAllCurrentPathItems();
 			}
@@ -1993,16 +2032,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
             try {
                 if(Data.assignedCustomerInfo instanceof AutoCustomerInfo){
-                    if(((AutoCustomerInfo)Data.assignedCustomerInfo).jugnooFareButton == 1){
+                    if(((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable == 1 && ((AutoCustomerInfo) Data.assignedCustomerInfo).getJugnooFareEnabled == 1) {
                         relativeLayoutUseJugnooFare.setVisibility(View.VISIBLE);
                     }
                     else{
                         relativeLayoutUseJugnooFare.setVisibility(View.GONE);
                     }
                 }
+                else{
+                    relativeLayoutUseJugnooFare.setVisibility(View.GONE);
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                relativeLayoutUseJugnooFare.setVisibility(View.GONE);
             }
+
             setCalculatedFareValuesAtEndRide();
             relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
             reviewFareInfoInnerRl.setVisibility(View.GONE);
@@ -2012,8 +2055,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			mapLayout.setVisibility(View.VISIBLE);
 			endRideReviewRl.setVisibility(View.GONE);
 			topRl.setBackgroundColor(getResources().getColor(R.color.bg_grey));
+
 		}
-		
+
 		
 		switch(mode){
 		
@@ -2234,7 +2278,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				else if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
                     startCustomerPathUpdateTimer();
 					driverEndRideBtn.setText("End Ride");
-                    inrideFareInfoRl.setVisibility(View.VISIBLE);
+
+                    try {
+                        if(Data.assignedCustomerInfo instanceof AutoCustomerInfo){
+                            if(((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable == 1) {
+                                inrideFareInfoRl.setVisibility(View.GONE);
+                            }
+                            else{
+                                inrideFareInfoRl.setVisibility(View.VISIBLE);
+                            }
+                        }
+                        else{
+                            inrideFareInfoRl.setVisibility(View.VISIBLE);
+                        }
+                    } catch (Exception e) {
+                        inrideFareInfoRl.setVisibility(View.VISIBLE);
+                    }
+
 				}
 				startMapAnimateAndUpdateRideDataTimer();
 				cancelStationPathUpdateTimer();
@@ -3484,12 +3544,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											}
 
                                             int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
-                                            int jugnooFareButton = jObj.optInt("jugnoo_fare_button", 1);
+                                            int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 											
 											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), 
 													Integer.parseInt(Data.dCustomerId), referenceId,
 													userName, phoneNo, pickuplLatLng, 
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, jugnooFareButton);
+													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled);
 
 											Data.driverRideRequests.clear();
 		
@@ -4111,7 +4171,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     && 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable){
                     enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
                     params.put("meter_fare", enteredMeterFare);
-                    params.put("get_fare_from_jugnoo", ""+getFareFromJugnoo);
+                    params.put("fare_fetched_from_jugnoo", ""+fareFetchedFromJugnoo);
                 }
             } catch (Exception e) {
             }
@@ -4132,7 +4192,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 @Override
                 public void onFailure(Throwable arg3) {
                     Log.e("request fail", arg3.toString());
-
                     endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare);
 
                 }
