@@ -8,18 +8,28 @@ import java.util.ArrayList;
 public class DriverLeaderboardData {
 
     public String cityName;
-    public int cityPosition, cityTotal;
-    public int overallPosition, overallTotal;
+    public int cityPositionDay, cityPositionWeek, cityPositionMonth, cityTotalDay, cityTotalWeek, cityTotalMonth;
+    public int overallPositionDay, overallPositionWeek, overallPositionMonth, overallTotalDay, overallTotalWeek, overallTotalMonth;
 
     public ArrayList<DriverLeaderboard> driverLeaderboardsAll;
 
-    public DriverLeaderboardData(String cityName, int cityPosition, int cityTotal, int overallPosition, int overallTotal,
+    public DriverLeaderboardData(String cityName,
+                                 int cityPositionDay, int cityPositionWeek, int cityPositionMonth, int cityTotalDay, int cityTotalWeek, int cityTotalMonth,
+                                 int overallPositionDay, int overallPositionWeek, int overallPositionMonth, int overallTotalDay, int overallTotalWeek, int overallTotalMonth,
                                  ArrayList<DriverLeaderboard> driverLeaderboardsAll){
         this.cityName = cityName;
-        this.cityPosition = cityPosition;
-        this.cityTotal = cityTotal;
-        this.overallPosition = overallPosition;
-        this.overallTotal = overallTotal;
+        this.cityPositionDay = cityPositionDay;
+        this.cityPositionWeek = cityPositionWeek;
+        this.cityPositionMonth = cityPositionMonth;
+        this.cityTotalDay = cityTotalDay;
+        this.cityTotalWeek = cityTotalWeek;
+        this.cityTotalMonth = cityTotalMonth;
+        this.overallPositionDay = overallPositionDay;
+        this.overallPositionWeek = overallPositionWeek;
+        this.overallPositionMonth = overallPositionMonth;
+        this.overallTotalDay = overallTotalDay;
+        this.overallTotalWeek = overallTotalWeek;
+        this.overallTotalMonth = overallTotalMonth;
         this.driverLeaderboardsAll = new ArrayList<DriverLeaderboard>();
         this.driverLeaderboardsAll.addAll(driverLeaderboardsAll);
     }
