@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -151,56 +152,106 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             cityTotal = driverLeaderboardData.cityTotalDay;
             overallPos = driverLeaderboardData.overallPositionDay;
             overallTotal = driverLeaderboardData.overallTotalDay;
+
+            textViewDaily.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+            textViewWeekly.setTypeface(Data.latoRegular(this));
+            textViewMonthly.setTypeface(Data.latoRegular(this));
+
+            textViewDaily.setBackgroundResource(R.drawable.background_white_dark);
+            textViewWeekly.setBackgroundResource(R.drawable.background_white_white_dark_selector);
+            textViewMonthly.setBackgroundResource(R.drawable.background_white_white_dark_selector);
+
         }
         else if(LeaderboardMode.WEEKLY == leaderboardMode){
             cityPos = driverLeaderboardData.cityPositionWeek;
             cityTotal = driverLeaderboardData.cityTotalWeek;
             overallPos = driverLeaderboardData.overallPositionWeek;
             overallTotal = driverLeaderboardData.overallTotalWeek;
+
+            textViewDaily.setTypeface(Data.latoRegular(this));
+            textViewWeekly.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+            textViewMonthly.setTypeface(Data.latoRegular(this));
+
+            textViewDaily.setBackgroundResource(R.drawable.background_white_white_dark_selector);
+            textViewWeekly.setBackgroundResource(R.drawable.background_white_dark);
+            textViewMonthly.setBackgroundResource(R.drawable.background_white_white_dark_selector);
         }
         else if(LeaderboardMode.MONTHLY == leaderboardMode){
             cityPos = driverLeaderboardData.cityPositionMonth;
             cityTotal = driverLeaderboardData.cityTotalMonth;
             overallPos = driverLeaderboardData.overallPositionMonth;
             overallTotal = driverLeaderboardData.overallTotalMonth;
+
+            textViewDaily.setTypeface(Data.latoRegular(this));
+            textViewWeekly.setTypeface(Data.latoRegular(this));
+            textViewMonthly.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+            textViewDaily.setBackgroundResource(R.drawable.background_white_white_dark_selector);
+            textViewWeekly.setBackgroundResource(R.drawable.background_white_white_dark_selector);
+            textViewMonthly.setBackgroundResource(R.drawable.background_white_dark);
         }
         if(LeaderboardAreaMode.LOCAL == leaderboardAreaMode){
             adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 0);
-            textViewPositionTop.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
-            textViewPositionBottom.setText("Your overall position : "+overallPos+"/"+overallTotal);
+            if(0 == cityPos){
+                textViewPositionTop.setText("Could not get local position");
+            }
+            else{
+                textViewPositionTop.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
+            }
+            if(0 == overallPos){
+                textViewPositionBottom.setText("Overall position");
+            }
+            else{
+                textViewPositionBottom.setText("Your overall position : "+overallPos+"/"+overallTotal);
+            }
         }
         else if(LeaderboardAreaMode.OVERALL == leaderboardAreaMode){
             adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 1);
-            textViewPositionTop.setText("Your overall position : "+overallPos+"/"+overallTotal);
-            textViewPositionBottom.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
+
+            if(0 == overallPos){
+                textViewPositionTop.setText("Could not get overall position");
+            }
+            else{
+                textViewPositionTop.setText("Your overall position : "+overallPos+"/"+overallTotal);
+            }
+            if(0 == cityPos){
+                textViewPositionBottom.setText("Local position");
+            }
+            else{
+                textViewPositionBottom.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
+            }
+
         }
     }
 
 
 
     public void getLeaderboardData(final Activity activity) {
-        if (AppStatus.getInstance(activity).isOnline(activity)) {
-            DialogPopup.showLoadingDialog(activity, "Loading...");
-            RequestParams params = new RequestParams();
+        if(!HomeActivity.checkIfUserDataNull(activity)) {
+            if (AppStatus.getInstance(activity).isOnline(activity)) {
+                DialogPopup.showLoadingDialog(activity, "Loading...");
+                RequestParams params = new RequestParams();
 
-            params.put("access_token", Data.userData.accessToken);
+                params.put("access_token", Data.userData.accessToken);
+//                params.put("access_token", "dce0da8447650e8ebd66fe4de118570819c988649c28a62d3129f552656c3f43");
 
-            AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/driver/show/leader_board", params,
-                new CustomAsyncHttpResponseHandler() {
-                    private JSONObject jObj;
 
-                    @Override
-                    public void onFailure(Throwable arg3) {
-                        Log.e("request fail", arg3.toString());
-                        DialogPopup.dismissLoadingDialog();
-                        retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\nTap to retry");
-                    }
+                AsyncHttpClient client = Data.getClient();
+                client.post(Data.SERVER_URL + "/driver/show/leader_board", params,
+                    new CustomAsyncHttpResponseHandler() {
+                        private JSONObject jObj;
 
-                    @Override
-                    public void onSuccess(String response) {
-                        Log.i("Server response faq ", "response = " + response);
-                        try {
+                        @Override
+                        public void onFailure(Throwable arg3) {
+                            Log.e("request fail", arg3.toString());
+                            DialogPopup.dismissLoadingDialog();
+                            retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\nTap to retry");
+                        }
+
+                        @Override
+                        public void onSuccess(String response) {
+                            Log.i("Server response faq ", "response = " + response);
+                            try {
 
 //                            {
 //                                "flag": 143,
@@ -266,104 +317,119 @@ public class DriverLeaderboardActivity extends FragmentActivity{
 //                            }
 //                            }
 
-                            jObj = new JSONObject(response);
-                            int flag = jObj.getInt("flag");
-                            String message = JSONParser.getServerMessage(jObj);
-                            if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                jObj = new JSONObject(response);
+                                int flag = jObj.getInt("flag");
+                                String message = JSONParser.getServerMessage(jObj);
+                                if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 
-                                if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-                                   DialogPopup.alertPopup(activity, "", message);
+                                    if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+                                        DialogPopup.alertPopup(activity, "", message);
+                                    } else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+                                        ArrayList<DriverLeaderboard> driverLeaderboards = new ArrayList<DriverLeaderboard>();
+
+                                        JSONObject jDriverLeaderBoard = jObj.getJSONObject("driver_leader_board");
+
+                                        int cityPositionDay = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("day");
+                                        int cityPositionWeek = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("week");
+                                        int cityPositionMonth = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("month");
+                                        int cityTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("day");
+                                        int cityTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("week");
+                                        int cityTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("month");
+                                        int overallPositionDay = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("day");
+                                        int overallPositionWeek = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("week");
+                                        int overallPositionMonth = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("month");
+                                        int overallTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("day");
+                                        int overallTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("week");
+                                        int overallTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("month");
+
+                                        JSONObject jOverallLeaderBoard = jDriverLeaderBoard.getJSONObject("overall_leader_board");
+                                        if (jOverallLeaderBoard.has("day")) {
+                                            JSONArray jOverallLeaderBoardDay = jOverallLeaderBoard.getJSONArray("day");
+                                            for (int i = 0; i < jOverallLeaderBoardDay.length(); i++) {
+                                                JSONObject ji = jOverallLeaderBoardDay.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
+                                            }
+                                        }
+                                        if (jOverallLeaderBoard.has("week")) {
+                                            JSONArray jOverallLeaderBoardWeek = jOverallLeaderBoard.getJSONArray("week");
+                                            for (int i = 0; i < jOverallLeaderBoardWeek.length(); i++) {
+                                                JSONObject ji = jOverallLeaderBoardWeek.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
+                                            }
+                                        }
+                                        if (jOverallLeaderBoard.has("month")) {
+                                            JSONArray jOverallLeaderBoardMonth = jOverallLeaderBoard.getJSONArray("month");
+                                            for (int i = 0; i < jOverallLeaderBoardMonth.length(); i++) {
+                                                JSONObject ji = jOverallLeaderBoardMonth.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
+                                            }
+                                        }
+
+
+                                        JSONObject jCityLeaderBoard = jDriverLeaderBoard.getJSONObject("city_leader_board");
+                                        if (jCityLeaderBoard.has("day")) {
+                                            JSONArray jCityLeaderBoardDay = jCityLeaderBoard.getJSONArray("day");
+                                            for (int i = 0; i < jCityLeaderBoardDay.length(); i++) {
+                                                JSONObject ji = jCityLeaderBoardDay.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
+                                            }
+                                        }
+                                        if (jCityLeaderBoard.has("week")) {
+                                            JSONArray jCityLeaderBoardWeek = jCityLeaderBoard.getJSONArray("week");
+                                            for (int i = 0; i < jCityLeaderBoardWeek.length(); i++) {
+                                                JSONObject ji = jCityLeaderBoardWeek.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
+                                            }
+                                        }
+                                        if (jCityLeaderBoard.has("month")) {
+                                            JSONArray jCityLeaderBoardMonth = jCityLeaderBoard.getJSONArray("month");
+                                            for (int i = 0; i < jCityLeaderBoardMonth.length(); i++) {
+                                                JSONObject ji = jCityLeaderBoardMonth.getJSONObject(i);
+                                                driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
+                                                    ji.getString("driver_name"),
+                                                    ji.getString("city_name"),
+                                                    ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
+                                            }
+                                        }
+
+
+                                        String cityName = jDriverLeaderBoard.optString("driver_city", "Local");
+
+                                        driverLeaderboardData = new DriverLeaderboardData(cityName, cityPositionDay, cityPositionWeek, cityPositionMonth, cityTotalDay, cityTotalWeek, cityTotalMonth,
+                                            overallPositionDay, overallPositionWeek, overallPositionMonth, overallTotalDay, overallTotalWeek, overallTotalMonth, driverLeaderboards);
+
+                                        setList(leaderboardAreaMode, leaderboardMode);
+                                    } else {
+                                        DialogPopup.alertPopup(activity, "", message);
+                                    }
+
                                 }
-                                else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-
-                                    ArrayList<DriverLeaderboard> driverLeaderboards = new ArrayList<DriverLeaderboard>();
-
-                                    JSONObject jDriverLeaderBoard = jObj.getJSONObject("driver_leader_board");
-
-                                    int cityPositionDay = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("day");
-                                    int cityPositionWeek = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("week");
-                                    int cityPositionMonth = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("month");
-                                    int cityTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("day");
-                                    int cityTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("week");
-                                    int cityTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("month");
-                                    int overallPositionDay = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("day");
-                                    int overallPositionWeek = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("week");
-                                    int overallPositionMonth = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("month");
-                                    int overallTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("day");
-                                    int overallTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("week");
-                                    int overallTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("month");
-
-                                    JSONObject jOverallLeaderBoard = jObj.getJSONObject("overall_leader_board");
-                                    JSONArray jOverallLeaderBoardDay = jOverallLeaderBoard.getJSONArray("day");
-                                    for(int i=0; i<jOverallLeaderBoardDay.length(); i++){
-                                        JSONObject ji = jOverallLeaderBoardDay.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
-                                    }
-                                    JSONArray jOverallLeaderBoardWeek = jOverallLeaderBoard.getJSONArray("week");
-                                    for(int i=0; i<jOverallLeaderBoardWeek.length(); i++){
-                                        JSONObject ji = jOverallLeaderBoardWeek.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
-                                    }
-                                    JSONArray jOverallLeaderBoardMonth = jOverallLeaderBoard.getJSONArray("month");
-                                    for(int i=0; i<jOverallLeaderBoardMonth.length(); i++){
-                                        JSONObject ji = jOverallLeaderBoardMonth.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
-                                    }
-
-
-                                    JSONObject jCityLeaderBoard = jObj.getJSONObject("city_leader_board");
-                                    JSONArray jCityLeaderBoardDay = jCityLeaderBoard.getJSONArray("day");
-                                    for(int i=0; i<jCityLeaderBoardDay.length(); i++){
-                                        JSONObject ji = jCityLeaderBoardDay.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
-                                    }
-                                    JSONArray jCityLeaderBoardWeek = jCityLeaderBoard.getJSONArray("week");
-                                    for(int i=0; i<jCityLeaderBoardWeek.length(); i++){
-                                        JSONObject ji = jCityLeaderBoardWeek.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
-                                    }
-                                    JSONArray jCityLeaderBoardMonth = jCityLeaderBoard.getJSONArray("month");
-                                    for(int i=0; i<jCityLeaderBoardMonth.length(); i++){
-                                        JSONObject ji = jCityLeaderBoardMonth.getJSONObject(i);
-                                        driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-                                            ji.getString("driver_name"),
-                                            ji.getString("city_name"),
-                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
-                                    }
-
-                                    driverLeaderboardData = new DriverLeaderboardData("Chandigarh", cityPositionDay, cityPositionWeek, cityPositionMonth, cityTotalDay, cityTotalWeek, cityTotalMonth,
-                                        overallPositionDay, overallPositionWeek, overallPositionMonth, overallTotalDay, overallTotalWeek, overallTotalMonth, driverLeaderboards);
-
-                                }
-                                else{
-                                    DialogPopup.alertPopup(activity, "", message);
-                                }
-
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                retryDialog(activity, Data.SERVER_ERROR_MSG + "\nTap to retry");
                             }
-                        } catch (Exception exception) {
-                            exception.printStackTrace();
-                            retryDialog(activity, Data.SERVER_ERROR_MSG + "\nTap to retry");
+                            DialogPopup.dismissLoadingDialog();
                         }
-                        DialogPopup.dismissLoadingDialog();
-                    }
-                });
-        } else {
-            retryDialog(activity, Data.CHECK_INTERNET_MSG + "\nTap to retry");
+                    });
+            } else {
+                retryDialog(activity, Data.CHECK_INTERNET_MSG + "\nTap to retry");
+            }
         }
     }
 

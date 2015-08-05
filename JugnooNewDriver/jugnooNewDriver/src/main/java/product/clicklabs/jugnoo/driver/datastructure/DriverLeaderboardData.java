@@ -41,6 +41,9 @@ public class DriverLeaderboardData {
                 driverLeaderboards.add(driverLeaderboard);
             }
         }
+        if(driverLeaderboards.size() == 0){
+            driverLeaderboards.add(new DriverLeaderboard(0, "", "", 0, 0, 0, true));
+        }
         return driverLeaderboards;
     }
 

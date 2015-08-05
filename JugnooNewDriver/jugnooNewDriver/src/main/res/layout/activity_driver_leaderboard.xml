@@ -111,7 +111,7 @@
             android:text="Daily"
             android:textColor="@drawable/text_color_bg_grey_selector"
             android:textSize="30px"
-            android:background="@drawable/background_white_white_light_grey_selector"
+            android:background="@drawable/background_white_white_dark_selector"
             />
         <ImageView
             android:layout_width="1px"
@@ -129,7 +129,7 @@
             android:text="Weekly"
             android:textColor="@drawable/text_color_bg_grey_selector"
             android:textSize="30px"
-            android:background="@drawable/background_white_white_light_grey_selector"
+            android:background="@drawable/background_white_white_dark_selector"
             />
         <ImageView
             android:layout_width="1px"
@@ -147,7 +147,7 @@
             android:text="Monthly"
             android:textColor="@drawable/text_color_bg_grey_selector"
             android:textSize="30px"
-            android:background="@drawable/background_white_white_light_grey_selector"
+            android:background="@drawable/background_white_white_dark_selector"
             />
     </LinearLayout>
 
@@ -162,7 +162,7 @@
         android:id="@+id/relativeLayoutPositionBottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_white_white_light_grey_selector"
+        android:background="@drawable/background_white_white_dark_selector"
         >
         <TextView
             android:id="@+id/textViewPositionBottom"

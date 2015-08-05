@@ -36,6 +36,9 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
 
     public synchronized void setResults(ArrayList<DriverLeaderboard> driverLeaderboards, int showCity){
         this.driverLeaderboards = driverLeaderboards;
+        if(this.driverLeaderboards.size() == 0){
+
+        }
         this.showCity = showCity;
         this.notifyDataSetChanged();
     }
@@ -62,7 +65,7 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
             convertView = mInflater.inflate(R.layout.list_item_driver_leaderboard, null);
 
             holder.textViewSno = (TextView) convertView.findViewById(R.id.textViewSno); holder.textViewSno.setTypeface(Data.latoRegular(context));
-            holder.textViewDriverName = (TextView) convertView.findViewById(R.id.textViewDriverName); holder.textViewDriverName.setTypeface(Data.latoLight(context));
+            holder.textViewDriverName = (TextView) convertView.findViewById(R.id.textViewDriverName); holder.textViewDriverName.setTypeface(Data.latoRegular(context));
             holder.textViewRidesTaken = (TextView) convertView.findViewById(R.id.textViewRidesTaken); holder.textViewRidesTaken.setTypeface(Data.latoRegular(context));
 
             holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
@@ -81,14 +84,21 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
 
         holder.id = position;
 
-        holder.textViewSno.setText(""+(position+1)+".");
-        if(1 == showCity && !"".equalsIgnoreCase(driverLeaderboard.cityName)){
-            holder.textViewDriverName.setText(driverLeaderboard.userName+" ("+driverLeaderboard.cityName+")");
+        if(driverLeaderboard.noEntry){
+            holder.textViewSno.setText("");
+            holder.textViewDriverName.setText("No data to show");
+            holder.textViewRidesTaken.setText("");
         }
         else{
-            holder.textViewDriverName.setText(driverLeaderboard.userName);
+            holder.textViewSno.setText(""+(position+1)+".");
+            if(1 == showCity && !"".equalsIgnoreCase(driverLeaderboard.cityName)){
+                holder.textViewDriverName.setText(driverLeaderboard.userName+" ("+driverLeaderboard.cityName+")");
+            }
+            else{
+                holder.textViewDriverName.setText(driverLeaderboard.userName);
+            }
+            holder.textViewRidesTaken.setText(""+driverLeaderboard.numRides);
         }
-        holder.textViewRidesTaken.setText(""+driverLeaderboard.numRides);
 
         return convertView;
     }
