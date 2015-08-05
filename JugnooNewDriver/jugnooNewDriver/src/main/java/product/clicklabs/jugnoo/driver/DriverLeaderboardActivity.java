@@ -144,15 +144,35 @@ public class DriverLeaderboardActivity extends FragmentActivity{
 
 
     public void setList(LeaderboardAreaMode leaderboardAreaMode, LeaderboardMode leaderboardMode){
+        int cityPos = 0, cityTotal = 0;
+        int overallPos = 0, overallTotal = 0;
+        if(LeaderboardMode.DAILY == leaderboardMode){
+            cityPos = driverLeaderboardData.cityPositionDay;
+            cityTotal = driverLeaderboardData.cityTotalDay;
+            overallPos = driverLeaderboardData.overallPositionDay;
+            overallTotal = driverLeaderboardData.overallTotalDay;
+        }
+        else if(LeaderboardMode.WEEKLY == leaderboardMode){
+            cityPos = driverLeaderboardData.cityPositionWeek;
+            cityTotal = driverLeaderboardData.cityTotalWeek;
+            overallPos = driverLeaderboardData.overallPositionWeek;
+            overallTotal = driverLeaderboardData.overallTotalWeek;
+        }
+        else if(LeaderboardMode.MONTHLY == leaderboardMode){
+            cityPos = driverLeaderboardData.cityPositionMonth;
+            cityTotal = driverLeaderboardData.cityTotalMonth;
+            overallPos = driverLeaderboardData.overallPositionMonth;
+            overallTotal = driverLeaderboardData.overallTotalMonth;
+        }
         if(LeaderboardAreaMode.LOCAL == leaderboardAreaMode){
             adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 0);
-            textViewPositionTop.setText("Your Position in "+driverLeaderboardData.cityName+" : "+driverLeaderboardData.cityPositionMonth+"/"+driverLeaderboardData.cityTotalMonth);
-            textViewPositionBottom.setText("Your overall position : "+driverLeaderboardData.overallPositionMonth+"/"+driverLeaderboardData.overallTotalMonth);
+            textViewPositionTop.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
+            textViewPositionBottom.setText("Your overall position : "+overallPos+"/"+overallTotal);
         }
         else if(LeaderboardAreaMode.OVERALL == leaderboardAreaMode){
             adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 1);
-            textViewPositionTop.setText("Your overall position : "+driverLeaderboardData.overallPositionMonth+"/"+driverLeaderboardData.overallTotalMonth);
-            textViewPositionBottom.setText("Your Position in "+driverLeaderboardData.cityName+" : "+driverLeaderboardData.cityPositionMonth+"/"+driverLeaderboardData.cityTotalMonth);
+            textViewPositionTop.setText("Your overall position : "+overallPos+"/"+overallTotal);
+            textViewPositionBottom.setText("Your Position in "+driverLeaderboardData.cityName+" : "+cityPos+"/"+cityTotal);
         }
     }
 
@@ -274,27 +294,29 @@ public class DriverLeaderboardActivity extends FragmentActivity{
                                     int overallTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("month");
 
                                     JSONObject jOverallLeaderBoard = jObj.getJSONObject("overall_leader_board");
-
                                     JSONArray jOverallLeaderBoardDay = jOverallLeaderBoard.getJSONArray("day");
                                     for(int i=0; i<jOverallLeaderBoardDay.length(); i++){
                                         JSONObject ji = jOverallLeaderBoardDay.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
                                     }
                                     JSONArray jOverallLeaderBoardWeek = jOverallLeaderBoard.getJSONArray("week");
                                     for(int i=0; i<jOverallLeaderBoardWeek.length(); i++){
                                         JSONObject ji = jOverallLeaderBoardWeek.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
                                     }
                                     JSONArray jOverallLeaderBoardMonth = jOverallLeaderBoard.getJSONArray("month");
                                     for(int i=0; i<jOverallLeaderBoardMonth.length(); i++){
                                         JSONObject ji = jOverallLeaderBoardMonth.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
                                     }
 
 
@@ -304,21 +326,24 @@ public class DriverLeaderboardActivity extends FragmentActivity{
                                         JSONObject ji = jCityLeaderBoardDay.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
                                     }
                                     JSONArray jCityLeaderBoardWeek = jCityLeaderBoard.getJSONArray("week");
                                     for(int i=0; i<jCityLeaderBoardWeek.length(); i++){
                                         JSONObject ji = jCityLeaderBoardWeek.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
                                     }
                                     JSONArray jCityLeaderBoardMonth = jCityLeaderBoard.getJSONArray("month");
                                     for(int i=0; i<jCityLeaderBoardMonth.length(); i++){
                                         JSONObject ji = jCityLeaderBoardMonth.getJSONObject(i);
                                         driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
                                             ji.getString("driver_name"),
-                                            ji.getString("city"), 0, LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
+                                            ji.getString("city_name"),
+                                            ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
                                     }
 
                                     driverLeaderboardData = new DriverLeaderboardData("Chandigarh", cityPositionDay, cityPositionWeek, cityPositionMonth, cityTotalDay, cityTotalWeek, cityTotalMonth,

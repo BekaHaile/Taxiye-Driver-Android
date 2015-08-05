@@ -82,7 +82,7 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
         holder.id = position;
 
         holder.textViewSno.setText(""+(position+1)+".");
-        if(1 == showCity){
+        if(1 == showCity && !"".equalsIgnoreCase(driverLeaderboard.cityName)){
             holder.textViewDriverName.setText(driverLeaderboard.userName+" ("+driverLeaderboard.cityName+")");
         }
         else{
