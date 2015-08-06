@@ -308,6 +308,8 @@ public class JSONParser {
 		} catch(Exception e){}
 
 
+        String deiValue = userData.optString("driver_engagement_index", "-1");
+
         String accessToken = userData.getString("access_token");
 
 		Data.termsAgreed = 1;
@@ -316,7 +318,7 @@ public class JSONParser {
 		
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), 
-				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable);
+				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable, deiValue);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

@@ -1908,6 +1908,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
 			try{Picasso.with(HomeActivity.this).load(Data.userData.userImage).skipMemoryCache().transform(new CircleTransform()).into(profileImg);}catch(Exception e){}
+
+            if("-1".equalsIgnoreCase(Data.userData.deiValue)){
+                linearLayoutDEI.setVisibility(View.GONE);
+            }
+            else{
+                linearLayoutDEI.setVisibility(View.VISIBLE);
+                textViewDEI.setText(Data.userData.deiValue);
+            }
+
 		} catch(Exception e){
 			e.printStackTrace();
 		}
