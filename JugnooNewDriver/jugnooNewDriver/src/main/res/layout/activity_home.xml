@@ -28,7 +28,7 @@
                     android:id="@+id/map"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    class="product.clicklabs.jugnoo.driver.utils.TouchableMapFragment" />
+                    class="com.google.android.gms.maps.SupportMapFragment" />
             </RelativeLayout>
 
             <!-- driver main layout-->

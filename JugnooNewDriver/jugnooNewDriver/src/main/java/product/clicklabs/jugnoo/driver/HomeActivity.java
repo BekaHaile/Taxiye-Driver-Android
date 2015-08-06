@@ -117,12 +117,10 @@ import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MapStateListener;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
-import product.clicklabs.jugnoo.driver.utils.TouchableMapFragment;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
@@ -192,8 +190,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//Map layout
 	RelativeLayout mapLayout;
 	GoogleMap map;
-	TouchableMapFragment mapFragment;
-	
+
 	
 	
 	
@@ -549,8 +546,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		//Map Layout
 		mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
 		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-		mapFragment = ((TouchableMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-		
+
 		
 		
 		
@@ -1461,29 +1457,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			});
 
 
-            new MapStateListener(map, mapFragment, this) {
-                @Override
-                public void onMapTouched() {
-                    // Map touched
-                }
-
-                @Override
-                public void onMapReleased() {
-                    // Map released
-                }
-
-                @Override
-                public void onMapUnsettled() {
-                    // Map unsettled
-                }
-
-                @Override
-                public void onMapSettled() {
-                    // Map settled
-                }
-            };
-
-			
 			driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 			driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
 			driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
@@ -3177,14 +3150,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	class DriverRequestListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverRequest holder;
+
+        ArrayList<DriverRideRequest> driverRideRequests;
 		
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            driverRideRequests = new ArrayList<DriverRideRequest>();
 		}
 
 		@Override
 		public int getCount() {
-			return Data.driverRideRequests.size();
+			return driverRideRequests.size();
 		}
 
 		@Override
@@ -3196,6 +3172,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		public long getItemId(int position) {
 			return position;
 		}
+
+        public synchronized void setResults(ArrayList<DriverRideRequest> driverRideRequests){
+            if(this.driverRideRequests == null){
+                this.driverRideRequests = new ArrayList<DriverRideRequest>();
+            }
+            this.driverRideRequests.clear();
+            this.driverRideRequests.addAll(driverRideRequests);
+            this.notifyDataSetChanged();
+        }
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -3228,7 +3213,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			
 			
-			DriverRideRequest driverRideRequest = Data.driverRideRequests.get(position);
+			DriverRideRequest driverRideRequest = driverRideRequests.get(position);
 			
 			holder.id = position;
 			
@@ -3286,7 +3271,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
 						
-						DriverRideRequest driverRideRequest = Data.driverRideRequests.get(holder.id);
+						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
 						
 						Data.dEngagementId = driverRideRequest.engagementId;
 						Data.dCustomerId = driverRideRequest.customerId;
@@ -3310,7 +3295,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     try {
                         holder = (ViewHolderDriverRequest) v.getTag();
 
-                        DriverRideRequest driverRideRequest = Data.driverRideRequests.get(holder.id);
+                        DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
 
                         Data.dEngagementId = driverRideRequest.engagementId;
                         Data.dCustomerId = driverRideRequest.customerId;
@@ -3324,7 +3309,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     }
                 }
             });
-			
 			
 			return convertView;
 		}
@@ -5767,7 +5751,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						driverNewRideRequestText.setText("You have "+Data.driverRideRequests.size()+" request");
 					}
 					
-					driverRequestListAdapter.notifyDataSetChanged();
+					driverRequestListAdapter.setResults(Data.driverRideRequests);
 					
 					map.animateCamera(CameraUpdateFactory.newLatLng(last), 1000, null);
 					
