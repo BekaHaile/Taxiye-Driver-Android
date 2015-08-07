@@ -4,9 +4,10 @@ public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 		autosAvailable, mealsAvailable, fatafatAvailable;
+    public String deiValue;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
-			int autosAvailable, int mealsAvailable, int fatafatAvailable){
+			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue){
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -20,5 +21,6 @@ public class UserData {
 		this.autosAvailable = autosAvailable;
 		this.mealsAvailable = mealsAvailable;
 		this.fatafatAvailable = fatafatAvailable;
+        this.deiValue = deiValue;
 	}
 }

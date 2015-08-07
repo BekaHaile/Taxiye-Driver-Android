@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:splitMotionEvents="false"
+    android:gravity="center_vertical"
+    >
+
+    <TextView
+        android:id="@+id/textViewSno"
+        android:layout_width="100px"
+        android:layout_height="120px"
+        android:text="5."
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textSize="30px"
+        android:layout_marginLeft="20px"
+        />
+
+
+    <TextView
+        android:id="@+id/textViewDriverName"
+        android:layout_width="450px"
+        android:layout_height="wrap_content"
+        android:text="Aman"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textSize="30px"
+        android:layout_marginLeft="20px"
+        />
+
+    <TextView
+        android:id="@+id/textViewRidesTaken"
+        android:layout_width="100px"
+        android:layout_height="wrap_content"
+        android:text="500"
+        android:textColor="@color/black"
+        android:gravity="center_vertical"
+        android:textSize="30px"
+        android:layout_marginLeft="20px"
+        />
+
+
+</LinearLayout>

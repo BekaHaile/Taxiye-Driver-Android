@@ -55,7 +55,6 @@ public class Data {
 			SP_LAST_LATITUDE = "last_latitude",
 			SP_LAST_LONGITUDE = "last_longitude",
 			SP_LAST_LOCATION_TIME = "last_location_time"
-			
 			;
 	
 	

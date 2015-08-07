@@ -117,12 +117,10 @@ import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MapStateListener;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
-import product.clicklabs.jugnoo.driver.utils.TouchableMapFragment;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
@@ -142,7 +140,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	
 	ImageView profileImg;
-	TextView userName;
+	TextView userName, textViewDEI;
+    LinearLayout linearLayoutDEI;
 	
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle;
@@ -155,6 +154,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	
 	RelativeLayout fareDetailsRl;
 	TextView fareDetailsText;
+    RelativeLayout relativeLayoutSuperDrivers;
+    TextView textViewSuperDrivers;
 	
 	RelativeLayout helpRl;
 	TextView helpText;
@@ -189,8 +190,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//Map layout
 	RelativeLayout mapLayout;
 	GoogleMap map;
-	TouchableMapFragment mapFragment;
-	
+
 	
 	
 	
@@ -476,8 +476,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		userName = (TextView) findViewById(R.id.userName); userName.setTypeface(Data.latoRegular(getApplicationContext()));
-		
-		
+
+        linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
+        textViewDEI = (TextView) findViewById(R.id.textViewDEI); textViewDEI.setTypeface(Data.latoRegular(this));
+
 		
 		relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 		((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
@@ -502,6 +504,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+        relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
+        ((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
 		
 		helpRl = (RelativeLayout) findViewById(R.id.helpRl);
 		helpText = (TextView) findViewById(R.id.helpText); helpText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -541,8 +546,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		//Map Layout
 		mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
 		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-		mapFragment = ((TouchableMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
-		
+
 		
 		
 		
@@ -876,6 +880,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				sendToFareDetails();
 			}
 		});
+
+        relativeLayoutSuperDrivers.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
+                overridePendingTransition(R.anim.right_in, R.anim.right_out);
+            }
+        });
 		
 		
 		helpRl.setOnClickListener(new View.OnClickListener() {
@@ -1267,22 +1280,27 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                         });
                     }
                     else{
-                        DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "The amount entered is "+getResources().getString(R.string.rupee)+" "+enteredMeterFare, "OK", "Cancel",
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
-                                }
-                            },
-                            new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
+                        if(AppStatus.getInstance(activity).isOnline(activity)) {
+                            DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare, "OK", "Cancel",
+                                new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+                                    }
+                                },
+                                new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
 
-                                }
-                            }, false, false);
+                                    }
+                                }, false, false);
+                        }
+                        else{
+                            DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
+                        }
                     }
                 }
-                else{
+                else if(DriverScreenMode.D_RIDE_END == driverScreenMode){
                     MeteringService.clearNotifications(HomeActivity.this);
                     driverScreenMode = DriverScreenMode.D_INITIAL;
                     switchDriverScreen(driverScreenMode);
@@ -1387,7 +1405,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else{
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Data.latitude, Data.longitude), 14));
 			}
-			
+
+//            map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+//                @Override
+//                public void onMyLocationChange(Location location) {
+//
+//                    Toast.makeText(HomeActivity.this, ""+location, Toast.LENGTH_SHORT).show();
+//
+//                }
+//            });
 			
 			
 			map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -1444,29 +1470,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			});
 
 
-            new MapStateListener(map, mapFragment, this) {
-                @Override
-                public void onMapTouched() {
-                    // Map touched
-                }
-
-                @Override
-                public void onMapReleased() {
-                    // Map released
-                }
-
-                @Override
-                public void onMapUnsettled() {
-                    // Map unsettled
-                }
-
-                @Override
-                public void onMapSettled() {
-                    // Map settled
-                }
-            };
-
-			
 			driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 			driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
 			driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
@@ -1891,6 +1894,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
 			try{Picasso.with(HomeActivity.this).load(Data.userData.userImage).skipMemoryCache().transform(new CircleTransform()).into(profileImg);}catch(Exception e){}
+
+            if("-1".equalsIgnoreCase(Data.userData.deiValue)){
+                linearLayoutDEI.setVisibility(View.GONE);
+            }
+            else{
+                linearLayoutDEI.setVisibility(View.VISIBLE);
+                textViewDEI.setText(Data.userData.deiValue);
+            }
+
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -2387,7 +2399,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             String kmsStr = (totalDistanceInKm > 1) ? "kms" : "km";
 
             long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-            double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+            double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
             String rideTime = decimalFormatNoDecimal.format(getElapsedRideTime(HomeActivity.this, rideTimeMinutes));
 
             double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
@@ -2427,7 +2439,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
             long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-            double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+            double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 
             double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
             return decimalFormatNoDecimal.format(totalFare);
@@ -3067,12 +3079,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			double totalDistanceInKm = Math.abs(distance/1000.0);
 			
 			long rideTimeSeconds = elapsedTime / 1000;
-			double totalTimeInMin = Math.ceil(((double)rideTimeSeconds) / 60.0);
+			double totalTimeInMin = Math.ceil(rideTimeSeconds / 60);
 			
 			long waitTimeSeconds = waitChronometer.eclipsedTime / 1000;
-			double totalWaitTimeInMin = Math.ceil(((double)waitTimeSeconds) / 60.0);
-			
-			
+			double totalWaitTimeInMin = Math.ceil(waitTimeSeconds / 60);
+
 			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
 			if(Data.fareStructure != null){
 				driverIRFareValue.setText(""+decimalFormat.format(Data.fareStructure.calculateFare(totalDistanceInKm, totalTimeInMin, totalWaitTimeInMin)));
@@ -3151,14 +3162,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	class DriverRequestListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverRequest holder;
+
+        ArrayList<DriverRideRequest> driverRideRequests;
 		
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            driverRideRequests = new ArrayList<DriverRideRequest>();
 		}
 
 		@Override
 		public int getCount() {
-			return Data.driverRideRequests.size();
+			return driverRideRequests.size();
 		}
 
 		@Override
@@ -3170,6 +3184,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		public long getItemId(int position) {
 			return position;
 		}
+
+        public synchronized void setResults(ArrayList<DriverRideRequest> driverRideRequests){
+            if(this.driverRideRequests == null){
+                this.driverRideRequests = new ArrayList<DriverRideRequest>();
+            }
+            this.driverRideRequests.clear();
+            this.driverRideRequests.addAll(driverRideRequests);
+            this.notifyDataSetChanged();
+        }
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
@@ -3202,7 +3225,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			
 			
-			DriverRideRequest driverRideRequest = Data.driverRideRequests.get(position);
+			DriverRideRequest driverRideRequest = driverRideRequests.get(position);
 			
 			holder.id = position;
 			
@@ -3260,7 +3283,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
 						
-						DriverRideRequest driverRideRequest = Data.driverRideRequests.get(holder.id);
+						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
 						
 						Data.dEngagementId = driverRideRequest.engagementId;
 						Data.dCustomerId = driverRideRequest.customerId;
@@ -3284,7 +3307,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     try {
                         holder = (ViewHolderDriverRequest) v.getTag();
 
-                        DriverRideRequest driverRideRequest = Data.driverRideRequests.get(holder.id);
+                        DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
 
                         Data.dEngagementId = driverRideRequest.engagementId;
                         Data.dCustomerId = driverRideRequest.customerId;
@@ -3298,7 +3321,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     }
                 }
             });
-			
 			
 			return convertView;
 		}
@@ -4108,9 +4130,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		}
 		else {
-			driverScreenMode = DriverScreenMode.D_IN_RIDE;
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			rideTimeChronometer.start();
+            if(DriverScreenMode.D_ENTER_METER_FARE != driverScreenMode){
+                driverScreenMode = DriverScreenMode.D_IN_RIDE;
+                rideTimeChronometer.start();
+            }
+            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 
 	}
@@ -4122,7 +4146,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
         long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
         long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
         long rideTimeSeconds = timeDiffToAdd / 1000;
-        double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
+        double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
         Log.e("timeDiffToAdd", "="+rideTimeMinutes);
         if(rideTimeMinutes > 0){
             rideMinutes = rideTimeMinutes;
@@ -4587,7 +4611,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
 		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
 		long rideTimeSeconds = timeDiffToAdd / 1000;
-		double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
+		double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 		Log.e("timeDiffToAdd", "="+rideTimeMinutes);
 		if(rideTimeMinutes > 0){
 			rideMinutes = rideTimeMinutes;
@@ -4989,7 +5013,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 				
 				long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-				double rideTimeMinutes = Math.ceil(((double)rideTimeSeconds) / 60.0);
+				double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 				
 				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 				nameValuePairs.add(new BasicNameValuePair("access_token", Data.userData.accessToken));
@@ -5383,19 +5407,24 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@SuppressWarnings("unused")
 					@Override
 					public void onClick(View view) {
-                        if(DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-                            if (Data.assignedCustomerInfo != null
-                                && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-                                && 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
-                                driverScreenMode = DriverScreenMode.D_ENTER_METER_FARE;
-                                switchDriverScreen(driverScreenMode);
-                                dialog.dismiss();
-                            } else {
-                                boolean success = endRideGPSCorrection(businessType);
-                                if (success) {
+                        if(AppStatus.getInstance(activity).isOnline(activity)) {
+                            if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+                                if (Data.assignedCustomerInfo != null
+                                    && BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+                                    && 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
+                                    driverScreenMode = DriverScreenMode.D_ENTER_METER_FARE;
+                                    switchDriverScreen(driverScreenMode);
                                     dialog.dismiss();
+                                } else {
+                                    boolean success = endRideGPSCorrection(businessType);
+                                    if (success) {
+                                        dialog.dismiss();
+                                    }
                                 }
                             }
+                        }
+                        else{
+                            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
                         }
 					}
 				});
@@ -5488,10 +5517,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                 waitStart = 0;
 
                 long waitSeconds = waitChronometer.eclipsedTime / 1000;
-                double waitMinutes = Math.ceil(((double) waitSeconds) / 60.0);
+                double waitMinutes = Math.ceil(waitSeconds / 60);
 
                 long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-                double rideTimeMinutes = Math.ceil(((double) rideTimeSeconds) / 60.0);
+                double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 
                 if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
 
@@ -5555,7 +5584,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				    	else{
 				    		throw new Exception();
 				    	}
-				    } 
+				    }
 				    catch (Exception e) {
 				    	e.printStackTrace();
 				    	totalDistance = totalDistance + displacement;
@@ -5741,7 +5770,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						driverNewRideRequestText.setText("You have "+Data.driverRideRequests.size()+" request");
 					}
 					
-					driverRequestListAdapter.notifyDataSetChanged();
+					driverRequestListAdapter.setResults(Data.driverRideRequests);
 					
 					map.animateCamera(CameraUpdateFactory.newLatLng(last), 1000, null);
 					
