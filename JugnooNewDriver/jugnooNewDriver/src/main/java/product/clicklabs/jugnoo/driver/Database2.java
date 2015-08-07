@@ -6,7 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.location.LocationManager;
 
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.RequestParams;
 
@@ -62,6 +65,8 @@ public class Database2 {																	// class for handling database related 
 	private static final String TABLE_DRIVER_CURRENT_LOCATION = "table_driver_current_location";
 	private static final String DRIVER_CURRENT_LATITUDE = "driver_current_latitude";
 	private static final String DRIVER_CURRENT_LONGITUDE = "driver_current_longitude";
+	private static final String DRIVER_CURRENT_LOCATION_ACCURACY = "driver_current_location_accuracy";
+	private static final String DRIVER_CURRENT_LOCATION_TIME = "driver_current_location_time";
 	
 	
 	private static final String TABLE_DRIVER_LAST_LOCATION_TIME = "table_driver_last_location_time";
@@ -177,7 +182,9 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
 				+ DRIVER_CURRENT_LATITUDE + " TEXT, " 
-				+ DRIVER_CURRENT_LONGITUDE + " TEXT" 
+				+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
+				+ DRIVER_CURRENT_LOCATION_ACCURACY + " TEXT, "
+				+ DRIVER_CURRENT_LOCATION_TIME + " TEXT"
 				+ ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LAST_LOCATION_TIME + " ("
@@ -487,43 +494,79 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
+
 	
-	
-	
-	
-	
-	
-	
-	public LatLng getDriverCurrentLocation() {
-		LatLng latLng = new LatLng(0, 0);
+	public Location getDriverCurrentLocation() {
+		Location location = new Location(LocationManager.GPS_PROVIDER);
 		try {
-			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE };
+			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
 			
 			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
 			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
+			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
+			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
 			
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
-				latLng = new LatLng(Double.parseDouble(cursor.getString(in0)), Double.parseDouble(cursor.getString(in1)));
+				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
+				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
+				location.setAccuracy((float) Double.parseDouble(cursor.getString(in2)));
+				location.setTime((long) Double.parseDouble(cursor.getString(in3)));
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			alterTableDriverCurrentLocation();
+
+			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
+			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
+
+			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
+			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
+			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
+			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
+
+			if(cursor.getCount() > 0){
+				cursor.moveToFirst();
+				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
+				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
+				location.setAccuracy((float) Double.parseDouble(cursor.getString(in2)));
+				location.setTime((long) Double.parseDouble(cursor.getString(in3)));
+
+			}
 		}
-		return latLng;
+		return location;
 	}
 	
 	
-	public void updateDriverCurrentLocation(LatLng latLng){
+	public void updateDriverCurrentLocation(Location location){
 		try{
 			deleteDriverCurrentLocation();
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+latLng.latitude);
-			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+latLng.longitude);
+			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, ""+location.getTime());
 			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 		} catch(Exception e){
 			e.printStackTrace();
+			alterTableDriverCurrentLocation();
+			deleteDriverCurrentLocation();
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 		}
+	}
+
+	public void alterTableDriverCurrentLocation(){
+		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'," +
+				"ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0' ");
 	}
 	
 	

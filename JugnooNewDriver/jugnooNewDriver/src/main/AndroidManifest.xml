@@ -206,6 +206,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE" />
+            </intent-filter>
+        </receiver>
+
 
 
         <activity

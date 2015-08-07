@@ -318,7 +318,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
     public static final double FUSED_DISTANCE_MAX_ADDITION = 10000;
 
-    public static final float HIGH_ACCURACY_ACCURACY_CHECK = 1000;  //in meters
+    public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
 
 
     public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
@@ -5207,6 +5207,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
             if (location.getAccuracy() <= HIGH_ACCURACY_ACCURACY_CHECK) {
                 HomeActivity.myLocation = location;
                 zoomToCurrentLocationAtFirstLocationFix(location);
+            }
+            else {
+                reconnectLocationFetchers();
             }
         }
 //		}

@@ -10,6 +10,7 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import android.content.Context;
+import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
@@ -35,18 +36,19 @@ public class DriverLocationDispatcher {
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
-					LatLng latLng = Database2.getInstance(context).getDriverCurrentLocation();
-					if((Math.abs(latLng.latitude) > LOCATION_TOLERANCE) && (Math.abs(latLng.longitude) > LOCATION_TOLERANCE)){
+					Location location = Database2.getInstance(context).getDriverCurrentLocation();
+					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 						nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-						nameValuePairs.add(new BasicNameValuePair("latitude", "" + latLng.latitude));
-						nameValuePairs.add(new BasicNameValuePair("longitude", "" + latLng.longitude));
+						nameValuePairs.add(new BasicNameValuePair("latitude", "" + location.getLatitude()));
+						nameValuePairs.add(new BasicNameValuePair("longitude", "" + location.getLongitude()));
 						nameValuePairs.add(new BasicNameValuePair("device_token", deviceToken));
+						nameValuePairs.add(new BasicNameValuePair("location_accuracy",""+ location.getAccuracy()));
 			
 						HttpRequester simpleJSONParser = new HttpRequester();
 						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
 									
-//						Log.e("result in DLD", "=" + result);
+						Log.e("equal_Low_acc2 result in DLD", "=" + result);
 						Log.writeLogToFile(filePrefix, "Server result "+DateOperations.getCurrentTime()+" = "+result);
 						
 						try{

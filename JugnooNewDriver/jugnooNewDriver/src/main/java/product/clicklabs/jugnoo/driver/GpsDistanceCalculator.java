@@ -41,6 +41,7 @@ public class GpsDistanceCalculator {
 	public double totalHaversineDistance;
 	public Location lastGPSLocation, lastFusedLocation;
 	public static long lastLocationTime;
+//	public int batteryCount=0;
 	
 	private FusedLocationFetcherBackgroundHigh gpsForegroundLocationFetcher;
 	private FusedLocationFetcherBackgroundBalanced fusedLocationFetcherBackgroundBalanced;
@@ -215,15 +216,6 @@ public class GpsDistanceCalculator {
 					long lastUpdateTime = System.currentTimeMillis();
 					try {
 						if(location.getAccuracy() < MAX_ACCURACY){
-//							if(location.getAccuracy() <= BEST_ACCURACY && LOCATION_UPDATE_INTERVAL == 1000){
-//								LOCATION_UPDATE_INTERVAL = 5000;
-//								connectGPSListener(context);
-//							}
-//							else if(location.getAccuracy() > BEST_ACCURACY && LOCATION_UPDATE_INTERVAL == 5000){
-//								LOCATION_UPDATE_INTERVAL = 1000;
-//								connectGPSListener(context);
-//							}
-
 							if((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)){
 								drawLocationChanged(location);
 							}
@@ -233,6 +225,13 @@ public class GpsDistanceCalculator {
 
 						Log.v("diff", String.valueOf(System.currentTimeMillis() - lastUpdateTime));
 
+//						if(batteryCount>=4) {
+//							batteryCount=0;
+//							Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
+//						}
+//						batteryCount++;
+
+
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -241,14 +240,6 @@ public class GpsDistanceCalculator {
 				@Override
 				public void refreshLocationFetchers(final Context context) {
 					reconnectGPSHandler();
-
-//					Handler mainHandler = new Handler(context.getMainLooper());
-//					mainHandler.post(new Runnable() {
-//						@Override
-//						public void run() {
-//							//try{Toast.makeText(context, "Old location detected", Toast.LENGTH_LONG).show();}catch(Exception e){}
-//						}
-//					});
 				}
 			};
 		}
