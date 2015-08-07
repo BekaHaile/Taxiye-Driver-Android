@@ -4,5 +4,387 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- menu layout -->
+    <LinearLayout
+        android:id="@+id/menuLayout"
+        android:layout_width="495px"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        android:background="@color/bg_grey">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="495px"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:splitMotionEvents="false">
+
+                <RelativeLayout
+                    android:id="@+id/profileRl"
+                    android:layout_width="220px"
+                    android:layout_height="220px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30px"
+                    android:splitMotionEvents="false"
+                    android:tag="mwar">
+
+                    <ImageView
+                        android:id="@+id/profileBack"
+                        android:layout_width="220px"
+                        android:layout_height="220px"
+                        android:background="@drawable/ring"
+                        android:tag="mwar"/>
+
+                    <ImageView
+                        android:id="@+id/profileImg"
+                        android:layout_width="200px"
+                        android:layout_height="200px"
+                        android:layout_centerInParent="true"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/profileRl"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10px"
+                    android:gravity="center"
+                    android:text="Dr"
+                    android:textColor="@color/white"
+                    android:textSize="34px"/>
+
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutDEI"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:orientation="horizontal"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        >
+
+                        <ImageView
+                            android:layout_width="53px"
+                            android:layout_height="53px"
+                            android:src="@drawable/ic_dei"
+                            android:tag="mwar"
+                            />
+
+                        <TextView
+                            android:id="@+id/textViewDEI"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10px"
+                            android:gravity="center"
+                            android:text="4.5"
+                            android:textColor="@color/white"
+                            android:textSize="38px"/>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutAutosOn"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:layout_marginTop="20px"
+                    android:background="@drawable/transparent"
+                    android:splitMotionEvents="false"
+                    >
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+
+                    <TextView
+                        android:id="@+id/textViewAutosOn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Jugnoo ON"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewAutosOnToggle"
+                        android:layout_width="90px"
+                        android:layout_height="72px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20px"
+                        android:src="@drawable/on"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutMealsOn"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/transparent"
+                    android:splitMotionEvents="false">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+
+                    <TextView
+                        android:id="@+id/textViewMealsOn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Meals ON"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewMealsOnToggle"
+                        android:layout_width="90px"
+                        android:layout_height="72px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20px"
+                        android:src="@drawable/on"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutFatafatOn"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/transparent"
+                    android:splitMotionEvents="false">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+
+                    <TextView
+                        android:id="@+id/textViewFatafatOn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Fatafat ON"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewFatafatOnToggle"
+                        android:layout_width="90px"
+                        android:layout_height="72px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20px"
+                        android:src="@drawable/on"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/inviteFriendRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/inviteFriendText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Invite &amp; Get FREE Rides"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bookingsRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/bookingsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="@string/rides"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fareDetailsRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/fareDetailsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Fare Details"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutSuperDrivers"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/textViewSuperDrivers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Super Drivers"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+
+                    <ImageView
+                        android:layout_width="50px"
+                        android:layout_height="50px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="40px"
+                        android:layout_toRightOf="@+id/textViewSuperDrivers"
+                        android:src="@drawable/ic_super_star"
+                        android:tag="mwar"
+
+                        />
+
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/helpRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/helpText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Help"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/languagePrefrencesRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/languagePrefrencesText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="@string/language_preferences"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/logoutRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/logoutText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="@string/logout"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </FrameLayout>
