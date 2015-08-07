@@ -110,7 +110,7 @@ public class GpsDistanceCalculator {
 	
 	public void pause(){
 		if(1 == getTrackingFromSP(context)){
-			saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+			saveData(context, lastGPSLocation, lastLocationTime);
 			disconnectGPSListener();
 		}
 	}
@@ -118,7 +118,7 @@ public class GpsDistanceCalculator {
 	
 	
 	public void saveState(){
-		saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+		saveData(context, lastGPSLocation, lastLocationTime);
 	}
 	
 	public void stop(){
@@ -267,7 +267,7 @@ public class GpsDistanceCalculator {
 					lastGPSLocation = location;
 					lastLocationTime = System.currentTimeMillis();
 						
-					saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+					saveData(context, lastGPSLocation, lastLocationTime);
 				}
 				else{
 					reconnectGPSHandler();
@@ -338,7 +338,7 @@ public class GpsDistanceCalculator {
 						+lastLatLng.longitude+","
 						+DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime));
 			}
-			saveData(context, lastGPSLocation, totalDistance, lastLocationTime);
+			saveData(context, lastGPSLocation, lastLocationTime);
 		}
 		return validDistance;
 	}
@@ -495,10 +495,18 @@ public class GpsDistanceCalculator {
 	
 	
 	
-	public void saveData(Context context, Location location, double totalDistance, long lastLocationTime){
+	public void saveData(Context context, Location location, long lastLocationTime){
 		if(location != null){
 			saveLatLngToSP(context, location.getLatitude(), location.getLongitude());
-			saveTotalDistanceToSP(context, totalDistance);
+
+            double savedTotalDist = getTotalDistanceFromSP(context);
+            if(totalDistance < savedTotalDist){
+                totalDistance = savedTotalDist;
+            }
+            else{
+                saveTotalDistanceToSP(context, totalDistance);
+            }
+
 			saveLastLocationTimeToSP(context, lastLocationTime);
 		}
 	}

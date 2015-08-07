@@ -12,8 +12,8 @@ import java.io.FileWriter;
  */
 public class Log {
 	
-	private static final boolean PRINT = false; 											// true for printing and false for not
-	private static final boolean WRITE_TO_FILE = false; 									// true for writing log to file and false for not 
+	public static boolean PRINT = false; 											// true for printing and false for not
+	private static final boolean WRITE_TO_FILE = false; 									// true for writing log to file and false for not
 	private static final boolean WRITE_TO_FILE_IN = false; 									// true for writing log to file and false for not 
 	
 	public Log(){}

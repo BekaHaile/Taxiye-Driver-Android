@@ -1,16 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.MissedRideInfo;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
@@ -30,6 +19,18 @@ import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.datastructure.MissedRideInfo;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import rmn.androidscreenlibrary.ASSL;
 
 public class DriverMissedRidesFragment extends Fragment {
 
@@ -148,7 +149,7 @@ public class DriverMissedRidesFragment extends Fragment {
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				holder = new ViewHolderDriverMissedRides();
 				convertView = mInflater.inflate(R.layout.list_item_missed_rides, null);
