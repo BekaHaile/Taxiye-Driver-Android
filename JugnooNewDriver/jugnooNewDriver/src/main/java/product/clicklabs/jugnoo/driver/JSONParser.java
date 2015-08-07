@@ -308,7 +308,7 @@ public class JSONParser {
 		} catch(Exception e){}
 
 
-        String deiValue = userData.optString("driver_engagement_index", "-1");
+        String deiValue = userData.optString("driver_dei", "-1");
 
         String accessToken = userData.getString("access_token");
 
