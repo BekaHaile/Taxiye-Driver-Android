@@ -112,12 +112,10 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MapStateListener;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
-import product.clicklabs.jugnoo.driver.utils.TouchableMapFragment;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
@@ -168,7 +166,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
     //Map layout
     RelativeLayout mapLayout;
     GoogleMap map;
-    TouchableMapFragment mapFragment;
 
 
     // Driver main layout 
@@ -449,7 +446,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
         //Map Layout
         mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
         map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-        mapFragment = ((TouchableMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
 
 
         // Driver main layout 
@@ -1077,29 +1073,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     }
                 }
             });
-
-
-            new MapStateListener(map, mapFragment, this) {
-                @Override
-                public void onMapTouched() {
-                    // Map touched
-                }
-
-                @Override
-                public void onMapReleased() {
-                    // Map released
-                }
-
-                @Override
-                public void onMapUnsettled() {
-                    // Map unsettled
-                }
-
-                @Override
-                public void onMapSettled() {
-                    // Map settled
-                }
-            };
 
 
             driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
