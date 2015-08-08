@@ -63,25 +63,6 @@ public class LocationReceiverDriver extends BroadcastReceiver {
                     }
                 }
 
-
-
-
-//                if(location.getAccuracy() < FREE_MAX_ACCURACY) {
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            Database2.getInstance(context).updateDriverCurrentLocation(location);
-//			    	    Log.e("DriverLocationUpdateService location in pi reciever ", "=="+location);
-//                            Log.writeLogToFile("LocationReciever", "Receiver " + DateOperations.getCurrentTime() + " = " + location + " hasNet = " + AppStatus.getInstance(context).isOnline(context));
-//                            new DriverLocationDispatcher().sendLocationToServer(context, "LocationReciever");
-//                        }
-//                    }).start();
-//                }
-//                else{
-//                    context.stopService(new Intent(context, DriverLocationUpdateService.class));
-//                    context.startService(new Intent(context, DriverLocationUpdateService.class));
-//
-//                }
             }
         }
     }
@@ -104,7 +85,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+10000, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime()+20000, pendingIntent);
 
     }
 

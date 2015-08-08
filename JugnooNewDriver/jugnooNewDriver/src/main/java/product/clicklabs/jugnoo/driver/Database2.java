@@ -549,10 +549,13 @@ public class Database2 {																	// class for handling database related 
 			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
 			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
-			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, ""+location.getTime());
-			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+			long rowId = database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			Log.e("insert successful", "= rowId =" + rowId);
+
 		} catch(Exception e){
 			e.printStackTrace();
+			Log.e("e", "=" + e);
 			alterTableDriverCurrentLocation();
 			deleteDriverCurrentLocation();
 			ContentValues contentValues = new ContentValues();
@@ -567,6 +570,7 @@ public class Database2 {																	// class for handling database related 
 	public void alterTableDriverCurrentLocation(){
 		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'," +
 				"ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0' ");
+		Log.e("drop query", "done");
 	}
 	
 	
