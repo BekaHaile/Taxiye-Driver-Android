@@ -26,7 +26,8 @@ public interface AppInterruptHandler {
 	
 	public void onCashAddedToWalletByCustomer(int userId, double balance);
 	
-	public void updateMeteringUI(double distance, long elapsedTime, Location lastGPSLocation, Location lastFusedLocation);
+	public void updateMeteringUI(double distance, long elapsedTime, Location lastGPSLocation,
+								 Location lastFusedLocation, double totalHaversineDistance);
 	
 	public void drawOldPath();
 	

@@ -519,5 +519,18 @@ public class FlurryEventLogger {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+    public static void gpsStatus(Context context, String event){
+        try{
+			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
+			FlurryAgent.logEvent(event);
+			FlurryAgent.onEndSession(context);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
 }
+

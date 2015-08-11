@@ -16,7 +16,7 @@ public class DriverLocationUpdateService extends Service {
 	
 	LocationFetcherDriver locationFetcherDriver;
 
-	long serverUpdateTimePeriod = 60000;
+	long serverUpdateTimePeriod = 90000;
 	
 	
 	public DriverLocationUpdateService() {
@@ -46,7 +46,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 2 * 60000;
+	    			serverUpdateTimePeriod = 90000;
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{

@@ -127,7 +127,7 @@ public class Log {
 			}
 			return gpxfile;
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return null;
 	}
@@ -147,7 +147,7 @@ public class Log {
 						writer.close();
 					}
 				} catch (Exception e1) {
-					e1.printStackTrace();
+//					e1.printStackTrace();
 				}
 			}
 		}).start();
