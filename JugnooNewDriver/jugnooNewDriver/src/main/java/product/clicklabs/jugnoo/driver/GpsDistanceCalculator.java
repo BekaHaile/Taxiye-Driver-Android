@@ -327,7 +327,7 @@ public class GpsDistanceCalculator {
 					speedMPS = displacement / secondsDiff;
 				}
 
-				if(speedMPS < MAX_SPEED_THRESHOLD){
+				if(speedMPS <= MAX_SPEED_THRESHOLD){
 						if((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)){
 							addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 							if(lastGPSLocation == null){

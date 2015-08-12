@@ -6109,8 +6109,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //				((UserMode.DRIVER == userMode) && (DriverScreenMode.D_IN_RIDE != driverScreenMode) && (DriverScreenMode.D_START_RIDE != driverScreenMode))){
 		if((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)){
 			if(location.getAccuracy() <= HIGH_ACCURACY_ACCURACY_CHECK){
-				HomeActivity.myLocation = location;
-				zoomToCurrentLocationAtFirstLocationFix(location);
+
+				if(HomeActivity.myLocation == null) {
+					HomeActivity.myLocation = location;
+					zoomToCurrentLocationAtFirstLocationFix(location);
+				}
+				else{
+					if(MapUtils.speed(HomeActivity.myLocation, location) <= GpsDistanceCalculator.MAX_SPEED_THRESHOLD){
+						HomeActivity.myLocation = location;
+						zoomToCurrentLocationAtFirstLocationFix(location);
+					}
+				}
 			}
 			else {
 				reconnectLocationFetchers();
