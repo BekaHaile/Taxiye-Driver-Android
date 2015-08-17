@@ -35,7 +35,7 @@ public class GpsDistanceCalculator {
 	private static long LOCATION_UPDATE_INTERVAL = 2000; // in milliseconds
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 19; //in meters per second
-	public static final double MAX_ACCURACY = 500;
+	public static final double MAX_ACCURACY = 200;
 
 	public double totalDistance;
 	public double totalHaversineDistance;
