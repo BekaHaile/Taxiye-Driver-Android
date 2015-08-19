@@ -6838,6 +6838,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+	@Override
+	public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				if(engagementId.equalsIgnoreCase(Data.dEngagementId)){
+					if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())) {
+						((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = dropLatLng;
+						startCustomerPathUpdateTimer();
+					}
+				}
+			}
+		});
+	}
+
 	@Override
 	public void updateMeteringUI(final double distance, final long elapsedTime, final Location lastGPSLocation, final Location lastFusedLocation, final double totalHaversineDistance) {
 		if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){

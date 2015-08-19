@@ -45,7 +45,6 @@ public class AutoCustomerInfo extends CustomerInfo{
 			String image, CouponInfo couponInfo, PromoInfo promoInfo){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
 		this.businessType = BusinessType.AUTOS;
-		this.businessType = BusinessType.AUTOS;
 		this.image = image;
 		this.rating = "4";
 		this.schedulePickupTime = "";

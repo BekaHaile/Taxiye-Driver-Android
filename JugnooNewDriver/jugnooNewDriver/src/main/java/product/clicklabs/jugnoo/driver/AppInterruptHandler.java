@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public interface AppInterruptHandler {
 	public void onCustomerCashDone();
 	
 	public void onCashAddedToWalletByCustomer(int userId, double balance);
+
+	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
 	
 	public void updateMeteringUI(double distance, long elapsedTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);

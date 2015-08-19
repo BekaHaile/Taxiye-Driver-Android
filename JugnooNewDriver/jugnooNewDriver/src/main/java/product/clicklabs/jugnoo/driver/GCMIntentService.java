@@ -447,6 +447,13 @@ public class GCMIntentService extends IntentService {
 										if (HomeActivity.appInterruptHandler != null) {
 											HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
 										}
+									} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
+										double dropLatitude = jObj.getDouble("op_drop_latitude");
+										double dropLongitude = jObj.getDouble("op_drop_longitude");
+										String engagementId = jObj.getString("engagement_id");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
+										}
 									}
 
 								} catch (Exception e) {
@@ -468,6 +475,7 @@ public class GCMIntentService extends IntentService {
 		}
 
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
+
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
