@@ -21,7 +21,7 @@ public enum PushFlags {
 	STATION_CHANGED(50),
 	CHANGE_PORT(60),
 	UPDATE_CUSTOMER_BALANCE(71),
-	UPDATE_DROP_LOCATION(72)
+	UPDATE_DROP_LOCATION(73)
 	;
 
 	private int ordinal;
