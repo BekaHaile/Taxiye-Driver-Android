@@ -512,8 +512,8 @@ public class Database2 {																	// class for handling database related 
 				cursor.moveToFirst();
 				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
 				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
-				location.setAccuracy((float) Double.parseDouble(cursor.getString(in2)));
-				location.setTime((long) Double.parseDouble(cursor.getString(in3)));
+				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
+				location.setTime(Long.parseLong(cursor.getString(in3)));
 
 			}
 		} catch (Exception e) {
@@ -533,8 +533,8 @@ public class Database2 {																	// class for handling database related 
 				cursor.moveToFirst();
 				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
 				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
-				location.setAccuracy((float) Double.parseDouble(cursor.getString(in2)));
-				location.setTime((long) Double.parseDouble(cursor.getString(in3)));
+				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
+				location.setTime(Long.parseLong(cursor.getString(in3)));
 
 			}
 		}

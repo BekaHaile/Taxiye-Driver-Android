@@ -32,8 +32,8 @@ public class BlankActivityForDialog extends Activity{
             }
         });
 
-        if(getIntent().hasExtra("message")){
-            message = getIntent().getStringExtra("message");
+        if(getIntent().hasExtra("message1")){
+            message = getIntent().getStringExtra("message1");
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -44,6 +44,15 @@ public class BlankActivityForDialog extends Activity{
                                     finish();
                                 }
                             });
+                }
+            }, 200);
+        }
+        else if(getIntent().hasExtra("message2")){
+            message = getIntent().getStringExtra("message2");
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    DialogPopup.dialogBanner(BlankActivityForDialog.this, message);
                 }
             }, 200);
         }

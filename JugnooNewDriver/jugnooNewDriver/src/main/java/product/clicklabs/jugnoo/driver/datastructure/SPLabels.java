@@ -19,4 +19,9 @@ public class SPLabels {
             TRACKING = "tracking",
             ENGAGEMENT_ID = "engagement_id",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
+
+    public static final String
+            BAD_ACCURACY_COUNT = "badAccuracyCount",
+            ACCURACY_SAVED_TIME = "accuracySavedTiem",
+            TIME_WINDOW_FLAG = "timeWindowFlag";
 }
