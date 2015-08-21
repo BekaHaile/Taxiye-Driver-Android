@@ -65,15 +65,15 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 					long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
 					if(timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))){
 						if(5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
-							String restartMessageHindi = "अपने फोन को बंद करें और इसे फिर से चालू करें";
-
-							SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 1, true, false);
-							Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
-							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-							dialogIntent.putExtra("message2", restartMessageHindi);
-							context.startActivity(dialogIntent);
-							generateNotification(context, restartMessageHindi);
+//							String restartMessageHindi = "अपने फोन को बंद करें और इसे फिर से चालू करें";
+//
+//							SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 1, true, false);
+//							Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
+//							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//							dialogIntent.putExtra("message2", restartMessageHindi);
+//							context.startActivity(dialogIntent);
+//							generateNotification(context, restartMessageHindi);
 
 							location.setAccuracy(3000.001f);
 
