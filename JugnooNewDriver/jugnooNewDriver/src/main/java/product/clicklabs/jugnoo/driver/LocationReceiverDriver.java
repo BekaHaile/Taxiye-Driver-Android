@@ -29,8 +29,10 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationReceiverDriver extends BroadcastReceiver {
     public static final double FREE_MAX_ACCURACY = 200;
+	public static final double MAX_TIME_WINDOW = 3600000;
 
-    @Override
+
+	@Override
     public void onReceive(final Context context, Intent intent) {
         if(!Utils.mockLocationEnabled(context)) {
             final Location location = (Location) intent.getExtras().get(LocationClient.KEY_LOCATION_CHANGED);
@@ -55,21 +57,23 @@ public class LocationReceiverDriver extends BroadcastReceiver {
                 }
                 else{
 
-					if(location.getAccuracy() > 200) {
+					if(location.getAccuracy() > FREE_MAX_ACCURACY) {
                         Log.i("equal_Low_acc", "");
 						Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
                     }
 
 					long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
-					if(timeLapse <= 3600000 && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))){
+					if(timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))){
 						if(5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
+							String restartMessageHindi = "अपने फोन को बंद करें और इसे फिर से चालू करें";
+
 							SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 1, true, false);
 							Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
 							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-							dialogIntent.putExtra("message2", "अपने फोन को बंद करें और इसे फिर से चालू करें");
-							generateNotification(context, "अपने फोन को बंद करें और इसे फिर से चालू करें");
+							dialogIntent.putExtra("message2", restartMessageHindi);
 							context.startActivity(dialogIntent);
+							generateNotification(context, restartMessageHindi);
 
 							location.setAccuracy(3000.001f);
 
@@ -77,7 +81,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 							Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
 						}
 					}
-					else if(timeLapse > 3600000) {
+					else if(timeLapse > MAX_TIME_WINDOW) {
 						Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
 						Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
 						Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
