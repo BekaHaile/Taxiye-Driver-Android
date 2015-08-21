@@ -12,7 +12,7 @@ import java.io.FileWriter;
  */
 public class Log {
 	
-	public static boolean PRINT = false; 											// true for printing and false for not
+	public static boolean PRINT = true; 											// true for printing and false for not
 	private static final boolean WRITE_TO_FILE = false; 									// true for writing log to file and false for not
 	private static final boolean WRITE_TO_FILE_IN = false; 									// true for writing log to file and false for not 
 	
@@ -127,7 +127,7 @@ public class Log {
 			}
 			return gpxfile;
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return null;
 	}
@@ -147,7 +147,7 @@ public class Log {
 						writer.close();
 					}
 				} catch (Exception e1) {
-					e1.printStackTrace();
+//					e1.printStackTrace();
 				}
 			}
 		}).start();

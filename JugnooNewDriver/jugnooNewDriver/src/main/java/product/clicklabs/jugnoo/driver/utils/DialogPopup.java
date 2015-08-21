@@ -10,11 +10,13 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -507,6 +509,40 @@ public class DialogPopup {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
+	public static void dialogBanner(Activity activity, String message) {
+		try {
+			dismissAlertPopup();
+
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_banner);
+
+			LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, linearLayout, 1134, 720, false);
+
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+			TextView textViewBanner = (TextView) dialog.findViewById(R.id.textViewBanner); textViewBanner.setTypeface(Data.latoRegular(activity));
+			textViewBanner.setText(message);
+
+			linearLayout.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+
+			dialog.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

@@ -35,6 +35,7 @@ public class FusedLocationFetcherBackgroundHigh implements GooglePlayServicesCli
 	public FusedLocationFetcherBackgroundHigh(Context context, long requestInterval){
 		this.context = context;
 		this.requestInterval = requestInterval;
+
 	}
 	
 	

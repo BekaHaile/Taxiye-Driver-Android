@@ -24,15 +24,21 @@ public class SoundMediaPlayer {
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 			    @Override
 			    public void onCompletion(MediaPlayer mp) {
-			    	SoundMediaPlayer.runCount++;
-			    	if(SoundMediaPlayer.runCount >= SoundMediaPlayer.loopCount){
-                        SoundMediaPlayer.cancelRingPlaying = false;
-			    		stopSound();
-			    	}
-			    	else{
-			    		mediaPlayer.start();
-			    	}
-			    }
+					try {
+						SoundMediaPlayer.runCount++;
+						if(SoundMediaPlayer.runCount >= SoundMediaPlayer.loopCount){
+                            SoundMediaPlayer.cancelRingPlaying = false;
+                            stopSound();
+                        }
+                        else{
+                            mediaPlayer.start();
+                        }
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally{
+						mediaPlayer = null;
+					}
+				}
 			});
 			mediaPlayer.start();
             if(cancelRingPlaying){

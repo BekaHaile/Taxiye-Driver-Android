@@ -6,13 +6,17 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
+import android.location.LocationManager;
 
+import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -61,6 +65,8 @@ public class Database2 {																	// class for handling database related 
 	private static final String TABLE_DRIVER_CURRENT_LOCATION = "table_driver_current_location";
 	private static final String DRIVER_CURRENT_LATITUDE = "driver_current_latitude";
 	private static final String DRIVER_CURRENT_LONGITUDE = "driver_current_longitude";
+	private static final String DRIVER_CURRENT_LOCATION_ACCURACY = "driver_current_location_accuracy";
+	private static final String DRIVER_CURRENT_LOCATION_TIME = "driver_current_location_time";
 	
 	
 	private static final String TABLE_DRIVER_LAST_LOCATION_TIME = "table_driver_last_location_time";
@@ -126,6 +132,11 @@ public class Database2 {																	// class for handling database related 
 
 
 
+	private static final String TABLE_GPS_STATE = "table_gps_state";
+	private static final String GPS_STATE = "gps_state";
+
+
+
     /**
 	 * Creates and opens database for the application use 
 	 * @author shankar
@@ -171,7 +182,9 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
 				+ DRIVER_CURRENT_LATITUDE + " TEXT, " 
-				+ DRIVER_CURRENT_LONGITUDE + " TEXT" 
+				+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
+				+ DRIVER_CURRENT_LOCATION_ACCURACY + " TEXT, "
+				+ DRIVER_CURRENT_LOCATION_TIME + " TEXT"
 				+ ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LAST_LOCATION_TIME + " ("
@@ -229,7 +242,9 @@ public class Database2 {																	// class for handling database related 
             + ACKNOWLEDGED + " INTEGER"
             + ");");
 
-		
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
+				+ GPS_STATE + " INTEGER" + ");");
+
 	}
 	
 	public static Database2 getInstance(Context context) {
@@ -479,43 +494,83 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
+
 	
-	
-	
-	
-	
-	
-	
-	public LatLng getDriverCurrentLocation() {
-		LatLng latLng = new LatLng(0, 0);
+	public Location getDriverCurrentLocation() {
+		Location location = new Location(LocationManager.GPS_PROVIDER);
 		try {
-			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE };
+			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
 			
 			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
 			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
+			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
+			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
 			
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
-				latLng = new LatLng(Double.parseDouble(cursor.getString(in0)), Double.parseDouble(cursor.getString(in1)));
+				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
+				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
+				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
+				location.setTime(Long.parseLong(cursor.getString(in3)));
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			alterTableDriverCurrentLocation();
+
+			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
+			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
+
+			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
+			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
+			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
+			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
+
+			if(cursor.getCount() > 0){
+				cursor.moveToFirst();
+				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
+				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
+				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
+				location.setTime(Long.parseLong(cursor.getString(in3)));
+
+			}
 		}
-		return latLng;
+		return location;
 	}
 	
 	
-	public void updateDriverCurrentLocation(LatLng latLng){
+	public void updateDriverCurrentLocation(Location location){
 		try{
 			deleteDriverCurrentLocation();
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+latLng.latitude);
-			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+latLng.longitude);
-			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+			long rowId = database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			Log.e("insert successful", "= rowId =" + rowId);
+
 		} catch(Exception e){
 			e.printStackTrace();
+			Log.e("e", "=" + e);
+			alterTableDriverCurrentLocation();
+			deleteDriverCurrentLocation();
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 		}
+	}
+
+	public void alterTableDriverCurrentLocation(){
+		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'");
+		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0'");
+		Log.e("drop query", "done");
 	}
 	
 	
@@ -1023,7 +1078,7 @@ public class Database2 {																	// class for handling database related 
 	
 	public String getRideData() {
 		String rideDataStr = "";
-		String template = "i,lat,lng,t";
+		String template = "i,lat,long,t";
 		String newLine = "\n";
 		boolean hasValues = false;
 		try {
@@ -1348,5 +1403,54 @@ public class Database2 {																	// class for handling database related 
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public int getGpsState() {
+		try {
+			String[] columns = new String[] { Database2.GPS_STATE };
+			Cursor cursor = database.query(Database2.TABLE_GPS_STATE, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                int choice = cursor.getInt(cursor.getColumnIndex(Database2.GPS_STATE));
+                return choice;
+            } else {
+                return GpsState.ZERO_TWO.getOrdinal();
+            }
+		} catch (Exception e) {
+			return GpsState.ZERO_TWO.getOrdinal();
+		}
+	}
+
+
+	public int updateGpsState(int choice){
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.GPS_STATE, choice);
+			int rowsAffected = database.update(Database2.TABLE_GPS_STATE, contentValues, null, null);
+			if(rowsAffected == 0){
+				database.insert(Database2.TABLE_GPS_STATE, null, contentValues);
+				return 1;
+			}
+			else{
+				return rowsAffected;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			return 0;
+		}
+	}
 	
 }

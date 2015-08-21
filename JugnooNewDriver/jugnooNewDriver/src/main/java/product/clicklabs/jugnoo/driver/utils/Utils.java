@@ -3,7 +3,9 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,14 +162,15 @@ public class Utils {
 	
 	
 	public static boolean mockLocationEnabled(Context context){
+//		return false;
 		if(Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
 			if (Settings.Secure.getString(context.getContentResolver(),
-		       Settings.Secure.ALLOW_MOCK_LOCATION).equals("0")) 
-		       return false; 
+		       Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
+		       return false;
 		       else return true;
 		}
 		else{
-			return false; 
+			return false;
 		}
 	}
 	
@@ -271,5 +274,20 @@ public class Utils {
         }
         return dir.delete();
     }
+
+
+	public static float getBatteryPercentage(Context context){
+		try {
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = context.registerReceiver(null, ifilter);
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			float batteryPct = (level / (float) scale) * 100;
+			return batteryPct;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 
 }
