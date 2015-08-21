@@ -32,6 +32,28 @@ public class MapUtils {
 		}
 		return 0;
 	}
+
+	public static double distance(Location start, Location end) {
+		try {
+			double distance = start.distanceTo(end);
+			return distance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public static double speed(Location start, Location end){
+		double speedMPS = 0;
+		if(start != null && end != null) {
+			long secondsDiff = Math.abs((end.getTime() - start.getTime()) / 1000);
+			double displacement = MapUtils.distance(start, end);
+			if (secondsDiff > 0) {
+				speedMPS = displacement / secondsDiff;
+			}
+		}
+		return speedMPS;
+	}
 	
 	
 	//http://maps.googleapis.com/maps/api/directions/json?origin=30.7342187,76.78088307&destination=30.74571777,76.78635478&sensor=false&mode=driving&alternatives=false

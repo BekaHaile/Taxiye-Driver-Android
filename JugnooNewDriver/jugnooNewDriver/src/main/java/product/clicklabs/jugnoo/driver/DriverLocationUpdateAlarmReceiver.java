@@ -3,6 +3,8 @@ package product.clicklabs.jugnoo.driver;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -15,6 +17,7 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
+//		Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
 		String userMode = Database2.getInstance(context).getUserMode();
 		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
 	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
@@ -27,8 +30,7 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 						DriverLocationUpdateService.updateServerData(context);
 					}
 					long currentTime = System.currentTimeMillis();
-					
-//					Log.e("currentTime - lastTime", "="+((currentTime - lastTime)/1000));
+
 			    	Log.writeLogToFile("AlarmReceiver", "Receiver "+DateOperations.getCurrentTime()+" = "+(currentTime - lastTime) 
 			    			+ " hasNet = "+AppStatus.getInstance(context).isOnline(context));
 					

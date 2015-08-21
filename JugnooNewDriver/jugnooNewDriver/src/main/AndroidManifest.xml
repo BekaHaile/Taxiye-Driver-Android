@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="product.clicklabs.jugnoo.driver"
-    android:versionCode="192"
-    android:versionName="1.9.2" >
+    android:versionCode="199"
+    android:versionName="1.9.9" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -199,6 +199,12 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="product.clicklabs.jugnoo.driver.MeteringAlarmReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION" />
+            </intent-filter>
+        </receiver>
+
 
 
         <receiver android:name="product.clicklabs.jugnoo.driver.PathUploadReceiver" >
@@ -207,6 +213,19 @@
             </intent-filter>
         </receiver>
 
+        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE" />
+            </intent-filter>
+        </receiver>
+
+
+
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.BlankActivityForDialog"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 
 
         <meta-data
