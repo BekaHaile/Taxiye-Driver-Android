@@ -48,7 +48,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -4917,13 +4916,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								else if(ApiResponseFlags.LOGOUT_SUCCESSFUL.getOrdinal() == flag){
 									PicassoTools.clearCache(Picasso.with(activity));
 
-									try {
-										Session.getActiveSession().closeAndClearTokenInformation();
-									}
-									catch(Exception e) {
-										Log.v("Logout", "Error"+e);
-									}
-
 									GCMIntentService.clearNotifications(activity);
 
 									Data.clearDataOnLogout(activity);
@@ -5457,106 +5449,114 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public boolean endRideGPSCorrection(BusinessType businessType){
 		//TODO end ride location check
-		if (distanceUpdateFromService) {
-			Location locationToUse;
-			boolean fusedLocationUsed = false;
+		try {
+			if (distanceUpdateFromService) {
+				Location locationToUse;
+				boolean fusedLocationUsed = false;
 
-			long currentTime = System.currentTimeMillis();
-			long threeMinuteMillis = 3 * 60 * 1000;
+				long currentTime = System.currentTimeMillis();
+				long threeMinuteMillis = 3 * 60 * 1000;
 
-			Log.e("lastGPSLocation on end ride", "=======" + lastGPSLocation);
-			Log.e("lastFusedLocation on end ride", "=======" + lastFusedLocation);
+				Log.e("lastGPSLocation on end ride", "=======" + lastGPSLocation);
+				Log.e("lastFusedLocation on end ride", "=======" + lastFusedLocation);
 
-			Log.writePathLogToFile(Data.dEngagementId + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
-			Log.writePathLogToFile(Data.dEngagementId + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
+				Log.writePathLogToFile(Data.dEngagementId + "m", "lastGPSLocation on end ride = " + lastGPSLocation);
+				Log.writePathLogToFile(Data.dEngagementId + "m", "lastFusedLocation on end ride = " + lastFusedLocation);
 
-			LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
+				LatLng oldGPSLatLng = MeteringService.gpsInstance(HomeActivity.this).getSavedLatLngFromSP(HomeActivity.this);
 
-			long lastloctime = GpsDistanceCalculator.lastLocationTime;
+				long lastloctime = GpsDistanceCalculator.lastLocationTime;
 
-			Log.e("oldGPSLatLng on end ride", "=======" + oldGPSLatLng);
-			Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
+				Log.e("oldGPSLatLng on end ride", "=======" + oldGPSLatLng);
+				Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng on end ride = " + oldGPSLatLng);
 
-			if (lastGPSLocation != null && lastFusedLocation != null) {
-				long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
-				long fusedLocTimeDiff = currentTime - lastFusedLocation.getTime();
+				if (lastGPSLocation != null && lastFusedLocation != null) {
+					long gpsLocTimeDiff = currentTime - lastGPSLocation.getTime();
+					long fusedLocTimeDiff = currentTime - lastFusedLocation.getTime();
 
-				Log.e("gpsLocTimeDiff on end ride", "=======" + gpsLocTimeDiff);
-				Log.e("fusedLocTimeDiff on end ride", "=======" + fusedLocTimeDiff);
+					Log.e("gpsLocTimeDiff on end ride", "=======" + gpsLocTimeDiff);
+					Log.e("fusedLocTimeDiff on end ride", "=======" + fusedLocTimeDiff);
 
-				Log.writePathLogToFile(Data.dEngagementId + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
+					Log.writePathLogToFile(Data.dEngagementId + "m", "gpsLocTimeDiff=" + gpsLocTimeDiff + " and fusedLocTimeDiff=" + fusedLocTimeDiff);
 
-				if (gpsLocTimeDiff <= threeMinuteMillis) {                                // gps location is fine
+					if (gpsLocTimeDiff <= threeMinuteMillis) {                                // gps location is fine
+						locationToUse = lastGPSLocation;
+						fusedLocationUsed = false;
+					} else {
+						if (fusedLocTimeDiff <= threeMinuteMillis) {                            //�fused to use
+							locationToUse = lastFusedLocation;
+							fusedLocationUsed = true;
+						} else {
+							locationToUse = lastGPSLocation;
+							fusedLocationUsed = false;
+						}
+					}
+				} else if (lastGPSLocation != null && lastFusedLocation == null) {
 					locationToUse = lastGPSLocation;
 					fusedLocationUsed = false;
 				} else {
-					if (fusedLocTimeDiff <= threeMinuteMillis) {                            //�fused to use
-						locationToUse = lastFusedLocation;
-						fusedLocationUsed = true;
-					} else {
-						locationToUse = lastGPSLocation;
-						fusedLocationUsed = false;
-					}
+					locationToUse = myLocation;
+					fusedLocationUsed = true;
+					Log.e("locationToUse on end ride from myLocation", "=======" + locationToUse);
+					Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride from myLocation=" + locationToUse);
 				}
-			} else if (lastGPSLocation != null && lastFusedLocation == null) {
-				locationToUse = lastGPSLocation;
-				fusedLocationUsed = false;
-			} else {
-				locationToUse = myLocation;
-				fusedLocationUsed = true;
-				Log.e("locationToUse on end ride from myLocation", "=======" + locationToUse);
-				Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride from myLocation=" + locationToUse);
-			}
 
 
-			if ((Utils.compareDouble(oldGPSLatLng.latitude, 0.0) == 0) && (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)) {
-				oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
-			}
-			Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
+				if (locationToUse != null
+						&& (Utils.compareDouble(oldGPSLatLng.latitude, 0.0) == 0)
+						&& (Utils.compareDouble(oldGPSLatLng.longitude, 0.0) == 0)) {
+					oldGPSLatLng = new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude());
+				}
+				Log.writePathLogToFile(Data.dEngagementId + "m", "oldGPSLatLng after on end ride = " + oldGPSLatLng);
 
 
-			Log.e("locationToUse on end ride", "=======" + locationToUse);
-			Log.e("fusedLocationUsed on end ride", "=======" + fusedLocationUsed);
+				Log.e("locationToUse on end ride", "=======" + locationToUse);
+				Log.e("fusedLocationUsed on end ride", "=======" + fusedLocationUsed);
 
-			Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride=" + locationToUse);
-			Log.writePathLogToFile(Data.dEngagementId + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
+				Log.writePathLogToFile(Data.dEngagementId + "m", "locationToUse on end ride=" + locationToUse);
+				Log.writePathLogToFile(Data.dEngagementId + "m", "fusedLocationUsed on end ride=" + fusedLocationUsed);
 
-			if (locationToUse != null) {
+				if (locationToUse != null) {
 
-				GCMIntentService.clearNotifications(activity);
+					GCMIntentService.clearNotifications(activity);
 
-				driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
-				driverWaitText.setText(getResources().getString(R.string.start_wait));
-				waitStart = 0;
+					driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
+					driverWaitText.setText(getResources().getString(R.string.start_wait));
+					waitStart = 0;
 
-				long waitSeconds = waitChronometer.eclipsedTime / 1000;
-				double waitMinutes = Math.ceil(waitSeconds / 60);
+					long waitSeconds = waitChronometer.eclipsedTime / 1000;
+					double waitMinutes = Math.ceil(waitSeconds / 60);
 
-				long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-				double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
+					long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+					double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 
-				if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
+					if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
 
-					waitChronometer.stop();
-					rideTimeChronometer.stop();
+						waitChronometer.stop();
+						rideTimeChronometer.stop();
 
-					driverScreenMode = DriverScreenMode.D_RIDE_END;
+						driverScreenMode = DriverScreenMode.D_RIDE_END;
 
-					if (fusedLocationUsed) {
-						calculateFusedLocationDistance(activity, oldGPSLatLng,
-								new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()), rideTimeMinutes, businessType, lastloctime);
+						if (fusedLocationUsed) {
+							calculateFusedLocationDistance(activity, oldGPSLatLng,
+									new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()), rideTimeMinutes, businessType, lastloctime);
+						} else {
+							driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(), 0, rideTimeMinutes, 0, businessType);
+						}
 					} else {
-						driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(), 0, rideTimeMinutes, 0, businessType);
+
 					}
+					return true;
 				} else {
-
+					Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+					return false;
 				}
-				return true;
 			} else {
 				Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
 				return false;
 			}
-		} else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
 			return false;
 		}
@@ -5700,17 +5700,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
-
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			super.onActivityResult(requestCode, resultCode, data);
-			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 
@@ -5973,22 +5962,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		protected String doInBackground(Void... urls) {
 			try {
-				try {
-					Session.getActiveSession().closeAndClearTokenInformation();
-				}
-				catch(Exception e) {
-					Log.v("Logout", "Error"+e);
-				}
-
 				SharedPreferences pref = act.getSharedPreferences("myPref", 0);
 				Editor editor = pref.edit();
 				editor.clear();
 				editor.commit();
 			} catch (Exception e) {
 				Log.v("e", e.toString());
-
 			}
-
 			return "";
 		}
 
@@ -6434,7 +6414,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	public boolean checkDriverFree(){
-		return (UserMode.DRIVER == userMode && driverScreenMode == DriverScreenMode.D_INITIAL && Data.userData.autosAvailable == 1 && Data.driverRideRequests.size() == 0);
+		try {
+			checkIfUserDataNull(this);
+			return (UserMode.DRIVER == userMode && DriverScreenMode.D_INITIAL == driverScreenMode && Data.userData.autosAvailable == 1 && Data.driverRideRequests.size() == 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	StationData assignedStationData;

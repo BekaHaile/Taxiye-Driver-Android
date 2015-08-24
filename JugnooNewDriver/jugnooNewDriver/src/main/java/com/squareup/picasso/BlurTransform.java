@@ -1,20 +1,23 @@
 package com.squareup.picasso;
 
 /**
- * Picasso's(ImageLoaderLibrary) class to crop bitmap in circular shape
+ * Picasso's(ImageLoaderLibrary) class to blur bitmap
  */
 
 import android.graphics.Bitmap;
 import android.util.Log;
-
-import com.squareup.picasso.Transformation;
  
 public class BlurTransform implements Transformation {
 	@Override
 	public Bitmap transform(Bitmap source) {
-		Bitmap dest = fastblur(source, 3);
-		source.recycle();
-		return dest;
+		try {
+			Bitmap dest = fastblur(source, 3);
+			source.recycle();
+			return dest;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return source;
+		}
 	}
 	
 	

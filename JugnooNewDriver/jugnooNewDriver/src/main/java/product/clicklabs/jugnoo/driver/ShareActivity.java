@@ -1,10 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import product.clicklabs.jugnoo.driver.datastructure.FacebookLoginCallback;
-import product.clicklabs.jugnoo.driver.datastructure.FacebookLoginHelper;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -24,8 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
+
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import rmn.androidscreenlibrary.ASSL;
 
 public class ShareActivity extends Activity{
 	
@@ -36,7 +34,7 @@ public class ShareActivity extends Activity{
 	TextView title;
 	
 	TextView textViewReferralCodeDisplay;
-	ImageView shareFacebookImg, shareWhatsappImg, shareSMSImg, shareEMailImg;
+	ImageView shareWhatsappImg, shareSMSImg, shareEMailImg;
 	TextView textViewShareReferral;
 	
 	
@@ -77,30 +75,32 @@ public class ShareActivity extends Activity{
 		
 		textViewReferralCodeDisplay = (TextView) findViewById(R.id.textViewReferralCodeDisplay); textViewReferralCodeDisplay.setTypeface(Data.latoRegular(getApplicationContext()));
 		
-		shareFacebookImg = (ImageView) findViewById(R.id.shareFacebookImg);
 		shareWhatsappImg = (ImageView) findViewById(R.id.shareWhatsappImg);
 		shareSMSImg = (ImageView) findViewById(R.id.shareSMSImg);
 		shareEMailImg = (ImageView) findViewById(R.id.shareEMailImg);
 		
 		textViewShareReferral = (TextView) findViewById(R.id.textViewShareReferral); textViewShareReferral.setTypeface(Data.latoRegular(getApplicationContext()));
-		
-		SpannableString sstr = new SpannableString(Data.userData.referralCode);
-		final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
-		final ForegroundColorSpan clrs = new ForegroundColorSpan(Color.parseColor("#FAA31C"));
-		sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-		
-		textViewShareReferral.setText("");
-		textViewShareReferral.append(str1);
-		textViewShareReferral.append(sstr);
-		textViewShareReferral.append(str2);
-		
-		textViewReferralCodeDisplay.setText("");
-		textViewReferralCodeDisplay.append(str3);
-		textViewReferralCodeDisplay.append(sstr);
-		
-		
-		
+
+		try {
+			SpannableString sstr = new SpannableString(Data.userData.referralCode);
+			final StyleSpan bss = new StyleSpan(android.graphics.Typeface.BOLD);
+			final ForegroundColorSpan clrs = new ForegroundColorSpan(Color.parseColor("#FAA31C"));
+			sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+			textViewShareReferral.setText("");
+			textViewShareReferral.append(str1);
+			textViewShareReferral.append(sstr);
+			textViewShareReferral.append(str2);
+
+			textViewReferralCodeDisplay.setText("");
+			textViewReferralCodeDisplay.append(str3);
+			textViewReferralCodeDisplay.append(sstr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		backBtn.setOnClickListener(new View.OnClickListener() {
 		
 			@Override
@@ -110,17 +110,7 @@ public class ShareActivity extends Activity{
 			}
 		});
 		
-		
-		shareFacebookImg.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				new FacebookLoginHelper().openFacebookSession(ShareActivity.this, facebookLoginCallback, false);
-				FlurryEventLogger.sharedViaFacebook(Data.userData.accessToken);
-			}
-		});
-		
-		
+
 		shareWhatsappImg.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -152,20 +142,7 @@ public class ShareActivity extends Activity{
 		
 		
 	}
-	
-	
-	FacebookLoginCallback facebookLoginCallback = new FacebookLoginCallback() {
-		@Override
-		public void facebookLoginDone() {
-			new FacebookLoginHelper().publishFeedDialog(ShareActivity.this, 
-					"Jugnoo - Autos on demand", 
-					shareStr11 + Data.userData.referralCode + shareStr2, 
-					"Use " + Data.userData.referralCode + " as code & get a FREE ride", 
-					"https://jugnoo.in", 
-					"http://bit.ly/1OCgcke");
-		}
-	};
-	
+
 	
 	public void shareToWhatsapp(String referralCode) {
 		PackageManager pm = getPackageManager();
@@ -204,17 +181,7 @@ public class ShareActivity extends Activity{
 		startActivity(Intent.createChooser(email, "Choose an Email client:"));
 	}
 	
-	
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		try {
-			super.onActivityResult(requestCode, resultCode, data);
-			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	
 	@Override
 	public void onBackPressed() {

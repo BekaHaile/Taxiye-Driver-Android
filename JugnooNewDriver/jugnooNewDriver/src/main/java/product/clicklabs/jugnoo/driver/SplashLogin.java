@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -313,19 +312,6 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 	
 	public void performBackPressed(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (Session.getActiveSession() != null) {
-                        Session.getActiveSession().closeAndClearTokenInformation();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
         if(fromPreviousAccounts){
             Intent intent = new Intent(SplashLogin.this, MultipleAccountsActivity.class);
             startActivity(intent);

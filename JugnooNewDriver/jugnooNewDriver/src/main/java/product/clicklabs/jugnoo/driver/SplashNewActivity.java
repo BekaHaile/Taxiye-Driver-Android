@@ -415,17 +415,29 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
     public void pushAPIs(final Context context){
     	boolean mockLocationEnabled = Utils.mockLocationEnabled(this);
 		if(mockLocationEnabled){
-			DialogPopup.alertPopupWithListener(this, "", "Disable mock location first", new View.OnClickListener() {
-				
+			runOnUiThread(new Runnable() {
+
 				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
-					finish();
+				public void run() {
+					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
+							finish();
+						}
+					});
 				}
 			});
 		}
 		else{
-	    	progressBar1.setVisibility(View.VISIBLE);
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					progressBar1.setVisibility(View.VISIBLE);
+				}
+			});
 	    	stopService(new Intent(context, PushPendingCallsService.class));
 	    	stopPushApiThread();
 	    	try{
