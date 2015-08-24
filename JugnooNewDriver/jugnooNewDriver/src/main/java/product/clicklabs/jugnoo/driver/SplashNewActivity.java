@@ -20,9 +20,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -67,7 +67,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	
 	LinearLayout relative;
 	
-	ImageView jugnooImg;
+	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl;
 	ImageView jugnooTextImg, jugnooTextImg2;
@@ -184,9 +184,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashNewActivity.this, relative, 1134, 720, false);
-		
-		
-		jugnooImg = (ImageView) findViewById(R.id.jugnooImg);
+
+
+		imageViewJugnooLogo = (ImageView) findViewById(R.id.imageViewJugnooLogo);
 		
 		jugnooTextImgRl = (RelativeLayout) findViewById(R.id.jugnooTextImgRl);
 		jugnooTextImg = (ImageView) findViewById(R.id.jugnooTextImg);
@@ -273,29 +273,25 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	    
 	    
 		if(getIntent().hasExtra("no_anim")){
-			jugnooImg.clearAnimation();
-			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(jugnooImg.getLayoutParams());
-			layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			layoutParams.setMargins(0, (int)(150 * ASSL.Yscale()), 0, 0);
-			jugnooImg.setLayoutParams(layoutParams);
+			imageViewJugnooLogo.clearAnimation();
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			noNetFirstTime = true;
 			getDeviceToken();
 		}
 		else{
-			Animation animation = new TranslateAnimation(0, 0, 0, (int)(438*ASSL.Yscale()));
+			Animation animation = new AlphaAnimation(0, 1);
 			animation.setFillAfter(false);
-			animation.setDuration(650);
+			animation.setDuration(1000);
 			animation.setInterpolator(new AccelerateDecelerateInterpolator());
 			animation.setAnimationListener(new ShowAnimListener());
-			jugnooImg.startAnimation(animation);
+			imageViewJugnooLogo.startAnimation(animation);
 		}
-		
-		
-		
-		
-		
-		jugnooImg.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+		relative.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -497,12 +493,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			Log.i("onAnimationStart", "onAnimationStart");
-			jugnooImg.clearAnimation();
-			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(jugnooImg.getLayoutParams());
-			layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			layoutParams.setMargins(0, (int)(150 * ASSL.Yscale()), 0, 0);
-			jugnooImg.setLayoutParams(layoutParams);
-			
+			imageViewJugnooLogo.clearAnimation();
+
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			
 			noNetFirstTime = true;
