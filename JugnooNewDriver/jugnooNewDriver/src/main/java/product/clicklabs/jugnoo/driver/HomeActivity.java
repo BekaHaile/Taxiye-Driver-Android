@@ -179,10 +179,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	//Top RL
 	RelativeLayout topRl;
-	Button menuBtn, backBtn;
-	TextView title;
-	ImageView jugnooLogo;
-	Button checkServerBtn, toggleDebugModeBtn;
+	Button menuBtn;
+	Button checkServerBtn;
+	ImageView imageViewTitleBarDEI;
+	TextView textViewTitleBarDEI;
 
 
 
@@ -524,18 +524,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		//Top RL
 		topRl = (RelativeLayout) findViewById(R.id.topRl);
 		menuBtn = (Button) findViewById(R.id.menuBtn);
-		backBtn = (Button) findViewById(R.id.backBtn);
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
-		jugnooLogo = (ImageView) findViewById(R.id.jugnooLogo);
 		checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
-		toggleDebugModeBtn = (Button) findViewById(R.id.toggleDebugModeBtn);
+		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
+		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
 
 
 
 		menuBtn.setVisibility(View.VISIBLE);
-		jugnooLogo.setVisibility(View.VISIBLE);
-		backBtn.setVisibility(View.GONE);
-		title.setVisibility(View.GONE);
 
 
 
@@ -1896,10 +1891,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			if("-1".equalsIgnoreCase(Data.userData.deiValue)){
 				linearLayoutDEI.setVisibility(View.GONE);
+
+				imageViewTitleBarDEI.setVisibility(View.GONE);
+				textViewTitleBarDEI.setText("Jugnoo");
 			}
 			else{
 				linearLayoutDEI.setVisibility(View.VISIBLE);
 				textViewDEI.setText(Data.userData.deiValue);
+
+				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
+				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
 
 		} catch(Exception e){
