@@ -113,10 +113,12 @@ import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -125,7 +127,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
 @SuppressLint("DefaultLocale")
-public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate {
+public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate, FlurryEventNames {
 
 
 
@@ -761,6 +763,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			@Override
 			public void onClick(View v) {
 				drawerLayout.openDrawer(menuLayout);
+				FlurryEventLogger.event(MENU);
 			}
 		});
 
@@ -812,6 +815,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					else{
 						changeJugnooON(BusinessType.AUTOS, 1);
 					}
+					FlurryEventLogger.event(JUGNOO_ON_OFF);
 				}
 			}
 		});
@@ -827,6 +831,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					else{
 						changeJugnooON(BusinessType.FATAFAT, 1);
 					}
+					FlurryEventLogger.event(FATAFAT_ENABLE);
 				}
 			}
 		});
@@ -842,6 +847,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					else{
 						changeJugnooON(BusinessType.MEALS, 1);
 					}
+					FlurryEventLogger.event(MEALS_ENABLE);
 				}
 			}
 		});
@@ -854,7 +860,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.shareScreenOpened(Data.userData.accessToken);
+				FlurryEventLogger.event(MENU);
 			}
 		});
 
@@ -865,6 +871,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			@Override
 			public void onClick(View v) {
 				sendToFareDetails();
+				FlurryEventLogger.event(FARE_DETAILS_CHECKED);
 			}
 		});
 
@@ -874,6 +881,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
 			}
 		});
 
@@ -884,7 +892,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, HelpActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.helpScreenOpened(Data.userData.accessToken);
+				FlurryEventLogger.event(HELP_CHECKED);
 			}
 		});
 
@@ -906,7 +914,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, DriverHistoryActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.rideScreenOpened(Data.userData.accessToken);
+				FlurryEventLogger.event(RIDES_OPENED);
 			}
 		});
 
@@ -921,11 +929,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(((userMode == UserMode.DRIVER) && (driverScreenMode == DriverScreenMode.D_INITIAL))){
 					logoutPopup(HomeActivity.this);
-					FlurryEventLogger.logoutPressed(Data.userData.accessToken);
 				}
 				else{
 					DialogPopup.alertPopup(activity, "", "Ride in progress. You can logout only after the ride ends.");
-					FlurryEventLogger.logoutPressedBetweenRide(Data.userData.accessToken);
 				}
 			}
 		});
@@ -988,6 +994,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				driverScreenMode = DriverScreenMode.D_INITIAL;
 				switchDriverScreen(driverScreenMode);
+				FlurryEventLogger.event(RIDE_CHECKED_AND_NO_ACTION);
 			}
 		});
 
@@ -995,14 +1002,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void onClick(View v) {
-				if(getBatteryPercentage() >= 20){
-					GCMIntentService.clearNotifications(HomeActivity.this);
-					GCMIntentService.stopRing();
-					driverAcceptRideAsync(HomeActivity.this);
-				}
-				else{
-					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
-				}
+				acceptRequestFunc();
+				FlurryEventLogger.event(RIDE_CHECKED_AND_ACCEPTED);
 			}
 		});
 
@@ -1011,9 +1012,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void onClick(View v) {
-				GCMIntentService.clearNotifications(HomeActivity.this);
-				GCMIntentService.stopRing();
-				driverRejectRequestAsync(HomeActivity.this);
+				rejectRequestFunc();
+				FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
 			}
 		});
 
@@ -1067,6 +1067,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				if(!"".equalsIgnoreCase(callPhoneNumber)){
 					Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
+					if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+						FlurryEventLogger.event(CALLED_CUSTOMER);
+					}
+					else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+						FlurryEventLogger.event(CALL_CUSTOMER_AFTER_ARRIVING);
+					}
+					else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+						FlurryEventLogger.event(CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+					}
 				}
 				else{
 					Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
@@ -1081,6 +1090,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(getBatteryPercentage() >= 10){
 					startRidePopup(HomeActivity.this);
+					FlurryEventLogger.event(RIDE_STARTED);
 				}
 				else{
 					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.");
@@ -1105,6 +1115,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											buildAlertMessageNoGps();
 											GCMIntentService.clearNotifications(activity);
 											driverMarkArriveRideAsync(activity, driverAtPickupLatLng);
+											FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
 										}
 										else{
 											DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to mark ride arrived.");
@@ -1118,8 +1129,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							new OnClickListener() {
 								@Override
 								public void onClick(View v) {
+									FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 								}
 							}, false, false);
+					FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
 				}
 				else{
 					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.");
@@ -1135,6 +1148,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			@Override
 			public void onClick(View v) {
 				cancelRidePopup(HomeActivity.this);
+				if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+					FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
+				}
+				else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+					FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+				}
 			}
 		});
 
@@ -1196,6 +1215,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						//Meals case of end ride
 						endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
 					}
+					FlurryEventLogger.event(RIDE_ENDED);
 				}
 			}
 		});
@@ -1282,6 +1302,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					MeteringService.clearNotifications(HomeActivity.this);
 					driverScreenMode = DriverScreenMode.D_INITIAL;
 					switchDriverScreen(driverScreenMode);
+					FlurryEventLogger.event(OK_ON_FARE_SCREEN);
 				}
 			}
 		});
@@ -1495,6 +1516,24 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+
+	public void acceptRequestFunc(){
+		if(getBatteryPercentage() >= 20){
+			GCMIntentService.clearNotifications(HomeActivity.this);
+			GCMIntentService.stopRing();
+			driverAcceptRideAsync(HomeActivity.this);
+		}
+		else{
+			DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+		}
+	}
+
+	public void rejectRequestFunc(){
+		GCMIntentService.clearNotifications(HomeActivity.this);
+		GCMIntentService.stopRing();
+		driverRejectRequestAsync(HomeActivity.this);
+	}
 
 
 
@@ -3282,6 +3321,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						switchDriverScreen(driverScreenMode);
 
 						map.animateCamera(CameraUpdateFactory.newLatLng(driverRideRequest.latLng), 1000, null);
+						FlurryEventLogger.event(RIDE_CHECKED);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3302,7 +3342,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Data.dCustLatLng = driverRideRequest.latLng;
 						Data.openedDriverRideRequest = driverRideRequest;
 
-						driverAcceptRideBtn.performClick();
+						acceptRequestFunc();
+						FlurryEventLogger.event(RIDE_ACCEPTED);
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -3324,7 +3365,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Data.dCustLatLng = driverRideRequest.latLng;
 						Data.openedDriverRideRequest = driverRideRequest;
 
-						driverCancelRequestBtn.performClick();
+						rejectRequestFunc();
+						FlurryEventLogger.event(RIDE_CANCELLED);
+
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -5076,6 +5119,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void onClick(View view) {
 					dialog.dismiss();
 					logoutAsync(activity);
+					FlurryEventLogger.event(LOGOUT_FROM_APP);
 				}
 
 			});
@@ -5204,7 +5248,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											LatLngBounds.Builder builder = new LatLngBounds.Builder();
 											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
 											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-											map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), (int)(minRatio * 100)));
+											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder), (int)(minRatio * 100)));
 										}
 
 									}
@@ -5360,6 +5404,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							GCMIntentService.clearNotifications(activity);
 
 							driverStartRideAsync(activity, driverAtPickupLatLng);
+							FlurryEventLogger.event(START_RIDE_CONFIRMED);
 						}
 						else{
 							DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to start ride.");
@@ -5377,6 +5422,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
+					FlurryEventLogger.event(START_RIDE_NOT_CONFIRMED);
 				}
 
 			});
@@ -5443,6 +5489,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									dialog.dismiss();
 								}
 							}
+							FlurryEventLogger.event(END_RIDE_CONFIRMED);
 						}
 					}
 					else{
@@ -5455,6 +5502,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
+					FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
 				}
 
 			});
@@ -5694,6 +5742,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					GCMIntentService.clearNotifications(HomeActivity.this);
 					driverCancelRideAsync(HomeActivity.this);
+					if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+						FlurryEventLogger.event(CANCELLED_BEFORE_ARRIVING_CONFIRMED);
+					}
+					else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+						FlurryEventLogger.event(CANCELLED_RIDE_CONFIRMED);
+					}
 				}
 
 
@@ -5703,6 +5757,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
+					if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+						FlurryEventLogger.event(CANCELLED_BEFORE_ARRIVING_NOT_CONFIRMED);
+					}
+					else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+						FlurryEventLogger.event(CANCELLED_RIDE_NOT_CONFIRMED);
+					}
 				}
 
 			});

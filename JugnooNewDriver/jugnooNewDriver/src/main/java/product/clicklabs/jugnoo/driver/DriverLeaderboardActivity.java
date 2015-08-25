@@ -30,9 +30,11 @@ import product.clicklabs.jugnoo.driver.datastructure.LeaderboardMode;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import rmn.androidscreenlibrary.ASSL;
 
-public class DriverLeaderboardActivity extends FragmentActivity{
+public class DriverLeaderboardActivity extends FragmentActivity implements FlurryEventNames {
 	
 	
 	LinearLayout linearLayoutRoot;
@@ -96,6 +98,7 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             public void onClick(View v) {
                 leaderboardMode = LeaderboardMode.DAILY;
                 setList(leaderboardAreaMode, leaderboardMode);
+				FlurryEventLogger.event(DAILY_SUPER_DRIVERS);
             }
         });
 
@@ -104,6 +107,7 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             public void onClick(View v) {
                 leaderboardMode = LeaderboardMode.WEEKLY;
                 setList(leaderboardAreaMode, leaderboardMode);
+				FlurryEventLogger.event(WEEKLY_SUPER_DRIVERS);
             }
         });
 
@@ -112,6 +116,7 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             public void onClick(View v) {
                 leaderboardMode = LeaderboardMode.MONTHLY;
                 setList(leaderboardAreaMode, leaderboardMode);
+				FlurryEventLogger.event(MONTHLY_SUPER_DRIVERS);
             }
         });
 
@@ -120,6 +125,7 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             public void onClick(View v) {
                 if(leaderboardAreaMode == LeaderboardAreaMode.LOCAL){
                     leaderboardAreaMode = LeaderboardAreaMode.OVERALL;
+					FlurryEventLogger.event(CHECKING_OVERALL_POSITION);
                 }
                 else{
                     leaderboardAreaMode = LeaderboardAreaMode.LOCAL;
@@ -133,6 +139,7 @@ public class DriverLeaderboardActivity extends FragmentActivity{
             @Override
             public void onClick(View v) {
                 performBackPressed();
+				FlurryEventLogger.event(BACK_FROM_SUPER_DRIVERS);
             }
         });
 

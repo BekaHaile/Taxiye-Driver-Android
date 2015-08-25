@@ -57,13 +57,14 @@ import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
-public class SplashNewActivity extends Activity implements LocationUpdate{
+public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
 	
 	LinearLayout relative;
 	
@@ -211,6 +212,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 				startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(LOGIN);
 			}
 		});
 		
