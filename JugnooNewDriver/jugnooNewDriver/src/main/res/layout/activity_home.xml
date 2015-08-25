@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="90px"
                 android:splitMotionEvents="false"
-                android:visibility="gone" >
+                android:visibility="visible" >
 
                 <!-- initial layout-->
                 <RelativeLayout
@@ -46,7 +46,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <TextView
                         android:id="@+id/textViewDriverInfo"
@@ -68,43 +68,15 @@
                         android:layout_below="@+id/textViewDriverInfo"
                         android:background="@drawable/shadow_down" />
 
-                    <RelativeLayout
-                        android:id="@+id/driverNewRideRequestRl"
-                        android:layout_width="565px"
-                        android:layout_height="180px"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="90px"
-                        android:background="@drawable/white_bg_bordered"
-                        android:gravity="center"
-                        android:splitMotionEvents="false"
-                        android:visibility="gone" >
-
-                        <TextView
-                            android:id="@+id/driverNewRideRequestText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="You have 1 ride request"
-                            android:textColor="@color/black"
-                            android:textSize="44px" />
-
-                        <TextView
-                            android:id="@+id/driverNewRideRequestClickText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/driverNewRideRequestText"
-                            android:gravity="center"
-                            android:text="@string/click_to_view"
-                            android:textColor="@color/black"
-                            android:textSize="48px" />
-                    </RelativeLayout>
 
                     <ListView
                         android:id="@+id/driverRideRequestsList"
                         android:layout_width="match_parent"
-                        android:layout_height="920px"
+                        android:layout_height="wrap_content"
                         android:divider="@color/transparent"
-                        android:visibility="gone" >
+                        android:visibility="visible"
+                        android:layout_alignParentTop="true"
+                        >
                     </ListView>
 
                     <Button
@@ -759,7 +731,7 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
 

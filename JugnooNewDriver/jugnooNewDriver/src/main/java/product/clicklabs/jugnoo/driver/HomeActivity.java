@@ -220,10 +220,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//Driver initial layout
 	RelativeLayout driverInitialLayout;
 	TextView textViewDriverInfo;
-	RelativeLayout driverNewRideRequestRl;
 	ListView driverRideRequestsList;
-	TextView driverNewRideRequestText;
-	TextView driverNewRideRequestClickText;
 	Button driverInitialMyLocationBtn;
 	RelativeLayout jugnooOffLayout;
 	TextView jugnooOffText;
@@ -564,15 +561,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		//Driver initial layout
 		driverInitialLayout = (RelativeLayout) findViewById(R.id.driverInitialLayout);
 		textViewDriverInfo = (TextView) findViewById(R.id.textViewDriverInfo); textViewDriverInfo.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverNewRideRequestRl = (RelativeLayout) findViewById(R.id.driverNewRideRequestRl);
 		driverRideRequestsList = (ListView) findViewById(R.id.driverRideRequestsList);
-		driverNewRideRequestText = (TextView) findViewById(R.id.driverNewRideRequestText); driverNewRideRequestText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverNewRideRequestClickText = (TextView) findViewById(R.id.driverNewRideRequestClickText); driverNewRideRequestClickText.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
 		jugnooOffLayout = (RelativeLayout) findViewById(R.id.jugnooOffLayout);
 		jugnooOffText = (TextView) findViewById(R.id.jugnooOffText); jugnooOffText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
-		driverNewRideRequestRl.setVisibility(View.GONE);
 		driverRideRequestsList.setVisibility(View.GONE);
 
 		driverRequestListAdapter = new DriverRequestListAdapter();
@@ -963,15 +956,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 		// driver initial layout events
-		driverNewRideRequestRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				driverNewRideRequestRl.setVisibility(View.GONE);
-				driverRideRequestsList.setVisibility(View.VISIBLE);
-			}
-		});
-
 		jugnooOffLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -3155,9 +3139,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	class ViewHolderDriverRequest {
-		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime, textViewRequestNumber,
+		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
 				textViewOtherRequestDetails, textViewRequestFareFactor;
-		Button buttonAcceptRide;
+		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
@@ -3209,16 +3193,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress); holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance); holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime); holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.textViewRequestNumber = (TextView) convertView.findViewById(R.id.textViewRequestNumber); holder.textViewRequestNumber.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails); holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor); holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide); holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide); holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 				holder.relative.setTag(holder);
 				holder.buttonAcceptRide.setTag(holder);
+				holder.buttonCancelRide.setTag(holder);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
@@ -3233,7 +3218,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			holder.id = position;
 
-			holder.textViewRequestNumber.setText(""+(position+1));
 			holder.textViewRequestAddress.setText(driverRideRequest.address);
 
 
@@ -3319,6 +3303,28 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Data.openedDriverRideRequest = driverRideRequest;
 
 						driverAcceptRideBtn.performClick();
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
+			holder.buttonCancelRide.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					try {
+						holder = (ViewHolderDriverRequest) v.getTag();
+
+						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
+
+						Data.dEngagementId = driverRideRequest.engagementId;
+						Data.dCustomerId = driverRideRequest.customerId;
+						Data.dCustLatLng = driverRideRequest.latLng;
+						Data.openedDriverRideRequest = driverRideRequest;
+
+						driverCancelRequestBtn.performClick();
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -5113,17 +5119,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void run() {
-					if((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)){
-						getCustomerPathAndDisplay(Data.assignedCustomerInfo.requestlLatLng);
-					}
-					else if((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.assignedCustomerInfo != null) && (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType)){
-						if(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng != null){
-							getCustomerPathAndDisplay(((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng);
-						}
-					}
-					else if (((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType))) {
-						if (((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
-							getCustomerPathAndDisplay(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryLatLng);
+					if(myLocation != null) {
+						if ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.assignedCustomerInfo != null)) {
+
+							getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.assignedCustomerInfo.requestlLatLng);
+
+						} else if ((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.assignedCustomerInfo != null) && (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType)) {
+
+							if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null) {
+								getCustomerPathAndDisplay(Data.assignedCustomerInfo.requestlLatLng, ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng);
+							}
+
+						} else if (((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType))) {
+
+							if (((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
+								getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryLatLng);
+							}
+
 						}
 					}
 				}
@@ -5156,11 +5168,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType)));
 	}
 
-	public void getCustomerPathAndDisplay(final LatLng customerLatLng) {
+	public void getCustomerPathAndDisplay(final LatLng sourceLatLng, final LatLng customerLatLng) {
 		try {
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext()) && myLocation != null && customerLatLng != null) {
-				LatLng source = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-				String url = MapUtils.makeDirectionsURL(source, customerLatLng);
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext()) && sourceLatLng != null && customerLatLng != null) {
+				String url = MapUtils.makeDirectionsURL(sourceLatLng, customerLatLng);
 				Log.i("getCustomerPathAndDisplay url", "="+url);
 				String result = new HttpRequester().getJSONFromUrl(url);
 
@@ -5188,6 +5199,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											polylineOptions.add(list.get(z));
 										}
 										pathToCustomerPolyline = map.addPolyline(polylineOptions);
+
+										if(myLocation != null){
+											LatLngBounds.Builder builder = new LatLngBounds.Builder();
+											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
+											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+											map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), (int)(minRatio * 100)));
+										}
 
 									}
 								} catch (Exception e) {
@@ -5244,9 +5262,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							@Override
 							public void run() {
-								if (myLocation != null && map != null) {
-									map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
-								}
+//								if (myLocation != null && map != null) {
+//									map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
+//								}
 							}
 						});
 					} catch (Exception e) {
@@ -5757,10 +5775,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				if(Data.driverRideRequests.size() > 0){
 
-					if(driverNewRideRequestRl.getVisibility() == View.GONE && driverRideRequestsList.getVisibility() == View.GONE){
-						driverNewRideRequestRl.setVisibility(View.VISIBLE);
-						driverRideRequestsList.setVisibility(View.GONE);
-					}
+					driverRideRequestsList.setVisibility(View.VISIBLE);
 
 					LatLng last = map.getCameraPosition().target;
 
@@ -5788,20 +5803,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					});
 
-					if(Data.driverRideRequests.size() > 1){
-						driverNewRideRequestText.setText("You have "+Data.driverRideRequests.size()+" requests");
-					}
-					else{
-						driverNewRideRequestText.setText("You have "+Data.driverRideRequests.size()+" request");
-					}
-
 					driverRequestListAdapter.setResults(Data.driverRideRequests);
 
 					map.animateCamera(CameraUpdateFactory.newLatLng(last), 1000, null);
 
 				}
 				else{
-					driverNewRideRequestRl.setVisibility(View.GONE);
 					driverRideRequestsList.setVisibility(View.GONE);
 				}
 

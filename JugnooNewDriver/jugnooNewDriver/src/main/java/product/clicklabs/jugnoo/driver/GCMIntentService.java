@@ -307,8 +307,8 @@ public class GCMIntentService extends IntentService {
 
 													if (BusinessType.AUTOS.getOrdinal() == businessId) {
 														Data.driverRideRequests.add(new AutoRideRequest(engagementId, userId,
-															new LatLng(latitude, longitude), startTime, address,
-															businessId, referenceId, fareFactor));
+																new LatLng(latitude, longitude), startTime, address,
+																businessId, referenceId, fareFactor));
 													} else if (BusinessType.MEALS.getOrdinal() == businessId) {
 														String rideTime = jObj.getString("ride_time");
 														Data.driverRideRequests.add(new MealRideRequest(engagementId, userId,
