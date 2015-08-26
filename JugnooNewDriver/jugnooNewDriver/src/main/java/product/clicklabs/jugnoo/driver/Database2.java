@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.maps.model.LatLng;
 import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
@@ -542,7 +540,7 @@ public class Database2 {																	// class for handling database related 
 	}
 	
 	
-	public void updateDriverCurrentLocation(Location location){
+	public void updateDriverCurrentLocation(Context context, Location location){
 		try{
 			deleteDriverCurrentLocation();
 			ContentValues contentValues = new ContentValues();
@@ -556,6 +554,7 @@ public class Database2 {																	// class for handling database related 
 		} catch(Exception e){
 			e.printStackTrace();
 			Log.e("e", "=" + e);
+			Database2.getInstance(context);
 			alterTableDriverCurrentLocation();
 			deleteDriverCurrentLocation();
 			ContentValues contentValues = new ContentValues();

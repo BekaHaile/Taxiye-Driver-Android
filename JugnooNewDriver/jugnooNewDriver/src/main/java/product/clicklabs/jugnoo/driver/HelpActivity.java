@@ -1,14 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,7 +24,18 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
-public class HelpActivity extends FragmentActivity{
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import rmn.androidscreenlibrary.ASSL;
+
+public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	
 	
 	LinearLayout relative;
@@ -213,18 +215,38 @@ public class HelpActivity extends FragmentActivity{
 					switch(helpSections.get(holder.id)){
 						case MAIL_US:
 							openMailIntentToSupport();
-							FlurryEventLogger.mailToSupportPressed(Data.userData.accessToken);
+							FlurryEventLogger.event(SEND_US_AN_EMAIL);
 							break;
 							
 						case CALL_US:
 							openCallIntent("+919023121121");
-							FlurryEventLogger.callToSupportPressed(Data.userData.accessToken);
+							FlurryEventLogger.event(CALL_US);
 							break;
-							
+
+						case FAQ:
+							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+							FlurryEventLogger.event(FAQS);
+							break;
+
+						case ABOUT:
+							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+							FlurryEventLogger.event(ABOUT_JUGNOO);
+							break;
+
+						case TERMS:
+							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+							FlurryEventLogger.event(TERMS_OF_USE);
+							break;
+
+						case PRIVACY:
+							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+							FlurryEventLogger.event(PRIVACY_POLICY);
+							break;
+
 						default:
 							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.particularHelpOpened(helpSections.get(holder.id).getName(), Data.userData.accessToken);
-							
+							FlurryEventLogger.event(helpSections.get(holder.id).getName());
+
 					}
 				}
 			});

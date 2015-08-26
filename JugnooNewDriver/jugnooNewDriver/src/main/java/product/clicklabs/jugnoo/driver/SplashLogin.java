@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
-import com.facebook.Session;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -35,11 +34,12 @@ import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import rmn.androidscreenlibrary.ASSL;
 
-public class SplashLogin extends Activity implements LocationUpdate{
+public class SplashLogin extends Activity implements LocationUpdate, FlurryEventNames{
 	
 	TextView title;
 	Button backBtn;
@@ -141,7 +141,9 @@ public class SplashLogin extends Activity implements LocationUpdate{
                         if (isEmailValid(email)) {
                             enteredEmail = email;
                             sendLoginValues(SplashLogin.this, email, password);
-                            FlurryEventLogger.emailLoginClicked(email);
+							FlurryEventLogger.event(LOGIN_EMAIL_ID);
+							FlurryEventLogger.event(LOGIN_PASSWORD);
+							FlurryEventLogger.event(LOGIN_IN_APP);
                         } else {
                             emailEt.requestFocus();
                             emailEt.setError("Please enter valid email");
@@ -164,6 +166,7 @@ public class SplashLogin extends Activity implements LocationUpdate{
                 startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				finish();
+				FlurryEventLogger.event(FORGOT_PASSWORD);
 			}
 		});
 		
@@ -313,19 +316,6 @@ public class SplashLogin extends Activity implements LocationUpdate{
 	
 	
 	public void performBackPressed(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (Session.getActiveSession() != null) {
-                        Session.getActiveSession().closeAndClearTokenInformation();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-
         if(fromPreviousAccounts){
             Intent intent = new Intent(SplashLogin.this, MultipleAccountsActivity.class);
             startActivity(intent);

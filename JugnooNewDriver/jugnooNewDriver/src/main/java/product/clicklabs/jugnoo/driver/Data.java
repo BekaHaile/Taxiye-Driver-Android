@@ -36,9 +36,9 @@ public class Data {
 	
 	//TODO change flurry key
 	//H8Y94ND8GPQTKKG5R2VY
-	public static final String STATIC_FLURRY_KEY = "H8Y94ND8GPQTKKG5R2VY";
+	public static final String STATIC_FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
 	
-	public static String FLURRY_KEY = "H8Y94ND8GPQTKKG5R2VY";
+	public static String FLURRY_KEY = "8CN4DKPSN69HNRSJKKF3";
 	
 	public static final String INVALID_ACCESS_TOKEN = "invalid access token";
 	
@@ -121,7 +121,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
-	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 	
 	
 

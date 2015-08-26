@@ -25,56 +25,83 @@
             android:textColor="@color/black"
             android:textSize="30px"/>
 
-        <LinearLayout
-            android:id="@+id/linearLayoutDist"
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textViewRequestAddress"
             android:layout_marginTop="10px"
-            android:orientation="vertical"
-            android:paddingRight="60px"
             android:splitMotionEvents="false"
 
             >
 
             <TextView
                 android:id="@+id/textViewRequestDistance"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:text="10 km away"
+                android:text="100.00 km away"
                 android:textColor="@color/black"
                 android:textSize="30px"/>
 
             <TextView
+                android:id="@+id/textViewRequestFareFactor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rate: 144.2x"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="34px"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40px"
+                android:layout_toRightOf="@+id/textViewRequestDistance"
+
+                />
+
+            <ImageView
+                android:id="@+id/imageViewRequestType"
+                android:layout_width="68px"
+                android:layout_height="68px"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="0px"
+                android:src="@drawable/request_autos"
+                android:tag="mwar"/>
+
+
+            <TextView
                 android:id="@+id/textViewRequestTime"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10px"
                 android:singleLine="true"
                 android:text="30 sec ago"
                 android:textColor="@color/black_translucent"
-                android:textSize="30px"/>
+                android:textSize="30px"
+                android:layout_below="@+id/textViewRequestDistance"
+                />
 
             <TextView
                 android:id="@+id/textViewOtherRequestDetails"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10px"
                 android:singleLine="true"
-                android:text=""
+                android:text="Amount to pay Rs 500"
                 android:textColor="@color/black"
-                android:textSize="30px"/>
+                android:textSize="30px"
+                android:layout_below="@+id/textViewRequestTime"
+                />
 
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="20px"
+                android:layout_below="@+id/textViewOtherRequestDetails"
+                >
                 <Button
                     android:id="@+id/buttonAcceptRide"
-                    android:layout_width="300px"
+                    android:layout_width="260px"
                     android:layout_height="69px"
                     android:background="@drawable/blue_btn_selector"
                     android:text="ACCEPT"
@@ -82,50 +109,24 @@
                     android:textSize="@dimen/button_text_size"
                     />
 
-                <TextView
-                    android:id="@+id/textViewRequestFareFactor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Rate: 144.2x"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="34px"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="40px"
-
+                <Button
+                    android:id="@+id/buttonCancelRide"
+                    android:layout_width="260px"
+                    android:layout_height="69px"
+                    android:background="@drawable/grey_btn_selector"
+                    android:text="CANCEL"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    android:layout_marginLeft="80px"
                     />
-
 
             </LinearLayout>
 
 
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
-
-        <ImageView
-            android:id="@+id/imageViewRequestType"
-            android:layout_width="68px"
-            android:layout_height="68px"
-            android:layout_above="@+id/textViewRequestNumber"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="0px"
-            android:src="@drawable/request_autos"
-            android:tag="mwar"
-            />
-
-
-        <TextView
-            android:id="@+id/textViewRequestNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/linearLayoutDist"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="10px"
-            android:text="1"
-            android:textColor="@color/black_translucent_level_2"
-            android:textSize="40px"
-            />
 
     </RelativeLayout>
 

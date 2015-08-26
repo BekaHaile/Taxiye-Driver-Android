@@ -20,9 +20,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,17 +57,18 @@ import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
-public class SplashNewActivity extends Activity implements LocationUpdate{
+public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
 	
 	LinearLayout relative;
 	
-	ImageView jugnooImg;
+	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl;
 	ImageView jugnooTextImg, jugnooTextImg2;
@@ -104,23 +105,23 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
 			Data.SERVER_URL = Data.TRIAL_SERVER_URL.substring(0, Data.TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
-			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
 			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
-			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_1_SERVER_URL;
-            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+            Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
         }
         else if(link.equalsIgnoreCase(Data.DEV_2_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_2_SERVER_URL;
-            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+            Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
         }
         else if(link.equalsIgnoreCase(Data.DEV_3_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_3_SERVER_URL;
-            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+            Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
         }
 		else{
 			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
@@ -184,9 +185,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashNewActivity.this, relative, 1134, 720, false);
-		
-		
-		jugnooImg = (ImageView) findViewById(R.id.jugnooImg);
+
+
+		imageViewJugnooLogo = (ImageView) findViewById(R.id.imageViewJugnooLogo);
 		
 		jugnooTextImgRl = (RelativeLayout) findViewById(R.id.jugnooTextImgRl);
 		jugnooTextImg = (ImageView) findViewById(R.id.jugnooTextImg);
@@ -211,6 +212,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 				startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(LOGIN);
 			}
 		});
 		
@@ -273,29 +275,25 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	    
 	    
 		if(getIntent().hasExtra("no_anim")){
-			jugnooImg.clearAnimation();
-			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(jugnooImg.getLayoutParams());
-			layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			layoutParams.setMargins(0, (int)(150 * ASSL.Yscale()), 0, 0);
-			jugnooImg.setLayoutParams(layoutParams);
+			imageViewJugnooLogo.clearAnimation();
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			noNetFirstTime = true;
 			getDeviceToken();
 		}
 		else{
-			Animation animation = new TranslateAnimation(0, 0, 0, (int)(438*ASSL.Yscale()));
+			Animation animation = new AlphaAnimation(0, 1);
 			animation.setFillAfter(false);
-			animation.setDuration(650);
+			animation.setDuration(1000);
 			animation.setInterpolator(new AccelerateDecelerateInterpolator());
 			animation.setAnimationListener(new ShowAnimListener());
-			jugnooImg.startAnimation(animation);
+			imageViewJugnooLogo.startAnimation(animation);
 		}
-		
-		
-		
-		
-		
-		jugnooImg.setOnClickListener(new View.OnClickListener() {
+
+
+
+
+
+		relative.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
@@ -419,17 +417,29 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
     public void pushAPIs(final Context context){
     	boolean mockLocationEnabled = Utils.mockLocationEnabled(this);
 		if(mockLocationEnabled){
-			DialogPopup.alertPopupWithListener(this, "", "Disable mock location first", new View.OnClickListener() {
-				
+			runOnUiThread(new Runnable() {
+
 				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
-					finish();
+				public void run() {
+					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
+							finish();
+						}
+					});
 				}
 			});
 		}
 		else{
-	    	progressBar1.setVisibility(View.VISIBLE);
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					progressBar1.setVisibility(View.VISIBLE);
+				}
+			});
 	    	stopService(new Intent(context, PushPendingCallsService.class));
 	    	stopPushApiThread();
 	    	try{
@@ -497,12 +507,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		@Override
 		public void onAnimationEnd(Animation animation) {
 			Log.i("onAnimationStart", "onAnimationStart");
-			jugnooImg.clearAnimation();
-			RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(jugnooImg.getLayoutParams());
-			layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			layoutParams.setMargins(0, (int)(150 * ASSL.Yscale()), 0, 0);
-			jugnooImg.setLayoutParams(layoutParams);
-			
+			imageViewJugnooLogo.clearAnimation();
+
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			
 			noNetFirstTime = true;

@@ -27,10 +27,11 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import rmn.androidscreenlibrary.ASSL;
 
-public class ForgotPasswordScreen extends Activity{
+public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 	
 	TextView title;
 	Button backBtn;
@@ -113,7 +114,8 @@ public class ForgotPasswordScreen extends Activity{
 				else{
 					if(isEmailValid(email)){
 						forgotPasswordAsync(ForgotPasswordScreen.this, email);
-						FlurryEventLogger.forgotPasswordClicked(email);
+						FlurryEventLogger.event(CHANGE_PASSWORD_ENTER_EMAIL);
+						FlurryEventLogger.event(CHANGE_PASSWORD);
 					}
 					else{
 						emailEt.requestFocus();
