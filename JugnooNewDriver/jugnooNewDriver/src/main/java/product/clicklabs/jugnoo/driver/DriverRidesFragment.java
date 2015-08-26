@@ -33,9 +33,11 @@ import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import rmn.androidscreenlibrary.ASSL;
 
-public class DriverRidesFragment extends Fragment {
+public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
@@ -81,6 +83,7 @@ public class DriverRidesFragment extends Fragment {
 		});
 		
 		getRidesAsync(getActivity());
+		FlurryEventLogger.event(COMPLETE_RIDES_CHECKED);
 		
 		return rootView;
 	}

@@ -132,6 +132,7 @@
                 android:layout_marginLeft="20px"
                 android:layout_marginRight="20px"
                 android:layout_marginTop="30px"
+                android:lineSpacingExtra="10px"
                 android:gravity="center"
                 android:text="Share your referral code 12345678"
                 android:textColor="@color/black"
