@@ -290,4 +290,15 @@ public class Utils {
 		}
 	}
 
+
+	public static boolean checkIfOnlyDigits(String strTocheck){
+		String regex = "[0-9+]+";
+		if(strTocheck.matches(regex)){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+
 }

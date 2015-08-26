@@ -45,28 +45,16 @@
             android:layout_height="740px"
             >
 
-            <ImageView
-                android:id="@+id/jugnooImg"
-                android:layout_width="288px"
-                android:layout_height="288px"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="60px"
-                android:src="@drawable/jugnoo_img"
-                android:tag="mwar"
-
-                />
 
             <ImageView
-                android:id="@+id/jugnooTextImg"
-                android:layout_width="420px"
-                android:layout_height="136px"
-                android:layout_below="@+id/jugnooImg"
+                android:id="@+id/imageViewJugnooLogo"
+                android:layout_width="379px"
+                android:layout_height="324px"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10px"
-                android:src="@drawable/jugnoo_text"
+                android:background="@drawable/jugnoo_logo_big_yellow"
+                android:layout_marginTop="150px"
                 android:tag="mwar"
-
-                />
+                android:visibility="visible" />
 
 
             <TextView
@@ -99,19 +87,9 @@
                 >
 
                 <ImageView
-                    android:id="@+id/shareFacebookImg"
-                    android:layout_width="88px"
-                    android:layout_height="88px"
-                    android:src="@drawable/share_fb_selector"
-                    android:tag="mwar"
-                    />
-
-
-                <ImageView
                     android:id="@+id/shareWhatsappImg"
                     android:layout_width="88px"
                     android:layout_height="88px"
-                    android:layout_marginLeft="80px"
                     android:src="@drawable/share_whatsapp_selector"
                     android:tag="mwar"
                     />
@@ -120,7 +98,7 @@
                     android:id="@+id/shareSMSImg"
                     android:layout_width="88px"
                     android:layout_height="88px"
-                    android:layout_marginLeft="80px"
+                    android:layout_marginLeft="120px"
                     android:src="@drawable/share_sms_selector"
                     android:tag="mwar"
                     />
@@ -129,7 +107,7 @@
                     android:id="@+id/shareEMailImg"
                     android:layout_width="80px"
                     android:layout_height="80px"
-                    android:layout_marginLeft="80px"
+                    android:layout_marginLeft="120px"
                     android:src="@drawable/share_mail_selector"
                     android:tag="mwar"
                     />
@@ -154,6 +132,7 @@
                 android:layout_marginLeft="20px"
                 android:layout_marginRight="20px"
                 android:layout_marginTop="30px"
+                android:lineSpacingExtra="10px"
                 android:gravity="center"
                 android:text="Share your referral code 12345678"
                 android:textColor="@color/black"

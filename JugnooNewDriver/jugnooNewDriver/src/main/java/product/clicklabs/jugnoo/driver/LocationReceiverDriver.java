@@ -9,14 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.maps.model.LatLng;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -24,7 +22,6 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationReceiverDriver extends BroadcastReceiver {
@@ -92,7 +89,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
-								Database2.getInstance(context).updateDriverCurrentLocation(location);
+								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 								Log.writeLogToFile("LocationReciever", "Receiver " + DateOperations.getCurrentTime() + " = " + location + " hasNet = " + AppStatus.getInstance(context).isOnline(context));
 								new DriverLocationDispatcher().sendLocationToServer(context, "LocationReciever");
 								Log.i("equal_data", location.toString());

@@ -185,284 +185,289 @@ public class GCMIntentService extends IntentService {
 
     @Override
     public void onHandleIntent(Intent intent) {
-        String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
-        String currentTime = DateOperations.getCurrentTime();
+		try {
+			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
+			String currentTime = DateOperations.getCurrentTime();
 
-        Bundle extras = intent.getExtras();
+			Bundle extras = intent.getExtras();
 
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
-        // The getMessageType() intent parameter must be the intent you received
-        // in your BroadcastReceiver.
-        String messageType = gcm.getMessageType(intent);
+			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+			// The getMessageType() intent parameter must be the intent you received
+			// in your BroadcastReceiver.
+			String messageType = gcm.getMessageType(intent);
 
-        if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
-                /*
-	             * Filter messages based on message type. Since it is likely that GCM
-	             * will be extended in the future with new message types, just ignore
-	             * any message types you're not interested in, or that you don't
-	             * recognize.
-	             */
-            if (GoogleCloudMessaging.
-                MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-//	                sendNotification("Send error: " + extras.toString());
-            } else if (GoogleCloudMessaging.
-                MESSAGE_TYPE_DELETED.equals(messageType)) {
-//	                sendNotification("Deleted messages on server: " +
-//	                        extras.toString());
-                // If it's a regular GCM message, do some work.
-            } else if (GoogleCloudMessaging.
-                MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // This loop represents the service doing some work.
+			if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
+					/*
+					 * Filter messages based on message type. Since it is likely that GCM
+					 * will be extended in the future with new message types, just ignore
+					 * any message types you're not interested in, or that you don't
+					 * recognize.
+					 */
+				if (GoogleCloudMessaging.
+					MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
+	//	                sendNotification("Send error: " + extras.toString());
+				} else if (GoogleCloudMessaging.
+					MESSAGE_TYPE_DELETED.equals(messageType)) {
+	//	                sendNotification("Deleted messages on server: " +
+	//	                        extras.toString());
+					// If it's a regular GCM message, do some work.
+				} else if (GoogleCloudMessaging.
+					MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+					// This loop represents the service doing some work.
 
-                String SHARED_PREF_NAME1 = "myPref", SP_ACCESS_TOKEN_KEY = "access_token";
+					String SHARED_PREF_NAME1 = "myPref", SP_ACCESS_TOKEN_KEY = "access_token";
 
-                SharedPreferences pref1 = getSharedPreferences(SHARED_PREF_NAME1, 0);
-                final String accessToken = pref1.getString(SP_ACCESS_TOKEN_KEY, "");
-                if (!"".equalsIgnoreCase(accessToken)) {
+					SharedPreferences pref1 = getSharedPreferences(SHARED_PREF_NAME1, 0);
+					final String accessToken = pref1.getString(SP_ACCESS_TOKEN_KEY, "");
+					if (!"".equalsIgnoreCase(accessToken)) {
 
-                    try {
-                        Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+						try {
+							Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 
-                        if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
+							if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
 
-                            String message = intent.getExtras().getString("message");
+								String message = intent.getExtras().getString("message");
 
-                            try {
-                                JSONObject jObj = new JSONObject(message);
+								try {
+									JSONObject jObj = new JSONObject(message);
 
-                                int flag = jObj.getInt("flag");
+									int flag = jObj.getInt("flag");
 
-                                if ((PushFlags.REQUEST.getOrdinal() == flag)
-                                    &&
-                                    (Prefs.with(this).getInt(SPLabels.RECEIVE_REQUESTS, 1) == 1)) {
+									if ((PushFlags.REQUEST.getOrdinal() == flag)
+										&&
+										(Prefs.with(this).getInt(SPLabels.RECEIVE_REQUESTS, 1) == 1)) {
 
-//	    	    						 {   "engagement_id": engagement_id, 
-//	    	    							 "user_id": data.customer_id, 
-//	    	    							 "flag": g_enum_notificationFlags.REQUEST,
-//	    	    							 "latitude": data.pickup_latitude, 
-//	    	    							 "longitude": data.pickup_longitude, 
-//	    	    							 "address": pickup_address
-//	    	    							 "start_time": date}
-
-
-                                    String engagementId = jObj.getString("engagement_id");
-                                    String userId = jObj.getString("user_id");
-                                    double latitude = jObj.getDouble("latitude");
-                                    double longitude = jObj.getDouble("longitude");
-                                    String startTime = jObj.getString("start_time");
-                                    String address = jObj.getString("address");
-
-                                    String startTimeLocal = DateOperations.utcToLocal(startTime);
-
-                                    Log.i("startTimeLocal = ", "=" + startTimeLocal);
-
-                                    String endTime = "";
-                                    if (jObj.has("end_time")) {
-                                        endTime = jObj.getString("end_time");
-                                    }
-
-                                    int businessId = BusinessType.AUTOS.getOrdinal();
-                                    if (jObj.has("business_id")) {
-                                        businessId = jObj.getInt("business_id");
-                                    }
-
-                                    long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-
-                                    if ("".equalsIgnoreCase(endTime)) {
-                                        long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
-                                        long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
-                                        requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
-                                    } else {
-                                        long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
-                                            startTimeLocal);
-                                        Log.i("startEndDiffMillis = ", "=" + startEndDiffMillis);
-                                        if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
-                                            requestTimeOutMillis = startEndDiffMillis;
-                                        } else {
-                                            requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-                                        }
-                                    }
+	//	    	    						 {   "engagement_id": engagement_id,
+	//	    	    							 "user_id": data.customer_id,
+	//	    	    							 "flag": g_enum_notificationFlags.REQUEST,
+	//	    	    							 "latitude": data.pickup_latitude,
+	//	    	    							 "longitude": data.pickup_longitude,
+	//	    	    							 "address": pickup_address
+	//	    	    							 "start_time": date}
 
 
-                                    double fareFactor = 1;
-                                    if(jObj.has("fare_factor")) {
-                                        fareFactor = jObj.getDouble("fare_factor");
-                                    }
+										String engagementId = jObj.getString("engagement_id");
+										String userId = jObj.getString("user_id");
+										double latitude = jObj.getDouble("latitude");
+										double longitude = jObj.getDouble("longitude");
+										String startTime = jObj.getString("start_time");
+										String address = jObj.getString("address");
+
+										String startTimeLocal = DateOperations.utcToLocal(startTime);
+
+										Log.i("startTimeLocal = ", "=" + startTimeLocal);
+
+										String endTime = "";
+										if (jObj.has("end_time")) {
+											endTime = jObj.getString("end_time");
+										}
+
+										int businessId = BusinessType.AUTOS.getOrdinal();
+										if (jObj.has("business_id")) {
+											businessId = jObj.getInt("business_id");
+										}
+
+										long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+
+										if ("".equalsIgnoreCase(endTime)) {
+											long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
+											long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
+											requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
+										} else {
+											long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
+												startTimeLocal);
+											Log.i("startEndDiffMillis = ", "=" + startEndDiffMillis);
+											if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
+												requestTimeOutMillis = startEndDiffMillis;
+											} else {
+												requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+											}
+										}
 
 
-                                    sendRequestAckToServer(this, engagementId, currentTimeUTC);
-
-                                    FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
-
-                                    startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
-
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        if (UserMode.DRIVER == HomeActivity.userMode) {
-                                            if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
-                                                DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-                                                DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
-
-                                                int referenceId = jObj.getInt("reference_id");
-
-                                                if (BusinessType.AUTOS.getOrdinal() == businessId) {
-                                                    Data.driverRideRequests.add(new AutoRideRequest(engagementId, userId,
-                                                        new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId, fareFactor));
-                                                } else if (BusinessType.MEALS.getOrdinal() == businessId) {
-                                                    String rideTime = jObj.getString("ride_time");
-                                                    Data.driverRideRequests.add(new MealRideRequest(engagementId, userId,
-                                                        new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId, rideTime, fareFactor));
-                                                } else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
-                                                    int orderAmount = jObj.getInt("order_amount");
-                                                    Log.e("orderAmount", "=" + orderAmount);
-                                                    Data.driverRideRequests.add(new FatafatRideRequest(engagementId, userId,
-                                                        new LatLng(latitude, longitude), startTime, address,
-                                                        businessId, referenceId, orderAmount, fareFactor));
-                                                }
-
-                                                startRing(this);
-
-                                                RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-                                                requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-
-                                                notificationManagerResume(this, "You have got a new request.", true);
-                                                HomeActivity.appInterruptHandler.onNewRideRequest();
-
-                                                Log.e("referenceId", "=" + referenceId);
-                                            }
-                                        }
-                                    } else {
-                                        notificationManager(this, "You have got a new request.", true);
-
-                                        startRing(this);
-                                        RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-                                        requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-                                    }
-
-                                } else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
-
-                                    String engagementId = jObj.getString("engagement_id");
-                                    clearNotifications(this);
-
-                                    stopRing();
-
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
-                                        HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
-                                    }
-
-                                } else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
-
-                                    String engagementId = jObj.getString("engagement_id");
-                                    clearNotifications(this);
-
-                                    stopRing();
-
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
-                                        HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
-                                    }
-
-                                } else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-
-                                    String engagementId = jObj.getString("engagement_id");
-                                    clearNotifications(this);
-
-                                    stopRing();
-
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
-                                        HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
-                                    }
-
-                                } else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-                                    Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
-
-                                    SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
-
-                                    String logMessage = jObj.getString("message");
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        HomeActivity.appInterruptHandler.onChangeStatePushReceived();
-                                        notificationManagerResume(this, logMessage, true);
-                                    } else {
-                                        notificationManager(this, logMessage, true);
-                                    }
-                                } else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
-
-                                    Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
-
-                                    String logMessage = jObj.getString("message");
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        HomeActivity.appInterruptHandler.onChangeStatePushReceived();
-                                        notificationManagerResume(this, logMessage, false);
-                                    } else {
-                                        notificationManager(this, logMessage, false);
-                                    }
-                                } else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
-                                    String message1 = jObj.getString("message");
-                                    if (HomeActivity.activity == null) {
-                                        notificationManager(this, "" + message1, false);
-                                    } else {
-                                        notificationManagerResume(this, "" + message1, false);
-                                    }
-                                } else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
-                                    int toggleLocation = jObj.getInt("toggle_location");
-                                    if (1 == toggleLocation) {
-                                        new DriverServiceOperations().startDriverService(GCMIntentService.this);
-                                    } else {
-                                        new DriverServiceOperations().stopAndScheduleDriverService(GCMIntentService.this);
-                                    }
-                                } else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
-                                    Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
-                                    startRingWithStopHandler(this);
-                                    String message1 = jObj.getString("message");
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
-                                        notificationManagerResume(this, message1, true);
-                                    } else {
-                                        notificationManager(this, message1, true);
-                                    }
-                                } else if (PushFlags.HEARTBEAT.getOrdinal() == flag) {
-                                    try {
-                                        String uuid = jObj.getString("uuid");
-                                        sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                } else if (PushFlags.STATION_CHANGED.getOrdinal() == flag) {
-                                    String message1 = jObj.getString("message");
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        HomeActivity.appInterruptHandler.onStationChangedPushReceived();
-                                        notificationManagerResume(this, message1, false);
-                                    } else {
-                                        notificationManager(this, message1, false);
-                                    }
-                                } else if (PushFlags.CHANGE_PORT.getOrdinal() == flag) {
-                                    sendChangePortAckToServer(this, jObj);
-                                } else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
-                                    int userId = jObj.getInt("user_id");
-                                    double balance = jObj.getDouble("balance");
-                                    if (HomeActivity.appInterruptHandler != null) {
-                                        HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
-                                    }
-                                }
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+										double fareFactor = 1;
+										if(jObj.has("fare_factor")) {
+											fareFactor = jObj.getDouble("fare_factor");
+										}
 
 
-            }
-        }
-        // Release the wake lock provided by the WakefulBroadcastReceiver.
+										sendRequestAckToServer(this, engagementId, currentTimeUTC);
+
+										FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
+
+										startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
+
+										if (HomeActivity.appInterruptHandler != null) {
+											if (UserMode.DRIVER == HomeActivity.userMode) {
+												if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
+													DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
+													DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
+
+													int referenceId = jObj.getInt("reference_id");
+
+													if (BusinessType.AUTOS.getOrdinal() == businessId) {
+														Data.driverRideRequests.add(new AutoRideRequest(engagementId, userId,
+																new LatLng(latitude, longitude), startTime, address,
+																businessId, referenceId, fareFactor));
+													} else if (BusinessType.MEALS.getOrdinal() == businessId) {
+														String rideTime = jObj.getString("ride_time");
+														Data.driverRideRequests.add(new MealRideRequest(engagementId, userId,
+															new LatLng(latitude, longitude), startTime, address,
+															businessId, referenceId, rideTime, fareFactor));
+													} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
+														int orderAmount = jObj.getInt("order_amount");
+														Log.e("orderAmount", "=" + orderAmount);
+														Data.driverRideRequests.add(new FatafatRideRequest(engagementId, userId,
+															new LatLng(latitude, longitude), startTime, address,
+															businessId, referenceId, orderAmount, fareFactor));
+													}
+
+													startRing(this);
+
+													RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+													requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+
+													notificationManagerResume(this, "You have got a new request.", true);
+													HomeActivity.appInterruptHandler.onNewRideRequest();
+
+													Log.e("referenceId", "=" + referenceId);
+												}
+											}
+										} else {
+											notificationManager(this, "You have got a new request.", true);
+
+											startRing(this);
+											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+										}
+
+									} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
+
+										String engagementId = jObj.getString("engagement_id");
+										clearNotifications(this);
+
+										stopRing();
+
+										if (HomeActivity.appInterruptHandler != null) {
+											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+											HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
+										}
+
+									} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
+
+										String engagementId = jObj.getString("engagement_id");
+										clearNotifications(this);
+
+										stopRing();
+
+										if (HomeActivity.appInterruptHandler != null) {
+											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+											HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
+										}
+
+									} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
+
+										String engagementId = jObj.getString("engagement_id");
+										clearNotifications(this);
+
+										stopRing();
+
+										if (HomeActivity.appInterruptHandler != null) {
+											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+											HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
+										}
+
+									} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+										Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
+
+										SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
+
+										String logMessage = jObj.getString("message");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+											notificationManagerResume(this, logMessage, true);
+										} else {
+											notificationManager(this, logMessage, true);
+										}
+									} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
+
+										Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
+
+										String logMessage = jObj.getString("message");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+											notificationManagerResume(this, logMessage, false);
+										} else {
+											notificationManager(this, logMessage, false);
+										}
+									} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
+										String message1 = jObj.getString("message");
+										if (HomeActivity.activity == null) {
+											notificationManager(this, "" + message1, false);
+										} else {
+											notificationManagerResume(this, "" + message1, false);
+										}
+									} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
+										int toggleLocation = jObj.getInt("toggle_location");
+										if (1 == toggleLocation) {
+											new DriverServiceOperations().startDriverService(GCMIntentService.this);
+										} else {
+											new DriverServiceOperations().stopAndScheduleDriverService(GCMIntentService.this);
+										}
+									} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
+										Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
+										startRingWithStopHandler(this);
+										String message1 = jObj.getString("message");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
+											notificationManagerResume(this, message1, true);
+										} else {
+											notificationManager(this, message1, true);
+										}
+									} else if (PushFlags.HEARTBEAT.getOrdinal() == flag) {
+										try {
+											String uuid = jObj.getString("uuid");
+											sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									} else if (PushFlags.STATION_CHANGED.getOrdinal() == flag) {
+										String message1 = jObj.getString("message");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onStationChangedPushReceived();
+											notificationManagerResume(this, message1, false);
+										} else {
+											notificationManager(this, message1, false);
+										}
+									} else if (PushFlags.CHANGE_PORT.getOrdinal() == flag) {
+										sendChangePortAckToServer(this, jObj);
+									} else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
+										int userId = jObj.getInt("user_id");
+										double balance = jObj.getDouble("balance");
+										if (HomeActivity.appInterruptHandler != null) {
+											HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
+										}
+									}
+
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+							}
+
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
+
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Release the wake lock provided by the WakefulBroadcastReceiver.
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
