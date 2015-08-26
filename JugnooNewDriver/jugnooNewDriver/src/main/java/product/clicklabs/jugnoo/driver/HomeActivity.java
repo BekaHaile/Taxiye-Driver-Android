@@ -2656,7 +2656,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
 				driverPassengerName.setText(Data.assignedCustomerInfo.name);
 
-
 				try {
 					double rateingD = 4;
 					try {
