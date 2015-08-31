@@ -42,6 +42,15 @@ public class MapUtils {
 		}
 		return 0;
 	}
+	public static double distanceGPS_GSM(Location GSM, Location GPS) {
+		try {
+			double distance = GSM.distanceTo(GPS);
+			return distance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	public static double speed(Location start, Location end){
 		double speedMPS = 0;

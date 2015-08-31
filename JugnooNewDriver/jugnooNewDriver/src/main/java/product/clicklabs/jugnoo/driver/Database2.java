@@ -41,7 +41,9 @@ public class Database2 {																	// class for handling database related 
 	
 	private static final String TABLE_DRIVER_SERVICE_FAST = "table_driver_service_fast";
 	private static final String FAST = "fast";
-	
+
+	private static final String TABLE_TOTAL_DISTANCE = "table_total_distance";
+	private static final String TOTAL_DISTANCE = "total_distance";
 	
 	private static final String TABLE_DRIVER_LOC_DATA = "table_driver_loc_data";
 	private static final String DLD_ACCESS_TOKEN = "dld_access_token";
@@ -166,7 +168,8 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE_FAST + " ("
 				+ FAST + " TEXT" + ");");
-		
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_TOTAL_DISTANCE + " ("
+				+ TOTAL_DISTANCE + " TEXT" + ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LOC_DATA + " ("
 				+ DLD_ACCESS_TOKEN + " TEXT, " 
@@ -270,8 +273,50 @@ public class Database2 {																	// class for handling database related 
 		dbHelper.close();
 		System.gc();
 	}
-	
-	
+
+
+
+
+
+
+
+	public double getTotalDistance() {
+		double totaldistance = 0;
+		try {
+			String[] columns = new String[] { Database2.TOTAL_DISTANCE };
+			Cursor cursor = database.query(Database2.TABLE_TOTAL_DISTANCE, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				totaldistance = Double.parseDouble(cursor.getString(cursor.getColumnIndex(Database2.TOTAL_DISTANCE)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totaldistance;
+	}
+
+
+	public void updateTotalDistance(double totalDistance){
+		try{
+			deleteTotalDistance();
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.TOTAL_DISTANCE, totalDistance);
+			database.insert(Database2.TABLE_TOTAL_DISTANCE, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public int deleteTotalDistance(){
+		try{
+			return database.delete(Database2.TABLE_TOTAL_DISTANCE, null, null);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 	
 	

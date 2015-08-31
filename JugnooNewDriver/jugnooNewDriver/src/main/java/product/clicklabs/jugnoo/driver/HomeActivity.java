@@ -2462,9 +2462,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
-
 			String meteringState = Database2.getInstance(this).getMetringState();
-			if(Database2.ON.equalsIgnoreCase(meteringState)){
+			String meteringStateSp= Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
+
+			if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
+				GpsDistanceCalculator.saveTrackingToSP(this, 0);
+			}
+			else{
 				new Handler().postDelayed(new Runnable() {
 
 					@Override
@@ -2475,6 +2479,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 			int rowsAffected = Database2.getInstance(this).updateMetringState(Database2.ON);
+			Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
 			if(rowsAffected > 0){
 				startService(new Intent(this, MeteringService.class));
 			}
@@ -2484,6 +2489,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		else{
 			int rowsAffected = Database2.getInstance(this).updateMetringState(Database2.OFF);
+			Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
 			if(rowsAffected > 0){
 				stopService(new Intent(this, MeteringService.class));
 			}
@@ -4166,15 +4172,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		final RequestParams params = new RequestParams();
 
+
+		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+
+		double Limit_endRideMinute = 360;
+		double Average_endRideMinute = totalDistanceInKm * 2;
+
 		rideMinutes = getElapsedRideTime(activity, rideMinutes);
-
-		rideTime = decimalFormatNoDecimal.format(rideMinutes);
-		waitTime = decimalFormatNoDecimal.format(waitMinutes);
-
+		if(rideMinutes < Limit_endRideMinute) {
+			rideTime = decimalFormatNoDecimal.format(rideMinutes);
+			waitTime = decimalFormatNoDecimal.format(waitMinutes);
+		}
+		else{
+			rideMinutes = Average_endRideMinute;
+			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
+			waitTime = decimalFormatNoDecimal.format(waitMinutes);
+		}
 		final double eoRideMinutes = rideMinutes;
 		final double eoWaitMinutes = waitMinutes;
 
-		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
 		final double totalHaversineDistanceInKm = Math.abs(totalHaversineDistance/1000.0);
 
@@ -4618,23 +4634,26 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		final RequestParams params = new RequestParams();
 
-		SharedPreferences pref = activity.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
-		long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
-		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-		long rideTimeSeconds = timeDiffToAdd / 1000;
-		double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-		Log.e("timeDiffToAdd", "="+rideTimeMinutes);
-		if(rideTimeMinutes > 0){
-			rideMinutes = rideTimeMinutes;
+		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+
+		double Limit_endRideMinute = 360;
+		double Average_endRideMinute = totalDistanceInKm * 2;
+
+		rideMinutes = getElapsedRideTime(activity, rideMinutes);
+		if(rideMinutes < Limit_endRideMinute) {
+			rideTime = decimalFormatNoDecimal.format(rideMinutes);
+			waitTime = decimalFormatNoDecimal.format(waitMinutes);
+		}
+		else{
+			rideMinutes = Average_endRideMinute;
+			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
+			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
 
-		rideTime = decimalFormatNoDecimal.format(rideMinutes);
-		waitTime = decimalFormatNoDecimal.format(waitMinutes);
 
 		final double eoRideMinutes = rideMinutes;
 		final double eoWaitMinutes = waitMinutes;
 
-		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
 		params.put("access_token", Data.userData.accessToken);
 
