@@ -1990,7 +1990,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					reviewDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime+" min");
 					reviewRideTimeValue.setText(rideTime+" min");
-					reviewFareValue.setText("Rs. "+decimalFormat.format(totalFare));
+					reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(totalFare));
 
 					reviewUserName.setText(Data.assignedCustomerInfo.name);
 
@@ -2442,7 +2442,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			textViewCalculatedTime.append("Time: \n");
 			textViewCalculatedTime.append(timeSS);
 
-			SpannableString fareSS = new SpannableString("Rs. " + decimalFormat.format(totalFare));
+			SpannableString fareSS = new SpannableString("Rs. " + Utils.getDecimalFormatForMoney().format(totalFare));
 			final StyleSpan fareBSS = new StyleSpan(Typeface.BOLD);
 			fareSS.setSpan(fareBSS, 0, fareSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			textViewCalculatedFare.setText("");
@@ -2465,7 +2465,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 
 			double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
-			return decimalFormatNoDecimal.format(totalFare);
+			return Utils.getDecimalFormatForMoney().format(totalFare);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "";
@@ -2533,11 +2533,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
 									textViewCouponSubTitle.setVisibility(View.VISIBLE);
@@ -2561,11 +2561,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText("Rs. " + decimalFormatNoDecimal.format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
@@ -2595,11 +2595,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						finalDiscountedPrice = 0;
 					}
 
-					textViewFatafatBillAmountValue.setText("Rs. "+decimalFormatNoDecimal.format(fatafatOrderInfo.deliveryInfo.finalPrice));
-					textViewFatafatBillDiscountValue.setText("Rs. "+decimalFormatNoDecimal.format(fatafatOrderInfo.deliveryInfo.discount));
-					textViewFatafatBillFinalAmountValue.setText("Rs. "+decimalFormatNoDecimal.format(finalDiscountedPrice));
-					textViewFatafatBillJugnooCashValue.setText("Rs. "+decimalFormatNoDecimal.format(fatafatOrderInfo.deliveryInfo.paidFromWallet));
-					textViewFatafatBillToPay.setText("Rs. "+decimalFormatNoDecimal.format(fatafatOrderInfo.deliveryInfo.customerToPay));
+					textViewFatafatBillAmountValue.setText("Rs. "+Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.finalPrice));
+					textViewFatafatBillDiscountValue.setText("Rs. "+Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.discount));
+					textViewFatafatBillFinalAmountValue.setText("Rs. "+Utils.getDecimalFormatForMoney().format(finalDiscountedPrice));
+					textViewFatafatBillJugnooCashValue.setText("Rs. "+Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.paidFromWallet));
+					textViewFatafatBillToPay.setText("Rs. "+Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.customerToPay));
 				}
 				else{
 					throw new Exception();
@@ -2612,7 +2612,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType){
 				if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){								// wallet
-					textViewCouponDiscountedFare.setText("Rs. "+decimalFormatNoDecimal.format(Data.endRideData.toPay));
+					textViewCouponDiscountedFare.setText("Rs. "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					textViewCouponTitle.setText("Jugnoo Cash");
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
@@ -2713,13 +2713,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						driverPassengerName.setText(Data.assignedCustomerInfo.name);
 						textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).address);
-						textViewAfterAcceptAmount.setText("Money to pay: Rs. " + decimalFormatNoDecimal.format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount));
+						textViewAfterAcceptAmount.setText("Money to pay: Rs. " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount));
 					}
 					else if (DriverScreenMode.D_IN_RIDE == mode) {
 						if (((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo != null && ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
 							driverPassengerName.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo.name);
 							textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryAddress);
-							textViewAfterAcceptAmount.setText("Money to take: Rs. " + decimalFormatNoDecimal.format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay));
+							textViewAfterAcceptAmount.setText("Money to take: Rs. " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay));
 							textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 							textViewCustomerPickupAddress.setText("Order ID: "+((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.orderId);
 						}
@@ -2766,10 +2766,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void setTextToFareInfoTextViews(TextView minFareValue, TextView fareAfterValue, TextView fareAfterText){
 
-		minFareValue.setText("Rs " + decimalFormat.format(Data.fareStructure.fixedFare) + " for "
+		minFareValue.setText("Rs " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.fixedFare) + " for "
 				+ decimalFormat.format(Data.fareStructure.thresholdDistance) + " km");
 
-		fareAfterValue.setText("Rs " + decimalFormat.format(Data.fareStructure.farePerKm) + " per km + Rs "
+		fareAfterValue.setText("Rs " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.farePerKm) + " per km + Rs "
 				+ decimalFormat.format(Data.fareStructure.farePerMin) + " per min");
 
 		SpannableString sstr = new SpannableString("Fare");
@@ -3112,7 +3112,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
 			if(Data.fareStructure != null){
-				driverIRFareValue.setText(""+decimalFormat.format(Data.fareStructure.calculateFare(totalDistanceInKm, totalTimeInMin, totalWaitTimeInMin)));
+				driverIRFareValue.setText(""+Utils.getDecimalFormatForMoney().format(Data.fareStructure.calculateFare(totalDistanceInKm, totalTimeInMin, totalWaitTimeInMin)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4541,7 +4541,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				paymentMode = PaymentMode.WALLET.getOrdinal();
 
 				params.put("payment_mode", ""+PaymentMode.WALLET.getOrdinal());
-				params.put("paid_using_wallet", ""+decimalFormat.format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", ""+Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
 			}
 			else{																			// no wallet
 				finalPaidUsingWallet = 0;
@@ -4549,7 +4549,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				paymentMode = PaymentMode.CASH.getOrdinal();
 
 				params.put("payment_mode", ""+PaymentMode.CASH.getOrdinal());
-				params.put("paid_using_wallet", ""+decimalFormat.format(finalPaidUsingWallet));
+				params.put("paid_using_wallet", ""+Utils.getDecimalFormatForMoney().format(finalPaidUsingWallet));
 			}
 
 
@@ -5462,7 +5462,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else if(BusinessType.FATAFAT == businessType){
 				textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
-						+decimalFormatNoDecimal.format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
+						+Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
 						+" from customer.");
 			}
 
