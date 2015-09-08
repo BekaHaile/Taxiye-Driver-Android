@@ -415,13 +415,13 @@ public class GpsDistanceCalculator {
 
 	private synchronized boolean updateTotalDistance(LatLng lastLatLng, LatLng currentLatLng, double deltaDistance, Location currentLocation) {
 		boolean validDistance = false;
-		if (deltaDistance > 0.0) {
+		if (deltaDistance > 0.0 && deltaDistance < 20001) {
 			LatLngPair latLngPair = new LatLngPair(lastLatLng, currentLatLng, deltaDistance);
 			if (deltaLatLngPairs == null) {
 				deltaLatLngPairs = new ArrayList<LatLngPair>();
 			}
 
-			if (!deltaLatLngPairs.contains(latLngPair)) {
+			if (!deltaLatLngPairs.contains(latLngPair) && totalDistance < 200001) {
 				totalDistance = totalDistance + deltaDistance;
 				deltaLatLngPairs.add(latLngPair);
 				validDistance = true;
@@ -441,8 +441,8 @@ public class GpsDistanceCalculator {
 								+ lastLatLng.longitude + ","
 								+ DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime) + ","
 								+ totalHaversineDistance);
+				saveData(context, lastGPSLocation, lastLocationTime);
 			}
-			saveData(context, lastGPSLocation, lastLocationTime);
 		}
 		return validDistance;
 	}
