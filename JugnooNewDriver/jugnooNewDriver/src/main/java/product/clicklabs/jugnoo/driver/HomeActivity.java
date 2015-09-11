@@ -78,6 +78,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -107,6 +108,8 @@ import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -123,6 +126,10 @@ import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 @SuppressLint("DefaultLocale")
@@ -4024,6 +4031,137 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	public void driverStartRideRetro(final Activity activity, final LatLng driverAtPickupLatLng) {
+		initializeStartRideVariables();
+
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+//			RequestParams params = new RequestParams();
+
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("access_token", Data.userData.accessToken);
+			params.put("engagement_id", Data.dEngagementId);
+			params.put("customer_id", Data.dCustomerId);
+			params.put("pickup_latitude", ""+driverAtPickupLatLng.latitude);
+			params.put("pickup_longitude", ""+driverAtPickupLatLng.longitude);
+
+			if(Data.assignedCustomerInfo != null){
+				params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
+			}
+
+			Log.i("params", "=" + params);
+
+			RestClient.getApiServices().driverStartRideRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if(!jObj.isNull("error")){
+
+							String errorMessage = jObj.getString("error");
+
+							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
+								HomeActivity.logoutUser(activity);
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", errorMessage);
+							}
+						}
+						else{
+
+							int flag = ApiResponseFlags.RIDE_STARTED.getOrdinal();
+
+							if(jObj.has("flag")){
+								flag = jObj.getInt("flag");
+							}
+
+
+							if(ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag){
+								if((Data.assignedCustomerInfo != null) && (BusinessType.FATAFAT.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())){
+
+									JSONObject jDeliveryInfo = jObj.getJSONObject("delivery_info");
+									FatafatDeliveryInfo deliveryInfo = new FatafatDeliveryInfo(jDeliveryInfo.getInt("order_id"),
+											jDeliveryInfo.getString("delivery_address"),
+											new LatLng(jDeliveryInfo.getDouble("delivery_latitude"), jDeliveryInfo.getDouble("delivery_longitude")),
+											jDeliveryInfo.getDouble("final_price"),
+											jDeliveryInfo.getDouble("discount"),
+											jDeliveryInfo.getDouble("paid_from_wallet"),
+											jDeliveryInfo.getDouble("customer_to_pay"));
+
+									JSONObject jCustomerInfo = jObj.getJSONObject("customer_info");
+									FatafatCustomerInfo customerInfo = new FatafatCustomerInfo(jCustomerInfo.getInt("user_id"),
+											jCustomerInfo.getString("name"),
+											jCustomerInfo.getString("phone_no"));
+
+									((FatafatOrderInfo)Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
+								}
+								else if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())){
+									double dropLatitude = 0, dropLongitude = 0;
+									try {
+										if(jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
+											dropLatitude = jObj.getDouble("op_drop_latitude");
+											dropLongitude = jObj.getDouble("op_drop_longitude");
+										}
+									} catch (JSONException e) {
+										e.printStackTrace();
+									}
+									if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+										((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = null;
+									}
+									else{
+										((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+									}
+								}
+							}
+
+
+							if(map != null){
+								map.clear();
+							}
+
+							initializeStartRideVariables();
+
+							Data.startRidePreviousLatLng = driverAtPickupLatLng;
+							Data.startRidePreviousLocationTime = System.currentTimeMillis();
+							SharedPreferences pref = getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+							Editor editor = pref.edit();
+							editor.putString(Data.SP_LAST_LATITUDE, "" + driverAtPickupLatLng.latitude);
+							editor.putString(Data.SP_LAST_LONGITUDE, "" + driverAtPickupLatLng.longitude);
+							editor.putString(Data.SP_LAST_LOCATION_TIME, "" + Data.startRidePreviousLocationTime);
+							editor.commit();
+
+							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+							switchDriverScreen(driverScreenMode);
+
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					callAndHandleStateRestoreAPI();
+				}
+			});
+
+		}
+		else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+	}
+
+
 
 
 
@@ -4130,7 +4268,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
 			}
 			else if(BusinessType.FATAFAT == businessType){
-				fatafatEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
+//				fatafatEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
+				fatafatEndRideAPIRetro(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
+
 			}
 		}
 		else {
@@ -4274,7 +4414,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								driverScreenMode = DriverScreenMode.D_RIDE_END;
 								switchDriverScreen(driverScreenMode);
 
-								driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistanceInKm);
+//								driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistanceInKm);
+								driverUploadPathDataFileRetro(activity, Data.dEngagementId, totalHaversineDistanceInKm);
+
 
 								initializeStartRideVariables();
 
@@ -4542,7 +4684,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				e.printStackTrace();
 			}
 
-			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+//			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+			driverUploadPathDataFileRetro(activity, Data.dEngagementId, totalHaversineDistance);
 
 			initializeStartRideVariables();
 
@@ -4590,8 +4733,41 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+//Retrofit
 
+	public void driverUploadPathDataFileRetro(final Activity activity, String engagementId, double totalHaversineDistance) {
+		String rideDataStr = Database2.getInstance(activity).getRideData();
+		if (!"".equalsIgnoreCase(rideDataStr)) {
+			totalHaversineDistance = totalHaversineDistance / 1000;
+			rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
 
+			final RequestParams rparams = new RequestParams();
+
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("access_token", Data.userData.accessToken);
+			params.put("engagement_id", engagementId);
+			params.put("ride_path_data", rideDataStr);
+
+			rparams.put("access_token", Data.userData.accessToken);
+			rparams.put("engagement_id", engagementId);
+			rparams.put("ride_path_data", rideDataStr);
+			final String url = Data.SERVER_URL + "/upload_ride_data";
+
+			RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					Database2.getInstance(activity).insertPendingAPICall(activity, url, rparams);
+
+				}
+			});
+		}
+	}
 
 
 
@@ -4735,7 +4911,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 										driverScreenMode = DriverScreenMode.D_RIDE_END;
 										switchDriverScreen(driverScreenMode);
 
-										driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+//										driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+										driverUploadPathDataFileRetro(activity, Data.dEngagementId, totalHaversineDistance);
 
 										initializeStartRideVariables();
 
@@ -4760,6 +4937,147 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							DialogPopup.dismissLoadingDialog();
 						}
 					});
+
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			driverScreenMode = DriverScreenMode.D_IN_RIDE;
+			rideTimeChronometer.start();
+		}
+
+	}
+
+//	Retrofit
+
+	public void fatafatEndRideAPIRetro(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
+								  double waitMinutes, double rideMinutes,
+								  int flagDistanceTravelled, final BusinessType businessType){
+
+
+		SharedPreferences pref = activity.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
+		long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
+		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
+		long rideTimeSeconds = timeDiffToAdd / 1000;
+		double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
+		Log.e("timeDiffToAdd", "="+rideTimeMinutes);
+		final String url = Data.SERVER_URL + "/mark_delivered";
+
+		if(rideTimeMinutes > 0){
+			rideMinutes = rideTimeMinutes;
+		}
+
+		rideTime = decimalFormatNoDecimal.format(rideMinutes);
+		waitTime = decimalFormatNoDecimal.format(waitMinutes);
+
+		final double eoRideMinutes = rideMinutes;
+		final double eoWaitMinutes = waitMinutes;
+
+		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+
+		final HashMap<String, String> params = new HashMap<String, String>();
+		final RequestParams rParams = new RequestParams();
+
+		params.put("access_token", Data.userData.accessToken);
+		rParams.put("access_token", Data.userData.accessToken);;
+
+		JSONObject rideDataJSON = new JSONObject();
+		try {
+			rideDataJSON.put("latitude", dropLatitude);
+			rideDataJSON.put("longitude", dropLongitude);
+			rideDataJSON.put("distance_travelled", Double.parseDouble(decimalFormat.format(totalDistanceInKm)));
+			rideDataJSON.put("ride_time", Integer.parseInt(rideTime));
+			rideDataJSON.put("wait_time", Integer.parseInt(waitTime));
+			rideDataJSON.put("flag_distance_travelled", flagDistanceTravelled);
+			rideDataJSON.put("last_accurate_latitude", lastAccurateLatLng.latitude);
+			rideDataJSON.put("last_accurate_longitude", lastAccurateLatLng.longitude);
+			rideDataJSON.put("engagement_id", Integer.parseInt(Data.dEngagementId));
+			rideDataJSON.put("is_cached", 0);
+
+			params.put("ride_data", rideDataJSON.toString());
+			params.put("business_id", ""+businessType.getOrdinal());
+			params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
+
+			rParams.put("ride_data", rideDataJSON.toString());
+			rParams.put("business_id", ""+businessType.getOrdinal());
+			rParams.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
+
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+
+			RestClient.getApiServices().fatafatEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.RIDE_ENDED.getOrdinal() == flag){
+
+								try{
+									totalFare = jObj.getDouble("fare");
+								} catch(Exception e){
+									e.printStackTrace();
+									totalFare = 0;
+								}
+
+								JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
+
+								JSONObject jDeliveryInfo = jObj.getJSONObject("delivery_info");
+								double finalPrice = jDeliveryInfo.getDouble("final_price");
+								double discount = jDeliveryInfo.getDouble("discount");
+								double paidFromWallet = jDeliveryInfo.getDouble("paid_from_wallet");
+								double customerToPay = jDeliveryInfo.getDouble("customer_to_pay");
+
+								((FatafatOrderInfo)Data.assignedCustomerInfo).deliveryInfo.updatePrices(finalPrice, discount, paidFromWallet, customerToPay);
+
+								if(map != null){
+									map.clear();
+								}
+
+								waitStart = 2;
+								waitChronometer.stop();
+								rideTimeChronometer.stop();
+
+
+								clearSPData();
+
+								driverScreenMode = DriverScreenMode.D_RIDE_END;
+								switchDriverScreen(driverScreenMode);
+
+//								driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+								driverUploadPathDataFileRetro(activity, Data.dEngagementId, totalHaversineDistance);
+
+								initializeStartRideVariables();
+
+							}
+							else{
+								driverScreenMode = DriverScreenMode.D_IN_RIDE;
+								rideTimeChronometer.start();
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						}
+						else{
+							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+							rideTimeChronometer.start();
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						driverScreenMode = DriverScreenMode.D_IN_RIDE;
+						rideTimeChronometer.start();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					fatafatEndRideOffline(activity, url, rParams, eoRideMinutes, eoWaitMinutes, (FatafatOrderInfo) Data.assignedCustomerInfo);
+
+				}
+			});
 
 		} catch (Exception e1) {
 			e1.printStackTrace();
@@ -4844,7 +5162,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				e.printStackTrace();
 			}
 
-			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+//			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
+			driverUploadPathDataFileRetro(activity, Data.dEngagementId, totalHaversineDistance);
 
 			initializeStartRideVariables();
 
@@ -4959,6 +5278,85 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	}
 
+
+
+//	Retrofit
+
+	public void logoutRetro(final Activity activity) {
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+			DialogPopup.showLoadingDialog(activity, "Please Wait ...");
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("is_access_token_new", "1");
+
+			RestClient.getApiServices().logoutRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
+							HomeActivity.logoutUser(activity);
+						}
+						else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
+							String errorMessage = jObj.getString("error");
+							DialogPopup.alertPopup(activity, "", errorMessage);
+						}
+						else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
+							String message = jObj.getString("message");
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.LOGOUT_FAILURE.getOrdinal() == flag){
+							String errorMessage = jObj.getString("error");
+							DialogPopup.alertPopup(activity, "", errorMessage);
+						}
+						else if(ApiResponseFlags.LOGOUT_SUCCESSFUL.getOrdinal() == flag){
+							PicassoTools.clearCache(Picasso.with(activity));
+
+							try {
+								Session.getActiveSession().closeAndClearTokenInformation();
+							}
+							catch(Exception e) {
+								Log.v("Logout", "Error"+e);
+							}
+
+							GCMIntentService.clearNotifications(activity);
+
+							Data.clearDataOnLogout(activity);
+
+							userMode = UserMode.DRIVER;
+							driverScreenMode = DriverScreenMode.D_INITIAL;
+
+							new DriverServiceOperations().stopService(activity);
+
+							loggedOut = true;
+						}
+						else{
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+		}
+		else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+	}
 
 	/**
 	 * ASync for start or end wait from server
@@ -5076,7 +5474,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
-					logoutAsync(activity);
+//					logoutAsync(activity);
+					logoutRetro(activity);
 				}
 
 			});
@@ -5348,7 +5747,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							GCMIntentService.clearNotifications(activity);
 
-							driverStartRideAsync(activity, driverAtPickupLatLng);
+//							driverStartRideAsync(activity, driverAtPickupLatLng);
+							driverStartRideRetro(activity, driverAtPickupLatLng);
 						}
 						else{
 							DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to start ride.");
@@ -6348,7 +6748,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		cancelStationPathUpdateTimer();
 		if(myLocation != null){
 			if(checkDriverFree()){
-				fetchStationDataAPI(HomeActivity.this);
+//				fetchStationDataAPI(HomeActivity.this);
+				fetchStationDataAPIRetro(HomeActivity.this);
 			}
 		}
 	}
@@ -6432,6 +6833,83 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					});
 		}
 	}
+
+
+	public void fetchStationDataAPIRetro(final Activity activity) {
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("latitude", "" + myLocation.getLatitude());
+			params.put("longitude", "" + myLocation.getLongitude());
+
+			RestClient.getApiServices().fetchStationDataAPIRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
+							HomeActivity.logoutUser(activity);
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+						else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
+							String errorMessage = jObj.getString("error");
+							DialogPopup.alertPopup(activity, "", errorMessage);
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+						else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
+							String message = jObj.getString("message");
+							DialogPopup.alertPopup(activity, "", message);
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+						else if(ApiResponseFlags.STATION_ASSIGNED.getOrdinal() == flag){
+							if(checkDriverFree()){
+								assignedStationData = new StationData(jObj.getString("station_id"), jObj.getDouble("latitude"), jObj.getDouble("longitude"),
+										DateOperations.utcToLocal(jObj.getString("arrival_time")), jObj.getString("address"), jObj.getString("message"), jObj.getDouble("radius"));
+								displayStationDataPopup(activity);
+								startStationPathUpdateTimer();
+								SoundMediaPlayer.startSound(activity, R.raw.ring_new, 3, false, false);
+							}
+							else{
+								SoundMediaPlayer.stopSound();
+								GCMIntentService.clearNotifications(activity);
+							}
+						}
+						else if(ApiResponseFlags.NO_STATION_ASSIGNED.getOrdinal() == flag){
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+						else if(ApiResponseFlags.NO_STATION_AVAILABLE.getOrdinal() == flag){
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+						else{
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							SoundMediaPlayer.stopSound();
+							GCMIntentService.clearNotifications(activity);
+						}
+
+					} catch (Exception exception) {
+						exception.printStackTrace();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+
+				}
+			});
+
+
+		}
+	}
+
 
 	public boolean checkDriverFree(){
 		return (UserMode.DRIVER == userMode && driverScreenMode == DriverScreenMode.D_INITIAL && Data.userData.autosAvailable == 1 && Data.driverRideRequests.size() == 0);

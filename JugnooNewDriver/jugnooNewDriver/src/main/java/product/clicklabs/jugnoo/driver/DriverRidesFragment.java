@@ -30,9 +30,15 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class DriverRidesFragment extends Fragment {
@@ -76,11 +82,13 @@ public class DriverRidesFragment extends Fragment {
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getRidesAsync(getActivity());
+				//getRidesAsync(getActivity());
+				getBookingHistory(getActivity());
 			}
 		});
 		
-		getRidesAsync(getActivity());
+		//getRidesAsync(getActivity());
+		getBookingHistory(getActivity());
 		
 		return rootView;
 	}
@@ -309,9 +317,13 @@ public class DriverRidesFragment extends Fragment {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				progressBar.setVisibility(View.VISIBLE);
 				textViewInfoDisplay.setVisibility(View.GONE);
+
 				RequestParams params = new RequestParams();
 				params.put("access_token", Data.userData.accessToken);
 				params.put("current_mode", "1");
+
+				Log.v("access_token","--->"+Data.userData.accessToken);
+
 				fetchRidesClient = Data.getClient();
 				fetchRidesClient.post(Data.SERVER_URL + "/booking_history", params,
 						new CustomAsyncHttpResponseHandler() {
@@ -440,6 +452,51 @@ public class DriverRidesFragment extends Fragment {
 
 	}
 	
-	
+	private void getBookingHistory(final Activity activity){
+		progressBar.setVisibility(View.VISIBLE);
+		RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
+				new Callback<BookingHistoryResponse>() {
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
+									updateListData("Some error occurred. Tap to retry", true);
+								}
+
+							} else {
+
+								for (int i = 0; i < bookingHistoryResponse.getBookingData().size(); i++) {
+									BookingHistoryResponse.BookingData data = bookingHistoryResponse.getBookingData().get(i);
+									RideInfo rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
+											data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
+											data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
+											data.getBusinessId(), data.getPaidToMerchant(), data.getPaidByCustomer(), data.getDriverPaymentStatus(),
+											data.getStatusString());
+									rides.add(rideInfo);
+								}
+								updateListData("No rides currently", false);
+							}
+						}catch (Exception exception){
+							exception.printStackTrace();
+							updateListData("Some error occurred. Tap to retry", true);
+						}
+						progressBar.setVisibility(View.GONE);
+					}
+
+
+					@Override
+					public void failure(RetrofitError error) {
+						progressBar.setVisibility(View.GONE);
+						updateListData("Some error occurred. Tap to retry", true);
+					}
+				});
+	}
 
 }

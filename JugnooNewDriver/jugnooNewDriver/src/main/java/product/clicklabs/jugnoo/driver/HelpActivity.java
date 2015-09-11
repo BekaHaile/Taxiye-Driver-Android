@@ -5,9 +5,15 @@ import java.util.ArrayList;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
@@ -109,7 +115,8 @@ public class HelpActivity extends FragmentActivity{
 			@Override
 			public void onClick(View v) {
 				if(selectedHelpSection != null){
-					getHelpAsync(HelpActivity.this, selectedHelpSection);
+//					getHelpAsync(HelpActivity.this, selectedHelpSection);
+					getHelp(HelpActivity.this, selectedHelpSection);
 				}
 			}
 		});
@@ -222,7 +229,9 @@ public class HelpActivity extends FragmentActivity{
 							break;
 							
 						default:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+//							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+							getHelp(HelpActivity.this, helpSections.get(holder.id));
+
 							FlurryEventLogger.particularHelpOpened(helpSections.get(holder.id).getName(), Data.userData.accessToken);
 							
 					}
@@ -320,6 +329,66 @@ public class HelpActivity extends FragmentActivity{
 			}
 		}
 	}
+
+	// Retrofit
+
+
+	public void getHelp(final Activity activity, final HelpSection helpSection) {
+		if(fetchHelpDataClient == null){
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+				helpExpandedRl.setVisibility(View.VISIBLE);
+				progressBarHelp.setVisibility(View.VISIBLE);
+				textViewInfoDisplay.setVisibility(View.GONE);
+				helpWebview.setVisibility(View.GONE);
+				loadHTMLContent("");
+
+
+
+				RestClient.getApiServices().gethelp(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+
+
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if(!jObj.isNull("error")){
+							String errorMessage = jObj.getString("error");
+							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
+								HomeActivity.logoutUser(activity);
+							}
+							else{
+								openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+							}
+						}
+						else{
+							String data = jObj.getString("data");
+							openHelpData(helpSection, data, false);
+						}
+
+					}catch (Exception exception) {
+						exception.printStackTrace();
+						openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+					}
+						progressBarHelp.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						progressBarHelp.setVisibility(View.GONE);
+						openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+
+					}
+				});
+			}
+			else {
+				openHelpData(helpSection, "No internet connection. Tap to retry.", true);
+			}
+		}
+	}
+
 	
 	
 	public void performBackPressed(){

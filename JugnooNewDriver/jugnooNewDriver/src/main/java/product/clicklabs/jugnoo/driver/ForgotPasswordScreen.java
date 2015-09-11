@@ -20,14 +20,21 @@ import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class ForgotPasswordScreen extends Activity{
@@ -112,7 +119,8 @@ public class ForgotPasswordScreen extends Activity{
 				}
 				else{
 					if(isEmailValid(email)){
-						forgotPasswordAsync(ForgotPasswordScreen.this, email);
+						//forgotPasswordAsync(ForgotPasswordScreen.this, email);
+						forgotPassword(ForgotPasswordScreen.this, email);
 						FlurryEventLogger.forgotPasswordClicked(email);
 					}
 					else{
@@ -287,6 +295,62 @@ public class ForgotPasswordScreen extends Activity{
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 
+	}
+
+	public void forgotPassword(final Activity activity, final String email){
+		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
+			@Override
+			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+				if(response != null) {
+
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					try {
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+						if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
+							HomeActivity.logoutUser(activity);
+						}
+						else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.NO_SUCH_USER.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+							SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+						}
+						else if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+							DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									performBackPressed();
+								}
+							});
+						}
+						else{
+							DialogPopup.alertPopup(activity, "", message);
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+			}
+		});
 	}
 	
 	
