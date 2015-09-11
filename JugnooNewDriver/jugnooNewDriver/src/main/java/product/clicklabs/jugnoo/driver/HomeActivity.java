@@ -289,6 +289,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	LinearLayout linearLayoutMeterFareEditText;
 	TextView textViewMeterFareRupee;
 	EditText editTextEnterMeterFare;
+
+	RelativeLayout relativeLayoutEndRideLuggageCount;
+	ImageView imageViewEndRideLuggageCountPlus, imageViewEndRideLuggageCountMinus;
+	TextView textViewEndRideLuggageCount;
+
 	RelativeLayout relativeLayoutUseJugnooFare;
 	RelativeLayout relativeLayoutJugnooCalculatedFare;
 	TextView textViewCalculatedDistance, textViewCalculatedTime, textViewCalculatedFare;
@@ -374,6 +379,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			mapTouchedOnce = false;
 	boolean dontCallRefreshDriver = false;
 	int fareFetchedFromJugnoo = 0;
+	int luggageCountAdded = 0;
 
 
 	AlertDialog gpsDialogAlert;
@@ -677,6 +683,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		textViewMeterFareRupee = (TextView) findViewById(R.id.textViewMeterFareRupee); textViewMeterFareRupee.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewMeterFareRupee.setVisibility(View.GONE);
 		editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare); editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+		relativeLayoutEndRideLuggageCount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideLuggageCount); relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+		imageViewEndRideLuggageCountPlus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountPlus);
+		imageViewEndRideLuggageCountMinus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountMinus);
+		textViewEndRideLuggageCount = (TextView) findViewById(R.id.textViewEndRideLuggageCount); textViewEndRideLuggageCount.setTypeface(Data.latoRegular(this));
 
 		relativeLayoutUseJugnooFare = (RelativeLayout) findViewById(R.id.relativeLayoutUseJugnooFare);
 		((TextView) findViewById(R.id.textViewUseJugnooFare)).setTypeface(Data.latoRegular(this));
@@ -1258,51 +1269,90 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void onClick(View v) {
-				if(DriverScreenMode.D_ENTER_METER_FARE == driverScreenMode
-						&& Data.assignedCustomerInfo != null
-						&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-						&& 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).meterFareApplicable){
+				try {
+					if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
+						if (Data.assignedCustomerInfo != null
+								&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+								&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
 
-					String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
-					if("".equalsIgnoreCase(enteredMeterFare)){
-						DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								new Handler().postDelayed(new Runnable() {
+							String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
+							if ("".equalsIgnoreCase(enteredMeterFare)) {
+								DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
 									@Override
-									public void run() {
-										linearLayoutMeterFareEditText.performClick();
+									public void onClick(View v) {
+										new Handler().postDelayed(new Runnable() {
+											@Override
+											public void run() {
+												linearLayoutMeterFareEditText.performClick();
+											}
+										}, 200);
 									}
-								}, 200);
-							}
-						});
-					}
-					else{
-						if(AppStatus.getInstance(activity).isOnline(activity)) {
-							DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare, "OK", "Cancel",
-									new OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+								});
+							} else {
+								if (AppStatus.getInstance(activity).isOnline(activity)) {
+									String message = "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
+									if (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
+										if (luggageCountAdded > 0) {
+											message = message + "\n" + luggageCountAdded + " luggage items added";
+										} else {
+											message = message + "\n" + "No luggage added";
 										}
-									},
-									new OnClickListener() {
-										@Override
-										public void onClick(View v) {
+									}
 
-										}
-									}, false, false);
+									DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
+											new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+												}
+											},
+											new OnClickListener() {
+												@Override
+												public void onClick(View v) {
+
+												}
+											}, false, false);
+								} else {
+									DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
+								}
+							}
+						} else if (Data.assignedCustomerInfo != null
+								&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+								&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
+
+							if (AppStatus.getInstance(activity).isOnline(activity)) {
+								String message = "";
+								if (luggageCountAdded > 0) {
+									message = luggageCountAdded + " luggage items added";
+								} else {
+									message = "No luggage added";
+								}
+
+								DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
+										new OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+											}
+										},
+										new OnClickListener() {
+											@Override
+											public void onClick(View v) {
+
+											}
+										}, false, false);
+							} else {
+								DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
+							}
 						}
-						else{
-							DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
-						}
+					} else if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
+						MeteringService.clearNotifications(HomeActivity.this);
+						driverScreenMode = DriverScreenMode.D_INITIAL;
+						switchDriverScreen(driverScreenMode);
+						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
 					}
-				}
-				else if(DriverScreenMode.D_RIDE_END == driverScreenMode){
-					MeteringService.clearNotifications(HomeActivity.this);
-					driverScreenMode = DriverScreenMode.D_INITIAL;
-					switchDriverScreen(driverScreenMode);
-					FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -1329,7 +1379,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						textViewMeterFareRupee.setVisibility(View.GONE);
 					}
 				}
-				if(!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())){
+				if (!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())) {
 					fareFetchedFromJugnoo = 0;
 				}
 			}
@@ -1366,6 +1416,33 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
 					editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
 					fareFetchedFromJugnoo = 1;
+				}
+			}
+		});
+
+
+
+		imageViewEndRideLuggageCountPlus.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(luggageCountAdded < 5){
+					luggageCountAdded = luggageCountAdded + 1;
+					textViewEndRideLuggageCount.setText(""+luggageCountAdded);
+				}
+			}
+		});
+
+		imageViewEndRideLuggageCountMinus.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(luggageCountAdded > 0){
+					luggageCountAdded = luggageCountAdded - 1;
+					if(luggageCountAdded == 0){
+						textViewEndRideLuggageCount.setText("NO LUGGAGE");
+					}
+					else{
+						textViewEndRideLuggageCount.setText(""+luggageCountAdded);
+					}
 				}
 			}
 		});
@@ -1507,12 +1584,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
 
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		showManualPatchPushReceivedDialog();
+
 	}
 
 
@@ -2033,6 +2110,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					} catch (Exception e) {
 						reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
 					}
+					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 
 					Database2.getInstance(this).deleteAllCurrentPathItems();
 				}
@@ -2041,7 +2119,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					switchDriverScreen(driverScreenMode);
 				}
 			}
-			else if(mode == DriverScreenMode.D_ENTER_METER_FARE){
+			else if(mode == DriverScreenMode.D_BEFORE_END_OPTIONS){
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
@@ -2061,7 +2139,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				relativeLayoutEndRideCustomerAmount.setVisibility(View.GONE);
 
 				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
-				layoutParams.setMargins(0, 0, 0, (int) (350 * ASSL.Yscale()));
+				layoutParams.setMargins(0, 0, 0, (int) (270 * ASSL.Yscale()));
 				reviewSubmitBtn.setLayoutParams(layoutParams);
 				reviewSubmitBtn.setText("OK");
 
@@ -2080,6 +2158,26 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				} catch (Exception e) {
 					relativeLayoutUseJugnooFare.setVisibility(View.GONE);
 				}
+
+				try {
+					if(Data.assignedCustomerInfo instanceof AutoCustomerInfo){
+						if(((AutoCustomerInfo)Data.assignedCustomerInfo).luggageChargesApplicable == 1) {
+							relativeLayoutEndRideLuggageCount.setVisibility(View.VISIBLE);
+						}
+						else{
+							relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+						}
+					}
+					else{
+						relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+					}
+				} catch (Exception e) {
+					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+				}
+
+				luggageCountAdded = 0;
+				textViewEndRideLuggageCount.setText("NO LUGGAGE");
+
 
 				setCalculatedFareValuesAtEndRide();
 				relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
@@ -2338,7 +2436,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					break;
 
 
-				case D_ENTER_METER_FARE:
+				case D_BEFORE_END_OPTIONS:
 
 					updateDriverServiceFast("no");
 
@@ -2388,7 +2486,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			updateReceiveRequestsFlag();
 
-			if(mode != DriverScreenMode.D_ENTER_METER_FARE) {
+			if(mode != DriverScreenMode.D_BEFORE_END_OPTIONS) {
 				startMeteringService();
 			}
 
@@ -3619,11 +3717,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 											int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
 											int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
+											int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable");
 
 											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 													Integer.parseInt(Data.dCustomerId), referenceId,
 													userName, phoneNo, pickuplLatLng,
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled);
+													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
+													meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable);
 
 											Data.driverRideRequests.clear();
 
@@ -4182,7 +4282,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		}
 		else {
-			if(DriverScreenMode.D_ENTER_METER_FARE != driverScreenMode){
+			if(DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode){
 				driverScreenMode = DriverScreenMode.D_IN_RIDE;
 				rideTimeChronometer.start();
 			}
@@ -4252,6 +4352,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
 					params.put("meter_fare", enteredMeterFare);
 					params.put("fare_fetched_from_jugnoo", ""+fareFetchedFromJugnoo);
+				}
+			} catch (Exception e) {
+			}
+
+			try {
+				if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+						&& 1 == ((AutoCustomerInfo)Data.assignedCustomerInfo).luggageChargesApplicable){
+					params.put("luggage_count", ""+luggageCountAdded);
 				}
 			} catch (Exception e) {
 			}
@@ -5478,8 +5586,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 							if (Data.assignedCustomerInfo != null
 									&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-									&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
-								driverScreenMode = DriverScreenMode.D_ENTER_METER_FARE;
+									&& (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable
+									|| 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable)) {
+								driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
 								switchDriverScreen(driverScreenMode);
 								dialog.dismiss();
 							} else {
