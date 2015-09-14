@@ -21,12 +21,20 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class ChangePhoneBeforeOTPActivity extends Activity{
@@ -108,8 +116,10 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                             editTextNewPhoneNumber.setError("Changed Phone number is same as the previous one.");
                         }
                         else{
-                            updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
-                        }
+//                            updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
+							  updateUserProfileAPIRetro(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
+
+						}
                     }
                     else{
                         editTextNewPhoneNumber.requestFocus();
@@ -219,6 +229,75 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                         }
                     }
                 });
+        }
+        else {
+            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+        }
+
+    }
+
+    public void updateUserProfileAPIRetro(final Activity activity, final String updatedField, String accessToken) {
+        if(AppStatus.getInstance(activity).isOnline(activity)) {
+
+            DialogPopup.showLoadingDialog(activity, "Updating...");
+
+//            RequestParams params = new RequestParams();
+			HashMap<String, String> params = new HashMap<String, String>();
+
+            params.put("client_id", Data.CLIENT_ID);
+            params.put("login_type", Data.LOGIN_TYPE);
+            params.put("access_token", accessToken);
+            params.put("is_access_token_new", "1");
+            params.put("updated_phone_no", updatedField);
+
+			RestClient.getApiServices().updateUserProfileAPIRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					DialogPopup.dismissLoadingDialog();
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
+						if(jObj.has("flag")){
+							flag = jObj.getInt("flag");
+						}
+						String message = JSONParser.getServerMessage(jObj);
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+								OTPConfirmScreen.emailRegisterData.phoneNo = updatedField;
+								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+
+									@Override
+									public void onClick(View v) {
+										performBackPressed();
+									}
+								});
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", message);
+							}
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+
+
         }
         else {
             DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);

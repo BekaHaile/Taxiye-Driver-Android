@@ -5,7 +5,9 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.utils.DataLoader;
 import retrofit.RestAdapter;
+import retrofit.client.ApacheClient;
 import retrofit.client.OkClient;
 
 /**
@@ -24,7 +26,8 @@ public class RestClient {
 		okHttpClient.setConnectTimeout(15, TimeUnit.SECONDS);
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
-				.setClient(new OkClient(okHttpClient))
+//				.setClient(new OkClient(okHttpClient))
+				.setClient(new ApacheClient(DataLoader.getHttpClientSecure()))
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();

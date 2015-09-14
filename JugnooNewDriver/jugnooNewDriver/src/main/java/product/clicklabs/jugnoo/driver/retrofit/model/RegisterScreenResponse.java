@@ -24,90 +24,70 @@ public class RegisterScreenResponse {
 	private String error;
 
 	/**
-	 *
-	 * @return
-	 * The flag
+	 * @return The flag
 	 */
 	public Integer getFlag() {
 		return flag;
 	}
 
 	/**
-	 *
-	 * @param flag
-	 * The flag
+	 * @param flag The flag
 	 */
 	public void setFlag(Integer flag) {
 		this.flag = flag;
 	}
 
 	/**
-	 *
-	 * @return
-	 * The phoneNo
+	 * @return The phoneNo
 	 */
 	public String getPhoneNo() {
 		return phoneNo;
 	}
 
 	/**
-	 *
-	 * @param phoneNo
-	 * The phone_no
+	 * @param phoneNo The phone_no
 	 */
 	public void setPhoneNo(String phoneNo) {
 		this.phoneNo = phoneNo;
 	}
 
 	/**
-	 *
-	 * @return
-	 * The accessToken
+	 * @return The accessToken
 	 */
 	public String getAccessToken() {
 		return accessToken;
 	}
 
 	/**
-	 *
-	 * @param accessToken
-	 * The access_token
+	 * @param accessToken The access_token
 	 */
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
 
 	/**
-	 *
-	 * @return
-	 * The userEmail
+	 * @return The userEmail
 	 */
 	public String getUserEmail() {
 		return userEmail;
 	}
 
 	/**
-	 *
-	 * @param userEmail
-	 * The user_email
+	 * @param userEmail The user_email
 	 */
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
 
 	/**
-	 *
-	 * @return
-	 * The error
+	 * @return The error
 	 */
 	public String getError() {
 		return error;
 	}
 
 	/**
-	 *
-	 * @param error
-	 * The error
+	 * @param error The error
 	 */
 	public void setError(String error) {
 		this.error = error;

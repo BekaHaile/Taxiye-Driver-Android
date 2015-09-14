@@ -22,11 +22,19 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class RequestDuplicateRegistrationActivity extends Activity {
@@ -100,7 +108,8 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 				email = OTPConfirmScreen.emailRegisterData.emailId;
 				phone = OTPConfirmScreen.emailRegisterData.phoneNo;
 
-				submitDuplicateRegistrationRequestAPI(RequestDuplicateRegistrationActivity.this, messageStr, name, email, phone);
+//				submitDuplicateRegistrationRequestAPI(RequestDuplicateRegistrationActivity.this, messageStr, name, email, phone);
+				submitDuplicateRegistrationRequestAPIRetro(RequestDuplicateRegistrationActivity.this, messageStr, name, email, phone);
 
 			}
 		});
@@ -253,6 +262,80 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 							DialogPopup.dismissLoadingDialog();
 						}
 					});
+		}
+		else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+	}
+
+
+
+	public void submitDuplicateRegistrationRequestAPIRetro(final Activity activity, String messageStr, String name, String email, String phone) {
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+//			RequestParams params = new RequestParams();
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("user_name", name);
+			params.put("user_email", email);
+			params.put("phone_no", phone);
+			params.put("user_message", ""+messageStr);
+			params.put("client_id", Data.CLIENT_ID);
+			params.put("login_type", Data.LOGIN_TYPE);
+
+			try {
+				if (RegisterScreen.multipleCaseJSON != null) {
+					params.put("users", ""+RegisterScreen.multipleCaseJSON.getJSONArray("users"));
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+			RestClient.getApiServices().submitDuplicateRegistrationRequestAPIRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener(){
+									@Override
+									public void onClick(View v) {
+										activity.startActivity(new Intent(activity, SplashNewActivity.class));
+										activity.finish();
+										activity.overridePendingTransition(R.anim.left_in, R.anim.left_out);
+									}
+								});
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", message);
+							}
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+
+
+
 		}
 		else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);

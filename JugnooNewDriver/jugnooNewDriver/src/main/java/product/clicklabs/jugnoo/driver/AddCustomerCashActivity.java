@@ -3,10 +3,16 @@ package product.clicklabs.jugnoo.driver;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.graphics.Typeface;
@@ -23,6 +29,8 @@ import android.widget.TextView.OnEditorActionListener;
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
+
+import java.util.HashMap;
 
 public class AddCustomerCashActivity extends Activity{
 	
@@ -84,7 +92,9 @@ public class AddCustomerCashActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-				addCustomerCashAPI(AddCustomerCashActivity.this, "0");
+//				addCustomerCashAPI(AddCustomerCashActivity.this, "0");
+				addCustomerCashRetro(AddCustomerCashActivity.this, "0");
+
 			}
 		});
 		
@@ -109,7 +119,9 @@ public class AddCustomerCashActivity extends Activity{
 								DialogPopup.alertPopup(AddCustomerCashActivity.this, "", "You cannot add amount less than \nRs. "+Data.endRideData.toPay);
 							}
 							else{
-								addCustomerCashAPI(AddCustomerCashActivity.this, ""+amount);
+//								addCustomerCashAPI(AddCustomerCashActivity.this, ""+amount);
+								addCustomerCashRetro(AddCustomerCashActivity.this, ""+amount);
+
 							}
 						}
 						else{
@@ -250,6 +262,82 @@ public class AddCustomerCashActivity extends Activity{
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
+	}
+
+
+	public void addCustomerCashRetro(final Activity activity, final String amount) {
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+//			RequestParams params = new RequestParams();
+
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("access_token", Data.userData.accessToken);
+			params.put("engagement_id", Data.dEngagementId);
+			params.put("money_added", amount);
+
+			RestClient.getApiServices().addCustomerCashRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					Log.i("Server response", "response = " + response);
+					DialogPopup.dismissLoadingDialog();
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+								String errorMessage = jObj.getString("error");
+								DialogPopup.alertPopup(activity, "", errorMessage);
+							}
+							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+								if("0".equalsIgnoreCase(amount)){
+									if(HomeActivity.appInterruptHandler != null){
+										HomeActivity.appInterruptHandler.onCustomerCashDone();
+										performBackPressed();
+									}
+								}
+								else{
+									String message = jObj.getString("message");
+									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+
+										@Override
+										public void onClick(View v) {
+											if(HomeActivity.appInterruptHandler != null){
+												HomeActivity.appInterruptHandler.onCustomerCashDone();
+												performBackPressed();
+											}
+										}
+									});
+								}
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						}
+
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
+				}
+			});
+
+
+		}
+		else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
 	}
 	
 }

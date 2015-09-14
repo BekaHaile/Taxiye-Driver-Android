@@ -490,7 +490,6 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 			params.put("app_version", "" + Data.appVersion);
 			params.put("os_version", Data.osVersion);
 			params.put("country", Data.country);
-
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
 			params.put("referral_code", "");

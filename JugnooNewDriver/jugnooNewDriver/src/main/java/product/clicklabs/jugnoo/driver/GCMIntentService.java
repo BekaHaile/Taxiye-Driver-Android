@@ -29,6 +29,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,12 +43,18 @@ import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class GCMIntentService extends IntentService {
 
@@ -290,7 +297,8 @@ public class GCMIntentService extends IntentService {
                                     }
 
 
-                                    sendRequestAckToServer(this, engagementId, currentTimeUTC);
+//                                    sendRequestAckToServer(this, engagementId, currentTimeUTC);
+                                    sendRequestAckToServerRetro(this, engagementId, currentTimeUTC);
 
                                     FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
 
@@ -426,7 +434,9 @@ public class GCMIntentService extends IntentService {
                                 } else if (PushFlags.HEARTBEAT.getOrdinal() == flag) {
                                     try {
                                         String uuid = jObj.getString("uuid");
-                                        sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
+//                                        sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
+                                        sendHeartbeatAckToServerRetro(this, uuid, currentTimeUTC);
+
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -439,7 +449,9 @@ public class GCMIntentService extends IntentService {
                                         notificationManager(this, message1, false);
                                     }
                                 } else if (PushFlags.CHANGE_PORT.getOrdinal() == flag) {
-                                    sendChangePortAckToServer(this, jObj);
+//                                    sendChangePortAckToServer(this, jObj);
+                                    sendChangePortAckToServerRetro(this, jObj);
+
                                 } else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
                                     int userId = jObj.getInt("user_id");
                                     double balance = jObj.getDouble("balance");
@@ -716,6 +728,48 @@ public class GCMIntentService extends IntentService {
     }
 
 
+    public void sendRequestAckToServerRetro(final Context context, final String engagementId, final String actTimeStamp) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String accessToken = Database2.getInstance(context).getDLDAccessToken();
+                    if ("".equalsIgnoreCase(accessToken)) {
+                        DriverLocationUpdateService.updateServerData(context);
+                        accessToken = Database2.getInstance(context).getDLDAccessToken();
+                    }
+
+                    String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+                    String networkName = getNetworkName(context);
+
+
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("access_token", accessToken);
+                    params.put("engagement_id", engagementId);
+                    params.put("ack_timestamp", actTimeStamp);
+                    params.put("network_name", networkName);
+
+
+                    Response response = RestClient.getApiServices().sendRequestAckToServerRetro(params);
+                    String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+                    JSONObject jObj = new JSONObject(result);
+                    if (jObj.has("flag")) {
+                        int flag = jObj.getInt("flag");
+                        if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == flag) {
+                            String log = jObj.getString("log");
+                            Log.e("ack to server successfull", "=" + log);
+                        }
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+
     public void sendHeartbeatAckToServer(final Context context, final String uuid, final String ackTimeStamp) {
         new Thread(new Runnable() {
             @Override
@@ -746,6 +800,39 @@ public class GCMIntentService extends IntentService {
         }).start();
     }
 
+//    Retrofit
+
+    public void sendHeartbeatAckToServerRetro(final Context context, final String uuid, final String ackTimeStamp) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+					String networkName = getNetworkName(context);
+
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("uuid", uuid);
+                    params.put("timestamp", ackTimeStamp);
+                    params.put("network_name", networkName);
+
+                    RestClient.getApiServices().sendHeartbeatAckToServerRetro(params, new Callback<RegisterScreenResponse>() {
+						@Override
+						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+							Log.v("RetroFIT11", String.valueOf(response));
+						}
+
+						@Override
+						public void failure(RetrofitError error) {
+							Log.v("RetroFIT1", String.valueOf(error));
+
+						}
+					});
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
     //context.sendBroadcast(new Intent("com.google.android.intent.action.GTALK_HEARTBEAT"));
     //context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
@@ -776,6 +863,33 @@ public class GCMIntentService extends IntentService {
                     }
 
                     simpleJSONParser = null;
+                    nameValuePairs = null;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    public void sendChangePortAckToServerRetro(final Context context, final JSONObject jObject1) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    SplashNewActivity.initializeServerURL(context);
+                    Pair<String, String> accessTokenPair = JSONParser.getAccessTokenPair(context);
+
+                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+                    nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenPair.first));
+
+                    Response response = RestClient.getApiServices().sendChangePortAckToServerRetro(accessTokenPair.first);
+                    String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+                    if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
+                    } else {
+                        new JSONParser().parsePortNumber(context, jObject1);
+                    }
+
                     nameValuePairs = null;
                 } catch (Exception e) {
                     e.printStackTrace();
