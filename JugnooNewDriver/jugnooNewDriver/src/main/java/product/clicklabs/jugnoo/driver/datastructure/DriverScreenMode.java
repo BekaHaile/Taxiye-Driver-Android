@@ -12,7 +12,7 @@ public enum DriverScreenMode {
 	
 	private int ordinal;
 	
-	private DriverScreenMode(int ordinal) {
+	DriverScreenMode(int ordinal) {
 		this.ordinal = ordinal;
 	}
 	

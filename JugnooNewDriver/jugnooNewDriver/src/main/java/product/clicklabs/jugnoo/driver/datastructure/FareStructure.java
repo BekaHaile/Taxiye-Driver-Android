@@ -10,6 +10,8 @@ public class FareStructure {
 	public double freeWaitingMinutes;
 	
 	public double fareFactor;
+
+	public double luggageFare;
 	
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes, double farePerWaitingMin, double freeWaitingMinutes){
 		this.fixedFare = fixedFare;
@@ -20,6 +22,7 @@ public class FareStructure {
 		this.farePerWaitingMin = farePerWaitingMin;
 		this.freeWaitingMinutes = freeWaitingMinutes;
 		this.fareFactor = 1;
+		this.luggageFare = 0;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){

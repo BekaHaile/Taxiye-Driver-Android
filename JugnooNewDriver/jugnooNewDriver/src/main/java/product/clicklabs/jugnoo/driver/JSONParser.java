@@ -516,6 +516,13 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+			if(jLastRideData.has("luggage_fare")){
+				try{
+					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_fare");
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
 			
 			parseEndRideData(jLastRideData, Data.dEngagementId, HomeActivity.totalFare);
 			
@@ -694,6 +701,13 @@ public class JSONParser {
 									if(jObject.has("fare_factor")){
 										try{
 											Data.fareStructure.fareFactor = jObject.getDouble("fare_factor");
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
+									if(jObject.has("luggage_fare")){
+										try{
+											Data.fareStructure.luggageFare = jObject.getDouble("luggage_fare");
 										} catch(Exception e){
 											e.printStackTrace();
 										}

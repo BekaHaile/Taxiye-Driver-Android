@@ -3623,7 +3623,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 												Log.w("fareFactor", "e="+e.toString());
 											}
 										}
-
+										if(jObj.has("luggage_fare")){
+											try{
+												Data.fareStructure.luggageFare = jObj.getDouble("luggage_fare");
+											} catch(Exception e){
+												e.printStackTrace();
+											}
+										}
 										//"http://jugnoo-images.s3.amazonaws.com/user_profile/user.png";
 
 										int referenceId = jObj.getInt("reference_id");
@@ -4380,7 +4386,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@Override
 					public void onFailure(Throwable arg3) {
 						Log.e("request fail", arg3.toString());
-						endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare);
+						endRideOffline(activity, url, params, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 
 					}
 
@@ -4541,7 +4547,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	 */
 	//TODO end ride offline
 	public void endRideOffline(Activity activity, String url, RequestParams params, double rideTime, double waitTime,
-							   AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare){
+							   AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded){
 		try{
 
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
@@ -4553,7 +4559,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("rideTime", "="+rideTime);
 
 			try{
-				if(1 == assignedCustomerInfo.meterFareApplicable){
+				if(assignedCustomerInfo != null && 1 == assignedCustomerInfo.meterFareApplicable){
 					totalFare = enteredMeterFare;
 				}
 				else{
@@ -4562,6 +4568,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} catch(Exception e){
 				e.printStackTrace();
 				totalFare = 0;
+			}
+
+			try{
+				if(assignedCustomerInfo != null && 1 == assignedCustomerInfo.luggageChargesApplicable){
+					totalFare = totalFare + (luggageCountAdded * Data.fareStructure.luggageFare);
+				}
+			} catch(Exception e){
+				e.printStackTrace();
 			}
 
 
