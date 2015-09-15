@@ -516,9 +516,9 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
-			if(jLastRideData.has("luggage_fare")){
+			if(jLastRideData.has("luggage_charges")){
 				try{
-					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_fare");
+					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_charges");
 				} catch(Exception e){
 					e.printStackTrace();
 				}
@@ -705,9 +705,9 @@ public class JSONParser {
 											e.printStackTrace();
 										}
 									}
-									if(jObject.has("luggage_fare")){
+									if(jObject.has("luggage_charges")){
 										try{
-											Data.fareStructure.luggageFare = jObject.getDouble("luggage_fare");
+											Data.fareStructure.luggageFare = jObject.getDouble("luggage_charges");
 										} catch(Exception e){
 											e.printStackTrace();
 										}

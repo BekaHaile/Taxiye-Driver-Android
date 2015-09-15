@@ -3623,9 +3623,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 												Log.w("fareFactor", "e="+e.toString());
 											}
 										}
-										if(jObj.has("luggage_fare")){
+										if(jObj.has("luggage_charges")){
 											try{
-												Data.fareStructure.luggageFare = jObj.getDouble("luggage_fare");
+												Data.fareStructure.luggageFare = jObj.getDouble("luggage_charges");
 											} catch(Exception e){
 												e.printStackTrace();
 											}
