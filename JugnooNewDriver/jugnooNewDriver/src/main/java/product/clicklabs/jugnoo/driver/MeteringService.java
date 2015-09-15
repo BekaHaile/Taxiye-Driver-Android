@@ -18,7 +18,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class MeteringService extends Service {
@@ -122,17 +124,18 @@ public class MeteringService extends Service {
     	}
     	try {
     		String meteringState = Database2.getInstance(this).getMetringState();
-    		if(Database2.ON.equalsIgnoreCase(meteringState)){
-    			Intent restartService = new Intent(getApplicationContext(), this.getClass());
-    			restartService.setPackage(getPackageName());
-    			PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
-    			AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-    			alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+			String meteringStateSp= Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
+    		if(!Database2.ON.equalsIgnoreCase(meteringState) && !Database2.ON.equalsIgnoreCase(meteringStateSp)){
+				gpsInstance(this).stop();
+				Database2.getInstance(this).deleteAllCurrentPathItems();
+				cancelUploadPathAlarm();
     		}
     		else{
-    			gpsInstance(this).stop();
-                Database2.getInstance(this).deleteAllCurrentPathItems();
-                cancelUploadPathAlarm();
+				Intent restartService = new Intent(getApplicationContext(), this.getClass());
+				restartService.setPackage(getPackageName());
+				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
+				AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
     		}
 		} catch (Exception e) {
 			e.printStackTrace();

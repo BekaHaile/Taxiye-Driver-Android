@@ -24,4 +24,9 @@ public class SPLabels {
             BAD_ACCURACY_COUNT = "badAccuracyCount",
             ACCURACY_SAVED_TIME = "accuracySavedTiem",
             TIME_WINDOW_FLAG = "timeWindowFlag";
+
+    public static final String
+            METERING_STATE = "meteringstate";
+    public static final String
+            GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
 }
