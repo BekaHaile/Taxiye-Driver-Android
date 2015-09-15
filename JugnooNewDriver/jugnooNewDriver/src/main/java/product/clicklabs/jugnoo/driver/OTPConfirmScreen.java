@@ -131,8 +131,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 			public void onClick(View v) {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
-//                    sendSignupValues(OTPConfirmScreen.this, otpCode);
-					sendSignupValuesRetro(OTPConfirmScreen.this, otpCode);
+                    sendSignupValues(OTPConfirmScreen.this, otpCode);
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
@@ -166,8 +165,8 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 
 			@Override
 			public void onClick(View v) {
-//                initiateOTPCallAsync(OTPConfirmScreen.this, emailRegisterData.phoneNo);
-				initiateOTPCall(OTPConfirmScreen.this, emailRegisterData.phoneNo);
+                initiateOTPCallAsync(OTPConfirmScreen.this, emailRegisterData.phoneNo);
+//				initiateOTPCall(OTPConfirmScreen.this, emailRegisterData.phoneNo);
 				FlurryEventLogger.otpThroughCall(emailRegisterData.phoneNo);
 			}
 		});
@@ -244,92 +243,9 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	}
 
 
-	/**
-	 * ASync for confirming otp from server
-	 */
-	public void sendSignupValues(final Activity activity, String otp) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-
-			RequestParams params = new RequestParams();
-
-			if (Data.locationFetcher != null) {
-				Data.latitude = Data.locationFetcher.getLatitude();
-				Data.longitude = Data.locationFetcher.getLongitude();
-			}
-
-			params.put("email", emailRegisterData.emailId);
-			params.put("password", emailRegisterData.password);
-			params.put("device_token", Data.deviceToken);
-			params.put("device_type", Data.DEVICE_TYPE);
-			params.put("device_name", Data.deviceName);
-			params.put("app_version", "" + Data.appVersion);
-			params.put("os_version", Data.osVersion);
-			params.put("country", Data.country);
-			params.put("unique_device_id", Data.uniqueDeviceId);
-			params.put("latitude", "" + Data.latitude);
-			params.put("longitude", "" + Data.longitude);
-			params.put("client_id", Data.CLIENT_ID);
-			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("otp", otp);
-
-			Log.i("params", "" + params.toString());
-
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/verify_otp", params,
-					new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-
-							try {
-								jObj = new JSONObject(response);
-
-								int flag = jObj.getInt("flag");
-								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-									if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
-										DialogPopup.alertPopup(activity, "", message);
-									} else if (ApiResponseFlags.AUTH_VERIFICATION_FAILURE.getOrdinal() == flag) {
-										DialogPopup.alertPopup(activity, "", message);
-									} else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {
-										DialogPopup.alertPopup(activity, "", message);
-									} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
-										DialogPopup.alertPopup(activity, "", message);
-									} else {
-										DialogPopup.alertPopup(activity, "", message);
-									}
-									DialogPopup.dismissLoadingDialog();
-								} else {
-									DialogPopup.dismissLoadingDialog();
-								}
-							} catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-								DialogPopup.dismissLoadingDialog();
-							}
-
-
-						}
-					});
-		} else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-		}
-
-	}
 
 	//	Retrofit
-	public void sendSignupValuesRetro(final Activity activity, String otp) {
+	public void sendSignupValues(final Activity activity, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			DialogPopup.showLoadingDialog(activity, "Loading...");
@@ -394,62 +310,10 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	}
 
 
-	/**
-	 * ASync for initiating OTP Call from server
-	 */
+//	Retrofit
+
+
 	public void initiateOTPCallAsync(final Activity activity, String phoneNo) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-
-			RequestParams params = new RequestParams();
-
-			params.put("phone_no", phoneNo);
-			Log.i("phone_no", ">" + phoneNo);
-
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/send_otp_via_call", params,
-					new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-
-							try {
-								jObj = new JSONObject(response);
-								int flag = jObj.getInt("flag");
-								String message = JSONParser.getServerMessage(jObj);
-								if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
-									DialogPopup.alertPopup(activity, "", message);
-								} else if (ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag) {
-									DialogPopup.alertPopup(activity, "", message);
-								} else {
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								DialogPopup.dismissLoadingDialog();
-							} catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-								DialogPopup.dismissLoadingDialog();
-							}
-						}
-					});
-		} else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-		}
-
-	}
-
-
-	public void initiateOTPCall(final Activity activity, String phoneNo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			DialogPopup.showLoadingDialog(activity, "Loading...");

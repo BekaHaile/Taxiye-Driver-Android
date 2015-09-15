@@ -115,8 +115,7 @@ public class HelpActivity extends FragmentActivity{
 			@Override
 			public void onClick(View v) {
 				if(selectedHelpSection != null){
-//					getHelpAsync(HelpActivity.this, selectedHelpSection);
-					getHelp(HelpActivity.this, selectedHelpSection);
+					getHelpAsync(HelpActivity.this, selectedHelpSection);
 				}
 			}
 		});
@@ -229,8 +228,7 @@ public class HelpActivity extends FragmentActivity{
 							break;
 							
 						default:
-//							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							getHelp(HelpActivity.this, helpSections.get(holder.id));
+							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
 
 							FlurryEventLogger.particularHelpOpened(helpSections.get(holder.id).getName(), Data.userData.accessToken);
 							
@@ -262,78 +260,11 @@ public class HelpActivity extends FragmentActivity{
 	}
 	
 	
-	/**
-	 * ASync for get rides from server
-	 */
-	public void getHelpAsync(final Activity activity, final HelpSection helpSection) {
-		if(fetchHelpDataClient == null){
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				
-				helpExpandedRl.setVisibility(View.VISIBLE);
-				progressBarHelp.setVisibility(View.VISIBLE);
-				textViewInfoDisplay.setVisibility(View.GONE);
-				helpWebview.setVisibility(View.GONE);
-				loadHTMLContent("");
-				
-				Log.e("helpSection", "="+helpSection);
-				
-				RequestParams params = new RequestParams();
-				params.put("section", ""+helpSection.getOrdinal());
-				
-				fetchHelpDataClient = Data.getClient();
-				fetchHelpDataClient.post(Data.SERVER_URL + "/get_information", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-	
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								progressBarHelp.setVisibility(View.GONE);
-								openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-							}
-	
-							@Override
-							public void onSuccess(String response) {
-								Log.i("Server response faq ", "response = " + response);
-								try {
-									jObj = new JSONObject(response);
-									if(!jObj.isNull("error")){
-										String errorMessage = jObj.getString("error");
-										if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-											HomeActivity.logoutUser(activity);
-										}
-										else{
-											openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-										}
-									}
-									else{
-										String data = jObj.getString("data");
-										openHelpData(helpSection, data, false);
-									}
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-								}
-								progressBarHelp.setVisibility(View.GONE);
-							}
-							
-							@Override
-							public void onFinish() {
-								super.onFinish();
-								fetchHelpDataClient = null;
-							}
-						});
-			}
-			else {
-				openHelpData(helpSection, "No internet connection. Tap to retry.", true);
-			}
-		}
-	}
 
 	// Retrofit
 
 
-	public void getHelp(final Activity activity, final HelpSection helpSection) {
+	public void getHelpAsync(final Activity activity, final HelpSection helpSection) {
 		if(fetchHelpDataClient == null){
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 
@@ -350,28 +281,26 @@ public class HelpActivity extends FragmentActivity{
 
 					@Override
 					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if(!jObj.isNull("error")){
-							String errorMessage = jObj.getString("error");
-							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-								HomeActivity.logoutUser(activity);
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
+									openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+								}
+							} else {
+								String data = jObj.getString("data");
+								openHelpData(helpSection, data, false);
 							}
-							else{
-								openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-							}
-						}
-						else{
-							String data = jObj.getString("data");
-							openHelpData(helpSection, data, false);
-						}
 
-					}catch (Exception exception) {
-						exception.printStackTrace();
-						openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-					}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+						}
 						progressBarHelp.setVisibility(View.GONE);
 					}
 

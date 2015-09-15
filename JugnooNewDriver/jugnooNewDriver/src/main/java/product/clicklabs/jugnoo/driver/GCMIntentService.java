@@ -297,8 +297,7 @@ public class GCMIntentService extends IntentService {
                                     }
 
 
-//                                    sendRequestAckToServer(this, engagementId, currentTimeUTC);
-                                    sendRequestAckToServerRetro(this, engagementId, currentTimeUTC);
+                                    sendRequestAckToServer(this, engagementId, currentTimeUTC);
 
                                     FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
 
@@ -434,8 +433,7 @@ public class GCMIntentService extends IntentService {
                                 } else if (PushFlags.HEARTBEAT.getOrdinal() == flag) {
                                     try {
                                         String uuid = jObj.getString("uuid");
-//                                        sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
-                                        sendHeartbeatAckToServerRetro(this, uuid, currentTimeUTC);
+                                        sendHeartbeatAckToServer(this, uuid, currentTimeUTC);
 
                                     } catch (Exception e) {
                                         e.printStackTrace();
@@ -449,9 +447,7 @@ public class GCMIntentService extends IntentService {
                                         notificationManager(this, message1, false);
                                     }
                                 } else if (PushFlags.CHANGE_PORT.getOrdinal() == flag) {
-//                                    sendChangePortAckToServer(this, jObj);
-                                    sendChangePortAckToServerRetro(this, jObj);
-
+                                    sendChangePortAckToServer(this, jObj);
                                 } else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
                                     int userId = jObj.getInt("user_id");
                                     double balance = jObj.getDouble("balance");
@@ -679,56 +675,9 @@ public class GCMIntentService extends IntentService {
     }
 
 
+
+
     public void sendRequestAckToServer(final Context context, final String engagementId, final String actTimeStamp) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String accessToken = Database2.getInstance(context).getDLDAccessToken();
-                    if ("".equalsIgnoreCase(accessToken)) {
-                        DriverLocationUpdateService.updateServerData(context);
-                        accessToken = Database2.getInstance(context).getDLDAccessToken();
-                    }
-
-                    String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-
-                    String networkName = getNetworkName(context);
-
-
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-                    nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
-                    nameValuePairs.add(new BasicNameValuePair("ack_timestamp", actTimeStamp));
-                    nameValuePairs.add(new BasicNameValuePair("network_name", networkName));
-
-//						Log.e("nameValuePairs in sending ack to server","="+nameValuePairs);
-
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/acknowledge_request", nameValuePairs);
-
-//						Log.e("result ","="+result);
-
-                    simpleJSONParser = null;
-                    nameValuePairs = null;
-
-                    JSONObject jObj = new JSONObject(result);
-                    if (jObj.has("flag")) {
-                        int flag = jObj.getInt("flag");
-                        if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == flag) {
-                            String log = jObj.getString("log");
-                            Log.e("ack to server successfull", "=" + log);
-                        }
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-
-    public void sendRequestAckToServerRetro(final Context context, final String engagementId, final String actTimeStamp) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -770,39 +719,10 @@ public class GCMIntentService extends IntentService {
     }
 
 
-    public void sendHeartbeatAckToServer(final Context context, final String uuid, final String ackTimeStamp) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-
-                    String networkName = getNetworkName(context);
-
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("uuid", uuid));
-                    nameValuePairs.add(new BasicNameValuePair("timestamp", ackTimeStamp));
-                    nameValuePairs.add(new BasicNameValuePair("network_name", networkName));
-
-//						Log.e("nameValuePairs in sending ack to server","="+nameValuePairs);
-
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    simpleJSONParser.getJSONFromUrlParams(serverUrl + "/acknowledge_heartbeat", nameValuePairs);
-
-//						Log.e("result ","="+result);
-
-                    simpleJSONParser = null;
-                    nameValuePairs = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
 //    Retrofit
 
-    public void sendHeartbeatAckToServerRetro(final Context context, final String uuid, final String ackTimeStamp) {
+    public void sendHeartbeatAckToServer(final Context context, final String uuid, final String ackTimeStamp) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -838,40 +758,8 @@ public class GCMIntentService extends IntentService {
     //context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
 
 
+
     public void sendChangePortAckToServer(final Context context, final JSONObject jObject1) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    SplashNewActivity.initializeServerURL(context);
-                    Pair<String, String> accessTokenPair = JSONParser.getAccessTokenPair(context);
-
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenPair.first));
-
-                    Log.i("nameValuePairs", "=" + nameValuePairs);
-                    Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
-
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/acknowledge_port_change", nameValuePairs);
-
-                    Log.e("result ", "=" + result);
-
-                    if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
-                    } else {
-                        new JSONParser().parsePortNumber(context, jObject1);
-                    }
-
-                    simpleJSONParser = null;
-                    nameValuePairs = null;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
-
-    public void sendChangePortAckToServerRetro(final Context context, final JSONObject jObject1) {
         new Thread(new Runnable() {
             @Override
             public void run() {

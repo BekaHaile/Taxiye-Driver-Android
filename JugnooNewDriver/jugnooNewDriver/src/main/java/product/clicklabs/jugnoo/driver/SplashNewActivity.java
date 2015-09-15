@@ -531,8 +531,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 		public void run() {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 				noNetFirstTime = false;
-//			    accessTokenLogin(SplashNewActivity.this);
-				accessTokenLoginRetro(SplashNewActivity.this);
+			    accessTokenLogin(SplashNewActivity.this);
 
 			}
 			else{
@@ -543,127 +542,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate{
 	}
 	
 	
-	/**
-	 * ASync for access token login from server
-	 */
-	public void accessTokenLogin(final Activity activity) {
-		
-		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
-		
-		if(!"".equalsIgnoreCase(accPair.first)){
-			buttonLogin.setVisibility(View.GONE);
-			buttonRegister.setVisibility(View.GONE);
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-				
-				DialogPopup.showLoadingDialog(activity, "Loading...");
-				
-				if(Data.locationFetcher != null){
-					Data.latitude = Data.locationFetcher.getLatitude();
-					Data.longitude = Data.locationFetcher.getLongitude();
-				}
-				
-				RequestParams params = new RequestParams();
-				params.put("access_token", accPair.first);
-				
-
-
-
-				params.put("access_token", accPair.first);
-				params.put("device_token", Data.deviceToken);
-
-
-                final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-                if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-                    params.put("latitude", "0");
-                    params.put("longitude", "0");
-                }
-                else{
-                    params.put("latitude", ""+Data.latitude);
-                    params.put("longitude", ""+Data.longitude);
-                }
-
-
-				params.put("app_version", ""+Data.appVersion);
-				params.put("device_type", Data.DEVICE_TYPE);
-				params.put("unique_device_id", Data.uniqueDeviceId);
-				params.put("is_access_token_new", "1");
-                params.put("client_id", Data.CLIENT_ID);
-                params.put("login_type", Data.LOGIN_TYPE);
-
-
-				Log.i("accessTokenlongi params", "=" + params);
-				
-				AsyncHttpClient client = Data.getClient();
-				client.post(Data.SERVER_URL + "/login_using_access_token", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								
-								DialogPopup.dismissLoadingDialog();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-								DialogPopup.dismissLoadingDialog();
-							}
-
-							@Override
-							public void onSuccess(String response) {
-								Log.e("Server response of access_token", "response = " + response);
-								try {
-									jObj = new JSONObject(response);
-									int flag = jObj.getInt("flag");
-                                    String message = JSONParser.getServerMessage(jObj);
-
-                                    if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-                                        if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                        else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                        else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                            if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-                                                new AccessTokenDataParseAsync(activity, response, message).execute();
-                                            }
-                                            else{
-                                                DialogPopup.dismissLoadingDialog();
-                                            }
-                                        }
-                                        else{
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                    }
-                                    else{
-                                        DialogPopup.dismissLoadingDialog();
-                                    }
-
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-									DialogPopup.dismissLoadingDialog();
-								}
-		
-							}
-						});
-			}
-			else {
-				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			}
-		}
-		else{
-			buttonLogin.setVisibility(View.VISIBLE);
-		}
-
-	}
 
 //	Retrofit
 
 
-	public void accessTokenLoginRetro(final Activity activity) {
+	public void accessTokenLogin(final Activity activity) {
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
 

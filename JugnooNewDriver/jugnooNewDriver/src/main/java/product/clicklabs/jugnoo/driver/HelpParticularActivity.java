@@ -97,13 +97,11 @@ public class HelpParticularActivity extends FragmentActivity {
 
 			@Override
 			public void onClick(View v) {
-//				getFareDetailsAsync(HelpParticularActivity.this);
-				getHelpSection(HelpParticularActivity.this);
+				getFareDetailsAsync(HelpParticularActivity.this);
 			}
 		});
 
-//		getFareDetailsAsync(HelpParticularActivity.this);
-		getHelpSection(HelpParticularActivity.this);
+		getFareDetailsAsync(HelpParticularActivity.this);
 
 	}
 
@@ -180,75 +178,11 @@ public class HelpParticularActivity extends FragmentActivity {
 	}
 
 
-	/**
-	 * ASync for get rides from server
-	 */
-	public void getFareDetailsAsync(final Activity activity) {
-		if (fetchHelpDataClient == null) {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if (helpSection != null) {
-					progressBar.setVisibility(View.VISIBLE);
-					textViewInfo.setVisibility(View.GONE);
-					webview.setVisibility(View.GONE);
-					loadHTMLContent("");
-
-					Log.e("helpSection", "=" + helpSection.getOrdinal() + " " + helpSection.getName());
-
-					RequestParams params = new RequestParams();
-					params.put("section", "" + helpSection.getOrdinal());
-
-					fetchHelpDataClient = Data.getClient();
-					fetchHelpDataClient.post(Data.SERVER_URL + "/get_information", params,
-							new CustomAsyncHttpResponseHandler() {
-								private JSONObject jObj;
-
-								@Override
-								public void onFailure(Throwable arg3) {
-									Log.e("request fail", arg3.toString());
-									progressBar.setVisibility(View.GONE);
-									openHelpData("Some error occured. Tap to retry.", true);
-								}
-
-								@Override
-								public void onSuccess(String response) {
-									Log.i("Server response faq ", "response = " + response);
-									try {
-										jObj = new JSONObject(response);
-										if (!jObj.isNull("error")) {
-											String errorMessage = jObj.getString("error");
-											if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-												HomeActivity.logoutUser(activity);
-											} else {
-												openHelpData("Some error occured. Tap to retry.", true);
-											}
-										} else {
-											String data = jObj.getString("data");
-											openHelpData(data, false);
-										}
-									} catch (Exception exception) {
-										exception.printStackTrace();
-										openHelpData("Some error occured. Tap to retry.", true);
-									}
-									progressBar.setVisibility(View.GONE);
-								}
-
-								@Override
-								public void onFinish() {
-									super.onFinish();
-									fetchHelpDataClient = null;
-								}
-							});
-				}
-			} else {
-				openHelpData("No internet connection. Tap to retry.", true);
-			}
-		}
-	}
 
 //	Retrofit
 
 
-	public void getHelpSection(final Activity activity) {
+	public void getFareDetailsAsync(final Activity activity) {
 		if (fetchHelpDataClient == null) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				if (helpSection != null) {

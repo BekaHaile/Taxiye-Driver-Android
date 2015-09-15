@@ -389,35 +389,11 @@ public class JSONParser {
 	
 	
 	
-	
-	
-	public String getUserStatus(Context context, String accessToken, int currentUserStatus){
-		String returnResponse = "";
-		try{
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
-			Log.e("result of = user_status", "="+result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				returnResponse = HttpRequester.SERVER_TIMEOUT;
-				return returnResponse;
-			}
-			else{
-				JSONObject jObject1 = new JSONObject(result);
-				returnResponse = parseCurrentUserStatus(context, currentUserStatus, jObject1);
-				return returnResponse;
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-			returnResponse = HttpRequester.SERVER_TIMEOUT;
-			return returnResponse;
-		}
-	}
+
 	
 //	Retrofit
 
-	public String getUserStatusRetro(Context context, String accessToken, int currentUserStatus){
+	public String getUserStatus(Context context, String accessToken, int currentUserStatus){
 		String returnResponse = "";
 		try{
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();

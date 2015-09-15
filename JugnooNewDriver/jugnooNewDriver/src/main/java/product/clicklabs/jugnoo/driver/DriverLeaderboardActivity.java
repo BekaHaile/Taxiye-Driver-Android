@@ -150,9 +150,7 @@ public class DriverLeaderboardActivity extends FragmentActivity {
 		adapter = new DriverLeaderboardAdapter(this, new ArrayList<DriverLeaderboard>(), 0);
 		listViewDriverLB.setAdapter(adapter);
 
-///		getLeaderboardData(this);
-		DriverLeaderBoard(this);
-
+		getLeaderboardData(this);
 
 	}
 
@@ -231,214 +229,10 @@ public class DriverLeaderboardActivity extends FragmentActivity {
 	}
 
 
+
+//	Retrofit
+
 	public void getLeaderboardData(final Activity activity) {
-		if (!HomeActivity.checkIfUserDataNull(activity)) {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
-				RequestParams params = new RequestParams();
-
-				params.put("access_token", Data.userData.accessToken);
-//                params.put("access_token", "dce0da8447650e8ebd66fe4de118570819c988649c28a62d3129f552656c3f43");
-
-
-				AsyncHttpClient client = Data.getClient();
-				client.post(Data.SERVER_URL + "/driver/show/leader_board", params,
-						new CustomAsyncHttpResponseHandler() {
-							private JSONObject jObj;
-
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								DialogPopup.dismissLoadingDialog();
-								retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\nTap to retry");
-							}
-
-							@Override
-							public void onSuccess(String response) {
-								Log.i("Server response faq ", "response = " + response);
-								try {
-
-//                            {
-//                                "flag": 143,
-//                                "message": "Driver Leader board created successfully",
-//                                "driver_leader_board": {
-//                                "overall_leader_board": {
-//                                    "day": [
-//                                    {
-//                                        "driver_id": 829,
-//                                        "driver_name": "Driver Rajasthan",
-//                                        "city": 4,
-//                                        "overall_rank": 1,
-//                                        "time_interval": "day"
-//                                    }
-//                                    ],
-//                                    "week": [
-//                                    {
-//                                        "driver_id": 829,
-//                                        "driver_name": "Driver Rajasthan",
-//                                        "city": 4,
-//                                        "overall_rank": 1,
-//                                        "time_interval": "week"
-//                                    }
-//                                    ],
-//                                    "month": [
-//                                    {
-//                                        "driver_id": 229,
-//                                        "driver_name": "Driver 7",
-//                                        "city": 1,
-//                                        "overall_rank": 2,
-//                                        "time_interval": "month"
-//                                    },
-//                                    {
-//                                        "driver_id": 829,
-//                                        "driver_name": "Driver Rajasthan",
-//                                        "city": 4,
-//                                        "overall_rank": 1,
-//                                        "time_interval": "month"
-//                                    }
-//                                    ]
-//                                },
-//                                "overall_driver_rank": {
-//                                    "day": 1,
-//                                        "week": 1,
-//                                        "month": 2
-//                                },
-//                                "city_leader_board": {},
-//                                "city_driver_rank": {
-//                                    "day": 0,
-//                                        "week": 0,
-//                                        "month": 0
-//                                },
-//                                "total_drivers_city": {
-//                                    "day": 0,
-//                                        "week": 0,
-//                                        "month": 0
-//                                },
-//                                "total_drivers_overall": {
-//                                    "month": 2,
-//                                        "day": 1,
-//                                        "week": 1
-//                                }
-//                            }
-//                            }
-
-									jObj = new JSONObject(response);
-									int flag = jObj.getInt("flag");
-									String message = JSONParser.getServerMessage(jObj);
-									if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-
-										if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-											DialogPopup.alertPopup(activity, "", message);
-										} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-											ArrayList<DriverLeaderboard> driverLeaderboards = new ArrayList<DriverLeaderboard>();
-
-											JSONObject jDriverLeaderBoard = jObj.getJSONObject("driver_leader_board");
-
-											int cityPositionDay = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("day");
-											int cityPositionWeek = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("week");
-											int cityPositionMonth = jDriverLeaderBoard.getJSONObject("city_driver_rank").getInt("month");
-											int cityTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("day");
-											int cityTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("week");
-											int cityTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_city").getInt("month");
-											int overallPositionDay = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("day");
-											int overallPositionWeek = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("week");
-											int overallPositionMonth = jDriverLeaderBoard.getJSONObject("overall_driver_rank").getInt("month");
-											int overallTotalDay = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("day");
-											int overallTotalWeek = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("week");
-											int overallTotalMonth = jDriverLeaderBoard.getJSONObject("total_drivers_overall").getInt("month");
-
-											JSONObject jOverallLeaderBoard = jDriverLeaderBoard.getJSONObject("overall_leader_board");
-											if (jOverallLeaderBoard.has("day")) {
-												JSONArray jOverallLeaderBoardDay = jOverallLeaderBoard.getJSONArray("day");
-												for (int i = 0; i < jOverallLeaderBoardDay.length(); i++) {
-													JSONObject ji = jOverallLeaderBoardDay.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
-												}
-											}
-											if (jOverallLeaderBoard.has("week")) {
-												JSONArray jOverallLeaderBoardWeek = jOverallLeaderBoard.getJSONArray("week");
-												for (int i = 0; i < jOverallLeaderBoardWeek.length(); i++) {
-													JSONObject ji = jOverallLeaderBoardWeek.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
-												}
-											}
-											if (jOverallLeaderBoard.has("month")) {
-												JSONArray jOverallLeaderBoardMonth = jOverallLeaderBoard.getJSONArray("month");
-												for (int i = 0; i < jOverallLeaderBoardMonth.length(); i++) {
-													JSONObject ji = jOverallLeaderBoardMonth.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_overall"), LeaderboardAreaMode.OVERALL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
-												}
-											}
-
-
-											JSONObject jCityLeaderBoard = jDriverLeaderBoard.getJSONObject("city_leader_board");
-											if (jCityLeaderBoard.has("day")) {
-												JSONArray jCityLeaderBoardDay = jCityLeaderBoard.getJSONArray("day");
-												for (int i = 0; i < jCityLeaderBoardDay.length(); i++) {
-													JSONObject ji = jCityLeaderBoardDay.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.DAILY.getOrdinal()));
-												}
-											}
-											if (jCityLeaderBoard.has("week")) {
-												JSONArray jCityLeaderBoardWeek = jCityLeaderBoard.getJSONArray("week");
-												for (int i = 0; i < jCityLeaderBoardWeek.length(); i++) {
-													JSONObject ji = jCityLeaderBoardWeek.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.WEEKLY.getOrdinal()));
-												}
-											}
-											if (jCityLeaderBoard.has("month")) {
-												JSONArray jCityLeaderBoardMonth = jCityLeaderBoard.getJSONArray("month");
-												for (int i = 0; i < jCityLeaderBoardMonth.length(); i++) {
-													JSONObject ji = jCityLeaderBoardMonth.getJSONObject(i);
-													driverLeaderboards.add(new DriverLeaderboard(ji.getInt("driver_id"),
-															ji.getString("driver_name"),
-															ji.getString("city_name"),
-															ji.getInt("number_of_rides_in_city"), LeaderboardAreaMode.LOCAL.getOrdinal(), LeaderboardMode.MONTHLY.getOrdinal()));
-												}
-											}
-
-
-											String cityName = jDriverLeaderBoard.optString("driver_city", "Local");
-
-											driverLeaderboardData = new DriverLeaderboardData(cityName, cityPositionDay, cityPositionWeek, cityPositionMonth, cityTotalDay, cityTotalWeek, cityTotalMonth,
-													overallPositionDay, overallPositionWeek, overallPositionMonth, overallTotalDay, overallTotalWeek, overallTotalMonth, driverLeaderboards);
-
-											setList(leaderboardAreaMode, leaderboardMode);
-										} else {
-											DialogPopup.alertPopup(activity, "", message);
-										}
-
-									}
-								} catch (Exception exception) {
-									exception.printStackTrace();
-									retryDialog(activity, Data.SERVER_ERROR_MSG + "\nTap to retry");
-								}
-								DialogPopup.dismissLoadingDialog();
-							}
-						});
-			} else {
-				retryDialog(activity, Data.CHECK_INTERNET_MSG + "\nTap to retry");
-			}
-		}
-	}
-
-	public void DriverLeaderBoard(final Activity activity) {
 		if (!HomeActivity.checkIfUserDataNull(activity)) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, "Loading...");
@@ -582,8 +376,7 @@ public class DriverLeaderboardActivity extends FragmentActivity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-//						getLeaderboardData(activity);
-						DriverLeaderBoard(activity);
+						getLeaderboardData(activity);
 					}
 				},
 				new View.OnClickListener() {

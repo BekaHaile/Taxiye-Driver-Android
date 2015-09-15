@@ -92,8 +92,7 @@ public class AddCustomerCashActivity extends Activity{
 			
 			@Override
 			public void onClick(View v) {
-//				addCustomerCashAPI(AddCustomerCashActivity.this, "0");
-				addCustomerCashRetro(AddCustomerCashActivity.this, "0");
+				addCustomerCashAPI(AddCustomerCashActivity.this, "0");
 
 			}
 		});
@@ -119,8 +118,7 @@ public class AddCustomerCashActivity extends Activity{
 								DialogPopup.alertPopup(AddCustomerCashActivity.this, "", "You cannot add amount less than \nRs. "+Data.endRideData.toPay);
 							}
 							else{
-//								addCustomerCashAPI(AddCustomerCashActivity.this, ""+amount);
-								addCustomerCashRetro(AddCustomerCashActivity.this, ""+amount);
+								addCustomerCashAPI(AddCustomerCashActivity.this, ""+amount);
 
 							}
 						}
@@ -183,89 +181,10 @@ public class AddCustomerCashActivity extends Activity{
 	}
 	
 	
+//	Retrofit
+
+
 	public void addCustomerCashAPI(final Activity activity, final String amount) {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
-				
-				RequestParams params = new RequestParams();
-				
-				params.put("access_token", Data.userData.accessToken);
-				params.put("engagement_id", Data.dEngagementId);
-				params.put("money_added", amount);
-			
-				AsyncHttpClient asyncHttpClient = Data.getClient();
-				asyncHttpClient.post(Data.SERVER_URL + "/add_money_to_wallet", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-	
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								DialogPopup.dismissLoadingDialog();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-							}
-							
-	
-							@Override
-							public void onSuccess(String response) {
-								Log.i("Server response", "response = " + response);
-								DialogPopup.dismissLoadingDialog();
-								try {
-									jObj = new JSONObject(response);
-									
-									int flag = jObj.getInt("flag");
-									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-										if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-											String errorMessage = jObj.getString("error");
-											DialogPopup.alertPopup(activity, "", errorMessage);	
-										}
-										else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-											if("0".equalsIgnoreCase(amount)){
-												if(HomeActivity.appInterruptHandler != null){
-													HomeActivity.appInterruptHandler.onCustomerCashDone();
-													performBackPressed();
-												}
-											}
-											else{
-												String message = jObj.getString("message");
-												DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
-													
-													@Override
-													public void onClick(View v) {
-														if(HomeActivity.appInterruptHandler != null){
-															HomeActivity.appInterruptHandler.onCustomerCashDone();
-															performBackPressed();
-														}
-													}
-												});
-											}
-										}
-										else{
-											DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-										}
-									}
-									
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-									
-								}
-							}
-							
-							@Override
-							public void onFinish() {
-								super.onFinish();
-							}
-							
-						});
-			}
-			else {
-				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			}
-	}
-
-
-	public void addCustomerCashRetro(final Activity activity, final String amount) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
 
