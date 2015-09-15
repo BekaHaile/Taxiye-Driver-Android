@@ -242,74 +242,78 @@ class CustomX509TrustManager implements X509TrustManager {
 
 
 
-class DataLoader {
-
-		public HttpResponse secureLoadDataRetry(String url, ArrayList<NameValuePair> nameValuePairs) throws Exception {
-			int count = 0;
-			while (count <= HttpRequester.RETRY_COUNT) {
-				count += 1;
-				try {
-					HttpResponse response = secureLoadData(url, nameValuePairs);
-					/**
-					 * if we get here, that means we were successful and we can
-					 * stop.
-					 */
-					return response;
-				} catch (Exception e) {
-					/**
-					 * if we have exhausted our retry limit
-					 */
-					if (count <= HttpRequester.RETRY_COUNT) {
-						/**
-						 * we have retries remaining, so log the message and go
-						 * again.
-						 */
-						System.out.println(e.toString());
-						Thread.sleep(HttpRequester.SLEEP_BETWEEN_RETRY);
-					} else {
-						System.out.println("could not succeed with retry...");
-						throw e;
-					}
-				}
-			}
-			return null;
-		}
-	
-	
-    public HttpResponse secureLoadData(String url, ArrayList<NameValuePair> nameValuePairs)
-            throws ClientProtocolException, IOException,
-            NoSuchAlgorithmException, KeyManagementException,
-            URISyntaxException, KeyStoreException, UnrecoverableKeyException {
-    	
-        SSLContext ctx = SSLContext.getInstance("TLS");
-        ctx.init(null, new TrustManager[] { new CustomX509TrustManager() },
-                new SecureRandom());
-
-        //Added timeout
-        HttpParams httpParameters = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParameters, HttpRequester.TIMEOUT_CONNECTION);
-        HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
-        
-        HttpClient client = new DefaultHttpClient(httpParameters);
-
-        SSLSocketFactory ssf = new CustomSSLSocketFactory(ctx);
-        ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-        ClientConnectionManager ccm = client.getConnectionManager();
-        SchemeRegistry sr = ccm.getSchemeRegistry();
-        sr.register(new Scheme("https", ssf, 443));
-        
-        DefaultHttpClient sslClient = new DefaultHttpClient(ccm, client.getParams());
-        sslClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(5, true));
-
-        HttpPost post = new HttpPost(new URI(url));
-        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		
-        HttpResponse response = sslClient.execute(post);
-
-        return response;
-    }
-
-}
+//class DataLoader {
+//
+//		public HttpResponse secureLoadDataRetry(String url, ArrayList<NameValuePair> nameValuePairs) throws Exception {
+//			int count = 0;
+//			while (count <= HttpRequester.RETRY_COUNT) {
+//				count += 1;
+//				try {
+//					HttpResponse response = secureLoadData(url, nameValuePairs);
+//					/**
+//					 * if we get here, that means we were successful and we can
+//					 * stop.
+//					 */
+//					return response;
+//				} catch (Exception e) {
+//					/**
+//					 * if we have exhausted our retry limit
+//					 */
+//					if (count <= HttpRequester.RETRY_COUNT) {
+//						/**
+//						 * we have retries remaining, so log the message and go
+//						 * again.
+//						 */
+//						System.out.println(e.toString());
+//						Thread.sleep(HttpRequester.SLEEP_BETWEEN_RETRY);
+//					} else {
+//						System.out.println("could not succeed with retry...");
+//						throw e;
+//					}
+//				}
+//			}
+//			return null;
+//		}
+//
+//
+//    public HttpResponse secureLoadData(String url, ArrayList<NameValuePair> nameValuePairs)
+//            throws ClientProtocolException, IOException,
+//            NoSuchAlgorithmException, KeyManagementException,
+//            URISyntaxException, KeyStoreException, UnrecoverableKeyException {
+//
+//        SSLContext ctx = SSLContext.getInstance("TLS");
+//        ctx.init(null, new TrustManager[] { new CustomX509TrustManager() },
+//                new SecureRandom());
+//
+//        //Added timeout
+//        HttpParams httpParameters = new BasicHttpParams();
+//        HttpConnectionParams.setConnectionTimeout(httpParameters, HttpRequester.TIMEOUT_CONNECTION);
+//        HttpConnectionParams.setSoTimeout(httpParameters, TIMEOUT_SOCKET);
+//
+//        HttpClient client = new DefaultHttpClient(httpParameters);
+//
+//        SSLSocketFactory ssf = new CustomSSLSocketFactory(ctx);
+//        ssf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+//        ClientConnectionManager ccm = client.getConnectionManager();
+//        SchemeRegistry sr = ccm.getSchemeRegistry();
+//        sr.register(new Scheme("https", ssf, 443));
+//
+//        DefaultHttpClient sslClient = new DefaultHttpClient(ccm, client.getParams());
+//        sslClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler(5, true));
+//
+//        HttpPost post = new HttpPost(new URI(url));
+//        post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+//
+//        HttpResponse response = sslClient.execute(post);
+//
+//        return response;
+//    }
+//
+//
+//
+//
+//
+//}
 
 	
 }

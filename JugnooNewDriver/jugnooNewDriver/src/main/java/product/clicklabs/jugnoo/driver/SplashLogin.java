@@ -29,6 +29,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -37,6 +39,10 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class SplashLogin extends Activity implements LocationUpdate, FlurryEventNames{
@@ -337,34 +343,24 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	boolean isEmailValid(CharSequence email) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
-	
-	
-	/**
-	 * ASync for login from server
-	 */
+
+
+//	Retrofit
+
+
 	public void sendLoginValues(final Activity activity, final String emailId, final String password) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, "Loading...");
-			
-			RequestParams params = new RequestParams();
-		
+
+//			RequestParams params = new RequestParams();
+
 			if(Data.locationFetcher != null){
 				Data.latitude = Data.locationFetcher.getLatitude();
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
-			
-//			params.put("email", emailId);
-//			params.put("password", password);
-//			params.put("device_type", Data.DEVICE_TYPE);
-//			params.put("unique_device_id", Data.uniqueDeviceId);
-//			params.put("device_token", Data.deviceToken);
-//			params.put("latitude", ""+Data.latitude);
-//			params.put("longitude", ""+Data.longitude);
-//			params.put("country", Data.country);
-//			params.put("device_name", Data.deviceName);
-//			params.put("app_version", Data.appVersion);
-//			params.put("os_version", Data.osVersion);
+
+			HashMap<String, String> params = new HashMap<String, String>();
 
 			params.put("email", emailId);
 			params.put("password", password);
@@ -378,79 +374,74 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
-            params.put("login_type", Data.LOGIN_TYPE);
+			params.put("login_type", Data.LOGIN_TYPE);
 
-			Log.i("paramsS", "=" + params);
+			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
 
-		
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/login_using_email", params,
-					new CustomAsyncHttpResponseHandler() {
-					private JSONObject jObj;
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
 
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-						
-
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-							try {
-								jObj = new JSONObject(response);
-
-                                int flag = jObj.getInt("flag");
-                                String message = JSONParser.getServerMessage(jObj);
-
-                                if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-                                    if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
-                                        DialogPopup.alertPopup(activity, "", message);
-                                    }
-                                    else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
-                                        SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
-                                    }
-                                    else if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-                                        DialogPopup.alertPopup(activity, "", message);
-                                    }
-                                    else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-                                        DialogPopup.alertPopup(activity, "", message);
-                                    }
-                                    else if(ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag){
-                                        enteredEmail = emailId;
-                                        phoneNoOfLoginAccount = jObj.getString("phone_no");
-                                        accessToken = jObj.getString("access_token");
-                                        otpErrorMsg = jObj.getString("error");
-                                        sendToOtpScreen = true;
-                                    }
-                                    else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                        if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-                                            new JSONParser().parseAccessTokenLoginData(activity, response);
-                                            new DriverServiceOperations().startDriverService(activity);
-                                            Database.getInstance(SplashLogin.this).insertEmail(emailId);
-                                            loginDataFetched = true;
-                                        }
-                                    }
-                                    else{
-                                        DialogPopup.alertPopup(activity, "", message);
-                                    }
-                                    DialogPopup.dismissLoadingDialog();
-                                }
-                                else{
-                                    DialogPopup.dismissLoadingDialog();
-                                }
-							}  catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+								SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+							}
+							else if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag){
+								enteredEmail = emailId;
+								phoneNoOfLoginAccount = jObj.getString("phone_no");
+								accessToken = jObj.getString("access_token");
+								otpErrorMsg = jObj.getString("error");
+								sendToOtpScreen = true;
+							}
+							else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+								if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+									new DriverServiceOperations().startDriverService(activity);
+									Database.getInstance(SplashLogin.this).insertEmail(emailId);
+									loginDataFetched = true;
+								}
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", message);
 							}
 							DialogPopup.dismissLoadingDialog();
 						}
-					});
+						else{
+							DialogPopup.dismissLoadingDialog();
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+
+				}
+			});
+
+
 		}
 		else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			DialogPopup.dismissLoadingDialog();
+			DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 		}
 
 	}

@@ -29,6 +29,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,12 +43,18 @@ import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class GCMIntentService extends IntentService {
 
@@ -468,6 +475,7 @@ public class GCMIntentService extends IntentService {
 		}
 
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
+
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
@@ -672,6 +680,8 @@ public class GCMIntentService extends IntentService {
     }
 
 
+
+
     public void sendRequestAckToServer(final Context context, final String engagementId, final String actTimeStamp) {
         new Thread(new Runnable() {
             @Override
@@ -684,25 +694,18 @@ public class GCMIntentService extends IntentService {
                     }
 
                     String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-
                     String networkName = getNetworkName(context);
 
 
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-                    nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
-                    nameValuePairs.add(new BasicNameValuePair("ack_timestamp", actTimeStamp));
-                    nameValuePairs.add(new BasicNameValuePair("network_name", networkName));
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("access_token", accessToken);
+                    params.put("engagement_id", engagementId);
+                    params.put("ack_timestamp", actTimeStamp);
+                    params.put("network_name", networkName);
 
-//						Log.e("nameValuePairs in sending ack to server","="+nameValuePairs);
 
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/acknowledge_request", nameValuePairs);
-
-//						Log.e("result ","="+result);
-
-                    simpleJSONParser = null;
-                    nameValuePairs = null;
+                    Response response = RestClient.getApiServices().sendRequestAckToServerRetro(params);
+                    String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
                     JSONObject jObj = new JSONObject(result);
                     if (jObj.has("flag")) {
@@ -721,29 +724,34 @@ public class GCMIntentService extends IntentService {
     }
 
 
+
+//    Retrofit
+
     public void sendHeartbeatAckToServer(final Context context, final String uuid, final String ackTimeStamp) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+					String networkName = getNetworkName(context);
 
-                    String networkName = getNetworkName(context);
+                    HashMap<String, String> params = new HashMap<String, String>();
+                    params.put("uuid", uuid);
+                    params.put("timestamp", ackTimeStamp);
+                    params.put("network_name", networkName);
 
-                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                    nameValuePairs.add(new BasicNameValuePair("uuid", uuid));
-                    nameValuePairs.add(new BasicNameValuePair("timestamp", ackTimeStamp));
-                    nameValuePairs.add(new BasicNameValuePair("network_name", networkName));
+                    RestClient.getApiServices().sendHeartbeatAckToServerRetro(params, new Callback<RegisterScreenResponse>() {
+						@Override
+						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+							Log.v("RetroFIT11", String.valueOf(response));
+						}
 
-//						Log.e("nameValuePairs in sending ack to server","="+nameValuePairs);
+						@Override
+						public void failure(RetrofitError error) {
+							Log.v("RetroFIT1", String.valueOf(error));
 
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    simpleJSONParser.getJSONFromUrlParams(serverUrl + "/acknowledge_heartbeat", nameValuePairs);
+						}
+					});
 
-//						Log.e("result ","="+result);
-
-                    simpleJSONParser = null;
-                    nameValuePairs = null;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -751,9 +759,9 @@ public class GCMIntentService extends IntentService {
         }).start();
     }
 
-
     //context.sendBroadcast(new Intent("com.google.android.intent.action.GTALK_HEARTBEAT"));
     //context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
+
 
 
     public void sendChangePortAckToServer(final Context context, final JSONObject jObject1) {
@@ -767,20 +775,14 @@ public class GCMIntentService extends IntentService {
                     ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
                     nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenPair.first));
 
-                    Log.i("nameValuePairs", "=" + nameValuePairs);
-                    Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
-
-                    HttpRequester simpleJSONParser = new HttpRequester();
-                    String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/acknowledge_port_change", nameValuePairs);
-
-                    Log.e("result ", "=" + result);
+                    Response response = RestClient.getApiServices().sendChangePortAckToServerRetro(accessTokenPair.first);
+                    String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
                     if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
                     } else {
                         new JSONParser().parsePortNumber(context, jObject1);
                     }
 
-                    simpleJSONParser = null;
                     nameValuePairs = null;
                 } catch (Exception e) {
                     e.printStackTrace();

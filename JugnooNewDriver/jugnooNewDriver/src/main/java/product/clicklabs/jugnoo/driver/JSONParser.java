@@ -34,10 +34,13 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class JSONParser {
 
@@ -386,15 +389,21 @@ public class JSONParser {
 	
 	
 	
+
 	
-	
+//	Retrofit
+
 	public String getUserStatus(Context context, String accessToken, int currentUserStatus){
 		String returnResponse = "";
 		try{
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
+//			HttpRequester simpleJSONParser = new HttpRequester();
+
+			Response response = RestClient.getApiServices().getUserStatusRetro(accessToken);
+			String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+//			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
 			Log.e("result of = user_status", "="+result);
 			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
 				returnResponse = HttpRequester.SERVER_TIMEOUT;
@@ -411,9 +420,6 @@ public class JSONParser {
 			return returnResponse;
 		}
 	}
-	
-	
-	
 	
 	
 	//TODO

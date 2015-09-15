@@ -30,11 +30,17 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class DriverRidesFragment extends Fragment implements FlurryEventNames {
@@ -85,6 +91,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 		getRidesAsync(getActivity());
 		FlurryEventLogger.event(COMPLETE_RIDES_CHECKED);
 		
+
 		return rootView;
 	}
 
@@ -305,143 +312,54 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	
 
 
-	/**
-	 * ASync for get rides from server
-	 */
-	public void getRidesAsync(final Activity activity) {
-		if(!HomeActivity.checkIfUserDataNull(activity)) {
-			if (fetchRidesClient == null) {
-				if (AppStatus.getInstance(activity).isOnline(activity)) {
-					progressBar.setVisibility(View.VISIBLE);
-					textViewInfoDisplay.setVisibility(View.GONE);
-					RequestParams params = new RequestParams();
-					params.put("access_token", Data.userData.accessToken);
-					params.put("current_mode", "1");
-					fetchRidesClient = Data.getClient();
-					fetchRidesClient.post(Data.SERVER_URL + "/booking_history", params,
-							new CustomAsyncHttpResponseHandler() {
-								private JSONObject jObj;
 
-								@Override
-								public void onFailure(Throwable arg3) {
-									Log.e("request fail", arg3.toString());
-									progressBar.setVisibility(View.GONE);
+//	Retrofit
+
+	private void getRidesAsync(final Activity activity){
+		progressBar.setVisibility(View.VISIBLE);
+		RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
+				new Callback<BookingHistoryResponse>() {
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
 									updateListData("Some error occurred. Tap to retry", true);
 								}
 
-								@Override
-								public void onSuccess(String response) {
-									Log.i("Server response", "response = " + response);
+							} else {
 
-									try {
-										jObj = new JSONObject(response);
-										if (!jObj.isNull("error")) {
-											String errorMessage = jObj.getString("error");
-											if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-												HomeActivity.logoutUser(activity);
-											} else {
-												updateListData("Some error occurred. Tap to retry", true);
-											}
-										} else {
-//										{
-//										    "booking_data": [
-//                                        {
-//                                            "id": 13279,
-//                                            "engagement_id": 13279,
-//                                            "business_id": 1,
-//                                            "from": "2387, Sector 19C, Chandigarh 160019, India",
-//                                            "to": "SCO 27, Madhya Marg, Sector 26, Chandigarh 160019, India",
-//                                            "fare": 47,
-//                                            "distance": 1.6,
-//                                            "ride_time": 3,
-//                                            "wait_time": 0,
-//                                            "customer_paid": 44,
-//                                            "time": "2015-06-15 15:08:23",
-//                                            "subsidy": 0,
-//                                            "balance": 3,
-//                                            "coupon_used": 0,
-//                                            "payment_mode": 2,
-//                                            "driver_payment_status": 0,
-//                                            "status_string": "Ride Completed"
-//                                        }
-//										    ]
-//										}
-
-											JSONArray bookingData = jObj.getJSONArray("booking_data");
-											rides.clear();
-											DecimalFormat decimalFormat = new DecimalFormat("#.#");
-											if (bookingData.length() > 0) {
-												for (int i = 0; i < bookingData.length(); i++) {
-													JSONObject booData = bookingData.getJSONObject(i);
-
-													int paymentMode = PaymentMode.CASH.getOrdinal();
-													if (booData.has("payment_mode")) {
-														paymentMode = booData.getInt("payment_mode");
-													}
-
-													int businessId = BusinessType.AUTOS.getOrdinal();
-													if (booData.has("business_id")) {
-														businessId = booData.getInt("business_id");
-													}
-
-													String customerPaid = "0";
-													if (booData.has("customer_paid")) {
-														customerPaid = booData.getString("customer_paid");
-													}
-													String paidToMerchant = "0";
-													if (booData.has("paid_to_merchant")) {
-														paidToMerchant = booData.getString("paid_to_merchant");
-													}
-													String paidByCustomer = "0";
-													if (booData.has("paid_by_customer")) {
-														paidByCustomer = booData.getString("paid_by_customer");
-													}
-
-													int paymentStatus = 0;
-													if (booData.has("driver_payment_status")) {
-														paymentStatus = booData.getInt("driver_payment_status");
-													}
-
-													String statusString = "";
-													if (booData.has("status_string")) {
-														statusString = booData.getString("status_string");
-													}
-
-
-													RideInfo rideInfo = new RideInfo(booData.getString("id"), booData.getString("from"), booData.getString("to"),
-															booData.getString("fare"), customerPaid, booData.getString("balance"), booData.getString("subsidy"),
-															decimalFormat.format(booData.getDouble("distance")), booData.getString("ride_time"), booData.getString("wait_time"),
-															booData.getString("time"),
-															booData.getInt("coupon_used"), paymentMode, businessId, paidToMerchant, paidByCustomer,
-															paymentStatus, statusString);
-													rides.add(rideInfo);
-												}
-											}
-											updateListData("No rides currently", false);
-										}
-									} catch (Exception exception) {
-										exception.printStackTrace();
-										updateListData("Some error occurred. Tap to retry", true);
-									}
-									progressBar.setVisibility(View.GONE);
+								for (int i = 0; i < bookingHistoryResponse.getBookingData().size(); i++) {
+									BookingHistoryResponse.BookingData data = bookingHistoryResponse.getBookingData().get(i);
+									RideInfo rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
+											data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
+											data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
+											data.getBusinessId(), data.getPaidToMerchant(), data.getPaidByCustomer(), data.getDriverPaymentStatus(),
+											data.getStatusString());
+									rides.add(rideInfo);
 								}
+								updateListData("No rides currently", false);
+							}
+						}catch (Exception exception){
+							exception.printStackTrace();
+							updateListData("Some error occurred. Tap to retry", true);
+						}
+						progressBar.setVisibility(View.GONE);
+					}
 
-								@Override
-								public void onFinish() {
-									fetchRidesClient = null;
-									super.onFinish();
-								}
 
-
-							});
-				} else {
-					updateListData("No Internet connection. Tap to retry", true);
-				}
-			}
-		}
-
+					@Override
+					public void failure(RetrofitError error) {
+						progressBar.setVisibility(View.GONE);
+						updateListData("Some error occurred. Tap to retry", true);
+					}
+				});
 	}
-	
-	
 
 }
