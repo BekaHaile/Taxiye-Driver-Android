@@ -644,6 +644,8 @@
                             android:layout_height="51px"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="20px"
+                            android:tag="mwar"
+                            android:src="@drawable/ic_luggage"
                             />
 
                         <ImageView
@@ -657,23 +659,27 @@
 
                         <ImageView
                             android:id="@+id/imageViewEndRideLuggageCountPlus"
-                            android:layout_width="52px"
-                            android:layout_height="52px"
+                            android:layout_width="82px"
+                            android:layout_height="82px"
+                            android:padding="15px"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="32px"
+                            android:layout_marginRight="10px"
                             android:layout_alignParentRight="true"
-                            android:background="@color/black_translucent"
+                            android:tag="mwar"
+                            android:src="@drawable/ic_plus"
                             />
 
 
                         <ImageView
                             android:id="@+id/imageViewEndRideLuggageCountMinus"
-                            android:layout_width="52px"
-                            android:layout_height="52px"
+                            android:layout_width="82px"
+                            android:layout_height="82px"
+                            android:padding="15px"
                             android:layout_centerVertical="true"
-                            android:layout_marginRight="121px"
+                            android:layout_marginRight="105px"
                             android:layout_alignParentRight="true"
-                            android:background="@color/black_translucent"
+                            android:tag="mwar"
+                            android:src="@drawable/ic_minus"
                             />
 
 
@@ -686,6 +692,7 @@
                             android:textSize="40px"
                             android:textColor="@color/black"
                             android:text="NO LUGGAGE"
+                            android:gravity="center"
                             />
 
 

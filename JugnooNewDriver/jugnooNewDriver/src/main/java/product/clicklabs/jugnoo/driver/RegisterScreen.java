@@ -38,7 +38,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	Button backBtn;
 	TextView title;
 	
-	EditText nameEt, emailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
+	EditText nameEt, emailIdEt, confirmEmailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
 	Button signUpBtn;
 
 	LinearLayout relative;
@@ -84,6 +84,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Data.latoRegular(this));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -93,7 +94,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 		
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
@@ -101,11 +102,11 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 		});
 		
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				nameEt.setError(null);
-				
+
 			}
 		});
 		
@@ -117,6 +118,15 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 				emailIdEt.setError(null);
 			}
 		});
+		confirmEmailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				confirmEmailIdEt.setError(null);
+			}
+		});
+		emailIdEt.setLongClickable(false);
+		confirmEmailIdEt.setLongClickable(false);
 		
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			
@@ -149,97 +159,100 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onClick(View v) {
-				
+
 				String name = nameEt.getText().toString().trim();
-				if(name.length() > 0){
+				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
 				String emailId = emailIdEt.getText().toString().trim();
+				String confirmEmail = confirmEmailIdEt.getText().toString().trim();
 
 
-				
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				String password = passwordEt.getText().toString().trim();
 				String confirmPassword = confirmPasswordEt.getText().toString().trim();
 
-				
-				
-				if("".equalsIgnoreCase(name)){
+
+				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
-				}
-				else{
-					if("".equalsIgnoreCase(emailId)){
+				} else {
+					if ("".equalsIgnoreCase(emailId)) {
 						emailIdEt.requestFocus();
 						emailIdEt.setError("Please enter email id");
-					}
-					else{
-						if("".equalsIgnoreCase(phoneNo)){
-							phoneNoEt.requestFocus();
-							phoneNoEt.setError("Please enter phone number");
-						}
-						else{
-							//TODO remove extra characters phoneNo
-							phoneNo = phoneNo.replace(" ", "");
-							phoneNo = phoneNo.replace("(", "");
-							phoneNo = phoneNo.replace("/", "");
-							phoneNo = phoneNo.replace(")", "");
-							phoneNo = phoneNo.replace("N", "");
-							phoneNo = phoneNo.replace(",", "");
-							phoneNo = phoneNo.replace("*", "");
-							phoneNo = phoneNo.replace(";", "");
-							phoneNo = phoneNo.replace("#", "");
-							phoneNo = phoneNo.replace("-", "");
-							phoneNo = phoneNo.replace(".", "");
-							
-							if(phoneNo.length() >= 10){
-								phoneNo = phoneNo.substring(phoneNo.length()-10, phoneNo.length());
-								if(phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")){
+					} else {
+						if ("".equalsIgnoreCase(confirmEmail)) {
+							confirmEmailIdEt.requestFocus();
+							confirmEmailIdEt.setError("Please confirm email id");
+						} else {
+							if (emailId.equalsIgnoreCase(confirmEmail)) {
+								if ("".equalsIgnoreCase(phoneNo)) {
 									phoneNoEt.requestFocus();
-									phoneNoEt.setError("Please enter valid phone number");
-								}
-								else{
-									phoneNo = "+91" + phoneNo;
-									
-									if("".equalsIgnoreCase(password)){
-										passwordEt.requestFocus();
-										passwordEt.setError("Please enter password");
-									}
-									else{
-										if("".equalsIgnoreCase(confirmPassword)){
-											confirmPasswordEt.requestFocus();
-											confirmPasswordEt.setError("Please confirm password");
-										}
-										else {
-											if (isEmailValid(emailId)) {
-												if (isPhoneValid(phoneNo)) {
-													if (password.equals(confirmPassword)) {
-														if (password.length() >= 6) {
-															sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
-															FlurryEventLogger.emailSignupClicked(emailId);
+									phoneNoEt.setError("Please enter phone number");
+								} else {
+									//TODO remove extra characters phoneNo
+									phoneNo = phoneNo.replace(" ", "");
+									phoneNo = phoneNo.replace("(", "");
+									phoneNo = phoneNo.replace("/", "");
+									phoneNo = phoneNo.replace(")", "");
+									phoneNo = phoneNo.replace("N", "");
+									phoneNo = phoneNo.replace(",", "");
+									phoneNo = phoneNo.replace("*", "");
+									phoneNo = phoneNo.replace(";", "");
+									phoneNo = phoneNo.replace("#", "");
+									phoneNo = phoneNo.replace("-", "");
+									phoneNo = phoneNo.replace(".", "");
+
+									if (phoneNo.length() >= 10) {
+										phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+										if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+											phoneNoEt.requestFocus();
+											phoneNoEt.setError("Please enter valid phone number");
+										} else {
+											phoneNo = "+91" + phoneNo;
+
+											if ("".equalsIgnoreCase(password)) {
+												passwordEt.requestFocus();
+												passwordEt.setError("Please enter password");
+											} else {
+												if ("".equalsIgnoreCase(confirmPassword)) {
+													confirmPasswordEt.requestFocus();
+													confirmPasswordEt.setError("Please confirm password");
+												} else {
+													if (isEmailValid(emailId)) {
+														if (isPhoneValid(phoneNo)) {
+															if (password.equals(confirmPassword)) {
+																if (password.length() >= 6) {
+																	sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
+																	FlurryEventLogger.emailSignupClicked(emailId);
+																} else {
+																	passwordEt.requestFocus();
+																	passwordEt.setError("Password must be of atleast six characters");
+																}
+															} else {
+																passwordEt.requestFocus();
+																passwordEt.setError("Passwords does not match");
+															}
 														} else {
-															passwordEt.requestFocus();
-															passwordEt.setError("Password must be of atleast six characters");
+															phoneNoEt.requestFocus();
+															phoneNoEt.setError("Please enter valid phone number");
 														}
 													} else {
-														passwordEt.requestFocus();
-														passwordEt.setError("Passwords does not match");
+														emailIdEt.requestFocus();
+														emailIdEt.setError("Please enter valid email id");
 													}
-												} else {
-													phoneNoEt.requestFocus();
-													phoneNoEt.setError("Please enter valid phone number");
 												}
-											} else {
-												emailIdEt.requestFocus();
-												emailIdEt.setError("Please enter valid email id");
 											}
 										}
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
 									}
 								}
 							}
 							else{
-								phoneNoEt.requestFocus();
-								phoneNoEt.setError("Please enter valid phone number");
+								confirmEmailIdEt.requestFocus();
+								confirmEmailIdEt.setError("Confirm email id doesn't match");
 							}
 						}
 					}
