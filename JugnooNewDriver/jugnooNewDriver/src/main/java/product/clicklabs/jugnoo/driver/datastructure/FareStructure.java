@@ -37,7 +37,7 @@ public class FareStructure {
 		
 		double fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKm));
 		fare = fare * fareFactor;
-		fare = Math.ceil(fare);
+		fare = Math.round(fare);
 		return fare;
 	}
 	

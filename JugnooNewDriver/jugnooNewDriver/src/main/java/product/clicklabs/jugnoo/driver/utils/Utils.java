@@ -19,6 +19,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -300,5 +301,15 @@ public class Utils {
 			return false;
 		}
 	}
+
+
+	private static DecimalFormat decimalFormatMoney;
+	public static DecimalFormat getDecimalFormatForMoney(){
+		if(decimalFormatMoney == null){
+			decimalFormatMoney = new DecimalFormat("#.##");
+		}
+		return decimalFormatMoney;
+	}
+
 
 }

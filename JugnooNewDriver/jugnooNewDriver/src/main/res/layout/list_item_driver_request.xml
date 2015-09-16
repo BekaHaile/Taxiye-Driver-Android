@@ -52,8 +52,9 @@
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="34px"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="40px"
-                android:layout_toRightOf="@+id/textViewRequestDistance"
+                android:layout_marginRight="80px"
+                android:layout_marginTop="14px"
+                android:layout_alignParentRight="true"
 
                 />
 

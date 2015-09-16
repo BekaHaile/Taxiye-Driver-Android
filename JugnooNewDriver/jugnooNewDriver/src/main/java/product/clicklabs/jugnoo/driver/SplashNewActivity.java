@@ -259,7 +259,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Log.i("countryCode", Data.country + "..");
 			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
 			Log.i("deviceName", Data.deviceName + "..");
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
+			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this) + "1";
 			
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());

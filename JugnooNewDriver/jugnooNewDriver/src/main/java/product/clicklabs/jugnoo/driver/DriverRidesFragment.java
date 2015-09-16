@@ -317,6 +317,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					RequestParams params = new RequestParams();
 					params.put("access_token", Data.userData.accessToken);
 					params.put("current_mode", "1");
+					Log.v("access token", Data.userData.accessToken);
+
 					fetchRidesClient = Data.getClient();
 					fetchRidesClient.post(Data.SERVER_URL + "/booking_history", params,
 							new CustomAsyncHttpResponseHandler() {
