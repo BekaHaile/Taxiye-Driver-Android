@@ -1448,6 +1448,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Start Location", "");
 						map.setInfoWindowAdapter(customIW);
 
+
+						//TODO 30.7500  76.7800
+//						updateDropLatLngandPath(new LatLng(30.7500,76.7800));
+						
 						return false;
 					}
 					else if(arg0.getTitle().equalsIgnoreCase("driver position")){
@@ -6811,7 +6815,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				initializeStationDataProcedure();
 			}
 		});
-
 	}
 
 	@Override
@@ -6834,6 +6837,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					((AutoCustomerInfo)Data.assignedCustomerInfo).jugnooBalance = balance;
 				}
 			}
+		}
+	}
+
+
+
+	@Override
+	public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng) {
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				if(engagementId.equalsIgnoreCase(Data.dEngagementId)){
+					updateDropLatLngandPath(dropLatLng);
+				}
+			}
+		});
+	}
+
+
+	private void updateDropLatLngandPath(LatLng dropLatLng){
+		if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())) {
+			((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = dropLatLng;
+			startCustomerPathUpdateTimer();
 		}
 	}
 
