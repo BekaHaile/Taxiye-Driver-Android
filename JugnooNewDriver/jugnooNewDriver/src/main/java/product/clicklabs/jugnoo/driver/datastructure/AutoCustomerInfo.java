@@ -17,10 +17,11 @@ public class AutoCustomerInfo extends CustomerInfo{
     public LatLng dropLatLng;
     public int meterFareApplicable;
     public int getJugnooFareEnabled;
+	public int luggageChargesApplicable;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String image, String rating, String schedulePickupTime, int freeRide,
-			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton){
+			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
@@ -36,7 +37,9 @@ public class AutoCustomerInfo extends CustomerInfo{
 
         this.meterFareApplicable = meterFareApplicable;
         this.getJugnooFareEnabled = jugnooFareButton;
+		this.luggageChargesApplicable = luggageChargesApplicable;
 
+//		this.luggageChargesApplicable = 1;
 //        this.meterFareApplicable = 1;
 //        this.getJugnooFareEnabled = 1;
 	}

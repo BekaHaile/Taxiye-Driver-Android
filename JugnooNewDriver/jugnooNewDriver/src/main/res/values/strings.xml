@@ -41,6 +41,7 @@
 	
 	
 	<string name="email_id">Email ID</string>
+    <string name="confirm_email_id">Confirm Email ID</string>
 	<string name="password">Password</string>
 	<string name="sign_in">Sign In</string>
 	<string name="forgot_password">Forgot Password?</string>

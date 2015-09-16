@@ -7,12 +7,12 @@ public enum DriverScreenMode {
     D_START_RIDE(3),
 	D_IN_RIDE(4),
 	D_RIDE_END(5),
-    D_ENTER_METER_FARE(6);
+    D_BEFORE_END_OPTIONS(6);
 	
 	
 	private int ordinal;
 	
-	private DriverScreenMode(int ordinal) {
+	DriverScreenMode(int ordinal) {
 		this.ordinal = ordinal;
 	}
 	

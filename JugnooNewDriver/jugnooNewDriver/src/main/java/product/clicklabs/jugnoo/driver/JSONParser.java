@@ -516,6 +516,13 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+			if(jLastRideData.has("luggage_charges")){
+				try{
+					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_charges");
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
 			
 			parseEndRideData(jLastRideData, Data.dEngagementId, HomeActivity.totalFare);
 			
@@ -541,7 +548,7 @@ public class JSONParser {
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1;
+			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -698,6 +705,13 @@ public class JSONParser {
 											e.printStackTrace();
 										}
 									}
+									if(jObject.has("luggage_charges")){
+										try{
+											Data.fareStructure.luggageFare = jObject.getDouble("luggage_charges");
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
 									
 									
 									if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
@@ -755,6 +769,7 @@ public class JSONParser {
 
                                             meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
+											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable");
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -857,7 +872,7 @@ public class JSONParser {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }
