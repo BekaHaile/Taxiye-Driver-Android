@@ -26,8 +26,8 @@ public class RestClient {
 		okHttpClient.setConnectTimeout(15, TimeUnit.SECONDS);
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
-//				.setClient(new OkClient(okHttpClient))
-				.setClient(new ApacheClient(DataLoader.getHttpClientSecure()))
+				.setClient(new OkClient(okHttpClient))
+//				.setClient(new ApacheClient(DataLoader.getHttpClientSecure()))
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();
