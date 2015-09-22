@@ -6899,7 +6899,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	@Override
-	public void updateMeteringUI(final double distance, final long elapsedTime, final Location lastGPSLocation, final Location lastFusedLocation, final double totalHaversineDistance) {
+	public void updateMeteringUI(final double distance, final long elapsedTime, final long waitTime,
+								 final Location lastGPSLocation, final Location lastFusedLocation, final double totalHaversineDistance) {
 		if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
 			totalDistance = distance;
 			HomeActivity.totalHaversineDistance = totalHaversineDistance;
