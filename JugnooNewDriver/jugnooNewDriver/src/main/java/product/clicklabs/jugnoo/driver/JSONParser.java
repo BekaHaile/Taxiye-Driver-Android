@@ -554,7 +554,7 @@ public class JSONParser {
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0;
+			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitTimeApplicable = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -775,7 +775,8 @@ public class JSONParser {
 
                                             meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
-											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable");
+											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
+											waitTimeApplicable = jObject.optInt("wait_time_applicable", 0);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -878,7 +879,7 @@ public class JSONParser {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitTimeApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }
@@ -911,7 +912,7 @@ public class JSONParser {
 					SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 					
 					HomeActivity.totalDistance = Double.parseDouble(pref.getString(Data.SP_TOTAL_DISTANCE, "-1"));
-					HomeActivity.previousWaitTime = Long.parseLong(pref.getString(Data.SP_WAIT_TIME, "0"));
+					HomeActivity.previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
 					
 					long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
 					long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;

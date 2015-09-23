@@ -68,7 +68,6 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -350,6 +349,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
 
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
+	static long totalWaitTime = 0;
 
 
 	static long previousWaitTime = 0, previousRideTime = 0;
@@ -2392,7 +2392,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
-					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime);
+					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, waitChronometer.eclipsedTime);
 
 					setAssignedCustomerInfoToViews(mode);
 
@@ -3215,14 +3215,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	//totalDistance, rideTimeChronometer.eclipsedTime
-	public synchronized void updateDistanceFareTexts(double distance, long elapsedTime){
+	public synchronized void updateDistanceFareTexts(double distance, long elapsedTime, long waitTime){
 		try {
 			double totalDistanceInKm = Math.abs(distance/1000.0);
 
 			long rideTimeSeconds = elapsedTime / 1000;
 			double totalTimeInMin = Math.ceil(rideTimeSeconds / 60);
 
-			long waitTimeSeconds = waitChronometer.eclipsedTime / 1000;
+			long waitTimeSeconds = waitTime / 1000;
 			double totalWaitTimeInMin = Math.ceil(waitTimeSeconds / 60);
 
 			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
@@ -3576,16 +3576,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 
-						if(!jObj.isNull("error")){
+						if (!jObj.isNull("error")) {
 
 							int flag = jObj.getInt("flag");
-							Log.e("accept_a_request flag", "="+flag);
+							Log.e("accept_a_request flag", "=" + flag);
 							String errorMessage = jObj.getString("error");
 
-							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 								HomeActivity.logoutUser(activity);
-							}
-							else{
+							} else {
 								DialogPopup.alertPopup(activity, "", errorMessage);
 							}
 
@@ -3593,34 +3592,33 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							reduceRideRequest(Data.dEngagementId);
 
-						}
-						else{
+						} else {
 
 							int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
 
-							if(jObj.has("flag")){
+							if (jObj.has("flag")) {
 								flag = jObj.getInt("flag");
 							}
 
-							if(ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag){
-								if(jObj.has("fare_details")){
-									try{
+							if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
+								if (jObj.has("fare_details")) {
+									try {
 										Data.fareStructure = JSONParser.parseFareObject(jObj.getJSONObject("fare_details"));
-									} catch(Exception e){
-										Log.w("fareStructure", "e="+e.toString());
+									} catch (Exception e) {
+										Log.w("fareStructure", "e=" + e.toString());
 									}
 								}
-								if(jObj.has("fare_factor")){
-									try{
+								if (jObj.has("fare_factor")) {
+									try {
 										Data.fareStructure.fareFactor = jObj.getDouble("fare_factor");
-									} catch(Exception e){
-										Log.w("fareFactor", "e="+e.toString());
+									} catch (Exception e) {
+										Log.w("fareFactor", "e=" + e.toString());
 									}
 								}
-								if(jObj.has("luggage_charges")){
-									try{
+								if (jObj.has("luggage_charges")) {
+									try {
 										Data.fareStructure.luggageFare = jObj.getDouble("luggage_charges");
-									} catch(Exception e){
+									} catch (Exception e) {
 										e.printStackTrace();
 									}
 								}
@@ -3630,7 +3628,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								int referenceId = jObj.getInt("reference_id");
 								int businessId = jObj.getInt("business_id");
 
-								if(BusinessType.AUTOS.getOrdinal() == businessId){
+								if (BusinessType.AUTOS.getOrdinal() == businessId) {
 
 
 									double jugnooBalance = 0;
@@ -3642,8 +3640,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									String userImage = userData.getString("user_image");
 									String phoneNo = userData.getString("phone_no");
 									String rating = "4";
-									try{rating = userData.getString("user_rating");}catch(Exception e){}
-									if(userData.has("jugnoo_balance")){
+									try {
+										rating = userData.getString("user_rating");
+									} catch (Exception e) {
+									}
+									if (userData.has("jugnoo_balance")) {
 										jugnooBalance = userData.getDouble("jugnoo_balance");
 									}
 
@@ -3654,45 +3655,46 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 									int isScheduled = 0;
 									String pickupTime = "";
-									if(jObj.has("is_scheduled")){
+									if (jObj.has("is_scheduled")) {
 										isScheduled = jObj.getInt("is_scheduled");
-										if(isScheduled == 1 && jObj.has("pickup_time")){
+										if (isScheduled == 1 && jObj.has("pickup_time")) {
 											pickupTime = jObj.getString("pickup_time");
 										}
 									}
 
 									int freeRide = 0;
-									if(jObj.has("free_ride")){
+									if (jObj.has("free_ride")) {
 										freeRide = jObj.getInt("free_ride");
 									}
 
 									CouponInfo couponInfo = null;
-									if(jObj.has("coupon")){
-										try{
+									if (jObj.has("coupon")) {
+										try {
 											couponInfo = JSONParser.parseCouponInfo(jObj.getJSONObject("coupon"));
-										} catch(Exception e){
-											Log.w("couponInfo", "e="+e.toString());
+										} catch (Exception e) {
+											Log.w("couponInfo", "e=" + e.toString());
 										}
 									}
 
 									PromoInfo promoInfo = null;
-									if(jObj.has("promotion")){
-										try{
+									if (jObj.has("promotion")) {
+										try {
 											promoInfo = JSONParser.parsePromoInfo(jObj.getJSONObject("promotion"));
-										} catch(Exception e){
-											Log.w("promoInfo", "e="+e.toString());
+										} catch (Exception e) {
+											Log.w("promoInfo", "e=" + e.toString());
 										}
 									}
 
-											int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
-											int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
-											int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable");
+									int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
+									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
+									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
+									int waitTimeApplicable = jObj.optInt("wait_time_applicable", 0);
 
-											Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
-													Integer.parseInt(Data.dCustomerId), referenceId,
-													userName, phoneNo, pickuplLatLng,
-													userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
-													meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable);
+									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
+											Integer.parseInt(Data.dCustomerId), referenceId,
+											userName, phoneNo, pickuplLatLng,
+											userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
+											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitTimeApplicable);
 
 
 									Data.driverRideRequests.clear();
@@ -3702,11 +3704,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									driverScreenMode = DriverScreenMode.D_ARRIVED;
 									switchDriverScreen(driverScreenMode);
 
-								}
-								else if(BusinessType.MEALS.getOrdinal() == businessId){
+								} else if (BusinessType.MEALS.getOrdinal() == businessId) {
 
-								}
-								else if(BusinessType.FATAFAT.getOrdinal() == businessId){
+								} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
 
 //											{
 //												   flag    : constants.responseFlags.RIDE_ACCEPTED,
@@ -3744,27 +3744,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									driverScreenMode = DriverScreenMode.D_ARRIVED;
 									switchDriverScreen(driverScreenMode);
 
-								}
-								else{
+								} else {
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 								}
 
 
-							}
-							else{
-								try{
-									Log.e("accept_a_request flag", "="+flag);
+							} else {
+								try {
+									Log.e("accept_a_request flag", "=" + flag);
 									String logMessage = jObj.getString("log");
-									DialogPopup.alertPopup(activity, "", ""+logMessage);
+									DialogPopup.alertPopup(activity, "", "" + logMessage);
 									reduceRideRequest(Data.dEngagementId);
-								} catch(Exception e){
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
 							}
 
 							DialogPopup.dismissLoadingDialog();
 						}
-					}  catch (Exception exception) {
+					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -6911,7 +6909,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void run() {
-					updateDistanceFareTexts(distance, elapsedTime);
+					updateDistanceFareTexts(distance, elapsedTime, waitTime);
 					if(rideStartPositionMarker == null){
 						displayOldPath();
 					}
