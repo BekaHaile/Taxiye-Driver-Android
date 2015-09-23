@@ -2530,11 +2530,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 			String kmsStr = (totalDistanceInKm > 1) ? "kms" : "km";
 
-			long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-			double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-			String rideTime = decimalFormatNoDecimal.format(getElapsedRideTime(HomeActivity.this, rideTimeMinutes));
-
-			double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
+			long rideTimeMillis = getElapsedRideTimeFromSPInMillis(HomeActivity.this, rideTimeChronometer.eclipsedTime);
+			double rideTimeMinutes = Math.ceil(rideTimeMillis / 60000);
+			String rideTime = decimalFormatNoDecimal.format(rideTimeMinutes);
+			double totalFare = getTotalFare(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime);
 
 
 			SpannableString distSS = new SpannableString(decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
@@ -2568,12 +2567,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	private String getJugnooCalculatedFare(){
 		try {
-			double totalDistanceInKm = Math.abs(totalDistance/1000.0);
-
-			long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-			double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-
-			double totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeMinutes, 0);
+			double totalFare = getTotalFare(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime);
 			return Utils.getDecimalFormatForMoney().format(totalFare);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3161,13 +3155,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
-					long elapsedMillis = waitChronometer.eclipsedTime;
 
 					editor.putString(Data.SP_TOTAL_DISTANCE, ""+totalDistance);
-					editor.putString(Data.SP_WAIT_TIME, ""+elapsedMillis);
 
-					long elapsedRideTime = rideTimeChronometer.eclipsedTime;
-					editor.putString(Data.SP_RIDE_TIME, ""+elapsedRideTime);
 
 					editor.putString(Data.SP_LAST_LOCATION_TIME, ""+HomeActivity.this.lastLocationTime);
 
@@ -3214,20 +3204,39 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+	private double getTotalFare(double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis){
+		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+
+		if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
+			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitTimeApplicable == 1){
+				elapsedTimeInMillis = elapsedTimeInMillis - waitTimeInMillis;
+			}
+			else{
+				waitTimeInMillis = 0;
+			}
+		}
+		else{
+			waitTimeInMillis = 0;
+		}
+
+		long rideTimeSeconds = elapsedTimeInMillis / 1000;
+		double rideTimeInMin = Math.ceil(rideTimeSeconds / 60);
+
+		long waitTimeSeconds = waitTimeInMillis / 1000;
+		double waitTimeInMin = Math.ceil(waitTimeSeconds / 60);
+
+		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin);
+	}
+
 	//totalDistance, rideTimeChronometer.eclipsedTime
 	public synchronized void updateDistanceFareTexts(double distance, long elapsedTime, long waitTime){
 		try {
-			double totalDistanceInKm = Math.abs(distance/1000.0);
-
-			long rideTimeSeconds = elapsedTime / 1000;
-			double totalTimeInMin = Math.ceil(rideTimeSeconds / 60);
-
-			long waitTimeSeconds = waitTime / 1000;
-			double totalWaitTimeInMin = Math.ceil(waitTimeSeconds / 60);
+			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
 			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
 			if(Data.fareStructure != null){
-				driverIRFareValue.setText(""+Utils.getDecimalFormatForMoney().format(Data.fareStructure.calculateFare(totalDistanceInKm, totalTimeInMin, totalWaitTimeInMin)));
+				driverIRFareValue.setText(""+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
+						elapsedTime, waitTime)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4201,17 +4210,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	 * ASync for start ride in  driver mode from server
 	 */
 	public void driverEndRideAsync(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
-								   double waitMinutes, double rideMinutes,
+								   long rideTimeInMillis, long waitTimeInMillis,
 								   int flagDistanceTravelled, final BusinessType businessType) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			if(BusinessType.AUTOS == businessType){
-				autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
-
+				autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
+						rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
 			}
 			else if(BusinessType.FATAFAT == businessType){
-				fatafatEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude, waitMinutes, rideMinutes, flagDistanceTravelled, businessType);
-
+				fatafatEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
+						rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
 			}
 		}
 		else {
@@ -4226,17 +4235,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	private double getElapsedRideTime(Activity activity, double rideMinutes){
+	private long getElapsedRideTimeFromSPInMillis(Activity activity, long rideTimeInMillisChrono){
 		SharedPreferences pref = activity.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
 		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-		long rideTimeSeconds = timeDiffToAdd / 1000;
-		double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-		Log.e("timeDiffToAdd", "="+rideTimeMinutes);
-		if(rideTimeMinutes > 0){
-			rideMinutes = rideTimeMinutes;
+		if(timeDiffToAdd > 0){
+			rideTimeInMillisChrono = timeDiffToAdd;
 		}
-		return rideMinutes;
+		return rideTimeInMillisChrono;
 	}
 
 	double enteredMeterFare = 0;
@@ -4244,7 +4250,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //	Retrofit
 
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
-							   double waitMinutes, double rideMinutes,
+							   long rideTimeInMillis, long waitTimeInMillis,
 							   int flagDistanceTravelled, final BusinessType businessType){
 		DialogPopup.showLoadingDialog(activity, "Loading...");
 
@@ -4256,18 +4262,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
-		rideMinutes = getElapsedRideTime(activity, rideMinutes);
+		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(activity, rideTimeInMillis);
+		double rideMinutes = Math.ceil(rideTimeInMillis / 60000);
+		double waitMinutes = Math.ceil(waitTimeInMillis / 60000);
 		if(rideMinutes < Limit_endRideMinute) {
 			rideTime = decimalFormatNoDecimal.format(rideMinutes);
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
 		else{
 			rideMinutes = Average_endRideMinute;
+			rideTimeInMillis = (long)(Average_endRideMinute * 60000.0);
 			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
-		final double eoRideMinutes = rideMinutes;
-		final double eoWaitMinutes = waitMinutes;
+		final long eoRideTimeInMillis = rideTimeInMillis;
+		final long eoWaitTimeInMillis = waitTimeInMillis;
 
 
 		final double totalHaversineDistanceInKm = Math.abs(totalHaversineDistance/1000.0);
@@ -4399,8 +4408,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void failure(RetrofitError error) {
-				endRideOffline(activity, url, rparams, eoRideMinutes, eoWaitMinutes, (AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
-
+				endRideOffline(activity, url, rparams, eoRideTimeInMillis, eoWaitTimeInMillis,
+						(AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 			}
 		});
 	}
@@ -4498,7 +4507,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	 * @param assignedCustomerInfo
 	 */
 	//TODO end ride offline
-	public void endRideOffline(Activity activity, String url, RequestParams params, double rideTime, double waitTime,
+	public void endRideOffline(Activity activity, String url, RequestParams params, long rideTimeInMillis, long waitTimeInMillis,
 							   AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded){
 		try{
 
@@ -4515,7 +4524,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					totalFare = enteredMeterFare;
 				}
 				else{
-					totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTime, waitTime);
+					totalFare = getTotalFare(totalDistance, rideTimeInMillis, waitTimeInMillis);
 				}
 			} catch(Exception e){
 				e.printStackTrace();
@@ -4740,7 +4749,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //	Retrofit
 
 	public void fatafatEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
-								  double waitMinutes, double rideMinutes,
+								  long rideTimeInMillis, long waitTimeInMillis,
 								  int flagDistanceTravelled, final BusinessType businessType){
 
 
@@ -4750,20 +4759,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
-		rideMinutes = getElapsedRideTime(activity, rideMinutes);
+		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(activity, rideTimeInMillis);
+		double rideMinutes = Math.ceil(rideTimeInMillis / 60000);
+		double waitMinutes = Math.ceil(waitTimeInMillis / 60000);
 		if(rideMinutes < Limit_endRideMinute) {
 			rideTime = decimalFormatNoDecimal.format(rideMinutes);
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
 		else{
 			rideMinutes = Average_endRideMinute;
+			rideTimeInMillis = (long)(Average_endRideMinute * 60000.0);
 			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
+		final long eoRideTimeInMillis = rideTimeInMillis;
+		final long eoWaitTimeInMillis = waitTimeInMillis;
 
-
-		final double eoRideMinutes = rideMinutes;
-		final double eoWaitMinutes = waitMinutes;
 
 
 		final HashMap<String, String> params = new HashMap<String, String>();
@@ -4866,8 +4877,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void failure(RetrofitError error) {
-					fatafatEndRideOffline(activity, url, rParams, eoRideMinutes, eoWaitMinutes, (FatafatOrderInfo) Data.assignedCustomerInfo);
-
+					fatafatEndRideOffline(activity, url, rParams, eoRideTimeInMillis, eoWaitTimeInMillis,
+							(FatafatOrderInfo) Data.assignedCustomerInfo);
 				}
 			});
 
@@ -4881,7 +4892,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	//TODO fatafat offline mark delivered
-	public void fatafatEndRideOffline(Activity activity, String url, RequestParams params, double rideTime, double waitTime,
+	public void fatafatEndRideOffline(Activity activity, String url, RequestParams params, long rideTimeInMillis, long waitTimeInMillis,
 									  FatafatOrderInfo fatafatOrderInfo){
 		try{
 
@@ -4894,7 +4905,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			Log.i("rideTime", "="+rideTime);
 
 			try{
-				totalFare = Data.fareStructure.calculateFare(totalDistanceInKm, rideTime, waitTime);
+				totalFare = getTotalFare(totalDistance, rideTimeInMillis, waitTimeInMillis);
 			} catch(Exception e){
 				e.printStackTrace();
 				totalFare = 0;
@@ -5638,9 +5649,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						if (fusedLocationUsed) {
 							calculateFusedLocationDistance(activity, oldGPSLatLng,
-									new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()), rideTimeMinutes, businessType, lastloctime);
+									new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()),
+									rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime, businessType, lastloctime);
 						} else {
-							driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(), 0, rideTimeMinutes, 0, businessType);
+							driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
+									rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime, 0, businessType);
 						}
 					} else {
 
@@ -5665,7 +5678,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	int flagDistanceTravelled = -1;
 
-	public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination, final double rideTimeMinutes,
+	public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination,
+											   final long rideTimeInMillis, final long waitTimeInMillis,
 											   final BusinessType businessType, final long lastloctime) {
 		DialogPopup.showLoadingDialog(activity, "Loading...");
 		new Thread(new Runnable() {
@@ -5730,7 +5744,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@Override
 					public void run() {
 						DialogPopup.dismissLoadingDialog();
-						driverEndRideAsync(activity, source, destination.latitude, destination.longitude, 0, rideTimeMinutes, flagDistanceTravelled, businessType);
+						driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+								rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
 					}
 				});
 
@@ -6022,8 +6037,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		Editor editor = pref.edit();
 
 		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
-		editor.putString(Data.SP_WAIT_TIME, "0");
-		editor.putString(Data.SP_RIDE_TIME, "0");
 		editor.putString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis());
 		editor.putString(Data.SP_LAST_LATITUDE, "0");
 		editor.putString(Data.SP_LAST_LONGITUDE, "0");
@@ -6902,6 +6915,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
 			totalDistance = distance;
 			HomeActivity.totalHaversineDistance = totalHaversineDistance;
+			HomeActivity.totalWaitTime = waitTime;
 			HomeActivity.this.lastGPSLocation = lastGPSLocation;
 			HomeActivity.this.lastFusedLocation = lastFusedLocation;
 			HomeActivity.this.distanceUpdateFromService = true;

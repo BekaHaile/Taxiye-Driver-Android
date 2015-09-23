@@ -969,8 +969,6 @@ public class JSONParser {
 		Editor editor = pref.edit();
 
 		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
-		editor.putString(Data.SP_WAIT_TIME, "0");
-		editor.putString(Data.SP_RIDE_TIME, "0");
 		editor.putString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis());
 		editor.putString(Data.SP_LAST_LATITUDE, "0");
 		editor.putString(Data.SP_LAST_LONGITUDE, "0");
