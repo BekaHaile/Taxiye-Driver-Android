@@ -18,7 +18,7 @@ public class AutoCustomerInfo extends CustomerInfo{
     public int meterFareApplicable;
     public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
-	public int waitTimeApplicable;
+	public int waitingChargesApplicable;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String image, String rating, String schedulePickupTime, int freeRide,
@@ -39,7 +39,7 @@ public class AutoCustomerInfo extends CustomerInfo{
         this.meterFareApplicable = meterFareApplicable;
         this.getJugnooFareEnabled = jugnooFareButton;
 		this.luggageChargesApplicable = luggageChargesApplicable;
-		this.waitTimeApplicable = waitTimeApplicable;
+		this.waitingChargesApplicable = waitTimeApplicable;
 
 //		this.luggageChargesApplicable = 1;
 //        this.meterFareApplicable = 1;
@@ -61,7 +61,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.luggageChargesApplicable = 0;
         this.meterFareApplicable = 0;
         this.getJugnooFareEnabled = 1;
-		this.waitTimeApplicable = 0;
+		this.waitingChargesApplicable = 0;
 	}
 	
 	@Override

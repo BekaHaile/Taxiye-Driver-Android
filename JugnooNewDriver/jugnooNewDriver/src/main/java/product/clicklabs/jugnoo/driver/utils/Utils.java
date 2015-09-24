@@ -176,7 +176,7 @@ public class Utils {
 	}
 	
 	
-	public static String getElapsedTimeFromMillis(long elapsedTime){
+	public static String getChronoTimeFromMillis(long elapsedTime){
 		long timeR = elapsedTime;
 		int hR = (int) (timeR / 3600000);
 		int mR = (int) (timeR - hR * 3600000) / 60000;

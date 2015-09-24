@@ -176,8 +176,8 @@ public class MeteringService extends Service {
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					if(fromGPS){
 						generateNotification(context, "Total distance = "+getDecimalFormat().format(Math.abs(distance) / 1000) 
-								+ " km"+" time = "+Utils.getElapsedTimeFromMillis(elapsedTime)
-								+" wait = "+Utils.getElapsedTimeFromMillis(waitTime));
+								+ " km"+"\nRide time = "+Utils.getChronoTimeFromMillis(elapsedTime)
+								+"\nWait time = "+Utils.getChronoTimeFromMillis(waitTime));
 					}
 					if(HomeActivity.appInterruptHandler != null){
 						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,

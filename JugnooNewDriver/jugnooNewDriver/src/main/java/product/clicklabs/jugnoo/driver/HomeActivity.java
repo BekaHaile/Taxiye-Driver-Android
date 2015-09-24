@@ -262,13 +262,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//In ride layout
 	RelativeLayout driverInRideMainRl;
 	Button driverEndRideMyLocationBtn;
-	TextView driverIRDistanceText, driverIRDistanceValue, driverIRDistanceKmText;
-	TextView driverIRFareText, driverIRFareRsText, driverIRFareValue;
-	TextView driverRideTimeText;
+	TextView driverIRDistanceText, driverIRDistanceValue, driverIRFareText, driverIRFareValue,
+			driverRideTimeText, driverWaitText, driverWaitValue;
 	PausableChronometer rideTimeChronometer;
 	RelativeLayout driverWaitRl;
-	TextView driverWaitText;
-	PausableChronometer waitChronometer;
 	RelativeLayout inrideFareInfoRl;
 	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue;
 	Button inrideFareInfoBtn;
@@ -291,6 +288,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			reviewDistanceText, reviewDistanceValue,
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
+	RelativeLayout reviewWaitTimeRl;
 
 	LinearLayout linearLayoutMeterFareEditText;
 	TextView textViewMeterFareRupee;
@@ -631,19 +629,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		driverEndRideMyLocationBtn = (Button) findViewById(R.id.driverEndRideMyLocationBtn);
 
 		driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText); driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue); driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRDistanceKmText = (TextView) findViewById(R.id.driverIRDistanceKmText); driverIRDistanceKmText.setTypeface(Data.latoRegular(getApplicationContext()));
+		driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue); driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		driverIRFareText = (TextView) findViewById(R.id.driverIRFareText); driverIRFareText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRFareRsText = (TextView) findViewById(R.id.driverIRFareRsText); driverIRFareRsText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRFareValue = (TextView) findViewById(R.id.driverIRFareValue); driverIRFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+		driverIRFareValue = (TextView) findViewById(R.id.driverIRFareValue); driverIRFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText); driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
 		rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer); rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
 		driverWaitText = (TextView) findViewById(R.id.driverWaitText); driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
-		waitChronometer = (PausableChronometer) findViewById(R.id.waitChronometer); waitChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		driverWaitValue = (TextView) findViewById(R.id.driverWaitValue); driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		inrideFareInfoRl = (RelativeLayout) findViewById(R.id.inrideFareInfoRl);
 		inrideMinFareText = (TextView) findViewById(R.id.inrideMinFareText); inrideMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -659,7 +655,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 		rideTimeChronometer.setText("00:00:00");
-		waitChronometer.setText("00:00:00");
+		driverWaitValue.setText("00:00:00");
 
 
 		//Review Layout
@@ -679,6 +675,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		reviewFareText = (TextView) findViewById(R.id.reviewFareText); reviewFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		reviewFareValue = (TextView) findViewById(R.id.reviewFareValue); reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
+		reviewWaitTimeRl.setVisibility(View.GONE);
 
 
 		reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
@@ -1197,21 +1195,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 		// driver in ride layout events
-		driverWaitRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(waitStart == 2){
-					startWait();
-				}
-				else if(waitStart == 1){
-					stopWait();
-				}
-				else if(waitStart == 0){
-					startWait();
-				}
-			}
-		});
+//		driverWaitRl.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				if(waitStart == 2){
+//					startWait();
+//				}
+//				else if(waitStart == 1){
+//					stopWait();
+//				}
+//				else if(waitStart == 0){
+//					startWait();
+//				}
+//			}
+//		});
 
 		inrideFareInfoBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -1633,38 +1631,36 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void startWait(){
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				waitChronometer.start();
-				rideTimeChronometer.stop();
-				driverWaitRl.setBackgroundResource(R.drawable.red_btn_selector);
-				driverWaitText.setText(getResources().getString(R.string.stop_wait));
-				waitStart = 1;
-				distanceAfterWaitStarted = 0;
-				startEndWaitAsync(HomeActivity.this, Data.dCustomerId, 1);
-
-			}
-		});
-	}
-
-
-
-	public void stopWait(){
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				waitChronometer.stop();
-				rideTimeChronometer.start();
-				driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
-				driverWaitText.setText(getResources().getString(R.string.start_wait));
-				waitStart = 0;
-				startEndWaitAsync(HomeActivity.this, Data.dCustomerId, 0);
-
-			}
-		});
-	}
+//	public void startWait(){
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				rideTimeChronometer.stop();
+//				driverWaitRl.setBackgroundResource(R.drawable.red_btn_selector);
+//				driverWaitText.setText(getResources().getString(R.string.stop_wait));
+//				waitStart = 1;
+//				distanceAfterWaitStarted = 0;
+//				startEndWaitAsync(HomeActivity.this, Data.dCustomerId, 1);
+//
+//			}
+//		});
+//	}
+//
+//
+//
+//	public void stopWait(){
+//		runOnUiThread(new Runnable() {
+//			@Override
+//			public void run() {
+//				rideTimeChronometer.start();
+//				driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
+//				driverWaitText.setText(getResources().getString(R.string.start_wait));
+//				waitStart = 0;
+//				startEndWaitAsync(HomeActivity.this, Data.dCustomerId, 0);
+//
+//			}
+//		});
+//	}
 
 
 
@@ -2121,6 +2117,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					} catch (Exception e) {
 						reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
 					}
+					try{
+						if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()) {
+							if (((AutoCustomerInfo) Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
+								reviewWaitTimeRl.setVisibility(View.VISIBLE);
+							} else {
+								reviewWaitTimeRl.setVisibility(View.GONE);
+							}
+						}else{
+							reviewWaitTimeRl.setVisibility(View.GONE);
+						}
+					} catch(Exception e){
+						e.printStackTrace();
+						reviewWaitTimeRl.setVisibility(View.GONE);
+					}
+
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 
 					Database2.getInstance(this).deleteAllCurrentPathItems();
@@ -2357,29 +2368,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
-					long timeR = (long)HomeActivity.previousRideTime;
-					int hR = (int) (timeR / 3600000);
-					int mR = (int) (timeR - hR * 3600000) / 60000;
-					int sR = (int) (timeR - hR * 3600000 - mR * 60000) / 1000;
-					String hhR = hR < 10 ? "0" + hR : hR + "";
-					String mmR = mR < 10 ? "0" + mR : mR + "";
-					String ssR = sR < 10 ? "0" + sR : sR + "";
-					rideTimeChronometer.setText(hhR + ":" + mmR + ":" + ssR);
 
+					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousRideTime));
 					rideTimeChronometer.eclipsedTime = (long)HomeActivity.previousRideTime;
 					rideTimeChronometer.start();
-
-
-					long time = (long)HomeActivity.previousWaitTime;
-					int h = (int) (time / 3600000);
-					int m = (int) (time - h * 3600000) / 60000;
-					int s = (int) (time - h * 3600000 - m * 60000) / 1000;
-					String hh = h < 10 ? "0" + h : h + "";
-					String mm = m < 10 ? "0" + m : m + "";
-					String ss = s < 10 ? "0" + s : s + "";
-					waitChronometer.setText(hh + ":" + mm + ":" + ss);
-
-					waitChronometer.eclipsedTime =  (long)HomeActivity.previousWaitTime;
 
 
 
@@ -2392,7 +2384,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
-					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, waitChronometer.eclipsedTime);
+					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.previousWaitTime);
 
 					setAssignedCustomerInfoToViews(mode);
 
@@ -2413,11 +2405,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						startCustomerPathUpdateTimer();
 						driverEndRideBtn.setText("Mark Delivered");
 						inrideFareInfoRl.setVisibility(View.GONE);
+						driverWaitRl.setVisibility(View.GONE);
 					}
 					else if(BusinessType.MEALS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 						cancelCustomerPathUpdateTimer();
 						driverEndRideBtn.setText("Mark Delivered");
 						inrideFareInfoRl.setVisibility(View.GONE);
+						driverWaitRl.setVisibility(View.GONE);
 					}
 					else if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 						startCustomerPathUpdateTimer();
@@ -2437,6 +2431,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							}
 						} catch (Exception e) {
 							inrideFareInfoRl.setVisibility(View.VISIBLE);
+						}
+
+						try{
+							if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
+								driverWaitRl.setVisibility(View.VISIBLE);
+								driverWaitValue.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousWaitTime));
+							}
+							else{
+								driverWaitRl.setVisibility(View.GONE);
+							}
+						} catch(Exception e){
+							e.printStackTrace();
+							driverWaitRl.setVisibility(View.GONE);
 						}
 
 					}
@@ -3138,9 +3145,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				if(driverScreenMode == DriverScreenMode.D_IN_RIDE){
 
 					if(stopWait){
-						if(waitChronometer.isRunning){
-							stopWait();
-						}
 						if(rideTimeChronometer.isRunning){
 							runOnUiThread(new Runnable() {
 								@Override
@@ -3208,7 +3212,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
 		if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
-			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitTimeApplicable == 1){
+			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
 				elapsedTimeInMillis = elapsedTimeInMillis - waitTimeInMillis;
 			}
 			else{
@@ -3234,6 +3238,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
 			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
+			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
+
 			if(Data.fareStructure != null){
 				driverIRFareValue.setText(""+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
 						elapsedTime, waitTime)));
@@ -3697,13 +3703,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
-									int waitTimeApplicable = jObj.optInt("wait_time_applicable", 0);
+									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 											Integer.parseInt(Data.dCustomerId), referenceId,
 											userName, phoneNo, pickuplLatLng,
 											userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
-											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitTimeApplicable);
+											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
 
 
 									Data.driverRideRequests.clear();
@@ -4381,7 +4387,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 
 						waitStart = 2;
-						waitChronometer.stop();
 						rideTimeChronometer.stop();
 
 
@@ -4653,7 +4658,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 			waitStart = 2;
-			waitChronometer.stop();
 			rideTimeChronometer.stop();
 
 
@@ -4841,7 +4845,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								}
 
 								waitStart = 2;
-								waitChronometer.stop();
 								rideTimeChronometer.stop();
 
 
@@ -4945,7 +4948,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 			waitStart = 2;
-			waitChronometer.stop();
 			rideTimeChronometer.stop();
 
 
@@ -5634,15 +5636,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverWaitText.setText(getResources().getString(R.string.start_wait));
 					waitStart = 0;
 
-					long waitSeconds = waitChronometer.eclipsedTime / 1000;
-					double waitMinutes = Math.ceil(waitSeconds / 60);
-
-					long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-					double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-
 					if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
 
-						waitChronometer.stop();
 						rideTimeChronometer.stop();
 
 						driverScreenMode = DriverScreenMode.D_RIDE_END;

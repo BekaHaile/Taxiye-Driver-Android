@@ -399,6 +399,20 @@ public class GpsDistanceCalculator {
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
+
+
+
+//		if(speedMPS < 1.4){
+//			long millisTillWaitWindow = System.currentTimeMillis() - lastWaitWindowTime;
+//			if(millisTillWaitWindow >= 30000){
+//				long waitTime = getWaitTimeFromSP(context) + 30000l;
+//				saveWaitTimeToSP(context, waitTime);
+//				this.lastWaitWindowTime = System.currentTimeMillis();
+//			}
+//		}
+//		else{
+//			this.lastWaitWindowTime = System.currentTimeMillis();
+//		}
 	}
 
 

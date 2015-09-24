@@ -469,7 +469,7 @@ public class JSONParser {
 			Data.dCustomerId = jLastRideData.getString("user_id");
 
 			HomeActivity.totalDistance = jLastRideData.getDouble("distance_travelled");
-			HomeActivity.waitTime = "0";
+			HomeActivity.waitTime = jLastRideData.optString("wait_time", "0");
 			HomeActivity.rideTime = jLastRideData.getString("ride_time");
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
@@ -554,7 +554,7 @@ public class JSONParser {
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitTimeApplicable = 0;
+			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitingChargesApplicable = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -776,7 +776,7 @@ public class JSONParser {
                                             meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
 											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
-											waitTimeApplicable = jObject.optInt("wait_time_applicable", 0);
+											waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -879,7 +879,7 @@ public class JSONParser {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitTimeApplicable);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }
