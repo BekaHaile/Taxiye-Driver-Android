@@ -493,7 +493,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/driverIRDistanceText"
                                         android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="0px"
+                                        android:layout_marginTop="5px"
                                         android:gravity="center"
                                         android:singleLine="true"
                                         android:text="4.7 Kms"
@@ -532,7 +532,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/driverRideTimeText"
                                         android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="0px"
+                                        android:layout_marginTop="5px"
                                         android:gravity="center"
                                         android:singleLine="true"
                                         android:text=""
@@ -564,7 +564,6 @@
                                         android:text="@string/wait_time"
                                         android:textColor="@color/bg_grey_opaque"
                                         android:textSize="@dimen/end_ride_details_text_size"
-                                        android:layout_marginTop="5px"
                                         />
 
                                     <TextView
@@ -573,23 +572,21 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/driverWaitText"
                                         android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="0px"
+                                        android:layout_marginTop="5px"
                                         android:gravity="center"
                                         android:singleLine="true"
                                         android:text="4 min"
                                         android:textColor="@color/bg_grey_opaque"
                                         android:textSize="@dimen/end_ride_details_text_size"/>
 
-
-                                    <ImageView
-                                        android:layout_width="2px"
-                                        android:layout_height="90px"
-                                        android:background="@color/bg_grey_opaque"
-                                        android:layout_alignParentRight="true"
-                                        />
-
                                 </RelativeLayout>
 
+                                <ImageView
+                                    android:id="@+id/imageViewIRWaitSep"
+                                    android:layout_width="2px"
+                                    android:layout_height="90px"
+                                    android:background="@color/bg_grey_opaque"
+                                    />
 
                                 <RelativeLayout
                                     android:id="@+id/driverIRFareRl"
@@ -616,7 +613,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_below="@+id/driverIRFareText"
                                         android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="0px"
+                                        android:layout_marginTop="5px"
                                         android:gravity="center"
                                         android:singleLine="true"
                                         android:text="Rs 10.00"
@@ -731,6 +728,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
+
             </RelativeLayout>
 
 
@@ -742,7 +740,7 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
 
@@ -878,7 +876,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/reviewDistanceText"
                                                 android:layout_centerHorizontal="true"
-                                                android:layout_marginTop="0px"
+                                                android:layout_marginTop="px"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="4.7 Kms"
@@ -894,22 +892,20 @@
                                         <RelativeLayout
                                             android:id="@+id/reviewWaitTimeRl"
                                             android:layout_width="wrap_content"
-                                            android:layout_height="match_parent"
+                                            android:layout_height="90px"
+                                            android:gravity="center"
                                             android:splitMotionEvents="false"
                                             android:visibility="visible"
-                                            android:gravity="center"
                                             android:layout_weight="1">
 
                                             <TextView
                                                 android:id="@+id/reviewWaitText"
                                                 android:layout_width="178px"
                                                 android:layout_height="wrap_content"
-                                                android:layout_centerHorizontal="true"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="@string/wait_time"
                                                 android:textColor="@color/white"
-                                                android:layout_marginTop="5px"
                                                 android:textSize="@dimen/end_ride_details_text_size"/>
 
                                             <TextView
@@ -917,21 +913,20 @@
                                                 android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/reviewWaitText"
-                                                android:layout_centerHorizontal="true"
-                                                android:layout_marginTop="0px"
+                                                android:layout_marginTop="5px"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="4 min"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/end_ride_details_text_size"/>
-                                            <ImageView
-                                                android:layout_width="2px"
-                                                android:layout_height="90px"
-                                                android:background="@color/white"
-                                                android:layout_alignParentRight="true"/>
+
                                         </RelativeLayout>
 
-
+                                        <ImageView
+                                            android:id="@+id/imageViewEndRideWaitSep"
+                                            android:layout_width="2px"
+                                            android:layout_height="90px"
+                                            android:background="@color/white"/>
 
                                         <RelativeLayout
                                             android:id="@+id/reviewRideTimeRl"
@@ -958,7 +953,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/reviewRideTimeText"
                                                 android:layout_centerHorizontal="true"
-                                                android:layout_marginTop="0px"
+                                                android:layout_marginTop="5px"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="4 min"
@@ -996,7 +991,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/reviewFareText"
                                                 android:layout_centerHorizontal="true"
-                                                android:layout_marginTop="0px"
+                                                android:layout_marginTop="5px"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="Rs 10.00"

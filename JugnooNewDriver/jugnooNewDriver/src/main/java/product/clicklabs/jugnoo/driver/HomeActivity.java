@@ -266,6 +266,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRideTimeText, driverWaitText, driverWaitValue;
 	PausableChronometer rideTimeChronometer;
 	RelativeLayout driverWaitRl;
+	ImageView imageViewIRWaitSep;
 	RelativeLayout inrideFareInfoRl;
 	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue;
 	Button inrideFareInfoBtn;
@@ -289,6 +290,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
+	ImageView imageViewEndRideWaitSep;
 
 	LinearLayout linearLayoutMeterFareEditText;
 	TextView textViewMeterFareRupee;
@@ -640,6 +642,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
 		driverWaitText = (TextView) findViewById(R.id.driverWaitText); driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
 		driverWaitValue = (TextView) findViewById(R.id.driverWaitValue); driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
 
 		inrideFareInfoRl = (RelativeLayout) findViewById(R.id.inrideFareInfoRl);
 		inrideMinFareText = (TextView) findViewById(R.id.inrideMinFareText); inrideMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -649,6 +652,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		inrideFareInfoBtn = (Button) findViewById(R.id.inrideFareInfoBtn);
 
 		driverWaitRl.setVisibility(View.GONE);
+		imageViewIRWaitSep.setVisibility(View.GONE);
 
 		driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn); driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		waitStart = 2;
@@ -676,7 +680,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		reviewFareValue = (TextView) findViewById(R.id.reviewFareValue); reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
+		imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
 		reviewWaitTimeRl.setVisibility(View.GONE);
+		imageViewEndRideWaitSep.setVisibility(View.GONE);
 
 
 		reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
@@ -2121,15 +2127,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()) {
 							if (((AutoCustomerInfo) Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
 								reviewWaitTimeRl.setVisibility(View.VISIBLE);
+								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 							} else {
 								reviewWaitTimeRl.setVisibility(View.GONE);
+								imageViewEndRideWaitSep.setVisibility(View.GONE);
 							}
 						}else{
 							reviewWaitTimeRl.setVisibility(View.GONE);
+							imageViewEndRideWaitSep.setVisibility(View.GONE);
 						}
 					} catch(Exception e){
 						e.printStackTrace();
 						reviewWaitTimeRl.setVisibility(View.GONE);
+						imageViewEndRideWaitSep.setVisibility(View.GONE);
 					}
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
@@ -2406,12 +2416,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						driverEndRideBtn.setText("Mark Delivered");
 						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
+						imageViewIRWaitSep.setVisibility(View.GONE);
 					}
 					else if(BusinessType.MEALS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 						cancelCustomerPathUpdateTimer();
 						driverEndRideBtn.setText("Mark Delivered");
 						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
+						imageViewIRWaitSep.setVisibility(View.GONE);
 					}
 					else if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 						startCustomerPathUpdateTimer();
@@ -2436,14 +2448,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						try{
 							if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
 								driverWaitRl.setVisibility(View.VISIBLE);
+								imageViewIRWaitSep.setVisibility(View.VISIBLE);
 								driverWaitValue.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousWaitTime));
 							}
 							else{
 								driverWaitRl.setVisibility(View.GONE);
+								imageViewIRWaitSep.setVisibility(View.GONE);
 							}
 						} catch(Exception e){
 							e.printStackTrace();
 							driverWaitRl.setVisibility(View.GONE);
+							imageViewIRWaitSep.setVisibility(View.GONE);
 						}
 
 					}
@@ -3237,11 +3252,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
-			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm));
+			driverIRDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm)+" km");
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if(Data.fareStructure != null){
-				driverIRFareValue.setText(""+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
+				driverIRFareValue.setText(getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
 						elapsedTime, waitTime)));
 			}
 		} catch (Exception e) {
@@ -5632,8 +5647,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					GCMIntentService.clearNotifications(activity);
 
-					driverWaitRl.setBackgroundResource(R.drawable.blue_btn_selector);
-					driverWaitText.setText(getResources().getString(R.string.start_wait));
 					waitStart = 0;
 
 					if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {

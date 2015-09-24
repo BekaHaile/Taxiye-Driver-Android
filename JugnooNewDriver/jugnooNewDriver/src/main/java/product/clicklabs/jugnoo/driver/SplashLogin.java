@@ -432,7 +432,8 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 
 				@Override
 				public void failure(RetrofitError error) {
-
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
 
@@ -440,8 +441,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		}
 		else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			DialogPopup.dismissLoadingDialog();
-			DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 		}
 
 	}

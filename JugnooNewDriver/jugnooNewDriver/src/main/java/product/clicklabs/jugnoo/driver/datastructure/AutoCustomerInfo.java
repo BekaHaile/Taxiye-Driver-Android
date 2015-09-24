@@ -44,6 +44,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 //		this.luggageChargesApplicable = 1;
 //        this.meterFareApplicable = 1;
 //        this.getJugnooFareEnabled = 1;
+//		this.waitingChargesApplicable = 0;
 	}
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
