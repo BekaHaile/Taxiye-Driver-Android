@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +18,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
@@ -32,8 +28,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -138,7 +132,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	
 	class ViewHolderDriverRides {
 		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance, textViewJugnooSubsidy,
-			textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue;
+			textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue, waitTimeValue;
 		ImageView couponImg, jugnooCashImg, imageViewRequestType;
         RelativeLayout relative;
 		int id;
@@ -183,6 +177,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewFare = (TextView) convertView.findViewById(R.id.textViewFare); holder.textViewFare.setTypeface(Data.latoRegular(getActivity()));
 				holder.distanceValue = (TextView) convertView.findViewById(R.id.distanceValue); holder.distanceValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue); holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue); holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				
 				holder.couponImg = (ImageView) convertView.findViewById(R.id.couponImg);
 				holder.jugnooCashImg = (ImageView) convertView.findViewById(R.id.jugnooCashImg);
@@ -251,6 +246,13 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			
 			holder.distanceValue.setText(rideInfo.distance + " km");
 			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
+
+			if("0".equalsIgnoreCase(rideInfo.waitTime)){
+				holder.waitTimeValue.setText("");
+			}
+			else{
+				holder.waitTimeValue.setText("Wait: "+rideInfo.waitTime + " min");
+			}
 
 
 			if(1 == rideInfo.couponUsed){

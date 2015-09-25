@@ -4159,7 +4159,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("engagement_id", Data.dEngagementId);
 
 			if(Data.assignedCustomerInfo != null){
-				params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
+				params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
 			}
 			RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -4237,6 +4237,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			if(BusinessType.AUTOS == businessType){
+
+				if(Data.assignedCustomerInfo != null){
+					if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
+						if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable != 1){
+							waitTimeInMillis = 0;
+						}
+					}
+				}
+
 				autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
 						rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
 			}

@@ -310,6 +310,7 @@ public class JSONParser {
 			}
 		} catch(Exception e){}
 
+		String customerReferralBonus = userData.optString("customer_referral_bonus", "30");
 
         String deiValue = userData.optString("driver_dei", "-1");
 
@@ -320,8 +321,9 @@ public class JSONParser {
 
 		
 		return new UserData(accessToken, userData.getString("user_name"),
-				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), 
-				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable, deiValue);
+				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), freeRideIconDisable,
+				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
+				deiValue, customerReferralBonus);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

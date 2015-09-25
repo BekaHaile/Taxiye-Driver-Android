@@ -218,6 +218,19 @@
                 android:text="10 min"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="30px"/>
+
+
+            <TextView
+                android:id="@+id/waitTimeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50px"
+                android:singleLine="true"
+                android:text="Wait: 10 min"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"/>
+
+
         </LinearLayout>
 
         <ImageView
