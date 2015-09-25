@@ -2,7 +2,6 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -12,7 +11,6 @@ import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
-import retrofit.http.PUT;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -52,26 +50,26 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/verify_otp")
-	void sendSignupValuesRetro(@Field ("email") String email,
-							   @Field ("password") String password,
-							   @Field ("device_token") String deviceToken,
-							   @Field ("device_type") String deviceType,
-							   @Field ("device_name") String deviceName,
-							   @Field ("app_version") int appVersion,
-							   @Field ("os_version") String osVersion,
-							   @Field ("country") String Country,
-							   @Field ("unique_device_id") String uniqueDeviceId,
-							   @Field ("latitude") double latitude,
-							   @Field ("longitude") double longitude,
-							   @Field ("client_id") String clientId,
-							   @Field ("login_type") String loginType,
-							   @Field ("otp") String Otp,
-							   Callback<BookingHistoryResponse> callback);
+	void verifyOtpUsingSignupFields(@Field("email") String email,
+									@Field("password") String password,
+									@Field("device_token") String deviceToken,
+									@Field("device_type") String deviceType,
+									@Field("device_name") String deviceName,
+									@Field("app_version") int appVersion,
+									@Field("os_version") String osVersion,
+									@Field("country") String Country,
+									@Field("unique_device_id") String uniqueDeviceId,
+									@Field("latitude") double latitude,
+									@Field("longitude") double longitude,
+									@Field("client_id") String clientId,
+									@Field("login_type") String loginType,
+									@Field("otp") String Otp,
+									Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/register_using_email")
-	void sendSignupValuesRetro(@FieldMap Map<String, String> params,
-								Callback<RegisterScreenResponse> callback);
+	void registerUsingEmail(@FieldMap Map<String, String> params,
+									Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/logout_driver")

@@ -83,7 +83,7 @@
                     android:layout_toRightOf="@+id/dateTimeValue"
                     android:src="@drawable/free_ride_icon"
                     android:tag="mwar"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/jugnooCashImg"
@@ -103,7 +103,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="20px"
-                    android:src="@drawable/request_autos"
+                    android:src="@drawable/request_fatafat"
                     android:tag="mwar"
                     />
 
@@ -176,7 +176,9 @@
                 android:singleLine="true"
                 android:text="Paid by Customer: Rs. 0"
                 android:textColor="@color/bg_grey_opaque"
-                android:textSize="30px"/>
+                android:textSize="30px"
+                android:visibility="gone"
+                />
 
             <TextView
                 android:id="@+id/textViewPaidToMerchant"

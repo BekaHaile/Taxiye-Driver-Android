@@ -15,8 +15,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
@@ -28,7 +26,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -403,7 +400,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 			Log.i("register_using_email params", params.toString());
 
-			RestClient.getApiServices().sendSignupValuesRetro(params, new Callback<RegisterScreenResponse>() {
+			RestClient.getApiServices().registerUsingEmail(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					try {
@@ -430,7 +427,6 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 									RegisterScreen.this.accessToken = data.getAccessToken();
 
 
-
 									sendToOtpScreen = true;
 								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
 									RegisterScreen.this.name = name;
@@ -447,7 +443,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 						} else {
 							DialogPopup.dismissLoadingDialog();
 						}
-					}  catch (Exception exception) {
+					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -460,7 +456,6 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
-
 
 
 		}

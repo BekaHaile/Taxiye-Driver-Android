@@ -1739,6 +1739,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				} catch (Exception e) {
 					e.printStackTrace();
+					showDialogFromBackground(Data.SERVER_ERROR_MSG);
 				}
 			}
 		}).start();
@@ -4739,7 +4740,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void failure(RetrofitError error) {
 					Database2.getInstance(activity).insertPendingAPICall(activity, url, rparams);
-
 				}
 			});
 		}
