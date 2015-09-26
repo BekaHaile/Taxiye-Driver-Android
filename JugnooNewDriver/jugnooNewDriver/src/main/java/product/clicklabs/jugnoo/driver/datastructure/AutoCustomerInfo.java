@@ -18,10 +18,11 @@ public class AutoCustomerInfo extends CustomerInfo{
     public int meterFareApplicable;
     public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
+	public int waitingChargesApplicable;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String image, String rating, String schedulePickupTime, int freeRide,
-			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable){
+			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
@@ -38,10 +39,12 @@ public class AutoCustomerInfo extends CustomerInfo{
         this.meterFareApplicable = meterFareApplicable;
         this.getJugnooFareEnabled = jugnooFareButton;
 		this.luggageChargesApplicable = luggageChargesApplicable;
+		this.waitingChargesApplicable = waitTimeApplicable;
 
 //		this.luggageChargesApplicable = 1;
 //        this.meterFareApplicable = 1;
 //        this.getJugnooFareEnabled = 1;
+//		this.waitingChargesApplicable = 0;
 	}
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
@@ -56,7 +59,10 @@ public class AutoCustomerInfo extends CustomerInfo{
 		this.promoInfo = promoInfo;
 		this.jugnooBalance = 0;
         this.dropLatLng = null;
+		this.luggageChargesApplicable = 0;
         this.meterFareApplicable = 0;
+        this.getJugnooFareEnabled = 1;
+		this.waitingChargesApplicable = 0;
 	}
 	
 	@Override

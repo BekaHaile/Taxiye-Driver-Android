@@ -25,7 +25,7 @@ public class RideDetailsActivity extends Activity{
 	TextView title;
 	
 	TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance, textViewJugnooSubsidy,
-		textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue, textViewFromValue, textViewToValue;
+		textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue, textViewFromValue, textViewToValue, waitTimeValue;
 	ImageView couponImg, jugnooCashImg, imageViewRequestType;
 	
 	public static RideInfo openedRideInfo;
@@ -70,6 +70,7 @@ public class RideDetailsActivity extends Activity{
 		textViewFare = (TextView) findViewById(R.id.textViewFare); textViewFare.setTypeface(Data.latoRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue); distanceValue.setTypeface(Data.latoRegular(this));
 		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue); rideTimeValue.setTypeface(Data.latoRegular(this));
+		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue); waitTimeValue.setTypeface(Data.latoRegular(this));
 		
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue); textViewFromValue.setTypeface(Data.latoRegular(this));
 		textViewToValue = (TextView) findViewById(R.id.textViewToValue); textViewToValue.setTypeface(Data.latoRegular(this));
@@ -124,10 +125,17 @@ public class RideDetailsActivity extends Activity{
 			
 			distanceValue.setText(openedRideInfo.distance + " km");
 			rideTimeValue.setText(openedRideInfo.rideTime + " min");
-			
+			if("0".equalsIgnoreCase(openedRideInfo.waitTime)){
+				waitTimeValue.setText("");
+			}
+			else{
+				waitTimeValue.setText("Wait: "+openedRideInfo.waitTime + " min");
+			}
+
+
 			textViewFromValue.setText(openedRideInfo.fromLocation);
 			textViewToValue.setText(openedRideInfo.toLocation);
-			
+
 			
 			if(1 == openedRideInfo.couponUsed){
 				couponImg.setVisibility(View.VISIBLE);

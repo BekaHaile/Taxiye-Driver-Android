@@ -48,9 +48,7 @@ public class Data {
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token", SP_IS_ACCESS_TOKEN_NEW = "is_access_token_new",
 			
-			SP_TOTAL_DISTANCE = "total_distance", 
-			SP_WAIT_TIME = "wait_time",
-			SP_RIDE_TIME = "ride_time", 
+			SP_TOTAL_DISTANCE = "total_distance",
 			SP_RIDE_START_TIME = "ride_start_time", 
 			SP_LAST_LATITUDE = "last_latitude",
 			SP_LAST_LONGITUDE = "last_longitude",
@@ -121,7 +119,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
-	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 	
 	
 

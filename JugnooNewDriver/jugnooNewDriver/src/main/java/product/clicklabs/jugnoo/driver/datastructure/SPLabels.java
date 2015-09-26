@@ -16,6 +16,7 @@ public class SPLabels {
             TOTAL_DISTANCE = "total_distance",
             LOCATION_TIME = "location_time",
             START_TIME = "start_time",
+    		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
             ENGAGEMENT_ID = "engagement_id",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";

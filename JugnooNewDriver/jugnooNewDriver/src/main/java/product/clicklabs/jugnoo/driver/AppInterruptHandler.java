@@ -29,7 +29,7 @@ public interface AppInterruptHandler {
 
 	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
 	
-	public void updateMeteringUI(double distance, long elapsedTime, Location lastGPSLocation,
+	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);
 	
 	public void drawOldPath();

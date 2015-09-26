@@ -104,7 +104,7 @@ public class ShareActivity extends Activity{
 //			String hindiMessage = "आमंत्रण बोनस! कस्टमर को अपने "+  + " Jugnoo App डाउनलोड करवांए और पांए "+ getResources().getString(R.string.rupee) + " 30 और कस्टमर को दिलवाए Jugnoo कैश ।";
 
 			String hindi1 = "कस्टमर को अपने Referral code ";
-			String hindi2 =  " से Jugnoo App डाउनलोड करवाएँ और पाएँ "+ getResources().getString(R.string.rupee) + " 30 और कस्टमर को दिलवाएँ Jugnoo कैश ।";
+			String hindi2 =  " से Jugnoo App डाउनलोड करवाएँ और पाएँ "+ getResources().getString(R.string.rupee) + " "+Data.userData.customerReferralBonus+" और कस्टमर को दिलवाएँ Jugnoo कैश ।";
 
 			textViewShareReferral.setText("");
 			textViewShareReferral.append(hindi1);
@@ -114,6 +114,8 @@ public class ShareActivity extends Activity{
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.left_out);
 		}
 
 

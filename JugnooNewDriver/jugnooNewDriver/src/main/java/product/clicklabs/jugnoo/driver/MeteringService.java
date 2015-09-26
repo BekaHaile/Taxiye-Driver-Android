@@ -18,6 +18,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
 
+import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -172,14 +174,26 @@ public class MeteringService extends Service {
 			gpsDistanceTimeUpdater = new GpsDistanceTimeUpdater() {
 				
 				@Override
-				public void updateDistanceTime(double distance, long elapsedTime, Location lastGPSLocation,
+				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					if(fromGPS){
-						generateNotification(context, "Total distance = "+getDecimalFormat().format(Math.abs(distance) / 1000) 
-								+ " km"+" time = "+Utils.getElapsedTimeFromMillis(elapsedTime));
+						boolean showWait = false;
+						if(Data.assignedCustomerInfo != null){
+							if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
+								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
+									showWait = true;
+								}
+							}
+						}
+						String message = "Total distance = "+getDecimalFormat().format(Math.abs(distance) / 1000) + " km"+"\nRide time = "+Utils.getChronoTimeFromMillis(elapsedTime);
+						if(showWait){
+							message = message + "\nWait time = "+Utils.getChronoTimeFromMillis(waitTime);
+						}
+						generateNotification(context, message);
 					}
 					if(HomeActivity.appInterruptHandler != null){
-						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, lastGPSLocation,
+						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,
+								lastGPSLocation,
 								lastFusedLocation, totalHaversineDistance);
 					}
 				}
