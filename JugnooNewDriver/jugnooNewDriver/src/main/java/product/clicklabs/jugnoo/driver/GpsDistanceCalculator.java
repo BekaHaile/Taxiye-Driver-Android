@@ -399,6 +399,7 @@ public class GpsDistanceCalculator {
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
+		Log.e("window time", "="+lastWaitWindowTime);
 	}
 
 

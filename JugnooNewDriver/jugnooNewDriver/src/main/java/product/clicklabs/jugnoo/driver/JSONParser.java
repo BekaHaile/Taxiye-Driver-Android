@@ -68,35 +68,6 @@ public class JSONParser {
 
 
 
-	public void parseLoginData(Context context, String response) throws Exception{
-		JSONObject jObj = new JSONObject(response);
-		JSONObject userData = jObj.getJSONObject("user_data");
-		
-		Data.userData = parseUserData(context, userData);
-		
-		Data.termsAgreed = 1;
-		saveAccessToken(context, Data.userData.accessToken);
-		
-		try{
-			int currentUserStatus = userData.getInt("current_user_status");
-			
-			if(currentUserStatus == 1){
-				Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-				new DriverServiceOperations().startDriverService(context);
-				HomeActivity.userMode = UserMode.DRIVER;
-				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-			new DriverServiceOperations().startDriverService(context);
-			HomeActivity.userMode = UserMode.DRIVER;
-			HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-		}
-
-	}
-	
-	
 	public static void saveAccessToken(Context context, String accessToken){
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();

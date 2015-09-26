@@ -5128,30 +5128,34 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public void updateInRideData(){
-		if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
-			if(myLocation != null){
-				double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+		try {
+			if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+				if(myLocation != null){
+					double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
-				long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
-				double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
+					long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+					double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 
-				ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("access_token", Data.userData.accessToken);
-				params.put("engagement_id", Data.dEngagementId);
-				params.put("current_latitude", "" + myLocation.getLatitude());
-				params.put("current_longitude", "" + myLocation.getLongitude());
-				params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
-				params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
-				params.put("wait_time", "0");
+					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("access_token", Data.userData.accessToken);
+					params.put("engagement_id", Data.dEngagementId);
+					params.put("current_latitude", "" + myLocation.getLatitude());
+					params.put("current_longitude", "" + myLocation.getLongitude());
+					params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
+					params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
+					params.put("wait_time", "0");
 
-				Log.i("update_in_ride_data nameValuePairs", "="+nameValuePairs);
+					Log.i("update_in_ride_data nameValuePairs", "="+nameValuePairs);
 
-				Response response = RestClient.getApiServices().updateInRideDataRetro(params);
-				String result = new String(((TypedByteArray) response.getBody()).getBytes());
+					Response response = RestClient.getApiServices().updateInRideDataRetro(params);
+					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
-				Log.i("update_in_ride_data result", "="+result);
+					Log.i("update_in_ride_data result", "="+result);
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

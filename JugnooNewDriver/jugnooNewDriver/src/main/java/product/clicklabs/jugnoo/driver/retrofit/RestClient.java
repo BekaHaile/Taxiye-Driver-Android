@@ -33,7 +33,6 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new OkClient(okHttpClient))
-//				.setClient(new ApacheClient(DataLoader.getHttpClientSecure()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
