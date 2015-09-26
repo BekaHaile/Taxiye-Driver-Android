@@ -363,6 +363,7 @@ public class GpsDistanceCalculator {
 
 			if (speedMPS <= MAX_SPEED_THRESHOLD) {
 				if ((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)) {
+//					Log.e("speedCounter", "="+speedCounter);
 					calculateWaitTime(speedMPS);
 					addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
@@ -399,7 +400,9 @@ public class GpsDistanceCalculator {
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
-		Log.e("window time", "="+lastWaitWindowTime);
+//		Log.e("window time", "="+lastWaitWindowTime);
+//		Log.e("accumulativeSpeed time", "="+accumulativeSpeed);
+//		Log.e("speedCounter time", "="+speedCounter);
 	}
 
 

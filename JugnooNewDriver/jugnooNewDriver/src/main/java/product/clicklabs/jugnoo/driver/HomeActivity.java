@@ -3607,6 +3607,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 
+						Log.e("accept_a_request jsonString", "=" + jsonString);
 						if (!jObj.isNull("error")) {
 
 							int flag = jObj.getInt("flag");
