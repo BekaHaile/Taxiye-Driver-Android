@@ -402,7 +402,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//TODO check final variables
 	public static AppMode appMode;
 
-	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
+	public static final int MAP_PATH_COLOR = Color.RED;
 	public static final int D_TO_C_MAP_PATH_COLOR = Color.BLUE;
 	public static final int DRIVER_TO_STATION_MAP_PATH_COLOR = Color.BLUE;
 
