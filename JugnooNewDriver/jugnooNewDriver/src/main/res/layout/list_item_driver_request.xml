@@ -42,7 +42,9 @@
                 android:singleLine="true"
                 android:text="100.00 km away"
                 android:textColor="@color/black"
-                android:textSize="30px"/>
+                android:textSize="30px"
+                android:visibility="visible"
+                />
 
             <TextView
                 android:id="@+id/textViewRequestFareFactor"
@@ -90,6 +92,7 @@
                 android:textColor="@color/black"
                 android:textSize="30px"
                 android:layout_below="@+id/textViewRequestTime"
+                android:visibility="gone"
                 />
 
 
@@ -97,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="30px"
                 android:layout_below="@+id/textViewOtherRequestDetails"
                 >
                 <Button

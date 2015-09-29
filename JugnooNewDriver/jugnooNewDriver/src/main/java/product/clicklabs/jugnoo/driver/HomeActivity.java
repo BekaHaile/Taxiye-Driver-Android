@@ -3424,6 +3424,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestDistance.setVisibility(View.GONE);
 			}
 
+
 			if(BusinessType.AUTOS == driverRideRequest.businessType){
 				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
 				holder.textViewOtherRequestDetails.setVisibility(View.GONE);
