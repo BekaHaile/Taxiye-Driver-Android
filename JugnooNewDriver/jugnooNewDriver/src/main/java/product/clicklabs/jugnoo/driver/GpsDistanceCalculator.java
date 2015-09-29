@@ -101,10 +101,6 @@ public class GpsDistanceCalculator {
 		instance.totalHaversineDistance = totalHaversineDistance;
 		instance.lastLocationTime = lastLocationTime;
 
-		instance.accumulativeSpeed = 0;
-		instance.speedCounter = 0;
-		instance.lastWaitWindowTime = System.currentTimeMillis();
-
 		return instance;
 	}
 
@@ -400,9 +396,9 @@ public class GpsDistanceCalculator {
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
-//		Log.e("window time", "="+lastWaitWindowTime);
-//		Log.e("accumulativeSpeed time", "="+accumulativeSpeed);
-//		Log.e("speedCounter time", "="+speedCounter);
+		Log.e("window time", "="+lastWaitWindowTime);
+		Log.e("accumulativeSpeed time", "="+accumulativeSpeed);
+		Log.e("speedCounter time", "="+speedCounter);
 	}
 
 
