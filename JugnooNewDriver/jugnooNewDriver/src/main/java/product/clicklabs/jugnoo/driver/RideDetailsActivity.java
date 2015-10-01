@@ -63,9 +63,9 @@ public class RideDetailsActivity extends Activity{
 		textViewRideId = (TextView) findViewById(R.id.textViewRideId); textViewRideId.setTypeface(Data.latoRegular(this));
         textViewStatusString = (TextView) findViewById(R.id.textViewStatusString); textViewStatusString.setTypeface(Data.latoRegular(this));
 		textViewBalance = (TextView) findViewById(R.id.textViewBalance); textViewBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewJugnooSubsidy = (TextView) findViewById(R.id.textViewJugnooSubsidy); textViewJugnooSubsidy.setTypeface(Data.latoRegular(this));
+//		textViewJugnooSubsidy = (TextView) findViewById(R.id.textViewJugnooSubsidy); textViewJugnooSubsidy.setTypeface(Data.latoRegular(this));
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid); textViewCustomerPaid.setTypeface(Data.latoRegular(this));
-		textViewPaidToMerchant = (TextView) findViewById(R.id.textViewPaidToMerchant); textViewPaidToMerchant.setTypeface(Data.latoRegular(this));
+//		textViewPaidToMerchant = (TextView) findViewById(R.id.textViewPaidToMerchant); textViewPaidToMerchant.setTypeface(Data.latoRegular(this));
         textViewPaidByCustomer = (TextView) findViewById(R.id.textViewPaidByCustomer); textViewPaidByCustomer.setTypeface(Data.latoRegular(this));
 		textViewFare = (TextView) findViewById(R.id.textViewFare); textViewFare.setTypeface(Data.latoRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue); distanceValue.setTypeface(Data.latoRegular(this));
@@ -78,8 +78,8 @@ public class RideDetailsActivity extends Activity{
 		((TextView) findViewById(R.id.textViewFrom)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		((TextView) findViewById(R.id.textViewTo)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		
-		couponImg = (ImageView) findViewById(R.id.couponImg);
-		jugnooCashImg = (ImageView) findViewById(R.id.jugnooCashImg);
+//		couponImg = (ImageView) findViewById(R.id.couponImg);
+//		jugnooCashImg = (ImageView) findViewById(R.id.jugnooCashImg);
         imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {

@@ -131,9 +131,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 	
 	class ViewHolderDriverRides {
-		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance, textViewJugnooSubsidy,
-			textViewCustomerPaid, textViewPaidToMerchant, textViewPaidByCustomer, textViewFare, distanceValue, rideTimeValue, waitTimeValue;
-		ImageView couponImg, jugnooCashImg, imageViewRequestType;
+		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance,
+			textViewCustomerPaid, textViewFare, distanceValue, rideTimeValue;
+		ImageView imageViewRequestType;
         RelativeLayout relative;
 		int id;
 	}
@@ -169,18 +169,12 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue); holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId); holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
                 holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString); holder.textViewStatusString.setTypeface(Data.latoRegular(getActivity()));
-				holder.textViewBalance = (TextView) convertView.findViewById(R.id.textViewBalance); holder.textViewBalance.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
-				holder.textViewJugnooSubsidy = (TextView) convertView.findViewById(R.id.textViewJugnooSubsidy); holder.textViewJugnooSubsidy.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewBalance = (TextView) convertView.findViewById(R.id.textViewBalance); holder.textViewBalance.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewCustomerPaid = (TextView) convertView.findViewById(R.id.textViewCustomerPaid); holder.textViewCustomerPaid.setTypeface(Data.latoRegular(getActivity()));
-				holder.textViewPaidToMerchant = (TextView) convertView.findViewById(R.id.textViewPaidToMerchant); holder.textViewPaidToMerchant.setTypeface(Data.latoRegular(getActivity()));
-                holder.textViewPaidByCustomer = (TextView) convertView.findViewById(R.id.textViewPaidByCustomer); holder.textViewPaidByCustomer.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewFare = (TextView) convertView.findViewById(R.id.textViewFare); holder.textViewFare.setTypeface(Data.latoRegular(getActivity()));
 				holder.distanceValue = (TextView) convertView.findViewById(R.id.distanceValue); holder.distanceValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue); holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
-				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue); holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
-				
-				holder.couponImg = (ImageView) convertView.findViewById(R.id.couponImg);
-				holder.jugnooCashImg = (ImageView) convertView.findViewById(R.id.jugnooCashImg);
+//				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue); holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
                 holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
@@ -232,66 +226,33 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			else{
 				holder.textViewBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 			}
-			holder.textViewBalance.setText("Bal. from Jugnoo: Rs. " + rideInfo.balance);
+			holder.textViewBalance.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.balance);
 			
-			if("0".equalsIgnoreCase(rideInfo.subsidy)){
-				holder.textViewJugnooSubsidy.setVisibility(View.GONE);
-			}
-			else{
-				holder.textViewJugnooSubsidy.setVisibility(View.VISIBLE);
-				holder.textViewJugnooSubsidy.setText("Jugnoo Subsidy: Rs. " + rideInfo.subsidy);
-			}
 
-			holder.textViewFare.setText("Fare: Rs. "+rideInfo.fare);
+			holder.textViewFare.setText(getResources().getString(R.string.rupee)+" "+rideInfo.fare);
 			
 			holder.distanceValue.setText(rideInfo.distance + " km");
 			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
 
 			if("0".equalsIgnoreCase(rideInfo.waitTime)){
-				holder.waitTimeValue.setText("");
+//				holder.waitTimeValue.setText("");
 			}
 			else{
-				holder.waitTimeValue.setText("Wait: "+rideInfo.waitTime + " min");
+//				holder.waitTimeValue.setText("Wait: "+rideInfo.waitTime + " min");
 			}
 
 
-			if(1 == rideInfo.couponUsed){
-				holder.couponImg.setVisibility(View.VISIBLE);
-			}
-			else{
-				holder.couponImg.setVisibility(View.GONE);
-			}
-			
-			if(PaymentMode.WALLET.getOrdinal() == rideInfo.paymentMode){
-				holder.jugnooCashImg.setVisibility(View.VISIBLE);
-			}
-			else{
-				holder.jugnooCashImg.setVisibility(View.GONE);
-			}
 
             if(BusinessType.AUTOS.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
-                holder.textViewPaidToMerchant.setVisibility(View.GONE);
-                holder.textViewPaidByCustomer.setVisibility(View.GONE);
-
-                holder.textViewCustomerPaid.setText("Paid by Customer: Rs. " + rideInfo.customerPaid);
+                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.customerPaid);
                 holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
             }
             else if(BusinessType.FATAFAT.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setVisibility(View.GONE);
-                holder.textViewPaidToMerchant.setVisibility(View.VISIBLE);
-                holder.textViewPaidByCustomer.setVisibility(View.VISIBLE);
-
-                holder.textViewPaidToMerchant.setText("Paid to Merchant: Rs. "+rideInfo.paidToMerchant);
-                holder.textViewPaidByCustomer.setText("Paid by Customer: Rs. "+rideInfo.paidByCustomer);
+                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.paidByCustomer);
                 holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
             }
             else if(BusinessType.MEALS.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
-                holder.textViewPaidToMerchant.setVisibility(View.GONE);
-                holder.textViewPaidByCustomer.setVisibility(View.GONE);
-
-                holder.textViewCustomerPaid.setText("Paid by Customer: Rs. " + rideInfo.customerPaid);
+                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.customerPaid);
                 holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
             }
 
