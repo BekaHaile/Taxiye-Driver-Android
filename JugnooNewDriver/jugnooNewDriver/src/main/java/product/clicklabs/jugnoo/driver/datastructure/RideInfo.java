@@ -20,6 +20,8 @@ public class RideInfo {
     public String paidByCustomer;
     public int driverPaymentStatus;
     public String statusString;
+	public String convenienceCharges, luggageCharges, fareFactorApplied,
+			fareFactorValue, acceptSubsidy, cancelSubsidy, accountBalance, actualFare;
 
 	
 	
@@ -27,7 +29,8 @@ public class RideInfo {
 			String fare, String customerPaid, String balance, String subsidy, 
 			String distance, String rideTime, String waitTime, String dateTime, 
 			int couponUsed, int paymentMode, int businessId, String paidToMerchant, String paidByCustomer,
-                    int paymentStatus, String statusString){
+                    int paymentStatus, String statusString, String convenienceCharges,String luggageCharges, String fareFactorApplied,
+					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare){
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -54,6 +57,15 @@ public class RideInfo {
 
         this.driverPaymentStatus = paymentStatus;
         this.statusString = statusString;
+
+		this.convenienceCharges = convenienceCharges;
+		this.luggageCharges = luggageCharges;
+		this.fareFactorApplied = fareFactorApplied;
+		this.fareFactorValue = fareFactorValue;
+		this.acceptSubsidy = acceptSubsidy;
+		this.cancelSubsidy = cancelSubsidy;
+		this.accountBalance = accountBalance;
+		this.actualFare = actualFare;
 	}
 	
 	@Override

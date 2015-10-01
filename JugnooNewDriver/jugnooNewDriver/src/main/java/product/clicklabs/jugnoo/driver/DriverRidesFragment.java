@@ -131,8 +131,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 	
 	class ViewHolderDriverRides {
-		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewBalance,
-			textViewCustomerPaid, textViewFare, distanceValue, rideTimeValue;
+		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewActualFareFare,
+				textViewCustomerPaid, textViewAccountBalance, distanceValue, rideTimeValue, waitTimeValue;
 		ImageView imageViewRequestType;
         RelativeLayout relative;
 		int id;
@@ -169,12 +169,12 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue); holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId); holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
                 holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString); holder.textViewStatusString.setTypeface(Data.latoRegular(getActivity()));
-				holder.textViewBalance = (TextView) convertView.findViewById(R.id.textViewBalance); holder.textViewBalance.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewActualFareFare = (TextView) convertView.findViewById(R.id.textViewActualFareFare); holder.textViewActualFareFare.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewCustomerPaid = (TextView) convertView.findViewById(R.id.textViewCustomerPaid); holder.textViewCustomerPaid.setTypeface(Data.latoRegular(getActivity()));
-				holder.textViewFare = (TextView) convertView.findViewById(R.id.textViewFare); holder.textViewFare.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewAccountBalance = (TextView) convertView.findViewById(R.id.textViewAccountBalance); holder.textViewAccountBalance.setTypeface(Data.latoRegular(getActivity()));
 				holder.distanceValue = (TextView) convertView.findViewById(R.id.distanceValue); holder.distanceValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue); holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
-//				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue); holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue); holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
                 holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
@@ -221,15 +221,15 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			
 			double balance = Double.parseDouble(rideInfo.balance);
 			if(balance < 0){
-				holder.textViewBalance.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.red_status));
 			}
 			else{
-				holder.textViewBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 			}
-			holder.textViewBalance.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.balance);
+			holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.accountBalance);
 			
 
-			holder.textViewFare.setText(getResources().getString(R.string.rupee)+" "+rideInfo.fare);
+			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee)+" "+rideInfo.actualFare);
 			
 			holder.distanceValue.setText(rideInfo.distance + " km");
 			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
@@ -242,19 +242,19 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			}
 
 
-
-            if(BusinessType.AUTOS.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.customerPaid);
-                holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
-            }
-            else if(BusinessType.FATAFAT.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.paidByCustomer);
-                holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
-            }
-            else if(BusinessType.MEALS.getOrdinal() == rideInfo.businessId){
-                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.customerPaid);
-                holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
-            }
+//
+//            if(BusinessType.AUTOS.getOrdinal() == rideInfo.businessId){
+//                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.customerPaid);
+//                holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
+//            }
+//            else if(BusinessType.FATAFAT.getOrdinal() == rideInfo.businessId){
+//                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+rideInfo.paidByCustomer);
+//                holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
+//            }
+//            else if(BusinessType.MEALS.getOrdinal() == rideInfo.businessId){
+//                holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee)+" "+ rideInfo.customerPaid);
+//                holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
+//            }
 
 			
 			holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +302,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 											data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
 											data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 											data.getBusinessId(), data.getPaidToMerchant(), data.getPaidByCustomer(), data.getDriverPaymentStatus(),
-											data.getStatusString());
+											data.getStatusString(), data.getConvenienceCharges(), data.getLuggageCharges(), data.getFareFactorApplied(),
+											data.getFareFactorValue(), data.getAcceptSubsidy(), data.getCancelSubsidy(), data.getAccountBalance(),
+											data.getActualFare());
 									rides.add(rideInfo);
 								}
 								updateListData("No rides currently", false);

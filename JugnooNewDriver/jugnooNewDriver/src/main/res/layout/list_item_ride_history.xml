@@ -244,7 +244,7 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:id="@+id/rideHistoryItem"
-        android:layout_height="240px"
+        android:layout_height="300px"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -291,11 +291,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="8px"
                 android:singleLine="true"
                 android:text="Ride ID: 1111"
                 android:textColor="@color/bg_grey_opaque"
-                android:textSize="28px"/>
+                android:textSize="30px"/>
 
 
             <TextView
@@ -303,7 +303,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="8px"
                 android:singleLine="true"
                 android:text="Status"
                 android:textColor="@color/bg_grey_opaque"
@@ -313,56 +313,57 @@
                 android:id="@+id/distTimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="8px"
+                android:layout_marginLeft="15px"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:splitMotionEvents="false">
 
-                <ImageView
-                    android:layout_width="30px"
-                    android:layout_height="30px"
-                    android:layout_marginLeft="15px"
-                    android:src="@drawable/location"
-                    android:tag="mwar"/>
+                <!--<ImageView-->
+                <!--android:layout_width="30px"-->
+                <!--android:layout_height="30px"-->
+                <!--android:layout_marginLeft="20px"-->
+                <!--android:src="@drawable/location"-->
+                <!--android:tag="mwar"/>-->
 
                 <TextView
                     android:id="@+id/distanceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
+                    android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:text="5.6 Km"
+                    android:text="Distance: 5.6 Km"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="28px"/>
+                    android:textSize="30px"/>
 
-                <ImageView
-                    android:layout_width="30px"
-                    android:layout_height="30px"
-                    android:layout_marginLeft="30px"
-                    android:src="@drawable/time"
-                    android:tag="mwar"/>
+                <!--<ImageView-->
+                <!--android:layout_width="30px"-->
+                <!--android:layout_height="30px"-->
+                <!--android:layout_marginLeft="30px"-->
+                <!--android:src="@drawable/time"-->
+                <!--android:tag="mwar"/>-->
 
                 <TextView
                     android:id="@+id/rideTimeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
+                    android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:text="10 min"
+                    android:layout_marginTop="8px"
+                    android:text="Toatal Time: 10 min"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="28px"/>
+                    android:textSize="30px"/>
 
-
-                <!--<TextView-->
-                    <!--android:id="@+id/waitTimeValue"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="50px"-->
-                    <!--android:singleLine="true"-->
-                    <!--android:text="Wait: 10 min"-->
-                    <!--android:textColor="@color/bg_grey_opaque"-->
-                    <!--android:textSize="30px"/>-->
-
+                <TextView
+                    android:id="@+id/waitTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0px"
+                    android:layout_marginTop="8px"
+                    android:singleLine="true"
+                    android:text="Wait Time: 10 min"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="30px"/>
 
             </LinearLayout>
 
@@ -371,17 +372,17 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="270px"
-            android:layout_height="144px"
+            android:layout_width="300px"
+            android:layout_height="170px"
             android:orientation="vertical"
-            android:layout_marginLeft="5px"
+            android:layout_marginLeft="30px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_black_border">
 
             <TextView
-                android:id="@+id/textViewFare"
+                android:id="@+id/textViewActualFareFare"
                 android:layout_width="match_parent"
-                android:layout_height="71px"
+                android:layout_height="85px"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/rupee_zero"
@@ -390,7 +391,7 @@
 
 
             <ImageView
-                android:layout_width="270px"
+                android:layout_width="300px"
                 android:layout_height="2px"
                 android:background="@color/black"/>
 
@@ -401,9 +402,9 @@
 
                 <TextView
                     android:id="@+id/textViewCustomerPaid"
-                    android:layout_width="132px"
+                    android:layout_width="150px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0px"
+                    android:layout_marginTop="10px"
                     android:gravity="center"
                     android:singleLine="true"
                     android:text="@string/rupee_zero"
@@ -411,7 +412,7 @@
                     android:textSize="32px"/>
                 <TextView
                     android:id="@+id/textViewCustomerPaidtext"
-                    android:layout_width="132px"
+                    android:layout_width="150px"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
@@ -422,17 +423,18 @@
 
                 <ImageView
                     android:layout_width="2px"
-                    android:layout_height="76px"
+                    android:layout_height="85px"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/imageViewVertical"
                     android:background="@color/black"/>
 
                 <TextView
-                    android:id="@+id/textViewBalance"
-                    android:layout_width="132px"
+                    android:id="@+id/textViewAccountBalance"
+                    android:layout_width="150px"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
+                    android:layout_marginTop="10px"
                     android:layout_toRightOf="@+id/imageViewVertical"
                     android:text="@string/rupee_zero"
                     android:textColor="@color/bg_grey_opaque"
@@ -440,9 +442,9 @@
 
                 <TextView
                     android:id="@+id/textViewBalanceText"
-                    android:layout_width="132px"
+                    android:layout_width="150px"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewBalance"
+                    android:layout_below="@+id/textViewAccountBalance"
                     android:layout_toRightOf="@+id/imageViewVertical"
                     android:gravity="center"
                     android:singleLine="true"
@@ -462,39 +464,39 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="80px"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginLeft="10px">
+        <!--<LinearLayout-->
+            <!--android:layout_width="80px"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_marginLeft="10px">-->
 
-            <ImageView
-                android:id="@+id/imageViewRequestType"
-                android:layout_width="45px"
-                android:layout_height="45px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
-                android:layout_marginLeft="10px"
-                android:layout_marginTop="60px"
-                android:src="@drawable/request_autos"
-                android:tag="mwar"
-                />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewRequestType"-->
+                <!--android:layout_width="45px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginRight="20px"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="60px"-->
+                <!--android:src="@drawable/request_autos"-->
+                <!--android:tag="mwar"-->
+                <!--/>-->
 
-            <ImageView
-                android:layout_width="40px"
-                android:layout_height="38px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
-                android:layout_marginLeft="10px"
-                android:layout_marginTop="55px"
-                android:src="@drawable/arrow_selector"
-                android:tag="mwar"
-                />
+            <!--<ImageView-->
+                <!--android:layout_width="40px"-->
+                <!--android:layout_height="38px"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginRight="20px"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="55px"-->
+                <!--android:src="@drawable/arrow_selector"-->
+                <!--android:tag="mwar"-->
+                <!--/>-->
 
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
 
     </LinearLayout>
 

@@ -55,8 +55,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewTime"
-                    android:layout_width="30px"
-                    android:layout_height="30px"
+                    android:layout_width="32px"
+                    android:layout_height="32px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="30px"
                     android:src="@drawable/time"
@@ -72,7 +72,7 @@
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"
+                    android:textSize="32px"
                     />
 
 
@@ -90,6 +90,52 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/distTimeRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:layout_marginLeft="30px"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:splitMotionEvents="false">
+
+                <TextView
+                    android:id="@+id/distanceValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0px"
+                    android:singleLine="true"
+                    android:text="Distance: 5.6 Km"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"/>
+
+
+
+                <TextView
+                    android:id="@+id/rideTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0px"
+                    android:singleLine="true"
+                    android:text="Total Time: 10 min"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"/>
+
+                <TextView
+                    android:id="@+id/waitTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0px"
+                    android:singleLine="true"
+                    android:text="Wait Time: 10 min"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"
+                    android:visibility="visible"
+                    />
+
+            </LinearLayout>
+
         <LinearLayout
             android:layout_width="680px"
             android:layout_height="wrap_content"
@@ -105,28 +151,28 @@
                 android:layout_marginTop="10px">
 
                 <TextView
-                    android:id="@+id/textViewEndRideFare"
+                    android:id="@+id/textViewRideFare"
                     android:layout_width="340px"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Base Fare"
+                    android:text="Ride Fare"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
                 <TextView
-                    android:id="@+id/textViewEndRideFareRupee"
+                    android:id="@+id/textViewRideFareRupee"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewEndRideFareValue"
+                    android:layout_toLeftOf="@+id/textViewRideFareValue"
                     android:gravity="center_vertical"
                     android:text="@string/rupee"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
                 <TextView
-                    android:id="@+id/textViewEndRideFareValue"
+                    android:id="@+id/textViewRideFareValue"
                     android:layout_width="110px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -137,120 +183,7 @@
                     android:textSize="32px"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
 
-                <TextView
-                    android:id="@+id/textViewEndRideDistanceFare"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Disatnce Fare"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewEndRideDisatnceFareRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewEndRideDistanceFareValue"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewEndRideDistanceFareValue"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
-
-                <TextView
-                    android:id="@+id/textViewEndRideTime"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Ride Time"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewEndRideTimeRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewEndRideTimeValue"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewEndRideTimeValue"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutWaitTime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
-
-                <TextView
-                    android:id="@+id/textViewWaitTime"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Wait Time"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewWaitTimeRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewWaitTimeValue"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewWaitTimeValue"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutConvenienceCharges"
@@ -410,7 +343,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="10px"
+                android:id="@+id/relativeLayoutCancelSubsidy">
 
                 <TextView
                     android:id="@+id/textViewCancelSubsidy"
@@ -448,7 +382,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="10px"
+                android:id="@+id/relativeLayoutJugnooCut">
 
                 <TextView
                     android:id="@+id/textViewJugnooCut"
@@ -483,167 +418,12 @@
                     android:textSize="32px"/>
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="680px"
-                android:layout_height="2px"
-                android:layout_marginTop="14px"
-                android:background="@color/black"/>
+            <!--<ImageView-->
+                <!--android:layout_width="680px"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_marginTop="14px"-->
+                <!--android:background="@color/black"/>-->
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
-
-                <TextView
-                    android:id="@+id/textViewViewFare"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Total Fare"
-                    android:textColor="@color/black"
-                    android:textSize="42px"/>
-
-                <TextView
-                    android:id="@+id/textViewViewFareRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewFare"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/blue_btn"
-                    android:textSize="42px"/>
-
-                <TextView
-                    android:id="@+id/textViewFare"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/blue_btn"
-                    android:textSize="42px"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
-
-                <TextView
-                    android:id="@+id/textViewPaidByCustomerText"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Paid in Cash"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewPaidByCustomerRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewPaidByCustomer"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewPaidByCustomer"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativeLayoutPaidToMerchant"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
-
-                <TextView
-                    android:id="@+id/textViewPaidToMerchantText"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Paid To Merchant"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewPaidToMerchantRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewPaidToMerchant"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-                <TextView
-                    android:id="@+id/textViewPaidToMerchant"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-            </RelativeLayout>
-
-
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10px">
-
-                <TextView
-                    android:id="@+id/textViewBalanceText"
-                    android:layout_width="340px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:layout_marginLeft="38px"
-                    android:text="Account"
-                    android:textColor="@color/black"
-                    android:textSize="42px"/>
-
-                <TextView
-                    android:id="@+id/textViewBalanceRupee"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10px"
-                    android:layout_toLeftOf="@+id/textViewBalance"
-                    android:gravity="center_vertical"
-                    android:text="@string/rupee"
-                    android:textColor="@color/black"
-                    android:textSize="42px"/>
-
-                <TextView
-                    android:id="@+id/textViewBalance"
-                    android:layout_width="110px"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:gravity="center_vertical|right"
-                    android:layout_marginRight="40px"
-                    android:text="0"
-                    android:textColor="@color/black"
-                    android:textSize="42px"/>
-            </RelativeLayout>
 
             <!--<TextView-->
                 <!--android:id="@+id/textViewFare"-->
@@ -718,6 +498,108 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="680px"
+            android:layout_height="260px"
+            android:orientation="vertical"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="15px"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_white_rounded_black_border">
+
+            <TextView
+                android:id="@+id/textViewActualFare"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:singleLine="true"
+                android:layout_marginTop="15px"
+                android:text="@string/rupee_zero"
+                android:textColor="@color/black"
+                android:textSize="52px"/>
+            <TextView
+                android:id="@+id/textViewActualFareText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewFare"
+                android:layout_marginBottom="15px"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="Total Fare"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="45px"/>
+
+
+            <ImageView
+                android:layout_width="720px"
+                android:layout_height="2px"
+                android:background="@color/black"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/textViewCustomerPaid"
+                    android:layout_width="345px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/grey_ride_history"
+                    android:textSize="52px"/>
+                <TextView
+                    android:id="@+id/textViewCustomerPaidText"
+                    android:layout_width="345px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_below="@+id/textViewCustomerPaid"
+                    android:text="Paid in Cash"
+                    android:textColor="@color/grey_ride_history"
+                    android:textSize="30px"/>
+
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="110px"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/imageViewVertical"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewAccountBalance"
+                    android:layout_width="345px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:layout_marginTop="5px"
+                    android:layout_toRightOf="@+id/imageViewVertical"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/grey_ride_history"
+                    android:textSize="52px"/>
+
+                <TextView
+                    android:id="@+id/textViewAccountBalanceText"
+                    android:layout_width="345px"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewAccountBalance"
+                    android:layout_toRightOf="@+id/imageViewVertical"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Account"
+                    android:textColor="@color/grey_ride_history"
+                    android:textSize="30px"/>
+
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
 
 
 
@@ -781,61 +663,7 @@
                     android:textSize="30px"/>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/distTimeRl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
-                android:layout_marginLeft="60px"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:splitMotionEvents="false">
 
-                <ImageView
-                    android:layout_width="30px"
-                    android:layout_height="30px"
-                    android:layout_marginLeft="20px"
-                    android:src="@drawable/location"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/distanceValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
-                    android:singleLine="true"
-                    android:text="5.6 Km"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
-
-                <ImageView
-                    android:layout_width="30px"
-                    android:layout_height="30px"
-                    android:layout_marginLeft="30px"
-                    android:src="@drawable/time"
-                    android:tag="mwar"/>
-
-                <TextView
-                    android:id="@+id/rideTimeValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
-                    android:singleLine="true"
-                    android:text="10 min"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
-
-                <TextView
-                    android:id="@+id/waitTimeValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50px"
-                    android:singleLine="true"
-                    android:text="Wait: 10 min"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
