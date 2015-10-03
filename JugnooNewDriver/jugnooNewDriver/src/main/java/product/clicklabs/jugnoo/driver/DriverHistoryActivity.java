@@ -1,7 +1,10 @@
 package product.clicklabs.jugnoo.driver;
 
+import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
+import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import rmn.androidscreenlibrary.ASSL;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -21,16 +24,16 @@ public class DriverHistoryActivity extends FragmentActivity{
 	LinearLayout relative;
 	
 	Button backBtn;
-	TextView title;
-	
+
 	RelativeLayout relativeLayoutRides, relativeLayoutMissed;
-	TextView textViewRides, textViewMissed;
+	TextView textViewRides, textViewMissed, textViewDailyValue, textViewMonthly, textViewDailyText, textViewMonthlyText ;
 	ImageView imageViewRides, imageViewMissed;
 	
 	ViewPager viewPagerDriverHistory;
 	
 	DriverHistoryTabsAdapter driverHistoryTabsAdapter;
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -41,17 +44,25 @@ public class DriverHistoryActivity extends FragmentActivity{
 		
 		
 		backBtn = (Button) findViewById(R.id.backBtn); 
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Data.latoRegular(getApplicationContext()),Typeface.BOLD);
+		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		relativeLayoutMissed = (RelativeLayout) findViewById(R.id.relativeLayoutMissed);
 		
 		textViewRides = (TextView) findViewById(R.id.textViewRides); textViewRides.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewMissed = (TextView) findViewById(R.id.textViewMissed); textViewMissed.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewDailyValue = (TextView) findViewById(R.id.textViewDailyValue); textViewDailyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewMonthly = (TextView) findViewById(R.id.textViewMonthly); textViewMonthly.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		
 		imageViewRides = (ImageView) findViewById(R.id.imageViewRides);
 		imageViewMissed = (ImageView) findViewById(R.id.imageViewMissed);
-		
+
+
+		textViewDailyValue.setText("");
+		textViewMonthly.setText("");
+
+
 		viewPagerDriverHistory = (ViewPager) findViewById(R.id.viewPagerDriverHistory);
 		
 		driverHistoryTabsAdapter = new DriverHistoryTabsAdapter(getSupportFragmentManager(), this);
@@ -99,7 +110,15 @@ public class DriverHistoryActivity extends FragmentActivity{
 		viewPagerDriverHistory.setCurrentItem(0, true);
 		switchTabs(0);
 	}
-	
+
+	UpdateDriverEarnings updateDriverEarnings = new UpdateDriverEarnings() {
+		@Override
+		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings) {
+			textViewDailyValue.setText(getResources().getString(R.string.rupee)+" "+dailyEarnings);
+			textViewMonthly.setText(getResources().getString(R.string.rupee)+" "+monthlyEarnings);
+		}
+	};
+
 	
 	public void switchTabs(int position){
 		switch(position){
@@ -135,6 +154,7 @@ public class DriverHistoryActivity extends FragmentActivity{
 			if(driverRidesFragment == null){
 				driverRidesFragment = new DriverRidesFragment();
 			}
+			driverRidesFragment.updateDriverEarnings = updateDriverEarnings;
 			return driverRidesFragment;
 		}
 		
@@ -160,7 +180,7 @@ public class DriverHistoryActivity extends FragmentActivity{
 
 		@Override
 		public int getCount() {
-			return 2;
+			return 1;
 		}
 		
 		public void clearFragments(){

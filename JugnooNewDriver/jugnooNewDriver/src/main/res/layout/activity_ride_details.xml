@@ -418,89 +418,18 @@
                     android:textSize="32px"/>
             </RelativeLayout>
 
-            <!--<ImageView-->
-                <!--android:layout_width="680px"-->
-                <!--android:layout_height="2px"-->
-                <!--android:layout_marginTop="14px"-->
-                <!--android:background="@color/black"/>-->
-
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewFare"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="10px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Fare: Rs. 0"-->
-                <!--android:textColor="@color/blue_btn"-->
-                <!--android:textSize="30px"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewPaidByCustomer"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="10px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Paid by Customer: Rs. 0"-->
-                <!--android:textColor="@color/bg_grey_opaque"-->
-                <!--android:textSize="30px"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewBalance"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="50px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Bal. from Jugnoo: Rs. 0"-->
-                <!--android:textColor="@color/bg_grey_opaque"-->
-                <!--android:textSize="36px"/>-->
-
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewJugnooSubsidy"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="10px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Jugnoo Subsidy: Rs. 0"-->
-                <!--android:textColor="@color/bg_grey_opaque"-->
-                <!--android:textSize="30px"/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewCustomerPaid"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="10px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Paid by Customer: Rs. 0"-->
-                <!--android:textColor="@color/bg_grey_opaque"-->
-                <!--android:textSize="30px"-->
-                <!--android:visibility="gone"-->
-                <!--/>-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textViewPaidToMerchant"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="20px"-->
-                <!--android:layout_marginTop="10px"-->
-                <!--android:singleLine="true"-->
-                <!--android:text="Paid to merchant: Rs. 0"-->
-                <!--android:textColor="@color/bg_grey_opaque"-->
-                <!--android:textSize="30px"/>-->
-
-
+            <ImageView
+                android:layout_width="620px"
+                android:layout_height="5px"
+                android:layout_marginLeft="10px"
+                android:layout_marginBottom="5px"
+                android:background="@color/white"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="680px"
-            android:layout_height="260px"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="20px"
             android:layout_marginTop="15px"
@@ -522,15 +451,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewFare"
-                android:layout_marginBottom="15px"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Total Fare"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="45px"/>
 
+            <TextView
+                android:id="@+id/textViewIncSubsidy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="(inc. Subsidy)"
+                android:textColor="@color/black"
+                android:textSize="24px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="15px"
+                />
 
-            <ImageView
+
+                <ImageView
                 android:layout_width="720px"
                 android:layout_height="2px"
                 android:background="@color/black"/>
@@ -563,7 +503,7 @@
 
                 <ImageView
                     android:layout_width="2px"
-                    android:layout_height="110px"
+                    android:layout_height="115px"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/imageViewVertical"
                     android:background="@color/black"/>
@@ -600,38 +540,34 @@
         </LinearLayout>
 
 
-
-
-
-
-
             <LinearLayout
                 android:id="@+id/linearLayoutFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24px"
                 android:layout_marginLeft="60px"
+                android:layout_marginRight="20px"
                 android:splitMotionEvents="false">
 
                 <TextView
                     android:id="@+id/textViewFrom"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100px"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20px"
+                    android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="@string/from"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
 
                 <TextView
                     android:id="@+id/textViewFromValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5px"
-                    android:layout_marginRight="20px"
+                    android:layout_marginLeft="0px"
+                    android:layout_marginBottom="5px"
                     android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
             </LinearLayout>
 
             <LinearLayout
@@ -640,31 +576,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20px"
                 android:layout_marginLeft="60px"
+                android:layout_marginRight="20px"
                 android:splitMotionEvents="false">
 
                 <TextView
                     android:id="@+id/textViewTo"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100px"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20px"
                     android:singleLine="true"
                     android:text="@string/to"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
 
                 <TextView
                     android:id="@+id/textViewToValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50px"
-                    android:layout_marginRight="20px"
                     android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+                    android:layout_marginBottom="5px"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
+
             </LinearLayout>
 
-
         </LinearLayout>
+
     </ScrollView>
 
 </LinearLayout>

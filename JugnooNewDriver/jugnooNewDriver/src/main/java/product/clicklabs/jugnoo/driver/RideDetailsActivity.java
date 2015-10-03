@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,8 +19,8 @@ import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import rmn.androidscreenlibrary.ASSL;
 
-public class RideDetailsActivity extends Activity{
-	
+public class RideDetailsActivity extends Activity {
+
 	LinearLayout relative;
 
 	Button backBtn;
@@ -29,16 +30,16 @@ public class RideDetailsActivity extends Activity{
 			textViewRideFareValue, textViewConvayenceChargeValue, textViewLuggageChargeValue,
 			textViewRateApplied, textViewRateAppliedValue,
 			textViewAcceptSubsidyValue, textViewCancelSubsidyValue, textViewJugnooCutValue,
-			textViewActualFare, textViewCustomerPaid, textViewAccountBalance,
+			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
 			textViewFromValue, textViewToValue;
 
 	ImageView imageViewRequestType;
 
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
-	
+
 	public static RideInfo openedRideInfo;
-	
+
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -51,50 +52,70 @@ public class RideDetailsActivity extends Activity{
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
-	
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_ride_details);
-		
+
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RideDetailsActivity.this, relative, 1134, 720, false);
-		
-		backBtn = (Button) findViewById(R.id.backBtn); 
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(this));
 
-		relativeLayoutConvenienceCharges = (RelativeLayout)findViewById(R.id.relativeLayoutConvenienceCharges);
-		relativeLayoutLuggageCharges = (RelativeLayout)findViewById(R.id.relativeLayoutLuggageCharges);
-		relativeLayoutCancelSubsidy = (RelativeLayout)findViewById(R.id.relativeLayoutCancelSubsidy);
-		relativeLayoutJugnooCut = (RelativeLayout)findViewById(R.id.relativeLayoutJugnooCut);
+		backBtn = (Button) findViewById(R.id.backBtn);
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(this));
+
+		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
+		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
+		relativeLayoutCancelSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutCancelSubsidy);
+		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
 
 
-		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue); dateTimeValue.setTypeface(Data.latoRegular(this));
-		distanceValue = (TextView) findViewById(R.id.distanceValue); distanceValue.setTypeface(Data.latoRegular(this));
-		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue); rideTimeValue.setTypeface(Data.latoRegular(this));
-		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue); waitTimeValue.setTypeface(Data.latoRegular(this));
+		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
+		dateTimeValue.setTypeface(Data.latoRegular(this));
+		distanceValue = (TextView) findViewById(R.id.distanceValue);
+		distanceValue.setTypeface(Data.latoRegular(this));
+		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue);
+		rideTimeValue.setTypeface(Data.latoRegular(this));
+		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
+		waitTimeValue.setTypeface(Data.latoRegular(this));
 
-		textViewRideFareValue = (TextView) findViewById(R.id.textViewRideFareValue); textViewRideFareValue.setTypeface(Data.latoRegular(this));
-		textViewConvayenceChargeValue = (TextView) findViewById(R.id.textViewConvayenceChargeValue); textViewConvayenceChargeValue.setTypeface(Data.latoRegular(this));
-		textViewLuggageChargeValue = (TextView) findViewById(R.id.textViewLuggageChargeValue); textViewLuggageChargeValue.setTypeface(Data.latoRegular(this));
-		textViewRateApplied = (TextView) findViewById(R.id.textViewRateApplied); textViewRateApplied.setTypeface(Data.latoRegular(this));
+		textViewRideFareValue = (TextView) findViewById(R.id.textViewRideFareValue);
+		textViewRideFareValue.setTypeface(Data.latoRegular(this));
+		textViewConvayenceChargeValue = (TextView) findViewById(R.id.textViewConvayenceChargeValue);
+		textViewConvayenceChargeValue.setTypeface(Data.latoRegular(this));
+		textViewLuggageChargeValue = (TextView) findViewById(R.id.textViewLuggageChargeValue);
+		textViewLuggageChargeValue.setTypeface(Data.latoRegular(this));
+		textViewRateApplied = (TextView) findViewById(R.id.textViewRateApplied);
+		textViewRateApplied.setTypeface(Data.latoRegular(this));
 
-		textViewRateAppliedValue = (TextView) findViewById(R.id.textViewRateAppliedValue); textViewRateAppliedValue.setTypeface(Data.latoRegular(this));
-		textViewAcceptSubsidyValue = (TextView) findViewById(R.id.textViewAcceptSubsidyValue); textViewAcceptSubsidyValue.setTypeface(Data.latoRegular(this));
-		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue); textViewCancelSubsidyValue.setTypeface(Data.latoRegular(this));
-		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue); textViewJugnooCutValue.setTypeface(Data.latoRegular(this));
+		textViewRateAppliedValue = (TextView) findViewById(R.id.textViewRateAppliedValue);
+		textViewRateAppliedValue.setTypeface(Data.latoRegular(this));
+		textViewAcceptSubsidyValue = (TextView) findViewById(R.id.textViewAcceptSubsidyValue);
+		textViewAcceptSubsidyValue.setTypeface(Data.latoRegular(this));
+		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
+		textViewCancelSubsidyValue.setTypeface(Data.latoRegular(this));
+		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
+		textViewJugnooCutValue.setTypeface(Data.latoRegular(this));
 
-		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare); textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance); textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid); textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue); textViewFromValue.setTypeface(Data.latoRegular(this));
-		textViewToValue = (TextView) findViewById(R.id.textViewToValue); textViewToValue.setTypeface(Data.latoRegular(this));
-		
+		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
+		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
+		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
+		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
+		textViewFromValue.setTypeface(Data.latoRegular(this));
+		textViewToValue = (TextView) findViewById(R.id.textViewToValue);
+		textViewToValue.setTypeface(Data.latoRegular(this));
+		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
+		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
+
 		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Data.latoRegular(this));
 
@@ -117,69 +138,60 @@ public class RideDetailsActivity extends Activity{
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Data.latoRegular(this));
-		
-        imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
-		
+		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
+
+
+		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
+
 		backBtn.setOnClickListener(new View.OnClickListener() {
-		
+
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
 			}
 		});
-		
-		
-		if(openedRideInfo != null){
+
+
+		if (openedRideInfo != null) {
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
 			distanceValue.setText(openedRideInfo.distance + " km");
 			rideTimeValue.setText(openedRideInfo.rideTime + " min");
-			if("0".equalsIgnoreCase(openedRideInfo.waitTime)){
+			if ("0".equalsIgnoreCase(openedRideInfo.waitTime)) {
 				waitTimeValue.setVisibility(View.GONE);
-			}
-			else{
+			} else {
 				waitTimeValue.setVisibility(View.VISIBLE);
-				waitTimeValue.setText("Wait: "+openedRideInfo.waitTime + " min");
+				waitTimeValue.setText("Wait: " + openedRideInfo.waitTime + " min");
 			}
 
-			textViewRideFareValue.setText(openedRideInfo.fare);
+			textViewRideFareValue.setText(openedRideInfo.driverRideFair);
 
-			if("0".equalsIgnoreCase(openedRideInfo.convenienceCharges)){
+			if ("0".equalsIgnoreCase(openedRideInfo.convenienceCharges)) {
 				relativeLayoutConvenienceCharges.setVisibility(View.GONE);
-			}
-			else{
+			} else {
 				relativeLayoutConvenienceCharges.setVisibility(View.VISIBLE);
 				textViewConvayenceChargeValue.setText(openedRideInfo.convenienceCharges);
 			}
 
-			if("0".equalsIgnoreCase(openedRideInfo.luggageCharges)){
+			if ("0".equalsIgnoreCase(openedRideInfo.luggageCharges)) {
 				relativeLayoutLuggageCharges.setVisibility(View.GONE);
-			}
-			else{
+			} else {
 				relativeLayoutLuggageCharges.setVisibility(View.VISIBLE);
 				textViewLuggageChargeValue.setText(openedRideInfo.luggageCharges);
 			}
 
 			textViewRateAppliedValue.setText(openedRideInfo.fareFactorValue);
-			textViewRateApplied.setText("Rate Applied "+openedRideInfo.fareFactorApplied + "x");
+			textViewRateApplied.setText("Rate Applied " + openedRideInfo.fareFactorApplied + "x");
 
 			textViewAcceptSubsidyValue.setText(openedRideInfo.acceptSubsidy);
 
-			if("0".equalsIgnoreCase(openedRideInfo.cancelSubsidy)){
+			if ("0".equalsIgnoreCase(openedRideInfo.cancelSubsidy)) {
 				relativeLayoutCancelSubsidy.setVisibility(View.GONE);
-			}
-			else{
+			} else {
 				relativeLayoutCancelSubsidy.setVisibility(View.VISIBLE);
-				textViewConvayenceChargeValue.setText(openedRideInfo.cancelSubsidy);
+				textViewCancelSubsidyValue.setText(openedRideInfo.cancelSubsidy);
 			}
 
 			relativeLayoutJugnooCut.setVisibility(View.GONE);
-
-			textViewActualFare.setText(openedRideInfo.actualFare);
-			textViewCustomerPaid.setText(openedRideInfo.customerPaid);
-			textViewAccountBalance.setText(openedRideInfo.accountBalance);
-			textViewFromValue.setText(openedRideInfo.fromLocation);
-			textViewToValue.setText(openedRideInfo.toLocation);
-
 //			if("0".equalsIgnoreCase(openedRideInfo.)){
 //				relativeLayoutJugnooCut.setVisibility(View.GONE);
 //			}
@@ -188,42 +200,56 @@ public class RideDetailsActivity extends Activity{
 //				textViewConvayenceChargeValue.setText(openedRideInfo.cancelSubsidy);
 //			}
 
-            if(BusinessType.AUTOS.getOrdinal() == openedRideInfo.businessId){
-                imageViewRequestType.setImageResource(R.drawable.request_autos);
-            }
-            else if(BusinessType.FATAFAT.getOrdinal() == openedRideInfo.businessId){
-                imageViewRequestType.setImageResource(R.drawable.request_fatafat);
-            }
+			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.actualFare);
+			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.customerPaid);
 
-        }
-		else{
+			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
+				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Math.abs(Double.parseDouble(openedRideInfo.accountBalance))));
+				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.red_status));
+				textViewAccountBalance.setTextColor(getResources().getColor(R.color.red_status));
+				textViewAccountBalanceText.setText("(-)Account");
+			} else {
+				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.accountBalance);
+				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
+				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
+				textViewAccountBalanceText.setText("Account");
+			}
+			textViewFromValue.setText(openedRideInfo.fromLocation);
+			textViewToValue.setText(openedRideInfo.toLocation);
+
+
+			if (BusinessType.AUTOS.getOrdinal() == openedRideInfo.businessId) {
+				imageViewRequestType.setImageResource(R.drawable.request_autos);
+			} else if (BusinessType.FATAFAT.getOrdinal() == openedRideInfo.businessId) {
+				imageViewRequestType.setImageResource(R.drawable.request_fatafat);
+			}
+
+		} else {
 			performBackPressed();
 		}
-		
-		
-		
+
+
 	}
-	
-	
-	public void performBackPressed(){
+
+
+	public void performBackPressed() {
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
-	
+
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
 		super.onBackPressed();
 	}
-	
-	
+
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 	}
-	
-	
-	
+
+
 }

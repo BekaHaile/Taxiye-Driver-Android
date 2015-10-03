@@ -17,6 +17,12 @@ public class BookingHistoryResponse {
 	@SerializedName("booking_data")
 	@Expose
 	private List<BookingData> bookingData = new ArrayList<BookingData>();
+	@SerializedName("daily_earnings")
+	@Expose
+	private String dailyEarnings;
+	@SerializedName("monthly_earnings")
+	@Expose
+	private String mothlyEarnings;
 
 	/**
 	 *
@@ -34,6 +40,22 @@ public class BookingHistoryResponse {
 	 */
 	public void setBookingData(List<BookingData> bookingData) {
 		this.bookingData = bookingData;
+	}
+
+	public String getDailyEarnings() {
+		return dailyEarnings;
+	}
+
+	public void setDailyEarnings(String paidByCustomer) {
+		this.dailyEarnings = dailyEarnings;
+	}
+
+	public String getMothlyEarnings() {
+		return mothlyEarnings;
+	}
+
+	public void setMothlyEarnings(String mothlyEarnings) {
+		this.mothlyEarnings = mothlyEarnings;
 	}
 
 	public class BookingData {
@@ -119,6 +141,10 @@ public class BookingHistoryResponse {
 		@SerializedName("paid_by_customer")
 		@Expose
 		private String paidByCustomer;
+		@SerializedName("driver_ride_fare")
+		@Expose
+		private String driverRideFair;
+
 
 		/**
 		 *
@@ -585,6 +611,16 @@ public class BookingHistoryResponse {
 		public void setPaidByCustomer(String paidByCustomer) {
 			this.paidByCustomer = paidByCustomer;
 		}
+
+		public String getDriverRideFair() {
+			return driverRideFair;
+		}
+
+		public void setDriverRideFair(String driverRideFair) {
+			this.driverRideFair = driverRideFair;
+		}
+
+
 
 	}
 
