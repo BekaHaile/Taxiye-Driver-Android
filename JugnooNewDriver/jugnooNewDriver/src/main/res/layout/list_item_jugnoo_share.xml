@@ -39,7 +39,7 @@
                     android:tag="mwar"/>
 
                 <TextView
-                    android:id="@+id/dateValue"
+                    android:id="@+id/textViewDateValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -70,7 +70,7 @@
                     android:tag="mwar"/>
 
                 <TextView
-                    android:id="@+id/TimeValue"
+                    android:id="@+id/textViewTimeValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -101,7 +101,7 @@
                     android:tag="mwar"/>
 
                 <TextView
-                    android:id="@+id/phoneValue"
+                    android:id="@+id/textViewPhoneValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -125,11 +125,11 @@
             android:layout_marginLeft="30px"
             android:layout_marginTop="25px"
             android:layout_marginRight="50px"
-            android:background="@drawable/background_white_rounded_black_border"
+            android:background="@drawable/background_white_rounded_black_bordered"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewActualFareFare"
+                android:id="@+id/textViewActualFare"
                 android:layout_width="match_parent"
                 android:layout_height="70px"
                 android:gravity="center"
@@ -215,7 +215,7 @@
         android:layout_marginTop="15px"
         android:splitMotionEvents="false">
         <Button
-            android:id="@+id/signInBtn"
+            android:id="@+id/buttonRideComplete"
             android:layout_width="250px"
             android:layout_height="50px"
             android:layout_centerInParent="true"
