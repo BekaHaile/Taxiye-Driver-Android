@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -136,6 +137,11 @@ public class Database2 {																	// class for handling database related 
 	private static final String GPS_STATE = "gps_state";
 
 
+	private static final String TABLE_SHARING_RIDES_STATUS = "table_sharing_rides_status";
+	private static final String SHARING_ENGAGEMENT_ID = "sharing_engagement_id";
+	private static final String COMPLETED = "completed";
+
+
 
     /**
 	 * Creates and opens database for the application use 
@@ -245,6 +251,11 @@ public class Database2 {																	// class for handling database related 
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
 				+ GPS_STATE + " INTEGER" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_SHARING_RIDES_STATUS + " ("
+				+ SHARING_ENGAGEMENT_ID + " INTEGER, "
+				+ COMPLETED + " INTEGER"
+				+ ");");
 
 	}
 	
@@ -1319,7 +1330,7 @@ public class Database2 {																	// class for handling database related 
             ContentValues contentValues = new ContentValues();
             contentValues.put(ACKNOWLEDGED, acknowledged);
             int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
-            Log.e("rowsAffected", "="+rowsAffected);
+            Log.e("rowsAffected", "=" + rowsAffected);
             return rowsAffected;
         } catch(Exception e){
             e.printStackTrace();
@@ -1496,5 +1507,18 @@ public class Database2 {																	// class for handling database related 
 			return 0;
 		}
 	}
+
+
+	public void insertSharingEngagementsArray(ArrayList<SharingRideData> sharingRideDatas){
+		String[] columns = new String[] { SHARING_ENGAGEMENT_ID };
+		Cursor cursor = database.query(TABLE_SHARING_RIDES_STATUS, columns, null, null, null, null, null);
+		ArrayList<String> existingEngagementIds = new ArrayList<>();
+		int inId = cursor.getColumnIndex(SHARING_ENGAGEMENT_ID);
+		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+			existingEngagementIds.add(cursor.getString(inId));
+		}
+	}
+
+
 	
 }

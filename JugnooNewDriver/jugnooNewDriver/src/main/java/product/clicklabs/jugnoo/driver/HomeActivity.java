@@ -160,6 +160,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout bookingsRl;
 	TextView bookingsText;
 
+	RelativeLayout relativeLayoutSharingRides;
+
 	RelativeLayout fareDetailsRl;
 	TextView fareDetailsText;
 	RelativeLayout relativeLayoutSuperDrivers;
@@ -512,6 +514,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
 		bookingsText = (TextView) findViewById(R.id.bookingsText); bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
+		((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -882,7 +887,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(MENU);
+				FlurryEventLogger.event(INVITE_OPENED);
 			}
 		});
 
@@ -937,6 +942,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				startActivity(new Intent(HomeActivity.this, DriverHistoryActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				FlurryEventLogger.event(RIDES_OPENED);
+			}
+		});
+
+		relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(SHARING_RIDES_OPENED);
 			}
 		});
 

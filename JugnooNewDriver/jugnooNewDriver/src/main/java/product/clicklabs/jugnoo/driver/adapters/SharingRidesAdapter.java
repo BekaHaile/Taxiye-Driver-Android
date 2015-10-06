@@ -11,23 +11,23 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.R;
-import product.clicklabs.jugnoo.datastructure.NearbyDriver;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
 /**
- * Created by socomo20 on 10/4/15.
+ * Created by aneesh on 10/4/15.
  */
 public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapter.SharingRideViewHolder> {
 
 	private ArrayList<SharingRideData> sharingRideDatas;
 	private Context context;
-	private SharingRideDataAdapterHandler adapterHandler;
+	private SharingRidesAdapterHandler adapterHandler;
 
-	public SharingRidesAdapter(Context context, ArrayList<SharingRideData> sharingRideDatas, SharingRideDataAdapterHandler adapterHandler) {
+	public SharingRidesAdapter(Context context, ArrayList<SharingRideData> sharingRideDatas, SharingRidesAdapterHandler adapterHandler) {
 		this.sharingRideDatas = sharingRideDatas;
 		this.context = context;
 		this.adapterHandler = adapterHandler;
@@ -39,29 +39,71 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 	}
 
 	@Override
-	public void onBindViewHolder(SharingRideViewHolder nearbyDriverViewHolder, int i) {
+	public void onBindViewHolder(SharingRideViewHolder sharingRideViewHolder, int i) {
 		SharingRideData srd = sharingRideDatas.get(i);
+
+		sharingRideViewHolder.textViewDateValue.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewDateValue.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewTimeValue.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewPhoneValue.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewActualFare.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewCustomerPaid.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewAccountBalance.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textRideStatus.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewCustomerPaidText.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewAccountBalanceText.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.buttonRideComplete.setTypeface(Data.latoRegular(context));
+
 		if(srd.completed == 1){
-			nearbyDriverViewHolder.buttonRideComplete.setVisibility(View.GONE);
-			nearbyDriverViewHolder.textRideStatus.setVisibility(View.VISIBLE);
+			sharingRideViewHolder.buttonRideComplete.setVisibility(View.GONE);
+			sharingRideViewHolder.textRideStatus.setVisibility(View.VISIBLE);
 		}
 		else{
-			nearbyDriverViewHolder.buttonRideComplete.setVisibility(View.VISIBLE);
-			nearbyDriverViewHolder.textRideStatus.setVisibility(View.GONE);
+			sharingRideViewHolder.buttonRideComplete.setVisibility(View.VISIBLE);
+			sharingRideViewHolder.textRideStatus.setVisibility(View.GONE);
+		}
+
+		sharingRideViewHolder.textViewDateValue.setText(DateOperations.getDate(DateOperations.utcToLocal(srd.transactionDateTime)));
+		sharingRideViewHolder.textViewTimeValue.setText(DateOperations.getTimeAMPM(DateOperations.utcToLocal(srd.transactionDateTime)));
+
+		sharingRideViewHolder.textViewPhoneValue.setText(Utils.hidePhoneNoString(srd.customerPhoneNumber));
+		sharingRideViewHolder.textViewActualFare.setText(context.getResources().getString(R.string.rupee)+" "+srd.actualFare);
+
+		if(srd.customerPaid > 0){
+			sharingRideViewHolder.textViewCustomerPaid.setText("" + srd.customerPaid);
+			sharingRideViewHolder.textViewCustomerPaidText.setText("Paid in Cash");
+			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.green_status));
+			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.green_status));
+		}
+		else {
+			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Math.abs(srd.customerPaid));
+			sharingRideViewHolder.textViewCustomerPaidText.setText("(-)Paid in Cash");
+			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.red_status));
+			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.red_status));
+		}
+
+		if(srd.accountBalance > 0){
+			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Math.abs(srd.accountBalance));
+			sharingRideViewHolder.textViewAccountBalanceText.setText("(-) Account Balance");
+			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.green_status));
+			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.green_status));
+		}
+		else {
+			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ srd.accountBalance);
+			sharingRideViewHolder.textViewAccountBalanceText.setText("Account Balance");
+			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.red_status));
+			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.red_status));
 		}
 
 
-		nearbyDriverViewHolder.textViewDateValue.setText(srd.transactionDateTime);
-		nearbyDriverViewHolder.linearLayoutNearby.setTag(i);
-		nearbyDriverViewHolder.buttonRideComplete.setOnClickListener(new View.OnClickListener() {
+
+		sharingRideViewHolder.buttonRideComplete.setTag(i);
+		sharingRideViewHolder.buttonRideComplete.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				for(int i=0; i< sharingRideDatas.size(); i++){
-					sharingRideDatas.get(i).ticked = false;
-				}
-				sharingRideDatas.get((int) v.getTag()).ticked = true;
+				sharingRideDatas.get((int) v.getTag()).completed = 1;
 				notifyDataSetChanged();
-				adapterHandler.itemClicked(sharingRideDatas.get((int) v.getTag()));
+				adapterHandler.okClicked(sharingRideDatas.get((int) v.getTag()));
 			}
 		});
 

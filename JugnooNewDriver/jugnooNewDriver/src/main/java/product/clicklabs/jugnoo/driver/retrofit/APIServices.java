@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.Field;
@@ -22,6 +23,11 @@ public interface APIServices {
 	void bookingHistory(@Field("access_token") String accessToken,
 						@Field("current_mode") String currentMode,
 						Callback<BookingHistoryResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/share_ride_history")
+	void getSharedRidesAsync(@Field("access_token") String accessToken,
+						Callback<SharedRideResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")

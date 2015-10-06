@@ -10,8 +10,7 @@ public class SharingRideData {
 	public int completed;
 
 	public SharingRideData(String sharingEngagementId, String transactionDateTime, String customerPhoneNumber,
-						   double actualFare, double customerPaid, double accountBalance,
-						   int completed) {
+						   double actualFare, double customerPaid, double accountBalance) {
 
 		this.sharingEngagementId = sharingEngagementId;
 		this.transactionDateTime = transactionDateTime;
@@ -19,7 +18,6 @@ public class SharingRideData {
 		this.actualFare = actualFare;
 		this.customerPaid =  customerPaid;
 		this.accountBalance = accountBalance;
-		this.completed = completed;
 	}
 
 }
