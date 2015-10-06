@@ -155,6 +155,10 @@ public interface APIServices {
 	Response switchJugnooOnThroughServerRetro(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
+	@POST("/toggle_sharing_mode")
+	Response toggleSharingMode(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/acknowledge_port_change")
 	Response sendChangePortAckToServerRetro(@Field ("access_token") String accessToken);
 

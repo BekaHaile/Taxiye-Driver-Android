@@ -17,6 +17,7 @@ public interface FlurryEventNames {
 			JUGNOO_ON_OFF = "jugnoo on/off",
 			FATAFAT_ENABLE = "Fatafat enable",
 			MEALS_ENABLE = "Meals enable",
+			SHARING_ENABLE = "Sharing enable",
 			RIDES_OPENED = "Rides opened",
 			COMPLETE_RIDES_CHECKED = "complete rides checked",
 			MISSED_RIDES_CHECKED = "missed rides checked",
