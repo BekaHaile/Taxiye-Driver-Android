@@ -151,8 +151,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView userName, textViewDEI;
 	LinearLayout linearLayoutDEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn;
-	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
+	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
 	RelativeLayout inviteFriendRl;
 	TextView inviteFriendText;
@@ -163,7 +163,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout fareDetailsRl;
 	TextView fareDetailsText;
 	RelativeLayout relativeLayoutSuperDrivers;
-	TextView textViewSuperDrivers;
 
 	RelativeLayout helpRl;
 	TextView helpText;
@@ -410,8 +409,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
-	public static final double FUSED_DISTANCE_MAX_ADDITION = 10000;
-
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
 
 
@@ -503,6 +500,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		relativeLayoutFatafatOn = (RelativeLayout) findViewById(R.id.relativeLayoutFatafatOn);
 		((TextView) findViewById(R.id.textViewFatafatOn)).setTypeface(Data.latoRegular(getApplicationContext()));
 		imageViewFatafatOnToggle = (ImageView) findViewById(R.id.imageViewFatafatOnToggle);
+
+		relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
+		((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+		imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
+
 
 
 
@@ -870,6 +872,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						changeJugnooON(BusinessType.MEALS, 1);
 					}
 					FlurryEventLogger.event(MEALS_ENABLE);
+				}
+			}
+		});
+
+		imageViewSharingOnToggle.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
+					if(Data.userData.sharingAvailable == 1){
+						toggleSharingMode(0);
+					}
+					else{
+						toggleSharingMode(1);
+					}
+					FlurryEventLogger.event(SHARING_ENABLE);
 				}
 			}
 		});
@@ -1689,6 +1706,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	public void toggleSharingMode(int mode){
+		if(mode == 1){
+			if(myLocation != null){
+				toggleSharingModeAPI(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+			}
+			else{
+				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
+			}
+		}
+		else{
+			toggleSharingModeAPI(0, new LatLng(0, 0));
+
+		}
+	}
+
+
 
 
 
@@ -1747,6 +1780,51 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+	public void toggleSharingModeAPI(final int mode, final LatLng latLng){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
+			}
+		});
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					HashMap<String, String> params = new HashMap<String, String>();
+
+					params.put("access_token", Data.userData.accessToken);
+					params.put("latitude", ""+latLng.latitude);
+					params.put("longitude", ""+latLng.longitude);
+					params.put("flag", ""+mode);
+
+					Response response = RestClient.getApiServices().toggleSharingMode(params);
+					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+					JSONObject jObj = new JSONObject(result);
+
+					if(jObj.has("flag")){
+						int flag = jObj.getInt("flag");
+						if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+							Data.userData.sharingAvailable = mode;
+							changeJugnooONUIAndInitService();
+						}
+					}
+					if(jObj.has("message")){
+						String message = jObj.getString("message");
+						showDialogFromBackground(message);
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					showDialogFromBackground(Data.SERVER_ERROR_MSG);
+				}
+			}
+		}).start();
+	}
+
+
+
 	public void showDialogFromBackground(final String message){
 		runOnUiThread(new Runnable() {
 			@Override
@@ -1784,6 +1862,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				relativeLayoutFatafatOn.setVisibility(View.GONE);
 				Data.userData.fatafatAvailable = 0;
 			}
+
+			if(1 == Data.userData.sharingEnabled){
+				relativeLayoutSharingOn.setVisibility(View.VISIBLE);
+			}
+			else{
+				relativeLayoutSharingOn.setVisibility(View.GONE);
+				Data.userData.sharingAvailable = 0;
+			}
 		}
 
 		logoutRl.setVisibility(View.VISIBLE);
@@ -1797,12 +1883,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			@Override
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
-			}
-		});
-
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
 				try {
 					if(Data.userData != null){
 						if(1 == Data.userData.autosAvailable){
@@ -1826,7 +1906,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							imageViewFatafatOnToggle.setImageResource(R.drawable.off);
 						}
 
-						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable){
+						if(1 == Data.userData.sharingAvailable){
+							imageViewSharingOnToggle.setImageResource(R.drawable.on);
+						}
+						else{
+							imageViewSharingOnToggle.setImageResource(R.drawable.off);
+						}
+
+						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable && 0 == Data.userData.sharingAvailable){
 							if(isDriverStateFree()){
 								jugnooOffLayout.setVisibility(View.VISIBLE);
 
@@ -1841,7 +1928,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								dismissStationDataPopup();
 								cancelStationPathUpdateTimer();
 							}
-
 						}
 						else{
 							if(isDriverStateFree()) {
@@ -1850,8 +1936,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								new DriverServiceOperations().startDriverService(HomeActivity.this);
 								initializeStationDataProcedure();
 							}
-
-
 						}
 
 						updateReceiveRequestsFlag();
@@ -5075,52 +5159,52 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 //	Retro
 
-	public void startEndWaitAsync(final Activity activity, String customerId, int flag) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
-//			RequestParams params = new RequestParams();
-			HashMap<String, String> params = new HashMap<String, String>();
-
-			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", customerId);
-			params.put("flag", "" + flag);
-
-			Log.i("access_token", "=" + Data.userData.accessToken);
-			Log.i("customer_id", "="+customerId);
-			Log.i("flag", "=" + flag);
-
-			RestClient.getApiServices().startEndWaitRetro(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if(!jObj.isNull("error")){
-							String errorMessage = jObj.getString("error");
-							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-								HomeActivity.logoutUser(activity);
-							}
-						}
-						else{
-
-						}
-					}  catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-
-				}
-			});
-
-
-		}
-		else {
-		}
-	}
+//	public void startEndWaitAsync(final Activity activity, String customerId, int flag) {
+//		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+//
+////			RequestParams params = new RequestParams();
+//			HashMap<String, String> params = new HashMap<String, String>();
+//
+//			params.put("access_token", Data.userData.accessToken);
+//			params.put("customer_id", customerId);
+//			params.put("flag", "" + flag);
+//
+//			Log.i("access_token", "=" + Data.userData.accessToken);
+//			Log.i("customer_id", "="+customerId);
+//			Log.i("flag", "=" + flag);
+//
+//			RestClient.getApiServices().startEndWaitRetro(params, new Callback<RegisterScreenResponse>() {
+//				@Override
+//				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+//					try {
+//						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+//						JSONObject jObj;
+//						jObj = new JSONObject(jsonString);
+//						if(!jObj.isNull("error")){
+//							String errorMessage = jObj.getString("error");
+//							if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
+//								HomeActivity.logoutUser(activity);
+//							}
+//						}
+//						else{
+//
+//						}
+//					}  catch (Exception exception) {
+//						exception.printStackTrace();
+//					}
+//				}
+//
+//				@Override
+//				public void failure(RetrofitError error) {
+//
+//				}
+//			});
+//
+//
+//		}
+//		else {
+//		}
+//	}
 
 	/**
 	 * to call only in background
