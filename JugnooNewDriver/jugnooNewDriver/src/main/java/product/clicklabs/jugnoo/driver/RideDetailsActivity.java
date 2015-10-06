@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.ColorRes;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,9 +13,9 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
-import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
 public class RideDetailsActivity extends Activity {
@@ -154,8 +153,8 @@ public class RideDetailsActivity extends Activity {
 
 		if (openedRideInfo != null) {
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-			distanceValue.setText(openedRideInfo.distance + " km");
-			rideTimeValue.setText(openedRideInfo.rideTime + " min");
+			distanceValue.setText("Distance: "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
+			rideTimeValue.setText("Total Time: "+openedRideInfo.rideTime + " min");
 			if ("0".equalsIgnoreCase(openedRideInfo.waitTime)) {
 				waitTimeValue.setVisibility(View.GONE);
 			} else {
@@ -163,32 +162,32 @@ public class RideDetailsActivity extends Activity {
 				waitTimeValue.setText("Wait: " + openedRideInfo.waitTime + " min");
 			}
 
-			textViewRideFareValue.setText(openedRideInfo.driverRideFair);
+			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
 
 			if ("0".equalsIgnoreCase(openedRideInfo.convenienceCharges)) {
 				relativeLayoutConvenienceCharges.setVisibility(View.GONE);
 			} else {
 				relativeLayoutConvenienceCharges.setVisibility(View.VISIBLE);
-				textViewConvayenceChargeValue.setText(openedRideInfo.convenienceCharges);
+				textViewConvayenceChargeValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.convenienceCharges)));
 			}
 
 			if ("0".equalsIgnoreCase(openedRideInfo.luggageCharges)) {
 				relativeLayoutLuggageCharges.setVisibility(View.GONE);
 			} else {
 				relativeLayoutLuggageCharges.setVisibility(View.VISIBLE);
-				textViewLuggageChargeValue.setText(openedRideInfo.luggageCharges);
+				textViewLuggageChargeValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.luggageCharges)));
 			}
 
-			textViewRateAppliedValue.setText(openedRideInfo.fareFactorValue);
-			textViewRateApplied.setText("Rate Applied " + openedRideInfo.fareFactorApplied + "x");
+			textViewRateAppliedValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorValue)));
+			textViewRateApplied.setText("Rate Applied " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
 
-			textViewAcceptSubsidyValue.setText(openedRideInfo.acceptSubsidy);
+			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
 
 			if ("0".equalsIgnoreCase(openedRideInfo.cancelSubsidy)) {
 				relativeLayoutCancelSubsidy.setVisibility(View.GONE);
 			} else {
 				relativeLayoutCancelSubsidy.setVisibility(View.VISIBLE);
-				textViewCancelSubsidyValue.setText(openedRideInfo.cancelSubsidy);
+				textViewCancelSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.cancelSubsidy)));
 			}
 
 			relativeLayoutJugnooCut.setVisibility(View.GONE);
@@ -200,16 +199,16 @@ public class RideDetailsActivity extends Activity {
 //				textViewConvayenceChargeValue.setText(openedRideInfo.cancelSubsidy);
 //			}
 
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.actualFare);
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.customerPaid);
+			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
+			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
 
 			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Math.abs(Double.parseDouble(openedRideInfo.accountBalance))));
+				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.red_status));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.red_status));
 				textViewAccountBalanceText.setText("(-)Account");
 			} else {
-				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + openedRideInfo.accountBalance);
+				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalanceText.setText("Account");

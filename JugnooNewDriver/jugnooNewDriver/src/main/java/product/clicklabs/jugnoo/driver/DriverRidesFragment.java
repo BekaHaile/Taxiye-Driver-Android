@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,8 +22,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
-import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -32,6 +29,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -186,7 +184,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue);
 				holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue);
-				holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity())); holder.waitTimeValue.setVisibility(View.GONE);
 				holder.textViewBalanceText = (TextView) convertView.findViewById(R.id.textViewBalanceText);
 				holder.textViewBalanceText.setTypeface(Data.latoRegular(getActivity()));
 
@@ -231,7 +229,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewStatusString.setText(rideInfo.statusString);
 			}
 
-			holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + rideInfo.customerPaid);
+			holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
 
 			double balance = Double.parseDouble(rideInfo.accountBalance);
 			if (balance < 0) {
@@ -245,13 +243,13 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			}
-			holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Math.abs(Double.parseDouble(rideInfo.accountBalance)));
+			holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance))));
 
 
-			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + rideInfo.actualFare);
+			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
 
-			holder.distanceValue.setText(rideInfo.distance + " km");
-			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
+			holder.distanceValue.setText("Distance: "+rideInfo.distance + " km");
+			holder.rideTimeValue.setText("Total Time: "+rideInfo.rideTime + " min");
 
 
 			holder.relative.setOnClickListener(new View.OnClickListener() {

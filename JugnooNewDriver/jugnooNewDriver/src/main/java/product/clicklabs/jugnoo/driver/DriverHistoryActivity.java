@@ -1,8 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
-import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
-import rmn.androidscreenlibrary.ASSL;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -17,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
+import rmn.androidscreenlibrary.ASSL;
 
 public class DriverHistoryActivity extends FragmentActivity{
 	
@@ -114,7 +114,7 @@ public class DriverHistoryActivity extends FragmentActivity{
 	UpdateDriverEarnings updateDriverEarnings = new UpdateDriverEarnings() {
 		@Override
 		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings) {
-			textViewDailyValue.setText(getResources().getString(R.string.rupee)+" "+dailyEarnings);
+			textViewDailyValue.setText(getResources().getString(R.string.rupee)+" "+ dailyEarnings);
 			textViewMonthly.setText(getResources().getString(R.string.rupee)+" "+monthlyEarnings);
 		}
 	};
