@@ -104,6 +104,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -773,17 +774,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 		//Top bar events
 		menuBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -808,22 +798,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				return false;
 			}
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -957,8 +931,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
-
 		logoutRl.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -980,21 +952,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			}
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		// driver initial layout events
@@ -7024,4 +6981,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 	}
+
+
 }

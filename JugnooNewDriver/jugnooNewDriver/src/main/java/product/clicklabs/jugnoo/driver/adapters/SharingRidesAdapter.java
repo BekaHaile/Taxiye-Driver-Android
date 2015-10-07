@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -46,9 +46,9 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 		sharingRideViewHolder.textViewDateValue.setTypeface(Data.latoRegular(context));
 		sharingRideViewHolder.textViewTimeValue.setTypeface(Data.latoRegular(context));
 		sharingRideViewHolder.textViewPhoneValue.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewActualFare.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewCustomerPaid.setTypeface(Data.latoRegular(context));
-		sharingRideViewHolder.textViewAccountBalance.setTypeface(Data.latoRegular(context));
+		sharingRideViewHolder.textViewActualFare.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+		sharingRideViewHolder.textViewCustomerPaid.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+		sharingRideViewHolder.textViewAccountBalance.setTypeface(Data.latoRegular(context), Typeface.BOLD);
 		sharingRideViewHolder.textRideStatus.setTypeface(Data.latoRegular(context));
 		sharingRideViewHolder.textViewCustomerPaidText.setTypeface(Data.latoRegular(context));
 		sharingRideViewHolder.textViewAccountBalanceText.setTypeface(Data.latoRegular(context));
@@ -57,42 +57,53 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 		if(srd.completed == 1){
 			sharingRideViewHolder.buttonRideComplete.setVisibility(View.GONE);
 			sharingRideViewHolder.textRideStatus.setVisibility(View.VISIBLE);
+			sharingRideViewHolder.relative.setBackgroundResource(R.drawable.background_white_lightdark);
 		}
 		else{
 			sharingRideViewHolder.buttonRideComplete.setVisibility(View.VISIBLE);
 			sharingRideViewHolder.textRideStatus.setVisibility(View.GONE);
+			sharingRideViewHolder.relative.setBackgroundResource(R.drawable.list_white_normal);
 		}
 
-		sharingRideViewHolder.textViewDateValue.setText(DateOperations.getDate(DateOperations.utcToLocal(srd.transactionDateTime)));
-		sharingRideViewHolder.textViewTimeValue.setText(DateOperations.getTimeAMPM(DateOperations.utcToLocal(srd.transactionDateTime)));
+		sharingRideViewHolder.textViewDateValue.setText(DateOperations.getDate(DateOperations.utcToLocalTZ(srd.transactionDateTime)));
+		sharingRideViewHolder.textViewTimeValue.setText(DateOperations.getTimeAMPM(DateOperations.utcToLocalTZ(srd.transactionDateTime)));
 
 		sharingRideViewHolder.textViewPhoneValue.setText(Utils.hidePhoneNoString(srd.customerPhoneNumber));
 		sharingRideViewHolder.textViewActualFare.setText(context.getResources().getString(R.string.rupee)+" "+srd.actualFare);
 
 		if(srd.customerPaid > 0){
-			sharingRideViewHolder.textViewCustomerPaid.setText("" + srd.customerPaid);
+			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ srd.customerPaid);
 			sharingRideViewHolder.textViewCustomerPaidText.setText("Paid in Cash");
 			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.green_status));
 			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.green_status));
 		}
 		else {
 			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Math.abs(srd.customerPaid));
-			sharingRideViewHolder.textViewCustomerPaidText.setText("(-)Paid in Cash");
-			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.red_status));
-			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.red_status));
+			sharingRideViewHolder.textViewCustomerPaidText.setText("Paid in Cash");
+			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.black));
+			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.black));
 		}
 
 		if(srd.accountBalance > 0){
 			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Math.abs(srd.accountBalance));
-			sharingRideViewHolder.textViewAccountBalanceText.setText("(-) Account Balance");
+			sharingRideViewHolder.textViewAccountBalanceText.setText("Account");
 			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.green_status));
 			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.green_status));
 		}
 		else {
-			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ srd.accountBalance);
-			sharingRideViewHolder.textViewAccountBalanceText.setText("Account Balance");
-			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.red_status));
-			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.red_status));
+			if(srd.accountBalance == 0){
+				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ srd.accountBalance);
+				sharingRideViewHolder.textViewAccountBalanceText.setText("Account");
+				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.black));
+				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.black));
+			}
+			else{
+				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ srd.accountBalance);
+				sharingRideViewHolder.textViewAccountBalanceText.setText("(-)Account");
+				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.red_status));
+				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.red_status));
+			}
+
 		}
 
 
@@ -127,6 +138,7 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 
 		public SharingRideViewHolder(View v) {
 			super(v);
+			relative = (RelativeLayout)v.findViewById(R.id.relative);
 			textViewDateValue = (TextView) v.findViewById(R.id.textViewDateValue);
 			textViewTimeValue = (TextView) v.findViewById(R.id.textViewTimeValue);
 			textViewPhoneValue = (TextView) v.findViewById(R.id.textViewPhoneValue);

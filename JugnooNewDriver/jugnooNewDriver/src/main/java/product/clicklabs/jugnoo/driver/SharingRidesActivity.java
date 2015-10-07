@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,16 +14,23 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapterHandler;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -46,21 +54,39 @@ public class SharingRidesActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FlurryAgent.onEndSession(this);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		HomeActivity.checkIfUserDataNull(this);
-		getSharedRidesAsync(this);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		try {
+			String sharingEngagementData = intent.getStringExtra("sharing_engagement_data");
+			JSONObject jObj = new JSONObject(sharingEngagementData);
+			SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
+					jObj.getString("transaction_time"),
+					jObj.getString("customer_phone_no"),
+					jObj.getDouble("actual_fare"),
+					jObj.getDouble("paid_in_cash"),
+					jObj.getDouble("account_balance"));
+			sharedRides.add(0, sharingRideData);
+			sharingRidesAdapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 	}
 
 	@Override
@@ -87,7 +113,6 @@ public class SharingRidesActivity extends Activity {
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewDrivers.setLayoutManager(llm);
-		recyclerViewDrivers.setVisibility(View.GONE);
 
 		sharedRides = new ArrayList<>();
 		sharingRidesAdapter = new SharingRidesAdapter(this, sharedRides, adapterHandler);
@@ -95,15 +120,32 @@ public class SharingRidesActivity extends Activity {
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {performBackPressed();
+			public void onClick(View v) {
+				performBackPressed();
 			}
 		});
+
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.showLoadingDialog(SharingRidesActivity.this, "Loading...");
+				getSharedRidesAsync(SharingRidesActivity.this);
+			}
+		});
+
 	}
 
 	SharingRidesAdapterHandler adapterHandler = new SharingRidesAdapterHandler() {
 		@Override
 		public void okClicked(SharingRideData sharingRideData) {
-
+			String completedEngagementIds = Prefs.with(SharingRidesActivity.this).getString(SPLabels.SHARING_ENGAGEMENTS_COMPLETED, "");
+			if("".equalsIgnoreCase(completedEngagementIds)){
+				completedEngagementIds = completedEngagementIds + sharingRideData.sharingEngagementId;
+			}
+			else{
+				completedEngagementIds = completedEngagementIds + "," + sharingRideData.sharingEngagementId;
+			}
+			Prefs.with(SharingRidesActivity.this).save(SPLabels.SHARING_ENGAGEMENTS_COMPLETED, completedEngagementIds);
 		}
 	};
 
@@ -124,6 +166,7 @@ public class SharingRidesActivity extends Activity {
 			public void success(SharedRideResponse sharedRideResponse, Response response) {
 				try {
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					Log.e("Shared rides jsonString", "="+jsonString);
 					JSONObject jObj;
 					jObj = new JSONObject(jsonString);
 					if (!jObj.isNull("error")) {
@@ -133,14 +176,18 @@ public class SharingRidesActivity extends Activity {
 						} else {
 							updateListData("Some error occurred. Tap to retry", true);
 						}
-
 					} else {
-
+						sharedRides.clear();
+						String completedEngagementIds = Prefs.with(activity).getString(SPLabels.SHARING_ENGAGEMENTS_COMPLETED, "");
+						List<String> arr = Arrays.asList(completedEngagementIds.split(","));
 						for (int i = 0; i < sharedRideResponse.getBookingData().size(); i++) {
 							SharedRideResponse.BookingData data = sharedRideResponse.getBookingData().get(i);
 							SharingRideData rideInfo = new SharingRideData(data.getSharingEngagementId(), data.getTransactionTime(),
 									data.getPhoneNo(), data.getAccountBalance(),
 									data.getActualFare(), data.getPaidInCash());
+							if(arr.contains(rideInfo.sharingEngagementId)){
+								rideInfo.completed = 1;
+							}
 							sharedRides.add(rideInfo);
 						}
 						updateListData("No rides currently", false);
@@ -150,11 +197,13 @@ public class SharingRidesActivity extends Activity {
 					updateListData("Some error occurred. Tap to retry", true);
 				}
 				swipeRefreshLayoutShareRides.setRefreshing(false);
+				DialogPopup.dismissLoadingDialog();
 			}
 
 			@Override
 			public void failure(RetrofitError error) {
 				swipeRefreshLayoutShareRides.setRefreshing(false);
+				DialogPopup.dismissLoadingDialog();
 				updateListData("Some error occurred. Tap to retry", true);
 			}
 		});

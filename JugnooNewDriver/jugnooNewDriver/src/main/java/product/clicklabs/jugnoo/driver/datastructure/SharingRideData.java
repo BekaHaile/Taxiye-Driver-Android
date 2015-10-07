@@ -18,6 +18,7 @@ public class SharingRideData {
 		this.actualFare = actualFare;
 		this.customerPaid =  customerPaid;
 		this.accountBalance = accountBalance;
+		this.completed = 0;
 	}
 
 }

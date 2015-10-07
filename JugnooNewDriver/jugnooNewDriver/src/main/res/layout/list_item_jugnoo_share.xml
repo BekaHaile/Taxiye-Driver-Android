@@ -4,8 +4,8 @@
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="260px"
-    android:background="@drawable/list_white_selector"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_white_normal"
     android:splitMotionEvents="false">
 
     <LinearLayout
@@ -57,6 +57,8 @@
                 android:id="@+id/TimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5px"
+                android:layout_marginBottom="5px"
                 android:gravity="center_vertical"
                 android:splitMotionEvents="false">
 
@@ -214,12 +216,13 @@
         android:layout_below="@+id/rideHistoryItem"
         android:layout_marginTop="15px"
         android:splitMotionEvents="false">
+
         <Button
             android:id="@+id/buttonRideComplete"
             android:layout_width="250px"
             android:layout_height="50px"
             android:layout_centerInParent="true"
-            android:background="@drawable/blue_btn_selector"
+            android:background="@drawable/button_blue"
             android:text="OK"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>

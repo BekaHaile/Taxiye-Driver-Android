@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -51,6 +52,7 @@ import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -58,7 +60,7 @@ import retrofit.mime.TypedByteArray;
 
 public class GCMIntentService extends IntentService {
 
-    public static final int NOTIFICATION_ID = 1;
+    public static final int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
     public static final long REQUEST_TIMEOUT = 120000;
     NotificationCompat.Builder builder;
 
@@ -173,6 +175,44 @@ public class GCMIntentService extends IntentService {
     }
 
 
+	@SuppressWarnings("deprecation")
+	public static void notificationManagerCustomID(Context context, String message, int notificationId, Class notifClass) {
+
+		try {
+			long when = System.currentTimeMillis();
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			Log.v("message", "," + message);
+			Intent notificationIntent = new Intent(context, notifClass);
+
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			builder.setAutoCancel(true);
+			builder.setContentTitle("Jugnoo");
+			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			builder.setContentText(message);
+			builder.setTicker(message);
+			builder.setDefaults(Notification.DEFAULT_ALL);
+			builder.setWhen(when);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
+			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setContentIntent(intent);
+
+			Notification notification = builder.build();
+			notificationManager.notify(notificationId, notification);
+
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+			wl.acquire(15000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
     public static void clearNotifications(Context context) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
@@ -193,6 +233,7 @@ public class GCMIntentService extends IntentService {
     @Override
     public void onHandleIntent(Intent intent) {
 		try {
+			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -409,11 +450,7 @@ public class GCMIntentService extends IntentService {
 										}
 									} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 										String message1 = jObj.getString("message");
-										if (HomeActivity.activity == null) {
-											notificationManager(this, "" + message1, false);
-										} else {
-											notificationManagerResume(this, "" + message1, false);
-										}
+										notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
 									} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
 										int toggleLocation = jObj.getInt("toggle_location");
 										if (1 == toggleLocation) {
@@ -461,6 +498,34 @@ public class GCMIntentService extends IntentService {
 										if (HomeActivity.appInterruptHandler != null) {
 											HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 										}
+									} else if(PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag){
+//										{
+//											"driver_id": 1148,
+//												"flag": 74,
+//												"actual_fare": 15,
+//												"account_balance": 5,
+//												"customer_phone_no": "+917696315417",
+//												"engagement_id": 11,
+//												"transaction_time": "2015-10-07T06:18:40.031Z",
+//												"paid_in_cash": 10
+//										}
+
+										SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
+												jObj.getString("transaction_time"),
+												jObj.getString("customer_phone_no"),
+												jObj.getDouble("actual_fare"),
+												jObj.getDouble("paid_in_cash"),
+												jObj.getDouble("account_balance"));
+
+										if(HomeActivity.appInterruptHandler != null){
+											Intent intent1 = new Intent(this, SharingRidesActivity.class);
+											intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+											intent1.putExtra("sharing_engagement_data", jObj.toString());
+											startActivity(intent1);
+										}
+										notificationManagerCustomID(this, "Sharing payment recieved for Phone "
+														+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
+												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 									}
 
 								} catch (Exception e) {

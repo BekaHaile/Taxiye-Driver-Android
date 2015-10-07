@@ -137,11 +137,6 @@ public class Database2 {																	// class for handling database related 
 	private static final String GPS_STATE = "gps_state";
 
 
-	private static final String TABLE_SHARING_RIDES_STATUS = "table_sharing_rides_status";
-	private static final String SHARING_ENGAGEMENT_ID = "sharing_engagement_id";
-	private static final String COMPLETED = "completed";
-
-
 
     /**
 	 * Creates and opens database for the application use 
@@ -251,11 +246,6 @@ public class Database2 {																	// class for handling database related 
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
 				+ GPS_STATE + " INTEGER" + ");");
-
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_SHARING_RIDES_STATUS + " ("
-				+ SHARING_ENGAGEMENT_ID + " INTEGER, "
-				+ COMPLETED + " INTEGER"
-				+ ");");
 
 	}
 	
@@ -1507,18 +1497,6 @@ public class Database2 {																	// class for handling database related 
 			return 0;
 		}
 	}
-
-
-	public void insertSharingEngagementsArray(ArrayList<SharingRideData> sharingRideDatas){
-		String[] columns = new String[] { SHARING_ENGAGEMENT_ID };
-		Cursor cursor = database.query(TABLE_SHARING_RIDES_STATUS, columns, null, null, null, null, null);
-		ArrayList<String> existingEngagementIds = new ArrayList<>();
-		int inId = cursor.getColumnIndex(SHARING_ENGAGEMENT_ID);
-		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-			existingEngagementIds.add(cursor.getString(inId));
-		}
-	}
-
 
 	
 }
