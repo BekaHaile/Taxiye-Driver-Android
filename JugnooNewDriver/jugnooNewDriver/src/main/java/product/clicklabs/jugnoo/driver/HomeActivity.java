@@ -1591,6 +1591,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 		}
 
+		try{
+			if(Data.userData.sharingEnabled == 1){
+				relativeLayoutSharingRides.setVisibility(View.VISIBLE);
+			}
+			else{
+				relativeLayoutSharingRides.setVisibility(View.GONE);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			relativeLayoutSharingRides.setVisibility(View.GONE);
+		}
+
 		showManualPatchPushReceivedDialog();
 
 	}
