@@ -30,4 +30,6 @@ public class SPLabels {
             METERING_STATE = "meteringstate";
     public static final String
             GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
+
+    public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 }

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_white_normal"
+    android:splitMotionEvents="false">
+
+    <LinearLayout
+        android:id="@+id/rideHistoryItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/RideDetails"
+            android:layout_width="360px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:id="@+id/dateRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewDate"
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18px"
+                    android:src="@drawable/date"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/textViewDateValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@+id/imageViewDate"
+                    android:singleLine="true"
+                    android:text="23 June, 2014"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="32px"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/TimeRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5px"
+                android:layout_marginBottom="5px"
+                android:gravity="center_vertical"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewTime"
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18px"
+                    android:src="@drawable/time"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/textViewTimeValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@+id/imageViewTime"
+                    android:singleLine="true"
+                    android:text="18:88 AM"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="32px"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/phoneNumberRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:splitMotionEvents="false">
+
+                <ImageView
+                    android:id="@+id/imageViewPhone"
+                    android:layout_width="30px"
+                    android:layout_height="30px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18px"
+                    android:src="@drawable/phone"
+                    android:tag="mwar"/>
+
+                <TextView
+                    android:id="@+id/textViewPhoneValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@+id/imageViewPhone"
+                    android:singleLine="true"
+                    android:text="xxxxxxx999"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="32px"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Ratello"
+            android:layout_width="280px"
+            android:layout_height="140px"
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="25px"
+            android:layout_marginRight="50px"
+            android:background="@drawable/background_white_rounded_black_bordered"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewActualFare"
+                android:layout_width="match_parent"
+                android:layout_height="70px"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/rupee_zero"
+                android:textColor="@color/black"
+                android:textSize="48px"/>
+
+
+            <ImageView
+                android:layout_width="300px"
+                android:layout_height="2px"
+                android:background="@color/black"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:id="@+id/textViewCustomerPaid"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"/>
+                <TextView
+                    android:id="@+id/textViewCustomerPaidtext"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewCustomerPaid"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Paid in Cash"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="20px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewVertical"
+                    android:layout_width="2px"
+                    android:layout_height="85px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewAccountBalance"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10px"
+                    android:layout_toRightOf="@+id/imageViewVertical"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"/>
+
+                <TextView
+                    android:id="@+id/textViewBalanceText"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewAccountBalance"
+                    android:layout_toRightOf="@+id/imageViewVertical"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Account"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="20px"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/okButtonRl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rideHistoryItem"
+        android:layout_marginTop="15px"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/buttonRideComplete"
+            android:layout_width="250px"
+            android:layout_height="50px"
+            android:layout_centerInParent="true"
+            android:background="@drawable/button_blue"
+            android:text="OK"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"/>
+
+        <TextView
+            android:id="@+id/textRideStatus"
+            android:layout_width="150px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="45px"
+            android:layout_marginTop="15px"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Completed"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="28px"/>
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="10px"
+        android:layout_below="@+id/okButtonRl"
+        android:layout_marginTop="15px"
+        android:background="@drawable/shadow_up"/>
+
+
+</RelativeLayout>

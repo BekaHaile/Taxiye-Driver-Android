@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -1319,7 +1320,7 @@ public class Database2 {																	// class for handling database related 
             ContentValues contentValues = new ContentValues();
             contentValues.put(ACKNOWLEDGED, acknowledged);
             int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
-            Log.e("rowsAffected", "="+rowsAffected);
+            Log.e("rowsAffected", "=" + rowsAffected);
             return rowsAffected;
         } catch(Exception e){
             e.printStackTrace();
@@ -1496,5 +1497,6 @@ public class Database2 {																	// class for handling database related 
 			return 0;
 		}
 	}
+
 	
 }

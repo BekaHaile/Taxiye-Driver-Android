@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 
 public interface AppInterruptHandler {
 	
@@ -37,5 +38,6 @@ public interface AppInterruptHandler {
 	public void addPathToMap(PolylineOptions polylineOptions);
 
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
+
 
 }

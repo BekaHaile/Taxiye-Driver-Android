@@ -104,6 +104,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -159,6 +160,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	RelativeLayout bookingsRl;
 	TextView bookingsText;
+
+	RelativeLayout relativeLayoutSharingRides;
 
 	RelativeLayout fareDetailsRl;
 	TextView fareDetailsText;
@@ -515,6 +518,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
 		bookingsText = (TextView) findViewById(R.id.bookingsText); bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
+		((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
+
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -770,17 +776,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 		//Top bar events
 		menuBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -805,22 +800,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				return false;
 			}
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -899,7 +878,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(MENU);
+				FlurryEventLogger.event(INVITE_OPENED);
 			}
 		});
 
@@ -957,7 +936,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 
-
+		relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(SHARING_RIDES_OPENED);
+			}
+		});
 
 
 
@@ -983,21 +969,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			}
 		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 		// driver initial layout events
@@ -7094,4 +7065,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 	}
+
+
 }
