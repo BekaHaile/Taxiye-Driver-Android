@@ -22,6 +22,18 @@
             android:orientation="vertical"
             >
 
+            <TextView
+                android:id="@+id/textViewRideID"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15px"
+                android:layout_marginBottom="5px"
+                android:layout_toRightOf="@+id/imageViewDate"
+                android:text="Ride Id:12345678"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="32px"
+                />
             <RelativeLayout
                 android:id="@+id/dateRl"
                 android:layout_width="match_parent"
@@ -48,7 +60,7 @@
                     android:singleLine="true"
                     android:text="23 June, 2014"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="32px"
+                    android:textSize="30px"
                     />
 
             </RelativeLayout>
@@ -81,7 +93,7 @@
                     android:singleLine="true"
                     android:text="18:88 AM"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="32px"
+                    android:textSize="30px"
                     />
 
             </RelativeLayout>
@@ -112,7 +124,7 @@
                     android:singleLine="true"
                     android:text="xxxxxxx999"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="32px"
+                    android:textSize="30px"
                     />
 
             </RelativeLayout>

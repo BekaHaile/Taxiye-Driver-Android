@@ -199,7 +199,7 @@ public class Utils {
 		String returnPhoneNo = "";
 		if(phoneNo.length() > 0){
 			int charLength = phoneNo.length();
-			int stars = (charLength < 3) ? 0 : (charLength - 3);
+			int stars = (charLength < 4) ? 0 : (charLength - 4);
 			StringBuilder stringBuilder = new StringBuilder();
 			for(int i=0; i<stars; i++){
 				stringBuilder.append("*");
@@ -306,7 +306,7 @@ public class Utils {
 	private static DecimalFormat decimalFormatMoney;
 	public static DecimalFormat getDecimalFormatForMoney(){
 		if(decimalFormatMoney == null){
-			decimalFormatMoney = new DecimalFormat("#.#");
+			decimalFormatMoney = new DecimalFormat("#");
 		}
 		return decimalFormatMoney;
 	}

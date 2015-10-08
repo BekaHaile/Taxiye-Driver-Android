@@ -96,6 +96,8 @@ public class SharingRidesActivity extends Activity {
 		setContentView(R.layout.activity_jugnoo_share_payments);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
+		new ASSL(this, relative, 1134, 720, false);
+
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(getApplicationContext()));
 		backBtn = (Button) findViewById(R.id.backBtn);
@@ -183,8 +185,7 @@ public class SharingRidesActivity extends Activity {
 						for (int i = 0; i < sharedRideResponse.getBookingData().size(); i++) {
 							SharedRideResponse.BookingData data = sharedRideResponse.getBookingData().get(i);
 							SharingRideData rideInfo = new SharingRideData(data.getSharingEngagementId(), data.getTransactionTime(),
-									data.getPhoneNo(), data.getAccountBalance(),
-									data.getActualFare(), data.getPaidInCash());
+									data.getPhoneNo(), data.getActualFare(), data.getPaidInCash(), data.getAccountBalance());
 							if(arr.contains(rideInfo.sharingEngagementId)){
 								rideInfo.completed = 1;
 							}
