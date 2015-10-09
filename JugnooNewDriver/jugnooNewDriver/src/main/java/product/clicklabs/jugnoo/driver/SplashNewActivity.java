@@ -209,7 +209,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
@@ -220,7 +220,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		buttonRegister.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, RegisterScreen.class));
@@ -230,7 +230,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		jugnooTextImg.setOnLongClickListener(new View.OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 				confirmDebugPasswordPopup(SplashNewActivity.this, DriverDebugOpenMode.DEBUG);
@@ -240,7 +240,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		jugnooTextImg2.setOnLongClickListener(new View.OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 				confirmDebugPasswordPopup(SplashNewActivity.this, DriverDebugOpenMode.REGISTER);
@@ -308,6 +308,26 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				}
 			}
 		});
+
+
+//		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
+//		if(installed){
+//			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
+//
+//		}
+//
+//		boolean installede = Utils.isAppInstalled(this, Data.UBER_APP);
+//		if(installede){
+//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " installed: " + installed);
+//
+//		}
+//
+//		boolean installedee = Utils.olaInstall(this);
+//		if(installedee){
+//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " olaaaaaa: " + installed);
+//
+//		}
+
 
 
 	}
@@ -568,10 +588,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
-
-
-
-
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
 
@@ -593,6 +609,38 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("is_access_token_new", "1");
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
+
+				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
+					params.put("auto_n_cab_installed", "1");
+				}
+				else{
+					params.put("auto_n_cab_installed", "0");
+				}
+
+				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
+					params.put("uber_installed", "1");
+				}
+				else{
+					params.put("uber_installed", "0");
+				}
+
+
+//				if(Utils.uberInstall(activity)){
+//					params.put("uber_installed", "1");
+//				}
+//				else{
+//					params.put("uber_installed", "0");
+//				}
+
+				if(Utils.olaInstall(activity)){
+					params.put("ola_installed", "1");
+				}
+				else{
+					params.put("ola_installed", "0");
+				}
+
+
+
 
 				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override

@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -372,6 +373,27 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
+
+			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
+				params.put("auto_n_cab_installed", "1");
+			}
+			else{
+				params.put("auto_n_cab_installed", "0");
+			}
+
+			if(Utils.isAppInstalled(activity, Data.UBER_APP)){
+				params.put("uber_installed", "1");
+			}
+			else{
+				params.put("uber_installed", "0");
+			}
+
+			if(Utils.olaInstall(activity)){
+				params.put("ola_installed", "1");
+			}
+			else{
+				params.put("ola_installed", "0");
+			}
 
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override

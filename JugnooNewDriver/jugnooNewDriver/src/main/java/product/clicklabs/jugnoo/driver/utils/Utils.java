@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.provider.Settings;
@@ -21,6 +23,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Data;
 
@@ -311,5 +314,44 @@ public class Utils {
 		return decimalFormatMoney;
 	}
 
+//	isAppInstalled("com.autoncab.driver");
+
+	public static boolean isAppInstalled(Context context, String packageName) {
+		PackageManager pm = context.getPackageManager();
+		boolean installed = false;
+		try {
+			pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+			installed = true;
+		} catch (PackageManager.NameNotFoundException e) {
+			installed = false;
+		}
+		return installed;
+	}
+
+
+
+	public static boolean olaInstall(Context context){
+		// Flags: See below
+		boolean olaDriver = false;
+		int olaInstalled = 0;
+		int flags = PackageManager.GET_META_DATA |
+				PackageManager.GET_SHARED_LIBRARY_FILES |
+				PackageManager.GET_UNINSTALLED_PACKAGES;
+
+		PackageManager pm = context.getPackageManager();
+		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+		for (ApplicationInfo appInfo : applications) {
+			Log.i(String.valueOf(appInfo), "application info");
+			if(!appInfo.packageName.contains("com.olacabs.customer")){
+				 olaDriver = (appInfo.packageName.contains("com.ola") || appInfo.packageName.contains("olacabs"));
+				if(olaDriver){
+					break;
+				}
+			}
+
+		}
+		return olaDriver;
+
+	}
 
 }

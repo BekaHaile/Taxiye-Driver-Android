@@ -155,7 +155,7 @@ public class RideDetailsActivity extends Activity {
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
 			distanceValue.setText("Distance: "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
 			rideTimeValue.setText("Total Time: "+openedRideInfo.rideTime + " min");
-			if ("0".equalsIgnoreCase(openedRideInfo.waitTime)) {
+			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
 				waitTimeValue.setVisibility(View.GONE);
 			} else {
 				waitTimeValue.setVisibility(View.VISIBLE);
@@ -164,14 +164,14 @@ public class RideDetailsActivity extends Activity {
 
 			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
 
-			if ("0".equalsIgnoreCase(openedRideInfo.convenienceCharges)) {
+			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.convenienceCharges), 0) == 0) {
 				relativeLayoutConvenienceCharges.setVisibility(View.GONE);
 			} else {
 				relativeLayoutConvenienceCharges.setVisibility(View.VISIBLE);
 				textViewConvayenceChargeValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.convenienceCharges)));
 			}
 
-			if ("0".equalsIgnoreCase(openedRideInfo.luggageCharges)) {
+			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.luggageCharges), 0) == 0) {
 				relativeLayoutLuggageCharges.setVisibility(View.GONE);
 			} else {
 				relativeLayoutLuggageCharges.setVisibility(View.VISIBLE);
@@ -183,7 +183,7 @@ public class RideDetailsActivity extends Activity {
 
 			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
 
-			if ("0".equalsIgnoreCase(openedRideInfo.cancelSubsidy)) {
+			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.cancelSubsidy), 0) == 0) {
 				relativeLayoutCancelSubsidy.setVisibility(View.GONE);
 			} else {
 				relativeLayoutCancelSubsidy.setVisibility(View.VISIBLE);
