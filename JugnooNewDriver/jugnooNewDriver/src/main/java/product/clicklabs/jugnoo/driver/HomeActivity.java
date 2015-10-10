@@ -813,10 +813,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
 					if(Data.userData.autosAvailable == 1){
-						changeJugnooON(BusinessType.AUTOS, 0);
+						changeJugnooON(BusinessType.AUTOS, 0, false);
 					}
 					else{
-						changeJugnooON(BusinessType.AUTOS, 1);
+						changeJugnooON(BusinessType.AUTOS, 1, false);
 					}
 					FlurryEventLogger.event(JUGNOO_ON_OFF);
 				}
@@ -829,10 +829,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
 					if(Data.userData.fatafatAvailable == 1){
-						changeJugnooON(BusinessType.FATAFAT, 0);
+						changeJugnooON(BusinessType.FATAFAT, 0, false);
 					}
 					else{
-						changeJugnooON(BusinessType.FATAFAT, 1);
+						changeJugnooON(BusinessType.FATAFAT, 1, false);
 					}
 					FlurryEventLogger.event(FATAFAT_ENABLE);
 				}
@@ -845,10 +845,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
 					if(Data.userData.mealsAvailable == 1){
-						changeJugnooON(BusinessType.MEALS, 0);
+						changeJugnooON(BusinessType.MEALS, 0, false);
 					}
 					else{
-						changeJugnooON(BusinessType.MEALS, 1);
+						changeJugnooON(BusinessType.MEALS, 1, false);
 					}
 					FlurryEventLogger.event(MEALS_ENABLE);
 				}
@@ -860,10 +860,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
 					if(Data.userData.sharingAvailable == 1){
-						toggleSharingMode(0);
+						toggleSharingMode(BusinessType.AUTOS, 0, false);
 					}
 					else{
-						toggleSharingMode(1);
+						toggleSharingMode(BusinessType.AUTOS, 1, false);
 					}
 					FlurryEventLogger.event(SHARING_ENABLE);
 				}
@@ -1672,35 +1672,42 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void changeJugnooON(BusinessType businessType, int mode){
+	public void changeJugnooON(BusinessType businessType, int mode, boolean enableSharing){
 		if(mode == 1){
 			if(myLocation != null){
-				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-
+				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing);
 			}
 			else{
 				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else{
-			switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0));
-
+			if(Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1){
+				toggleSharingMode(businessType, 0, true);
+			}
+			else{
+				switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
+			}
 		}
 	}
 
 
-	public void toggleSharingMode(int mode){
+	public void toggleSharingMode(BusinessType businessType, int mode, boolean disableAutos){
 		if(mode == 1){
 			if(myLocation != null){
-				toggleSharingModeAPI(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				if(Data.userData.autosAvailable == 0){
+					changeJugnooON(businessType, 1, true);
+				}
+				else{
+					toggleSharingModeAPI(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), false);
+				}
 			}
 			else{
 				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
 			}
 		}
 		else{
-			toggleSharingModeAPI(0, new LatLng(0, 0));
-
+			toggleSharingModeAPI(businessType, 0, new LatLng(0, 0), disableAutos);
 		}
 	}
 
@@ -1709,7 +1716,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng){
+	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1748,14 +1755,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							changeJugnooONUIAndInitService();
 						}
 					}
-					if(jObj.has("message")){
-						String message = jObj.getString("message");
-						showDialogFromBackground(message);
-					}
+					String message = JSONParser.getServerMessage(jObj);
+					showDialogFromBackground(message);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					showDialogFromBackground(Data.SERVER_ERROR_MSG);
+				}
+				dismissLoadingFromBackground();
+
+				if(jugnooOnFlag == 1 && enableSharing && Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 0){
+					toggleSharingMode(businessType, 1, false);
 				}
 			}
 		}).start();
@@ -1763,7 +1773,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void toggleSharingModeAPI(final int mode, final LatLng latLng){
+	public void toggleSharingModeAPI(final BusinessType businessType, final int mode, final LatLng latLng, final boolean disableAutos){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1793,14 +1803,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							changeJugnooONUIAndInitService();
 						}
 					}
-					if(jObj.has("message")){
-						String message = jObj.getString("message");
-						showDialogFromBackground(message);
-					}
+					String message = JSONParser.getServerMessage(jObj);
+					showDialogFromBackground(message);
 
 				} catch (Exception e) {
 					e.printStackTrace();
 					showDialogFromBackground(Data.SERVER_ERROR_MSG);
+				}
+				dismissLoadingFromBackground();
+				if(mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
+					switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
 				}
 			}
 		}).start();
@@ -1814,6 +1826,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
 				DialogPopup.alertPopup(HomeActivity.this, "", message);
+			}
+		});
+	}
+
+	private void dismissLoadingFromBackground(){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				DialogPopup.dismissLoadingDialog();
 			}
 		});
 	}

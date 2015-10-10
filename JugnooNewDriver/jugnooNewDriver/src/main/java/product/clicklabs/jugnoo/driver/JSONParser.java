@@ -281,6 +281,9 @@ public class JSONParser {
 		if(userData.has("sharing_available")){
 			sharingAvailable = userData.getInt("sharing_available");
 		}
+		if(1 != sharingEnabled){
+			sharingAvailable = 0;
+		}
 
 		
 		try{
