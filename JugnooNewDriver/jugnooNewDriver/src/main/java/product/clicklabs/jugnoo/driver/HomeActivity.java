@@ -424,6 +424,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public ASSL assl;
 
 
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

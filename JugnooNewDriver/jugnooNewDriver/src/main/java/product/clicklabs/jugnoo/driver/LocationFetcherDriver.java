@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 
-import product.clicklabs.jugnoo.driver.utils.Log;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,16 +10,19 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class LocationFetcherDriver implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener {
+import product.clicklabs.jugnoo.driver.utils.Log;
+
+public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
 
 	
 	private final String TAG = this.getClass().getSimpleName();
-	private LocationClient locationclient;
+
+	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
 	private PendingIntent locationIntent;
 	
@@ -44,13 +46,13 @@ public class LocationFetcherDriver implements GooglePlayServicesClient.Connectio
 	
 	
 	public boolean isConnected(){
-		if(locationclient != null){
-			return locationclient.isConnected();
+		if(googleApiClient != null){
+			return googleApiClient.isConnected();
 		}
 		return false;
 	}
-	
-	
+
+
 	/**
 	 * Checks if location fetching is enabled in device or not
 	 * @param context application context
@@ -74,8 +76,7 @@ public class LocationFetcherDriver implements GooglePlayServicesClient.Connectio
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if(resp == ConnectionResult.SUCCESS){														// google play services working
 			if(isLocationEnabled(context)){															// location fetching enabled
-				locationclient = new LocationClient(context, this, this);
-				locationclient.connect();
+				buildGoogleApiClient(context);
 			}
 			else{																					// location disabled
 			}
@@ -90,14 +91,14 @@ public class LocationFetcherDriver implements GooglePlayServicesClient.Connectio
 	public void destroy(){
 		try{
 			Log.e("location","destroy");
-			if(locationclient!=null){
-				if(locationclient.isConnected()){
-					locationclient.removeLocationUpdates(locationIntent);
+			if(googleApiClient!=null){
+				if(googleApiClient.isConnected()){
+					LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationIntent);
 					locationIntent.cancel();
-					locationclient.disconnect();
+					googleApiClient.disconnect();
 				}
-				else if(locationclient.isConnecting()){
-					locationclient.disconnect();
+				else if(googleApiClient.isConnecting()){
+					googleApiClient.disconnect();
 				}
 			}
 		}catch(Exception e){
@@ -105,27 +106,43 @@ public class LocationFetcherDriver implements GooglePlayServicesClient.Connectio
 		}
 	}
 
-	
-	
+
+
+	protected void createLocationRequest(long interval) {
+		locationrequest = new LocationRequest();
+		locationrequest.setInterval(interval);
+		locationrequest.setFastestInterval(interval / 2);
+		locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	}
+
+
+	protected synchronized void buildGoogleApiClient(Context context) {
+		googleApiClient = new GoogleApiClient.Builder(context)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API).build();
+		googleApiClient.connect();
+	}
+
+	protected void startLocationUpdates(long interval) {
+		createLocationRequest(interval);
+		Intent intent = new Intent(context, LocationReceiverDriver.class);
+		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
+	}
+
+
+
+
+
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		Log.e(TAG, "onConnected ********************************************************");
-		
-		locationrequest = LocationRequest.create();
-		locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		locationrequest.setInterval(requestInterval);
-		locationrequest.setFastestInterval(requestInterval);
-		
-		
-		Intent intent = new Intent(context, LocationReceiverDriver.class);
-		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		locationclient.requestLocationUpdates(locationrequest, locationIntent);
-		
-		Log.e("locationrequest priority", "="+locationrequest.getPriority());
+		startLocationUpdates(requestInterval);
 	}
 
 	@Override
-	public void onDisconnected() {
+	public void onConnectionSuspended(int i) {
 		Log.e(TAG, "onDisconnected ********************************************************");
 		destroy();
 		connect();

@@ -14,7 +14,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationServices;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -31,7 +31,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 	@Override
     public void onReceive(final Context context, Intent intent) {
-		final Location location = (Location) intent.getExtras().get(LocationClient.KEY_LOCATION_CHANGED);
+		final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
         if(!Utils.mockLocationEnabled(location)) {
 
             if (location != null) {
