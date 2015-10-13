@@ -42,6 +42,15 @@ public class MapUtils {
 		}
 		return 0;
 	}
+	public static double distanceGPS_GSM(Location GSM, Location GPS) {
+		try {
+			double distance = GSM.distanceTo(GPS);
+			return distance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
 
 	public static double speed(Location start, Location end){
 		double speedMPS = 0;
@@ -158,16 +167,16 @@ public class MapUtils {
                 + ","
                 + latLng.longitude + "&sensor=true";
 
-            Log.e("language ", "="+language);
+//            Log.e("language ", "="+language);
             if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
                 url = url + "&language=hi";
             }
-            Log.e("getGAPIAddress url", "="+url);
+//            Log.e("getGAPIAddress url", "="+url);
 
 			JSONObject jsonObj = new JSONObject(
 					new HttpRequester().getJSONFromUrl(url));
 
-            Log.e("jsonObj", "="+jsonObj);
+//            Log.e("jsonObj", "="+jsonObj);
 
 			
 			String status = jsonObj.getString("status");
@@ -298,7 +307,7 @@ public class MapUtils {
 			
 			JSONObject jsonObj = new JSONObject(new HttpRequester().getJSONFromUrl(ignr2));
 
-			Log.writeLogToFile("search", jsonObj.toString());
+//			Log.writeLogToFile("search", jsonObj.toString());
 			
 			JSONArray info = null;
 			info = jsonObj.getJSONArray("results");

@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -39,7 +40,9 @@ public class Database2 {																	// class for handling database related 
 	
 	private static final String TABLE_DRIVER_SERVICE_FAST = "table_driver_service_fast";
 	private static final String FAST = "fast";
-	
+
+	private static final String TABLE_TOTAL_DISTANCE = "table_total_distance";
+	private static final String TOTAL_DISTANCE = "total_distance";
 	
 	private static final String TABLE_DRIVER_LOC_DATA = "table_driver_loc_data";
 	private static final String DLD_ACCESS_TOKEN = "dld_access_token";
@@ -164,7 +167,8 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE_FAST + " ("
 				+ FAST + " TEXT" + ");");
-		
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_TOTAL_DISTANCE + " ("
+				+ TOTAL_DISTANCE + " TEXT" + ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LOC_DATA + " ("
 				+ DLD_ACCESS_TOKEN + " TEXT, " 
@@ -268,8 +272,50 @@ public class Database2 {																	// class for handling database related 
 		dbHelper.close();
 		System.gc();
 	}
-	
-	
+
+
+
+
+
+
+
+	public double getTotalDistance() {
+		double totaldistance = 0;
+		try {
+			String[] columns = new String[] { Database2.TOTAL_DISTANCE };
+			Cursor cursor = database.query(Database2.TABLE_TOTAL_DISTANCE, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				totaldistance = Double.parseDouble(cursor.getString(cursor.getColumnIndex(Database2.TOTAL_DISTANCE)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return totaldistance;
+	}
+
+
+	public void updateTotalDistance(double totalDistance){
+		try{
+			deleteTotalDistance();
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.TOTAL_DISTANCE, totalDistance);
+			database.insert(Database2.TABLE_TOTAL_DISTANCE, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public int deleteTotalDistance(){
+		try{
+			return database.delete(Database2.TABLE_TOTAL_DISTANCE, null, null);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	
 	
 	
@@ -1274,7 +1320,7 @@ public class Database2 {																	// class for handling database related 
             ContentValues contentValues = new ContentValues();
             contentValues.put(ACKNOWLEDGED, acknowledged);
             int rowsAffected = database.update(TABLE_CURRENT_PATH, contentValues, ID + " in(" + rowId.toString().substring(1, rowId.toString().length() - 1) + ")", null);
-            Log.e("rowsAffected", "="+rowsAffected);
+            Log.e("rowsAffected", "=" + rowsAffected);
             return rowsAffected;
         } catch(Exception e){
             e.printStackTrace();
@@ -1451,5 +1497,6 @@ public class Database2 {																	// class for handling database related 
 			return 0;
 		}
 	}
+
 	
 }

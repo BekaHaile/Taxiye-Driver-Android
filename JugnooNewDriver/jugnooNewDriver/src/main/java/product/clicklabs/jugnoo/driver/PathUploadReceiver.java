@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -18,6 +20,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapUtils;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
@@ -39,18 +42,55 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                 JSONArray locationDataArr = new JSONArray();
 
-                                for(CurrentPathItem currentPathItem : validCurrentPathItems){
+                                LatLng pathSource = null;
+
+                                for(int i=0; i<validCurrentPathItems.size(); i++){
+                                    CurrentPathItem currentPathItem = validCurrentPathItems.get(i);
+                                    LatLng nextSourceLatLng = null;
                                     if(1 == currentPathItem.googlePath){
                                     }
                                     else{
                                         try{
-                                            JSONObject locationData = new JSONObject();
-                                            locationData.put("location_id", currentPathItem.id);
-                                            locationData.put("source_latitude", currentPathItem.sLatLng.latitude);
-                                            locationData.put("source_longitude", currentPathItem.sLatLng.longitude);
-                                            locationData.put("destination_latitude", currentPathItem.dLatLng.latitude);
-                                            locationData.put("destination_longitude", currentPathItem.dLatLng.longitude);
-                                            locationDataArr.put(locationData);
+                                            if(pathSource == null){
+                                                pathSource = currentPathItem.sLatLng;
+                                                nextSourceLatLng = currentPathItem.sLatLng;
+                                            }
+                                            boolean addPath = false;
+                                            if(i < validCurrentPathItems.size()-1){
+                                                if(MapUtils.distance(currentPathItem.dLatLng, validCurrentPathItems.get(i+1).sLatLng) < 2){
+                                                    if(MapUtils.distance(pathSource, currentPathItem.dLatLng) < 50){
+                                                        //dont add
+                                                        addPath = false;
+                                                    }
+                                                    else{
+                                                        //add pathSource, currentPathItem.dLatLng
+                                                        nextSourceLatLng = currentPathItem.dLatLng;
+                                                        addPath = true;
+                                                    }
+                                                }
+                                                else{
+                                                    //add pathSource, currentPathItem.dLatLng
+                                                    nextSourceLatLng = validCurrentPathItems.get(i+1).sLatLng;
+                                                    addPath = true;
+                                                }
+                                            }
+                                            else{
+                                                //add pathSource, currentPathItem.dLatLng
+                                                nextSourceLatLng = currentPathItem.dLatLng;
+                                                addPath = true;
+                                            }
+
+                                            if(addPath) {
+                                                JSONObject locationData = new JSONObject();
+                                                locationData.put("location_id", currentPathItem.id);
+                                                locationData.put("source_latitude", pathSource.latitude);
+                                                locationData.put("source_longitude", pathSource.longitude);
+                                                locationData.put("destination_latitude", currentPathItem.dLatLng.latitude);
+                                                locationData.put("destination_longitude", currentPathItem.dLatLng.longitude);
+                                                locationDataArr.put(locationData);
+                                                pathSource = nextSourceLatLng;
+                                            }
+
                                         } catch(Exception e){e.printStackTrace();}
                                     }
                                 }

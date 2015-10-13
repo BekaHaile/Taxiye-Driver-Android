@@ -2,11 +2,13 @@ package product.clicklabs.jugnoo.driver;
 
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 
 public interface AppInterruptHandler {
 	
@@ -25,8 +27,10 @@ public interface AppInterruptHandler {
 	public void onCustomerCashDone();
 	
 	public void onCashAddedToWalletByCustomer(int userId, double balance);
+
+	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
 	
-	public void updateMeteringUI(double distance, long elapsedTime, Location lastGPSLocation,
+	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);
 	
 	public void drawOldPath();
@@ -34,5 +38,6 @@ public interface AppInterruptHandler {
 	public void addPathToMap(PolylineOptions polylineOptions);
 
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
+
 
 }

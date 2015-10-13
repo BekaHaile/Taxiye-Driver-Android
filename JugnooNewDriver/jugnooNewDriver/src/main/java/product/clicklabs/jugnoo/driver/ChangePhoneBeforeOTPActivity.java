@@ -16,17 +16,21 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class ChangePhoneBeforeOTPActivity extends Activity{
@@ -109,7 +113,8 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                         }
                         else{
                             updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
-                        }
+
+						}
                     }
                     else{
                         editTextNewPhoneNumber.requestFocus();
@@ -157,12 +162,15 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
 
 
 
+//    Retrofit
+
     public void updateUserProfileAPI(final Activity activity, final String updatedField, String accessToken) {
         if(AppStatus.getInstance(activity).isOnline(activity)) {
 
             DialogPopup.showLoadingDialog(activity, "Updating...");
 
-            RequestParams params = new RequestParams();
+//            RequestParams params = new RequestParams();
+			HashMap<String, String> params = new HashMap<String, String>();
 
             params.put("client_id", Data.CLIENT_ID);
             params.put("login_type", Data.LOGIN_TYPE);
@@ -170,55 +178,53 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
             params.put("is_access_token_new", "1");
             params.put("updated_phone_no", updatedField);
 
+			RestClient.getApiServices().updateUserProfileAPIRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					DialogPopup.dismissLoadingDialog();
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
+						if(jObj.has("flag")){
+							flag = jObj.getInt("flag");
+						}
+						String message = JSONParser.getServerMessage(jObj);
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+								OTPConfirmScreen.emailRegisterData.phoneNo = updatedField;
+								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 
-            AsyncHttpClient client = Data.getClient();
-            client.post(Data.SERVER_URL + "/update_user_profile", params,
-                new CustomAsyncHttpResponseHandler() {
-                    private JSONObject jObj;
+									@Override
+									public void onClick(View v) {
+										performBackPressed();
+									}
+								});
+							}
+							else{
+								DialogPopup.alertPopup(activity, "", message);
+							}
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
+					}
+				}
 
-                    @Override
-                    public void onFailure(Throwable arg3) {
-                        Log.e("request fail", arg3.toString());
-                        DialogPopup.dismissLoadingDialog();
-                        DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-                    }
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
 
-                    @Override
-                    public void onSuccess(String response) {
-                        Log.i("Server response", "response = " + response);
-                        DialogPopup.dismissLoadingDialog();
-                        try {
-                            jObj = new JSONObject(response);
-                            int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
-                            if(jObj.has("flag")){
-                                flag = jObj.getInt("flag");
-                            }
-                            String message = JSONParser.getServerMessage(jObj);
-                            if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-                                if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-                                    DialogPopup.alertPopup(activity, "", message);
-                                }
-                                else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-                                    OTPConfirmScreen.emailRegisterData.phoneNo = updatedField;
-                                    DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 
-                                        @Override
-                                        public void onClick(View v) {
-                                            performBackPressed();
-                                        }
-                                    });
-                                }
-                                else{
-                                    DialogPopup.alertPopup(activity, "", message);
-                                }
-                            }
-                        }  catch (Exception exception) {
-                            exception.printStackTrace();
-                            DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-                            DialogPopup.dismissLoadingDialog();
-                        }
-                    }
-                });
+
         }
         else {
             DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);

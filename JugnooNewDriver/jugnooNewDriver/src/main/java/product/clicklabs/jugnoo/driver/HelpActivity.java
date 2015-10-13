@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +21,21 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class HelpActivity extends FragmentActivity implements FlurryEventNames {
@@ -247,6 +250,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
 							FlurryEventLogger.event(helpSections.get(holder.id).getName());
 
+
 					}
 				}
 			});
@@ -275,73 +279,64 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	}
 	
 	
-	/**
-	 * ASync for get rides from server
-	 */
+
+	// Retrofit
+
+
 	public void getHelpAsync(final Activity activity, final HelpSection helpSection) {
 		if(fetchHelpDataClient == null){
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				
+
 				helpExpandedRl.setVisibility(View.VISIBLE);
 				progressBarHelp.setVisibility(View.VISIBLE);
 				textViewInfoDisplay.setVisibility(View.GONE);
 				helpWebview.setVisibility(View.GONE);
 				loadHTMLContent("");
-				
-				Log.e("helpSection", "="+helpSection);
-				
-				RequestParams params = new RequestParams();
-				params.put("section", ""+helpSection.getOrdinal());
-				
-				fetchHelpDataClient = Data.getClient();
-				fetchHelpDataClient.post(Data.SERVER_URL + "/get_information", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-	
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								progressBarHelp.setVisibility(View.GONE);
-								openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-							}
-	
-							@Override
-							public void onSuccess(String response) {
-								Log.i("Server response faq ", "response = " + response);
-								try {
-									jObj = new JSONObject(response);
-									if(!jObj.isNull("error")){
-										String errorMessage = jObj.getString("error");
-										if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-											HomeActivity.logoutUser(activity);
-										}
-										else{
-											openHelpData(helpSection, "Some error occured. Tap to retry.", true);
-										}
-									}
-									else{
-										String data = jObj.getString("data");
-										openHelpData(helpSection, data, false);
-									}
-								}  catch (Exception exception) {
-									exception.printStackTrace();
+
+
+
+				RestClient.getApiServices().gethelp(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+
+
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
 									openHelpData(helpSection, "Some error occured. Tap to retry.", true);
 								}
-								progressBarHelp.setVisibility(View.GONE);
+							} else {
+								String data = jObj.getString("data");
+								openHelpData(helpSection, data, false);
 							}
-							
-							@Override
-							public void onFinish() {
-								super.onFinish();
-								fetchHelpDataClient = null;
-							}
-						});
+
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+						}
+						progressBarHelp.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						progressBarHelp.setVisibility(View.GONE);
+						openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+
+					}
+				});
 			}
 			else {
 				openHelpData(helpSection, "No internet connection. Tap to retry.", true);
 			}
 		}
 	}
+
 	
 	
 	public void performBackPressed(){

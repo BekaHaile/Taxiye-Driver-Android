@@ -34,10 +34,13 @@ import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class JSONParser {
 
@@ -65,35 +68,6 @@ public class JSONParser {
 
 
 
-	public void parseLoginData(Context context, String response) throws Exception{
-		JSONObject jObj = new JSONObject(response);
-		JSONObject userData = jObj.getJSONObject("user_data");
-		
-		Data.userData = parseUserData(context, userData);
-		
-		Data.termsAgreed = 1;
-		saveAccessToken(context, Data.userData.accessToken);
-		
-		try{
-			int currentUserStatus = userData.getInt("current_user_status");
-			
-			if(currentUserStatus == 1){
-				Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-				new DriverServiceOperations().startDriverService(context);
-				HomeActivity.userMode = UserMode.DRIVER;
-				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-			new DriverServiceOperations().startDriverService(context);
-			HomeActivity.userMode = UserMode.DRIVER;
-			HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-		}
-
-	}
-	
-	
 	public static void saveAccessToken(Context context, String accessToken){
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();
@@ -300,6 +274,17 @@ public class JSONParser {
             fatafatAvailable = 0;
         }
 
+		int sharingEnabled = 0, sharingAvailable = 0;
+		if(userData.has("sharing_enabled")){
+			sharingEnabled = userData.getInt("sharing_enabled");
+		}
+		if(userData.has("sharing_available")){
+			sharingAvailable = userData.getInt("sharing_available");
+		}
+		if(1 != sharingEnabled){
+			sharingAvailable = 0;
+		}
+
 		
 		try{
 			if(userData.has("gcm_intent")){
@@ -307,6 +292,7 @@ public class JSONParser {
 			}
 		} catch(Exception e){}
 
+		String customerReferralBonus = userData.optString("customer_referral_bonus", "30");
 
         String deiValue = userData.optString("driver_dei", "-1");
 
@@ -317,8 +303,9 @@ public class JSONParser {
 
 		
 		return new UserData(accessToken, userData.getString("user_name"),
-				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), 
-				freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable, deiValue);
+				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), freeRideIconDisable,
+				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
@@ -386,15 +373,21 @@ public class JSONParser {
 	
 	
 	
+
 	
-	
+//	Retrofit
+
 	public String getUserStatus(Context context, String accessToken, int currentUserStatus){
 		String returnResponse = "";
 		try{
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
+//			HttpRequester simpleJSONParser = new HttpRequester();
+
+			Response response = RestClient.getApiServices().getUserStatusRetro(accessToken);
+			String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+//			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
 			Log.e("result of = user_status", "="+result);
 			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
 				returnResponse = HttpRequester.SERVER_TIMEOUT;
@@ -411,9 +404,6 @@ public class JSONParser {
 			return returnResponse;
 		}
 	}
-	
-	
-	
 	
 	
 	//TODO
@@ -463,7 +453,7 @@ public class JSONParser {
 			Data.dCustomerId = jLastRideData.getString("user_id");
 
 			HomeActivity.totalDistance = jLastRideData.getDouble("distance_travelled");
-			HomeActivity.waitTime = "0";
+			HomeActivity.waitTime = jLastRideData.optString("wait_time", "0");
 			HomeActivity.rideTime = jLastRideData.getString("ride_time");
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
@@ -516,6 +506,13 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+			if(jLastRideData.has("luggage_charges")){
+				try{
+					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_charges");
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
 			
 			parseEndRideData(jLastRideData, Data.dEngagementId, HomeActivity.totalFare);
 			
@@ -541,7 +538,7 @@ public class JSONParser {
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1;
+			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitingChargesApplicable = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -698,6 +695,13 @@ public class JSONParser {
 											e.printStackTrace();
 										}
 									}
+									if(jObject.has("luggage_charges")){
+										try{
+											Data.fareStructure.luggageFare = jObject.getDouble("luggage_charges");
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
 									
 									
 									if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
@@ -755,6 +759,8 @@ public class JSONParser {
 
                                             meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
+											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
+											waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -857,7 +863,7 @@ public class JSONParser {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }
@@ -890,7 +896,7 @@ public class JSONParser {
 					SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 					
 					HomeActivity.totalDistance = Double.parseDouble(pref.getString(Data.SP_TOTAL_DISTANCE, "-1"));
-					HomeActivity.previousWaitTime = Long.parseLong(pref.getString(Data.SP_WAIT_TIME, "0"));
+					HomeActivity.previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
 					
 					long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
 					long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
@@ -947,8 +953,6 @@ public class JSONParser {
 		Editor editor = pref.edit();
 
 		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
-		editor.putString(Data.SP_WAIT_TIME, "0");
-		editor.putString(Data.SP_RIDE_TIME, "0");
 		editor.putString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis());
 		editor.putString(Data.SP_LAST_LATITUDE, "0");
 		editor.putString(Data.SP_LAST_LONGITUDE, "0");

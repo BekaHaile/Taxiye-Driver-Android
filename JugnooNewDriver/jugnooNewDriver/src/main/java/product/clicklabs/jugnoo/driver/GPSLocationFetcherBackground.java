@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.provider.Settings;
-import android.util.Log;
 
 public class GPSLocationFetcherBackground{
 	
@@ -71,7 +70,6 @@ public class GPSLocationFetcherBackground{
 				locationIntent.cancel();
 			}
 		}catch(Exception e){
-			Log.e("e", "="+e.toString());
 		}
 	}
 

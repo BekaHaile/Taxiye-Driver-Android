@@ -38,21 +38,21 @@ import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -62,6 +62,10 @@ import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
@@ -127,7 +131,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
 		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
-		
+		RestClient.setupRestClient();
 		DriverLocationUpdateService.updateServerData(context);
 	}
 	
@@ -205,7 +209,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
@@ -216,7 +220,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		buttonRegister.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, RegisterScreen.class));
@@ -226,7 +230,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		jugnooTextImg.setOnLongClickListener(new View.OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 				confirmDebugPasswordPopup(SplashNewActivity.this, DriverDebugOpenMode.DEBUG);
@@ -236,7 +240,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 		
 		jugnooTextImg2.setOnLongClickListener(new View.OnLongClickListener() {
-			
+
 			@Override
 			public boolean onLongClick(View v) {
 				confirmDebugPasswordPopup(SplashNewActivity.this, DriverDebugOpenMode.REGISTER);
@@ -259,8 +263,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Log.i("countryCode", Data.country + "..");
 			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
 			Log.i("deviceName", Data.deviceName + "..");
+
 			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
-			
+			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
 		}
@@ -303,6 +308,26 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				}
 			}
 		});
+
+
+//		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
+//		if(installed){
+//			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
+//
+//		}
+//
+//		boolean installede = Utils.isAppInstalled(this, Data.UBER_APP);
+//		if(installede){
+//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " installed: " + installed);
+//
+//		}
+//
+//		boolean installedee = Utils.olaInstall(this);
+//		if(installedee){
+//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " olaaaaaa: " + installed);
+//
+//		}
+
 
 
 	}
@@ -530,6 +555,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 				noNetFirstTime = false;
 			    accessTokenLogin(SplashNewActivity.this);
+
 			}
 			else{
 				DialogPopup.alertPopup(SplashNewActivity.this, "", Data.CHECK_INTERNET_MSG);
@@ -539,112 +565,137 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	}
 	
 	
-	/**
-	 * ASync for access token login from server
-	 */
+
+//	Retrofit
+
+
 	public void accessTokenLogin(final Activity activity) {
-		
+
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
-		
+
 		if(!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-				
+
 				DialogPopup.showLoadingDialog(activity, "Loading...");
-				
+
 				if(Data.locationFetcher != null){
 					Data.latitude = Data.locationFetcher.getLatitude();
 					Data.longitude = Data.locationFetcher.getLongitude();
 				}
-				
-				RequestParams params = new RequestParams();
+				HashMap<String, String> params = new HashMap<String, String>();
+
+//				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
-				
-
-
-
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
 
 
-                final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-                if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-                    params.put("latitude", "0");
-                    params.put("longitude", "0");
-                }
-                else{
-                    params.put("latitude", ""+Data.latitude);
-                    params.put("longitude", ""+Data.longitude);
-                }
+				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
+				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
+					params.put("latitude", "0");
+					params.put("longitude", "0");
+				}
+				else{
+					params.put("latitude", ""+Data.latitude);
+					params.put("longitude", ""+Data.longitude);
+				}
 
 
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
 				params.put("unique_device_id", Data.uniqueDeviceId);
 				params.put("is_access_token_new", "1");
-                params.put("client_id", Data.CLIENT_ID);
-                params.put("login_type", Data.LOGIN_TYPE);
+				params.put("client_id", Data.CLIENT_ID);
+				params.put("login_type", Data.LOGIN_TYPE);
+
+				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
+					params.put("auto_n_cab_installed", "1");
+				}
+				else{
+					params.put("auto_n_cab_installed", "0");
+				}
+
+				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
+					params.put("uber_installed", "1");
+				}
+				else{
+					params.put("uber_installed", "0");
+				}
 
 
-				Log.i("accessTokenlongi params", "=" + params);
-				
-				AsyncHttpClient client = Data.getClient();
-				client.post(Data.SERVER_URL + "/login_using_access_token", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
+//				if(Utils.uberInstall(activity)){
+//					params.put("uber_installed", "1");
+//				}
+//				else{
+//					params.put("uber_installed", "0");
+//				}
 
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								
-								DialogPopup.dismissLoadingDialog();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-								DialogPopup.dismissLoadingDialog();
-							}
+				if(Utils.olaInstall(activity)){
+					params.put("ola_installed", "1");
+				}
+				else{
+					params.put("ola_installed", "0");
+				}
 
-							@Override
-							public void onSuccess(String response) {
-								Log.e("Server response of access_token", "response = " + response);
-								try {
-									jObj = new JSONObject(response);
-									int flag = jObj.getInt("flag");
-                                    String message = JSONParser.getServerMessage(jObj);
 
-                                    if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-                                        if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                        else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                        else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
-                                            if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-                                                new AccessTokenDataParseAsync(activity, response, message).execute();
-                                            }
-                                            else{
-                                                DialogPopup.dismissLoadingDialog();
-                                            }
-                                        }
-                                        else{
-                                            DialogPopup.alertPopup(activity, "", message);
-                                            DialogPopup.dismissLoadingDialog();
-                                        }
-                                    }
-                                    else{
-                                        DialogPopup.dismissLoadingDialog();
-                                    }
 
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+
+				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
+
+							if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+								if(ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag){
+									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();
 								}
-		
+								else if(ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag){
+									DialogPopup.alertPopup(activity, "", message);
+									DialogPopup.dismissLoadingDialog();
+								}
+								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
+									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+									}
+									else{
+										DialogPopup.dismissLoadingDialog();
+									}
+								}
+								else{
+									DialogPopup.alertPopup(activity, "", message);
+									DialogPopup.dismissLoadingDialog();
+								}
 							}
-						});
+							else{
+								DialogPopup.dismissLoadingDialog();
+							}
+
+						}  catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.dismissLoadingDialog();
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
+					}
+				});
+
+
+
 			}
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
@@ -655,7 +706,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		}
 
 	}
-	
 	
 	class AccessTokenDataParseAsync extends AsyncTask<String, Integer, String>{
 		

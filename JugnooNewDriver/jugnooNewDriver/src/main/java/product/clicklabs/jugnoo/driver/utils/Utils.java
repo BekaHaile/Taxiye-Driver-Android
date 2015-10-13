@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.provider.Settings;
@@ -19,7 +21,9 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Data;
 
@@ -175,7 +179,7 @@ public class Utils {
 	}
 	
 	
-	public static String getElapsedTimeFromMillis(long elapsedTime){
+	public static String getChronoTimeFromMillis(long elapsedTime){
 		long timeR = elapsedTime;
 		int hR = (int) (timeR / 3600000);
 		int mR = (int) (timeR - hR * 3600000) / 60000;
@@ -198,7 +202,7 @@ public class Utils {
 		String returnPhoneNo = "";
 		if(phoneNo.length() > 0){
 			int charLength = phoneNo.length();
-			int stars = (charLength < 3) ? 0 : (charLength - 3);
+			int stars = (charLength < 4) ? 0 : (charLength - 4);
 			StringBuilder stringBuilder = new StringBuilder();
 			for(int i=0; i<stars; i++){
 				stringBuilder.append("*");
@@ -299,6 +303,55 @@ public class Utils {
 		else{
 			return false;
 		}
+	}
+
+
+	private static DecimalFormat decimalFormatMoney;
+	public static DecimalFormat getDecimalFormatForMoney(){
+		if(decimalFormatMoney == null){
+			decimalFormatMoney = new DecimalFormat("#");
+		}
+		return decimalFormatMoney;
+	}
+
+//	isAppInstalled("com.autoncab.driver");
+
+	public static boolean isAppInstalled(Context context, String packageName) {
+		PackageManager pm = context.getPackageManager();
+		boolean installed = false;
+		try {
+			pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+			installed = true;
+		} catch (PackageManager.NameNotFoundException e) {
+			installed = false;
+		}
+		return installed;
+	}
+
+
+
+	public static boolean olaInstall(Context context){
+		// Flags: See below
+		boolean olaDriver = false;
+		int olaInstalled = 0;
+		int flags = PackageManager.GET_META_DATA |
+				PackageManager.GET_SHARED_LIBRARY_FILES |
+				PackageManager.GET_UNINSTALLED_PACKAGES;
+
+		PackageManager pm = context.getPackageManager();
+		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+		for (ApplicationInfo appInfo : applications) {
+			Log.i(String.valueOf(appInfo), "application info");
+			if(!appInfo.packageName.contains("com.olacabs.customer")){
+				 olaDriver = (appInfo.packageName.contains("com.ola") || appInfo.packageName.contains("olacabs"));
+				if(olaDriver){
+					break;
+				}
+			}
+
+		}
+		return olaDriver;
+
 	}
 
 }

@@ -72,7 +72,12 @@ public class Prefs {
 	}
 
 	public int getInt(String key, int defValue) {
+
 		return preferences.getInt(key, defValue);
+	}
+
+	public boolean contains(String key){
+		return preferences.contains(key);
 	}
 
 	public float getFloat(String key, float defValue) {

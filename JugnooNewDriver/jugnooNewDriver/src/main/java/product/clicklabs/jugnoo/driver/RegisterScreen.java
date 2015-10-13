@@ -15,22 +15,26 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class RegisterScreen extends Activity implements LocationUpdate{
@@ -38,7 +42,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	Button backBtn;
 	TextView title;
 	
-	EditText nameEt, emailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
+	EditText nameEt, emailIdEt, confirmEmailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
 	Button signUpBtn;
 
 	LinearLayout relative;
@@ -84,6 +88,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Data.latoRegular(this));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -93,7 +98,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 		
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
@@ -101,11 +106,11 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 		});
 		
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				nameEt.setError(null);
-				
+
 			}
 		});
 		
@@ -117,6 +122,15 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 				emailIdEt.setError(null);
 			}
 		});
+		confirmEmailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				confirmEmailIdEt.setError(null);
+			}
+		});
+		emailIdEt.setLongClickable(false);
+		confirmEmailIdEt.setLongClickable(false);
 		
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			
@@ -149,97 +163,100 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 			
 			@Override
 			public void onClick(View v) {
-				
+
 				String name = nameEt.getText().toString().trim();
-				if(name.length() > 0){
+				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
 				String emailId = emailIdEt.getText().toString().trim();
+				String confirmEmail = confirmEmailIdEt.getText().toString().trim();
 
 
-				
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				String password = passwordEt.getText().toString().trim();
 				String confirmPassword = confirmPasswordEt.getText().toString().trim();
 
-				
-				
-				if("".equalsIgnoreCase(name)){
+
+				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
-				}
-				else{
-					if("".equalsIgnoreCase(emailId)){
+				} else {
+					if ("".equalsIgnoreCase(emailId)) {
 						emailIdEt.requestFocus();
 						emailIdEt.setError("Please enter email id");
-					}
-					else{
-						if("".equalsIgnoreCase(phoneNo)){
-							phoneNoEt.requestFocus();
-							phoneNoEt.setError("Please enter phone number");
-						}
-						else{
-							//TODO remove extra characters phoneNo
-							phoneNo = phoneNo.replace(" ", "");
-							phoneNo = phoneNo.replace("(", "");
-							phoneNo = phoneNo.replace("/", "");
-							phoneNo = phoneNo.replace(")", "");
-							phoneNo = phoneNo.replace("N", "");
-							phoneNo = phoneNo.replace(",", "");
-							phoneNo = phoneNo.replace("*", "");
-							phoneNo = phoneNo.replace(";", "");
-							phoneNo = phoneNo.replace("#", "");
-							phoneNo = phoneNo.replace("-", "");
-							phoneNo = phoneNo.replace(".", "");
-							
-							if(phoneNo.length() >= 10){
-								phoneNo = phoneNo.substring(phoneNo.length()-10, phoneNo.length());
-								if(phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")){
+					} else {
+						if ("".equalsIgnoreCase(confirmEmail)) {
+							confirmEmailIdEt.requestFocus();
+							confirmEmailIdEt.setError("Please confirm email id");
+						} else {
+							if (emailId.equalsIgnoreCase(confirmEmail)) {
+								if ("".equalsIgnoreCase(phoneNo)) {
 									phoneNoEt.requestFocus();
-									phoneNoEt.setError("Please enter valid phone number");
-								}
-								else{
-									phoneNo = "+91" + phoneNo;
-									
-									if("".equalsIgnoreCase(password)){
-										passwordEt.requestFocus();
-										passwordEt.setError("Please enter password");
-									}
-									else{
-										if("".equalsIgnoreCase(confirmPassword)){
-											confirmPasswordEt.requestFocus();
-											confirmPasswordEt.setError("Please confirm password");
-										}
-										else {
-											if (isEmailValid(emailId)) {
-												if (isPhoneValid(phoneNo)) {
-													if (password.equals(confirmPassword)) {
-														if (password.length() >= 6) {
-															sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
-															FlurryEventLogger.emailSignupClicked(emailId);
+									phoneNoEt.setError("Please enter phone number");
+								} else {
+									//TODO remove extra characters phoneNo
+									phoneNo = phoneNo.replace(" ", "");
+									phoneNo = phoneNo.replace("(", "");
+									phoneNo = phoneNo.replace("/", "");
+									phoneNo = phoneNo.replace(")", "");
+									phoneNo = phoneNo.replace("N", "");
+									phoneNo = phoneNo.replace(",", "");
+									phoneNo = phoneNo.replace("*", "");
+									phoneNo = phoneNo.replace(";", "");
+									phoneNo = phoneNo.replace("#", "");
+									phoneNo = phoneNo.replace("-", "");
+									phoneNo = phoneNo.replace(".", "");
+
+									if (phoneNo.length() >= 10) {
+										phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+										if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+											phoneNoEt.requestFocus();
+											phoneNoEt.setError("Please enter valid phone number");
+										} else {
+											phoneNo = "+91" + phoneNo;
+
+											if ("".equalsIgnoreCase(password)) {
+												passwordEt.requestFocus();
+												passwordEt.setError("Please enter password");
+											} else {
+												if ("".equalsIgnoreCase(confirmPassword)) {
+													confirmPasswordEt.requestFocus();
+													confirmPasswordEt.setError("Please confirm password");
+												} else {
+													if (isEmailValid(emailId)) {
+														if (isPhoneValid(phoneNo)) {
+															if (password.equals(confirmPassword)) {
+																if (password.length() >= 6) {
+																	sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
+																	FlurryEventLogger.emailSignupClicked(emailId);
+																} else {
+																	passwordEt.requestFocus();
+																	passwordEt.setError("Password must be of atleast six characters");
+																}
+															} else {
+																passwordEt.requestFocus();
+																passwordEt.setError("Passwords does not match");
+															}
 														} else {
-															passwordEt.requestFocus();
-															passwordEt.setError("Password must be of atleast six characters");
+															phoneNoEt.requestFocus();
+															phoneNoEt.setError("Please enter valid phone number");
 														}
 													} else {
-														passwordEt.requestFocus();
-														passwordEt.setError("Passwords does not match");
+														emailIdEt.requestFocus();
+														emailIdEt.setError("Please enter valid email id");
 													}
-												} else {
-													phoneNoEt.requestFocus();
-													phoneNoEt.setError("Please enter valid phone number");
 												}
-											} else {
-												emailIdEt.requestFocus();
-												emailIdEt.setError("Please enter valid email id");
 											}
 										}
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
 									}
 								}
 							}
 							else{
-								phoneNoEt.requestFocus();
-								phoneNoEt.setError("Please enter valid phone number");
+								confirmEmailIdEt.requestFocus();
+								confirmEmailIdEt.setError("Confirm email id doesn't match");
 							}
 						}
 					}
@@ -345,108 +362,102 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 	
 	
 	
-	/**
-	 * ASync for register from server
-	 */
+
+//	Retrofit
+
 	public void sendSignupValues(final Activity activity, final String name,
-			final String emailId, final String phoneNo, final String password) {
+								 final String emailId, final String phoneNo, final String password) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, "Loading...");
-			
-			RequestParams params = new RequestParams();
-		
+
+//			RequestParams params = new RequestParams();
+
 			if(Data.locationFetcher != null){
 				Data.latitude = Data.locationFetcher.getLatitude();
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
 
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("user_name", name);
+			params.put("phone_no", phoneNo);
+			params.put("email", emailId);
+			params.put("password", password);
+			params.put("latitude", "" + Data.latitude);
+			params.put("longitude", "" + Data.longitude);
 
-            params.put("user_name", name);
-            params.put("phone_no", phoneNo);
-            params.put("email", emailId);
-            params.put("password", password);
-            params.put("latitude", "" + Data.latitude);
-            params.put("longitude", "" + Data.longitude);
-
-            params.put("device_type", Data.DEVICE_TYPE);
-            params.put("device_name", Data.deviceName);
-            params.put("app_version", "" + Data.appVersion);
-            params.put("os_version", Data.osVersion);
-            params.put("country", Data.country);
-
-            params.put("client_id", Data.CLIENT_ID);
+			params.put("device_type", Data.DEVICE_TYPE);
+			params.put("device_name", Data.deviceName);
+			params.put("app_version", "" + Data.appVersion);
+			params.put("os_version", Data.osVersion);
+			params.put("country", Data.country);
+			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-            params.put("referral_code", "");
+			params.put("referral_code", "");
 
-            params.put("device_token", Data.deviceToken);
-            params.put("unique_device_id", Data.uniqueDeviceId);
+			params.put("device_token", Data.deviceToken);
+			params.put("unique_device_id", Data.uniqueDeviceId);
 
-            Log.i("register_using_email params", params.toString());
+			Log.i("register_using_email params", params.toString());
+
+			RestClient.getApiServices().registerUsingEmail(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+
+						if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
+
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
+									DialogPopup.alertPopup(activity, "", message);
+								} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
+									DialogPopup.alertPopup(activity, "", message);
+								} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
+									RegisterScreenResponse data = registerScreenResponse;
+									RegisterScreen.this.name = name;
+									RegisterScreen.this.emailId = emailId;
+									RegisterScreen.this.phoneNo = data.getPhoneNo();
+									RegisterScreen.this.password = password;
+									RegisterScreen.this.accessToken = data.getAccessToken();
 
 
-
-		
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/register_using_email", params,
-					new CustomAsyncHttpResponseHandler() {
-					private JSONObject jObj;
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-	
-							try {
-								jObj = new JSONObject(response);
-
-                                if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
-                                    int flag = jObj.getInt("flag");
-                                    String message = JSONParser.getServerMessage(jObj);
-
-                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-
-                                        if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
-                                            DialogPopup.alertPopup(activity, "", message);
-                                        } else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
-                                            DialogPopup.alertPopup(activity, "", message);
-                                        } else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
-                                            RegisterScreen.this.name = name;
-                                            RegisterScreen.this.emailId = emailId;
-                                            RegisterScreen.this.phoneNo = jObj.getString("phone_no");
-                                            RegisterScreen.this.password = password;
-                                            RegisterScreen.this.accessToken = jObj.getString("access_token");
-                                            sendToOtpScreen = true;
-                                        } else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
-                                            RegisterScreen.this.name = name;
-                                            RegisterScreen.this.emailId = emailId;
-                                            RegisterScreen.this.phoneNo = phoneNo;
-                                            RegisterScreen.this.password = password;
-                                            RegisterScreen.this.accessToken = "";
-                                            parseDataSendToMultipleAccountsScreen(activity, jObj);
-                                        } else {
-                                            DialogPopup.alertPopup(activity, "", message);
-                                        }
-                                        DialogPopup.dismissLoadingDialog();
-                                    }
-                                } else {
-                                    DialogPopup.dismissLoadingDialog();
-                                }
-							}  catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+									sendToOtpScreen = true;
+								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
+									RegisterScreen.this.name = name;
+									RegisterScreen.this.emailId = emailId;
+									RegisterScreen.this.phoneNo = phoneNo;
+									RegisterScreen.this.password = password;
+									RegisterScreen.this.accessToken = "";
+									parseDataSendToMultipleAccountsScreen(activity, jObj);
+								} else {
+									DialogPopup.alertPopup(activity, "", message);
+								}
 								DialogPopup.dismissLoadingDialog();
 							}
-	
-							
+						} else {
+							DialogPopup.dismissLoadingDialog();
 						}
-					});
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+
 		}
 		else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);

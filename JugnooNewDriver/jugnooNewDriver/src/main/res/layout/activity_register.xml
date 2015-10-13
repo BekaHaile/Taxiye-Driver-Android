@@ -81,6 +81,20 @@
                 android:textSize="34px"/>
 
             <EditText
+                android:id="@+id/confirmEmailIdEt"
+                android:layout_width="650px"
+                android:layout_height="100px"
+                android:layout_marginTop="5px"
+                android:background="@drawable/white_bg_rounded"
+                android:hint="@string/confirm_email_id"
+                android:inputType="textEmailAddress"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+            <EditText
                 android:id="@+id/phoneNoEt"
                 android:layout_width="650px"
                 android:layout_height="100px"

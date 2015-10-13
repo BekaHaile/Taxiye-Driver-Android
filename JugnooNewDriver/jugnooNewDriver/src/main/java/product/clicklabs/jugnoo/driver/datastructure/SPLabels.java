@@ -16,6 +16,7 @@ public class SPLabels {
             TOTAL_DISTANCE = "total_distance",
             LOCATION_TIME = "location_time",
             START_TIME = "start_time",
+    		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
             ENGAGEMENT_ID = "engagement_id",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
@@ -24,4 +25,11 @@ public class SPLabels {
             BAD_ACCURACY_COUNT = "badAccuracyCount",
             ACCURACY_SAVED_TIME = "accuracySavedTiem",
             TIME_WINDOW_FLAG = "timeWindowFlag";
+
+    public static final String
+            METERING_STATE = "meteringstate";
+    public static final String
+            GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
+
+    public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 }

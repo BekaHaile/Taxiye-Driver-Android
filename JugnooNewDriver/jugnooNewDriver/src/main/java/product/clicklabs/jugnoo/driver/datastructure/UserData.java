@@ -4,10 +4,11 @@ public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 		autosAvailable, mealsAvailable, fatafatAvailable;
-    public String deiValue;
+	public int sharingEnabled, sharingAvailable;
+    public String deiValue, customerReferralBonus;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
-			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue){
+			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable){
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -22,5 +23,9 @@ public class UserData {
 		this.mealsAvailable = mealsAvailable;
 		this.fatafatAvailable = fatafatAvailable;
         this.deiValue = deiValue;
+		this.customerReferralBonus = customerReferralBonus;
+
+		this.sharingEnabled = sharingEnabled;
+		this.sharingAvailable = sharingAvailable;
 	}
 }

@@ -17,18 +17,19 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
@@ -210,85 +211,66 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 		
 	}
 
-	
-	
-	/**
-	 * ASync for register from server
-	 */
-	public void forgotPasswordAsync(final Activity activity, final String email) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-			
-			RequestParams params = new RequestParams();
-		
-			params.put("email", email);
+//	Retrofit
 
-			Log.i("email", "=" + email);
-		
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/forgot_password_driver", params,
-					new CustomAsyncHttpResponseHandler() {
-					private JSONObject jObj;
 
-					@Override
-					public void onSuccess(String response) {
-							Log.v("Server response", "response = " + response);
-	
-							try {
-								jObj = new JSONObject(response);
-								int flag = jObj.getInt("flag");
-                                String message = JSONParser.getServerMessage(jObj);
-								if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
-									HomeActivity.logoutUser(activity);
-								}
-								else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								else if(ApiResponseFlags.NO_SUCH_USER.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
-									SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
-								}
-								else if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-									DialogPopup.alertPopup(activity, "", message);
-								}
-								else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+	public void forgotPasswordAsync(final Activity activity, final String email){
+		DialogPopup.showLoadingDialog(activity, "Loading...");
+		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
+			@Override
+			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+				if(response != null) {
 
-										@Override
-										public void onClick(View v) {
-                                            performBackPressed();
-										}
-									});
-								}
-								else{
-									DialogPopup.alertPopup(activity, "", message);
-								}
-							}  catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-							}
-							DialogPopup.dismissLoadingDialog();
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					try {
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+						if(ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag){
+							HomeActivity.logoutUser(activity);
 						}
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+						else if(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
 						}
-						
-					});
-		}
-		else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-		}
+						else if(ApiResponseFlags.SHOW_MESSAGE.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.NO_SUCH_USER.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag){
+							SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+						}
+						else if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+							DialogPopup.alertPopup(activity, "", message);
+						}
+						else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+							DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 
+								@Override
+								public void onClick(View v) {
+									performBackPressed();
+								}
+							});
+						}
+						else{
+							DialogPopup.alertPopup(activity, "", message);
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+				DialogPopup.dismissLoadingDialog();
+			}
+		});
 	}
 	
 	
