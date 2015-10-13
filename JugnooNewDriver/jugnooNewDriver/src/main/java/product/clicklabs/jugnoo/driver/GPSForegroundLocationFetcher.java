@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -99,7 +98,6 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 			else{
 				if(locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
 					location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-					Log.e("last GPS location", "="+location);
 					return location;
 				}
 			}
