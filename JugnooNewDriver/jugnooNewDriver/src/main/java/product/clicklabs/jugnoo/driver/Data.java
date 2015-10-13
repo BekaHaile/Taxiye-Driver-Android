@@ -119,7 +119,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
-	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 	
 	
 
@@ -145,8 +145,8 @@ public class Data {
 	public static final String SERVER_ERROR_MSG = "Connection lost. Please try again later.";
 	public static final String SERVER_NOT_RESOPNDING_MSG = "Connection lost. Please try again later.";
 	public static final String CHECK_INTERNET_MSG = "Check your internet connection.";
-	
-	
+	public static final String GADDAR_JUGNOO_APP = "com.autoncab.driver";
+	public static final String UBER_APP = "com.ubercab.driver";
 	
 	public static final String GOOGLE_PROJECT_ID = "506849624961";
 

@@ -274,6 +274,17 @@ public class JSONParser {
             fatafatAvailable = 0;
         }
 
+		int sharingEnabled = 0, sharingAvailable = 0;
+		if(userData.has("sharing_enabled")){
+			sharingEnabled = userData.getInt("sharing_enabled");
+		}
+		if(userData.has("sharing_available")){
+			sharingAvailable = userData.getInt("sharing_available");
+		}
+		if(1 != sharingEnabled){
+			sharingAvailable = 0;
+		}
+
 		
 		try{
 			if(userData.has("gcm_intent")){
@@ -294,7 +305,7 @@ public class JSONParser {
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
