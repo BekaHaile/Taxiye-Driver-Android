@@ -25,7 +25,7 @@ public class RideDetailsActivity extends Activity {
 	Button backBtn;
 	TextView title;
 
-	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
+	TextView idValue, dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
 			textViewRideFareValue, textViewConvayenceChargeValue, textViewLuggageChargeValue,
 			textViewRateApplied, textViewRateAppliedValue,
 			textViewAcceptSubsidyValue, textViewCancelSubsidyValue, textViewJugnooCutValue,
@@ -75,6 +75,7 @@ public class RideDetailsActivity extends Activity {
 		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
 
 
+		idValue = (TextView) findViewById(R.id.idValue); idValue.setTypeface(Data.latoRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
 		dateTimeValue.setTypeface(Data.latoRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
@@ -152,6 +153,7 @@ public class RideDetailsActivity extends Activity {
 
 
 		if (openedRideInfo != null) {
+			idValue.setText("Ride ID: "+openedRideInfo.id);
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
 			distanceValue.setText("Distance: "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
 			rideTimeValue.setText("Total Time: "+openedRideInfo.rideTime + " min");

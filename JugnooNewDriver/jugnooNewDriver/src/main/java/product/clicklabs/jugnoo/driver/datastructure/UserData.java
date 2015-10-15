@@ -5,10 +5,11 @@ public class UserData {
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 		autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable;
-    public String deiValue, customerReferralBonus;
+    public String deiValue, customerReferralBonus, driverSupportNumber;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
-			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable){
+			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable,
+					String driverSupportNumber){
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -27,5 +28,6 @@ public class UserData {
 
 		this.sharingEnabled = sharingEnabled;
 		this.sharingAvailable = sharingAvailable;
+		this.driverSupportNumber = driverSupportNumber;
 	}
 }

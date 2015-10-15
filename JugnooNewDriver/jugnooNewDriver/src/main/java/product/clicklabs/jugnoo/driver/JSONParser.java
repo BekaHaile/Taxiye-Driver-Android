@@ -298,6 +298,8 @@ public class JSONParser {
 
         String accessToken = userData.getString("access_token");
 
+		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
+
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -305,7 +307,7 @@ public class JSONParser {
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
