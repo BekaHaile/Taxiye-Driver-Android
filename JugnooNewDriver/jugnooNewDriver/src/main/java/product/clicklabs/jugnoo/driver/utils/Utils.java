@@ -309,7 +309,7 @@ public class Utils {
 	private static DecimalFormat decimalFormatMoney;
 	public static DecimalFormat getDecimalFormatForMoney(){
 		if(decimalFormatMoney == null){
-			decimalFormatMoney = new DecimalFormat("#");
+			decimalFormatMoney = new DecimalFormat("#.##");
 		}
 		return decimalFormatMoney;
 	}

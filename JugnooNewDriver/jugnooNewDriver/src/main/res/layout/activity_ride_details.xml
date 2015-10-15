@@ -101,6 +101,16 @@
                 android:splitMotionEvents="false">
 
                 <TextView
+                    android:id="@+id/idValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0px"
+                    android:singleLine="true"
+                    android:text="Ride ID: "
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="28px"/>
+
+                <TextView
                     android:id="@+id/distanceValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -173,12 +183,12 @@
 
                 <TextView
                     android:id="@+id/textViewRideFareValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
                     android:layout_marginRight="40px"
-                    android:text="0"
+                    android:text="00000.00"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
             </RelativeLayout>
@@ -214,7 +224,7 @@
 
                 <TextView
                     android:id="@+id/textViewConvayenceChargeValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
@@ -254,7 +264,7 @@
 
                 <TextView
                     android:id="@+id/textViewLuggageChargeValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
@@ -292,7 +302,7 @@
 
                 <TextView
                     android:id="@+id/textViewRateAppliedValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
@@ -330,7 +340,7 @@
 
                 <TextView
                     android:id="@+id/textViewAcceptSubsidyValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
@@ -369,7 +379,7 @@
 
                 <TextView
                     android:id="@+id/textViewCancelSubsidyValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"
@@ -408,7 +418,7 @@
 
                 <TextView
                     android:id="@+id/textViewJugnooCutValue"
-                    android:layout_width="110px"
+                    android:layout_width="140px"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:gravity="center_vertical|right"

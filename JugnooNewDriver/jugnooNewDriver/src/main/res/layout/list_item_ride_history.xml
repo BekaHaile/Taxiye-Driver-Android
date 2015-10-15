@@ -138,7 +138,7 @@
                 android:layout_height="85px"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@string/rupee_zero"
+                android:text="@string/rupee_zero_zero"
                 android:textColor="@color/blue_btn"
                 android:textSize="55px"/>
 
@@ -160,9 +160,9 @@
                     android:layout_marginTop="10px"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="@string/rupee_zero"
+                    android:text="@string/rupee_zero_zero"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="32px"/>
+                    android:textSize="30px"/>
                 <TextView
                     android:id="@+id/textViewCustomerPaidtext"
                     android:layout_width="150px"
@@ -189,9 +189,9 @@
                     android:singleLine="true"
                     android:layout_marginTop="10px"
                     android:layout_toRightOf="@+id/imageViewVertical"
-                    android:text="@string/rupee_zero"
+                    android:text="@string/rupee_zero_zero"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="32px"/>
+                    android:textSize="30px"/>
 
                 <TextView
                     android:id="@+id/textViewBalanceText"

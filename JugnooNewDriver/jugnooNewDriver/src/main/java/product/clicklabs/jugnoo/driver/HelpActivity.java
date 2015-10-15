@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
@@ -32,6 +31,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -213,44 +213,48 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 				
 				@Override
 				public void onClick(View v) {
-					holder = (ViewHolderHelp) v.getTag();
-					
-					switch(helpSections.get(holder.id)){
-						case MAIL_US:
-							openMailIntentToSupport();
-							FlurryEventLogger.event(SEND_US_AN_EMAIL);
-							break;
-							
-						case CALL_US:
-							openCallIntent("+919023121121");
-							FlurryEventLogger.event(CALL_US);
-							break;
+					try {
+						holder = (ViewHolderHelp) v.getTag();
 
-						case FAQ:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.event(FAQS);
-							break;
+						switch(helpSections.get(holder.id)){
+							case MAIL_US:
+								openMailIntentToSupport();
+								FlurryEventLogger.event(SEND_US_AN_EMAIL);
+								break;
 
-						case ABOUT:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.event(ABOUT_JUGNOO);
-							break;
+							case CALL_US:
+								Utils.openCallIntent(HelpActivity.this, Data.userData.driverSupportNumber);
+								FlurryEventLogger.event(CALL_US);
+								break;
 
-						case TERMS:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.event(TERMS_OF_USE);
-							break;
+							case FAQ:
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								FlurryEventLogger.event(FAQS);
+								break;
 
-						case PRIVACY:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.event(PRIVACY_POLICY);
-							break;
+							case ABOUT:
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								FlurryEventLogger.event(ABOUT_JUGNOO);
+								break;
 
-						default:
-							getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
-							FlurryEventLogger.event(helpSections.get(holder.id).getName());
+							case TERMS:
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								FlurryEventLogger.event(TERMS_OF_USE);
+								break;
+
+							case PRIVACY:
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								FlurryEventLogger.event(PRIVACY_POLICY);
+								break;
+
+							default:
+								getHelpAsync(HelpActivity.this, helpSections.get(holder.id));
+								FlurryEventLogger.event(helpSections.get(holder.id).getName());
 
 
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			});
@@ -272,13 +276,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		startActivity(Intent.createChooser(email, "Choose an Email client:"));
 	}
 	
-	public void openCallIntent(String phoneNumber){
-		Intent callIntent = new Intent(Intent.ACTION_VIEW);
-        callIntent.setData(Uri.parse("tel:"+phoneNumber));
-        startActivity(callIntent);
-	}
-	
-	
+
 
 	// Retrofit
 
