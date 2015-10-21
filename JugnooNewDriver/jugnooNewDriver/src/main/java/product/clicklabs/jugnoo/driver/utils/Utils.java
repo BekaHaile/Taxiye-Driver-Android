@@ -166,16 +166,16 @@ public class Utils {
 	
 	
 	public static boolean mockLocationEnabled(Context context){
-//		return false;
-		if(Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			if (Settings.Secure.getString(context.getContentResolver(),
-		       Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
-		       return false;
-		       else return true;
-		}
-		else{
-			return false;
-		}
+		return false;
+//		if(Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+//			if (Settings.Secure.getString(context.getContentResolver(),
+//		       Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
+//		       return false;
+//		       else return true;
+//		}
+//		else{
+//			return false;
+//		}
 	}
 	
 	
@@ -314,6 +314,14 @@ public class Utils {
 		return decimalFormatMoney;
 	}
 
+	private static DecimalFormat decimalFormat;
+	public static DecimalFormat getDecimalFormat(){
+		if(decimalFormat == null){
+			decimalFormat = new DecimalFormat("#.##");
+		}
+		return decimalFormat;
+	}
+
 //	isAppInstalled("com.autoncab.driver");
 
 	public static boolean isAppInstalled(Context context, String packageName) {
@@ -341,7 +349,6 @@ public class Utils {
 		PackageManager pm = context.getPackageManager();
 		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
 		for (ApplicationInfo appInfo : applications) {
-			Log.i(String.valueOf(appInfo), "application info");
 			if(!appInfo.packageName.contains("com.olacabs.customer")){
 				 olaDriver = (appInfo.packageName.contains("com.ola") || appInfo.packageName.contains("olacabs"));
 				if(olaDriver){

@@ -332,8 +332,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		}
 
 		Pushy.listen(this);
-
-
+		long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+		Pushy.setHeartbeatInterval( interval, this );
 	}
 	
 	public void getDeviceToken(){
