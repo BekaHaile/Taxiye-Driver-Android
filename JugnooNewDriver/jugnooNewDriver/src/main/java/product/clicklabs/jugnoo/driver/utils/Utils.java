@@ -341,7 +341,6 @@ public class Utils {
 	public static boolean olaInstall(Context context){
 		// Flags: See below
 		boolean olaDriver = false;
-		int olaInstalled = 0;
 		int flags = PackageManager.GET_META_DATA |
 				PackageManager.GET_SHARED_LIBRARY_FILES |
 				PackageManager.GET_UNINSTALLED_PACKAGES;
@@ -358,6 +357,28 @@ public class Utils {
 
 		}
 		return olaDriver;
+
+	}
+
+	public static boolean telerickshawInstall(Context context){
+		// Flags: See below
+		boolean telerickshawDriver = false;
+		int flags = PackageManager.GET_META_DATA |
+				PackageManager.GET_SHARED_LIBRARY_FILES |
+				PackageManager.GET_UNINSTALLED_PACKAGES;
+
+		PackageManager pm = context.getPackageManager();
+		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+		for (ApplicationInfo appInfo : applications) {
+			if(!appInfo.packageName.contains("com.gcs.telerickshaw")){
+				telerickshawDriver = (appInfo.packageName.contains("com.telerickshaw") || appInfo.packageName.contains("telerickshaw"));
+				if(telerickshawDriver){
+					break;
+				}
+			}
+
+		}
+		return telerickshawDriver;
 
 	}
 

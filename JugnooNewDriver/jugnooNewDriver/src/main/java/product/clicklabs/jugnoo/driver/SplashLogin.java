@@ -395,6 +395,13 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				params.put("ola_installed", "0");
 			}
 
+			if(Utils.telerickshawInstall(activity)){
+				params.put("telerickshaw_installed", "1");
+			}
+			else{
+				params.put("telerickshaw_installed", "0");
+			}
+
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {

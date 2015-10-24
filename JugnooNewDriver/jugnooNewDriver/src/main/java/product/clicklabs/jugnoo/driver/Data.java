@@ -18,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
@@ -177,8 +178,8 @@ public class Data {
 	
 	
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
-	
-	
+
+	public static ArrayList<CancelOption> cancelOptionsList;
 	
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;

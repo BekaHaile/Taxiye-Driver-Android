@@ -636,6 +636,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("auto_n_cab_installed", "0");
 				}
 
+
 				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
 					params.put("uber_installed", "1");
 				}
@@ -644,18 +645,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				}
 
 
-//				if(Utils.uberInstall(activity)){
-//					params.put("uber_installed", "1");
-//				}
-//				else{
-//					params.put("uber_installed", "0");
-//				}
-
 				if(Utils.olaInstall(activity)){
 					params.put("ola_installed", "1");
 				}
 				else{
 					params.put("ola_installed", "0");
+				}
+
+
+				if(Utils.telerickshawInstall(activity)){
+					params.put("telerickshaw_installed", "1");
+				}
+				else{
+					params.put("telerickshaw_installed", "0");
 				}
 
 

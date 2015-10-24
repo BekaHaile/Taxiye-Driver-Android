@@ -190,4 +190,8 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_in_ride_data")
 	Response updateInRideDataRetro(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/cancel_ride_by_customer")
+	Response cancelRideAPI(@FieldMap Map<String, String> params, Callback<RegisterScreenResponse> callback);
 }

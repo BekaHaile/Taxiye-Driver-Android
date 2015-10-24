@@ -1157,7 +1157,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void onClick(View v) {
-				cancelRidePopup(HomeActivity.this);
+//				cancelRidePopup(HomeActivity.this);
+				Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
 				}
@@ -7100,4 +7103,30 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	@Override
+	public void handleCancelRideSuccess() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  if (map != null) {
+								  map.clear();
+							  }
+							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+							  reduceRideRequest(Data.dEngagementId);
+						  }
+					  }
+		);
+	}
+
+	@Override
+	public void handleCancelRideFailure() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  callAndHandleStateRestoreAPI();
+						  }
+					  }
+		);
+	}
 }
