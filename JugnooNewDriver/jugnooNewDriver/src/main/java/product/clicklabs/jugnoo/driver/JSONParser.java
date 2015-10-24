@@ -515,6 +515,22 @@ public class JSONParser {
 					e.printStackTrace();
 				}
 			}
+			if(jLastRideData.has("convenience_charge")){
+				try{
+					Data.fareStructure.convenienceCharge = jLastRideData.getDouble("convenience_charge");
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+			if(jLastRideData.has("convenience_charge_waiver")){
+				try{
+					Data.fareStructure.convenienceChargeWaiver = jLastRideData.getDouble("convenience_charge_waiver");
+				} catch(Exception e){
+					e.printStackTrace();
+				}
+			}
+//									"convenience_charge": 10,
+//									"convenience_charge_waiver": 0,
 			
 			parseEndRideData(jLastRideData, Data.dEngagementId, HomeActivity.totalFare);
 			
@@ -704,6 +720,25 @@ public class JSONParser {
 											e.printStackTrace();
 										}
 									}
+
+									if(jObject.has("convenience_charge")){
+										try{
+											Data.fareStructure.convenienceCharge = jObject.getDouble("convenience_charge");
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
+									if(jObject.has("convenience_charge_waiver")){
+										try{
+											Data.fareStructure.convenienceChargeWaiver = jObject.getDouble("convenience_charge_waiver");
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
+//									"convenience_charge": 10,
+//									"convenience_charge_waiver": 0,
+
+
 									
 									
 									if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
