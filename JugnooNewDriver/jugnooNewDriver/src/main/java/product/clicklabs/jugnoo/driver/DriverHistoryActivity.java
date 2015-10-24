@@ -26,7 +26,8 @@ public class DriverHistoryActivity extends FragmentActivity{
 	Button backBtn;
 
 	RelativeLayout relativeLayoutRides, relativeLayoutMissed;
-	TextView textViewRides, textViewMissed, textViewDailyValue, textViewMonthly, textViewDailyText, textViewMonthlyText ;
+	TextView textViewRides, textViewMissed, textViewDailyValue, textViewMonthly, textViewDailyText,
+			textViewReferralMoneyText, textViewReferralMoneyValue, textViewMonthlyText ;
 	ImageView imageViewRides, imageViewMissed;
 	
 	ViewPager viewPagerDriverHistory;
@@ -46,6 +47,8 @@ public class DriverHistoryActivity extends FragmentActivity{
 		backBtn = (Button) findViewById(R.id.backBtn); 
 		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Data.latoRegular(getApplicationContext()),Typeface.BOLD);
 		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyText = (TextView) findViewById(R.id.textViewReferralMoneyText); textViewReferralMoneyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyValue = (TextView) findViewById(R.id.textViewReferralMoneyValue); textViewReferralMoneyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		relativeLayoutMissed = (RelativeLayout) findViewById(R.id.relativeLayoutMissed);
@@ -61,6 +64,7 @@ public class DriverHistoryActivity extends FragmentActivity{
 
 		textViewDailyValue.setText("");
 		textViewMonthly.setText("");
+		textViewReferralMoneyValue.setText("");
 
 
 		viewPagerDriverHistory = (ViewPager) findViewById(R.id.viewPagerDriverHistory);
@@ -113,9 +117,10 @@ public class DriverHistoryActivity extends FragmentActivity{
 
 	UpdateDriverEarnings updateDriverEarnings = new UpdateDriverEarnings() {
 		@Override
-		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings) {
+		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings, String refferalMoney) {
 			textViewDailyValue.setText(getResources().getString(R.string.rupee)+" "+ dailyEarnings);
 			textViewMonthly.setText(getResources().getString(R.string.rupee)+" "+monthlyEarnings);
+			textViewReferralMoneyValue.setText(getResources().getString(R.string.rupee) + " " + refferalMoney);
 		}
 	};
 

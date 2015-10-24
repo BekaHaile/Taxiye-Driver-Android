@@ -23,6 +23,9 @@ public class BookingHistoryResponse {
 	@SerializedName("monthly_earnings")
 	@Expose
 	private String mothlyEarnings;
+	@SerializedName("refferal_money")
+	@Expose
+	private String refferalMoney;
 
 	/**
 	 *
@@ -57,6 +60,15 @@ public class BookingHistoryResponse {
 	public void setMothlyEarnings(String mothlyEarnings) {
 		this.mothlyEarnings = mothlyEarnings;
 	}
+
+	public String getRefferalMoney() {
+		return refferalMoney;
+	}
+
+	public void setRefferalMoney(String refferalMoney) {
+		this.refferalMoney = refferalMoney;
+	}
+
 
 	public class BookingData {
 
@@ -144,6 +156,7 @@ public class BookingHistoryResponse {
 		@SerializedName("driver_ride_fare")
 		@Expose
 		private String driverRideFair;
+
 
 
 		/**

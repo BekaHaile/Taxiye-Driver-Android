@@ -22,15 +22,15 @@
 
             <Button
                 android:id="@+id/backBtn"
-                android:layout_width="90px"
-                android:layout_height="90px"
+                android:layout_width="80px"
+                android:layout_height="80px"
                 android:layout_centerVertical="true"
                 android:background="@drawable/back_btn_selector"
                 android:tag="mwar"/>
 
             <RelativeLayout
                 android:id="@+id/topRlDaily"
-                android:layout_width="360px"
+                android:layout_width="240px"
                 android:layout_height="match_parent"
                 android:splitMotionEvents="false">
 
@@ -42,7 +42,7 @@
                     android:layout_marginTop="12px"
                     android:text="Today"
                     android:textColor="@color/white"
-                    android:textSize="32px"
+                    android:textSize="30px"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/textViewDailyValue"
@@ -58,17 +58,18 @@
             </RelativeLayout>
 
             <ImageView
+                android:id="@+id/imgView1"
                 android:layout_width="2px"
                 android:layout_height="120px"
                 android:background="@color/white"
-                android:layout_centerHorizontal="true"
+                android:layout_toRightOf="@+id/topRlDaily"
                 />
 
             <RelativeLayout
                 android:id="@+id/topRlMonthly"
-                android:layout_width="360px"
+                android:layout_width="230px"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/imgView1"
                 android:splitMotionEvents="false">
 
 
@@ -80,7 +81,7 @@
                     android:layout_marginTop="12px"
                     android:text="This Month"
                     android:textColor="@color/white"
-                    android:textSize="32px"
+                    android:textSize="30px"
                     android:textStyle="bold"/>
 
                 <TextView
@@ -88,6 +89,45 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewMonthlyText"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/white"
+                    android:textSize="32px"/>
+
+            </RelativeLayout>
+
+
+            <ImageView
+                android:id="@+id/imgView2"
+                android:layout_width="2px"
+                android:layout_height="120px"
+                android:background="@color/white"
+                android:layout_toRightOf="@+id/topRlMonthly"                />
+
+            <RelativeLayout
+                android:id="@+id/topRlReferralMoney"
+                android:layout_width="250px"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/imgView2"
+                android:splitMotionEvents="false">
+
+
+                <TextView
+                    android:id="@+id/textViewReferralMoneyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="12px"
+                    android:text="Referral Money"
+                    android:textColor="@color/white"
+                    android:textSize="28px"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/textViewReferralMoneyValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewReferralMoneyText"
                     android:layout_centerHorizontal="true"
                     android:text="@string/rupee_zero"
                     android:textColor="@color/white"
