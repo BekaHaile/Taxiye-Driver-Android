@@ -274,7 +274,7 @@ public class ShareActivity extends Activity {
 					} else {
 						SmsManager smsManager = SmsManager.getDefault();
 						smsManager.sendTextMessage("+91" + code, null, " " + Data.userData.referralSMSToCustomer + " ", null, null);
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है");
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
 						dialog.dismiss();
 					}
 

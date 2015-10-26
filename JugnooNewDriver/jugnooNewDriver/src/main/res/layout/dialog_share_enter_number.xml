@@ -20,7 +20,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="2px"
+            android:padding="1px"
             android:splitMotionEvents="false" >
 
             <TextView
@@ -79,8 +79,8 @@
 
                 <Button
                     android:id="@+id/btnCancel"
-                    android:layout_width="308px"
-                    android:layout_height="90px"
+                    android:layout_width="309px"
+                    android:layout_height="match_parent"
                     android:background="@drawable/grey_btn_br_selector"
                     android:singleLine="true"
                     android:text="Cancel"
@@ -89,8 +89,8 @@
 
                 <Button
                     android:id="@+id/btnOk"
-                    android:layout_width="308px"
-                    android:layout_height="90px"
+                    android:layout_width="309px"
+                    android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
                     android:background="@drawable/blue_btn_bl_selector"
                     android:singleLine="true"
