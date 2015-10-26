@@ -1063,22 +1063,19 @@ public class JSONParser {
 
 		try {
 			Data.cancelOptionsList = new ArrayList<>();
-			Data.cancelOptionsList.add(new CancelOption("Driver is late"));
-			Data.cancelOptionsList.add(new CancelOption("Driver denied duty"));
-			Data.cancelOptionsList.add(new CancelOption("Changed my mind"));
-			Data.cancelOptionsList.add(new CancelOption("Booked another auto"));
+			Data.cancelOptionsList.add(new CancelOption("ऑटो ख़राब है"));
+			Data.cancelOptionsList.add(new CancelOption("ट्रैफिक"));
+			Data.cancelOptionsList.add(new CancelOption("गलती से एक्सेप्ट किया"));
+			Data.cancelOptionsList.add(new CancelOption("कस्टमर ने राइड कैंसिल करने के लिए कहा"));
+			Data.cancelOptionsList.add(new CancelOption("कस्टमर से संपर्क नहीं हो पा रहा है"));
+			Data.cancelOptionsList.add(new CancelOption("कस्टमर का बुरा व्यवहार"));
 
-			JSONObject jCancellation = jObj.getJSONObject("cancellation");
-			String message = jCancellation.getString("message");
-
-			String additionalReason = jCancellation.getString("addn_reason");
-
-			JSONArray jReasons = jCancellation.getJSONArray("reasons");
+			JSONArray jCancellationReasons = jObj.getJSONArray("cancellation_reasons");
 
 			Data.cancelOptionsList.clear();
 
-			for (int i = 0; i < jReasons.length(); i++) {
-				Data.cancelOptionsList.add(new CancelOption(jReasons.getString(i)));
+			for (int i = 0; i < jCancellationReasons.length(); i++) {
+				Data.cancelOptionsList.add(new CancelOption(jCancellationReasons.getString(i)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
