@@ -298,14 +298,18 @@ public class JSONParser {
 
         String accessToken = userData.getString("access_token");
 
-		String referralSMSToCustomer = userData.optString("referral_sms_to_customer", "");
+		String referralCode = userData.getString("referral_code");
+
+		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
+				"Use my code " +referralCode+" to download Jugnoo customer App and earn jugnoo cash." +
+				"Download it from here\nhttp://smarturl.it/jugnoo");
 
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
 		
 		return new UserData(accessToken, userData.getString("user_name"),
-				userData.getString("user_image"), userData.getString("referral_code"), userData.getString("phone_no"), freeRideIconDisable,
+				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, referralSMSToCustomer);
 	}

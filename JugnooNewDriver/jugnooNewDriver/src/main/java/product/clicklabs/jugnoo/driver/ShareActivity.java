@@ -267,15 +267,20 @@ public class ShareActivity extends Activity {
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					String code = customerNumber.getText().toString().trim();
-					if ("".equalsIgnoreCase(code)) {
-						customerNumber.requestFocus();
-						customerNumber.setError("Phone Number can't be empty.");
-					} else {
-						SmsManager smsManager = SmsManager.getDefault();
-						smsManager.sendTextMessage("+91" + code, null, " " + Data.userData.referralSMSToCustomer + " ", null, null);
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
-						dialog.dismiss();
+					try {
+						String code = customerNumber.getText().toString().trim();
+						if ("".equalsIgnoreCase(code)) {
+							customerNumber.requestFocus();
+							customerNumber.setError("Phone Number can't be empty.");
+						} else {
+							SmsManager smsManager = SmsManager.getDefault();
+							smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
+
+							DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
+							dialog.dismiss();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 				}
