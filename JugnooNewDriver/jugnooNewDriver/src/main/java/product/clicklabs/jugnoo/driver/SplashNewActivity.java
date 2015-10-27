@@ -329,7 +329,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		}
 
 
-
 	}
 	
 	public void getDeviceToken(){
@@ -625,18 +624,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				}
 
 
-//				if(Utils.uberInstall(activity)){
-//					params.put("uber_installed", "1");
-//				}
-//				else{
-//					params.put("uber_installed", "0");
-//				}
-
 				if(Utils.olaInstall(activity)){
 					params.put("ola_installed", "1");
 				}
 				else{
 					params.put("ola_installed", "0");
+				}
+
+
+				if(Utils.isDeviceRooted()){
+					params.put("device_rooted", "1");
+				}
+				else{
+					params.put("device_rooted", "0");
 				}
 
 
