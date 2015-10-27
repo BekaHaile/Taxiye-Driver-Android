@@ -395,6 +395,13 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				params.put("ola_installed", "0");
 			}
 
+			if(Utils.isDeviceRooted()){
+				params.put("device_rooted", "1");
+			}
+			else{
+				params.put("device_rooted", "0");
+			}
+
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {

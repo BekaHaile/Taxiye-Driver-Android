@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -397,6 +398,14 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
+
+			boolean rooted = Utils.isDeviceRooted();
+			if(rooted){
+				DialogPopup.alertPopup(this, "", " rooted: " + rooted);
+			}
+			else{
+				DialogPopup.alertPopup(this, "", " rooted: " + rooted);
+			}
 
 			Log.i("register_using_email params", params.toString());
 
