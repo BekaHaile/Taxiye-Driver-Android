@@ -25,9 +25,9 @@ public class DriverHistoryActivity extends FragmentActivity{
 	
 	Button backBtn;
 
-	RelativeLayout relativeLayoutRides, relativeLayoutMissed;
-	TextView textViewRides, textViewMissed, textViewDailyValue, textViewMonthly, textViewDailyText,
-			textViewReferralMoneyText, textViewReferralMoneyValue, textViewMonthlyText ;
+	RelativeLayout relativeLayoutRides, relativeLayoutMissed, relativeLayoutReferralMoney;
+	TextView textViewRides, textViewMissed, textViewDailyText, textViewDailyValue, textViewMonthlyText, textViewMonthlyValue,
+			textViewReferralMoneyText, textViewReferralMoneyValue;
 	ImageView imageViewRides, imageViewMissed;
 	
 	ViewPager viewPagerDriverHistory;
@@ -44,26 +44,28 @@ public class DriverHistoryActivity extends FragmentActivity{
 		new ASSL(DriverHistoryActivity.this, relative, 1134, 720, false);
 		
 		
-		backBtn = (Button) findViewById(R.id.backBtn); 
-		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Data.latoRegular(getApplicationContext()),Typeface.BOLD);
-		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewReferralMoneyText = (TextView) findViewById(R.id.textViewReferralMoneyText); textViewReferralMoneyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewReferralMoneyValue = (TextView) findViewById(R.id.textViewReferralMoneyValue); textViewReferralMoneyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		backBtn = (Button) findViewById(R.id.backBtn);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		relativeLayoutMissed = (RelativeLayout) findViewById(R.id.relativeLayoutMissed);
+		relativeLayoutReferralMoney = (RelativeLayout) findViewById(R.id.relativeLayoutReferralMoney);
+		relativeLayoutReferralMoney.setVisibility(View.GONE);
 		
 		textViewRides = (TextView) findViewById(R.id.textViewRides); textViewRides.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewMissed = (TextView) findViewById(R.id.textViewMissed); textViewMissed.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewDailyText = (TextView) findViewById(R.id.textViewDailyText); textViewDailyText.setTypeface(Data.latoRegular(getApplicationContext()),Typeface.BOLD);
 		textViewDailyValue = (TextView) findViewById(R.id.textViewDailyValue); textViewDailyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewMonthly = (TextView) findViewById(R.id.textViewMonthly); textViewMonthly.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText); textViewMonthlyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewMonthlyValue = (TextView) findViewById(R.id.textViewMonthlyValue); textViewMonthlyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyText = (TextView) findViewById(R.id.textViewReferralMoneyText); textViewReferralMoneyText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		textViewReferralMoneyValue = (TextView) findViewById(R.id.textViewReferralMoneyValue); textViewReferralMoneyValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		
 		imageViewRides = (ImageView) findViewById(R.id.imageViewRides);
 		imageViewMissed = (ImageView) findViewById(R.id.imageViewMissed);
 
 
 		textViewDailyValue.setText("");
-		textViewMonthly.setText("");
+		textViewMonthlyValue.setText("");
 		textViewReferralMoneyValue.setText("");
 
 
@@ -118,9 +120,14 @@ public class DriverHistoryActivity extends FragmentActivity{
 	UpdateDriverEarnings updateDriverEarnings = new UpdateDriverEarnings() {
 		@Override
 		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings, String refferalMoney) {
-			textViewDailyValue.setText(getResources().getString(R.string.rupee)+" "+ dailyEarnings);
-			textViewMonthly.setText(getResources().getString(R.string.rupee)+" "+monthlyEarnings);
+			textViewDailyValue.setText(getResources().getString(R.string.rupee) + " " + dailyEarnings);
+			textViewMonthlyValue.setText(getResources().getString(R.string.rupee) + " " + monthlyEarnings);
 			textViewReferralMoneyValue.setText(getResources().getString(R.string.rupee) + " " + refferalMoney);
+			if(null == refferalMoney){
+				relativeLayoutReferralMoney.setVisibility(View.GONE);
+			} else{
+				relativeLayoutReferralMoney.setVisibility(View.VISIBLE);
+			}
 		}
 	};
 
