@@ -22,8 +22,10 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
 
@@ -309,7 +311,7 @@ public class Utils {
 	private static DecimalFormat decimalFormatMoney;
 	public static DecimalFormat getDecimalFormatForMoney(){
 		if(decimalFormatMoney == null){
-			decimalFormatMoney = new DecimalFormat("#.##");
+			decimalFormatMoney = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 		}
 		return decimalFormatMoney;
 	}

@@ -17,6 +17,8 @@ import android.support.v4.app.NotificationCompat;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
@@ -160,10 +162,10 @@ public class MeteringService extends Service {
     }
     
     
-    private static DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    private static DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
     private static DecimalFormat getDecimalFormat(){
     	if(decimalFormat == null){
-    		decimalFormat = new DecimalFormat("#.##");
+    		decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
     	}
     	return decimalFormat;
     }

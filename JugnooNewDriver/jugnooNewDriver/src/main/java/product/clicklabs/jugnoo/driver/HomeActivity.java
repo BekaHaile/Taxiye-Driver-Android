@@ -72,6 +72,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -346,8 +347,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public String language = "";
 
 
-	DecimalFormat decimalFormat = new DecimalFormat("#.#");
-	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
+	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
@@ -434,6 +435,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,
 //            getBaseContext().getResources().getDisplayMetrics());
+
+		decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+		decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 
 		initializeGPSForegroundLocationFetcher();
@@ -4446,6 +4450,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		params.put("last_accurate_latitude", ""+lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", ""+lastAccurateLatLng.longitude);
 		params.put("ride_distance_using_haversine", ""+decimalFormat.format(totalHaversineDistanceInKm));
+
 
 		rparams.put("access_token", Data.userData.accessToken);
 		rparams.put("engagement_id", Data.dEngagementId);
