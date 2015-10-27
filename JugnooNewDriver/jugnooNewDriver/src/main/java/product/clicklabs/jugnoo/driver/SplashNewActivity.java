@@ -33,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -626,6 +625,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("uber_installed", "0");
 				}
 
+				if(Utils.telerickshawInstall(activity)){
+					params.put("telerickshaw_installed", "1");
+				}
+				else{
+					params.put("telerickshaw_installed", "0");
+				}
 
 				if(Utils.olaInstall(activity)){
 					params.put("ola_installed", "1");
