@@ -72,6 +72,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -104,7 +105,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -270,7 +270,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout driverWaitRl;
 	ImageView imageViewIRWaitSep;
 	RelativeLayout inrideFareInfoRl;
-	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue;
+	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue, textViewInRideConvenienceCharges;
 	Button inrideFareInfoBtn;
 	Button driverEndRideBtn;
 
@@ -321,7 +321,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	Button reviewSubmitBtn;
 	RelativeLayout reviewFareInfoInnerRl;
-	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue;
+	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue, textViewReviewConvenienceCharges;
 	Button reviewFareInfoBtn;
 
 	ScrollView scrollViewEndRide;
@@ -347,8 +347,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public String language = "";
 
 
-	DecimalFormat decimalFormat = new DecimalFormat("#.#");
-	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#");
+	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
@@ -435,6 +435,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,
 //            getBaseContext().getResources().getDisplayMetrics());
+
+		decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+		decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 
 		initializeGPSForegroundLocationFetcher();
@@ -657,6 +660,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		inrideMinFareValue = (TextView) findViewById(R.id.inrideMinFareValue); inrideMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		inrideFareAfterText = (TextView) findViewById(R.id.inrideFareAfterText); inrideFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
 		inrideFareAfterValue = (TextView) findViewById(R.id.inrideFareAfterValue); inrideFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewInRideConvenienceCharges = (TextView) findViewById(R.id.textViewInRideConvenienceCharges); textViewInRideConvenienceCharges.setTypeface(Data.latoRegular(this));
+		textViewInRideConvenienceCharges.setVisibility(View.GONE);
 		inrideFareInfoBtn = (Button) findViewById(R.id.inrideFareInfoBtn);
 
 		driverWaitRl.setVisibility(View.GONE);
@@ -752,6 +757,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		reviewMinFareValue = (TextView) findViewById(R.id.reviewMinFareValue); reviewMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
 		reviewFareAfterText = (TextView) findViewById(R.id.reviewFareAfterText); reviewFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
 		reviewFareAfterValue = (TextView) findViewById(R.id.reviewFareAfterValue); reviewFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
+		textViewReviewConvenienceCharges = (TextView) findViewById(R.id.textViewReviewConvenienceCharges); textViewReviewConvenienceCharges.setTypeface(Data.latoRegular(this));
+		textViewReviewConvenienceCharges.setVisibility(View.GONE);
 		reviewFareInfoBtn = (Button) findViewById(R.id.reviewFareInfoBtn);
 		reviewFareInfoInnerRl = (RelativeLayout) findViewById(R.id.reviewFareInfoInnerRl);
 
@@ -2176,7 +2183,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
 					try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
 
-					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText);
+					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
 					jugnooRideOverText.setText("The Jugnoo ride is over.");
 					takeFareText.setText("Please take the fare as shown above from the customer.");
@@ -2252,7 +2259,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
 				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
 
-				setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText);
+				setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
 				reviewReachedDistanceRl.setVisibility(View.GONE);
 				linearLayoutMeterFare.setVisibility(View.VISIBLE);
@@ -2487,7 +2494,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					setAssignedCustomerInfoToViews(mode);
 
-					setTextToFareInfoTextViews(inrideMinFareValue, inrideFareAfterValue, inrideFareAfterText);
+					setTextToFareInfoTextViews(inrideMinFareValue, inrideFareAfterValue, inrideFareAfterText, textViewInRideConvenienceCharges);
 
 
 
@@ -2857,8 +2864,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try{
 			if(Data.fareStructure != null){
 				if (Data.fareStructure.fareFactor > 1 || Data.fareStructure.fareFactor < 1) {
-					textViewInRideFareFactor.setVisibility(View.VISIBLE);
-					textViewInRideFareFactor.setText("Rate: " + decimalFormat.format(Data.fareStructure.fareFactor) + "x");
+					textViewInRideFareFactor.setVisibility(View.GONE);
+//					textViewInRideFareFactor.setVisibility(View.VISIBLE);
+//					textViewInRideFareFactor.setText("Rate: " + decimalFormat.format(Data.fareStructure.fareFactor) + "x");
 				} else {
 					textViewInRideFareFactor.setVisibility(View.GONE);
 				}
@@ -2984,7 +2992,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void setTextToFareInfoTextViews(TextView minFareValue, TextView fareAfterValue, TextView fareAfterText){
+	public void setTextToFareInfoTextViews(TextView minFareValue, TextView fareAfterValue, TextView fareAfterText, TextView textViewConvenienceCharges){
 
 		minFareValue.setText("Rs " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.fixedFare) + " for "
 				+ decimalFormat.format(Data.fareStructure.thresholdDistance) + " km");
@@ -2999,6 +3007,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		fareAfterText.setText("");
 		fareAfterText.append(sstr);
 		fareAfterText.append(" (after " + decimalFormat.format(Data.fareStructure.thresholdDistance) + " km)");
+
+		if(Data.fareStructure.getEffectiveConvenienceCharge() > 0){
+			textViewConvenienceCharges.setVisibility(View.VISIBLE);
+			textViewConvenienceCharges.setText("Convenience charges for customer: "
+					+getResources().getString(R.string.rupee)+" "+decimalFormat.format(Data.fareStructure.getEffectiveConvenienceCharge()));
+		}
+		else{
+			textViewConvenienceCharges.setVisibility(View.GONE);
+		}
 	}
 
 
@@ -3743,6 +3760,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 										e.printStackTrace();
 									}
 								}
+								if(jObj.has("convenience_charge")){
+									try{
+										Data.fareStructure.convenienceCharge = jObj.getDouble("convenience_charge");
+									} catch(Exception e){
+										e.printStackTrace();
+									}
+								}
+								if(jObj.has("convenience_charge_waiver")){
+									try{
+										Data.fareStructure.convenienceChargeWaiver = jObj.getDouble("convenience_charge_waiver");
+									} catch(Exception e){
+										e.printStackTrace();
+									}
+								}
+//									"convenience_charge": 10,
+//									"convenience_charge_waiver": 0,
+
 
 								//"http://jugnoo-images.s3.amazonaws.com/user_profile/user.png";
 
@@ -4417,6 +4451,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		params.put("last_accurate_longitude", ""+lastAccurateLatLng.longitude);
 		params.put("ride_distance_using_haversine", ""+decimalFormat.format(totalHaversineDistanceInKm));
 
+
 		rparams.put("access_token", Data.userData.accessToken);
 		rparams.put("engagement_id", Data.dEngagementId);
 		rparams.put("customer_id", Data.dCustomerId);
@@ -4528,9 +4563,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void failure(RetrofitError error) {
+				Log.e("error", "="+error);
 				endRideOffline(activity, url, rparams, eoRideTimeInMillis, eoWaitTimeInMillis,
 						(AutoCustomerInfo) Data.assignedCustomerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 			}
+
+
+
 		});
 	}
 

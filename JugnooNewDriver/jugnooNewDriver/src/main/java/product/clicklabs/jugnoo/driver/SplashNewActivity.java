@@ -641,7 +641,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 
 
-
 				RestClient.getApiServices().accessTokenLoginRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
