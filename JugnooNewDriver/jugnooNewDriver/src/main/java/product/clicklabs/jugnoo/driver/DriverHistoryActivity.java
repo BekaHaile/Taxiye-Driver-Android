@@ -119,11 +119,11 @@ public class DriverHistoryActivity extends FragmentActivity{
 
 	UpdateDriverEarnings updateDriverEarnings = new UpdateDriverEarnings() {
 		@Override
-		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings, String refferalMoney) {
+		public void updateDriverEarnings(String dailyEarnings, String monthlyEarnings, String referralMoney) {
 			textViewDailyValue.setText(getResources().getString(R.string.rupee) + " " + dailyEarnings);
 			textViewMonthlyValue.setText(getResources().getString(R.string.rupee) + " " + monthlyEarnings);
-			textViewReferralMoneyValue.setText(getResources().getString(R.string.rupee) + " " + refferalMoney);
-			if(null == refferalMoney){
+			textViewReferralMoneyValue.setText(getResources().getString(R.string.rupee) + " " + referralMoney);
+			if(null == referralMoney){
 				relativeLayoutReferralMoney.setVisibility(View.GONE);
 			} else{
 				relativeLayoutReferralMoney.setVisibility(View.VISIBLE);

@@ -304,7 +304,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 								}
 
 								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
-										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getRefferalMoney());
+										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getReferralMoney());
 
 //								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
 //										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getRefferalMoney());
