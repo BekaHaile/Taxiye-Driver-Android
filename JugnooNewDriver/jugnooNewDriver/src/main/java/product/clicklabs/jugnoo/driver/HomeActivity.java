@@ -7380,6 +7380,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	}
 
+	private void deleteGpsData(){
+        /* Cold start */
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("all", true);
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER,"delete_aiding_data", null);
+		locationManager.sendExtraCommand("gps", "force_xtra_injection", bundle);
+		locationManager.sendExtraCommand("gps", "force_time_injection", bundle);
+	}
+
 
 	@Override
 	public void handleCancelRideSuccess() {
