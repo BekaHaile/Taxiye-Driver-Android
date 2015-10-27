@@ -33,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -328,17 +329,16 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //
 //		}
 
-
 	}
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-			
+
 			@Override
 			public void deviceTokenReceived(final String regId) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						Data.deviceToken = regId;
@@ -347,10 +347,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 						pushAPIs(SplashNewActivity.this);
 					}
 				});
-				
+
 			}
 		});
+
 	}
+
+
 	
 	
 	@Override

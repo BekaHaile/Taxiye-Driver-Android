@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Convinence Charge"
+                    android:text="Convenience Charge"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 

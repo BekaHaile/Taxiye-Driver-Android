@@ -251,16 +251,7 @@ public class GCMIntentService extends IntentService {
 					 * any message types you're not interested in, or that you don't
 					 * recognize.
 					 */
-				if (GoogleCloudMessaging.
-					MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-	//	                sendNotification("Send error: " + extras.toString());
-				} else if (GoogleCloudMessaging.
-					MESSAGE_TYPE_DELETED.equals(messageType)) {
-	//	                sendNotification("Deleted messages on server: " +
-	//	                        extras.toString());
-					// If it's a regular GCM message, do some work.
-				} else if (GoogleCloudMessaging.
-					MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+
 					// This loop represents the service doing some work.
 
 					String SHARED_PREF_NAME1 = "myPref", SP_ACCESS_TOKEN_KEY = "access_token";
@@ -528,6 +519,8 @@ public class GCMIntentService extends IntentService {
 												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 									}
 
+
+
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -536,11 +529,10 @@ public class GCMIntentService extends IntentService {
 
 						} catch (Exception e) {
 							e.printStackTrace();
+
 						}
 					}
 
-
-				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -181,7 +181,7 @@ public class RideDetailsActivity extends Activity {
 			}
 
 			textViewRateAppliedValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorValue)));
-			textViewRateApplied.setText("Rate Applied " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
+			textViewRateApplied.setText("Rate Applied " + Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
 
 			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
 
