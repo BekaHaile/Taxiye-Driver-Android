@@ -399,12 +399,11 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
 
-			boolean rooted = Utils.isDeviceRooted();
-			if(rooted){
-				DialogPopup.alertPopup(this, "", " rooted: " + rooted);
+			if(Utils.isDeviceRooted()){
+				params.put("device_rooted", "1");
 			}
 			else{
-				DialogPopup.alertPopup(this, "", " rooted: " + rooted);
+				params.put("device_rooted", "0");
 			}
 
 			Log.i("register_using_email params", params.toString());
