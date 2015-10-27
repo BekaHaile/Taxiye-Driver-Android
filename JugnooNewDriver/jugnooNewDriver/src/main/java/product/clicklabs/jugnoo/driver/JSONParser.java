@@ -301,7 +301,7 @@ public class JSONParser {
 		String referralCode = userData.getString("referral_code");
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-				"Use my code " +referralCode+" to download Jugnoo customer App and earn jugnoo cash." +
+				"Use my code " +referralCode+" to download Jugnoo customer App and earn jugnoo cash.\n" +
 				"Download it from here\nhttp://smarturl.it/jugnoo");
 
 		Data.termsAgreed = 1;

@@ -3,12 +3,10 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.telephony.SmsManager;
@@ -16,24 +14,20 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
-import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
 
 public class ShareActivity extends Activity {
@@ -273,11 +267,17 @@ public class ShareActivity extends Activity {
 							customerNumber.requestFocus();
 							customerNumber.setError("Phone Number can't be empty.");
 						} else {
-							SmsManager smsManager = SmsManager.getDefault();
-							smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
+							code = Utils.retrievePhoneNumberTenChars(code);
+							if (!Utils.validPhoneNumber(code)) {
+								customerNumber.requestFocus();
+								customerNumber.setError("Please enter valid phone number");
+							} else {
+								SmsManager smsManager = SmsManager.getDefault();
+								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
 
-							DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
-							dialog.dismiss();
+								DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
+								dialog.dismiss();
+							}
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
