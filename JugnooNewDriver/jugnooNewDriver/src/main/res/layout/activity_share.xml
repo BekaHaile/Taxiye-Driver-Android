@@ -3,7 +3,6 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
-              android:background="@drawable/bg_image"
               android:orientation="vertical"
               android:splitMotionEvents="false">
 
@@ -42,7 +41,8 @@
         <RelativeLayout
             android:id="@+id/shareImgRl"
             android:layout_width="match_parent"
-            android:layout_height="650px"
+            android:layout_height="640px"
+            android:background="@drawable/bg_image"
             >
 
 
