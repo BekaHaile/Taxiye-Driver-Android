@@ -132,7 +132,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 	class ViewHolderDriverRides {
 		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewActualFareFare,
-				textViewCustomerPaid, textViewAccountBalance, textViewBalanceText, distanceValue, rideTimeValue, waitTimeValue;
+				textViewCustomerPaid, textViewAccountBalance, textViewBalanceText, distanceValue, rideTimeValue,
+				waitTimeValue;
 		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
@@ -233,9 +234,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			double balance = Double.parseDouble(rideInfo.accountBalance);
 			if (balance < 0) {
-				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.red_status));
-				holder.textViewBalanceText.setText("(-)Account");
-				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				holder.textViewBalanceText.setText("Money to\nJugnoo");
+				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			} else {
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));

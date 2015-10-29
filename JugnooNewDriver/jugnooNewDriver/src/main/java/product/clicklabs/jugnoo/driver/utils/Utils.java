@@ -165,15 +165,15 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Context context) {
-//		return false;
-		if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-			if (Settings.Secure.getString(context.getContentResolver(),
-					Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
-				return false;
-			else return true;
-		} else {
-			return false;
-		}
+		return false;
+//		if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+//			if (Settings.Secure.getString(context.getContentResolver(),
+//					Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
+//				return false;
+//			else return true;
+//		} else {
+//			return false;
+//		}
 	}
 
 
