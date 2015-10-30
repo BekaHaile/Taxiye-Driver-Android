@@ -33,6 +33,9 @@ public class SPLabels {
     public static final String
             NOTIFICATION_ID = "notificationId";
 
+    public static final String
+            GPS_REFRESH_TIME = "GpsRefreshTime";
+
     public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
