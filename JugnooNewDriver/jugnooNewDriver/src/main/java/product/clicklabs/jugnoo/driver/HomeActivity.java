@@ -1817,7 +1817,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							}
 							changeJugnooONUIAndInitService();
 							if(jugnooOnFlag == 1){
-								AGPSRefresh.refreshGpsData(HomeActivity.this);
+								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
 							}
 						}
 					}
@@ -4701,8 +4701,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					rideTimeChronometer.start();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 				}
-
+				AGPSRefresh.hardRefreshGpsData(HomeActivity.this);
 				DialogPopup.dismissLoadingDialog();
+
 			}
 
 			@Override
