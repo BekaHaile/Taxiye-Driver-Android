@@ -3932,6 +3932,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									}
 									if (userData.has("jugnoo_balance")) {
 										jugnooBalance = userData.getDouble("jugnoo_balance");
+										Log.i("jugnooblance", String.valueOf(jugnooBalance));
 									}
 
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
