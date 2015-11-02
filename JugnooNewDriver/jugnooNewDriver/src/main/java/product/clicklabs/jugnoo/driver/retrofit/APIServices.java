@@ -31,7 +31,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")
-	void forgotpassword(@Field("email") String email,
+	void forgotpassword(@Field("phone_number") String phoneNumber,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -106,21 +108,22 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 			@Override
 			public void onClick(View v) {
 				
-				String email = emailEt.getText().toString().trim();
+				String phoneNumber = emailEt.getText().toString().trim();
 				
-				if("".equalsIgnoreCase(email)){
+				if("".equalsIgnoreCase(phoneNumber)){
 					emailEt.requestFocus();
-					emailEt.setError("Please enter email");
+					emailEt.setError("Please enter phone number");
 				}
 				else{
-					if(isEmailValid(email)){
-						forgotPasswordAsync(ForgotPasswordScreen.this, email);
+					String phone = Utils.retrievePhoneNumberTenChars(phoneNumber);
+					if(Utils.validPhoneNumber(phone)){
+						forgotPasswordAsync(ForgotPasswordScreen.this, phone);
 						FlurryEventLogger.event(CHANGE_PASSWORD_ENTER_EMAIL);
 						FlurryEventLogger.event(CHANGE_PASSWORD);
 					}
 					else{
 						emailEt.requestFocus();
-						emailEt.setError("Please enter valid email");
+						emailEt.setError("Please enter valid phone number");
 					}
 				}
 				
@@ -147,26 +150,26 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 			}
 		});
 
-
-        try {
-            if(getIntent().hasExtra("forgotEmail")){
-                emailAlready = getIntent().getStringExtra("forgotEmail");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            if(getIntent().hasExtra("fromPreviousAccounts")){
-                fromPreviousAccounts = getIntent().getBooleanExtra("fromPreviousAccounts", false);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-		emailEt.setText(emailAlready);
-		emailEt.setSelection(emailEt.getText().toString().length());
+//
+//        try {
+//            if(getIntent().hasExtra("forgotEmail")){
+//                emailAlready = getIntent().getStringExtra("forgotEmail");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            if(getIntent().hasExtra("fromPreviousAccounts")){
+//                fromPreviousAccounts = getIntent().getBooleanExtra("fromPreviousAccounts", false);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//		emailEt.setText(emailAlready);
+//		emailEt.setSelection(emailEt.getText().toString().length());
 		
 		final View activityRootView = findViewById(R.id.mainLinear);
 		activityRootView.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -214,9 +217,9 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 //	Retrofit
 
 
-	public void forgotPasswordAsync(final Activity activity, final String email){
+	public void forgotPasswordAsync(final Activity activity, final String phoneNumber){
 		DialogPopup.showLoadingDialog(activity, "Loading...");
-		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
+		RestClient.getApiServices().forgotpassword(phoneNumber, new Callback<BookingHistoryResponse>() {
 			@Override
 			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
 				if(response != null) {
@@ -275,9 +278,9 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 	
 	
 	
-	boolean isEmailValid(CharSequence email) {
-		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-	}
+//	boolean isEmailValid(CharSequence phone_number) {
+//		return Patterns.PHONE.matcher(phone_number).matches();
+//	}
 	
 	
 	@Override
