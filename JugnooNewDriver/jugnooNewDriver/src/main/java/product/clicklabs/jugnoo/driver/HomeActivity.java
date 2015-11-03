@@ -3703,6 +3703,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			if(Data.openedDriverRideRequest != null){
 				params.put("reference_id", ""+Data.openedDriverRideRequest.referenceId);
+				Log.i("request", String.valueOf(params));
 			}
 			RestClient.getApiServices().driverAcceptRideRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
