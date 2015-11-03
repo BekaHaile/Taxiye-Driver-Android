@@ -388,11 +388,26 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				params.put("uber_installed", "0");
 			}
 
+			if(Utils.telerickshawInstall(activity)){
+				params.put("telerickshaw_installed", "1");
+			}
+			else{
+				params.put("telerickshaw_installed", "0");
+			}
+
+
 			if(Utils.olaInstall(activity)){
 				params.put("ola_installed", "1");
 			}
 			else{
 				params.put("ola_installed", "0");
+			}
+
+			if(Utils.isDeviceRooted()){
+				params.put("device_rooted", "1");
+			}
+			else{
+				params.put("device_rooted", "0");
 			}
 
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {

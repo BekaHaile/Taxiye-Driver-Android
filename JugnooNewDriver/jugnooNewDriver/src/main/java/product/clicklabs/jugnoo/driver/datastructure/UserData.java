@@ -5,11 +5,11 @@ public class UserData {
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 		autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable;
-    public String deiValue, customerReferralBonus, driverSupportNumber;
+    public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
 			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable,
-					String driverSupportNumber){
+					String driverSupportNumber, String referralSMSToCustomer){
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -21,6 +21,7 @@ public class UserData {
 		this.mealsEnabled = mealsEnabled;
 		this.fatafatEnabled = fatafatEnabled;
 		this.autosAvailable = autosAvailable;
+
 		this.mealsAvailable = mealsAvailable;
 		this.fatafatAvailable = fatafatAvailable;
         this.deiValue = deiValue;
@@ -29,5 +30,6 @@ public class UserData {
 		this.sharingEnabled = sharingEnabled;
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
+		this.referralSMSToCustomer = referralSMSToCustomer;
 	}
 }

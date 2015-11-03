@@ -328,18 +328,16 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //
 //		}
 
-
-
 	}
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-			
+
 			@Override
 			public void deviceTokenReceived(final String regId) {
 				runOnUiThread(new Runnable() {
-					
+
 					@Override
 					public void run() {
 						Data.deviceToken = regId;
@@ -348,10 +346,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 						pushAPIs(SplashNewActivity.this);
 					}
 				});
-				
+
 			}
 		});
+
 	}
+
+
 	
 	
 	@Override
@@ -624,13 +625,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("uber_installed", "0");
 				}
 
-
-//				if(Utils.uberInstall(activity)){
-//					params.put("uber_installed", "1");
-//				}
-//				else{
-//					params.put("uber_installed", "0");
-//				}
+				if(Utils.telerickshawInstall(activity)){
+					params.put("telerickshaw_installed", "1");
+				}
+				else{
+					params.put("telerickshaw_installed", "0");
+				}
 
 				if(Utils.olaInstall(activity)){
 					params.put("ola_installed", "1");
@@ -639,6 +639,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("ola_installed", "0");
 				}
 
+
+				if(Utils.isDeviceRooted()){
+					params.put("device_rooted", "1");
+				}
+				else{
+					params.put("device_rooted", "0");
+				}
 
 
 

@@ -640,7 +640,7 @@
                         <RelativeLayout
                             android:id="@+id/inrideFareInfoRl"
                             android:layout_width="match_parent"
-                            android:layout_height="120px"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:background="@color/white_translucent"
                             android:visibility="visible"
@@ -655,7 +655,7 @@
                                 android:id="@+id/inrideMinFareLinear"
                                 android:layout_width="235px"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
+                                android:layout_marginTop="10px"
                                 android:layout_marginLeft="20px"
                                 android:orientation="vertical" >
 
@@ -686,7 +686,7 @@
                                 android:id="@+id/inrideFareAfterLinear"
                                 android:layout_width="360px"
                                 android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
+                                android:layout_marginTop="10px"
                                 android:layout_marginLeft="25px"
                                 android:layout_toRightOf="@+id/inrideMinFareLinear"
                                 android:orientation="vertical" >
@@ -723,6 +723,28 @@
                                 android:layout_marginRight="20px"
                                 android:background="@drawable/info_btn"
                                 android:tag="mwar" />
+
+                            <LinearLayout
+                                android:layout_below="@+id/inrideMinFareLinear"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10px"
+                                >
+                                <TextView
+                                    android:id="@+id/textViewInRideConvenienceCharges"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="5px"
+                                    android:layout_marginLeft="20px"
+                                    android:layout_marginRight="20px"
+                                    android:text="Convenience charges for customer: Rs 0"
+                                    android:textColor="@color/black"
+                                    android:textSize="28px"
+                                    android:visibility="gone"
+                                    />
+
+                            </LinearLayout>
+
                         </RelativeLayout>
 
                     </RelativeLayout>
@@ -876,7 +898,7 @@
                                                 android:layout_height="wrap_content"
                                                 android:layout_below="@+id/reviewDistanceText"
                                                 android:layout_centerHorizontal="true"
-                                                android:layout_marginTop="px"
+                                                android:layout_marginTop="5px"
                                                 android:gravity="center"
                                                 android:singleLine="true"
                                                 android:text="4.7 Kms"
@@ -1558,7 +1580,7 @@
                                 <RelativeLayout
                                     android:id="@+id/reviewFareInfoInnerRl"
                                     android:layout_width="match_parent"
-                                    android:layout_height="100px"
+                                    android:layout_height="wrap_content"
                                     android:layout_alignParentBottom="true"
                                     android:background="@color/white_translucent"
                                     android:visibility="visible"
@@ -1568,7 +1590,7 @@
                                         android:id="@+id/reviewMinFareLinear"
                                         android:layout_width="235px"
                                         android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="10px"
                                         android:layout_marginLeft="20px"
                                         android:orientation="vertical">
 
@@ -1599,7 +1621,7 @@
                                         android:id="@+id/reviewFareAfterLinear"
                                         android:layout_width="360px"
                                         android:layout_height="wrap_content"
-                                        android:layout_centerVertical="true"
+                                        android:layout_marginTop="10px"
                                         android:layout_marginLeft="25px"
                                         android:layout_toRightOf="@+id/reviewMinFareLinear"
                                         android:orientation="vertical">
@@ -1636,6 +1658,27 @@
                                         android:layout_marginRight="20px"
                                         android:background="@drawable/info_btn"
                                         android:tag="mwar"/>
+
+                                    <LinearLayout
+                                        android:layout_below="@+id/reviewMinFareLinear"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="10px"
+                                        >
+                                        <TextView
+                                            android:id="@+id/textViewReviewConvenienceCharges"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginBottom="5px"
+                                            android:layout_marginLeft="20px"
+                                            android:layout_marginRight="20px"
+                                            android:text="Convenience charges for customer: Rs 0"
+                                            android:textColor="@color/black"
+                                            android:textSize="28px"
+                                            android:visibility="gone"
+                                            />
+
+                                    </LinearLayout>
 
                                 </RelativeLayout>
 

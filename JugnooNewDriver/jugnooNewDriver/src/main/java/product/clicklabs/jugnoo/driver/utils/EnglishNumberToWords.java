@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 /**
  * Created by shankar on 4/24/15.
@@ -72,7 +74,7 @@ public class EnglishNumberToWords {
 
         // pad with "0"
         String mask = "000000000000";
-        DecimalFormat df = new DecimalFormat(mask);
+        DecimalFormat df = new DecimalFormat(mask, new DecimalFormatSymbols(Locale.ENGLISH));
         snumber = df.format(number);
 
         // XXXnnnnnnnnn

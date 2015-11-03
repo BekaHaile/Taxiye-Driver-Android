@@ -119,7 +119,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
-	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 	
 	
 
@@ -253,7 +253,7 @@ public class Data {
 	
 	
 	
-	private static Typeface latoRegular, museoSlab, latoLight;																// fonts declaration
+	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy;																// fonts declaration
 	
 
 	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
@@ -277,6 +277,13 @@ public class Data {
         }
         return latoLight;
     }
+
+	public static Typeface latoHeavy(Context appContext) {											// accessing fonts functions
+		if (latoHeavy == null) {
+			latoHeavy = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato-heavy.ttf");
+		}
+		return latoHeavy;
+	}
 
 
 

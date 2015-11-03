@@ -687,7 +687,13 @@ public class GpsDistanceCalculator {
 	}
 
 	public static synchronized int getTrackingFromSP(Context context) {
-		return Prefs.with(context).getInt(SPLabels.TRACKING, 0);
+		try {
+			return Prefs.with(context).getInt(SPLabels.TRACKING, 0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			saveTrackingToSP(context, 0);
+			return 0;
+		}
 	}
 
 	public static synchronized boolean isMeteringStateActive(Context context) {

@@ -12,6 +12,7 @@ public class FareStructure {
 	public double fareFactor;
 
 	public double luggageFare;
+	public double convenienceCharge, convenienceChargeWaiver;
 	
 	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes, double farePerWaitingMin, double freeWaitingMinutes){
 		this.fixedFare = fixedFare;
@@ -23,6 +24,8 @@ public class FareStructure {
 		this.freeWaitingMinutes = freeWaitingMinutes;
 		this.fareFactor = 1;
 		this.luggageFare = 0;
+		this.convenienceCharge = 0;
+		this.convenienceChargeWaiver = 0;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){
@@ -40,13 +43,21 @@ public class FareStructure {
 		
 		double fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKm));
 		fare = fare * fareFactor;
+
+		fare = fare + getEffectiveConvenienceCharge();
+
 		fare = Math.round(fare);
 		return fare;
+	}
+
+	public double getEffectiveConvenienceCharge(){
+		return (convenienceCharge - convenienceChargeWaiver);
 	}
 	
 	@Override
 	public String toString() {
 		return "fixedFare=" + fixedFare + ", thresholdDistance=" + thresholdDistance + ", farePerKm=" + farePerKm + ", farePerMin=" + farePerMin + ", freeMinutes=" + freeMinutes
-				+ ", farePerWaitingMin=" + farePerWaitingMin + ", freeWaitingMinutes=" + freeWaitingMinutes + " fareFactor = " + fareFactor;
+				+ ", farePerWaitingMin=" + farePerWaitingMin + ", freeWaitingMinutes=" + freeWaitingMinutes + " fareFactor = " + fareFactor+", luggageFare="+luggageFare
+				+", convenienceCharge="+convenienceCharge+", convenienceChargeWaiver="+convenienceChargeWaiver;
 	}
 }

@@ -23,7 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.MissedRideInfo;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -252,7 +254,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 										
 										JSONArray missedRidesData = jObj.getJSONArray("missed_rides");
 										missedRideInfos.clear();
-										DecimalFormat decimalFormat = new DecimalFormat("#.#");
+										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 										if(missedRidesData.length() > 0){
 											for(int i=missedRidesData.length()-1; i>=0; i--){
 												JSONObject rideData = missedRidesData.getJSONObject(i);

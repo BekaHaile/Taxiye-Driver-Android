@@ -304,7 +304,10 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 								}
 
 								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
-										bookingHistoryResponse.getMothlyEarnings());
+										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getReferralMoney());
+
+//								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
+//										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getRefferalMoney());
 
 								updateListData("No rides currently", false);
 							}

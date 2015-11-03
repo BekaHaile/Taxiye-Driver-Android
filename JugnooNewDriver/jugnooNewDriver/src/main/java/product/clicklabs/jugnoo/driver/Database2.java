@@ -17,7 +17,6 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
-import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -598,24 +597,37 @@ public class Database2 {																	// class for handling database related 
 			Log.e("insert successful", "= rowId =" + rowId);
 
 		} catch(Exception e){
-			e.printStackTrace();
-			Log.e("e", "=" + e);
-			Database2.getInstance(context);
-			alterTableDriverCurrentLocation();
-			deleteDriverCurrentLocation();
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
-			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
-			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
-			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
-			database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			try {
+				e.printStackTrace();
+				Log.e("e", "=" + e);
+				try {
+					dbInstance = null;
+					Database2.getInstance(context);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				alterTableDriverCurrentLocation();
+				deleteDriverCurrentLocation();
+				ContentValues contentValues = new ContentValues();
+				contentValues.put(Database2.DRIVER_CURRENT_LATITUDE, ""+location.getLatitude());
+				contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
+				contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
+				contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+				database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	public void alterTableDriverCurrentLocation(){
-		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'");
-		database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0'");
-		Log.e("drop query", "done");
+		try {
+			database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'");
+			database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0'");
+			Log.e("drop query", "done");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

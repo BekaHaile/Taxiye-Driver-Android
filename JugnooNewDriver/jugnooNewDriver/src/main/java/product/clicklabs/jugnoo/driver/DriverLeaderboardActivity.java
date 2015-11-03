@@ -89,7 +89,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		textViewDaily.setTypeface(Data.latoRegular(this));
 		textViewWeekly = (TextView) findViewById(R.id.textViewWeekly);
 		textViewWeekly.setTypeface(Data.latoRegular(this));
-		textViewMonthly = (TextView) findViewById(R.id.textViewMonthly);
+		textViewMonthly = (TextView) findViewById(R.id.textViewMonthlyValue);
 		textViewMonthly.setTypeface(Data.latoRegular(this));
 		textViewPositionBottom = (TextView) findViewById(R.id.textViewPositionBottom);
 		textViewPositionBottom.setTypeface(Data.latoRegular(this));
