@@ -191,8 +191,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout topRl;
 	Button menuBtn;
 	Button checkServerBtn;
-	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI;
+	ImageView imageViewTitleBarDEI, imageViewTitleBarOval;
+	TextView textViewTitleBarDEI, textViewTitleBarOnlineHours, imageViewTitleBarOvalText;
 
 
 
@@ -549,7 +549,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		menuBtn = (Button) findViewById(R.id.menuBtn);
 		checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
+		imageViewTitleBarOval = (ImageView) findViewById(R.id.imageViewTitleBarOval);
 		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+		textViewTitleBarOnlineHours = (TextView) findViewById(R.id.textViewTitleBarOnlineHours); textViewTitleBarOnlineHours.setTypeface(Data.latoRegular(this));
+		imageViewTitleBarOvalText = (TextView) findViewById(R.id.imageViewTitleBarOvalText); imageViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
 
 
