@@ -1419,7 +1419,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void onClick(View v) {
 				if(relativeLayoutJugnooCalculatedFare.getVisibility() == View.GONE){
 					relativeLayoutJugnooCalculatedFare.setVisibility(View.VISIBLE);
-					reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+					reviewFareInfoInnerRl.setVisibility(View.GONE);
 					editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
 					fareFetchedFromJugnoo = 1;
 				}
@@ -2210,14 +2210,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								reviewFareInfoInnerRl.setVisibility(View.GONE);
 							}
 							else{
-								reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+								reviewFareInfoInnerRl.setVisibility(View.GONE);
 							}
 						}
 						else{
-							reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+							reviewFareInfoInnerRl.setVisibility(View.GONE);
 						}
 					} catch (Exception e) {
-						reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+						reviewFareInfoInnerRl.setVisibility(View.GONE);
 					}
 					try{
 						if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()) {
@@ -2531,14 +2531,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									inrideFareInfoRl.setVisibility(View.GONE);
 								}
 								else{
-									inrideFareInfoRl.setVisibility(View.VISIBLE);
+									inrideFareInfoRl.setVisibility(View.GONE);
 								}
 							}
 							else{
-								inrideFareInfoRl.setVisibility(View.VISIBLE);
+								inrideFareInfoRl.setVisibility(View.GONE);
 							}
 						} catch (Exception e) {
-							inrideFareInfoRl.setVisibility(View.VISIBLE);
+							inrideFareInfoRl.setVisibility(View.GONE);
 						}
 
 						try{
@@ -2750,7 +2750,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			if(Data.assignedCustomerInfo != null){
 				if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType){
-					reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+					reviewFareInfoInnerRl.setVisibility(View.GONE);
 					AutoCustomerInfo autoCustomerInfo = (AutoCustomerInfo)Data.assignedCustomerInfo;
 					if(autoCustomerInfo.couponInfo != null){
 						if(autoCustomerInfo.couponInfo.couponApplied) {
