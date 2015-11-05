@@ -109,7 +109,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                         phoneNoChanged = "+91" + phoneNoChanged;
                         if(previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)){
                             editTextNewPhoneNumber.requestFocus();
-                            editTextNewPhoneNumber.setError("Changed Phone number is same as the previous one.");
+                            editTextNewPhoneNumber.setError(getResources().getString(R.string.change_phone_no_text));
                         }
                         else{
                             updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);

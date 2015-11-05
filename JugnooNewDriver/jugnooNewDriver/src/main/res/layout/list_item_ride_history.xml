@@ -201,7 +201,7 @@
                     android:layout_toRightOf="@+id/imageViewVertical"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="Account"
+                    android:text="@string/account"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="20px"/>
 

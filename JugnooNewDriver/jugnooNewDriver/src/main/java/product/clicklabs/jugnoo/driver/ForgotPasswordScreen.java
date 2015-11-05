@@ -215,7 +215,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 
 
 	public void forgotPasswordAsync(final Activity activity, final String email){
-		DialogPopup.showLoadingDialog(activity, "Loading...");
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
 			@Override
 			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {

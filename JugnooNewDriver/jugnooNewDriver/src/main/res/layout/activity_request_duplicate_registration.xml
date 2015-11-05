@@ -107,7 +107,7 @@
                             android:textColor="@color/black_text"
                             android:textSize="28px"
                             android:layout_marginLeft="40px"
-                            android:text="Email:"/>
+                            android:text="@string/email"/>
 
                         <TextView
                             android:id="@+id/textViewRegisterEmailValue"

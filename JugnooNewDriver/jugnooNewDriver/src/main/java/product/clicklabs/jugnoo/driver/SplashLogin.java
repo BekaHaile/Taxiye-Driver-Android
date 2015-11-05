@@ -349,7 +349,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	public void sendLoginValues(final Activity activity, final String emailId, final String password) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

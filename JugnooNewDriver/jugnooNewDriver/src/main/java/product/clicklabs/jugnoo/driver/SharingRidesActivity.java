@@ -130,7 +130,7 @@ public class SharingRidesActivity extends Activity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				DialogPopup.showLoadingDialog(SharingRidesActivity.this, "Loading...");
+				DialogPopup.showLoadingDialog(SharingRidesActivity.this, getResources().getString(R.string.loading));
 				getSharedRidesAsync(SharingRidesActivity.this);
 			}
 		});

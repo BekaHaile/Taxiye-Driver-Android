@@ -211,7 +211,7 @@ public class ShareActivity extends Activity {
 		email.putExtra(Intent.EXTRA_SUBJECT, "Jugnoo Invite");
 		email.putExtra(Intent.EXTRA_TEXT, shareStr1 + referralCode + shareStr2);
 		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, "Choose an Email client:"));
+		startActivity(Intent.createChooser(email, getResources().getString(R.string.choose_email_client)));
 	}
 
 

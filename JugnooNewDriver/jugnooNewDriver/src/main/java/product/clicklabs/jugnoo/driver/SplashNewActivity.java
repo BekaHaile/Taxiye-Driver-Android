@@ -446,7 +446,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 				@Override
 				public void run() {
-					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
+					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", getResources().getString(R.string.disable_mock_location), new View.OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
@@ -579,7 +579,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			buttonRegister.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				if(Data.locationFetcher != null){
 					Data.latitude = Data.locationFetcher.getLatitude();

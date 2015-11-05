@@ -347,7 +347,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		}
 		if(helpExpandedRl.getVisibility() == View.VISIBLE){
 			helpExpandedRl.setVisibility(View.GONE);
-			title.setText("Help");
+			title.setText(getResources().getString(R.string.help));
 		}
 		else{
 			finish();

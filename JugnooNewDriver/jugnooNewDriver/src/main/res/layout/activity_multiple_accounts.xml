@@ -102,7 +102,7 @@
                     android:layout_marginRight="20px"
                     android:layout_marginTop="30px"
                     android:gravity="center"
-                    android:text="If you would still like to create a new account"
+                    android:text="@string/create_new_account_msg"
                     android:textColor="@color/black_text"
                     android:textSize="27px" />
 

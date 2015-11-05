@@ -186,7 +186,7 @@ public class AddCustomerCashActivity extends Activity{
 
 	public void addCustomerCashAPI(final Activity activity, final String amount) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

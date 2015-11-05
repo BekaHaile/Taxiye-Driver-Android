@@ -257,7 +257,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 							}
 							else{
 								confirmEmailIdEt.requestFocus();
-								confirmEmailIdEt.setError("Confirm email id doesn't match");
+								confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_text));
 							}
 						}
 					}
@@ -370,7 +370,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 								 final String emailId, final String phoneNo, final String password) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

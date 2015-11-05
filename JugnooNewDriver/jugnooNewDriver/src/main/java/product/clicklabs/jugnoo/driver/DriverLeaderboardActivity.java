@@ -198,7 +198,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		if (LeaderboardAreaMode.LOCAL == leaderboardAreaMode) {
 			adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 0);
 			if (0 == cityPos) {
-				textViewPositionTop.setText("Could not get local position");
+				textViewPositionTop.setText(getResources().getString(R.string.local_positon_text));
 			} else {
 				textViewPositionTop.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
@@ -211,12 +211,12 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 			adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 1);
 
 			if (0 == overallPos) {
-				textViewPositionTop.setText("Could not get overall position");
+				textViewPositionTop.setText(getResources().getString(R.string.overall_position_text));
 			} else {
 				textViewPositionTop.setText("Your overall position : " + overallPos + "/" + overallTotal);
 			}
 			if (0 == cityPos) {
-				textViewPositionBottom.setText("Local position");
+				textViewPositionBottom.setText(getResources().getString(R.string.local_position));
 			} else {
 				textViewPositionBottom.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
@@ -231,7 +231,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 	public void getLeaderboardData(final Activity activity) {
 		if (!HomeActivity.checkIfUserDataNull(activity)) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 				RequestParams params = new RequestParams();
 
 				params.put("access_token", Data.userData.accessToken);
@@ -368,7 +368,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 
 	public void retryDialog(final Activity activity, String message) {
 
-		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message, "Retry", "Cancel",
+		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message, getResources().getString(R.string.retry), getResources().getString(R.string.cancel),
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

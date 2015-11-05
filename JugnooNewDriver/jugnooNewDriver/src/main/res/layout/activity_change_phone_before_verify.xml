@@ -68,7 +68,7 @@
                     android:layout_marginTop="50px"
                     android:background="#0000"
                     android:gravity="center_vertical"
-                    android:hint="Enter New Phone Number"
+                    android:hint="@string/enter_new_phone_no"
                     android:inputType="phone"
                     android:paddingLeft="20px"
                     android:paddingRight="20px"

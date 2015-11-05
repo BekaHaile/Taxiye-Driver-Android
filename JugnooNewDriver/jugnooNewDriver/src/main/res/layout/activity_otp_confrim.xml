@@ -74,7 +74,7 @@
                     android:layout_marginTop="20px"
                     android:background="#0000"
                     android:gravity="center_vertical"
-                    android:hint="Enter One Time Password"
+                    android:hint="@string/enter_otp"
                     android:inputType="number"
                     android:maxLength="4"
                     android:paddingLeft="20px"
@@ -116,7 +116,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20px"
                         android:gravity="center"
-                        android:text="I didn&apos;t receive the OTP"
+                        android:text="@string/not_recived_otp"
                         android:textColor="@color/black_text"
                         android:textSize="30px" />
 
@@ -128,7 +128,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="80px"
                         android:gravity="center"
-                        android:text="CALL ME"
+                        android:text="@string/call_me"
                         android:textColor="@drawable/black_color_selector"
                         android:textSize="30px" />
 
@@ -164,7 +164,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20px"
                         android:gravity="center"
-                        android:text="Change phone number"
+                        android:text="@string/change_phone_no"
                         android:textColor="@color/black_text"
                         android:textSize="30px" />
 
@@ -176,7 +176,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="80px"
                         android:gravity="center"
-                        android:text="CHANGE"
+                        android:text="@string/change"
                         android:textColor="@drawable/black_color_selector"
                         android:textSize="30px" />
 

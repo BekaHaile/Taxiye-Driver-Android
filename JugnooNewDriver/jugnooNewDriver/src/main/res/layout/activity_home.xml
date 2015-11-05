@@ -104,7 +104,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:gravity="center"
-                            android:text="Jugnoo is OFF now."
+                            android:text="@string/jugnoo_off"
                             android:textColor="@color/black"
                             android:textSize="44px" />
                     </RelativeLayout>
@@ -402,7 +402,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginBottom="27px"
                             android:background="@drawable/blue_btn_selector"
-                            android:text="Arrived"
+                            android:text="@string/arrived"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size"
                             android:visibility="gone"
@@ -1044,7 +1044,7 @@
                                         android:id="@+id/textViewEnterMeterFare"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="ENTER FARE"
+                                        android:text="@string/enter_fare"
                                         android:textColor="@color/white"
                                         android:textSize="40px"
                                         />
@@ -1174,7 +1174,7 @@
                                             android:layout_marginLeft="20px"
                                             android:layout_marginRight="20px"
                                             android:gravity="center"
-                                            android:text="Free Ride"
+                                            android:text="@string/free_ride"
                                             android:textColor="@color/black"
                                             android:textSize="46px"/>
 
@@ -1250,7 +1250,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Amount"
+                                                android:text="@string/amount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1279,7 +1279,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Discount"
+                                                android:text="@string/discount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1308,7 +1308,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Final Amount"
+                                                android:text="@string/final_amount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1337,7 +1337,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Jugnoo Cash"
+                                                android:text="@string/jugnoo_cash"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1544,7 +1544,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="20px"
-                                        android:text="Distance:\n"
+                                        android:text="@string/distance2"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1568,7 +1568,7 @@
                                         android:layout_alignParentRight="true"
                                         android:layout_centerVertical="true"
                                         android:layout_marginRight="20px"
-                                        android:text="Fare:\n"
+                                        android:text="@string/fare2"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1877,7 +1877,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Jugnoo ON"
+                        android:text="@string/jugnoo_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2007,7 +2007,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Invite &amp; Earn"
+                        android:text="@string/invite_earn"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2079,7 +2079,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Fare Details"
+                        android:text="@string/fare_details"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2142,7 +2142,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Help"
+                        android:text="@string/help"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 

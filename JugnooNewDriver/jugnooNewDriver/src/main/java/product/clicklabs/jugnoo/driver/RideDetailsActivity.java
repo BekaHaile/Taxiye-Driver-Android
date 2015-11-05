@@ -155,7 +155,7 @@ public class RideDetailsActivity extends Activity {
 		if (openedRideInfo != null) {
 			idValue.setText("Ride ID: "+openedRideInfo.id);
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-			distanceValue.setText("Distance: "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
+			distanceValue.setText(getResources().getString(R.string.distance)+": "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
 			rideTimeValue.setText("Total Time: "+openedRideInfo.rideTime + " min");
 			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
 				waitTimeValue.setVisibility(View.GONE);
@@ -213,7 +213,7 @@ public class RideDetailsActivity extends Activity {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText("Account");
+				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
 			}
 			textViewFromValue.setText(openedRideInfo.fromLocation);
 			textViewToValue.setText(openedRideInfo.toLocation);

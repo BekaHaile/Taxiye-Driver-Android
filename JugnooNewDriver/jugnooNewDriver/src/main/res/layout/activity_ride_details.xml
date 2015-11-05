@@ -247,7 +247,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Luggage Charge"
+                    android:text="@string/luggage_charge"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -323,7 +323,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Accept Subsidy"
+                    android:text="@string/accept_subsidy"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -401,7 +401,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Jugnoo Cut"
+                    android:text="@string/jugnoo_cut"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -538,7 +538,7 @@
                     android:layout_toRightOf="@+id/imageViewVertical"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="Account"
+                    android:text="@string/account"
                     android:textColor="@color/grey_ride_history"
                     android:textSize="30px"/>
 

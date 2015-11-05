@@ -239,7 +239,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			} else {
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Account");
+				holder.textViewBalanceText.setText(getResources().getString(R.string.account));
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			}
@@ -247,8 +247,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 
 			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
-
-			holder.distanceValue.setText("Distance: "+rideInfo.distance + " km");
+			holder.distanceValue.setText(getResources().getString(R.string.distance)+": "+rideInfo.distance + getResources().getString(R.string.km));
 			holder.rideTimeValue.setText("Total Time: "+rideInfo.rideTime + " min");
 
 

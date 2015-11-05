@@ -130,7 +130,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
-					editTextOTP.setError("Code can't be empty");
+					editTextOTP.setError(getResources().getString(R.string.code_empty));
 				}
 
 			}
@@ -243,7 +243,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public void sendSignupValues(final Activity activity, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //		RequestParams params = new RequestParams();
 
@@ -311,7 +311,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public void initiateOTPCallAsync(final Activity activity, String phoneNo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 			RestClient.getApiServices().initiateOTPCall(phoneNo, new Callback<BookingHistoryResponse>() {
 

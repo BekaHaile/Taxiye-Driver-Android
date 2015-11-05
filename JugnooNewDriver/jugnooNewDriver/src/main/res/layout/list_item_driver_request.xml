@@ -108,7 +108,7 @@
                     android:layout_width="260px"
                     android:layout_height="69px"
                     android:background="@drawable/blue_btn_selector"
-                    android:text="ACCEPT"
+                    android:text="@string/accept"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
                     />
@@ -118,7 +118,7 @@
                     android:layout_width="260px"
                     android:layout_height="69px"
                     android:background="@drawable/grey_btn_selector"
-                    android:text="CANCEL"
+                    android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
                     android:layout_marginLeft="80px"

@@ -88,14 +88,14 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 
 		if(srd.accountBalance > 0){
 			sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(Math.abs(srd.accountBalance)));
-			sharingRideViewHolder.textViewAccountBalanceText.setText("Account");
+			sharingRideViewHolder.textViewAccountBalanceText.setText(context.getResources().getString(R.string.account));
 			sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.green_status));
 			sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.green_status));
 		}
 		else {
 			if(srd.accountBalance == 0){
 				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.accountBalance));
-				sharingRideViewHolder.textViewAccountBalanceText.setText("Account");
+				sharingRideViewHolder.textViewAccountBalanceText.setText(context.getResources().getString(R.string.account));
 				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.black));
 				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.black));
 			}

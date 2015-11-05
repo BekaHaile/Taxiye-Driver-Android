@@ -38,7 +38,7 @@
                 android:gravity="center"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:text="Creating Game ... "
+                android:text="@string/creating_game"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff"
                 android:singleLine="true"
