@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -32,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -264,7 +264,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
 			Log.i("deviceName", Data.deviceName + "..");
 
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this)+"1";
+			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
 			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
@@ -336,7 +336,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
-				runOnUiThread(new Runnable() {
+				new Handler().postDelayed(new Runnable() {
 
 					@Override
 					public void run() {
@@ -345,7 +345,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 						progressBar1.setVisibility(View.GONE);
 						pushAPIs(SplashNewActivity.this);
 					}
-				});
+				}, 2000);
 
 			}
 		});
@@ -440,23 +440,25 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
     public Thread pushApiThread;
     public void pushAPIs(final Context context){
-    	boolean mockLocationEnabled = Utils.mockLocationEnabled(this);
-		Toast.makeText(this, ""+mockLocationEnabled, Toast.LENGTH_SHORT).show();
+    	boolean mockLocationEnabled = false;
+		if(Data.locationFetcher != null){
+			mockLocationEnabled = Utils.mockLocationEnabled(Data.locationFetcher.getLocationUnchecked());
+		}
 		if(mockLocationEnabled){
-//			runOnUiThread(new Runnable() {
-//
-//				@Override
-//				public void run() {
-//					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
-//
-//						@Override
-//						public void onClick(View v) {
-//							startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
-//							finish();
-//						}
-//					});
-//				}
-//			});
+			runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS));
+							finish();
+						}
+					});
+				}
+			});
 		}
 		else{
 			runOnUiThread(new Runnable() {

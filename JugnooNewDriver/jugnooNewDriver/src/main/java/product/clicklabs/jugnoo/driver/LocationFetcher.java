@@ -12,20 +12,20 @@ import android.provider.Settings;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener,LocationListener {
 	
 	private final String TAG = this.getClass().getSimpleName();
 	private LocationClient locationclient;
 	private LocationRequest locationrequest;
-	private Location location;
+	private Location location, locationUnchecked;
 	
 	private long requestInterval;
 	private LocationUpdate locationUpdate;
@@ -81,15 +81,15 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(LOCATION_LAT, ""+latitude);
-		editor.putString(LOCATION_LNG, ""+longitude);
+		editor.putString(LOCATION_LNG, "" + longitude);
 		editor.commit();
 	}
 	
 	
 	private synchronized double getSavedLatFromSP(){
 		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
-		String latitude = preferences.getString(LOCATION_LAT, ""+ 0);
-		Log.d("saved last lat", "=="+latitude);
+		String latitude = preferences.getString(LOCATION_LAT, "" + 0);
+		Log.d("saved last lat", "==" + latitude);
 		return Double.parseDouble(latitude);
 	}
 	
@@ -164,6 +164,13 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 		} catch(Exception e){e.printStackTrace();}
 		return null;
 	}
+
+	public Location getLocationUnchecked(){
+		try{
+			return locationUnchecked;
+		} catch(Exception e){e.printStackTrace();}
+		return null;
+	}
 	
 
 	
@@ -235,16 +242,14 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 	@Override
 	public void onLocationChanged(Location location) {
 		try{
-//            if(!Utils.mockLocationEnabled(context)) {
+            if(!Utils.mockLocationEnabled(location)) {
                 if (location != null) {
-					Bundle extras = location.getExtras();
-					boolean isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-
                     this.location = location;
                     locationUpdate.onLocationChanged(location, priority);
                     saveLatLngToSP(location.getLatitude(), location.getLongitude());
                 }
-//            }
+            }
+			locationUnchecked = location;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

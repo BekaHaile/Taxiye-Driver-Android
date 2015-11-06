@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
-import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -10,9 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -34,6 +31,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import product.clicklabs.jugnoo.driver.Data;
 
 
 public class Utils {
@@ -168,56 +167,27 @@ public class Utils {
 	}
 
 
-//	public static boolean mockLocationEnabled(Context context) {
+
+	public static boolean mockLocationEnabled(Location location) {
 //		return false;
-////		if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-////			if (Settings.Secure.getString(context.getContentResolver(),
-////					Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
-////				return false;
-////			else return true;
-////		} else {
-////			return false;
-////		}
-//	}
-
-	public static boolean mockLocationEnabled(Context context) {
-		boolean isMockLocation = false;
 		try {
-			//if marshmallow
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				AppOpsManager opsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-				isMockLocation = (opsManager.checkOp(AppOpsManager.OPSTR_MOCK_LOCATION, android.os.Process.myUid(), "com.fakegps.mock") == AppOpsManager.MODE_ALLOWED);
-
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
 			} else {
-				// in marshmallow this will always return true
-				isMockLocation = !android.provider.Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
+				return false;
 			}
 		} catch (Exception e) {
-			return isMockLocation;
+			e.printStackTrace();
+			return false;
 		}
-
-		return isMockLocation;
 	}
 
-	public static boolean mockLocationEnabled(Context context, Location location) {
-		Bundle extras = location.getExtras();
-		boolean isMockLocation = location != null && extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-		try {
-			//if marshmallow
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				AppOpsManager opsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-				isMockLocation = (opsManager.checkOp(AppOpsManager.OPSTR_MOCK_LOCATION, android.os.Process.myUid(), "com.fakegps.mock") == AppOpsManager.MODE_ALLOWED);
 
-			} else {
-				// in marshmallow this will always return true
-				isMockLocation = !android.provider.Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ALLOW_MOCK_LOCATION).equals("0");
-			}
-		} catch (Exception e) {
-			return isMockLocation;
-		}
-
-		return isMockLocation;
-	}
 
 
 	public static String getChronoTimeFromMillis(long elapsedTime) {
