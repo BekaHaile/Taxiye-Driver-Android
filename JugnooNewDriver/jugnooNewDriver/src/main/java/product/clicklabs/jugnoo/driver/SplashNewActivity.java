@@ -336,17 +336,21 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
-				new Handler().postDelayed(new Runnable() {
-
+				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						Data.deviceToken = regId;
-						Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-						progressBar1.setVisibility(View.GONE);
-						pushAPIs(SplashNewActivity.this);
-					}
-				}, 2000);
+						new Handler().postDelayed(new Runnable() {
 
+							@Override
+							public void run() {
+								Data.deviceToken = regId;
+								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+								progressBar1.setVisibility(View.GONE);
+								pushAPIs(SplashNewActivity.this);
+							}
+						}, 2000);
+					}
+				});
 			}
 		});
 
