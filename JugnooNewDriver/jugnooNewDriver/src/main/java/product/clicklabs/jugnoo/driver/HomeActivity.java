@@ -5409,8 +5409,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	public boolean toShowPathToCustomer(){
-		return ((DriverScreenMode.D_ARRIVED == driverScreenMode ||  driverScreenMode == DriverScreenMode.D_START_RIDE || driverScreenMode == DriverScreenMode.D_IN_RIDE) ||
-				((Data.assignedCustomerInfo != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType)));
+		boolean inRide = false;
+		if ((DriverScreenMode.D_IN_RIDE == driverScreenMode)
+				&& (Data.assignedCustomerInfo != null)
+				&& (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType)) {
+			if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null) {
+				inRide = true;
+			}
+		}
+		return ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) || inRide ||
+				(Data.assignedCustomerInfo != null && driverScreenMode == DriverScreenMode.D_IN_RIDE && BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType));
 	}
 
 	public void getCustomerPathAndDisplay(final LatLng sourceLatLng, final LatLng customerLatLng) {
