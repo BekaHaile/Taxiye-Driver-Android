@@ -29,7 +29,7 @@
             android:background="@color/red_status"
             android:gravity="center_horizontal"
             android:padding="35px"
-            android:text="Message"
+            android:text="@string/message"
             android:textColor="@color/white"
             android:textSize="36px" />
     </LinearLayout>

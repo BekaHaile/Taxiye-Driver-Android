@@ -66,7 +66,7 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 			sharingRideViewHolder.relative.setBackgroundResource(R.drawable.list_white_normal);
 		}
 
-		sharingRideViewHolder.textViewRideID.setText("Ride Id: "+srd.sharingEngagementId);
+		sharingRideViewHolder.textViewRideID.setText(context.getResources().getString(R.string.ride_id)+": "+srd.sharingEngagementId);
 		sharingRideViewHolder.textViewDateValue.setText(DateOperations.getDate(DateOperations.utcToLocalTZ(srd.transactionDateTime)));
 		sharingRideViewHolder.textViewTimeValue.setText(DateOperations.getTimeAMPM(DateOperations.utcToLocalTZ(srd.transactionDateTime)));
 
@@ -75,13 +75,13 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 
 		if(srd.customerPaid > 0){
 			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.customerPaid));
-			sharingRideViewHolder.textViewCustomerPaidText.setText("Take Cash");
+			sharingRideViewHolder.textViewCustomerPaidText.setText(context.getResources().getString(R.string.take_cash));
 			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.red_status));
 			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.red_status));
 		}
 		else {
 			sharingRideViewHolder.textViewCustomerPaid.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(Math.abs(srd.customerPaid)));
-			sharingRideViewHolder.textViewCustomerPaidText.setText("Take Cash");
+			sharingRideViewHolder.textViewCustomerPaidText.setText(context.getResources().getString(R.string.take_cash));
 			sharingRideViewHolder.textViewCustomerPaid.setTextColor(context.getResources().getColor(R.color.black));
 			sharingRideViewHolder.textViewCustomerPaidText.setTextColor(context.getResources().getColor(R.color.black));
 		}

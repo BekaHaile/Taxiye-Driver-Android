@@ -45,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12px"
-                    android:text="Today"
+                    android:text="@string/today"
                     android:textColor="@color/white"
                     android:textSize="30px"
                     android:textStyle="bold"/>
@@ -83,7 +83,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12px"
-                    android:text="This Month"
+                    android:text="@string/this_month"
                     android:textColor="@color/white"
                     android:textSize="30px"
                     android:textStyle="bold"/>

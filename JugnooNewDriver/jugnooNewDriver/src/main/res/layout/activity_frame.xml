@@ -488,7 +488,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Min Fare"
+                        android:text="@string/min_fare"
                         android:textColor="@color/black"
                         android:textSize="26px"
                         android:textStyle="bold" />

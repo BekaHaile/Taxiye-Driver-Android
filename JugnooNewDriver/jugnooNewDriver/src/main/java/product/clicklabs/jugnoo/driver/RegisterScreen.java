@@ -180,20 +180,20 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
-					nameEt.setError("Please enter name");
+					nameEt.setError(getResources().getString(R.string.enter_name));
 				} else {
 					if ("".equalsIgnoreCase(emailId)) {
 						emailIdEt.requestFocus();
-						emailIdEt.setError("Please enter email id");
+						emailIdEt.setError(getResources().getString(R.string.Pls_enter_email));
 					} else {
 						if ("".equalsIgnoreCase(confirmEmail)) {
 							confirmEmailIdEt.requestFocus();
-							confirmEmailIdEt.setError("Please confirm email id");
+							confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_id));
 						} else {
 							if (emailId.equalsIgnoreCase(confirmEmail)) {
 								if ("".equalsIgnoreCase(phoneNo)) {
 									phoneNoEt.requestFocus();
-									phoneNoEt.setError("Please enter phone number");
+									phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 								} else {
 									//TODO remove extra characters phoneNo
 									phoneNo = phoneNo.replace(" ", "");
@@ -212,17 +212,17 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 										phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
 										if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
 											phoneNoEt.requestFocus();
-											phoneNoEt.setError("Please enter valid phone number");
+											phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
 										} else {
 											phoneNo = "+91" + phoneNo;
 
 											if ("".equalsIgnoreCase(password)) {
 												passwordEt.requestFocus();
-												passwordEt.setError("Please enter password");
+												passwordEt.setError(getResources().getString(R.string.enter_password));
 											} else {
 												if ("".equalsIgnoreCase(confirmPassword)) {
 													confirmPasswordEt.requestFocus();
-													confirmPasswordEt.setError("Please confirm password");
+													confirmPasswordEt.setError(getResources().getString(R.string.confirm_password));
 												} else {
 													if (isEmailValid(emailId)) {
 														if (isPhoneValid(phoneNo)) {
@@ -232,26 +232,26 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 																	FlurryEventLogger.emailSignupClicked(emailId);
 																} else {
 																	passwordEt.requestFocus();
-																	passwordEt.setError("Password must be of atleast six characters");
+																	passwordEt.setError(getResources().getString(R.string.password_atleast_6));
 																}
 															} else {
 																passwordEt.requestFocus();
-																passwordEt.setError("Passwords does not match");
+																passwordEt.setError(getResources().getString(R.string.password_not_match));
 															}
 														} else {
 															phoneNoEt.requestFocus();
-															phoneNoEt.setError("Please enter valid phone number");
+															phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
 														}
 													} else {
 														emailIdEt.requestFocus();
-														emailIdEt.setError("Please enter valid email id");
+														emailIdEt.setError(getResources().getString(R.string.valid_email));
 													}
 												}
 											}
 										}
 									} else {
 										phoneNoEt.requestFocus();
-										phoneNoEt.setError("Please enter valid phone number");
+										phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
 									}
 								}
 							}

@@ -34,7 +34,7 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 					Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
 					dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-					dialogIntent.putExtra("message1", "Please Restart Your Phone");
+					dialogIntent.putExtra("restart_phone", context.getResources().getString(R.string.restart_phone));
 					context.startActivity(dialogIntent);
 
 					GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis();

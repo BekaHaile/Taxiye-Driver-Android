@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Ride Details"
+            android:text="@string/ride_details"
             android:textColor="@color/white"
             android:textSize="48px"/>
     </RelativeLayout>
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:text="Ride ID: "
+                    android:text="@string/ride_id"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 
@@ -166,7 +166,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Ride Fare"
+                    android:text="@string/ride_fare"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -285,7 +285,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Rate Applied 1.25x"
+                    android:text="@string/rate_applied"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -463,7 +463,7 @@
                 android:layout_below="@+id/textViewFare"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="Total Fare"
+                android:text="@string/total_fare"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="45px"/>
 
@@ -507,7 +507,7 @@
                     android:gravity="center"
                     android:singleLine="true"
                     android:layout_below="@+id/textViewCustomerPaid"
-                    android:text="Paid in Cash"
+                    android:text="@string/paid_cash"
                     android:textColor="@color/grey_ride_history"
                     android:textSize="30px"/>
 

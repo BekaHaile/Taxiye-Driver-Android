@@ -426,7 +426,7 @@ public class DialogPopup {
 		        alertDialogPrepare.setMessage(mContext.getResources().getString(R.string.google_pay_service_error_message));
 		 
 		        // On pressing Settings button
-		        alertDialogPrepare.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+		        alertDialogPrepare.setPositiveButton(mContext.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
 						dialog.dismiss();
 						try {

@@ -51,7 +51,7 @@
                 android:maxHeight="800px"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="Message"
+                android:text="@string/message"
                 android:layout_marginTop="20px"
                 android:textColor="@color/black"
                 android:lineSpacingExtra="10px"

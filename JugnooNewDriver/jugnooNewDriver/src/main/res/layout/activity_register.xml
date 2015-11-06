@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="REGISTER"
+            android:text="@string/register"
             android:textColor="@color/blue_btn"
             android:textSize="@dimen/button_text_size"/>
     </RelativeLayout>
@@ -59,7 +59,7 @@
                 android:layout_height="100px"
                 android:background="@drawable/white_bg_rounded"
                 android:capitalize="words"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:singleLine="true"
@@ -144,7 +144,7 @@
             android:layout_height="99px"
             android:layout_marginTop="45px"
             android:background="@drawable/blue_btn_selector"
-            android:text="REGISTER"
+            android:text="@string/register"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
 

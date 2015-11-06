@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="SUPER DRIVERS"
+            android:text="@string/super_driver"
             android:textColor="@color/white"
             android:textSize="48px"/>
     </RelativeLayout>
@@ -56,7 +56,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="35px"
         android:gravity="center"
-        android:text="POSITIONS"
+        android:text="@string/position"
         android:textColor="@color/bg_grey_opaque"
         android:textSize="38px"
 
@@ -70,7 +70,7 @@
         android:layout_marginRight="20px"
         android:layout_marginTop="20px"
         android:gravity="center"
-        android:text="No of rides"
+        android:text="@string/no_of_rides"
         android:textColor="@color/bg_grey"
         android:textSize="30px"
 
@@ -126,7 +126,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Weekly"
+            android:text="@string/weekly"
             android:textColor="@drawable/text_color_bg_grey_selector"
             android:textSize="30px"
             android:background="@drawable/background_white_white_dark_selector"
@@ -144,7 +144,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Monthly"
+            android:text="@string/monthly"
             android:textColor="@drawable/text_color_bg_grey_selector"
             android:textSize="30px"
             android:background="@drawable/background_white_white_dark_selector"

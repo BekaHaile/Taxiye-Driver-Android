@@ -192,7 +192,7 @@ public class ShareActivity extends Activity {
 			startActivity(Intent.createChooser(waIntent, "Share with"));
 
 		} catch (NameNotFoundException e) {
-			Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.whatsapp_not_installed), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -265,12 +265,12 @@ public class ShareActivity extends Activity {
 						String code = customerNumber.getText().toString().trim();
 						if ("".equalsIgnoreCase(code)) {
 							customerNumber.requestFocus();
-							customerNumber.setError("Phone Number can't be empty.");
+							customerNumber.setError(getResources().getString(R.string.Phone_number_not_empty));
 						} else {
 							code = Utils.retrievePhoneNumberTenChars(code);
 							if (!Utils.validPhoneNumber(code)) {
 								customerNumber.requestFocus();
-								customerNumber.setError("Please enter valid phone number");
+								customerNumber.setError(getResources().getString(R.string.enter_valid_phone_number));
 							} else {
 								SmsManager smsManager = SmsManager.getDefault();
 								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);

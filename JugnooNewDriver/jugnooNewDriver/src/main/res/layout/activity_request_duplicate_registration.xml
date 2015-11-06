@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="REQUEST REGISTRATION"
+                android:text="@string/request_registration"
                 android:textColor="@color/white"
                 android:textSize="30.6px" />
 
@@ -59,7 +59,7 @@
                     android:layout_marginTop="40px"
                     android:textColor="@color/black_text"
                     android:textSize="30px"
-                    android:text="Registration Information"/>
+                    android:text="@string/reg_info"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                             android:textColor="@color/black_text"
                             android:textSize="28px"
                             android:layout_marginLeft="40px"
-                            android:text="Name:"/>
+                            android:text="@string/name_colon"/>
 
                         <TextView
                             android:id="@+id/textViewRegisterNameValue"
@@ -184,7 +184,7 @@
                     android:layout_marginTop="40px"
                     android:layout_marginLeft="40px"
                     android:layout_marginRight="40px"
-                    android:text="We will revert to you soon"/>
+                    android:text="@string/will_revert_you"/>
 
 
                 <Button
@@ -194,7 +194,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="40px"
                     android:background="@drawable/blue_btn_selector"
-                    android:text="SUBMIT REQUEST"
+                    android:text="@string/submit_request"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size" />
 

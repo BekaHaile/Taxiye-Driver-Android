@@ -204,7 +204,7 @@ public class HelpParticularActivity extends FragmentActivity {
 									if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 										HomeActivity.logoutUser(activity);
 									} else {
-										openHelpData("Some error occured. Tap to retry.", true);
+										openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 									}
 								} else {
 									String data = jObj.getString("data");
@@ -213,7 +213,7 @@ public class HelpParticularActivity extends FragmentActivity {
 
 							} catch (Exception exception) {
 								exception.printStackTrace();
-								openHelpData("Some error occured. Tap to retry.", true);
+								openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
 							progressBar.setVisibility(View.GONE);
 						}
@@ -221,13 +221,13 @@ public class HelpParticularActivity extends FragmentActivity {
 						@Override
 						public void failure(RetrofitError error) {
 							progressBar.setVisibility(View.GONE);
-							openHelpData("Some error occured. Tap to retry.", true);
+							openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 
 						}
 					});
 				}
 			} else {
-				openHelpData("No internet connection. Tap to retry.", true);
+				openHelpData(getResources().getString(R.string.no_internet_tap_to_retry), true);
 			}
 		}
 	}

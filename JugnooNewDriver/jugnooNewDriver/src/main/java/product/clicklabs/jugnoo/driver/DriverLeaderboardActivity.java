@@ -200,12 +200,12 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 			if (0 == cityPos) {
 				textViewPositionTop.setText(getResources().getString(R.string.local_positon_text));
 			} else {
-				textViewPositionTop.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
+				textViewPositionTop.setText(getResources().getString(R.string.your_position)+" " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
 			if (0 == overallPos) {
-				textViewPositionBottom.setText("Overall position");
+				textViewPositionBottom.setText(getResources().getString(R.string.overall_position));
 			} else {
-				textViewPositionBottom.setText("Your overall position : " + overallPos + "/" + overallTotal);
+				textViewPositionBottom.setText(getResources().getString(R.string.your_overall_position)+" : " + overallPos + "/" + overallTotal);
 			}
 		} else if (LeaderboardAreaMode.OVERALL == leaderboardAreaMode) {
 			adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 1);
@@ -213,12 +213,12 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 			if (0 == overallPos) {
 				textViewPositionTop.setText(getResources().getString(R.string.overall_position_text));
 			} else {
-				textViewPositionTop.setText("Your overall position : " + overallPos + "/" + overallTotal);
+				textViewPositionTop.setText(getResources().getString(R.string.your_overall_position)+" : " + overallPos + "/" + overallTotal);
 			}
 			if (0 == cityPos) {
 				textViewPositionBottom.setText(getResources().getString(R.string.local_position));
 			} else {
-				textViewPositionBottom.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
+				textViewPositionBottom.setText(getResources().getString(R.string.your_position)+" " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
 
 		}
@@ -346,7 +346,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 
 								} catch (Exception exception) {
 									exception.printStackTrace();
-									retryDialog(activity, Data.SERVER_ERROR_MSG + "\nTap to retry");
+									retryDialog(activity, Data.SERVER_ERROR_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 								}
 								DialogPopup.dismissLoadingDialog();
 
@@ -355,12 +355,12 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 							@Override
 							public void failure(RetrofitError error) {
 								DialogPopup.dismissLoadingDialog();
-								retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\nTap to retry");
+								retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 
 							}
 						});
 			} else {
-				retryDialog(activity, Data.CHECK_INTERNET_MSG + "\nTap to retry");
+				retryDialog(activity, Data.CHECK_INTERNET_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 			}
 
 		}

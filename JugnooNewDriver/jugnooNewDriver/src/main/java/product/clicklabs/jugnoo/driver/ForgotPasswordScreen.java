@@ -110,7 +110,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 				
 				if("".equalsIgnoreCase(email)){
 					emailEt.requestFocus();
-					emailEt.setError("Please enter email");
+					emailEt.setError(getResources().getString(R.string.Pls_enter_email));
 				}
 				else{
 					if(isEmailValid(email)){
@@ -120,7 +120,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 					}
 					else{
 						emailEt.requestFocus();
-						emailEt.setError("Please enter valid email");
+						emailEt.setError(getResources().getString(R.string.valid_email));
 					}
 				}
 				

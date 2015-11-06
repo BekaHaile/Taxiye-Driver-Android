@@ -57,7 +57,7 @@
                 android:layout_marginTop="40px"
                 android:layout_marginLeft="50px"
                 android:layout_marginRight="40px"
-                android:text="Please enter your new phone number"/>
+                android:text="@string/enter_new_phone_number"/>
 
 
             <EditText
@@ -93,7 +93,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="70px"
                     android:background="@drawable/blue_btn_selector"
-                    android:text="SUBMIT"
+                    android:text="@string/SUBMIT"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size" />
 

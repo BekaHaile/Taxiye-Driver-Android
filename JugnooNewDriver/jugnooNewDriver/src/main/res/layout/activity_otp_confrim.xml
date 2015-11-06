@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="VERIFICATION"
+                android:text="@string/verification"
                 android:textColor="@color/white"
                 android:textSize="30.6px" />
 
@@ -98,7 +98,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="50px"
                     android:background="@drawable/blue_btn_selector"
-                    android:text="VERIFY ME"
+                    android:text="@string/verify_me"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size" />
 

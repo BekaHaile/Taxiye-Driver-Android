@@ -105,17 +105,17 @@ public class AddCustomerCashActivity extends Activity{
 					String amountStr = editTextCashAmount.getText().toString().trim();
 					if("".equalsIgnoreCase(amountStr)){
 						editTextCashAmount.requestFocus();
-						editTextCashAmount.setError("Please enter some amount");
+						editTextCashAmount.setError(getResources().getString(R.string.some_amount));
 					}
 					else{
 						double amount = Double.parseDouble(editTextCashAmount.getText().toString().trim());
 						if(AppStatus.getInstance(AddCustomerCashActivity.this).isOnline(AddCustomerCashActivity.this)){
 							if(amount > 1000){
 								editTextCashAmount.requestFocus();
-								editTextCashAmount.setError("Please enter less amount");
+								editTextCashAmount.setError(getResources().getString(R.string.less_amount));
 							}
 							else if(Data.endRideData != null && amount < Data.endRideData.toPay){
-								DialogPopup.alertPopup(AddCustomerCashActivity.this, "", "You cannot add amount less than \nRs. "+Data.endRideData.toPay);
+								DialogPopup.alertPopup(AddCustomerCashActivity.this, "", getResources().getString(R.string.cannot_add_less_than)+" "+Data.endRideData.toPay);
 							}
 							else{
 								addCustomerCashAPI(AddCustomerCashActivity.this, ""+amount);
@@ -130,7 +130,7 @@ public class AddCustomerCashActivity extends Activity{
 					e.printStackTrace();
 					
 					editTextCashAmount.requestFocus();
-					editTextCashAmount.setError("Please enter valid amount");
+					editTextCashAmount.setError(getResources().getString(R.string.valid_amount));
 				}
 			}
 		});

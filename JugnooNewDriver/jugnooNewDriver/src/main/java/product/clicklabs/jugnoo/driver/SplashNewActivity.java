@@ -828,7 +828,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			textMessage.setText(message);
 			
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
-			btnOk.setText("Update");
+			btnOk.setText(activity.getResources().getString(R.string.update));
 			
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
 			btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -991,7 +991,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					textHead.setText("Confirm Register Password");
 				}
 				
-				textMessage.setText("Please enter password to continue.");
+				textMessage.setText(getResources().getString(R.string.password_to_continue));
 				
 				textMessage.setVisibility(View.GONE);
 				
@@ -1312,7 +1312,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				textMessage.setMovementMethod(new ScrollingMovementMethod());
 				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 				
-				textMessage.setText("Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using Jugnoo.");
+				textMessage.setText(activity.getResources().getString(R.string.network_problem));
 				
 	
 				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);

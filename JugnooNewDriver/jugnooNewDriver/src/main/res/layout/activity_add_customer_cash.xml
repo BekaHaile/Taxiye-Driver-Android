@@ -91,7 +91,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40px"
             android:background="@drawable/red_btn_selector"
-            android:text="NO CASH"
+            android:text="@string/no_cash"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             android:visibility="gone"
