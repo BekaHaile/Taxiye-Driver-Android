@@ -14,8 +14,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -49,6 +51,7 @@ import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -61,6 +64,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -103,7 +107,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	public static void initializeServerURL(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
 		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
-		
+
+		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, Data.DEFAULT_SERVER_URL);
+
 		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
@@ -113,6 +119,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
 			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_1_SERVER_URL;
@@ -127,8 +137,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
             Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
         }
 		else{
-			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
-			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
+			Data.SERVER_URL = CUSTOM_URL;
+			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
 		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
 		RestClient.setupRestClient();
@@ -890,7 +900,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textHead.setText(title);
 			textMessage.setText(message);
@@ -1169,7 +1179,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					btnNeutral.setText("DEV");
 					
 					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
-					btnCancel.setText("SALES");
+					btnCancel.setText("CUSTOM");
 					
 					
 					btnOk.setOnClickListener(new View.OnClickListener() {
@@ -1193,9 +1203,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							SharedPreferences.Editor editor = preferences.edit();
 							editor.putString(Data.SP_SERVER_LINK, Data.DEV_SERVER_URL);
 							editor.commit();
-							
+
 							initializeServerURL(activity);
-							
+
 							dialog.dismiss();
 						}
 					});
@@ -1203,15 +1213,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					btnCancel.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-							SharedPreferences.Editor editor = preferences.edit();
-							editor.putString(Data.SP_SERVER_LINK, Data.TRIAL_SERVER_URL);
-							editor.commit();
-							
-							initializeServerURL(activity);
-							
 							dialog.dismiss();
+							saveCustomURLDialog(activity);
 						}
 					});
 
@@ -1224,7 +1227,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					
 					
 					dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
-						
+
 						@Override
 						public void onClick(View v) {
 							dialog.dismiss();
@@ -1236,7 +1239,109 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					e.printStackTrace();
 				}
 			}
-	
+
+
+	public void saveCustomURLDialog(final Activity activity){
+		try {
+			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_edittext);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+			final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Data.latoRegular(activity));
+
+			etCode.setInputType(InputType.TYPE_CLASS_TEXT);
+			etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30);
+
+			etCode.setText(Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL));
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+
+			textHead.setText("Custom URL");
+
+			textMessage.setText("Please enter Custom URL");
+
+			textMessage.setVisibility(View.GONE);
+
+
+			final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Data.latoRegular(activity));
+
+			btnConfirm.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					String code = etCode.getText().toString().trim();
+					if ("".equalsIgnoreCase(code)) {
+						etCode.requestFocus();
+						etCode.setError("URL can't be empty.");
+					} else {
+						Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, code);
+						SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString(Data.SP_SERVER_LINK, code);
+						editor.commit();
+
+						initializeServerURL(activity);
+						dialog.dismiss();
+					}
+				}
+
+			});
+
+
+			etCode.setOnEditorActionListener(new OnEditorActionListener() {
+
+				@Override
+				public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+					int result = actionId & EditorInfo.IME_MASK_ACTION;
+					switch (result) {
+						case EditorInfo.IME_ACTION_DONE:
+							btnConfirm.performClick();
+							break;
+
+						case EditorInfo.IME_ACTION_NEXT:
+							break;
+
+						default:
+					}
+					return true;
+				}
+			});
+
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+
+			dialog.show();
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 

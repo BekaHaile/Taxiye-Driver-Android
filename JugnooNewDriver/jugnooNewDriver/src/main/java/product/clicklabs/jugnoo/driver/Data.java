@@ -117,7 +117,7 @@ public class Data {
 
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
-    public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
+    public static final String DEV_3_SERVER_URL = "https://dev.jugnoo.in:4015";
 	
 	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 	
