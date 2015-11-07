@@ -39,15 +39,15 @@
 
 	<string name="ok">OK</string>
 
-	<string name="first_name">First Name</string>
-	<string name="last_name">Last Name</string>
-	<string name="phone_number">Phone number</string>
+	<string name="first_name">पहला नाम</string>
+	<string name="last_name">अंतिम नाम</string>
+	<string name="phone_number">फ़ोन नंबर</string>
 	<string name="confirm_password">Confirm Password</string>
 
 	<string name="confirmation_code">Confirmation Code</string>
-	<string name="check_your_registered_email_phone_number_for_otp">Check your registered email/phone number for OTP</string>
-	<string name="enter_code">Enter Code</string>
-	<string name="done">Done</string>
+	<string name="check_your_registered_email_phone_number_for_otp">ओटीपी के लिए अपने पंजीकृत ईमेल / फोन नंबर की जांच करें</string>
+	<string name="enter_code">कोड दर्ज करें</string>
+	<string name="done">डन</string>
 	<string name="amount">Amount</string>
 
 	<string name="no_driver_available">No Driver Available</string>
@@ -56,12 +56,12 @@
 	<string name="logout">Logout</string>
 	<string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
 
-	<string name="cancel">Cancel</string>
+	<string name="cancel">रद्द करें</string>
 
 	<string name="select_language">Select Language</string>
 
-	<string name="enter_email">Enter Email</string>
-	<string name="send_email">Send Email</string>
+	<string name="enter_email">ईमेल दर्ज करें</string>
+	<string name="send_email">ईमेल भेजें</string>
 
 	<string name="favorites">Favorites</string>
 	<string name="no_favorite_locations_added">No favorite locations added.</string>
@@ -79,10 +79,10 @@
 	<string name="update">Update</string>
 
 	<string name="driver_mode">Driver Mode</string>
-	<string name="jugnoo_on">Jugnoo ON</string>
+	<string name="jugnoo_on">जुगनू चालू</string>
 	<string name="driver_type">Driver Type</string>
 	<string name="ride_type">Ride Type</string>
-	<string name="invite_friends">Invite Friends</string>
+	<string name="invite_friends">मित्रों को आमंत्रित करें</string>
 	<string name="about">About</string>
 	<string name="support">Support</string>
 	<string name="sos">SOS</string>
@@ -92,9 +92,9 @@
 
 	<string name="click_to_view">Click to view</string>
 
-	<string name="start_ride">Start Ride</string>
+	<string name="start_ride">यात्रा प्रारंभ</string>
 
-	<string name="end_ride">End Ride</string>
+	<string name="end_ride">यात्रा समाप्त</string>
 
 	<string name="reached_destination">Reached Destination</string>
 	<string name="distance">Distance</string>
