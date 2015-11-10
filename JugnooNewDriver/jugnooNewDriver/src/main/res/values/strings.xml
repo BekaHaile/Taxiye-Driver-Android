@@ -175,7 +175,8 @@
 
 	<string name="name">Name</string>
 	<string name="driver_id">Driver ID:</string>
-	<string name="rank">Rank:</string>
+	<string name="rank_city">Rank City:</string>
+	<string name="rank_overall">Rank Overall:</string>
 	<string name="monthly">Monthly</string>
 	<string name="earnings">Earnings</string>
 	<string name="rides_taken">Rides Taken</string>

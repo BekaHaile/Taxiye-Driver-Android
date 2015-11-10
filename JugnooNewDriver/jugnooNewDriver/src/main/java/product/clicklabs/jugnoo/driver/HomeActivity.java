@@ -150,7 +150,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ImageView profileImg;
 	TextView userName, textViewDEI;
-	LinearLayout linearLayoutDEI;
+	LinearLayout linearLayoutDEI, driverImageRL;
 
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
@@ -386,7 +386,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	boolean loggedOut = false,
 			zoomedToMyLocation = false,
 			mapTouchedOnce = false;
-	boolean dontCallRefreshDriver = false;
+	boolean dontCallRefreshDriver = false, resumed = false;
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
 
@@ -450,6 +450,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		zoomedToMyLocation = false;
 		dontCallRefreshDriver = false;
 		mapTouchedOnce = false;
+		resumed = false;
 
 		appMode = AppMode.NORMAL;
 
@@ -525,6 +526,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
+		driverImageRL = (LinearLayout) findViewById(R.id.driverImageRL);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
@@ -539,6 +541,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
 		logoutText = (TextView) findViewById(R.id.logoutText); logoutText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+
+//		driverProfileText = (TextView) findViewById(R.id.driverProfileText); driverProfileText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
 
@@ -889,6 +893,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 
+
+		driverImageRL.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(HomeActivity.this, DriverProfileActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(INVITE_OPENED);
+			}
+		});
 
 
 		fareDetailsRl.setOnClickListener(new View.OnClickListener() {
@@ -2096,7 +2110,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try{
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
-			try{Picasso.with(HomeActivity.this).load(Data.userData.userImage).skipMemoryCache().transform(new CircleTransform()).into(profileImg);}catch(Exception e){}
+			try{
+				if(resumed){
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.transform(new CircleTransform()).into(profileImg);
+				}
+				else{
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.skipMemoryCache()
+							.transform(new CircleTransform()).into(profileImg);
+				}
+			}catch(Exception e){}
 
 			if("-1".equalsIgnoreCase(Data.userData.deiValue)){
 				linearLayoutDEI.setVisibility(View.GONE);
@@ -2106,7 +2130,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				linearLayoutDEI.setVisibility(View.VISIBLE);
-				textViewDEI.setText(Data.userData.deiValue);
+//				textViewDEI.setText(Data.userData.deiValue);
 
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
@@ -3169,7 +3193,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 		}
-
+		resumed = true;
 		language = Locale.getDefault().getLanguage();
 
 	}

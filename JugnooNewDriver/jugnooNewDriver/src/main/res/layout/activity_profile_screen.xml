@@ -7,6 +7,7 @@
               android:orientation="vertical"
               android:splitMotionEvents="false" >
 
+
     <RelativeLayout
         android:id="@+id/topRl"
         android:layout_width="match_parent"
@@ -101,7 +102,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="250px"
+            android:layout_height="wrap_content"
             android:layout_toRightOf="@id/profileRl"
             android:layout_centerVertical="true">
 
@@ -111,7 +112,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="42px"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="15px"
                 android:text="@string/name"
                 android:textColor="@color/white"
                 android:textSize="44px" />
@@ -129,14 +130,25 @@
                 android:textSize="44px" />
 
             <TextView
-                android:id="@+id/textViewRank"
+                android:id="@+id/textViewRankCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="42px"
                 android:layout_marginTop="5px"
                 android:layout_below="@id/textViewDriverId"
-                android:text="@string/rank"
+                android:text="@string/rank_city"
+                android:textColor="@color/white"
+                android:textSize="44px" />
+            <TextView
+                android:id="@+id/textViewRankOverall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="42px"
+                android:layout_marginTop="5px"
+                android:layout_below="@id/textViewRankCity"
+                android:text="@string/rank_overall"
                 android:textColor="@color/white"
                 android:textSize="44px" />
 
@@ -160,6 +172,14 @@
             android:text="@string/monthly"
             android:textColor="@color/black_grey"
             android:textSize="48px" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="140px"
+            android:layout_height="140px"
+            android:layout_centerInParent="true"
+            />
+
 
     </RelativeLayout>
 
