@@ -1784,6 +1784,12 @@
                 android:orientation="vertical"
                 android:splitMotionEvents="false">
 
+                <LinearLayout
+                    android:id="@+id/driverImageRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/profileRl"
                     android:layout_width="220px"
@@ -1808,24 +1814,14 @@
                         android:tag="mwar"/>
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/profileRl"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10px"
-                    android:gravity="center"
-                    android:text="Dr"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
+
 
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDEI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
+                    android:layout_marginTop="10px"
                     android:orientation="horizontal"
                     >
 
@@ -1836,25 +1832,31 @@
                         android:orientation="vertical"
                         >
 
-                        <ImageView
-                            android:layout_width="53px"
-                            android:layout_height="53px"
-                            android:src="@drawable/ic_dei"
-                            android:tag="mwar"
-                            />
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15px"
+                            android:text="Dr"
+                            android:textColor="@color/white"
+                            android:textSize="34px"/>
+
 
                         <TextView
                             android:id="@+id/textViewDEI"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10px"
+                            android:layout_marginTop="15px"
                             android:gravity="center"
-                            android:text="4.5"
+                            android:text="View Account"
                             android:textColor="@color/white"
-                            android:textSize="38px"/>
+                            android:textSize="32px"/>
 
                     </LinearLayout>
                 </LinearLayout>
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutAutosOn"
@@ -1864,6 +1866,10 @@
                     android:background="@drawable/transparent"
                     android:splitMotionEvents="false"
                     >
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:background="@drawable/menu_divider"/>
 
                     <ImageView
                         android:layout_width="match_parent"

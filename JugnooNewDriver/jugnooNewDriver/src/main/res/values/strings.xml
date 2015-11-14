@@ -8,8 +8,8 @@
 
 
 
-    <!-- <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live -->
-    <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> <!-- Dev-->
+     <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live
+    <!--<string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> &lt;!&ndash; Dev&ndash;&gt;-->
 
 
 	<!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
@@ -172,6 +172,18 @@
 
 	<string name="check_all">Check All</string>
 	<string name="uncheck_all">Uncheck All</string>
+
+	<string name="name">Name</string>
+	<string name="driver_id">Driver ID:</string>
+	<string name="rank_city">Rank City:</string>
+	<string name="rank_overall">Rank Overall:</string>
+	<string name="monthly">Monthly</string>
+	<string name="earnings">Earnings</string>
+	<string name="rides_taken">Rides Taken</string>
+	<string name="rides_missed">Rides Missed</string>
+	<string name="rides_cancelled">Rides Cancelled</string>
+	<string name="online_hours">Online Hours</string>
+
 
 
 

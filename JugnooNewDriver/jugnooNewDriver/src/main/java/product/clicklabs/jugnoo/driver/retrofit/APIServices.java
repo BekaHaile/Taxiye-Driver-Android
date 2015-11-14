@@ -190,4 +190,9 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_in_ride_data")
 	Response updateInRideDataRetro(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/driver_profile")
+	void driverProfileInfo(@Field("access_token") String accessToken,
+						Callback<BookingHistoryResponse> callback);
 }
