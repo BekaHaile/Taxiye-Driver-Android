@@ -6,19 +6,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
-import android.provider.Settings;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.api.GoogleAPIException;
-import com.google.api.translate.Language;
-import com.google.api.translate.Translate;
-import com.google.api.translate.TranslateV2;
+
+import com.google.android.gms.location.FusedLocationProviderApi;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -168,17 +167,27 @@ public class Utils {
 	}
 
 
-	public static boolean mockLocationEnabled(Context context) {
+
+	public static boolean mockLocationEnabled(Location location) {
 //		return false;
-		if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-			if (Settings.Secure.getString(context.getContentResolver(),
-					Settings.Secure.ALLOW_MOCK_LOCATION).equals("0"))
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
 				return false;
-			else return true;
-		} else {
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
+
+
 
 
 	public static String getChronoTimeFromMillis(long elapsedTime) {

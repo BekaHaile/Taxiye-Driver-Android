@@ -122,7 +122,7 @@ public class GPSForegroundLocationFetcher implements LocationListener{
 	@Override
 	public void onLocationChanged(Location location) {
 		try{
-            if(!Utils.mockLocationEnabled(context)) {
+            if(!Utils.mockLocationEnabled(location)) {
                 if (location != null) {
                     this.location = location;
                     gpsLocationUpdate.onGPSLocationChanged(location);
