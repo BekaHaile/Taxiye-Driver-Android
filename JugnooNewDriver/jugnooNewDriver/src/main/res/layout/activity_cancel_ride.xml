@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginTop="25px"
-            android:text="राइड कैंसिल करने का कारन"
+            android:text="@string/cancel_ride"
             android:textColor="@color/black"
             android:textSize="30.6px"/>
 
@@ -74,7 +74,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30px"
                 android:background="@drawable/blue_btn_normal"
-                android:text="ओके"
+                android:text="@string/ok"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 

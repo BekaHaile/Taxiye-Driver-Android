@@ -1789,7 +1789,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/imageViewTitleBarOvalText"
+                            android:id="@+id/textViewTitleBarOvalText"
                             android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
                             android:layout_width="40px"
                             android:layout_height="35px"

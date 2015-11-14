@@ -192,7 +192,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI, imageViewTitleBarOval;
-	TextView textViewTitleBarDEI, textViewTitleBarOnlineHours, imageViewTitleBarOvalText;
+	TextView textViewTitleBarDEI, textViewTitleBarOnlineHours, textViewTitleBarOvalText;
 
 
 
@@ -556,7 +556,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		imageViewTitleBarOval = (ImageView) findViewById(R.id.imageViewTitleBarOval);
 		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
 		textViewTitleBarOnlineHours = (TextView) findViewById(R.id.textViewTitleBarOnlineHours); textViewTitleBarOnlineHours.setTypeface(Data.latoRegular(this));
-		imageViewTitleBarOvalText = (TextView) findViewById(R.id.imageViewTitleBarOvalText); imageViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
+		textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText); textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
 
 
@@ -2141,6 +2141,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
+			textViewTitleBarOvalText.setText(""+Data.userData.driverOnlineHours);
 
 		} catch(Exception e){
 			e.printStackTrace();
