@@ -5,7 +5,9 @@
               android:layout_height="1134px"
               android:background="@color/white"
               android:orientation="vertical"
-              android:splitMotionEvents="false" >
+              android:splitMotionEvents="false"
+                android:animateLayoutChanges="true"
+    >
 
 
     <RelativeLayout
@@ -66,8 +68,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/driverDetailsRLL">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="350px"
-        android:background="@drawable/driver_profile_bg">
+        android:background="@drawable/driver_profile_bg"
+        android:id="@+id/driverDetailsRL">
 
         <RelativeLayout
             android:id="@+id/profileRl"
@@ -112,10 +120,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="42px"
-                android:layout_marginTop="15px"
+                android:layout_marginTop="5px"
                 android:text="@string/name"
                 android:textColor="@color/white"
-                android:textSize="44px" />
+                android:textSize="40px" />
 
             <TextView
                 android:id="@+id/textViewDriverId"
@@ -127,7 +135,7 @@
                 android:layout_marginTop="5px"
                 android:text="@string/driver_id"
                 android:textColor="@color/white"
-                android:textSize="44px" />
+                android:textSize="40px" />
 
             <TextView
                 android:id="@+id/textViewRankCity"
@@ -139,7 +147,7 @@
                 android:layout_below="@id/textViewDriverId"
                 android:text="@string/rank_city"
                 android:textColor="@color/white"
-                android:textSize="44px" />
+                android:textSize="40px" />
             <TextView
                 android:id="@+id/textViewRankOverall"
                 android:layout_width="wrap_content"
@@ -150,7 +158,7 @@
                 android:layout_below="@id/textViewRankCity"
                 android:text="@string/rank_overall"
                 android:textColor="@color/white"
-                android:textSize="44px" />
+                android:textSize="40px" />
 
 
         </RelativeLayout>
@@ -161,7 +169,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="120px">
+        android:layout_height="120px"
+        android:layout_below="@+id/driverDetailsRL">
 
         <TextView
             android:id="@+id/textViewmonthlyText"
@@ -172,13 +181,6 @@
             android:text="@string/monthly"
             android:textColor="@color/black_grey"
             android:textSize="48px" />
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="140px"
-            android:layout_height="140px"
-            android:layout_centerInParent="true"
-            />
 
 
     </RelativeLayout>
@@ -261,6 +263,40 @@
                     android:textSize="40px" />
 
             </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/imageViewHorizontal3"
+                android:background="@color/blue_btn_pressed"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="107px">
+
+                <TextView
+                    android:id="@+id/textViewRidesMissedText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:text="@string/rides_cancelled"
+                    android:textColor="@color/black_grey"
+                    android:textSize="40px" />
+
+                <TextView
+                    android:id="@+id/textViewRidesMissedValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="0000"
+                    android:layout_marginRight="42px"
+                    android:textColor="@color/blue_btn_pressed"
+                    android:textSize="40px" />
+
+            </RelativeLayout>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -297,40 +333,6 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal3"
-                android:background="@color/blue_btn_pressed"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="107px">
-
-                <TextView
-                    android:id="@+id/textViewRidesMissedText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:text="@string/rides_cancelled"
-                    android:textColor="@color/black_grey"
-                    android:textSize="40px" />
-
-                <TextView
-                    android:id="@+id/textViewRidesMissedValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:text="0000"
-                    android:layout_marginRight="42px"
-                    android:textColor="@color/blue_btn_pressed"
-                    android:textSize="40px" />
-
-            </RelativeLayout>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -373,6 +375,7 @@
 
 
 
+    </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>

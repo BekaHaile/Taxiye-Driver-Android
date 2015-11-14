@@ -1814,16 +1814,7 @@
                         android:tag="mwar"/>
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="15px"
-                    android:layout_marginLeft="80px"
-                    android:text="Dr"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
+
 
 
                 <LinearLayout
@@ -1831,7 +1822,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10px"
-                    android:layout_marginLeft="10px"
                     android:orientation="horizontal"
                     >
 
@@ -1842,12 +1832,22 @@
                         android:orientation="vertical"
                         >
 
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15px"
+                            android:text="Dr"
+                            android:textColor="@color/white"
+                            android:textSize="34px"/>
+
 
                         <TextView
                             android:id="@+id/textViewDEI"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10px"
+                            android:layout_marginTop="15px"
                             android:gravity="center"
                             android:text="View Account"
                             android:textColor="@color/white"

@@ -6046,7 +6046,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void showAllRideRequestsOnMap(){
+	public void
+	showAllRideRequestsOnMap(){
 
 		try {
 			if(userMode == UserMode.DRIVER){
