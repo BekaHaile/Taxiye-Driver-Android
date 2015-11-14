@@ -1791,13 +1791,26 @@
                         <TextView
                             android:id="@+id/textViewTitleBarOvalText"
                             android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
-                            android:layout_width="40px"
-                            android:layout_height="35px"
-                            android:layout_marginLeft="37px"
-                            android:layout_marginTop="10px"
+                            android:gravity="center"
+                            android:layout_width="60px"
+                            android:layout_height="60px"
+                            android:layout_marginLeft="25px"
+                            android:layout_marginRight="15px"
                             android:text="24"
                             android:textSize="32px"
                             android:textColor="@color/white"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/progressBarDriverOnlineHours"
+                            android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
+                            android:layout_width="50px"
+                            android:layout_height="50px"
+                            android:layout_marginLeft="30px"
+                            android:layout_marginRight="20px"
+                            android:layout_marginTop="5px"
+                            android:src="@drawable/oval"
+                            android:tag="mwar"
                             />
 
 

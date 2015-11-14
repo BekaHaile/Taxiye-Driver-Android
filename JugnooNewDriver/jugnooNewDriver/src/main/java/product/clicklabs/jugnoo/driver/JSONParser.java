@@ -306,7 +306,6 @@ public class JSONParser {
 				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
 						"Download it from here\nhttp://smarturl.it/jugnoo");
 
-		String driverOnlineHours = userData.optString("driver_online_hours", "0");
 
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
@@ -315,8 +314,7 @@ public class JSONParser {
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer,
-				driverOnlineHours);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

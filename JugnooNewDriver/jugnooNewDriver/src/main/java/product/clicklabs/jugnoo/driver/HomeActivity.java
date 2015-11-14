@@ -43,6 +43,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -191,8 +192,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout topRl;
 	Button menuBtn;
 	Button checkServerBtn;
-	ImageView imageViewTitleBarDEI, imageViewTitleBarOval;
-	TextView textViewTitleBarDEI, textViewTitleBarOnlineHours, textViewTitleBarOvalText;
+	ImageView imageViewTitleBarDEI;
+	TextView textViewTitleBarDEI, textViewTitleBarOvalText;
+	ProgressBar progressBarDriverOnlineHours;
 
 
 
@@ -553,9 +555,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		menuBtn = (Button) findViewById(R.id.menuBtn);
 		checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
-		imageViewTitleBarOval = (ImageView) findViewById(R.id.imageViewTitleBarOval);
+		progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-		textViewTitleBarOnlineHours = (TextView) findViewById(R.id.textViewTitleBarOnlineHours); textViewTitleBarOnlineHours.setTypeface(Data.latoRegular(this));
 		textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText); textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
 
@@ -2141,7 +2142,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
-			textViewTitleBarOvalText.setText(""+Data.userData.driverOnlineHours);
+			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2186,7 +2187,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if(userMode == UserMode.DRIVER){
 
 			initializeFusedLocationFetchers();
-
 
 			if(mode == DriverScreenMode.D_RIDE_END){
 				if(Data.endRideData != null){
@@ -2354,7 +2354,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			switch(mode){
 
 				case D_INITIAL:
-
+					getDriverOnlineHours(HomeActivity.this);
 					updateDriverServiceFast("no");
 
 					textViewDriverInfo.setVisibility(View.GONE);
@@ -3703,7 +3703,50 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+	public void getDriverOnlineHours(final Activity activity) {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
+				textViewTitleBarOvalText.setVisibility(View.GONE);
+				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						try {
+							progressBarDriverOnlineHours.setVisibility(View.GONE);
+							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									String onlineHours = jObj.getString("driver_online_hours");
+									Log.i("Online hours",onlineHours);
+									if(Data.userData != null) {
+										Data.userData.driverOnlineHours = onlineHours;
+										setUserData();
+									}
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
 
+					@Override
+					public void failure(RetrofitError error) {
+						progressBarDriverOnlineHours.setVisibility(View.GONE);
+						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			progressBarDriverOnlineHours.setVisibility(View.GONE);
+			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+		}
+
+	}
 
 
 

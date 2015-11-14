@@ -196,4 +196,9 @@ public interface APIServices {
 	void driverProfileInfo(@Field("access_token") String accessToken,
 						Callback<BookingHistoryResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/daily_online_hours")
+	void dailyOnlineHours(@Field("access_token") String accessToken,
+						   Callback<RegisterScreenResponse> callback);
+
 }
