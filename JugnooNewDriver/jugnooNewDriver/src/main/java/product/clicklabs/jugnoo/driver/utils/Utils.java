@@ -391,6 +391,7 @@ public class Utils {
 			}
 		}
 	public static boolean telerickshawInstall(Context context) {
+
 		// Flags: See below
 		boolean telerickshawDriver = false;
 		int flags = PackageManager.GET_META_DATA |
@@ -403,6 +404,7 @@ public class Utils {
 			if (!appInfo.packageName.contains("com.gcs.telerickshaw")) {
 				telerickshawDriver = (appInfo.packageName.contains("com.telerickshaw") || appInfo.packageName.contains("telerickshaw"));
 				if (telerickshawDriver) {
+
 					break;
 				}
 			}
@@ -411,7 +413,6 @@ public class Utils {
 		return telerickshawDriver;
 
 	}
-
 
 
 }

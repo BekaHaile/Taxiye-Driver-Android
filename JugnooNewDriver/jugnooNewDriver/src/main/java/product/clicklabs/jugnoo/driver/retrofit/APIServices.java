@@ -195,4 +195,5 @@ public interface APIServices {
 	@POST("/driver_profile")
 	void driverProfileInfo(@Field("access_token") String accessToken,
 						Callback<BookingHistoryResponse> callback);
+
 }

@@ -618,6 +618,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("auto_n_cab_installed", "0");
 				}
 
+
 				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
 					params.put("uber_installed", "1");
 				}
@@ -638,7 +639,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				else{
 					params.put("ola_installed", "0");
 				}
-
 
 				if(Utils.isDeviceRooted()){
 					params.put("device_rooted", "1");

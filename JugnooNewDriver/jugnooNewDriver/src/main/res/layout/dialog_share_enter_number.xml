@@ -61,7 +61,7 @@
 
                 <ImageView 
                     android:layout_width="350px"
-                    android:layout_height="2px"
+                    android:layout_height="3px"
                     android:src="@color/musturd_jugnoo"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
