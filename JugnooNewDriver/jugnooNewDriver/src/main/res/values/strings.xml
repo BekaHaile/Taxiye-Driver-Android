@@ -184,6 +184,13 @@
 	<string name="rides_cancelled">Rides Cancelled</string>
 	<string name="online_hours">Online Hours</string>
 
+	<string name="Auto_not_working">Auto is not working</string>
+	<string name="Traffic">Traffic</string>
+	<string name="accepted_by_mistake">Ride accepted by mistake</string>
+	<string name="Customer_asked_to_cancel">Customer asked to cancel the ride</string>
+	<string name="Not_able_to_contact_customer">Not able to contact customer</string>
+	<string name="Customer_behavior">Customer\'s bad behavior</string>
+
 
 
 

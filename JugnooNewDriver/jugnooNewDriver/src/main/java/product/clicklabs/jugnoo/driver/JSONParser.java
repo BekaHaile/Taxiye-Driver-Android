@@ -345,7 +345,7 @@ public class JSONParser {
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
 
-		parseCancellationReasons(jObj);
+		parseCancellationReasons(jObj,context);
 				
 		return resp;
 	}
@@ -1088,7 +1088,7 @@ public class JSONParser {
     }
 
 
-	public static void parseCancellationReasons(JSONObject jObj) {
+	public static void parseCancellationReasons(JSONObject jObj, Context context) {
 
 //		"cancellation": {
 //      "message": "Cancellation of a ride more than 5 minutes after the driver is allocated will lead to cancellation charges of Rs. 20",
@@ -1104,12 +1104,12 @@ public class JSONParser {
 
 		try {
 			Data.cancelOptionsList = new ArrayList<>();
-			Data.cancelOptionsList.add(new CancelOption("ऑटो ख़राब है"));
-			Data.cancelOptionsList.add(new CancelOption("ट्रैफिक"));
-			Data.cancelOptionsList.add(new CancelOption("गलती से एक्सेप्ट किया"));
-			Data.cancelOptionsList.add(new CancelOption("कस्टमर ने राइड कैंसिल करने के लिए कहा"));
-			Data.cancelOptionsList.add(new CancelOption("कस्टमर से संपर्क नहीं हो पा रहा है"));
-			Data.cancelOptionsList.add(new CancelOption("कस्टमर का बुरा व्यवहार"));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Auto_not_working)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Traffic)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.accepted_by_mistake)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Customer_asked_to_cancel)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Not_able_to_contact_customer)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Customer_behavior)));
 
 			JSONArray jCancellationReasons = jObj.getJSONArray("cancellation_reasons");
 

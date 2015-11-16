@@ -151,9 +151,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ImageView profileImg;
 	TextView userName, textViewDEI;
-	LinearLayout linearLayoutDEI, driverImageRL;
+	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
 	RelativeLayout inviteFriendRl;
@@ -495,6 +495,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		userName = (TextView) findViewById(R.id.userName); userName.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
+		linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
+		RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
 		textViewDEI = (TextView) findViewById(R.id.textViewDEI); textViewDEI.setTypeface(Data.latoRegular(this));
 
 
@@ -2191,6 +2193,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(mode == DriverScreenMode.D_RIDE_END){
 				if(Data.endRideData != null){
 					mapLayout.setVisibility(View.GONE);
+					RelativeLayoutDailyHours.setVisibility(View.GONE);
+					linearLayout_DEI.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
 					topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
@@ -2281,6 +2285,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else if(mode == DriverScreenMode.D_BEFORE_END_OPTIONS){
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.GONE);
+				linearLayout_DEI.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 				editTextEnterMeterFare.setText("");
@@ -2345,6 +2351,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				mapLayout.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.VISIBLE);
+				linearLayout_DEI.setVisibility(View.VISIBLE);
 				endRideReviewRl.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.bg_grey));
 

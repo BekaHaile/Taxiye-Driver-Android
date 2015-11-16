@@ -1730,6 +1730,7 @@
 
                     <LinearLayout
                         android:layout_width="wrap_content"
+                        android:id="@+id/linearLayout_DEI"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_alignParentLeft="true"
@@ -1760,6 +1761,7 @@
 
 
                     <RelativeLayout
+                        android:id="@+id/RelativeLayoutDailyHours"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
