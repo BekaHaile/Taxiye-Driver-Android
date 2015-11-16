@@ -15,9 +15,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.api.GoogleAPI;
-import com.google.api.translate.Language;
-import com.google.api.translate.Translate;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -306,16 +303,18 @@ public class Utils {
 
 
 	private static DecimalFormat decimalFormatMoney;
-	public static DecimalFormat getDecimalFormatForMoney(){
-		if(decimalFormatMoney == null){
+
+	public static DecimalFormat getDecimalFormatForMoney() {
+		if (decimalFormatMoney == null) {
 			decimalFormatMoney = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 		}
 		return decimalFormatMoney;
 	}
 
 	private static DecimalFormat decimalFormat;
-	public static DecimalFormat getDecimalFormat(){
-		if(decimalFormat == null){
+
+	public static DecimalFormat getDecimalFormat() {
+		if (decimalFormat == null) {
 			decimalFormat = new DecimalFormat("#.##");
 		}
 		return decimalFormat;
@@ -359,37 +358,38 @@ public class Utils {
 	}
 
 
-		public static boolean  isDeviceRooted() {
-			return checkRootMethod1() || checkRootMethod2() || checkRootMethod3();
-		}
+	public static boolean isDeviceRooted() {
+		return checkRootMethod1() || checkRootMethod2() || checkRootMethod3();
+	}
 
-		private static boolean checkRootMethod1() {
-			String buildTags = android.os.Build.TAGS;
-			return buildTags != null && buildTags.contains("test-keys");
-		}
+	private static boolean checkRootMethod1() {
+		String buildTags = android.os.Build.TAGS;
+		return buildTags != null && buildTags.contains("test-keys");
+	}
 
-		private static boolean checkRootMethod2() {
-			String[] paths = { "/system/app/Superuser.apk", "/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
-					"/system/bin/failsafe/su", "/data/local/su" };
-			for (String path : paths) {
-				if (new File(path).exists()) return true;
-			}
+	private static boolean checkRootMethod2() {
+		String[] paths = {"/system/app/Superuser.apk", "/sbin/su", "/system/bin/su", "/system/xbin/su", "/data/local/xbin/su", "/data/local/bin/su", "/system/sd/xbin/su",
+				"/system/bin/failsafe/su", "/data/local/su"};
+		for (String path : paths) {
+			if (new File(path).exists()) return true;
+		}
+		return false;
+	}
+
+	private static boolean checkRootMethod3() {
+		Process process = null;
+		try {
+			process = Runtime.getRuntime().exec(new String[]{"/system/xbin/which", "su"});
+			BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			if (in.readLine() != null) return true;
 			return false;
+		} catch (Throwable t) {
+			return false;
+		} finally {
+			if (process != null) process.destroy();
 		}
+	}
 
-		private static boolean checkRootMethod3() {
-			Process process = null;
-			try {
-				process = Runtime.getRuntime().exec(new String[] { "/system/xbin/which", "su" });
-				BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
-				if (in.readLine() != null) return true;
-				return false;
-			} catch (Throwable t) {
-				return false;
-			} finally {
-				if (process != null) process.destroy();
-			}
-		}
 	public static boolean telerickshawInstall(Context context) {
 		// Flags: See below
 		boolean telerickshawDriver = false;
@@ -412,27 +412,28 @@ public class Utils {
 
 	}
 
-	public static String languageTranslator(String InputString){
-		String OutputString;
-		try {
-			// Set the HTTP referrer to your website address.
-			GoogleAPI.setHttpReferrer("https://jugnoo.in");
+//	public static String languageTranslator(String InputString){
+//		String OutputString;
+//		try {
+//			// Set the HTTP referrer to your website address.
+//			GoogleAPI.setHttpReferrer("http://code.google.com/p/google-api-translate-java/");
+//
+//			// Set the Google Translate API key
+//			// See: http://code.google.com/apis/language/translate/v2/getting_started.html
+//			GoogleAPI.setKey("AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM");
+//
+//			OutputString = Translate.DEFAULT.execute(InputString, Language.ENGLISH, Language.HINDI);
+//			String translatedText = Translate.DEFAULT.execute("Bonjour le monde", Language.FRENCH, Language.ENGLISH);
+//			Log.i("translate",translatedText);
+//
+//		} catch (GoogleAPIException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			OutputString = "Error";
+//		}
+//		return OutputString;
 
-			// Set the Google Translate API key
-			// See: http://code.google.com/apis/language/translate/v2/getting_started.html
-			GoogleAPI.setKey("AIzaSyAdBlqKjTjDcZ78iOlsvgKvTVjXpMwvu1g");
+//	}
 
-			OutputString = Translate.DEFAULT.execute(InputString, Language.ENGLISH, Language.HINDI);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			OutputString = "Error";
-		}
-		return OutputString;
-
-
-
-
-
-	}
 
 }

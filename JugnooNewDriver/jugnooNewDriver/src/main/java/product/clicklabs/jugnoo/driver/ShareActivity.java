@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import product.clicklabs.jugnoo.driver.utils.BingTranslator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -272,10 +273,21 @@ public class ShareActivity extends Activity {
 								customerNumber.requestFocus();
 								customerNumber.setError(getResources().getString(R.string.enter_valid_phone_number));
 							} else {
+								final String phone = code;
 								SmsManager smsManager = SmsManager.getDefault();
 								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
 
-								DialogPopup.alertPopup(ShareActivity.this, "", " "+Utils.languageTranslator("your referral code") + code + " के साथ शेयर कर दिया गया है।");
+								new BingTranslator().startTranslation("your referral code", new BingTranslator.BingCallback() {
+									@Override
+									public void onSuccess(String translatedStr) {
+										DialogPopup.alertPopup(ShareActivity.this, "", " " + translatedStr+" " + phone + " के साथ शेयर कर दिया गया है।");
+									}
+
+									@Override
+									public void onFailure() {
+										DialogPopup.alertPopup(ShareActivity.this, "", " "+"your referral code" + phone + " के साथ शेयर कर दिया गया है।");
+									}
+								});
 								dialog.dismiss();
 							}
 						}
@@ -301,5 +313,24 @@ public class ShareActivity extends Activity {
 		}
 
 	}
+
+//	public String translate(String text) throws Exception {
+//		// Set the Client ID / Client Secret once per JVM. It is set statically and applies to all services
+//		try {
+//			Translate.setClientId("aneesh_jugnoo");
+//			Translate.setClientSecret("wzZGiM3+xESz/ssyCAZLakFuAb5o7sDbAr3N0dpRX3g=");
+//
+//			String translatedText = "";
+//
+//			// English AUTO_DETECT -> gERMAN Change this if u wanna other languages
+////			translatedText = Translate.execute(text, Language.GERMAN);
+//			translatedText = Translate.execute(text, Language.ENGLISH,
+//					Language.ENGLISH);
+//			return translatedText;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "";
+//		}
+//	}
 
 }
