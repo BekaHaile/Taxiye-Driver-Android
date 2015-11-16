@@ -15,6 +15,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.api.GoogleAPI;
+import com.google.api.translate.Language;
+import com.google.api.translate.Translate;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -405,6 +409,29 @@ public class Utils {
 
 		}
 		return telerickshawDriver;
+
+	}
+
+	public static String languageTranslator(String InputString){
+		String OutputString;
+		try {
+			// Set the HTTP referrer to your website address.
+			GoogleAPI.setHttpReferrer("https://jugnoo.in");
+
+			// Set the Google Translate API key
+			// See: http://code.google.com/apis/language/translate/v2/getting_started.html
+			GoogleAPI.setKey("AIzaSyAdBlqKjTjDcZ78iOlsvgKvTVjXpMwvu1g");
+
+			OutputString = Translate.DEFAULT.execute(InputString, Language.ENGLISH, Language.HINDI);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			OutputString = "Error";
+		}
+		return OutputString;
+
+
+
+
 
 	}
 
