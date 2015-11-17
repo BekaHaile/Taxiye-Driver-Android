@@ -167,23 +167,23 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="120px"
-        android:layout_below="@+id/driverDetailsRL">
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="120px"-->
+        <!--android:layout_below="@+id/driverDetailsRL">-->
 
-        <TextView
-            android:id="@+id/textViewmonthlyText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="@string/monthly"
-            android:textColor="@color/black_grey"
-            android:textSize="48px" />
+        <!--<TextView-->
+            <!--android:id="@+id/textViewmonthlyText"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/monthly"-->
+            <!--android:textColor="@color/black_grey"-->
+            <!--android:textSize="48px" />-->
 
 
-    </RelativeLayout>
+    <!--</RelativeLayout>-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -193,13 +193,38 @@
         >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="540px"
+            android:layout_height="648px"
             android:orientation="vertical"
             android:layout_marginLeft="24px"
             android:layout_marginRight="24px"
             android:layout_marginBottom="30px"
             android:layout_alignParentBottom="true"
             android:background="@drawable/background_grey_rounded_blue_border">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="107px">
+
+                <TextView
+                    android:id="@+id/textViewmonthlyText"
+                    android:layout_width="295px"
+                    android:gravity="center"
+                    android:layout_height="65px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/monthly"
+                    android:textColor="@color/white"
+                    android:background="@color/grey_dark_less"
+                    android:textSize="42px" />
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/imageViewHorizontal0"
+                android:background="@color/blue_btn_pressed"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
