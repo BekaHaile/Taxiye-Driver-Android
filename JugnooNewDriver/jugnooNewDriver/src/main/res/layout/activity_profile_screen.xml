@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Profile"
+            android:text="@string/profile"
             android:textColor="@color/white"
             android:textSize="48px" />
 
@@ -88,8 +88,9 @@
 
             <ImageView
                 android:id="@+id/profileBack"
-                android:layout_width="220px"
-                android:layout_height="220px"
+                android:layout_width="200px"
+                android:layout_height="200px"
+                android:layout_centerInParent="true"
                 android:background="@drawable/ring"
                 android:tag="mwar"/>
 
