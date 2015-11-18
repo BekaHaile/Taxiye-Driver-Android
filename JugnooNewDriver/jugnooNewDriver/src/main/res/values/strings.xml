@@ -8,7 +8,7 @@
 
 
 
-     <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live
+     <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--Live-->
     <!--<string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> &lt;!&ndash; Dev&ndash;&gt;-->
 
 
@@ -175,8 +175,8 @@
 
 	<string name="name">Name</string>
 	<string name="driver_id">Driver ID:</string>
-	<string name="rank_city">Rank City:</string>
-	<string name="rank_overall">Rank Overall:</string>
+	<string name="rank_city">City Rank:</string>
+	<string name="rank_overall">Overall Rank:</string>
 	<string name="monthly">Monthly Score</string>
 	<string name="earnings">Earnings</string>
 	<string name="rides_taken">Rides Taken</string>
@@ -191,8 +191,8 @@
 	<string name="Not_able_to_contact_customer">Not able to contact customer</string>
 	<string name="Customer_behavior">Customer\'s bad behavior</string>
 	<string name="profile">Profile</string>
+	<string name="Duty_Hours">Duty Hours:</string>
 
-	Profile
 
 
 

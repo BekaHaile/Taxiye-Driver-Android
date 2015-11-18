@@ -1774,32 +1774,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:layout_marginTop="5px"
-                            android:text="Duty Hours"
+                            android:text="@string/Duty_Hours"
                             android:textColor="@color/white"
                             android:textSize="42px"/>
 
-                        <ImageView
-                            android:id="@+id/imageViewTitleBarOval"
-                            android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
-                            android:layout_width="60px"
-                            android:layout_height="60px"
-                            android:layout_marginLeft="25px"
-                            android:layout_marginRight="15px"
-                            android:src="@drawable/oval"
-                            android:tag="mwar"
-                            />
 
                         <TextView
                             android:id="@+id/textViewTitleBarOvalText"
                             android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
                             android:gravity="center"
-                            android:layout_width="60px"
+                            android:layout_width="wrap_content"
                             android:layout_height="60px"
-                            android:layout_marginLeft="25px"
-                            android:layout_marginRight="15px"
-                            android:text="24"
-                            android:textSize="32px"
+                            android:layout_marginLeft="20px"
+                            android:layout_marginRight="20px"
+                            android:singleLine="true"
+                            android:text="HH:MM"
+                            android:textSize="40px"
                             android:textColor="@color/white"
                             />
 
@@ -1808,9 +1798,8 @@
                             android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
                             android:layout_width="50px"
                             android:layout_height="50px"
-                            android:layout_marginLeft="30px"
-                            android:layout_marginRight="20px"
                             android:layout_marginTop="5px"
+                            android:layout_marginLeft="45px"
                             android:src="@drawable/oval"
                             android:tag="mwar"
                             />

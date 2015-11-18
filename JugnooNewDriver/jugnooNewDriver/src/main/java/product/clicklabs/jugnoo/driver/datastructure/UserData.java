@@ -32,7 +32,7 @@ public class UserData {
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
 		this.referralSMSToCustomer = referralSMSToCustomer;
-		this.driverOnlineHours = "0";
+		this.driverOnlineHours = "00:00";
 	}
 
 }
