@@ -432,13 +432,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		setContentView(R.layout.activity_home);
 
-//        String languageToLoad = "hi";
-//        Locale locale = new Locale(languageToLoad);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,
-//            getBaseContext().getResources().getDisplayMetrics());
 
 		decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 		decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
