@@ -33,6 +33,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -46,6 +47,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
@@ -61,6 +63,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -155,7 +158,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
-		
+
+		Pushy.listen(this);
+
 		
 //		Locale locale = new Locale("en");
 //	    Locale.setDefault(locale);
@@ -349,6 +354,19 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								pushAPIs(SplashNewActivity.this);
 							}
 						}, 2000);
+					}
+				});
+			}
+		});
+
+		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+			@Override
+			public void deviceTokenReceived(final String regId) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Log.e("pushy regId", "=" + regId);
+						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
 					}
 				});
 			}
