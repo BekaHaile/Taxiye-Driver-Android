@@ -237,32 +237,6 @@ public class GCMIntentService extends IntentService {
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
-			Bundle extras = intent.getExtras();
-
-			GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
-			// The getMessageType() intent parameter must be the intent you received
-			// in your BroadcastReceiver.
-			String messageType = gcm.getMessageType(intent);
-
-			if (!extras.isEmpty()) {  // has effect of unparcelling Bundle
-					/*
-					 * Filter messages based on message type. Since it is likely that GCM
-					 * will be extended in the future with new message types, just ignore
-					 * any message types you're not interested in, or that you don't
-					 * recognize.
-					 */
-				if (GoogleCloudMessaging.
-					MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-	//	                sendNotification("Send error: " + extras.toString());
-				} else if (GoogleCloudMessaging.
-					MESSAGE_TYPE_DELETED.equals(messageType)) {
-	//	                sendNotification("Deleted messages on server: " +
-	//	                        extras.toString());
-					// If it's a regular GCM message, do some work.
-				} else if (GoogleCloudMessaging.
-					MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-					// This loop represents the service doing some work.
-
 					String SHARED_PREF_NAME1 = "myPref", SP_ACCESS_TOKEN_KEY = "access_token";
 
 					SharedPreferences pref1 = getSharedPreferences(SHARED_PREF_NAME1, 0);
@@ -538,16 +512,11 @@ public class GCMIntentService extends IntentService {
 							e.printStackTrace();
 						}
 					}
-
-
-				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
-
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 

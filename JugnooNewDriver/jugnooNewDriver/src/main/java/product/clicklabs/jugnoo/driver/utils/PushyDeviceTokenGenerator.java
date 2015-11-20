@@ -27,13 +27,13 @@ public class PushyDeviceTokenGenerator {
 
 	public void generateDeviceToken(Context context, IDeviceTokenReceiver deviceTokenReceiver){
 		regId = getRegistrationId(context);
-		registerInBackground(context, deviceTokenReceiver);
-//		if(regId.isEmpty()){
-//			registerInBackground(context, deviceTokenReceiver);
-//		}
-//		else{
-//			deviceTokenReceiver.deviceTokenReceived(regId);
-//		}
+//		registerInBackground(context, deviceTokenReceiver);
+		if(regId.isEmpty()){
+			registerInBackground(context, deviceTokenReceiver);
+		}
+		else{
+			deviceTokenReceiver.deviceTokenReceived(regId);
+		}
 	}
 
 
