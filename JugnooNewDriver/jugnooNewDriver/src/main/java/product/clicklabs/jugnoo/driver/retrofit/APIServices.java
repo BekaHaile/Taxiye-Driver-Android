@@ -59,6 +59,7 @@ public interface APIServices {
 	void verifyOtpUsingSignupFields(@Field("email") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
+									@Field("pushy_token") String pushyToken,
 									@Field("device_type") String deviceType,
 									@Field("device_name") String deviceName,
 									@Field("app_version") int appVersion,

@@ -1555,6 +1555,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 				Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
+				Database2.getInstance(HomeActivity.this).updatePushyToken(Data.pushyToken);
 
 			} catch (Exception e) {
 				e.printStackTrace();

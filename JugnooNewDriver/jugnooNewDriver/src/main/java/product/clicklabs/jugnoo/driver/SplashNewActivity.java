@@ -350,8 +350,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							public void run() {
 								Data.deviceToken = regId;
 								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-								progressBar1.setVisibility(View.GONE);
-								pushAPIs(SplashNewActivity.this);
+								checkForTokens();
 							}
 						}, 2000);
 					}
@@ -366,12 +365,20 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					@Override
 					public void run() {
 						Log.e("pushy regId", "=" + regId);
+						Data.pushyToken = regId;
 //						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
+						checkForTokens();
 					}
 				});
 			}
 		});
 
+	}
+	private void checkForTokens(){
+		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
+			progressBar1.setVisibility(View.GONE);
+			pushAPIs(SplashNewActivity.this);
+		}
 	}
 
 
@@ -614,8 +621,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
-				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
+				params.put("pushy_token", Data.pushyToken);
 
 
 				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();

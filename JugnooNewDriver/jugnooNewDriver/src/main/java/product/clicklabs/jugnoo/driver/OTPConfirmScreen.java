@@ -253,7 +253,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 			}
 
 
-			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password, Data.deviceToken,
+			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password, Data.deviceToken, Data.pushyToken,
 					Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 

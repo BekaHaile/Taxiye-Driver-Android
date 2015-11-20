@@ -34,6 +34,7 @@ public class DriverLocationDispatcher {
 				String accessToken = Database2.getInstance(context).getDLDAccessToken();
 				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+				String pushyToken = Database2.getInstance(context).getPushyToken();
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					Location location = Database2.getInstance(context).getDriverCurrentLocation();
@@ -44,6 +45,8 @@ public class DriverLocationDispatcher {
 						nameValuePairs.add(new BasicNameValuePair("longitude", "" + location.getLongitude()));
 						nameValuePairs.add(new BasicNameValuePair("device_token", deviceToken));
 						nameValuePairs.add(new BasicNameValuePair("location_accuracy",""+ location.getAccuracy()));
+						nameValuePairs.add(new BasicNameValuePair("pushy_token", pushyToken));
+
 			
 						HttpRequester simpleJSONParser = new HttpRequester();
 						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
