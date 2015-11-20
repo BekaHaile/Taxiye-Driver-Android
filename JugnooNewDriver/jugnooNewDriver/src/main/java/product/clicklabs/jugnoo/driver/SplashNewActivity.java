@@ -366,7 +366,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					@Override
 					public void run() {
 						Log.e("pushy regId", "=" + regId);
-						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
+//						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
 					}
 				});
 			}
