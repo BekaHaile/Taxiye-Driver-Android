@@ -10,9 +10,9 @@ import android.os.Handler;
 import android.provider.Settings;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
@@ -20,19 +20,20 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener,LocationListener {
+public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener,LocationListener {
 	
 	private final String TAG = this.getClass().getSimpleName();
-	private LocationClient locationclient;
+
+	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
-	private Location location;
+	private Location location, locationUnchecked;
 	
 	private long requestInterval;
 	private LocationUpdate locationUpdate;
 	private Context context;
 	
 	
-	private String LOCATION_SP = "location_sp",
+	private static String LOCATION_SP = "location_sp",
 			LOCATION_LAT = "location_lat",
 			LOCATION_LNG = "location_lng";
 	
@@ -55,8 +56,7 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if(resp == ConnectionResult.SUCCESS){														// google play services working
 			if(isLocationEnabled(context)){															// location fetching enabled
-				locationclient = new LocationClient(context, this, this);
-				locationclient.connect();
+				buildGoogleApiClient(context);
 			}
 			else{																					// location disabled
 			}
@@ -76,24 +76,24 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 			}
 		}, 2000);
 	}
-	
+
 	private synchronized void saveLatLngToSP(double latitude, double longitude){
 		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putString(LOCATION_LAT, ""+latitude);
-		editor.putString(LOCATION_LNG, ""+longitude);
+		editor.putString(LOCATION_LNG, "" + longitude);
 		editor.commit();
 	}
-	
-	
-	private synchronized double getSavedLatFromSP(){
+
+
+	public static double getSavedLatFromSP(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
-		String latitude = preferences.getString(LOCATION_LAT, ""+ 0);
-		Log.d("saved last lat", "=="+latitude);
+		String latitude = preferences.getString(LOCATION_LAT, "" + 0);
+		Log.d("saved last lat", "==" + latitude);
 		return Double.parseDouble(latitude);
 	}
-	
-	private synchronized double getSavedLngFromSP(){
+
+	public static double getSavedLngFromSP(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
 		String longitude = preferences.getString(LOCATION_LNG, ""+0);
 		return Double.parseDouble(longitude);
@@ -118,12 +118,43 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 			return false;
 		}
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+	protected void createLocationRequest(long interval, int priority) {
+		locationrequest = new LocationRequest();
+		locationrequest.setInterval(interval);
+		locationrequest.setFastestInterval(interval / 2);
+		if(priority == 1){
+			locationrequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+		}
+		else if(priority == 2){
+			locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+		}
+		else{
+			locationrequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
+		}
+	}
+
+
+	protected synchronized void buildGoogleApiClient(Context context) {
+		googleApiClient = new GoogleApiClient.Builder(context)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API).build();
+		googleApiClient.connect();
+	}
+
+	protected void startLocationUpdates(long interval, int priority) {
+		createLocationRequest(interval, priority);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, this);
+	}
+
+
+
+
+
 	/**
 	 * Function to get latitude
 	 * */
@@ -133,10 +164,10 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 			if(loc != null){
 				return loc.getLatitude();
 			}
-		} catch(Exception e){Log.e("e","="+e.toString());}
-		return getSavedLatFromSP();
+		} catch(Exception e){Log.e("e", "=" + e.toString());}
+		return getSavedLatFromSP(context);
 	}
-	
+
 	/**
 	 * Function to get longitude
 	 * */
@@ -146,83 +177,86 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 			if(loc != null){
 				return loc.getLongitude();
 			}
-		} catch(Exception e){Log.e("e","="+e.toString());}
-		return getSavedLngFromSP();
+		} catch(Exception e){Log.e("e", "=" + e.toString());}
+		return getSavedLngFromSP(context);
 	}
-	
+
 	public Location getLocation(){
 		try{
 			if(location != null){
-				return location;
+				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
+					return location;
+				}
 			}
 			else{
-				if(locationclient != null && locationclient.isConnected()){
-					location = locationclient.getLastLocation();
-					return location;
+				if(googleApiClient != null && googleApiClient.isConnected()){
+					location = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+					Log.e("last fused location", "=" + location);
+					if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
+						return location;
+					}
 				}
 			}
 		} catch(Exception e){e.printStackTrace();}
 		return null;
 	}
-	
 
-	
-	
-	public synchronized void destroy(){
+	public Location getLocationUnchecked(){
 		try{
-			this.location = null;
-			if(locationclient != null){
-				if(locationclient.isConnected()){
-					locationclient.removeLocationUpdates(this);
-					locationclient.disconnect();
-				}
-				else if(locationclient.isConnecting()){
-					locationclient.disconnect();
-				}
-			}
-		}catch(Exception e){
-			Log.e("e", "="+e.toString());
-		}
-		stopCheckingLocationUpdates();
+			return locationUnchecked;
+		} catch(Exception e){e.printStackTrace();}
+		return null;
 	}
 	
 
+
+
+
+	public synchronized void destroy(){
+		try{
+			this.location = null;
+			Log.e("location", "destroy");
+			if(googleApiClient!=null){
+				if(googleApiClient.isConnected()){
+					LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, this);
+					googleApiClient.disconnect();
+				}
+				else if(googleApiClient.isConnecting()){
+					googleApiClient.disconnect();
+				}
+			}
+		}catch(Exception e){
+			Log.e("e", "=" + e.toString());
+		}
+		stopCheckingLocationUpdates();
+	}
+
+
 	private synchronized void startRequest(){
 		try {
-			locationrequest = LocationRequest.create();
-			
-			if(priority == 0){
-				locationrequest.setPriority(LocationRequest.PRIORITY_LOW_POWER);
-			}
-			else if(priority == 1){
-				locationrequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-			}
-			else if(priority == 2){
-				locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-			}
-			
-			locationrequest.setFastestInterval(requestInterval);
-			locationrequest.setInterval(requestInterval);
-			
-			locationclient.requestLocationUpdates(locationrequest, LocationFetcher.this);
+			startLocationUpdates(requestInterval, priority);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+
 	@Override
 	public void onConnected(Bundle connectionHint) {
 		Log.e(TAG, "onConnected");
 		Location loc = getLocation();
 		if(loc != null){
+			Bundle bundle = new Bundle();
+			bundle.putBoolean("cached", true);
+			loc.setExtras(bundle);
 			locationUpdate.onLocationChanged(loc, priority);
 		}
 		startRequest();
 	}
 
 	@Override
-	public void onDisconnected() {
-		Log.e(TAG, "onDisconnected");
+	public void onConnectionSuspended(int i) {
 		this.location = null;
 	}
 
@@ -235,13 +269,15 @@ public class LocationFetcher implements GooglePlayServicesClient.ConnectionCallb
 	@Override
 	public void onLocationChanged(Location location) {
 		try{
-            if(!Utils.mockLocationEnabled(context)) {
-                if (location != null) {
-                    this.location = location;
-                    locationUpdate.onLocationChanged(location, priority);
-                    saveLatLngToSP(location.getLatitude(), location.getLongitude());
-                }
+            if(!Utils.mockLocationEnabled(location)) {
+				Log.i("loc chanfged ----******", "=" + location);
+				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
+					this.location = location;
+					locationUpdate.onLocationChanged(location, priority);
+					saveLatLngToSP(location.getLatitude(), location.getLongitude());
+				}
             }
+			locationUnchecked = location;
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationServices;
 
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -13,8 +13,8 @@ public class FusedLocationReceiverBackgroundHigh extends BroadcastReceiver {
 
     @Override
     public void onReceive(final Context context, Intent intent) {
-        if(!Utils.mockLocationEnabled(context)) {
-            final Location location = (Location) intent.getExtras().get(LocationClient.KEY_LOCATION_CHANGED);
+        final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
+        if(!Utils.mockLocationEnabled(location)) {
             if (location != null && GpsDistanceCalculator.gpsLocationUpdate != null) {
                 GpsDistanceCalculator.gpsLocationUpdate.onGPSLocationChanged(location);
             }

@@ -43,14 +43,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -134,7 +137,7 @@ import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 @SuppressLint("DefaultLocale")
-public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate, FlurryEventNames {
+public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate, FlurryEventNames, OnMapReadyCallback {
 
 
 
@@ -150,9 +153,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ImageView profileImg;
 	TextView userName, textViewDEI;
-	LinearLayout linearLayoutDEI;
+	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
 	RelativeLayout inviteFriendRl;
@@ -192,7 +195,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI;
+	TextView textViewTitleBarDEI, textViewTitleBarOvalText;
+	ProgressBar progressBarDriverOnlineHours;
 
 
 
@@ -386,7 +390,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	boolean loggedOut = false,
 			zoomedToMyLocation = false,
 			mapTouchedOnce = false;
-	boolean dontCallRefreshDriver = false;
+	boolean dontCallRefreshDriver = false, resumed = false;
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
 
@@ -422,38 +426,34 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public ASSL assl;
 
 
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.activity_home);
-
-//        String languageToLoad = "hi";
-//        Locale locale = new Locale(languageToLoad);
-//        Locale.setDefault(locale);
-//        Configuration config = new Configuration();
-//        config.locale = locale;
-//        getBaseContext().getResources().updateConfiguration(config,
-//            getBaseContext().getResources().getDisplayMetrics());
-
-		decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
-		decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+		try {
+			setContentView(R.layout.activity_home);
 
 
-		initializeGPSForegroundLocationFetcher();
+			decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+			decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
-		HomeActivity.appInterruptHandler = HomeActivity.this;
 
-		activity = this;
+			initializeGPSForegroundLocationFetcher();
 
-		loggedOut = false;
-		zoomedToMyLocation = false;
-		dontCallRefreshDriver = false;
-		mapTouchedOnce = false;
+			HomeActivity.appInterruptHandler = HomeActivity.this;
 
-		appMode = AppMode.NORMAL;
+			activity = this;
 
-		language = Locale.getDefault().getLanguage();
+			loggedOut = false;
+			zoomedToMyLocation = false;
+			dontCallRefreshDriver = false;
+			mapTouchedOnce = false;
+			resumed = false;
+
+			appMode = AppMode.NORMAL;
+
+			language = Locale.getDefault().getLanguage();
 
 //        String language = Locale.getDefault().getLanguage()       ;//---> en
 //        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
@@ -469,733 +469,715 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //        Log.e("Locale info", "="+localeInfo);
 
 
+			drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+			drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-		drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
 
+			assl = new ASSL(HomeActivity.this, drawerLayout, 1134, 720, false);
 
-		assl = new ASSL(HomeActivity.this, drawerLayout, 1134, 720, false);
 
+			Log.e("home", "oncreate");
 
-		Log.e("home", "oncreate");
 
+			//Swipe menu
+			menuLayout = (LinearLayout) findViewById(R.id.menuLayout);
 
 
-		//Swipe menu
-		menuLayout = (LinearLayout) findViewById(R.id.menuLayout);
+			profileImg = (ImageView) findViewById(R.id.profileImg);
+			userName = (TextView) findViewById(R.id.userName);
+			userName.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
+			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
+			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
+			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
+			textViewDEI.setTypeface(Data.latoRegular(this));
 
 
+			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
+			((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
+			relativeLayoutMealsOn = (RelativeLayout) findViewById(R.id.relativeLayoutMealsOn);
+			((TextView) findViewById(R.id.textViewMealsOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			imageViewMealsOnToggle = (ImageView) findViewById(R.id.imageViewMealsOnToggle);
 
-		profileImg = (ImageView) findViewById(R.id.profileImg);
-		userName = (TextView) findViewById(R.id.userName); userName.setTypeface(Data.latoRegular(getApplicationContext()));
+			relativeLayoutFatafatOn = (RelativeLayout) findViewById(R.id.relativeLayoutFatafatOn);
+			((TextView) findViewById(R.id.textViewFatafatOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			imageViewFatafatOnToggle = (ImageView) findViewById(R.id.imageViewFatafatOnToggle);
 
-		linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
-		textViewDEI = (TextView) findViewById(R.id.textViewDEI); textViewDEI.setTypeface(Data.latoRegular(this));
+			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
+			((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
 
-		relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
-		((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
-		imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
+			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
+			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		relativeLayoutMealsOn = (RelativeLayout) findViewById(R.id.relativeLayoutMealsOn);
-		((TextView) findViewById(R.id.textViewMealsOn)).setTypeface(Data.latoRegular(getApplicationContext()));
-		imageViewMealsOnToggle = (ImageView) findViewById(R.id.imageViewMealsOnToggle);
+			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
+			bookingsText = (TextView) findViewById(R.id.bookingsText);
+			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		relativeLayoutFatafatOn = (RelativeLayout) findViewById(R.id.relativeLayoutFatafatOn);
-		((TextView) findViewById(R.id.textViewFatafatOn)).setTypeface(Data.latoRegular(getApplicationContext()));
-		imageViewFatafatOnToggle = (ImageView) findViewById(R.id.imageViewFatafatOnToggle);
+			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
+			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
-		relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
-		((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
-		imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
+			fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
+			driverImageRL = (LinearLayout) findViewById(R.id.driverImageRL);
+			fareDetailsText = (TextView) findViewById(R.id.fareDetailsText);
+			fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
+			((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
 
+			helpRl = (RelativeLayout) findViewById(R.id.helpRl);
+			helpText = (TextView) findViewById(R.id.helpText);
+			helpText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
+			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
+			languagePrefrencesText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
+			logoutText = (TextView) findViewById(R.id.logoutText);
+			logoutText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
-		inviteFriendText = (TextView) findViewById(R.id.inviteFriendText); inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
-		bookingsText = (TextView) findViewById(R.id.bookingsText); bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
+//		driverProfileText = (TextView) findViewById(R.id.driverProfileText); driverProfileText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
-		((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
-		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
-		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			//Top RL
+			topRl = (RelativeLayout) findViewById(R.id.topRl);
+			menuBtn = (Button) findViewById(R.id.menuBtn);
+			checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
+			imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
+			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
+			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
+			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
+			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
-		relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
-		((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
 
-		helpRl = (RelativeLayout) findViewById(R.id.helpRl);
-		helpText = (TextView) findViewById(R.id.helpText); helpText.setTypeface(Data.latoRegular(getApplicationContext()));
+			menuBtn.setVisibility(View.VISIBLE);
 
-		languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
-		languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText); languagePrefrencesText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
-		logoutText = (TextView) findViewById(R.id.logoutText); logoutText.setTypeface(Data.latoRegular(getApplicationContext()));
+			//Map Layout
+			mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
+			SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+			mapFragment.getMapAsync(this);
 
 
+			// Driver main layout
+			driverMainLayout = (RelativeLayout) findViewById(R.id.driverMainLayout);
 
 
+			//Driver initial layout
+			driverInitialLayout = (RelativeLayout) findViewById(R.id.driverInitialLayout);
+			textViewDriverInfo = (TextView) findViewById(R.id.textViewDriverInfo);
+			textViewDriverInfo.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverRideRequestsList = (ListView) findViewById(R.id.driverRideRequestsList);
+			driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
+			jugnooOffLayout = (RelativeLayout) findViewById(R.id.jugnooOffLayout);
+			jugnooOffText = (TextView) findViewById(R.id.jugnooOffText);
+			jugnooOffText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+			driverRideRequestsList.setVisibility(View.GONE);
+
+			driverRequestListAdapter = new DriverRequestListAdapter();
+			driverRideRequestsList.setAdapter(driverRequestListAdapter);
+
+
+			// Driver Request Accept layout
+			driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
+			textViewBeforeAcceptRequestInfo = (TextView) findViewById(R.id.textViewBeforeAcceptRequestInfo);
+			textViewBeforeAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			driverRequestAcceptBackBtn = (Button) findViewById(R.id.driverRequestAcceptBackBtn);
+			driverAcceptRideBtn = (Button) findViewById(R.id.driverAcceptRideBtn);
+			driverAcceptRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
+			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
+
+
+			// Driver engaged layout
+			driverEngagedLayout = (RelativeLayout) findViewById(R.id.driverEngagedLayout);
+
+
+			driverPassengerName = (TextView) findViewById(R.id.driverPassengerName);
+			driverPassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress);
+			textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo);
+			textViewAfterAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewAfterAcceptAmount = (TextView) findViewById(R.id.textViewAfterAcceptAmount);
+			textViewAfterAcceptAmount.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			textViewInRideFareFactor = (TextView) findViewById(R.id.textViewInRideFareFactor);
+			textViewInRideFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+
+			driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue);
+			driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
+			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
+			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
+			driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverFreeRideIcon = (ImageView) findViewById(R.id.driverFreeRideIcon);
+
+			driverPassengerRatingValue.setVisibility(View.GONE);
+
+			//Start ride layout
+			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
+			driverStartRideMyLocationBtn = (Button) findViewById(R.id.driverStartRideMyLocationBtn);
+			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
+			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
+			buttonMarkArrived.setTypeface(Data.latoRegular(this));
+			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
+			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+
+
+			//In ride layout
+			driverInRideMainRl = (RelativeLayout) findViewById(R.id.driverInRideMainRl);
+
+			driverEndRideMyLocationBtn = (Button) findViewById(R.id.driverEndRideMyLocationBtn);
+
+			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
+			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue);
+			driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+			driverIRFareText = (TextView) findViewById(R.id.driverIRFareText);
+			driverIRFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRFareValue = (TextView) findViewById(R.id.driverIRFareValue);
+			driverIRFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+			driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText);
+			driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer);
+			rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+			driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
+			driverWaitText = (TextView) findViewById(R.id.driverWaitText);
+			driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverWaitValue = (TextView) findViewById(R.id.driverWaitValue);
+			driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
+
+			inrideFareInfoRl = (RelativeLayout) findViewById(R.id.inrideFareInfoRl);
+			inrideMinFareText = (TextView) findViewById(R.id.inrideMinFareText);
+			inrideMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			inrideMinFareValue = (TextView) findViewById(R.id.inrideMinFareValue);
+			inrideMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			inrideFareAfterText = (TextView) findViewById(R.id.inrideFareAfterText);
+			inrideFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
+			inrideFareAfterValue = (TextView) findViewById(R.id.inrideFareAfterValue);
+			inrideFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewInRideConvenienceCharges = (TextView) findViewById(R.id.textViewInRideConvenienceCharges);
+			textViewInRideConvenienceCharges.setTypeface(Data.latoRegular(this));
+			textViewInRideConvenienceCharges.setVisibility(View.GONE);
+			inrideFareInfoBtn = (Button) findViewById(R.id.inrideFareInfoBtn);
+
+			driverWaitRl.setVisibility(View.GONE);
+			imageViewIRWaitSep.setVisibility(View.GONE);
+
+			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
+			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			waitStart = 2;
+
+
+			rideTimeChronometer.setText("00:00:00");
+			driverWaitValue.setText("00:00:00");
+
+
+			//Review Layout
+			endRideReviewRl = (RelativeLayout) findViewById(R.id.endRideReviewRl);
+
+			reviewUserImgBlured = (ImageView) findViewById(R.id.reviewUserImgBlured);
+			reviewUserImage = (ImageView) findViewById(R.id.reviewUserImage);
+
+			reviewUserName = (TextView) findViewById(R.id.reviewUserName);
+			reviewUserName.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewReachedDestinationText = (TextView) findViewById(R.id.reviewReachedDestinationText);
+			reviewReachedDestinationText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
+			reviewDistanceText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewDistanceValue = (TextView) findViewById(R.id.reviewDistanceValue);
+			reviewDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewWaitText = (TextView) findViewById(R.id.reviewWaitText);
+			reviewWaitText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewWaitValue = (TextView) findViewById(R.id.reviewWaitValue);
+			reviewWaitValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewRideTimeText = (TextView) findViewById(R.id.reviewRideTimeText);
+			reviewRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
+			reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewFareText = (TextView) findViewById(R.id.reviewFareText);
+			reviewFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewFareValue = (TextView) findViewById(R.id.reviewFareValue);
+			reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
+			imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
+			reviewWaitTimeRl.setVisibility(View.GONE);
+			imageViewEndRideWaitSep.setVisibility(View.GONE);
+
+
+			reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
+
+			linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
+			((TextView)findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+			linearLayoutMeterFareEditText = (LinearLayout) findViewById(R.id.linearLayoutMeterFareEditText);
+			textViewMeterFareRupee = (TextView) findViewById(R.id.textViewMeterFareRupee);
+			textViewMeterFareRupee.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			textViewMeterFareRupee.setVisibility(View.GONE);
+			editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare);
+			editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+			relativeLayoutEndRideLuggageCount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideLuggageCount);
+			relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+			imageViewEndRideLuggageCountPlus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountPlus);
+			imageViewEndRideLuggageCountMinus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountMinus);
+			textViewEndRideLuggageCount = (TextView) findViewById(R.id.textViewEndRideLuggageCount);
+			textViewEndRideLuggageCount.setTypeface(Data.latoRegular(this));
+
+			relativeLayoutUseJugnooFare = (RelativeLayout) findViewById(R.id.relativeLayoutUseJugnooFare);
+			((TextView) findViewById(R.id.textViewUseJugnooFare)).setTypeface(Data.latoRegular(this));
+			relativeLayoutJugnooCalculatedFare = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCalculatedFare);
+			textViewCalculatedDistance = (TextView) findViewById(R.id.textViewCalculatedDistance);
+			textViewCalculatedDistance.setTypeface(Data.latoRegular(this));
+			textViewCalculatedTime = (TextView) findViewById(R.id.textViewCalculatedTime);
+			textViewCalculatedTime.setTypeface(Data.latoRegular(this));
+			textViewCalculatedFare = (TextView) findViewById(R.id.textViewCalculatedFare);
+			textViewCalculatedFare.setTypeface(Data.latoRegular(this));
+
+
+			relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
+
+
+			endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
+			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
+			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			takeFareText = (TextView) findViewById(R.id.takeFareText);
+			takeFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
+			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			relativeLayoutCoupon = (RelativeLayout) findViewById(R.id.relativeLayoutCoupon);
+			textViewCouponTitle = (TextView) findViewById(R.id.textViewCouponTitle);
+			textViewCouponTitle.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
+			textViewCouponSubTitle = (TextView) findViewById(R.id.textViewCouponSubTitle);
+			textViewCouponSubTitle.setTypeface(Data.museoSlab(getApplicationContext()));
+			textViewCouponPayTakeText = (TextView) findViewById(R.id.textViewCouponPayTakeText);
+			textViewCouponPayTakeText.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
+			textViewCouponDiscountedFare = (TextView) findViewById(R.id.textViewCouponDiscountedFare);
+			textViewCouponDiscountedFare.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
+
+			relativeLayoutFatafatCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutFatafatCustomerAmount);
+			linearLayoutFatafatBill = (LinearLayout) findViewById(R.id.linearLayoutFatafatBill);
+			textViewFatafatBillAmountValue = (TextView) findViewById(R.id.textViewFatafatBillAmountValue);
+			textViewFatafatBillAmountValue.setTypeface(Data.latoRegular(this));
+			textViewFatafatBillDiscountValue = (TextView) findViewById(R.id.textViewFatafatBillDiscountValue);
+			textViewFatafatBillDiscountValue.setTypeface(Data.latoRegular(this));
+			textViewFatafatBillFinalAmountValue = (TextView) findViewById(R.id.textViewFatafatBillFinalAmountValue);
+			textViewFatafatBillFinalAmountValue.setTypeface(Data.latoRegular(this));
+			textViewFatafatBillJugnooCashValue = (TextView) findViewById(R.id.textViewFatafatBillJugnooCashValue);
+			textViewFatafatBillJugnooCashValue.setTypeface(Data.latoRegular(this));
+			textViewFatafatBillToPay = (TextView) findViewById(R.id.textViewFatafatBillToPay);
+			textViewFatafatBillToPay.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+			((TextView) findViewById(R.id.textViewFatafatBillAmount)).setTypeface(Data.latoRegular(this));
+			((TextView) findViewById(R.id.textViewFatafatBillDiscount)).setTypeface(Data.latoRegular(this));
+			((TextView) findViewById(R.id.textViewFatafatBillFinalAmount)).setTypeface(Data.latoRegular(this));
+			((TextView) findViewById(R.id.textViewFatafatBillJugnooCash)).setTypeface(Data.latoRegular(this));
+			((TextView) findViewById(R.id.textViewFatafatBillTake)).setTypeface(Data.latoRegular(this));
+
+
+			reviewMinFareText = (TextView) findViewById(R.id.reviewMinFareText);
+			reviewMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewMinFareValue = (TextView) findViewById(R.id.reviewMinFareValue);
+			reviewMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewFareAfterText = (TextView) findViewById(R.id.reviewFareAfterText);
+			reviewFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
+			reviewFareAfterValue = (TextView) findViewById(R.id.reviewFareAfterValue);
+			reviewFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewReviewConvenienceCharges = (TextView) findViewById(R.id.textViewReviewConvenienceCharges);
+			textViewReviewConvenienceCharges.setTypeface(Data.latoRegular(this));
+			textViewReviewConvenienceCharges.setVisibility(View.GONE);
+			reviewFareInfoBtn = (Button) findViewById(R.id.reviewFareInfoBtn);
+			reviewFareInfoInnerRl = (RelativeLayout) findViewById(R.id.reviewFareInfoInnerRl);
+
+			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
+			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
+			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll, new KeyBoardStateHandler() {
+				@Override
+				public void keyboardOpened() {
 
-
-		//Top RL
-		topRl = (RelativeLayout) findViewById(R.id.topRl);
-		menuBtn = (Button) findViewById(R.id.menuBtn);
-		checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
-		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
-		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-
-
-
-		menuBtn.setVisibility(View.VISIBLE);
-
-
-
-
-
-
-		//Map Layout
-		mapLayout = (RelativeLayout) findViewById(R.id.mapLayout);
-		map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// Driver main layout
-		driverMainLayout = (RelativeLayout) findViewById(R.id.driverMainLayout);
-
-
-
-		//Driver initial layout
-		driverInitialLayout = (RelativeLayout) findViewById(R.id.driverInitialLayout);
-		textViewDriverInfo = (TextView) findViewById(R.id.textViewDriverInfo); textViewDriverInfo.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverRideRequestsList = (ListView) findViewById(R.id.driverRideRequestsList);
-		driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
-		jugnooOffLayout = (RelativeLayout) findViewById(R.id.jugnooOffLayout);
-		jugnooOffText = (TextView) findViewById(R.id.jugnooOffText); jugnooOffText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
-		driverRideRequestsList.setVisibility(View.GONE);
-
-		driverRequestListAdapter = new DriverRequestListAdapter();
-		driverRideRequestsList.setAdapter(driverRequestListAdapter);
-
-
-		// Driver Request Accept layout
-		driverRequestAcceptLayout = (RelativeLayout) findViewById(R.id.driverRequestAcceptLayout);
-		textViewBeforeAcceptRequestInfo = (TextView) findViewById(R.id.textViewBeforeAcceptRequestInfo); textViewBeforeAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		driverRequestAcceptBackBtn = (Button) findViewById(R.id.driverRequestAcceptBackBtn);
-		driverAcceptRideBtn = (Button) findViewById(R.id.driverAcceptRideBtn); driverAcceptRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn); driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
-
-
-
-		// Driver engaged layout
-		driverEngagedLayout = (RelativeLayout) findViewById(R.id.driverEngagedLayout);
-
-
-		driverPassengerName = (TextView) findViewById(R.id.driverPassengerName); driverPassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress); textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo); textViewAfterAcceptRequestInfo.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewAfterAcceptAmount = (TextView) findViewById(R.id.textViewAfterAcceptAmount); textViewAfterAcceptAmount.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		textViewInRideFareFactor = (TextView) findViewById(R.id.textViewInRideFareFactor); textViewInRideFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
-
-		driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue); driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
-		driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText); driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText); driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverFreeRideIcon = (ImageView) findViewById(R.id.driverFreeRideIcon);
-
-		driverPassengerRatingValue.setVisibility(View.GONE);
-
-		//Start ride layout
-		driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
-		driverStartRideMyLocationBtn = (Button) findViewById(R.id.driverStartRideMyLocationBtn);
-		driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn); driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived); buttonMarkArrived.setTypeface(Data.latoRegular(this));
-		driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn); driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-
-
-
-		//In ride layout
-		driverInRideMainRl = (RelativeLayout) findViewById(R.id.driverInRideMainRl);
-
-		driverEndRideMyLocationBtn = (Button) findViewById(R.id.driverEndRideMyLocationBtn);
-
-		driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText); driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue); driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
-		driverIRFareText = (TextView) findViewById(R.id.driverIRFareText); driverIRFareText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverIRFareValue = (TextView) findViewById(R.id.driverIRFareValue); driverIRFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
-		driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText); driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
-		rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer); rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
-		driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
-		driverWaitText = (TextView) findViewById(R.id.driverWaitText); driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
-		driverWaitValue = (TextView) findViewById(R.id.driverWaitValue); driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
-
-		inrideFareInfoRl = (RelativeLayout) findViewById(R.id.inrideFareInfoRl);
-		inrideMinFareText = (TextView) findViewById(R.id.inrideMinFareText); inrideMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		inrideMinFareValue = (TextView) findViewById(R.id.inrideMinFareValue); inrideMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		inrideFareAfterText = (TextView) findViewById(R.id.inrideFareAfterText); inrideFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
-		inrideFareAfterValue = (TextView) findViewById(R.id.inrideFareAfterValue); inrideFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewInRideConvenienceCharges = (TextView) findViewById(R.id.textViewInRideConvenienceCharges); textViewInRideConvenienceCharges.setTypeface(Data.latoRegular(this));
-		textViewInRideConvenienceCharges.setVisibility(View.GONE);
-		inrideFareInfoBtn = (Button) findViewById(R.id.inrideFareInfoBtn);
-
-		driverWaitRl.setVisibility(View.GONE);
-		imageViewIRWaitSep.setVisibility(View.GONE);
-
-		driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn); driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		waitStart = 2;
-
-
-		rideTimeChronometer.setText("00:00:00");
-		driverWaitValue.setText("00:00:00");
-
-
-		//Review Layout
-		endRideReviewRl = (RelativeLayout) findViewById(R.id.endRideReviewRl);
-
-		reviewUserImgBlured = (ImageView) findViewById(R.id.reviewUserImgBlured);
-		reviewUserImage = (ImageView) findViewById(R.id.reviewUserImage);
-
-		reviewUserName = (TextView) findViewById(R.id.reviewUserName); reviewUserName.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewReachedDestinationText = (TextView) findViewById(R.id.reviewReachedDestinationText); reviewReachedDestinationText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText); reviewDistanceText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewDistanceValue = (TextView) findViewById(R.id.reviewDistanceValue); reviewDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewWaitText = (TextView) findViewById(R.id.reviewWaitText); reviewWaitText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewWaitValue = (TextView) findViewById(R.id.reviewWaitValue); reviewWaitValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewRideTimeText = (TextView) findViewById(R.id.reviewRideTimeText); reviewRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue); reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewFareText = (TextView) findViewById(R.id.reviewFareText); reviewFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewFareValue = (TextView) findViewById(R.id.reviewFareValue); reviewFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
-
-		reviewWaitTimeRl = (RelativeLayout) findViewById(R.id.reviewWaitTimeRl);
-		imageViewEndRideWaitSep = (ImageView) findViewById(R.id.imageViewEndRideWaitSep);
-		reviewWaitTimeRl.setVisibility(View.GONE);
-		imageViewEndRideWaitSep.setVisibility(View.GONE);
-
-
-		reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
-
-		linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
-		((TextView)findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-		linearLayoutMeterFareEditText = (LinearLayout) findViewById(R.id.linearLayoutMeterFareEditText);
-		textViewMeterFareRupee = (TextView) findViewById(R.id.textViewMeterFareRupee); textViewMeterFareRupee.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewMeterFareRupee.setVisibility(View.GONE);
-		editTextEnterMeterFare = (EditText) findViewById(R.id.editTextEnterMeterFare); editTextEnterMeterFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-		relativeLayoutEndRideLuggageCount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideLuggageCount); relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
-		imageViewEndRideLuggageCountPlus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountPlus);
-		imageViewEndRideLuggageCountMinus = (ImageView) findViewById(R.id.imageViewEndRideLuggageCountMinus);
-		textViewEndRideLuggageCount = (TextView) findViewById(R.id.textViewEndRideLuggageCount); textViewEndRideLuggageCount.setTypeface(Data.latoRegular(this));
-
-		relativeLayoutUseJugnooFare = (RelativeLayout) findViewById(R.id.relativeLayoutUseJugnooFare);
-		((TextView) findViewById(R.id.textViewUseJugnooFare)).setTypeface(Data.latoRegular(this));
-		relativeLayoutJugnooCalculatedFare = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCalculatedFare);
-		textViewCalculatedDistance = (TextView) findViewById(R.id.textViewCalculatedDistance); textViewCalculatedDistance.setTypeface(Data.latoRegular(this));
-		textViewCalculatedTime = (TextView) findViewById(R.id.textViewCalculatedTime); textViewCalculatedTime.setTypeface(Data.latoRegular(this));
-		textViewCalculatedFare = (TextView) findViewById(R.id.textViewCalculatedFare); textViewCalculatedFare.setTypeface(Data.latoRegular(this));
-
-
-		relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
-
-
-
-		endRideInfoRl = (LinearLayout) findViewById(R.id.endRideInfoRl);
-		jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
-		jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		takeFareText = (TextView) findViewById(R.id.takeFareText);
-		takeFareText.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn); reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-
-		relativeLayoutCoupon = (RelativeLayout) findViewById(R.id.relativeLayoutCoupon);
-		textViewCouponTitle = (TextView) findViewById(R.id.textViewCouponTitle); textViewCouponTitle.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
-		textViewCouponSubTitle = (TextView) findViewById(R.id.textViewCouponSubTitle); textViewCouponSubTitle.setTypeface(Data.museoSlab(getApplicationContext()));
-		textViewCouponPayTakeText = (TextView) findViewById(R.id.textViewCouponPayTakeText); textViewCouponPayTakeText.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
-		textViewCouponDiscountedFare = (TextView) findViewById(R.id.textViewCouponDiscountedFare); textViewCouponDiscountedFare.setTypeface(Data.museoSlab(getApplicationContext()), Typeface.BOLD);
-
-		relativeLayoutFatafatCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutFatafatCustomerAmount);
-		linearLayoutFatafatBill = (LinearLayout) findViewById(R.id.linearLayoutFatafatBill);
-		textViewFatafatBillAmountValue = (TextView) findViewById(R.id.textViewFatafatBillAmountValue); textViewFatafatBillAmountValue.setTypeface(Data.latoRegular(this));
-		textViewFatafatBillDiscountValue = (TextView) findViewById(R.id.textViewFatafatBillDiscountValue); textViewFatafatBillDiscountValue.setTypeface(Data.latoRegular(this));
-		textViewFatafatBillFinalAmountValue = (TextView) findViewById(R.id.textViewFatafatBillFinalAmountValue); textViewFatafatBillFinalAmountValue.setTypeface(Data.latoRegular(this));
-		textViewFatafatBillJugnooCashValue = (TextView) findViewById(R.id.textViewFatafatBillJugnooCashValue); textViewFatafatBillJugnooCashValue.setTypeface(Data.latoRegular(this));
-		textViewFatafatBillToPay = (TextView) findViewById(R.id.textViewFatafatBillToPay); textViewFatafatBillToPay.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-		((TextView) findViewById(R.id.textViewFatafatBillAmount)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewFatafatBillDiscount)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewFatafatBillFinalAmount)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewFatafatBillJugnooCash)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewFatafatBillTake)).setTypeface(Data.latoRegular(this));
-
-
-		reviewMinFareText = (TextView) findViewById(R.id.reviewMinFareText); reviewMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		reviewMinFareValue = (TextView) findViewById(R.id.reviewMinFareValue); reviewMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewFareAfterText = (TextView) findViewById(R.id.reviewFareAfterText); reviewFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
-		reviewFareAfterValue = (TextView) findViewById(R.id.reviewFareAfterValue); reviewFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
-		textViewReviewConvenienceCharges = (TextView) findViewById(R.id.textViewReviewConvenienceCharges); textViewReviewConvenienceCharges.setTypeface(Data.latoRegular(this));
-		textViewReviewConvenienceCharges.setVisibility(View.GONE);
-		reviewFareInfoBtn = (Button) findViewById(R.id.reviewFareInfoBtn);
-		reviewFareInfoInnerRl = (RelativeLayout) findViewById(R.id.reviewFareInfoInnerRl);
-
-		scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
-		linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
-		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-		linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll, new KeyBoardStateHandler() {
-			@Override
-			public void keyboardOpened() {
-
-			}
-
-			@Override
-			public void keyBoardClosed() {
-
-			}
-		}));
-
-
-
-
-
-
-
-		//Top bar events
-		menuBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				drawerLayout.openDrawer(menuLayout);
-				FlurryEventLogger.event(MENU);
-			}
-		});
-
-
-
-
-		checkServerBtn.setOnLongClickListener(new View.OnLongClickListener() {
-
-			@Override
-			public boolean onLongClick(View v) {
-
-				Toast.makeText(getApplicationContext(), "url = " + Data.SERVER_URL, Toast.LENGTH_SHORT).show();
-				FlurryEventLogger.checkServerPressed(Data.userData.accessToken);
-
-				return false;
-			}
-		});
-
-
-
-
-
-
-		// menu events
-		imageViewAutosOnToggle.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
-					if(Data.userData.autosAvailable == 1){
-						changeJugnooON(BusinessType.AUTOS, 0, false);
-					}
-					else{
-						changeJugnooON(BusinessType.AUTOS, 1, false);
-					}
-					FlurryEventLogger.event(JUGNOO_ON_OFF);
 				}
-			}
-		});
 
-		imageViewFatafatOnToggle.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void keyBoardClosed() {
 
-			@Override
-			public void onClick(View v) {
-				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
-					if(Data.userData.fatafatAvailable == 1){
-						changeJugnooON(BusinessType.FATAFAT, 0, false);
-					}
-					else{
-						changeJugnooON(BusinessType.FATAFAT, 1, false);
-					}
-					FlurryEventLogger.event(FATAFAT_ENABLE);
 				}
-			}
-		});
+			}));
 
-		imageViewMealsOnToggle.setOnClickListener(new View.OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
-					if(Data.userData.mealsAvailable == 1){
-						changeJugnooON(BusinessType.MEALS, 0, false);
-					}
-					else{
-						changeJugnooON(BusinessType.MEALS, 1, false);
-					}
-					FlurryEventLogger.event(MEALS_ENABLE);
+			//Top bar events
+			menuBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					drawerLayout.openDrawer(menuLayout);
+					FlurryEventLogger.event(MENU);
 				}
-			}
-		});
+			});
 
-		imageViewSharingOnToggle.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
-					if(Data.userData.sharingAvailable == 1){
-						toggleSharingMode(BusinessType.AUTOS, 0, false);
-					}
-					else{
-						toggleSharingMode(BusinessType.AUTOS, 1, false);
-					}
-					FlurryEventLogger.event(SHARING_ENABLE);
+
+			checkServerBtn.setOnLongClickListener(new View.OnLongClickListener() {
+
+				@Override
+				public boolean onLongClick(View v) {
+
+					Toast.makeText(getApplicationContext(), "url = " + Data.SERVER_URL, Toast.LENGTH_SHORT).show();
+					FlurryEventLogger.checkServerPressed(Data.userData.accessToken);
+
+					return false;
 				}
-			}
-		});
+			});
 
 
+			// menu events
+			imageViewAutosOnToggle.setOnClickListener(new OnClickListener() {
 
-		inviteFriendRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, ShareActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(INVITE_OPENED);
-			}
-		});
-
-
-
-		fareDetailsRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				sendToFareDetails();
-				FlurryEventLogger.event(FARE_DETAILS_CHECKED);
-			}
-		});
-
-		relativeLayoutSuperDrivers.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
-			}
-		});
-
-
-		helpRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, HelpActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(HELP_CHECKED);
-			}
-		});
-
-
-
-		languagePrefrencesRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			}
-		});
-
-
-		bookingsRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, DriverHistoryActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(RIDES_OPENED);
-			}
-		});
-
-		relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(SHARING_RIDES_OPENED);
-			}
-		});
-
-
-
-
-		logoutRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(((userMode == UserMode.DRIVER) && (driverScreenMode == DriverScreenMode.D_INITIAL))){
-					logoutPopup(HomeActivity.this);
-				}
-				else{
-					DialogPopup.alertPopup(activity, "", "Ride in progress. You can logout only after the ride ends.");
-				}
-			}
-		});
-
-
-		menuLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
-
-		// driver initial layout events
-		jugnooOffLayout.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				drawerLayout.openDrawer(menuLayout);
-			}
-		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// driver accept layout events
-		driverRequestAcceptBackBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				driverScreenMode = DriverScreenMode.D_INITIAL;
-				switchDriverScreen(driverScreenMode);
-				FlurryEventLogger.event(RIDE_CHECKED_AND_NO_ACTION);
-			}
-		});
-
-		driverAcceptRideBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				acceptRequestFunc();
-				FlurryEventLogger.event(RIDE_CHECKED_AND_ACCEPTED);
-			}
-		});
-
-
-		driverCancelRequestBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				rejectRequestFunc();
-				FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
-			}
-		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// driver start ride layout events
-		driverPassengerCallRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				String callPhoneNumber = "";
-
-				if(Data.assignedCustomerInfo != null){
-					if(BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType){
-						if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode){
-							callPhoneNumber = Data.assignedCustomerInfo.phoneNumber;
+				@Override
+				public void onClick(View v) {
+					if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
+						if(Data.userData.autosAvailable == 1){
+							changeJugnooON(BusinessType.AUTOS, 0, false);
 						}
-						else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
-							if(((FatafatOrderInfo)Data.assignedCustomerInfo).customerInfo != null){
-								callPhoneNumber = ((FatafatOrderInfo)Data.assignedCustomerInfo).customerInfo.phoneNo;
+						else{
+							changeJugnooON(BusinessType.AUTOS, 1, false);
+						}
+						FlurryEventLogger.event(JUGNOO_ON_OFF);
+					}
+				}
+			});
+
+			imageViewFatafatOnToggle.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
+						if(Data.userData.fatafatAvailable == 1){
+							changeJugnooON(BusinessType.FATAFAT, 0, false);
+						}
+						else{
+							changeJugnooON(BusinessType.FATAFAT, 1, false);
+						}
+						FlurryEventLogger.event(FATAFAT_ENABLE);
+					}
+				}
+			});
+
+			imageViewMealsOnToggle.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
+						if(Data.userData.mealsAvailable == 1){
+							changeJugnooON(BusinessType.MEALS, 0, false);
+						}
+						else{
+							changeJugnooON(BusinessType.MEALS, 1, false);
+						}
+						FlurryEventLogger.event(MEALS_ENABLE);
+					}
+				}
+			});
+
+			imageViewSharingOnToggle.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL){
+						if(Data.userData.sharingAvailable == 1){
+							toggleSharingMode(BusinessType.AUTOS, 0, false);
+						}
+						else{
+							toggleSharingMode(BusinessType.AUTOS, 1, false);
+						}
+						FlurryEventLogger.event(SHARING_ENABLE);
+					}
+				}
+			});
+
+
+			inviteFriendRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, ShareActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(INVITE_OPENED);
+				}
+			});
+
+
+			driverImageRL.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverProfileActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(INVITE_OPENED);
+				}
+			});
+
+
+			fareDetailsRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					sendToFareDetails();
+					FlurryEventLogger.event(FARE_DETAILS_CHECKED);
+				}
+			});
+
+			relativeLayoutSuperDrivers.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
+				}
+			});
+
+
+			helpRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, HelpActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(HELP_CHECKED);
+				}
+			});
+
+
+			languagePrefrencesRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
+
+			bookingsRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverHistoryActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(RIDES_OPENED);
+				}
+			});
+
+			relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(SHARING_RIDES_OPENED);
+				}
+			});
+
+
+			logoutRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(((userMode == UserMode.DRIVER) && (driverScreenMode == DriverScreenMode.D_INITIAL))){
+						logoutPopup(HomeActivity.this);
+					}
+					else{
+						DialogPopup.alertPopup(activity, "", "Ride in progress. You can logout only after the ride ends.");
+					}
+				}
+			});
+
+
+			menuLayout.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
+
+
+			// driver initial layout events
+			jugnooOffLayout.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					drawerLayout.openDrawer(menuLayout);
+				}
+			});
+
+
+			// driver accept layout events
+			driverRequestAcceptBackBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					driverScreenMode = DriverScreenMode.D_INITIAL;
+					switchDriverScreen(driverScreenMode);
+					FlurryEventLogger.event(RIDE_CHECKED_AND_NO_ACTION);
+				}
+			});
+
+			driverAcceptRideBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					acceptRequestFunc();
+					FlurryEventLogger.event(RIDE_CHECKED_AND_ACCEPTED);
+				}
+			});
+
+
+			driverCancelRequestBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					rejectRequestFunc();
+					FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
+				}
+			});
+
+
+			// driver start ride layout events
+			driverPassengerCallRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					String callPhoneNumber = "";
+
+					if(Data.assignedCustomerInfo != null){
+						if(BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType){
+							if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode){
+								callPhoneNumber = Data.assignedCustomerInfo.phoneNumber;
+							}
+							else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+								if(((FatafatOrderInfo)Data.assignedCustomerInfo).customerInfo != null){
+									callPhoneNumber = ((FatafatOrderInfo)Data.assignedCustomerInfo).customerInfo.phoneNo;
+								}
 							}
 						}
+						else{
+							callPhoneNumber = Data.assignedCustomerInfo.phoneNumber;
+						}
+					}
+
+					if(!"".equalsIgnoreCase(callPhoneNumber)){
+						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
+						if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+							FlurryEventLogger.event(CALLED_CUSTOMER);
+						}
+						else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+							FlurryEventLogger.event(CALL_CUSTOMER_AFTER_ARRIVING);
+						}
+						else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+							FlurryEventLogger.event(CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+						}
 					}
 					else{
-						callPhoneNumber = Data.assignedCustomerInfo.phoneNumber;
+						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
 					}
 				}
+			});
 
-				if(!"".equalsIgnoreCase(callPhoneNumber)){
-					Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
-					if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
-						FlurryEventLogger.event(CALLED_CUSTOMER);
+
+			driverStartRideBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(getBatteryPercentage() >= 10){
+						startRidePopup(HomeActivity.this);
+						FlurryEventLogger.event(RIDE_STARTED);
 					}
-					else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
-						FlurryEventLogger.event(CALL_CUSTOMER_AFTER_ARRIVING);
-					}
-					else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
-						FlurryEventLogger.event(CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+					else{
+						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.");
 					}
 				}
-				else{
-					Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+			});
 
 
-		driverStartRideBtn.setOnClickListener(new View.OnClickListener() {
+			buttonMarkArrived.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(getBatteryPercentage() >= 10){
+						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
+								new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										if(myLocation != null){
+											LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+											double displacement = MapUtils.distance(driverAtPickupLatLng, Data.dCustLatLng);
 
-			@Override
-			public void onClick(View v) {
-				if(getBatteryPercentage() >= 10){
-					startRidePopup(HomeActivity.this);
-					FlurryEventLogger.event(RIDE_STARTED);
-				}
-				else{
-					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.");
-				}
-			}
-		});
-
-
-		buttonMarkArrived.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(getBatteryPercentage() >= 10){
-					DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
-							new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									if(myLocation != null){
-										LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-										double displacement = MapUtils.distance(driverAtPickupLatLng, Data.dCustLatLng);
-
-										if(displacement <= DRIVER_START_RIDE_CHECK_METERS){
-											buildAlertMessageNoGps();
-											GCMIntentService.clearNotifications(activity);
-											driverMarkArriveRideAsync(activity, driverAtPickupLatLng);
-											FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+											if(displacement <= DRIVER_START_RIDE_CHECK_METERS){
+												buildAlertMessageNoGps();
+												GCMIntentService.clearNotifications(activity);
+												driverMarkArriveRideAsync(activity, driverAtPickupLatLng);
+												FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+											}
+											else{
+												DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to mark ride arrived.");
+											}
 										}
 										else{
-											DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to mark ride arrived.");
+											Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
 										}
 									}
-									else{
-										Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+								},
+								new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 									}
-								}
-							},
-							new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
-								}
-							}, false, false);
-					FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
+								}, false, false);
+						FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
+					}
+					else{
+						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.");
+					}
 				}
-				else{
-					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.");
+			});
+
+
+			driverCancelRideBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+	//				cancelRidePopup(HomeActivity.this);
+					Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
+						FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
+					}
+					else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
+						FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+					}
 				}
-			}
-		});
+			});
 
 
-
-
-		driverCancelRideBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				cancelRidePopup(HomeActivity.this);
-				if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
-					FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
-				}
-				else if(DriverScreenMode.D_START_RIDE == driverScreenMode){
-					FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
-				}
-			}
-		});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// driver in ride layout events
+			// driver in ride layout events
 //		driverWaitRl.setOnClickListener(new View.OnClickListener() {
 //
 //			@Override
@@ -1212,97 +1194,103 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //			}
 //		});
 
-		inrideFareInfoBtn.setOnClickListener(new View.OnClickListener() {
+			inrideFareInfoBtn.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				sendToFareDetails();
-			}
-		});
-
-		driverEndRideBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if(Data.assignedCustomerInfo != null){
-					if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType){
-						endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
-					}
-					else{
-						//Meals case of end ride
-						endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
-					}
-					FlurryEventLogger.event(RIDE_ENDED);
+				@Override
+				public void onClick(View v) {
+					sendToFareDetails();
 				}
-			}
-		});
+			});
+
+			driverEndRideBtn.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(Data.assignedCustomerInfo != null){
+						if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType){
+							endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+						}
+						else{
+							//Meals case of end ride
+							endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+						}
+						FlurryEventLogger.event(RIDE_ENDED);
+					}
+				}
+			});
 
 
+			// End ride review layout events
+			endRideReviewRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+				}
+			});
 
 
+			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
 
+				@Override
+				public void onClick(View v) {
+					try {
+						if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
+							if (Data.assignedCustomerInfo != null
+									&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+									&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		// End ride review layout events
-		endRideReviewRl.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
-
-
-		reviewSubmitBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				try {
-					if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
-						if (Data.assignedCustomerInfo != null
-								&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-								&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable) {
-
-							String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
-							if ("".equalsIgnoreCase(enteredMeterFare)) {
-								DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										new Handler().postDelayed(new Runnable() {
-											@Override
-											public void run() {
-												linearLayoutMeterFareEditText.performClick();
-											}
-										}, 200);
-									}
-								});
-							} else {
-								if (AppStatus.getInstance(activity).isOnline(activity)) {
-									String message = "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
-									if (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
-										if (luggageCountAdded > 0) {
-											message = message + "\n" + luggageCountAdded + " luggage items added";
-										} else {
-											message = message + "\n" + "No luggage added";
+								String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
+								if ("".equalsIgnoreCase(enteredMeterFare)) {
+									DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											new Handler().postDelayed(new Runnable() {
+												@Override
+												public void run() {
+													linearLayoutMeterFareEditText.performClick();
+												}
+											}, 200);
 										}
+									});
+								} else {
+									if (AppStatus.getInstance(activity).isOnline(activity)) {
+										String message = "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
+										if (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
+											if (luggageCountAdded > 0) {
+												message = message + "\n" + luggageCountAdded + " luggage items added";
+											} else {
+												message = message + "\n" + "No luggage added";
+											}
+										}
+
+										DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
+												new OnClickListener() {
+													@Override
+													public void onClick(View v) {
+														endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
+													}
+												},
+												new OnClickListener() {
+													@Override
+													public void onClick(View v) {
+
+													}
+												}, false, false);
+									} else {
+										DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
+									}
+								}
+							} else if (Data.assignedCustomerInfo != null
+									&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+									&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
+
+								if (AppStatus.getInstance(activity).isOnline(activity)) {
+									String message = "";
+									if (luggageCountAdded > 0) {
+										message = luggageCountAdded + " luggage items added";
+									} else {
+										message = "No luggage added";
 									}
 
 									DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
@@ -1322,299 +1310,275 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
 								}
 							}
-						} else if (Data.assignedCustomerInfo != null
-								&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-								&& 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
-
-							if (AppStatus.getInstance(activity).isOnline(activity)) {
-								String message = "";
-								if (luggageCountAdded > 0) {
-									message = luggageCountAdded + " luggage items added";
-								} else {
-									message = "No luggage added";
-								}
-
-								DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
-										new OnClickListener() {
-											@Override
-											public void onClick(View v) {
-												endRideGPSCorrection(Data.assignedCustomerInfo.businessType);
-											}
-										},
-										new OnClickListener() {
-											@Override
-											public void onClick(View v) {
-
-											}
-										}, false, false);
-							} else {
-								DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
-							}
+						} else if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
+							MeteringService.clearNotifications(HomeActivity.this);
+							driverScreenMode = DriverScreenMode.D_INITIAL;
+							switchDriverScreen(driverScreenMode);
+							FlurryEventLogger.event(OK_ON_FARE_SCREEN);
 						}
-					} else if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
-						MeteringService.clearNotifications(HomeActivity.this);
-						driverScreenMode = DriverScreenMode.D_INITIAL;
-						switchDriverScreen(driverScreenMode);
-						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		editTextEnterMeterFare.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				if (s.length() > 0) {
-					if (textViewMeterFareRupee.getVisibility() == View.GONE) {
-						textViewMeterFareRupee.setVisibility(View.VISIBLE);
-					}
-				} else {
-					if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
-						textViewMeterFareRupee.setVisibility(View.GONE);
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
-				if (!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())) {
-					fareFetchedFromJugnoo = 0;
+			});
+
+			editTextEnterMeterFare.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 				}
-			}
-		});
 
-		editTextEnterMeterFare.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-			@Override
-			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-				reviewSubmitBtn.performClick();
-				return true;
-			}
-		});
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-		linearLayoutMeterFareEditText.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				editTextEnterMeterFare.requestFocus();
-				editTextEnterMeterFare.setSelection(editTextEnterMeterFare.getText().length());
-				Utils.showSoftKeyboard(HomeActivity.this, editTextEnterMeterFare);
-				new Handler().postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						scrollViewEndRide.smoothScrollTo(0, editTextEnterMeterFare.getBottom());
+				}
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					if (s.length() > 0) {
+						if (textViewMeterFareRupee.getVisibility() == View.GONE) {
+							textViewMeterFareRupee.setVisibility(View.VISIBLE);
+						}
+					} else {
+						if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
+							textViewMeterFareRupee.setVisibility(View.GONE);
+						}
 					}
-				}, 300);
-			}
-		});
-
-		relativeLayoutUseJugnooFare.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(relativeLayoutJugnooCalculatedFare.getVisibility() == View.GONE){
-					relativeLayoutJugnooCalculatedFare.setVisibility(View.VISIBLE);
-					reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
-					editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
-					fareFetchedFromJugnoo = 1;
-				}
-			}
-		});
-
-
-
-		imageViewEndRideLuggageCountPlus.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(luggageCountAdded < 5){
-					luggageCountAdded = luggageCountAdded + 1;
-					textViewEndRideLuggageCount.setText(""+luggageCountAdded);
-				}
-			}
-		});
-
-		imageViewEndRideLuggageCountMinus.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(luggageCountAdded > 0){
-					luggageCountAdded = luggageCountAdded - 1;
-					if(luggageCountAdded == 0){
-						textViewEndRideLuggageCount.setText("NO LUGGAGE");
+					if (!getJugnooCalculatedFare().equalsIgnoreCase(s.toString())) {
+						fareFetchedFromJugnoo = 0;
 					}
-					else{
+				}
+			});
+
+			editTextEnterMeterFare.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+					reviewSubmitBtn.performClick();
+					return true;
+				}
+			});
+
+			linearLayoutMeterFareEditText.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					editTextEnterMeterFare.requestFocus();
+					editTextEnterMeterFare.setSelection(editTextEnterMeterFare.getText().length());
+					Utils.showSoftKeyboard(HomeActivity.this, editTextEnterMeterFare);
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							scrollViewEndRide.smoothScrollTo(0, editTextEnterMeterFare.getBottom());
+						}
+					}, 300);
+				}
+			});
+
+			relativeLayoutUseJugnooFare.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(relativeLayoutJugnooCalculatedFare.getVisibility() == View.GONE){
+						relativeLayoutJugnooCalculatedFare.setVisibility(View.VISIBLE);
+						reviewFareInfoInnerRl.setVisibility(View.VISIBLE);
+						editTextEnterMeterFare.setText("" + getJugnooCalculatedFare());
+						fareFetchedFromJugnoo = 1;
+					}
+				}
+			});
+
+
+			imageViewEndRideLuggageCountPlus.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(luggageCountAdded < 5){
+						luggageCountAdded = luggageCountAdded + 1;
 						textViewEndRideLuggageCount.setText(""+luggageCountAdded);
 					}
 				}
-			}
-		});
-
-
-
-		reviewFareInfoBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				sendToFareDetails();
-			}
-		});
-
-
-
-
-
-
-		lastLocation = null;
-		lastLocationTime = System.currentTimeMillis();
-
-		// map object initialized
-		if(map != null){
-			map.getUiSettings().setZoomControlsEnabled(false);
-			map.setMyLocationEnabled(true);
-			map.getUiSettings().setTiltGesturesEnabled(false);
-			map.getUiSettings().setMyLocationButtonEnabled(false);
-			map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
-			//30.75, 76.78
-
-			if(0 == Data.latitude && 0 == Data.longitude){
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7500, 76.7800), 14));
-			}
-			else{
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Data.latitude, Data.longitude), 14));
-			}
-
-//            map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-//                @Override
-//                public void onMyLocationChange(Location location) {
-//
-//                    Toast.makeText(HomeActivity.this, ""+location, Toast.LENGTH_SHORT).show();
-//
-//                }
-//            });
-
-
-			map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-
-				@Override
-				public void onMapClick(LatLng arg0) {
-					Log.e("arg0", "="+arg0);
-				}
 			});
 
-			map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-
+			imageViewEndRideLuggageCountMinus.setOnClickListener(new OnClickListener() {
 				@Override
-				public boolean onMarkerClick(Marker arg0) {
-
-					if(arg0.getTitle().equalsIgnoreCase("pickup location")){
-
-						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Your Pickup Location", "");
-						map.setInfoWindowAdapter(customIW);
-
-						return false;
-					}
-					else if(arg0.getTitle().equalsIgnoreCase("customer_current_location")){
-
-						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
-						map.setInfoWindowAdapter(customIW);
-
-						return true;
-					}
-
-					else if(arg0.getTitle().equalsIgnoreCase("start ride location")){
-
-						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Start Location", "");
-						map.setInfoWindowAdapter(customIW);
-
-
-						//TODO 30.7500  76.7800
-//						updateDropLatLngandPath(new LatLng(30.7500,76.7800));
-						
-						return false;
-					}
-					else if(arg0.getTitle().equalsIgnoreCase("driver position")){
-
-						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Driver Location", "");
-						map.setInfoWindowAdapter(customIW);
-
-						return false;
-					}
-					else if(arg0.getTitle().equalsIgnoreCase("station_marker")){
-						CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
-						map.setInfoWindowAdapter(customIW);
-						return false;
-					}
-					else{
-						return true;
+				public void onClick(View v) {
+					if(luggageCountAdded > 0){
+						luggageCountAdded = luggageCountAdded - 1;
+						if(luggageCountAdded == 0){
+							textViewEndRideLuggageCount.setText("NO LUGGAGE");
+						}
+						else{
+							textViewEndRideLuggageCount.setText(""+luggageCountAdded);
+						}
 					}
 				}
 			});
 
 
-			driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
-			driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
-			driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
-			driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
+			reviewFareInfoBtn.setOnClickListener(new OnClickListener() {
 
-		}
-
-
-
-		try {
-			getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-			Log.i("userMode", "="+userMode);
-			Log.i("driverScreenMode", "="+driverScreenMode);
-
-			if(userMode == null){
-				userMode = UserMode.DRIVER;
-			}
-
-			if(driverScreenMode == null){
-				driverScreenMode = DriverScreenMode.D_INITIAL;
-			}
+				@Override
+				public void onClick(View v) {
+					sendToFareDetails();
+				}
+			});
 
 
-			switchUserScreen(userMode);
-
-			switchDriverScreen(driverScreenMode);
-
-
-
-
-			changeDriverOptionsUI();
-
-			changeJugnooONUIAndInitService();
-
-
-			Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
-
+			lastLocation = null;
+			lastLocationTime = System.currentTimeMillis();
 		} catch (Exception e) {
 			e.printStackTrace();
+			Crashlytics.logException(e);
 		}
-
-		try{
-			if(Data.userData.sharingEnabled == 1){
-				relativeLayoutSharingRides.setVisibility(View.VISIBLE);
-			}
-			else{
-				relativeLayoutSharingRides.setVisibility(View.GONE);
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-			relativeLayoutSharingRides.setVisibility(View.GONE);
-		}
-
-		showManualPatchPushReceivedDialog();
 
 	}
 
+	@Override
+	public void onMapReady(GoogleMap gMap) {
+		this.map = gMap;
+		// map object initialized
+		try {
+			if(map != null){
+				map.getUiSettings().setZoomControlsEnabled(false);
+				map.setMyLocationEnabled(true);
+				map.getUiSettings().setTiltGesturesEnabled(false);
+				map.getUiSettings().setMyLocationButtonEnabled(false);
+				map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
+				//30.75, 76.78
+
+				if(0 == Data.latitude && 0 == Data.longitude){
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.7500, 76.7800), 14));
+				}
+				else{
+					map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(Data.latitude, Data.longitude), 14));
+				}
+
+	//            map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+	//                @Override
+	//                public void onMyLocationChange(Location location) {
+	//
+	//                    Toast.makeText(HomeActivity.this, ""+location, Toast.LENGTH_SHORT).show();
+	//
+	//                }
+	//            });
+
+
+				map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+
+					@Override
+					public void onMapClick(LatLng arg0) {
+						Log.e("arg0", "="+arg0);
+					}
+				});
+
+				map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+
+					@Override
+					public boolean onMarkerClick(Marker arg0) {
+
+						if(arg0.getTitle().equalsIgnoreCase("pickup location")){
+
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Your Pickup Location", "");
+							map.setInfoWindowAdapter(customIW);
+
+							return false;
+						}
+						else if(arg0.getTitle().equalsIgnoreCase("customer_current_location")){
+
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
+							map.setInfoWindowAdapter(customIW);
+
+							return true;
+						}
+
+						else if(arg0.getTitle().equalsIgnoreCase("start ride location")){
+
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Start Location", "");
+							map.setInfoWindowAdapter(customIW);
+
+
+							//TODO 30.7500  76.7800
+	//						updateDropLatLngandPath(new LatLng(30.7500,76.7800));
+
+							return false;
+						}
+						else if(arg0.getTitle().equalsIgnoreCase("driver position")){
+
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Driver Location", "");
+							map.setInfoWindowAdapter(customIW);
+
+							return false;
+						}
+						else if(arg0.getTitle().equalsIgnoreCase("station_marker")){
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
+							map.setInfoWindowAdapter(customIW);
+							return false;
+						}
+						else{
+							return true;
+						}
+					}
+				});
+
+
+				driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
+
+			}
+
+
+			try {
+				getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+				Log.i("userMode", "="+userMode);
+				Log.i("driverScreenMode", "="+driverScreenMode);
+
+				if(userMode == null){
+					userMode = UserMode.DRIVER;
+				}
+
+				if(driverScreenMode == null){
+					driverScreenMode = DriverScreenMode.D_INITIAL;
+				}
+
+
+				switchUserScreen(userMode);
+
+				switchDriverScreen(driverScreenMode);
+
+
+
+
+				changeDriverOptionsUI();
+
+				changeJugnooONUIAndInitService();
+
+
+				Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
+				Database2.getInstance(HomeActivity.this).updatePushyToken(Data.pushyToken);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			try{
+				if(Data.userData.sharingEnabled == 1){
+					relativeLayoutSharingRides.setVisibility(View.VISIBLE);
+				}
+				else{
+					relativeLayoutSharingRides.setVisibility(View.GONE);
+				}
+			} catch(Exception e){
+				e.printStackTrace();
+				relativeLayoutSharingRides.setVisibility(View.GONE);
+			}
+
+			showManualPatchPushReceivedDialog();
+		} catch (Exception e) {
+			e.printStackTrace();
+			Crashlytics.logException(e);
+		}
+	}
 
 
 	public void acceptRequestFunc(){
@@ -2096,7 +2060,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try{
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
-			try{Picasso.with(HomeActivity.this).load(Data.userData.userImage).skipMemoryCache().transform(new CircleTransform()).into(profileImg);}catch(Exception e){}
+			try{
+				if(resumed){
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.transform(new CircleTransform()).into(profileImg);
+				}
+				else{
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.skipMemoryCache()
+							.transform(new CircleTransform()).into(profileImg);
+				}
+			}catch(Exception e){}
 
 			if("-1".equalsIgnoreCase(Data.userData.deiValue)){
 				linearLayoutDEI.setVisibility(View.GONE);
@@ -2106,11 +2080,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				linearLayoutDEI.setVisibility(View.VISIBLE);
-				textViewDEI.setText(Data.userData.deiValue);
+//				textViewDEI.setText(Data.userData.deiValue);
 
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
+			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2156,10 +2131,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			initializeFusedLocationFetchers();
 
-
 			if(mode == DriverScreenMode.D_RIDE_END){
 				if(Data.endRideData != null){
 					mapLayout.setVisibility(View.GONE);
+					RelativeLayoutDailyHours.setVisibility(View.GONE);
+					linearLayout_DEI.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
 					topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
@@ -2250,6 +2226,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else if(mode == DriverScreenMode.D_BEFORE_END_OPTIONS){
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.GONE);
+				linearLayout_DEI.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 				editTextEnterMeterFare.setText("");
@@ -2314,6 +2292,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				mapLayout.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.VISIBLE);
+				linearLayout_DEI.setVisibility(View.VISIBLE);
 				endRideReviewRl.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.bg_grey));
 
@@ -2323,7 +2303,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			switch(mode){
 
 				case D_INITIAL:
-
+					getDriverOnlineHours(HomeActivity.this);
 					updateDriverServiceFast("no");
 
 					textViewDriverInfo.setVisibility(View.GONE);
@@ -3169,7 +3149,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 		}
-
+		resumed = true;
 		language = Locale.getDefault().getLanguage();
 
 	}
@@ -3672,7 +3652,50 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+	public void getDriverOnlineHours(final Activity activity) {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
+				textViewTitleBarOvalText.setVisibility(View.GONE);
+				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						try {
+							progressBarDriverOnlineHours.setVisibility(View.GONE);
+							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									String onlineHours = jObj.getString("driver_online_hours");
+									Log.i("Online hours",onlineHours);
+									if(Data.userData != null) {
+										Data.userData.driverOnlineHours = onlineHours;
+										setUserData();
+									}
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
 
+					@Override
+					public void failure(RetrofitError error) {
+						progressBarDriverOnlineHours.setVisibility(View.GONE);
+						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			progressBarDriverOnlineHours.setVisibility(View.GONE);
+			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+		}
+
+	}
 
 
 
@@ -7139,4 +7162,30 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	@Override
+	public void handleCancelRideSuccess() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  if (map != null) {
+								  map.clear();
+							  }
+							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+							  reduceRideRequest(Data.dEngagementId);
+						  }
+					  }
+		);
+	}
+
+	@Override
+	public void handleCancelRideFailure() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  callAndHandleStateRestoreAPI();
+						  }
+					  }
+		);
+	}
 }

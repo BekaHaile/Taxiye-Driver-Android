@@ -373,6 +373,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("pushy_token", Data.pushyToken);
 
 			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 				params.put("auto_n_cab_installed", "1");
@@ -408,6 +409,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			}
 			else{
 				params.put("device_rooted", "0");
+
 			}
 
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {

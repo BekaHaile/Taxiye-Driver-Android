@@ -18,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
@@ -119,7 +120,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 	
-	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 	
 	
 
@@ -171,14 +172,15 @@ public class Data {
 	
 
 	public static final String DEVICE_TYPE = "0";
-	public static String deviceToken = "", country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
+	public static String deviceToken = "", pushyToken = "",
+			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
 	public static int appVersion;
 	
 	
 	
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
-	
-	
+
+	public static ArrayList<CancelOption> cancelOptionsList;
 	
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;
