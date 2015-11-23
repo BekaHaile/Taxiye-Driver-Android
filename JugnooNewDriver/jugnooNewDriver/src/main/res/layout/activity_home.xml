@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <TextView
                         android:id="@+id/textViewBeforeAcceptRequestInfo"
@@ -1584,7 +1584,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentBottom="true"
                                     android:background="@color/white_translucent"
-                                    android:visibility="visible"
+                                    android:visibility="gone"
                                     >
 
                                     <LinearLayout
