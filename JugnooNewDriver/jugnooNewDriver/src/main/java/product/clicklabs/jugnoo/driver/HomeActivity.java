@@ -58,6 +58,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
@@ -3172,6 +3173,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		language = Locale.getDefault().getLanguage();
 
+		ArrayList<LatLng> coordList = new ArrayList<LatLng>();
+
+		coordList.add(new LatLng(30.718001, 76.811633));
+		coordList.add(new LatLng(30.723461, 76.806869));
+		coordList.add(new LatLng(30.716378, 76.795411));
+		coordList.add(new LatLng(30.711028, 76.800775));
+		map.addPolygon(addPolygon(coordList));
+		CustomMapMarkerCreator.addTextMarkerToMap(this, map,new LatLng(30.717300, 76.803522) , "1.25", 2, 20);
+
+
+		ArrayList<LatLng> coordList1 = new ArrayList<LatLng>();
+
+		coordList1.add(new LatLng(30.706798, 76.795769));
+		coordList1.add(new LatLng(30.701836, 76.800748));
+		coordList1.add(new LatLng(30.707777, 76.805448));
+		map.addPolygon(addPolygon(coordList1));
 	}
 
 
@@ -7074,7 +7091,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void run() {
 					updateDistanceFareTexts(distance, elapsedTime, waitTime);
-					if(rideStartPositionMarker == null){
+					if (rideStartPositionMarker == null) {
 						displayOldPath();
 					}
 				}
@@ -7117,25 +7134,36 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void run() {
-				if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+				if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 
 					PolylineOptions polylineOptions = new PolylineOptions();
 					polylineOptions.width(ASSL.Xscale() * 5);
 					polylineOptions.color(MAP_PATH_COLOR);
 					polylineOptions.geodesic(false);
 
-					for(CurrentPathItem currentPathItem : currentPathItems){
-						if(1 != currentPathItem.googlePath) {
+					for (CurrentPathItem currentPathItem : currentPathItems) {
+						if (1 != currentPathItem.googlePath) {
 							polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
 						}
 					}
 
-					if(Color.TRANSPARENT != MAP_PATH_COLOR){
+					if (Color.TRANSPARENT != MAP_PATH_COLOR) {
 						map.addPolyline(polylineOptions);
 					}
 				}
 			}
 		});
+
+	}
+
+	public PolygonOptions addPolygon(ArrayList<LatLng> arg) {
+		PolygonOptions polygonOptions = new PolygonOptions();
+		polygonOptions.strokeColor(Color.RED).strokeWidth(3).fillColor(Color.parseColor("#20FF0000"));
+		for(LatLng latLng : arg) {
+			polygonOptions.add(latLng);
+		}
+		return polygonOptions;
+
 	}
 
 
