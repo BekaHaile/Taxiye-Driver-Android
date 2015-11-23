@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -117,7 +118,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 				else{
 					String phone = Utils.retrievePhoneNumberTenChars(phoneNumber);
 					if(Utils.validPhoneNumber(phone)){
-						forgotPasswordAsync(ForgotPasswordScreen.this, phone);
+						forgotPasswordAsync(ForgotPasswordScreen.this, "+91"+phone);
 						FlurryEventLogger.event(CHANGE_PASSWORD_ENTER_EMAIL);
 						FlurryEventLogger.event(CHANGE_PASSWORD);
 					}
@@ -219,6 +220,7 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 
 	public void forgotPasswordAsync(final Activity activity, final String phoneNumber){
 		DialogPopup.showLoadingDialog(activity, "Loading...");
+
 		RestClient.getApiServices().forgotpassword(phoneNumber, new Callback<BookingHistoryResponse>() {
 			@Override
 			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
