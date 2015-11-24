@@ -935,6 +935,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			});
 
 
+			fareDetailsRl.setVisibility(View.GONE);
 			fareDetailsRl.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -959,9 +960,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, HelpActivity.class));
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					FlurryEventLogger.event(HELP_CHECKED);
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					FlurryEventLogger.event(CALL_US);
+
 				}
 			});
 
@@ -1847,7 +1848,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		}
 
-		logoutRl.setVisibility(View.VISIBLE);
+		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+
+		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
+
+		 if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			logoutRl.setVisibility(View.GONE);
+		}
+		else{
+			logoutRl.setVisibility(View.VISIBLE);
+		}
 	}
 
 
