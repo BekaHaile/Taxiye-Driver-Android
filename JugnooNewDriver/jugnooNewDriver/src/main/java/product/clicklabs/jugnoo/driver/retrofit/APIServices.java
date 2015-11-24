@@ -4,6 +4,7 @@ import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
+import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -194,5 +195,5 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/heat_map_data")
 	void getHeatMapAsync(@Field("access_token") String accessToken,
-						 Callback<RegisterScreenResponse> callback);
+						 Callback<HeatMapResponse> callback);
 }
