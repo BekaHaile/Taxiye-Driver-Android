@@ -86,7 +86,7 @@ public class CustomMapMarkerCreator {
 				* padding, boundsText.height() + 2 * padding, conf);
 
 		final Canvas canvasText = new Canvas(bmpText);
-		paintText.setColor(Color.BLACK);
+		paintText.setColor(Color.WHITE);
 
 		canvasText.drawText(text, canvasText.getWidth() / 2,
 				canvasText.getHeight() - padding, paintText);

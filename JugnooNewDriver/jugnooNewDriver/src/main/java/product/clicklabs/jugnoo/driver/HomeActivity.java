@@ -110,6 +110,7 @@ import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -3180,14 +3181,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		coordList.add(new LatLng(30.716378, 76.795411));
 		coordList.add(new LatLng(30.711028, 76.800775));
 		map.addPolygon(addPolygon(coordList));
-		CustomMapMarkerCreator.addTextMarkerToMap(this, map,new LatLng(30.717300, 76.803522) , "1.25", 2, 20);
+
 
 
 		ArrayList<LatLng> coordList1 = new ArrayList<LatLng>();
 
-		coordList1.add(new LatLng(30.706798, 76.795769));
-		coordList1.add(new LatLng(30.701836, 76.800748));
-		coordList1.add(new LatLng(30.707777, 76.805448));
+		coordList1.add(new LatLng(30.714238, 76.795583));
+		coordList1.add(new LatLng(30.714976, 76.807857));
+		coordList1.add(new LatLng(30.702172, 76.801465));
 		map.addPolygon(addPolygon(coordList1));
 	}
 
@@ -5306,6 +5307,77 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+
+
+	public void drawHeatMap(final Activity activity) {
+
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+
+			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+
+							String errorMessage = jObj.getString("error");
+
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							} else {
+								DialogPopup.alertPopup(activity, "", errorMessage);
+							}
+						} else {
+							try {
+								int flag = jObj.getInt("flag");
+								if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
+									String log = jObj.getString("log");
+									DialogPopup.alertPopup(activity, "", "" + log);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
+
+							if (map != null) {
+								map.clear();
+							}
+							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+							reduceRideRequest(Data.dEngagementId);
+
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+
+		}
+		else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+
+	}
+
+
 	void logoutPopup(final Activity activity) {
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -7157,11 +7229,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	public PolygonOptions addPolygon(ArrayList<LatLng> arg) {
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
 		PolygonOptions polygonOptions = new PolygonOptions();
 		polygonOptions.strokeColor(Color.RED).strokeWidth(3).fillColor(Color.parseColor("#20FF0000"));
 		for(LatLng latLng : arg) {
 			polygonOptions.add(latLng);
+			builder.include(latLng);
 		}
+		polygonOptions.zIndex(1);
+		LatLngBounds latLngBounds = builder.build();
+		CustomMapMarkerCreator.addTextMarkerToMap(this, map, latLngBounds.getCenter(), "1.25", 2, 20);
 		return polygonOptions;
 
 	}

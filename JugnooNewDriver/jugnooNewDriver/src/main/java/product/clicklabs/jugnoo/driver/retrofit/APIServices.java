@@ -190,4 +190,9 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/update_in_ride_data")
 	Response updateInRideDataRetro(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/heat_map_data")
+	void getHeatMapAsync(@Field("access_token") String accessToken,
+						 Callback<RegisterScreenResponse> callback);
 }
