@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.utils;
 import product.clicklabs.jugnoo.driver.R;
 import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
+import android.app.Notification;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -72,31 +73,46 @@ public class CustomMapMarkerCreator {
 		}
 
 		final TextView textView = new TextView(context);
+		final TextView textView2 = new TextView(context);
 		textView.setText(text);
 		textView.setTextSize(fontSize);
-
-		final Paint paintText = textView.getPaint();
+		textView2.setText(text);
+		textView2.setTextSize(fontSize);
 
 		final Rect boundsText = new Rect();
+
+			final Paint paintText = textView.getPaint();
 		paintText.getTextBounds(text, 0, textView.length(), boundsText);
 		paintText.setTextAlign(Paint.Align.CENTER);
+		paintText.setStyle(Paint.Style.STROKE);
+		paintText.setStrokeWidth(4);
+		paintText.setColor(Color.WHITE);
+
 
 		final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
 		final Bitmap bmpText = Bitmap.createBitmap(boundsText.width() + 2
 				* padding, boundsText.height() + 2 * padding, conf);
 
+
+		final Paint paintText2 = textView2.getPaint();
+		paintText2.getTextBounds(text, 0, textView2.length(), boundsText);
+		paintText2.setTextAlign(Paint.Align.CENTER);
+		paintText2.setColor(Color.BLACK);
+
 		final Canvas canvasText = new Canvas(bmpText);
-		paintText.setColor(Color.WHITE);
 
 		canvasText.drawText(text, canvasText.getWidth() / 2,
 				canvasText.getHeight() - padding, paintText);
+		canvasText.drawText(text, canvasText.getWidth() / 2,
+				canvasText.getHeight() - padding, paintText2);
 
 		final MarkerOptions markerOptions = new MarkerOptions()
 				.position(location)
 				.icon(BitmapDescriptorFactory.fromBitmap(bmpText))
 				.anchor(0.5f, 1);
 
-		marker = map.addMarker(markerOptions);
+		 marker = map.addMarker(markerOptions);
+		marker.setTitle("");
 
 		return marker;
 	}

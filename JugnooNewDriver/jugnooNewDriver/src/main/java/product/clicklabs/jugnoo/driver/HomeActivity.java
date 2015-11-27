@@ -5314,6 +5314,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
 							if(ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag){
 								drawHeatMapData(heatMapResponse);
+								Log.i("Heat Map response", String.valueOf(heatMapResponse));
+								Prefs.with(HomeActivity.this).save(SPLabels.HEAT_MAP_RESPONSE, String.valueOf(heatMapResponse));
 							}
 							else{
 								DialogPopup.alertPopup(activity, "", message);
@@ -5361,7 +5363,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			PolygonOptions polygonOptions = new PolygonOptions();
 			polygonOptions.strokeColor(Color.parseColor(color))
-					.strokeWidth(3)
+					.strokeWidth((100/zIndex))
 					.fillColor(Color.parseColor(color));
 			for(LatLng latLng : arg) {
 				polygonOptions.add(latLng);
@@ -5372,6 +5374,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			CustomMapMarkerCreator.addTextMarkerToMap(this, map,
 					latLngBounds.getCenter(),
 					decimalFormat.format(fareFactor), 2, 20);
+
 			map.addPolygon(polygonOptions);
 		} catch (Exception e) {
 			e.printStackTrace();
