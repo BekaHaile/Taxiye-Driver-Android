@@ -368,36 +368,33 @@ public class GCMIntentService extends IntentService {
 										String engagementId = jObj.getString("engagement_id");
 										clearNotifications(this);
 
-										stopRing();
-
 										if (HomeActivity.appInterruptHandler != null) {
 											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 											HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 										}
+										stopRing();
 
 									} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
 
 										String engagementId = jObj.getString("engagement_id");
 										clearNotifications(this);
 
-										stopRing();
-
 										if (HomeActivity.appInterruptHandler != null) {
 											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 											HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 										}
+										stopRing();
 
 									} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
 										String engagementId = jObj.getString("engagement_id");
 										clearNotifications(this);
 
-										stopRing();
-
 										if (HomeActivity.appInterruptHandler != null) {
 											Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 											HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 										}
+										stopRing();
 
 									} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 										Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
@@ -632,21 +629,33 @@ public class GCMIntentService extends IntentService {
 
 
     public static void stopRing() {
-        try {
-            if (vibrator != null) {
-                vibrator.cancel();
-            }
-            if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                mediaPlayer.reset();
-                mediaPlayer.release();
-            }
-            if (ringStopTimer != null) {
-                ringStopTimer.cancel();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		boolean stopRing;
+		if (HomeActivity.appInterruptHandler != null) {
+			if(Data.driverRideRequests != null && Data.driverRideRequests.size() > 0){
+				stopRing = false;
+			} else{
+				stopRing = true;
+			}
+		} else{
+			stopRing = true;
+		}
+		if(stopRing){
+			try {
+				if (vibrator != null) {
+					vibrator.cancel();
+				}
+				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+					mediaPlayer.reset();
+					mediaPlayer.release();
+				}
+				if (ringStopTimer != null) {
+					ringStopTimer.cancel();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
     }
 
 
