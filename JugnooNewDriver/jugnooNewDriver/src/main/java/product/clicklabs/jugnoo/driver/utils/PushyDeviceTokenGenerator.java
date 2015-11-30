@@ -7,6 +7,11 @@ import android.content.pm.PackageManager;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
+import java.util.Arrays;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.SplashLogin;
@@ -58,20 +63,47 @@ public class PushyDeviceTokenGenerator {
 
 	private void registerInBackground(final Context context, final IDeviceTokenReceiver deviceTokenReceiver) {
 		if (AppStatus.getInstance(context).isOnline(context)) {
-			new Thread(new Runnable() {
+
+			ExecutorService executor = Executors.newSingleThreadExecutor();
+			try {
+				executor.submit(new Runnable() {
 
 				@Override
 				public void run() {
 					try {
+						long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+						Pushy.setHeartbeatInterval( interval, context );
 						regId = Pushy.register(context);
 						setRegistrationId(context, regId);
 					} catch(Exception e){
 						e.printStackTrace();
 					} finally{
-						deviceTokenReceiver.deviceTokenReceived(regId);
+						deviceTokenReceiver.deviceTokenReceived(regId); //try breakpoint here
 					}
 				}
-			}).start();
+			}).get(30, TimeUnit.SECONDS);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			executor.shutdown();
+			deviceTokenReceiver.deviceTokenReceived(regId); //try breakpoint here
+
+//			new Thread(new Runnable() {
+//
+//				@Override
+//				public void run() {
+//					try {
+//						long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+//						Pushy.setHeartbeatInterval( interval, context );
+//						regId = Pushy.register(context);
+//						setRegistrationId(context, regId);
+//					} catch(Exception e){
+//						e.printStackTrace();
+//					} finally{
+//						deviceTokenReceiver.deviceTokenReceived(regId);
+//					}
+//				}
+//			}).start();
 			Log.i(regId, "pushy");
 		}
 		else{

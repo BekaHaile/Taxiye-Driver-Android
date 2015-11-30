@@ -33,7 +33,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -159,6 +158,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
+		long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
+		Pushy.setHeartbeatInterval(interval, this);
 		Pushy.listen(this);
 
 		
