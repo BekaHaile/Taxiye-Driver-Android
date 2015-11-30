@@ -178,7 +178,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	RelativeLayout logoutRl;
 	TextView logoutText;
-
+	HeatMapResponse heatMapResponseGlobal;
 
 
 
@@ -1938,6 +1938,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if(map != null){
 									map.clear();
+									drawHeatMapData(heatMapResponseGlobal);
 								}
 								dismissStationDataPopup();
 								cancelStationPathUpdateTimer();
@@ -2341,6 +2342,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					if(map != null){
 						map.clear();
+						drawHeatMapData(heatMapResponseGlobal);
 					}
 
 					showAllRideRequestsOnMap();
@@ -4004,6 +4006,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							if (map != null) {
 								map.clear();
+								drawHeatMapData(heatMapResponseGlobal);
 							}
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
@@ -4538,6 +4541,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						if (map != null) {
 							map.clear();
+							drawHeatMapData(heatMapResponseGlobal);
 						}
 
 						waitStart = 2;
@@ -5313,9 +5317,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						String message = JSONParser.getServerMessage(jObj);
 						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
 							if(ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag){
-								drawHeatMapData(heatMapResponse);
+								heatMapResponseGlobal = heatMapResponse;
+								drawHeatMapData(heatMapResponseGlobal);
 								Log.i("Heat Map response", String.valueOf(heatMapResponse));
-								Prefs.with(HomeActivity.this).save(SPLabels.HEAT_MAP_RESPONSE, String.valueOf(heatMapResponse));
+								Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
 							}
 							else{
 								DialogPopup.alertPopup(activity, "", message);
@@ -6123,6 +6128,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				Log.e("driverRideRequests", "="+Data.driverRideRequests);
 
 				map.clear();
+				drawHeatMapData(heatMapResponseGlobal);
 
 				if(Data.driverRideRequests.size() > 0){
 
