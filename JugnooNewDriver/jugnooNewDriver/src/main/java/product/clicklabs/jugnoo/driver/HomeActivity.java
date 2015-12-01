@@ -2757,7 +2757,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
 									textViewCouponSubTitle.setVisibility(View.VISIBLE);
@@ -3009,13 +3009,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			textViewConvenienceCharges.setVisibility(View.GONE);
 		}
 	}
-
-
-
-
-
-
-
 
 
 
