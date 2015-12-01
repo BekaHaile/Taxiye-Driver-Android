@@ -935,6 +935,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			});
 
 
+			fareDetailsRl.setVisibility(View.GONE);
 			fareDetailsRl.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -959,9 +960,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, HelpActivity.class));
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					FlurryEventLogger.event(HELP_CHECKED);
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					FlurryEventLogger.event(CALL_US);
+
 				}
 			});
 
@@ -1847,7 +1848,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		}
 
-		logoutRl.setVisibility(View.VISIBLE);
+		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+
+		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
+
+		 if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			logoutRl.setVisibility(View.GONE);
+		}
+		else{
+			logoutRl.setVisibility(View.VISIBLE);
+		}
 	}
 
 
@@ -2741,11 +2752,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									Log.i("coupontitle",autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
 									textViewCouponSubTitle.setVisibility(View.VISIBLE);
 								}
@@ -2769,14 +2782,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
+									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Wallet");
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
-
 								textViewCouponPayTakeText.setText("Take");
 							} else {
 								throw new Exception();
@@ -2820,7 +2832,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType){
 				if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){								// wallet
 					textViewCouponDiscountedFare.setText("Rs. "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-					textViewCouponTitle.setText("Jugnoo Cash");
+					textViewCouponTitle.setText("Wallet");
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
 					textViewCouponPayTakeText.setText("Take");
