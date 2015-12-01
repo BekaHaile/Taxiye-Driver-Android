@@ -80,6 +80,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	ImageView jugnooTextImg, jugnooTextImg2;
 	
 	ProgressBar progressBar1;
+	public static String pushyInterval;
 	
 	Button buttonLogin, buttonRegister;
 	
@@ -157,9 +158,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
-
-		long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
-		Pushy.setHeartbeatInterval(interval, this);
+		if(pushyInterval != null){
+			long interval = (1000 * Long.parseLong(pushyInterval));
+			Pushy.setHeartbeatInterval(interval, this);
+		}else if(SplashLogin.pushyInterval != null){
+			long interval = (1000 * Long.parseLong(SplashLogin.pushyInterval));
+			Pushy.setHeartbeatInterval(interval, this);
+		}
 		Pushy.listen(this);
 
 		
@@ -689,6 +694,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
+							Log.i("pushyyy", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
@@ -704,6 +710,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										pushyInterval = jObj.getString("pushy_interval");
+										Log.i("pushint", String.valueOf(pushyInterval));
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();

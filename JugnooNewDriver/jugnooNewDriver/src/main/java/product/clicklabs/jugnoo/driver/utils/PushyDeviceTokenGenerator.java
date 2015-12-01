@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import com.flurry.android.FlurryAgent;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.SplashLogin;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 
 /**
  * Created by aneeshbansal on 12/10/15.
@@ -71,8 +73,13 @@ public class PushyDeviceTokenGenerator {
 				@Override
 				public void run() {
 					try {
-						long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
-						Pushy.setHeartbeatInterval( interval, context );
+						if(SplashNewActivity.pushyInterval != null){
+							long interval = (1000 * Long.parseLong(SplashNewActivity.pushyInterval));
+							Pushy.setHeartbeatInterval(interval, context);
+						}else if(SplashLogin.pushyInterval != null){
+							long interval = (1000 * Long.parseLong(SplashLogin.pushyInterval));
+							Pushy.setHeartbeatInterval(interval, context);
+						}
 						regId = Pushy.register(context);
 						setRegistrationId(context, regId);
 					} catch(Exception e){

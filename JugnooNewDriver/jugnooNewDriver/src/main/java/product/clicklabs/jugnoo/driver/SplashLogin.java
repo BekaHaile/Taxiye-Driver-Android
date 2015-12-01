@@ -50,6 +50,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	AutoCompleteTextView emailEt;
 	EditText passwordEt;
 	Button signInBtn, forgotPasswordBtn;
+	public static String pushyInterval;
 
 
 	LinearLayout relative;
@@ -449,6 +450,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 									new DriverServiceOperations().startDriverService(activity);
 									Database.getInstance(SplashLogin.this).insertEmail(emailId);
 									loginDataFetched = true;
+									pushyInterval = jObj.getString("pushy_interval");
 								}
 							}
 							else{
