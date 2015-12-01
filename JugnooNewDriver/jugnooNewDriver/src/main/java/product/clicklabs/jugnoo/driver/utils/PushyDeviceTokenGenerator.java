@@ -14,9 +14,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import me.pushy.sdk.Pushy;
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.SplashLogin;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 /**
  * Created by aneeshbansal on 12/10/15.
@@ -73,13 +75,9 @@ public class PushyDeviceTokenGenerator {
 				@Override
 				public void run() {
 					try {
-						if(SplashNewActivity.pushyInterval != null){
-							long interval = (1000 * Long.parseLong(SplashNewActivity.pushyInterval));
-							Pushy.setHeartbeatInterval(interval, context);
-						}else if(SplashLogin.pushyInterval != null){
-							long interval = (1000 * Long.parseLong(SplashLogin.pushyInterval));
-							Pushy.setHeartbeatInterval(interval, context);
-						}
+                        long interval = (1000 * Prefs.with(context)
+                                .getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
+                        Pushy.setHeartbeatInterval(interval, context);
 						regId = Pushy.register(context);
 						setRegistrationId(context, regId);
 					} catch(Exception e){

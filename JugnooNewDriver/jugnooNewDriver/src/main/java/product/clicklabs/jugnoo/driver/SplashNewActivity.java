@@ -50,6 +50,7 @@ import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -62,6 +63,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -80,8 +82,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	ImageView jugnooTextImg, jugnooTextImg2;
 	
 	ProgressBar progressBar1;
-	public static String pushyInterval;
-	
+
 	Button buttonLogin, buttonRegister;
 	
 	boolean loginDataFetched = false, loginFailed = false;
@@ -158,13 +159,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
-		if(pushyInterval != null){
-			long interval = (1000 * Long.parseLong(pushyInterval));
-			Pushy.setHeartbeatInterval(interval, this);
-		}else if(SplashLogin.pushyInterval != null){
-			long interval = (1000 * Long.parseLong(SplashLogin.pushyInterval));
-			Pushy.setHeartbeatInterval(interval, this);
-		}
+
+        long interval = (1000 * Prefs.with(this)
+                .getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
+        Pushy.setHeartbeatInterval(interval, this);
 		Pushy.listen(this);
 
 		
@@ -710,8 +708,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
-										pushyInterval = jObj.getString("pushy_interval");
-										Log.i("pushint", String.valueOf(pushyInterval));
+                                        JSONParser.parsePushyInterval(activity, jObj);
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -36,6 +37,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -50,7 +52,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	AutoCompleteTextView emailEt;
 	EditText passwordEt;
 	Button signInBtn, forgotPasswordBtn;
-	public static String pushyInterval;
 
 
 	LinearLayout relative;
@@ -449,8 +450,8 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
 									new DriverServiceOperations().startDriverService(activity);
 									Database.getInstance(SplashLogin.this).insertEmail(emailId);
+                                    JSONParser.parsePushyInterval(activity, jObj);
 									loginDataFetched = true;
-									pushyInterval = jObj.getString("pushy_interval");
 								}
 							}
 							else{
