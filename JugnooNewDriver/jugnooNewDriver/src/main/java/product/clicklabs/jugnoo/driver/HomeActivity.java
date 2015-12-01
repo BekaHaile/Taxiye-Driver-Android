@@ -170,8 +170,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView fareDetailsText;
 	RelativeLayout relativeLayoutSuperDrivers;
 
-	RelativeLayout helpRl;
-	TextView helpText;
+	RelativeLayout callUsRl;
+	TextView callUsText;
 
 	RelativeLayout languagePrefrencesRl;
 	TextView languagePrefrencesText;
@@ -530,9 +530,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
 			((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
 
-			helpRl = (RelativeLayout) findViewById(R.id.helpRl);
-			helpText = (TextView) findViewById(R.id.helpText);
-			helpText.setTypeface(Data.latoRegular(getApplicationContext()));
+			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
+			callUsText = (TextView) findViewById(R.id.callUsText);
+			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
@@ -956,15 +956,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			});
 
 
-			helpRl.setOnClickListener(new OnClickListener() {
+			callUsRl.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
-
-				}
-			});
+                @Override
+                public void onClick(View v) {
+                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                    FlurryEventLogger.event(CALL_US);
+                }
+            });
 
 
 			languagePrefrencesRl.setOnClickListener(new OnClickListener() {
@@ -1009,6 +1008,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 				}
 			});
+
+            SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+            String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+            if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+                logoutRl.setVisibility(View.GONE);
+            }
+            else{
+                logoutRl.setVisibility(View.VISIBLE);
+            }
 
 
 			menuLayout.setOnClickListener(new OnClickListener() {
@@ -1846,18 +1854,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				relativeLayoutSharingOn.setVisibility(View.GONE);
 				Data.userData.sharingAvailable = 0;
 			}
-		}
-
-		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
-
-		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
-
-		 if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			logoutRl.setVisibility(View.GONE);
-		}
-		else{
-			logoutRl.setVisibility(View.VISIBLE);
 		}
 	}
 

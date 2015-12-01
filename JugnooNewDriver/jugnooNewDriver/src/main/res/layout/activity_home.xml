@@ -2188,14 +2188,14 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/helpRl"
+                    android:id="@+id/callUsRl"
                     android:layout_width="match_parent"
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
                     <TextView
-                        android:id="@+id/helpText"
+                        android:id="@+id/callUsText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
