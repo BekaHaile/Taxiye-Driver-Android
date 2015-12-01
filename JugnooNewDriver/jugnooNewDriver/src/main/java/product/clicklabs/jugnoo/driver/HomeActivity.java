@@ -2752,11 +2752,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Jugnoo Cash");
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									Log.i("coupontitle",autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
 									textViewCouponSubTitle.setVisibility(View.VISIBLE);
 								}
@@ -2780,14 +2782,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Jugnoo Cash");
+									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Wallet");
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
-
 								textViewCouponPayTakeText.setText("Take");
 							} else {
 								throw new Exception();
@@ -2831,7 +2832,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType){
 				if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){								// wallet
 					textViewCouponDiscountedFare.setText("Rs. "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-					textViewCouponTitle.setText("Jugnoo Cash");
+					textViewCouponTitle.setText("Wallet");
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
 					textViewCouponPayTakeText.setText("Take");
