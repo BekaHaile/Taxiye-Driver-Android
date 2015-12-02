@@ -696,7 +696,7 @@ public class JSONParser {
 									
 									
 									if(jActiveRequests.length() == 0){
-										GCMIntentService.stopRing();
+										GCMIntentService.stopRing(true);
 									}
 									
 								}
