@@ -3310,7 +3310,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	private double getTotalFare(double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis){
-		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+		double totalDistanceInKm = Math.abs(totalDistance);
 
 		if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
