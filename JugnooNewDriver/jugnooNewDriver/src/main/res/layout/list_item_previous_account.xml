@@ -64,7 +64,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="80px"
             android:gravity="center"
-            android:text="LOGIN"
+            android:text="@string/login"
             android:textColor="@drawable/black_color_selector"
             android:textSize="26px" />
 

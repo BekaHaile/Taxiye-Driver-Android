@@ -225,7 +225,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="27px"
                 android:background="@drawable/blue_btn_selector"
-                android:text="Arrived"
+                android:text="@string/arrived"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"
                 android:visibility="gone"
@@ -488,7 +488,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:singleLine="true"
-                        android:text="Min Fare"
+                        android:text="@string/min_fare"
                         android:textColor="@color/black"
                         android:textSize="26px"
                         android:textStyle="bold" />

@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Invite &amp; Earn"
+            android:text="@string/invite_earn"
             android:textColor="@color/white"
             android:textSize="48px"/>
     </RelativeLayout>
@@ -68,7 +68,7 @@
                 android:layout_marginRight="20px"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="Your Referral Code is"
+                android:text="@string/your_referral_code"
                 android:textColor="@color/white"
                 android:textSize="36px"
                 />

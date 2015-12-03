@@ -101,7 +101,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                 String phoneNoChanged = editTextNewPhoneNumber.getText().toString().trim();
                 if("".equalsIgnoreCase(phoneNoChanged)){
                     editTextNewPhoneNumber.requestFocus();
-                    editTextNewPhoneNumber.setError("Phone number can't be empty");
+                    editTextNewPhoneNumber.setError(getResources().getString(R.string.Phone_number_not_empty));
                 }
                 else{
                     phoneNoChanged = Utils.retrievePhoneNumberTenChars(phoneNoChanged);
@@ -109,7 +109,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                         phoneNoChanged = "+91" + phoneNoChanged;
                         if(previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)){
                             editTextNewPhoneNumber.requestFocus();
-                            editTextNewPhoneNumber.setError("Changed Phone number is same as the previous one.");
+                            editTextNewPhoneNumber.setError(getResources().getString(R.string.change_phone_no_text));
                         }
                         else{
                             updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
@@ -118,7 +118,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                     }
                     else{
                         editTextNewPhoneNumber.requestFocus();
-                        editTextNewPhoneNumber.setError("Please enter valid phone number");
+                        editTextNewPhoneNumber.setError(getResources().getString(R.string.valid_phone_number));
                     }
                 }
 			}
@@ -167,7 +167,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
     public void updateUserProfileAPI(final Activity activity, final String updatedField, String accessToken) {
         if(AppStatus.getInstance(activity).isOnline(activity)) {
 
-            DialogPopup.showLoadingDialog(activity, "Updating...");
+            DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.updating));
 
 //            RequestParams params = new RequestParams();
 			HashMap<String, String> params = new HashMap<String, String>();

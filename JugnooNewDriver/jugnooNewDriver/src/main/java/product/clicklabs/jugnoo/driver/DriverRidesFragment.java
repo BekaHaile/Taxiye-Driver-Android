@@ -216,7 +216,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 
 			holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-			holder.textViewRideId.setText("Ride ID: " + rideInfo.id);
+			holder.textViewRideId.setText(getResources().getString(R.string.ride_id)+": " + rideInfo.id);
 
 			if ("".equalsIgnoreCase(rideInfo.statusString)) {
 				holder.textViewStatusString.setVisibility(View.GONE);
@@ -240,7 +240,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			} else {
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Account");
+				holder.textViewBalanceText.setText(getResources().getString(R.string.account));
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			}
@@ -248,9 +248,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 
 			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
-
-			holder.distanceValue.setText("Distance: "+rideInfo.distance + " km");
-			holder.rideTimeValue.setText("Total Time: "+rideInfo.rideTime + " min");
+			holder.distanceValue.setText(getResources().getString(R.string.distance)+": "+rideInfo.distance + getResources().getString(R.string.km));
+			holder.rideTimeValue.setText(getResources().getString(R.string.total_time)+": "+rideInfo.rideTime + " "+getResources().getString(R.string.min));
 
 
 			holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -287,7 +286,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 									HomeActivity.logoutUser(activity);
 								} else {
-									updateListData("Some error occurred. Tap to retry", true);
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 								}
 
 							} else {
@@ -310,11 +309,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 //								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
 //										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getRefferalMoney());
 
-								updateListData("No rides currently", false);
+								updateListData(getResources().getString(R.string.no_rides), false);
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							updateListData("Some error occurred. Tap to retry", true);
+							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 						}
 						progressBar.setVisibility(View.GONE);
 					}
@@ -323,7 +322,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					@Override
 					public void failure(RetrofitError error) {
 						progressBar.setVisibility(View.GONE);
-						updateListData("Some error occurred. Tap to retry", true);
+						updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
 				});
 	}

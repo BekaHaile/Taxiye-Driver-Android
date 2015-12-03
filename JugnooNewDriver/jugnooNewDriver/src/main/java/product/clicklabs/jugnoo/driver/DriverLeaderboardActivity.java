@@ -199,27 +199,27 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		if (LeaderboardAreaMode.LOCAL == leaderboardAreaMode) {
 			adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 0);
 			if (0 == cityPos) {
-				textViewPositionTop.setText("Could not get local position");
+				textViewPositionTop.setText(getResources().getString(R.string.local_positon_text));
 			} else {
-				textViewPositionTop.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
+				textViewPositionTop.setText(getResources().getString(R.string.your_position)+" " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
 			if (0 == overallPos) {
-				textViewPositionBottom.setText("Overall position");
+				textViewPositionBottom.setText(getResources().getString(R.string.overall_position));
 			} else {
-				textViewPositionBottom.setText("Your overall position : " + overallPos + "/" + overallTotal);
+				textViewPositionBottom.setText(getResources().getString(R.string.your_overall_position)+" : " + overallPos + "/" + overallTotal);
 			}
 		} else if (LeaderboardAreaMode.OVERALL == leaderboardAreaMode) {
 			adapter.setResults(driverLeaderboardData.getDriverLeaderboardsList(leaderboardAreaMode, leaderboardMode), 1);
 
 			if (0 == overallPos) {
-				textViewPositionTop.setText("Could not get overall position");
+				textViewPositionTop.setText(getResources().getString(R.string.overall_position_text));
 			} else {
-				textViewPositionTop.setText("Your overall position : " + overallPos + "/" + overallTotal);
+				textViewPositionTop.setText(getResources().getString(R.string.your_overall_position)+" : " + overallPos + "/" + overallTotal);
 			}
 			if (0 == cityPos) {
-				textViewPositionBottom.setText("Local position");
+				textViewPositionBottom.setText(getResources().getString(R.string.local_position));
 			} else {
-				textViewPositionBottom.setText("Your Position in " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
+				textViewPositionBottom.setText(getResources().getString(R.string.your_position)+" " + driverLeaderboardData.cityName + " : " + cityPos + "/" + cityTotal);
 			}
 
 		}
@@ -232,7 +232,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 	public void getLeaderboardData(final Activity activity) {
 		if (!HomeActivity.checkIfUserDataNull(activity)) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 				RequestParams params = new RequestParams();
 
 				params.put("access_token", Data.userData.accessToken);
@@ -348,7 +348,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 
 								} catch (Exception exception) {
 									exception.printStackTrace();
-									retryDialog(activity, Data.SERVER_ERROR_MSG + "\nTap to retry");
+									retryDialog(activity, Data.SERVER_ERROR_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 								}
 								DialogPopup.dismissLoadingDialog();
 
@@ -357,12 +357,12 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 							@Override
 							public void failure(RetrofitError error) {
 								DialogPopup.dismissLoadingDialog();
-								retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\nTap to retry");
+								retryDialog(activity, Data.SERVER_NOT_RESOPNDING_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 
 							}
 						});
 			} else {
-				retryDialog(activity, Data.CHECK_INTERNET_MSG + "\nTap to retry");
+				retryDialog(activity, Data.CHECK_INTERNET_MSG + "\n"+getResources().getString(R.string.tap_to_retry));
 			}
 
 		}
@@ -370,7 +370,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 
 	public void retryDialog(final Activity activity, String message) {
 
-		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message, "Retry", "Cancel",
+		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message, getResources().getString(R.string.retry), getResources().getString(R.string.cancel),
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {

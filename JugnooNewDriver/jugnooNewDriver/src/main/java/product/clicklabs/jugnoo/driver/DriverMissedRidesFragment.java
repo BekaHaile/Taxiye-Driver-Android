@@ -220,7 +220,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 							public void onFailure(Throwable arg3) {
 								Log.e("request fail", arg3.toString());
 								progressBar.setVisibility(View.GONE);
-								updateListData("Some error occurred. Tap to retry", true);
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
 	
 							
@@ -235,7 +235,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 											HomeActivity.logoutUser(activity);
 										}
 										else{
-											updateListData("Some error occurred. Tap to retry", true);
+											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 										}
 									}
 									else{
@@ -275,11 +275,11 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 												}
 											}
 										}
-										updateListData("No missed rides currently", false);
+										updateListData(getResources().getString(R.string.no_missed_rides), false);
 									}
 								}  catch (Exception exception) {
 									exception.printStackTrace();
-									updateListData("Some error occurred. Tap to retry", true);
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 								}
 								progressBar.setVisibility(View.GONE);
 							}
@@ -293,7 +293,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 						});
 			}
 			else {
-				updateListData("No Internet connection. Tap to retry", true);
+				updateListData(getResources().getString(R.string.no_internet_tap_to_retry), true);
 			}
 		}
 

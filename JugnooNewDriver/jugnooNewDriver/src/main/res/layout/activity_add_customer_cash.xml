@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Add Cash"
+            android:text="@string/add_cash"
             android:textColor="@color/white"
             android:textSize="48px" />
     </RelativeLayout>
@@ -80,7 +80,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="70px"
             android:background="@drawable/blue_btn_selector"
-            android:text="ADD CUSTOMER CASH"
+            android:text="@string/add_customer_cash"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size" />
         
@@ -91,7 +91,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="40px"
             android:background="@drawable/red_btn_selector"
-            android:text="NO CASH"
+            android:text="@string/no_cash"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             android:visibility="gone"

@@ -138,11 +138,11 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
                 String password = passwordEt.getText().toString().trim();
                 if ("".equalsIgnoreCase(email)) {
                     emailEt.requestFocus();
-                    emailEt.setError("Please enter email");
+                    emailEt.setError(getResources().getString(R.string.Pls_enter_email));
                 } else {
                     if ("".equalsIgnoreCase(password)) {
                         passwordEt.requestFocus();
-                        passwordEt.setError("Please enter password");
+                        passwordEt.setError(getResources().getString(R.string.enter_password));
                     } else {
                         if (isEmailValid(email)) {
                             enteredEmail = email;
@@ -152,7 +152,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 							FlurryEventLogger.event(LOGIN_IN_APP);
                         } else {
                             emailEt.requestFocus();
-                            emailEt.setError("Please enter valid email");
+                            emailEt.setError(getResources().getString(R.string.valid_email));
                         }
                     }
                 }
@@ -351,7 +351,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	public void sendLoginValues(final Activity activity, final String emailId, final String password) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

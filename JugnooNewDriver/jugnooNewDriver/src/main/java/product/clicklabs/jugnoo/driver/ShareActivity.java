@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import product.clicklabs.jugnoo.driver.utils.BingTranslator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -192,7 +193,7 @@ public class ShareActivity extends Activity {
 			startActivity(Intent.createChooser(waIntent, "Share with"));
 
 		} catch (NameNotFoundException e) {
-			Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, getResources().getString(R.string.whatsapp_not_installed), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -211,7 +212,7 @@ public class ShareActivity extends Activity {
 		email.putExtra(Intent.EXTRA_SUBJECT, "Jugnoo Invite");
 		email.putExtra(Intent.EXTRA_TEXT, shareStr1 + referralCode + shareStr2);
 		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, "Choose an Email client:"));
+		startActivity(Intent.createChooser(email, getResources().getString(R.string.choose_email_client)));
 	}
 
 
@@ -265,17 +266,28 @@ public class ShareActivity extends Activity {
 						String code = customerNumber.getText().toString().trim();
 						if ("".equalsIgnoreCase(code)) {
 							customerNumber.requestFocus();
-							customerNumber.setError("Phone Number can't be empty.");
+							customerNumber.setError(getResources().getString(R.string.Phone_number_not_empty));
 						} else {
 							code = Utils.retrievePhoneNumberTenChars(code);
 							if (!Utils.validPhoneNumber(code)) {
 								customerNumber.requestFocus();
-								customerNumber.setError("Please enter valid phone number");
+								customerNumber.setError(getResources().getString(R.string.enter_valid_phone_number));
 							} else {
+								final String phone = code;
 								SmsManager smsManager = SmsManager.getDefault();
 								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
 
-								DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
+								new BingTranslator().startTranslation("your referral code", new BingTranslator.BingCallback() {
+									@Override
+									public void onSuccess(String translatedStr) {
+										DialogPopup.alertPopup(ShareActivity.this, "", " " + translatedStr+" " + phone + " के साथ शेयर कर दिया गया है।");
+									}
+
+									@Override
+									public void onFailure() {
+										DialogPopup.alertPopup(ShareActivity.this, "", " "+"your referral code" + phone + " के साथ शेयर कर दिया गया है।");
+									}
+								});
 								dialog.dismiss();
 							}
 						}
@@ -302,5 +314,24 @@ public class ShareActivity extends Activity {
 		}
 
 	}
+
+//	public String translate(String text) throws Exception {
+//		// Set the Client ID / Client Secret once per JVM. It is set statically and applies to all services
+//		try {
+//			Translate.setClientId("aneesh_jugnoo");
+//			Translate.setClientSecret("wzZGiM3+xESz/ssyCAZLakFuAb5o7sDbAr3N0dpRX3g=");
+//
+//			String translatedText = "";
+//
+//			// English AUTO_DETECT -> gERMAN Change this if u wanna other languages
+////			translatedText = Translate.execute(text, Language.GERMAN);
+//			translatedText = Translate.execute(text, Language.ENGLISH,
+//					Language.ENGLISH);
+//			return translatedText;
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return "";
+//		}
+//	}
 
 }

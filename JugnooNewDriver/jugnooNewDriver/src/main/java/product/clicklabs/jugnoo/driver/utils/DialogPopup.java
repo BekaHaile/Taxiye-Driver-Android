@@ -467,16 +467,16 @@ public class DialogPopup {
 				AlertDialog.Builder alertDialogPrepare = new AlertDialog.Builder(mContext);
 		   	 
 		        // Setting Dialog Title
-		        alertDialogPrepare.setTitle("Google Play Services Error");
+		        alertDialogPrepare.setTitle(mContext.getResources().getString(R.string.google_pay_service_error));
 		        alertDialogPrepare.setCancelable(false);
 		 
 		        // Setting Dialog Message
-		        alertDialogPrepare.setMessage("Google Play services not found or outdated. Please install Google Play Services?");
+		        alertDialogPrepare.setMessage(mContext.getResources().getString(R.string.google_pay_service_error_message));
 		 
 		        // On pressing Settings button
-		        alertDialogPrepare.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-		            public void onClick(DialogInterface dialog,int which) {
-		            	dialog.dismiss();
+		        alertDialogPrepare.setPositiveButton(mContext.getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
 						try {
 							Intent intent = new Intent(Intent.ACTION_VIEW);
 							intent.setData(Uri.parse("market://details?id=com.google.android.gms"));
@@ -488,7 +488,7 @@ public class DialogPopup {
 		        });
 		 
 		        // on pressing cancel button
-		        alertDialogPrepare.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		        alertDialogPrepare.setNegativeButton(mContext.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int which) {
 		            	dialog.dismiss();
 		            	mContext.finish();
@@ -529,11 +529,11 @@ public class DialogPopup {
 				AlertDialog.Builder alertDialogPrepare = new AlertDialog.Builder(mContext);
 		   	 
 		        // Setting Dialog Title
-		        alertDialogPrepare.setTitle("Location Settings");
+		        alertDialogPrepare.setTitle(mContext.getResources().getString(R.string.location_setting));
 		        alertDialogPrepare.setCancelable(false);
 		 
 		        // Setting Dialog Message
-		        alertDialogPrepare.setMessage("Location is not enabled. Do you want to enable it from settings menu?");
+		        alertDialogPrepare.setMessage(mContext.getResources().getString(R.string.location_setting_enable_message));
 		 
 		        // On pressing Settings button
 		        alertDialogPrepare.setPositiveButton("Settings", new DialogInterface.OnClickListener() {

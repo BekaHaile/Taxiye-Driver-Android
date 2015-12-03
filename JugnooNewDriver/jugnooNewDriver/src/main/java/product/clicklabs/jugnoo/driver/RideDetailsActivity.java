@@ -153,15 +153,15 @@ public class RideDetailsActivity extends Activity {
 
 
 		if (openedRideInfo != null) {
-			idValue.setText("Ride ID: "+openedRideInfo.id);
+			idValue.setText(getResources().getString(R.string.ride_id)+" "+openedRideInfo.id);
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-			distanceValue.setText("Distance: "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
-			rideTimeValue.setText("Total Time: "+openedRideInfo.rideTime + " min");
+			distanceValue.setText(getResources().getString(R.string.distance)+": "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
+			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));
 			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
 				waitTimeValue.setVisibility(View.GONE);
 			} else {
 				waitTimeValue.setVisibility(View.VISIBLE);
-				waitTimeValue.setText("Wait: " + openedRideInfo.waitTime + " min");
+				waitTimeValue.setText(getResources().getString(R.string.wait)+": " + openedRideInfo.waitTime + " "+getResources().getString(R.string.min));
 			}
 
 			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
@@ -181,7 +181,7 @@ public class RideDetailsActivity extends Activity {
 			}
 
 			textViewRateAppliedValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorValue)));
-			textViewRateApplied.setText("Rate Applied " + Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
+			textViewRateApplied.setText(getResources().getString(R.string.rate_applied)+" " + Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
 
 			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
 
@@ -213,7 +213,7 @@ public class RideDetailsActivity extends Activity {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText("Account");
+				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
 			}
 			textViewFromValue.setText(openedRideInfo.fromLocation);
 			textViewToValue.setText(openedRideInfo.toLocation);

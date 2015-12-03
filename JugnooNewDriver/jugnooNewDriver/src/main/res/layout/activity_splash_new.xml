@@ -75,7 +75,7 @@
                 android:layout_width="288px"
                 android:layout_height="96px"
                 android:background="@drawable/grey_btn_selector"
-                android:text="LOGIN"
+                android:text="@string/login"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 
@@ -85,7 +85,7 @@
                 android:layout_height="96px"
                 android:layout_marginLeft="57px"
                 android:background="@drawable/blue_btn_selector"
-                android:text="REGISTER"
+                android:text="@string/register"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"
                 android:visibility="gone"

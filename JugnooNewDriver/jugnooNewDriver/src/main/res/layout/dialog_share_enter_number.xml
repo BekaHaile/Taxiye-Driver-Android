@@ -83,7 +83,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/grey_btn_br_selector"
                     android:singleLine="true"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="34px" />
 
@@ -94,7 +94,7 @@
                     android:layout_alignParentRight="true"
                     android:background="@drawable/blue_btn_bl_selector"
                     android:singleLine="true"
-                    android:text="OK"
+                    android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="34px" />
 
