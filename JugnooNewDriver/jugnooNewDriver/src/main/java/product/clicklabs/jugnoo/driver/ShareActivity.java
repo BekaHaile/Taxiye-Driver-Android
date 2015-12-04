@@ -281,6 +281,7 @@ public class ShareActivity extends Activity {
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
+
 					}
 
 				}

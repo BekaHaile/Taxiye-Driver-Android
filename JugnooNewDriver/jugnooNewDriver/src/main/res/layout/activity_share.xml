@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewReferralCodeDisplay"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="20px"
                 android:layout_marginLeft="20px"
                 android:layout_marginRight="20px"
                 android:gravity="center"

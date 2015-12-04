@@ -6,6 +6,7 @@ public class UserData {
 		autosAvailable, mealsAvailable, fatafatAvailable;
 	public int sharingEnabled, sharingAvailable;
     public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer;
+	public String driverOnlineHours;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
 			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable,
@@ -31,5 +32,7 @@ public class UserData {
 		this.sharingAvailable = sharingAvailable;
 		this.driverSupportNumber = driverSupportNumber;
 		this.referralSMSToCustomer = referralSMSToCustomer;
+		this.driverOnlineHours = "00:00";
 	}
+
 }

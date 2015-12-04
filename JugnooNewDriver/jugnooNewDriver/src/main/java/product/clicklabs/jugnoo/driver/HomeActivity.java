@@ -43,6 +43,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -150,9 +151,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ImageView profileImg;
 	TextView userName, textViewDEI;
-	LinearLayout linearLayoutDEI;
+	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
 	RelativeLayout inviteFriendRl;
@@ -192,7 +193,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI;
+	TextView textViewTitleBarDEI, textViewTitleBarOvalText;
+	ProgressBar progressBarDriverOnlineHours;
 
 
 
@@ -386,7 +388,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	boolean loggedOut = false,
 			zoomedToMyLocation = false,
 			mapTouchedOnce = false;
-	boolean dontCallRefreshDriver = false;
+	boolean dontCallRefreshDriver = false, resumed = false;
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
 
@@ -450,6 +452,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		zoomedToMyLocation = false;
 		dontCallRefreshDriver = false;
 		mapTouchedOnce = false;
+		resumed = false;
 
 		appMode = AppMode.NORMAL;
 
@@ -492,6 +495,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		userName = (TextView) findViewById(R.id.userName); userName.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
+		linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
+		RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
 		textViewDEI = (TextView) findViewById(R.id.textViewDEI); textViewDEI.setTypeface(Data.latoRegular(this));
 
 
@@ -525,6 +530,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
 		fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
+		driverImageRL = (LinearLayout) findViewById(R.id.driverImageRL);
 		fareDetailsText = (TextView) findViewById(R.id.fareDetailsText); fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
@@ -540,6 +546,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		logoutText = (TextView) findViewById(R.id.logoutText); logoutText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
+//		driverProfileText = (TextView) findViewById(R.id.driverProfileText); driverProfileText.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 
 
@@ -549,7 +557,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		menuBtn = (Button) findViewById(R.id.menuBtn);
 		checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
+		progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI); textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+		textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText); textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
 
 
@@ -890,6 +900,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		});
 
 
+		driverImageRL.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(HomeActivity.this, DriverProfileActivity.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				FlurryEventLogger.event(INVITE_OPENED);
+			}
+		});
+
 
 		fareDetailsRl.setOnClickListener(new View.OnClickListener() {
 
@@ -1164,7 +1184,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void onClick(View v) {
-				cancelRidePopup(HomeActivity.this);
+//				cancelRidePopup(HomeActivity.this);
+				Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				if(DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
 				}
@@ -2096,7 +2119,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try{
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
-			try{Picasso.with(HomeActivity.this).load(Data.userData.userImage).skipMemoryCache().transform(new CircleTransform()).into(profileImg);}catch(Exception e){}
+			try{
+				if(resumed){
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.transform(new CircleTransform()).into(profileImg);
+				}
+				else{
+					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
+							.skipMemoryCache()
+							.transform(new CircleTransform()).into(profileImg);
+				}
+			}catch(Exception e){}
 
 			if("-1".equalsIgnoreCase(Data.userData.deiValue)){
 				linearLayoutDEI.setVisibility(View.GONE);
@@ -2106,11 +2139,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				linearLayoutDEI.setVisibility(View.VISIBLE);
-				textViewDEI.setText(Data.userData.deiValue);
+//				textViewDEI.setText(Data.userData.deiValue);
 
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
+			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2156,10 +2190,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			initializeFusedLocationFetchers();
 
-
 			if(mode == DriverScreenMode.D_RIDE_END){
 				if(Data.endRideData != null){
 					mapLayout.setVisibility(View.GONE);
+					RelativeLayoutDailyHours.setVisibility(View.GONE);
+					linearLayout_DEI.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
 					topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
@@ -2250,6 +2285,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else if(mode == DriverScreenMode.D_BEFORE_END_OPTIONS){
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.GONE);
+				linearLayout_DEI.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 				editTextEnterMeterFare.setText("");
@@ -2314,6 +2351,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				mapLayout.setVisibility(View.VISIBLE);
+				RelativeLayoutDailyHours.setVisibility(View.VISIBLE);
+				linearLayout_DEI.setVisibility(View.VISIBLE);
 				endRideReviewRl.setVisibility(View.GONE);
 				topRl.setBackgroundColor(getResources().getColor(R.color.bg_grey));
 
@@ -2323,7 +2362,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			switch(mode){
 
 				case D_INITIAL:
-
+					getDriverOnlineHours(HomeActivity.this);
 					updateDriverServiceFast("no");
 
 					textViewDriverInfo.setVisibility(View.GONE);
@@ -3169,7 +3208,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 		}
-
+		resumed = true;
 		language = Locale.getDefault().getLanguage();
 
 	}
@@ -3672,7 +3711,50 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
+	public void getDriverOnlineHours(final Activity activity) {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
+				textViewTitleBarOvalText.setVisibility(View.GONE);
+				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						try {
+							progressBarDriverOnlineHours.setVisibility(View.GONE);
+							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									String onlineHours = jObj.getString("driver_online_hours");
+									Log.i("Online hours",onlineHours);
+									if(Data.userData != null) {
+										Data.userData.driverOnlineHours = onlineHours;
+										setUserData();
+									}
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
 
+					@Override
+					public void failure(RetrofitError error) {
+						progressBarDriverOnlineHours.setVisibility(View.GONE);
+						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			progressBarDriverOnlineHours.setVisibility(View.GONE);
+			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+		}
+
+	}
 
 
 
@@ -7139,4 +7221,30 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	@Override
+	public void handleCancelRideSuccess() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  if (map != null) {
+								  map.clear();
+							  }
+							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+							  reduceRideRequest(Data.dEngagementId);
+						  }
+					  }
+		);
+	}
+
+	@Override
+	public void handleCancelRideFailure() {
+		runOnUiThread(new Runnable() {
+						  @Override
+						  public void run() {
+							  callAndHandleStateRestoreAPI();
+						  }
+					  }
+		);
+	}
 }

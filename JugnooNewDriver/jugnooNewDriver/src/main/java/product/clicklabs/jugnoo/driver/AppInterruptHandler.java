@@ -39,5 +39,7 @@ public interface AppInterruptHandler {
 
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
 
+	void handleCancelRideSuccess();
+	void handleCancelRideFailure();
 
 }

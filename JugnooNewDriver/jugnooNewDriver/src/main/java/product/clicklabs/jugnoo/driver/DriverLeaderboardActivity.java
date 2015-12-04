@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -243,6 +244,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 								try {
 
 									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									Log.i("leaderboard",jsonString );
 									JSONObject jObj;
 									jObj = new JSONObject(jsonString);
 									int flag = jObj.getInt("flag");

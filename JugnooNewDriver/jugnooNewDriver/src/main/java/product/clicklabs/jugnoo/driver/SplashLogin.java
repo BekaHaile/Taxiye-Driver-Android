@@ -408,6 +408,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			}
 			else{
 				params.put("device_rooted", "0");
+
 			}
 
 			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
