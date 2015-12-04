@@ -19,6 +19,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
+import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
@@ -302,8 +303,9 @@ public class JSONParser {
 		String referralCode = userData.getString("referral_code");
 
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-				"Use my code " +referralCode+" to download Jugnoo customer App and earn jugnoo cash.\n" +
-				"Download it from here\nhttp://smarturl.it/jugnoo");
+				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
+						"Download it from here\nhttp://smarturl.it/jugnoo");
+
 
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
@@ -342,6 +344,8 @@ public class JSONParser {
 		//Fetching user current status
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
+
+		parseCancellationReasons(jObj,context);
 				
 		return resp;
 	}
@@ -1082,6 +1086,42 @@ public class JSONParser {
 
         return previousAccountInfoList;
     }
-	
+
+
+	public static void parseCancellationReasons(JSONObject jObj, Context context) {
+
+//		"cancellation": {
+//      "message": "Cancellation of a ride more than 5 minutes after the driver is allocated will lead to cancellation charges of Rs. 20",
+//      "reasons": [
+//          "Driver is late",
+//          "Driver denied duty",
+//          "Changed my mind",
+//          "Booked another auto"
+//      ],
+//        "addn_reason":"foo"
+//  }
+
+
+		try {
+			Data.cancelOptionsList = new ArrayList<>();
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Auto_not_working)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Traffic)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.accepted_by_mistake)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Customer_asked_to_cancel)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Not_able_to_contact_customer)));
+			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Customer_behavior)));
+
+			JSONArray jCancellationReasons = jObj.getJSONArray("cancellation_reasons");
+
+			Data.cancelOptionsList.clear();
+
+			for (int i = 0; i < jCancellationReasons.length(); i++) {
+				Data.cancelOptionsList.add(new CancelOption(jCancellationReasons.getString(i)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 }

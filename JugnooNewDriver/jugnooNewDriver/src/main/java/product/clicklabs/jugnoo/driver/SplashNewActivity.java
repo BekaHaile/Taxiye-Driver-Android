@@ -337,16 +337,20 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			@Override
 			public void deviceTokenReceived(final String regId) {
 				runOnUiThread(new Runnable() {
-
 					@Override
 					public void run() {
-						Data.deviceToken = regId;
-						Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-						progressBar1.setVisibility(View.GONE);
-						pushAPIs(SplashNewActivity.this);
+						new Handler().postDelayed(new Runnable() {
+
+							@Override
+							public void run() {
+								Data.deviceToken = regId;
+								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+								progressBar1.setVisibility(View.GONE);
+								pushAPIs(SplashNewActivity.this);
+							}
+						}, 2000);
 					}
 				});
-
 			}
 		});
 
@@ -440,7 +444,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
     public Thread pushApiThread;
     public void pushAPIs(final Context context){
-    	boolean mockLocationEnabled = Utils.mockLocationEnabled(this);
+    	boolean mockLocationEnabled = false;
+		if(Data.locationFetcher != null){
+			mockLocationEnabled = Utils.mockLocationEnabled(Data.locationFetcher.getLocationUnchecked());
+		}
 		if(mockLocationEnabled){
 			runOnUiThread(new Runnable() {
 
@@ -618,6 +625,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					params.put("auto_n_cab_installed", "0");
 				}
 
+
 				if(Utils.isAppInstalled(activity, Data.UBER_APP)){
 					params.put("uber_installed", "1");
 				}
@@ -638,7 +646,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				else{
 					params.put("ola_installed", "0");
 				}
-
 
 				if(Utils.isDeviceRooted()){
 					params.put("device_rooted", "1");

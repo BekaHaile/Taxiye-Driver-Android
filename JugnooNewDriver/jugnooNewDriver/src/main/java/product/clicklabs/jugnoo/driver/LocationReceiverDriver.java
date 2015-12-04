@@ -31,8 +31,8 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 	@Override
     public void onReceive(final Context context, Intent intent) {
-        if(!Utils.mockLocationEnabled(context)) {
-            final Location location = (Location) intent.getExtras().get(LocationClient.KEY_LOCATION_CHANGED);
+		final Location location = (Location) intent.getExtras().get(LocationClient.KEY_LOCATION_CHANGED);
+        if(!Utils.mockLocationEnabled(location)) {
 
             if (location != null) {
                 Location oldlocation = Database2.getInstance(context).getDriverCurrentLocation();

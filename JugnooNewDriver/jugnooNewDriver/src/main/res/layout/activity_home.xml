@@ -1723,16 +1723,19 @@
                         android:layout_width="82px"
                         android:layout_height="82px"
                         android:layout_centerVertical="true"
-                        android:layout_alignParentRight="true"
+                        android:layout_centerInParent="true"
                         android:background="@drawable/transparent"
                         android:longClickable="true" />
 
 
                     <LinearLayout
                         android:layout_width="wrap_content"
+                        android:id="@+id/linearLayout_DEI"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_centerInParent="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="100px"
+                        android:layout_marginTop="19px"
                         android:orientation="horizontal"
                         >
 
@@ -1755,6 +1758,54 @@
                             android:textSize="38px"/>
 
                     </LinearLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayoutDailyHours"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="15px"
+                        >
+
+                        <TextView
+                            android:id="@+id/textViewTitleBarOnlineHours"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="@string/Duty_Hours"
+                            android:textColor="@color/white"
+                            android:textSize="42px"/>
+
+
+                        <TextView
+                            android:id="@+id/textViewTitleBarOvalText"
+                            android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="60px"
+                            android:layout_marginLeft="20px"
+                            android:layout_marginRight="20px"
+                            android:singleLine="true"
+                            android:text="HH:MM"
+                            android:textSize="40px"
+                            android:textColor="@color/white"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/progressBarDriverOnlineHours"
+                            android:layout_toRightOf="@+id/textViewTitleBarOnlineHours"
+                            android:layout_width="50px"
+                            android:layout_height="50px"
+                            android:layout_marginTop="5px"
+                            android:layout_marginLeft="45px"
+                            android:src="@drawable/oval"
+                            android:tag="mwar"
+                            />
+
+
+                    </RelativeLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
@@ -1784,6 +1835,12 @@
                 android:orientation="vertical"
                 android:splitMotionEvents="false">
 
+                <LinearLayout
+                    android:id="@+id/driverImageRL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
                 <RelativeLayout
                     android:id="@+id/profileRl"
                     android:layout_width="220px"
@@ -1808,24 +1865,14 @@
                         android:tag="mwar"/>
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/profileRl"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10px"
-                    android:gravity="center"
-                    android:text="Dr"
-                    android:textColor="@color/white"
-                    android:textSize="34px"/>
+
 
 
                 <LinearLayout
                     android:id="@+id/linearLayoutDEI"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20px"
+                    android:layout_marginTop="10px"
                     android:orientation="horizontal"
                     >
 
@@ -1836,25 +1883,31 @@
                         android:orientation="vertical"
                         >
 
-                        <ImageView
-                            android:layout_width="53px"
-                            android:layout_height="53px"
-                            android:src="@drawable/ic_dei"
-                            android:tag="mwar"
-                            />
+                        <TextView
+                            android:id="@+id/userName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15px"
+                            android:text="Dr"
+                            android:textColor="@color/white"
+                            android:textSize="34px"/>
+
 
                         <TextView
                             android:id="@+id/textViewDEI"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10px"
+                            android:layout_marginTop="15px"
                             android:gravity="center"
-                            android:text="4.5"
+                            android:text="View Account"
                             android:textColor="@color/white"
-                            android:textSize="38px"/>
+                            android:textSize="32px"/>
 
                     </LinearLayout>
                 </LinearLayout>
+                </LinearLayout>
+
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutAutosOn"
@@ -1864,6 +1917,10 @@
                     android:background="@drawable/transparent"
                     android:splitMotionEvents="false"
                     >
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:background="@drawable/menu_divider"/>
 
                     <ImageView
                         android:layout_width="match_parent"
