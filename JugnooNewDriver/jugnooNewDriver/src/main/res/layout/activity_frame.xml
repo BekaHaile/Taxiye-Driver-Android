@@ -345,7 +345,7 @@
                             android:layout_centerHorizontal="true"
                             android:gravity="center"
                             android:singleLine="true"
-                            android:text="Ride Time"
+                            android:text="@string/ride_time"
                             android:textColor="@color/bg_grey_opaque"
                             android:textSize="@dimen/end_ride_details_text_size"/>
 

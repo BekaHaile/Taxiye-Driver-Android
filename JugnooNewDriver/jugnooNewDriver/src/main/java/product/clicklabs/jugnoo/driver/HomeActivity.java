@@ -1005,7 +1005,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						logoutPopup(HomeActivity.this);
 					}
 					else{
-						DialogPopup.alertPopup(activity, "", "Ride in progress. You can logout only after the ride ends.");
+						DialogPopup.alertPopup(activity, "", getResources().getString(R.string.ride_in_progress_cant_logout));
 					}
 				}
 			});
@@ -1488,7 +1488,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(arg0.getTitle().equalsIgnoreCase(getResources().getString(R.string.pickup_location))){
 
 
-							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Your Pickup Location", "");
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.pickup_location), "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
@@ -2751,7 +2751,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n&" + getResources().getString(R.string.wallet));
 									Log.i("coupontitle",autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
@@ -2781,7 +2781,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Wallet");
+									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& "+getResources().getString(R.string.wallet));
 
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
@@ -2833,7 +2833,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(BusinessType.AUTOS == Data.assignedCustomerInfo.businessType){
 				if(PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode){								// wallet
 					textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-					textViewCouponTitle.setText("Wallet");
+					textViewCouponTitle.setText(getResources().getString(R.string.wallet));
 
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
@@ -2895,7 +2895,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							driverScheduledRideText.setVisibility(View.GONE);
 						} else {
 							driverScheduledRideText.setVisibility(View.VISIBLE);
-							driverScheduledRideText.setText("Scheduled Ride Pickup: " + time);
+							driverScheduledRideText.setText(getResources().getString(R.string.Scheduled_Ride_Pickup) + time);
 						}
 					}
 

@@ -57,7 +57,7 @@
                         android:background="@color/white_translucent"
                         android:gravity="center"
                         android:padding="25px"
-                        android:text="Wait here..."
+                        android:text="@string/wait_here"
                         android:textColor="@color/bg_grey_opaque"
                         android:textSize="32px"
                         android:visibility="gone" />
@@ -523,7 +523,7 @@
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
                                         android:singleLine="true"
-                                        android:text="Ride Time"
+                                        android:text="@string/ride_time"
                                         android:textColor="@color/bg_grey_opaque"
                                         android:textSize="@dimen/end_ride_details_text_size"/>
 
@@ -966,7 +966,7 @@
                                                 android:layout_centerHorizontal="true"
                                                 android:gravity="center"
                                                 android:singleLine="true"
-                                                android:text="Ride Time"
+                                                android:text="@string/ride_time"
                                                 android:textColor="@color/white"
                                                 android:textSize="@dimen/end_ride_details_text_size"/>
 
@@ -1130,7 +1130,7 @@
                                         android:layout_gravity="center_horizontal"
                                         android:gravity="center"
                                         android:singleLine="true"
-                                        android:text="The Jugnoo ride is over."
+                                        android:text="@string/jugnoo_ride_over"
                                         android:textColor="@color/black"
                                         android:textSize="40px"/>
 
@@ -1368,7 +1368,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:text="Take"
+                                            android:text="@string/take"
                                             android:textColor="@color/black"
                                             android:textSize="50px"/>
 
@@ -1505,7 +1505,7 @@
                                         android:layout_marginRight="20px"
                                         android:layout_marginTop="10px"
                                         android:gravity="center"
-                                        android:text="USE JUGNOO FARE"
+                                        android:text="@string/use_jugnoo_fare"
                                         android:textColor="@drawable/blue_btn_color_selector"
                                         android:textSize="@dimen/button_small_text_size"
                                         android:visibility="visible"/>
@@ -1557,7 +1557,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerHorizontal="true"
                                         android:layout_centerVertical="true"
-                                        android:text="Time:\n"
+                                        android:text="@string/time_new"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1901,7 +1901,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="15px"
                             android:gravity="center"
-                            android:text="View Account"
+                            android:text="@string/view_account"
                             android:textColor="@color/white"
                             android:textSize="32px"/>
 

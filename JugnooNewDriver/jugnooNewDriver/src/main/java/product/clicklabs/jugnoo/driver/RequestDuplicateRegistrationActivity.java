@@ -118,7 +118,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 			textViewRegisterNameValue.setText(OTPConfirmScreen.emailRegisterData.name);
 			textViewRegisterEmailValue.setText(OTPConfirmScreen.emailRegisterData.emailId);
 			textViewRegisterPhoneValue.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-			editTextMessage.setHint(getResources().getString(R.string.You_have_already_created)+" " + Data.previousAccountInfoList.size() + " "+getResources().getString(R.string.reason_to_create_new_account));
+			editTextMessage.setHint(getResources().getString(R.string.You_have_already_created, Data.previousAccountInfoList.size()));
 		} catch(Exception e){
             e.printStackTrace();
             performBackPressed();

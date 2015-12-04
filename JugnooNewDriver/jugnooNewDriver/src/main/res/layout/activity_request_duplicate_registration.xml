@@ -164,7 +164,7 @@
                     android:layout_marginTop="50px"
                     android:background="@drawable/background_white_rounded_bordered"
                     android:gravity="left"
-                    android:hint="You have already created 2 accounts from this device. Please explain the reason for creating a new account."
+                    android:hint="@string/hint_created_multiple_account"
                     android:padding="20px"
                     android:scrollbars="vertical"
                     android:textSize="24px"

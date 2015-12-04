@@ -126,7 +126,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 					}
 
 					if ("".equalsIgnoreCase(cancelReasonsStr)) {
-						DialogPopup.alertPopup(RideCancellationActivity.this, "", "Please select one reason");
+						DialogPopup.alertPopup(RideCancellationActivity.this, "", getResources().getString(R.string.select_reason));
 					} else {
 						driverCancelRideAsync(RideCancellationActivity.this, cancelReasonsStr);
 					}
@@ -188,7 +188,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 	public void driverCancelRideAsync(final Activity activity, String reason) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);

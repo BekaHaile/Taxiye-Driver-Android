@@ -235,7 +235,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			double balance = Double.parseDouble(rideInfo.accountBalance);
 			if (balance < 0) {
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Money to\nJugnoo");
+				holder.textViewBalanceText.setText(getResources().getString(R.string.money_to)+"\nJugnoo");
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			} else {

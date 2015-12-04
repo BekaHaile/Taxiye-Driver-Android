@@ -43,16 +43,13 @@ public class ShareActivity extends Activity {
 	TextView textViewShareReferral;
 
 
-	String str1 = "Share your referral code ",
-			str2 = " with your friends and they will get a FREE ride because of your referral and once they have used Jugnoo, " +
-					"you will earn a FREE ride (upto Rs. 100) as well.",
-			str3 = "Your Referral Code is ";
+//	String str1 = "Share your referral code ",
+//			str2 = " with your friends and they will get a FREE ride because of your referral and once they have used Jugnoo, " +
+//					"you will earn a FREE ride (upto Rs. 100) as well.",
+//	String	str3 = getResources().getString(R.string.your_referral_code);
 	SpannableString sstr;
 
 
-	String shareStr1 = "Hey, \nUse Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr11 = "Use Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr2 = " to get FREE ride upto Rs. 100.\nDownload it from here: http://smarturl.it/jugnoo";
 
 	@Override
 	protected void onStart() {
@@ -97,13 +94,13 @@ public class ShareActivity extends Activity {
 			sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			textViewShareReferral.setText("");
-			textViewShareReferral.append(str1);
-			textViewShareReferral.append(sstr);
-			textViewShareReferral.append(str2);
+//			textViewShareReferral.setText("");
+//			textViewShareReferral.append(str1);
+//			textViewShareReferral.append(sstr);
+//			textViewShareReferral.append(str2);
 
 			textViewReferralCodeDisplay.setText("");
-			textViewReferralCodeDisplay.append(str3);
+			textViewReferralCodeDisplay.append(getResources().getString(R.string.your_referral_code));
 			textViewReferralCodeValue.setText(sstr);
 			textViewReferralCodeValue.setTypeface(Data.latoHeavy(getApplicationContext()));
 
@@ -146,74 +143,12 @@ public class ShareActivity extends Activity {
 		});
 
 
-//		shareWhatsappImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				shareToWhatsapp(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaWhatsapp(Data.userData.accessToken);
-//			}
-//		});
-//
-//
-//		shareSMSImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				sendSMSIntent(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaSMS(Data.userData.accessToken);
-//			}
-//		});
-//
-//		shareEMailImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openMailIntent(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaEmail(Data.userData.accessToken);
-//			}
-//		});
+
 
 
 	}
 
 
-	public void shareToWhatsapp(String referralCode) {
-		PackageManager pm = getPackageManager();
-		try {
-			Intent waIntent = new Intent(Intent.ACTION_SEND);
-			waIntent.setType("text/plain");
-			String text = shareStr1 + referralCode + shareStr2;
-
-			PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-			Log.d("info", "=" + info);
-			waIntent.setPackage("com.whatsapp");
-
-			waIntent.putExtra(Intent.EXTRA_TEXT, text);
-			startActivity(Intent.createChooser(waIntent, "Share with"));
-
-		} catch (NameNotFoundException e) {
-			Toast.makeText(this, getResources().getString(R.string.whatsapp_not_installed), Toast.LENGTH_SHORT).show();
-		}
-	}
-
-
-	public void sendSMSIntent(String referralCode) {
-		Uri sms_uri = Uri.parse("smsto:");
-		Intent sms_intent = new Intent(Intent.ACTION_SENDTO, sms_uri);
-		sms_intent.putExtra("sms_body", shareStr1 + referralCode + shareStr2);
-		startActivity(sms_intent);
-	}
-
-
-	public void openMailIntent(String referralCode) {
-		Intent email = new Intent(Intent.ACTION_SEND);
-		email.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
-		email.putExtra(Intent.EXTRA_SUBJECT, "Jugnoo Invite");
-		email.putExtra(Intent.EXTRA_TEXT, shareStr1 + referralCode + shareStr2);
-		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, getResources().getString(R.string.choose_email_client)));
-	}
 
 
 	@Override
@@ -280,7 +215,7 @@ public class ShareActivity extends Activity {
 								new BingTranslator().startTranslation("your referral code", new BingTranslator.BingCallback() {
 									@Override
 									public void onSuccess(String translatedStr) {
-										DialogPopup.alertPopup(ShareActivity.this, "", " " + translatedStr+" " + phone + " के साथ शेयर कर दिया गया है।");
+										DialogPopup.alertPopup(ShareActivity.this, "", " " + "your referral code"+" " + phone + " के साथ शेयर कर दिया गया है।");
 									}
 
 									@Override

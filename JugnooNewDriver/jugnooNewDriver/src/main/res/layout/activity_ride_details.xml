@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Convenience Charge"
+                    android:text="@string/convenience_charge"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -362,7 +362,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
-                    android:text="Cancel Subsidy"
+                    android:text="@string/cancel_subsidy"
                     android:textColor="@color/black"
                     android:textSize="32px"/>
 
@@ -472,7 +472,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:text="(inc. Subsidy)"
+                android:text="@string/inc_subsidy"
                 android:textColor="@color/black"
                 android:textSize="24px"
                 android:layout_gravity="center_horizontal"

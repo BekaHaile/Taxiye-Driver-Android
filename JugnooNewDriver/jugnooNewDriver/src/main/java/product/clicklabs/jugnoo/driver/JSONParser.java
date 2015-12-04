@@ -305,9 +305,7 @@ public class JSONParser {
 		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
 		String referralCode = userData.getString("referral_code");
 
-		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
-				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
-						"Download it from here\nhttp://smarturl.it/jugnoo");
+		String referralSMSToCustomer = userData.optString("referral_sms_to_customer", context.getResources().getString(R.string.referral_msg, referralCode));
 
 
 		Data.termsAgreed = 1;

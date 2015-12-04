@@ -143,7 +143,7 @@ public class DriverProfileActivity extends Activity {
 	}
 
 	private void getProfileInfoAsync(final Activity activity) {
-		DialogPopup.showLoadingDialog(activity, "Loading...");
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		driverDetailsRLL.setVisibility(View.GONE);
 		RestClient.getApiServices().driverProfileInfo(Data.userData.accessToken,
 				new Callback<BookingHistoryResponse>() {

@@ -95,7 +95,7 @@ public class MultipleAccountsActivity extends Activity {
         scrollView.smoothScrollTo(0,0);
 
         try {
-            textViewMultipleAccountsCreated.setText(EnglishNumberToWords.convert(Data.previousAccountInfoList.size()) + " accounts have already been created on this device");
+            textViewMultipleAccountsCreated.setText(EnglishNumberToWords.convert(Data.previousAccountInfoList.size()) + getResources().getString(R.string.no_of_account));
         } catch(Exception e){
             e.printStackTrace();
             performBackPressed();

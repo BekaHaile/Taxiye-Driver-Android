@@ -54,7 +54,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public static boolean intentFromRegister = true;
 	public static EmailRegisterData emailRegisterData;
 
-	String otpHelpStr = "Please enter the One Time Password you just received via SMS at ";
+	String otpHelpStr = getResources().getString(R.string.enter_otp_received);
 
 	@Override
 	protected void onStart() {
