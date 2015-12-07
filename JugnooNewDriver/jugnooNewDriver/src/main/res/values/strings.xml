@@ -298,11 +298,11 @@
 	<string name="pls_confirm_password">Please confirm password</string>
 	<string name="password_atleast_6">Password must be of atleast six characters</string>
 	<string name="valid_email">Please enter valid email id</string>
-	<string name="password_not_match">Passwords does not match</string>
+	<string name="password_not_match">Passwords do not match</string>
 	<string name="password_to_continue">Please enter password to continue.</string>
 	<string name="enter_new_phone_number">Please enter your new phone number</string>
 	<string name="position">POSITION</string>
-	<string name="enter_phone_to_have_instruction">Please provide your Phone No. to get instructions for reseting your password.</string>
+	<string name="enter_phone_to_have_instruction">Please provide your Phone No. to get instructions for resetting your password.</string>
 	<string name="pay">Pay</string>
 	<string name="please_login_from_these_accounts">Please login through one of these accounts</string>
 	<string name="please_contact_customer_care">Please contact our customer care</string>

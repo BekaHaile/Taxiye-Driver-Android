@@ -212,15 +212,15 @@ public class ShareActivity extends Activity {
 								SmsManager smsManager = SmsManager.getDefault();
 								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
 
-								new BingTranslator().startTranslation("your referral code", new BingTranslator.BingCallback() {
+								new BingTranslator().startTranslation("आपका referral code ", new BingTranslator.BingCallback() {
 									@Override
 									public void onSuccess(String translatedStr) {
-										DialogPopup.alertPopup(ShareActivity.this, "", " " + "your referral code"+" " + phone + " के साथ शेयर कर दिया गया है।");
+										DialogPopup.alertPopup(ShareActivity.this, "", " " + "आपका referral code "+" " + phone + " के साथ शेयर कर दिया गया है।");
 									}
 
 									@Override
 									public void onFailure() {
-										DialogPopup.alertPopup(ShareActivity.this, "", " "+"your referral code" + phone + " के साथ शेयर कर दिया गया है।");
+										DialogPopup.alertPopup(ShareActivity.this, "", " "+"आपका referral code " + phone + " के साथ शेयर कर दिया गया है।");
 									}
 								});
 								dialog.dismiss();
