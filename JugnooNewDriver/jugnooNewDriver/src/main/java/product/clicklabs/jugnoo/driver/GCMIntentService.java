@@ -60,7 +60,7 @@ import retrofit.mime.TypedByteArray;
 
 public class GCMIntentService extends IntentService {
 
-	public static final int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
+	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	NotificationCompat.Builder builder;
 
@@ -115,7 +115,7 @@ public class GCMIntentService extends IntentService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(NOTIFICATION_ID, notification);
+			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
@@ -162,7 +162,95 @@ public class GCMIntentService extends IntentService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(NOTIFICATION_ID, notification);
+			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
+
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+			wl.acquire(15000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+
+	@SuppressWarnings("deprecation")
+	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId, boolean appstate) {
+
+		try {
+			long when = System.currentTimeMillis();
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+			Log.v("message", "," + message);
+
+			Intent notificationIntent = new Intent(context, HomeActivity.class);
+
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			builder.setAutoCancel(true);
+			builder.setContentTitle("Jugnoo");
+			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			builder.setContentText(message);
+			builder.setTicker(message);
+			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+
+			if (ring) {
+				builder.setLights(Color.GREEN, 500, 500);
+			} else {
+				builder.setDefaults(Notification.DEFAULT_ALL);
+			}
+
+			builder.setWhen(when);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
+			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setContentIntent(intent);
+
+
+			if(appstate) {
+				Intent intentAcc = new Intent(context, HomeActivity.class);
+				intentAcc.putExtra("type", "accept");
+				intentAcc.putExtra("engagement_id", engagementId);
+				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
+				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+
+				Intent intentCanc = new Intent(context, ShareActivity.class);
+				intentCanc.putExtra("type", "cancel");
+				intentCanc.putExtra("engagement_id", engagementId);
+				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
+
+			}else{
+				Intent intentAccKill = new Intent(context, SplashNewActivity.class);
+				intentAccKill.putExtra("type", "accept");
+				intentAccKill.putExtra("engagement_id", engagementId);
+				intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+
+				Intent intentCancKill = new Intent(context, SplashLogin.class);
+				intentCancKill.putExtra("type", "cancel");
+				intentCancKill.putExtra("engagement_id", engagementId);
+				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
+			}
+
+
+
+
+
+			Notification notification = builder.build();
+
+			Prefs.with(context).save(SPLabels.NOTIFICATION_ID, Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0) + 1);
+			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
+
+
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
@@ -215,7 +303,8 @@ public class GCMIntentService extends IntentService {
 
 	public static void clearNotifications(Context context) {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancel(NOTIFICATION_ID);
+//		notificationManager.cancel(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0));
+		notificationManager.cancelAll();
 	}
 
 	protected void onRegistered(Context arg0, String arg1) {
@@ -352,18 +441,18 @@ public class GCMIntentService extends IntentService {
 											}
 
 											startRing(this);
-
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-
-											notificationManagerResume(this, "You have got a new request.", true);
+//											notificationManagerResume(this, "You have got a new request.", true);
+											notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, true);
 											HomeActivity.appInterruptHandler.onNewRideRequest();
 
 											Log.e("referenceId", "=" + referenceId);
 										}
 									}
 								} else {
-									notificationManager(this, "You have got a new request.", true);
+//									notificationManager(this, "You have got a new request.", true);
+									notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, false);
 
 									startRing(this);
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);

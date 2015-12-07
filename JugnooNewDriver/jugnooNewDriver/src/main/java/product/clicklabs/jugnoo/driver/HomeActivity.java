@@ -1436,6 +1436,66 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			Crashlytics.logException(e);
 		}
+		try{
+			if(getIntent().hasExtra("type")){
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						onNewIntent(getIntent());
+					}
+				},1000);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		try {
+			String type = intent.getStringExtra("type");
+			if(type.equalsIgnoreCase("accept")){
+				DriverRideRequest driverRideRequest = driverRequestListAdapter
+						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
+								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
+
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
+
+				acceptRequestFunc();
+				FlurryEventLogger.event(RIDE_ACCEPTED);
+
+			} else if(type.equalsIgnoreCase("cancel")){
+
+				DriverRideRequest driverRideRequest = driverRequestListAdapter
+						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
+								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
+
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
+
+				rejectRequestFunc();
+				FlurryEventLogger.event(RIDE_CANCELLED);
+
+			}
+			else{
+
+			}
+
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 
 	}
 
