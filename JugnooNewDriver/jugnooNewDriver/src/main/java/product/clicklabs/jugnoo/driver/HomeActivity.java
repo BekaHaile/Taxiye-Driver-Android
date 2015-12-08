@@ -5244,6 +5244,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void success(HeatMapResponse heatMapResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						Log.i("heat",jsonString);
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
@@ -5288,7 +5289,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
 				}
 				addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-						region.getColor());
+						region.getColor(), region.getStrokeColor());
 			}
 		} catch (Exception e){
 			e.printStackTrace();
@@ -5296,18 +5297,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color) {
+	public void addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
 		try {
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			PolygonOptions polygonOptions = new PolygonOptions();
-			polygonOptions.strokeColor(Color.parseColor(color))
-					.strokeWidth((100/zIndex))
+			polygonOptions.strokeColor(Color.parseColor(strokeColor))
+					.strokeWidth((4))
 					.fillColor(Color.parseColor(color));
 			for(LatLng latLng : arg) {
 				polygonOptions.add(latLng);
 				builder.include(latLng);
 			}
-			polygonOptions.zIndex(zIndex);
+			polygonOptions.zIndex(100/zIndex);
 			LatLngBounds latLngBounds = builder.build();
 			CustomMapMarkerCreator.addTextMarkerToMap(this, map,
 					latLngBounds.getCenter(),

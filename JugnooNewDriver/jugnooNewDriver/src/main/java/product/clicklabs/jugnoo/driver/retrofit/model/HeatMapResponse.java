@@ -67,6 +67,9 @@ public class HeatMapResponse {
 		@SerializedName("color")
 		@Expose
 		private String color;
+		@SerializedName("stroke_color")
+		@Expose
+		private String strokeColor;
 
 		/**
 		 * @return The regionId
@@ -150,6 +153,23 @@ public class HeatMapResponse {
 		 */
 		public void setColor(String color) {
 			this.color = color;
+		}
+		/**
+		 *
+		 * @return
+		 * The strokeColor
+		 */
+		public String getStrokeColor() {
+			return strokeColor;
+		}
+
+		/**
+		 *
+		 * @param strokeColor
+		 * The stroke_color
+		 */
+		public void setStrokeColor(String strokeColor) {
+			this.strokeColor = strokeColor;
 		}
 
 	}
