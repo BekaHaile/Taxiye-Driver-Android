@@ -1593,7 +1593,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void acceptRequestFunc(){
 		if(getBatteryPercentage() >= 20){
 			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing();
+			GCMIntentService.stopRing(true);
 			driverAcceptRideAsync(HomeActivity.this);
 		}
 		else{
@@ -1603,7 +1603,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void rejectRequestFunc(){
 		GCMIntentService.clearNotifications(HomeActivity.this);
-		GCMIntentService.stopRing();
+		GCMIntentService.stopRing(true);
 		driverRejectRequestAsync(HomeActivity.this);
 	}
 
@@ -1902,7 +1902,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								new DriverServiceOperations().stopAndScheduleDriverService(HomeActivity.this);
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
-								GCMIntentService.stopRing();
+								GCMIntentService.stopRing(true);
 
 								if(map != null){
 									map.clear();
@@ -1926,7 +1926,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						if(Data.driverRideRequests.size() == 0){
 							GCMIntentService.clearNotifications(HomeActivity.this);
-							GCMIntentService.stopRing();
+							GCMIntentService.stopRing(true);
 						}
 
 						showAllRideRequestsOnMap();
@@ -3214,7 +3214,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			saveDataOnPause(true);
 
 			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing();
+			GCMIntentService.stopRing(true);
 
 			MeteringService.clearNotifications(HomeActivity.this);
 
@@ -3311,7 +3311,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	private double getTotalFare(double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis){
-		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
+		double totalDistanceInKm = Math.abs(totalDistance);
 
 		if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
@@ -6539,7 +6539,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						DialogPopup.alertPopupWithListener(HomeActivity.this, "", "A pickup has been assigned to you. Please pick the customer.", new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								GCMIntentService.stopRing();
+								GCMIntentService.stopRing(true);
 								Database2.getInstance(HomeActivity.this).updateDriverManualPatchPushReceived(Database2.NO);
 								manualPatchPushAckAPI(HomeActivity.this);
 							}
