@@ -211,7 +211,7 @@ public class GCMIntentService extends IntentService {
 
 
 			if(appstate) {
-				Intent intentAcc = new Intent(context, HomeActivity.class);
+				Intent intentAcc = new Intent(context, DriverProfileActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
 				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -248,7 +248,7 @@ public class GCMIntentService extends IntentService {
 			Notification notification = builder.build();
 
 			Prefs.with(context).save(SPLabels.NOTIFICATION_ID, Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0) + 1);
-			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
+			notificationManager.notify(Integer.parseInt(engagementId), notification);
 
 
 
