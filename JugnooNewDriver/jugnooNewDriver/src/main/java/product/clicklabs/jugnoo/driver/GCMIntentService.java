@@ -499,8 +499,6 @@ public class GCMIntentService extends IntentService {
 												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 									}
 
-
-
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
