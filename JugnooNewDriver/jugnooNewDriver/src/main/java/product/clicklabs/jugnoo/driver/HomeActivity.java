@@ -1436,19 +1436,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			Crashlytics.logException(e);
 		}
-		try{
-			if(getIntent().hasExtra("type")){
-				Handler handler = new Handler();
-				handler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						onNewIntent(getIntent());
-					}
-				},1000);
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+
 	}
 
 	@Override
@@ -1461,6 +1449,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				DriverRideRequest driverRideRequest = driverRequestListAdapter
 						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
 								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
+
+				driverRideRequestsList.setVisibility(View.GONE);
 
 				Data.dEngagementId = driverRideRequest.engagementId;
 				Data.dCustomerId = driverRideRequest.customerId;
@@ -1647,6 +1637,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			Crashlytics.logException(e);
 		}
+
+		try{
+			if(getIntent().hasExtra("type")){
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						onNewIntent(getIntent());
+					}
+				},0);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -1657,6 +1661,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverAcceptRideAsync(HomeActivity.this);
 		}
 		else{
+			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
 		}
 	}
@@ -3801,6 +3806,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Log.e("accept_a_request jsonString", "=" + jsonString);
 						if (!jObj.isNull("error")) {
 
+							driverRideRequestsList.setVisibility(View.VISIBLE);
 							int flag = jObj.getInt("flag");
 							Log.e("accept_a_request flag", "=" + flag);
 							String errorMessage = jObj.getString("error");
@@ -3985,11 +3991,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									switchDriverScreen(driverScreenMode);
 
 								} else {
+									driverRideRequestsList.setVisibility(View.VISIBLE);
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 								}
 
 
 							} else {
+								driverRideRequestsList.setVisibility(View.VISIBLE);
 								try {
 									Log.e("accept_a_request flag", "=" + flag);
 									String logMessage = jObj.getString("log");
@@ -4003,6 +4011,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							DialogPopup.dismissLoadingDialog();
 						}
 					} catch (Exception exception) {
+						driverRideRequestsList.setVisibility(View.VISIBLE);
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -4013,6 +4022,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void failure(RetrofitError error) {
+					driverRideRequestsList.setVisibility(View.VISIBLE);
 					DialogPopup.dismissLoadingDialog();
 					callAndHandleStateRestoreAPI();
 				}
@@ -4021,6 +4031,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		}
 		else {
+			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 	}
