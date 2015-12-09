@@ -69,7 +69,9 @@
         <activity
             android:name="product.clicklabs.jugnoo.driver.HomeActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask"
+            >
         </activity>
         <activity
             android:name="product.clicklabs.jugnoo.driver.RegisterScreen"

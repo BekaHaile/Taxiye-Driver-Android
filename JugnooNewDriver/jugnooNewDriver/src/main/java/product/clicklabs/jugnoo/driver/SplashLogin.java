@@ -88,6 +88,21 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		try{
+			if(getIntent().hasExtra("type")){
+				if(getIntent().getStringExtra("type").equalsIgnoreCase("cancel")){
+					Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
+					intent.putExtras(getIntent().getExtras());
+					startActivity(intent);
+					finish();
+				}
+			}
+
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 		setContentView(R.layout.activity_splash_login);
 
 		Data.locationFetcher = null;

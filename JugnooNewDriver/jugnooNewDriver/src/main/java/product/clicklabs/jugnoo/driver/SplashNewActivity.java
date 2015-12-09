@@ -138,7 +138,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		RestClient.setupRestClient();
 		DriverLocationUpdateService.updateServerData(context);
 	}
-	
+
+	Bundle bundleHomePush= new Bundle();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -154,8 +155,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		    config.locale = locale;
 //		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 //		}
-		
-		
+
+		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
@@ -921,7 +922,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textHead.setText(title);
 			textMessage.setText(message);
@@ -962,7 +963,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
+
 		if(hasFocus && noNetFirstTime){
 			noNetFirstTime = false;
 			checkNetHandler.postDelayed(checkNetRunnable, 4000);
@@ -973,7 +974,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		}
 		else if(hasFocus && loginDataFetched){
 			loginDataFetched = false;
-			startActivity(new Intent(SplashNewActivity.this, HomeActivity.class));
+			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
+			if(bundleHomePush != null)
+			intent.putExtras(bundleHomePush);
+
+			startActivity(intent);
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
