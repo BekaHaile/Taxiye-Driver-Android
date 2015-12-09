@@ -1980,7 +1980,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable && 0 == Data.userData.sharingAvailable){
 							if(isDriverStateFree()){
 								jugnooOffLayout.setVisibility(View.VISIBLE);
-
+								map.clear();
 								new DriverServiceOperations().stopAndScheduleDriverService(HomeActivity.this);
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
@@ -1988,7 +1988,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								if(map != null){
 									map.clear();
-									drawHeatMapData(heatMapResponseGlobal);
 								}
 								dismissStationDataPopup();
 								cancelStationPathUpdateTimer();
@@ -1997,7 +1996,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						else{
 							if(isDriverStateFree()) {
 								jugnooOffLayout.setVisibility(View.GONE);
-
+								fetchHeatMapData(HomeActivity.this);
 								new DriverServiceOperations().startDriverService(HomeActivity.this);
 								initializeStationDataProcedure();
 							}
@@ -5414,46 +5413,34 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-
 			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
 				@Override
 				public void success(HeatMapResponse heatMapResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i("heat",jsonString);
+						Log.i("heat", jsonString);
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
 						String message = JSONParser.getServerMessage(jObj);
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-							if(ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag){
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
 								heatMapResponseGlobal = heatMapResponse;
 								drawHeatMapData(heatMapResponseGlobal);
 								Log.i("Heat Map response", String.valueOf(heatMapResponse));
 								Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
 							}
-							else{
-								DialogPopup.alertPopup(activity, "", message);
-							}
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
 
-					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
-					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
-		}
-		else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 	}
 
