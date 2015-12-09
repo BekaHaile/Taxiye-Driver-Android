@@ -28,7 +28,7 @@
                     android:id="@+id/map"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    class="com.google.android.gms.maps.SupportMapFragment" />
+                    class="com.google.android.gms.maps.SupportMapFragment"/>
             </RelativeLayout>
 
             <!-- driver main layout-->
@@ -76,6 +76,7 @@
                         android:divider="@color/transparent"
                         android:visibility="visible"
                         android:layout_alignParentTop="true"
+                        android:splitMotionEvents="false"
                         >
                     </ListView>
 
@@ -116,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <TextView
                         android:id="@+id/textViewBeforeAcceptRequestInfo"
@@ -839,7 +840,7 @@
                                     android:gravity="center"
                                     android:singleLine="true"
                                     android:text=" "
-                                    android:textColor="@color/white"
+                                    android:textColor="@color/grey_dark_button"
                                     android:textSize="34px"/>
 
                                 <!-- reached distance km, time, fare layout -->
@@ -1583,7 +1584,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignParentBottom="true"
                                     android:background="@color/white_translucent"
-                                    android:visibility="visible"
+                                    android:visibility="gone"
                                     >
 
                                     <LinearLayout
@@ -2187,19 +2188,19 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/helpRl"
+                    android:id="@+id/callUsRl"
                     android:layout_width="match_parent"
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
                     <TextView
-                        android:id="@+id/helpText"
+                        android:id="@+id/callUsText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Help"
+                        android:text="@string/call_us"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 

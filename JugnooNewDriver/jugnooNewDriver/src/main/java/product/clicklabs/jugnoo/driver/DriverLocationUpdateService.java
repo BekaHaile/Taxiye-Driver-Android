@@ -121,9 +121,12 @@ public class DriverLocationUpdateService extends Service {
 		
 		deviceToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(), 
 				Context.MODE_PRIVATE).getString("registration_id", "");
+		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
+				Context.MODE_PRIVATE).getString("pushy_registration_id", "");
     	
 
 		Database2.getInstance(context).insertDriverLocData(accessToken, deviceToken, SERVER_URL);
+		Database2.getInstance(context).updatePushyToken(pushyToken);
     }
     
     

@@ -10,14 +10,16 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-public class FusedLocationFetcherBackgroundHigh implements GooglePlayServicesClient.ConnectionCallbacks,GooglePlayServicesClient.OnConnectionFailedListener {
-	
-	private LocationClient locationclient;
+import product.clicklabs.jugnoo.driver.utils.Log;
+
+public class FusedLocationFetcherBackgroundHigh implements GoogleApiClient.ConnectionCallbacks,GoogleApiClient.OnConnectionFailedListener {
+
+	private GoogleApiClient googleApiClient;
 	private LocationRequest locationrequest;
 	private PendingIntent locationIntent;
 	
@@ -41,8 +43,8 @@ public class FusedLocationFetcherBackgroundHigh implements GooglePlayServicesCli
 	
 	
 	public boolean isConnected(){
-		if(locationclient != null){
-			return locationclient.isConnected();
+		if(googleApiClient != null){
+			return googleApiClient.isConnected();
 		}
 		return false;
 	}
@@ -64,73 +66,83 @@ public class FusedLocationFetcherBackgroundHigh implements GooglePlayServicesCli
 			return false;
 		}
 	}
-	
-	
+
+
 
 	public void connect(){
 		destroy();
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(context);
 		if(resp == ConnectionResult.SUCCESS){														// google play services working
 			if(isLocationEnabled(context)){															// location fetching enabled
-				locationclient = new LocationClient(context, this, this);
-				locationclient.connect();
+				buildGoogleApiClient(context);
 			}
 			else{																					// location disabled
 			}
 		}
 		else{																						// google play services not working
-//			Log.e("Google Play Service Error ","="+resp);
 		}
 	}
-	
-	
-	
+
+
+
 	public void destroy(){
 		try{
-			if(locationclient != null){
-				if(locationclient.isConnected()){
-					locationclient.removeLocationUpdates(locationIntent);
+			Log.e("location", "destroy");
+			if(googleApiClient!=null){
+				if(googleApiClient.isConnected()){
+					LocationServices.FusedLocationApi.removeLocationUpdates(googleApiClient, locationIntent);
 					locationIntent.cancel();
-					locationclient.disconnect();
+					googleApiClient.disconnect();
 				}
-				else if(locationclient.isConnecting()){
-					locationclient.disconnect();
+				else if(googleApiClient.isConnecting()){
+					googleApiClient.disconnect();
 				}
 			}
 		}catch(Exception e){
-//			Log.e("e", "="+e.toString());
+			Log.e("e", "="+e.toString());
 		}
+	}
+
+
+
+	protected void createLocationRequest(long interval) {
+		locationrequest = new LocationRequest();
+		locationrequest.setInterval(interval);
+		locationrequest.setFastestInterval(interval / 2);
+		locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	}
+
+
+	protected synchronized void buildGoogleApiClient(Context context) {
+		googleApiClient = new GoogleApiClient.Builder(context)
+				.addConnectionCallbacks(this)
+				.addOnConnectionFailedListener(this)
+				.addApi(LocationServices.API).build();
+		googleApiClient.connect();
+	}
+
+	protected void startLocationUpdates(long interval) {
+		createLocationRequest(interval);
+		Intent intent = new Intent(context, FusedLocationReceiverBackgroundHigh.class);
+		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
 	}
 
 	
 	
 	@Override
 	public void onConnected(Bundle connectionHint) {
-		locationrequest = LocationRequest.create();
-		locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-		locationrequest.setInterval(requestInterval);
-		locationrequest.setFastestInterval(requestInterval);
-		
-		
-		Intent intent = new Intent(context, FusedLocationReceiverBackgroundHigh.class);
-		
-		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		locationclient.requestLocationUpdates(locationrequest, locationIntent);
-		
-//		Log.e("locationrequest priority", "="+locationrequest.getPriority());
-//		Log.e(TAG, "onConnected ********************************************************");
+		startLocationUpdates(requestInterval);
 	}
 
 	@Override
-	public void onDisconnected() {
-//		Log.e(TAG, "onDisconnected ********************************************************");
+	public void onConnectionSuspended(int i) {
 		destroy();
 		connect();
 	}
 
 	@Override
 	public void onConnectionFailed(ConnectionResult result) {
-//		Log.e(TAG, "onConnectionFailed ********************************************************");
 		destroy();
 		connect();
 	}

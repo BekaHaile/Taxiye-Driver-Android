@@ -12,6 +12,7 @@
     <!--<string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> &lt;!&ndash; Dev&ndash;&gt;-->
 
 
+
 	<!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
@@ -74,8 +75,9 @@
 	<string name="cancel">Cancel</string>
 
 	<string name="select_language">Select Language</string>
-
+	<string name="enter_phone_number">Enter Phone No.</string>
 	<string name="enter_email">Enter Email</string>
+
 	<string name="send_email">Send Email</string>
 
 	<string name="favorites">Favorites</string>
@@ -192,6 +194,8 @@
 	<string name="Customer_behavior">Customer\'s bad behavior</string>
 	<string name="profile">Profile</string>
 	<string name="Duty_Hours">Duty Hours:</string>
+	<string name="call_us">Call Us</string>
+
 
 
 

@@ -46,9 +46,11 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -61,6 +63,8 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -78,7 +82,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	ImageView jugnooTextImg, jugnooTextImg2;
 	
 	ProgressBar progressBar1;
-	
+
 	Button buttonLogin, buttonRegister;
 	
 	boolean loginDataFetched = false, loginFailed = false;
@@ -155,7 +159,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
-		
+
+        long interval = (1000 * Prefs.with(this)
+                .getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
+        Pushy.setHeartbeatInterval(interval, this);
+		Pushy.listen(this);
+
 		
 //		Locale locale = new Locale("en");
 //	    Locale.setDefault(locale);
@@ -345,8 +354,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							public void run() {
 								Data.deviceToken = regId;
 								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-								progressBar1.setVisibility(View.GONE);
-								pushAPIs(SplashNewActivity.this);
+								checkForTokens();
 							}
 						}, 2000);
 					}
@@ -354,6 +362,27 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			}
 		});
 
+		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+			@Override
+			public void deviceTokenReceived(final String regId) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Log.e("pushy regId", "=" + regId);
+						Data.pushyToken = regId;
+//						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
+						checkForTokens();
+					}
+				});
+			}
+		});
+
+	}
+	private void checkForTokens(){
+		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
+			progressBar1.setVisibility(View.GONE);
+			pushAPIs(SplashNewActivity.this);
+		}
 	}
 
 
@@ -596,8 +625,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
-				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
+				params.put("pushy_token", Data.pushyToken);
 
 
 				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
@@ -663,6 +692,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
+							Log.i("pushyyy", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
@@ -678,6 +708,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+                                        JSONParser.parsePushyInterval(activity, jObj);
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();

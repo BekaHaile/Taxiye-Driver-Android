@@ -31,7 +31,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")
-	void forgotpassword(@Field("email") String email,
+	void forgotpassword(@Field("phone_number") String phoneNumber,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
@@ -59,6 +59,7 @@ public interface APIServices {
 	void verifyOtpUsingSignupFields(@Field("email") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
+									@Field("pushy_token") String pushyToken,
 									@Field("device_type") String deviceType,
 									@Field("device_name") String deviceName,
 									@Field("app_version") int appVersion,
