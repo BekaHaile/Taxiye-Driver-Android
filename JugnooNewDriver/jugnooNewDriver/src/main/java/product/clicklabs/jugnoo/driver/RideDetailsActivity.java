@@ -206,9 +206,9 @@ public class RideDetailsActivity extends Activity {
 
 			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
 				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.red_status));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.red_status));
-				textViewAccountBalanceText.setText("(-)Account");
+				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
+				textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
+				textViewAccountBalanceText.setText("Money to Jugnoo");
 			} else {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
