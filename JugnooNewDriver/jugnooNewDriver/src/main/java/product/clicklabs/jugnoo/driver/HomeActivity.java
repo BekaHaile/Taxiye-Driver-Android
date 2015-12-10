@@ -3507,9 +3507,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		ArrayList<DriverRideRequest> driverRideRequests;
 
+		Handler handlerRefresh;
+		Runnable runnableRefresh;
+
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			driverRideRequests = new ArrayList<DriverRideRequest>();
+			handlerRefresh = new Handler();
+			runnableRefresh = new Runnable() {
+				@Override
+				public void run() {
+					if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+						DriverRequestListAdapter.this.notifyDataSetChanged();
+					}
+					handlerRefresh.postDelayed(runnableRefresh, 1000);
+				}
+			};
+			handlerRefresh.postDelayed(runnableRefresh, 1000);
 		}
 
 		@Override
@@ -3584,10 +3598,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), driverRideRequest.latLng);
 				distance = distance * 1.5;
 				if(distance >= 1000){
-					holder.textViewRequestDistance.setText(""+decimalFormat.format(distance/1000)+" km away");
+					holder.textViewRequestDistance.setText(""+decimalFormatNoDecimal.format(distance/1000)+" km away");
 				}
 				else{
-					holder.textViewRequestDistance.setText(""+decimalFormat.format(distance)+" m away");
+					holder.textViewRequestDistance.setText(""+decimalFormatNoDecimal.format(distance)+" m away");
 				}
 			}
 			else{
@@ -3693,6 +3707,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			return convertView;
 		}
+
+
+
 
 	}
 
@@ -4021,6 +4038,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									Log.e("accept_a_request flag", "=" + flag);
 									String logMessage = jObj.getString("log");
 									DialogPopup.alertPopup(activity, "", "" + logMessage);
+									new Handler().postDelayed(new Runnable() {
+										@Override
+										public void run() {
+											DialogPopup.dismissAlertPopup();
+										}
+									}, 3000);
 									reduceRideRequest(Data.dEngagementId);
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -4073,7 +4096,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+//			DialogPopup.showLoadingDialog(activity, "Loading...");
 
 //			RequestParams params = new RequestParams();
 
@@ -4127,12 +4150,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
 
-					DialogPopup.dismissLoadingDialog();
+//					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
+//					DialogPopup.dismissLoadingDialog();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
@@ -6321,9 +6344,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							switchDriverScreen(driverScreenMode);
 							if(acceptedByOtherDriver){
 								DialogPopup.alertPopup(HomeActivity.this, "", "This request has been accepted by other driver");
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										DialogPopup.dismissAlertPopup();
+									}
+								}, 3000);
 							}
 							else{
 								DialogPopup.alertPopup(HomeActivity.this, "", "User has canceled the request");
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										DialogPopup.dismissAlertPopup();
+									}
+								}, 4000);
 							}
 						}
 					}

@@ -464,36 +464,36 @@ public class GCMIntentService extends IntentService {
 								String engagementId = jObj.getString("engagement_id");
 								clearNotifications(this);
 
-								stopRing(false);
-
 								if (HomeActivity.appInterruptHandler != null) {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
+
+								stopRing(false);
 
 							} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
 
 								String engagementId = jObj.getString("engagement_id");
 								clearNotifications(this);
 
-								stopRing(false);
-
 								if (HomeActivity.appInterruptHandler != null) {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
+
+								stopRing(false);
 
 							} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
 								String engagementId = jObj.getString("engagement_id");
 								clearNotifications(this);
 
-								stopRing(false);
-
 								if (HomeActivity.appInterruptHandler != null) {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
+
+								stopRing(false);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
