@@ -20,277 +20,384 @@
 
 	    <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
-	<string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
-	<string name="about_2_text">Rate card</string>
-	<string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
+	<string name="about_1_text">Jugnoo आपको चंडीगढ़ षेत्र के भीतर एक अनुकूल और सस्ती  राइड  प्रदान में मदद करता है.\nदरों में सस्ती है, आप निश्चित रूप से एक अच्छा सौदा कर रहे हैं </string>
+	<string name="about_2_text">दर कार्ड</string>
+	<string name="about_3_text">सबसे पहले 2 किलोमीटर:रुपये 30 \n 2 किलोमीटर के बाद:रुपये 10 / किमी \n प्रतीक्षा काल: 15 मिनट के बाद रुपये 1.5 / मिनट</string>
 
 
-	<string name="email_id">Email ID</string>
-    <string name="confirm_email_id">Confirm Email ID</string>
-	<string name="password">Password</string>
-	<string name="sign_in">Sign In</string>
-	<string name="forgot_password">Forgot Password?</string>
-	<string name="sign_up">Sign Up</string>
-	<string name="or">OR</string>
-	<string name="sign_in_with_facebook">Sign in with Facebook</string>
+	<string name="email_id">ईमेल आईडी</string>
+	<string name="confirm_email_id">ईमेल आईडी की पुष्टि</string>
+	<string name="password">पासवर्ड</string>
+	<string name="sign_in">साइन इन करें</string>
+	<string name="forgot_password">पासवर्ड भूल गए?</string>
+	<string name="sign_up">साइन अप करें</string>
+	<string name="or">या</string>
+	<string name="sign_in_with_facebook">फ़ेसबुक से साइन इन करें</string>
 
-	<string name="save_to_favorite">Save To Favorite</string>
-	<string name="enter_name_for_favorite">Enter Name for Favorite</string>
+	<string name="save_to_favorite">पसंदीदा करने के लिए सहेजें</string>
+	<string name="enter_name_for_favorite">पसंदीदा के लिए नाम दर्ज</string>
+	<string name="ok">ठीक है</string>
 
-	<string name="ok">OK</string>
-
-	<string name="first_name">पहला नाम</string>
-	<string name="last_name">अंतिम नाम</string>
+	<string name="first_name">प्रथम नाम</string>
+	<string name="last_name">सरनेम</string>
 	<string name="phone_number">फ़ोन नंबर</string>
-	<string name="confirm_password">Confirm Password</string>
+	<string name="confirm_password">पासवर्ड की पुष्टि कीजिये</string>
 
-	<string name="confirmation_code">Confirmation Code</string>
+	<string name="confirmation_code">पुष्टि कोड</string>
 	<string name="check_your_registered_email_phone_number_for_otp">ओटीपी के लिए अपने पंजीकृत ईमेल / फोन नंबर की जांच करें</string>
 	<string name="enter_code">कोड दर्ज करें</string>
-	<string name="done">डन</string>
-	<string name="amount">Amount</string>
+	<string name="done">पूर्ण</string>
+	<string name="amount">राशि</string>
 
-	<string name="no_driver_available">No Driver Available</string>
-	<string name="no_driver_available_message">Currently there are no drivers available nearby within 3km. We will look into it</string>
+	<string name="no_driver_available">कोई ड्राइवर उपलब् नहीं</string>
+	<string name="no_driver_available_message">3 किमी के दायरे में ड्राइवर उपलब् नहीं ।हम इसकी जांच करेंगे</string>
 
-	<string name="logout">Logout</string>
-	<string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+	<string name="logout">लोग आउट</string>
+	<string name="are_you_sure_you_want_to_logout">क्या आप निश्चित रूप से लॉग आउट करना चाहते हैं?</string>
+	<string name="cancel">रद्द</string>
 
-	<string name="cancel">रद्द करें</string>
-
-	<string name="select_language">Select Language</string>
-
+	<string name="select_language">भाषा चुनिए</string>
+	<string name="enter_phone_number">फोन नंबर दर्ज करें</string>
 	<string name="enter_email">ईमेल दर्ज करें</string>
+
 	<string name="send_email">ईमेल भेजें</string>
+	<string name="favorites">प्रीतिपात्र or  प्रिय</string>
+	<string name="no_favorite_locations_added">कोई पसंदीदा स्थान जोड़ा नहीं गया है। </string>
 
-	<string name="favorites">Favorites</string>
-	<string name="no_favorite_locations_added">No favorite locations added.</string>
-
-	<string name="from">From: </string>
+	<string name="from">आरंभ: </string>
 	<string name="to">To: </string>
-
-	<string name="rides">Rides</string>
-	<string name="no_rides_currently">No rides currently.</string>
+	<string name="rides"> राइड </string>
+	<string name="no_rides_currently">इस वक़्त कोई  राइड  उपलब्ध नहीं </string>
 
 	<string name="history">History</string>
-	<string name="missed">Missed</string>
-	<string name="no_missed_rides_currently">No missed rides currently.</string>
+	<string name="missed">मिस्ड </string>
+	<string name="no_missed_rides_currently">वर्तमान में कोई  राइड  नहीं चूकी</string>
+	<string name="update">अपडेट</string>
 
-	<string name="update">Update</string>
-
-	<string name="driver_mode">Driver Mode</string>
-	<string name="jugnoo_on">जुगनू चालू</string>
-	<string name="driver_type">Driver Type</string>
-	<string name="ride_type">Ride Type</string>
+	<string name="driver_mode">ड्राइवर मोड</string>
+	<string name="jugnoo_on">Jugnoo ON</string>
+	<string name="driver_type">राइवर प्ररूप</string>
+	<string name="ride_type"> राइड  टाइप</string>
 	<string name="invite_friends">मित्रों को आमंत्रित करें</string>
 	<string name="about">About</string>
 	<string name="support">Support</string>
 	<string name="sos">SOS</string>
-	<string name="language_preferences">Language Preferences</string>
+	<string name="language_preferences">भाषा प्राथमिकताएँ</string>
 
-	<string name="ride_in_progress">Ride in progress...</string>
-
-	<string name="click_to_view">Click to view</string>
-
-	<string name="start_ride">यात्रा प्रारंभ</string>
-
-	<string name="end_ride">यात्रा समाप्त</string>
+	<string name="ride_in_progress"> राइड  प्रगति में...</string>
+	<string name="click_to_view">देखने के लिए क्लिक करें</string>
+	<string name="start_ride"> राइड  शुरू करें </string>
+	<string name="end_ride"> राइड  समाप्त करें </string>
 
 	<string name="reached_destination">Reached Destination</string>
-	<string name="distance">Distance</string>
-	<string name="wait_time">Wait Time</string>
-	<string name="fare">Fare</string>
+	<string name="distance">फासला</string>
+	<string name="wait_time">प्रतीक्षा काल</string>
+	<string name="fare">किराया</string>
 
-	<string name="driver_rating">Driver Rating</string>
-	<string name="customer_rating">Customer Rating</string>
+	<string name="driver_rating">ड्राइवर रेटिंग</string>
+	<string name="customer_rating">ग्राहक रेटिंग </string>
+	<string name="request_ride"> राइड  के लिए अनुरोध करें </string>
+	<string name="assigning_driver">आप के लिए ड्राइवर नियुक्त किया जा रहा है...</string>
 
-	<string name="request_ride">Request Ride</string>
-	<string name="assigning_driver">Assigning driver...</string>
+	<string name="no_drivers_nearby">आस-पास कोई ड्राइवर नहीं</string>
+	<string name="could_not_find_nearest_driver_distance">निकटतम ड्राइवर की दूरी खोजने में असमर्थ</string>
+	<string name="nearest_driver_is">निकटतम ड्राइवर </string>
+	<string name="away">की दूरी पर है । </string>
 
-	<string name="no_drivers_nearby">No drivers nearby.</string>
-	<string name="could_not_find_nearest_driver_distance">Could not find nearest driver\'s distance.</string>
-	<string name="nearest_driver_is">Nearest driver is</string>
-	<string name="away">away.</string>
-
-	<string name="cancel_request_in">Cancel request in </string>
-
-	<string name="your_ride_is">Your ride is </string>
-	<string name="away_and_will_arrive"> away and will arrive in approximately </string>
-
-	<string name="will_arrive_in">Will arrive in </string>
-
-	<string name="call_driver">Call Driver</string>
-
-	<string name="you_have">You have </string>
-	<string name="ride_request"> ride request</string>
-
-	<string name="accept_ride">Accept Ride</string>
-	<string name="cancel_request">Cancel Request</string>
-
-	<string name="cancel_ride">Cancel Ride</string>
+	<string name="cancel_request_in">अनुरोध रद्द करें</string>
+	<string name="your_ride_is">आपकी  राइड  </string>
 
 
-	<string name="rating"> Rating</string>
-	<string name="call">Call</string>
 
-	<string name="ride_time">Ride Time</string>
+	<string name="away_and_will_arrive"> की दूरी पर है और उसे पहुंचें में लगभग लगेंगे। </string>
 
-	<string name="start_wait">Start wait</string>
-	<string name="stop_wait">Stop wait</string>
 
-	<string name="submit">Submit</string>
 
-	<string name="search_results">Search results</string>
-	<string name="search">Search</string>
 
-	<string name="your_login_session_expired">Your Login session has expired. Please login again.</string>
 
+	<string name="will_arrive_in">में पहुंचने वाली है  </string>
+
+	<string name="call_driver">कॉल ड्राइवर</string>
+	<string name="you_have">आपके पास</string>
+	<string name="ride_request">  राइड  क लिए अनुरोध </string>
+
+	<string name="accept_ride"> राइड  स्वीकारें</string>
+	<string name="cancel_request">अनुरोध रद्द</string>
+	<string name="cancel_ride"> राइड  रद्द</string>
+
+
+	<string name="rating">रेटिंग</string>
+	<string name="call">कॉल</string>
+	<string name="ride_time"> राइड  काल</string>
+
+	<string name="start_wait">प्रतीक्षअ काल शुरू </string>
+	<string name="stop_wait">प्रतीक्षअ काल समाप्त </string>
+	<string name="submit">सबमिट करें </string>
+	<string name="search_results">खोज परिणाम</string>
+	<string name="search">खोज प्रारम्भ करें </string>
+
+	<string name="your_login_session_expired">अपना लॉगिन सत्र समाप्त हो गया है। कृपया पुनः  लोगिन करें। </string>
 	<string name="alert">Alert</string>
-
-	<string name="start_ride_error">You must be present near the customer pickup location to start ride.</string>
-
-
-	<string name="server_error">Server error. Please try again later.</string>
-	<string name="server_not_responding">Oops!! Server not responding. Please try again later.</string>
-	<string name="check_internet_message">Check your internet connection.</string>
+	<string name="start_ride_error"> राइड  शुरू करने क लिए आपको ग्राहक के पिक्कूप स्थान पर मौजूद होना अनिवार्य है।</string>
 
 
-	<string name="check_all">Check All</string>
-	<string name="uncheck_all">Uncheck All</string>
-	<string name="add_cash">Add Cash</string>
-	<string name="add_customer_cash">ADD CUSTOMER CASH</string>
+	<string name="server_error">सर्वर त्रुटि। कृपया थोड़ी देर बाद बाद पुन: प्रयास करें।</string>
+	<string name="server_not_responding">Oops!! सर्वर प्रतिक्रिया नहीं दे रहा है।कृपया बाद में पुन: प्रयास करें।</string>
+	<string name="check_internet_message">अपना इंटरनेट कनेक्शन की जाँच करें।</string>
+
+
+
+	<string name="driver_id">ड्राइवर आईडी:</string>
+	<string name="rank_city">शहर रैंक:</string>
+	<string name="rank_overall">Overall Rank:</string>
+	<string name="monthly">मासिक स्कोर</string>
+	<string name="earnings">कमाई</string>
+	<string name="rides_taken">राइड्स टेकन </string>
+	<string name="rides_missed">राइड्स मिस्ड </string>
+	<string name="rides_cancelled">राइड्स कांसल्लेड </string>
+	<string name="online_hours">ऑनलाइन घंटे</string>
+
+	<string name="Auto_not_working">ऑटो काम नहीं कर रहा है</string>
+	<string name="Traffic">ट्रैफ़िक</string>
+	<string name="accepted_by_mistake">  राइड  के अनुरोध को गलती से स्वीकार कर लिया।</string>
+	<string name="Customer_asked_to_cancel">ग्राहक ने  राइड  रद्द करने का अनुरोध किआ </string>
+	<string name="Not_able_to_contact_customer">ग्राहक से सम्पर्क नहीं हो पा रहा है। </string>
+	<string name="Customer_behavior">ग्राहक  व्यवहार के कारण </string>
+	<string name="profile">प्रोफाइल</string>
+	<string name="Duty_Hours">ड्यूटी के घंटे:</string>
+	<string name="call_us">हमें कॉल करें </string>
+
+
+
+	<string name="check_all">सभी की जांच करो</string>
+	<string name="uncheck_all">सभी अचयनित करें</string>
+	<string name="add_cash">नकद जोड़े</string>
+	<string name="add_customer_cash">ग्राहक नकद जोड़ें</string>
 	<string name="arrived">Arrived</string>
-	<string name="accept_subsidy">Accept Subsidy</string>
-	<string name="account">Account</string>
-	<string name="accept">ACCEPT</string>
-	<string name="away_from_you">Away from you:</string>
-	<string name="cancel_ride_text">Are you sure you want to cancel ride?</string>
-	<string name="end_ride_text">Are you sure you want to end ride?</string>
-	<string name="logout_text">Are you sure you want to logout?</string>
-	<string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
-	<string name="start_ride_text">Are you sure you want to start ride?</string>
+	<string name="accept_subsidy">सब्सिडी को स्वीकार करें</string>
+	<string name="account">खाता</string>
+	<string name="accept">स्वीकार करें </string>
+	<string name="away_from_you">आपसे दुरी पर है :</string>
+	<string name="cancel_ride_text">क्या आप निश्चित रूप से राइड कैंसिल करना चाहते हैं?</string>
+	<string name="end_ride_text">क्या आप निश्चित रूप से राइड समापत करना चाहते हैं?</string>
+	<string name="logout_text">या आप निश्चित रूप से लॉग आउट करना चाहते हैं?</string>
+	<string name="customer_pickup_text">एक पिक आप को सौंपा गया है । कृपया ग्राहक को पिक करें।  </string>
+	<string name="start_ride_text">क्या आप निश्चित रूप से राइड पिक करना चाहते हैं?</string>
 
+	<string name="battery_level_text">बैटरी स्तर राइड स्वीकार करने के लिए 20% से अधिक होना चाहिए। जारी रखने क लिए पावर सोर्स में प्लगइन करें। </string>
+	<string name="battery_level_start_text">राइड शुरू करने के लिए बैटरी स्तर 10% से अधिक होना चाहिए। जारी रखने क लिए पावर सोर्स में प्लगइन करें।</string>
+	<string name="battery_level_arrived_text">राइड को अरराइव्ड चिह्नित करने के लिए बैटरी स्तर 10% से अधिक होना चाहिए। जारी रखने क लिए पावर सोर्स में प्लगइन करें।</string>
+	<string name="back">वापस</string>
 
-	<string name="battery_level_text">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
-	<string name="battery_level_start_text">Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.</string>
-	<string name="battery_level_arrived_text">Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.</string>
-	<string name="back">Back</string>
-
-
-	<string name="change_phone_no_text">Changed Phone number is same as the previous one.</string>
-	<string name="local_positon_text">Could not get local position</string>
-	<string name="overall_position_text">Could not get overall position</string>
-	<string name="cash_needed_text">Cash Needed: Rs. </string>
-	<string name="convenience_charges_text">Convenience charges for customer: </string>
-	<string name="code_empty">Code can\'t be empty</string>
-	<string name="confirm_email_text">Confirm email id doesn\'t match</string>
-	<string name="choose_email_client">Choose an Email client:</string>
-	<string name="select_time_error_text">Cannot select time before current time</string>
-	<string name="call_me">CALL ME</string>
-	<string name="change_phone_no">Change phone number</string>
-	<string name="creating_game">Creating Game ...</string>
-	<string name="completed">Completed</string>
-	<string name="customer_name">Customer name: </string>
-	<string name="change">CHANGE</string>
-
+	<string name="change_phone_no_text">तबदील किया गया फ़ोन नंबर पूर्व नंबर ही है। </string>
+	<string name="local_positon_text">स्थानीय स्थिति प्राप्त नहीं हो पा रही। </string>
+	<string name="overall_position_text"> स्थिति प्राप्त नहीं हो पा रही। </string>
+	<string name="cash_needed_text">नकदी की जरूरत : रु</string>
+	<string name="convenience_charges_text">ग्राहक के लिए सुविधा शुल्क: </string>
+	<string name="code_empty">कोड खली नहीं रख सकते </string>
+	<string name="confirm_email_text">पुष्टीकृत ई-मेल आईडी से मेल नहीं कर रहा है। </string>
+	<string name="choose_email_client">एक ईमेल क्लाइंट चुनें:</string>
+	<string name="select_time_error_text">वर्तमान समय से पहले समय का चयन नहीं कर सकते</string>
+	<string name="call_me">मुझे फ़ोन करो</string>
+	<string name="change_phone_no">फोन नंबर बदलें </string>
+	<string name="creating_game">खेल सर्जन...</string>
+	<string name="completed">संपूरित</string>
+	<string name="customer_name">ग्राहक का नाम: </string>
+	<string name="change">बदलें</string>
 
 	<string name="km">Km</string>
-	<string name="disable_mock_location">Disable mock location first</string>
-	<string name="daily">Daily</string>
-	<string name="distance2">Distance:\n</string>
-	<string name="discount">Discount</string>
-	<string name="retry">Retry</string>
+	<string name="disable_mock_location">पहले मोक स्थान को निष्क्रिय करें। </string>
+	<string name="daily">दैनिक</string>
+	<string name="distance2">दूरी:\n</string>
+	<string name="discount">छूट</string>
+	<string name="retry">पुन: प्रयास करें</string>
 
-	<string name="enter_new_phone_no">Enter New Phone Number</string>
-	<string name="enter_fare">ENTER FARE</string>
-	<string name="enter_otp">Enter One Time Password</string>
-	<string name="email">Email:</string>
+	<string name="enter_new_phone_no">नया फोन नंबर दर्ज करें </string>
+	<string name="enter_fare">किराया दर्ज करें </string>
+	<string name="enter_otp">वन टाइम पासवर्ड दर्ज करें </string>
+	<string name="email">ईमेल:</string>
 
-	<string name="fare1">Fare</string>
-	<string name="forgot_password_cap">FORGOT PASSWORD</string>
-	<string name="free_ride">Free Ride</string>
-	<string name="final_amount">Final Amount</string>
-	<string name="fare2">Fare:\n</string>
-	<string name="fare_details">Fare Details</string>
+	<string name="fare1">किराया</string>
+	<string name="forgot_password_cap">पासवर्ड भूल गए</string>
+	<string name="free_ride">मुफ्त  राइड </string>
+	<string name="final_amount">अंतिम राशि</string>
+	<string name="fare2">किराया:\n</string>
+	<string name="fare_details">किराया का विवरण</string>
 
-	<string name="go_to_setting">Go to Settings</string>
-	<string name="google_pay_service_error">Google Play Services Error</string>
-	<string name="google_pay_service_error_message">Google Play services not found or outdated. Please install Google Play Services?</string>
-	<string name="go_to_playstore">Go to Play Store:</string>
+	<string name="go_to_setting">सेटिंग्स में जाओ</string>
+	<string name="google_pay_service_error">गूगल प्ले सर्विसेज़  त्रुटि</string>
+	<string name="google_pay_service_error_message">गूगल प्ले सर्विसेज़ नहीं मिली याकालग्रस्त हो गई हैं। कृपया गूगल प्ले सर्विसेज़ इनस्टॉल करें ?</string>
+	<string name="go_to_playstore">प्ले स्टोर पर जाएं :</string>
 
-	<string name="help">Help</string>
-	<string name="have_arrived">Have you arrived?</string>
+	<string name="help">मदद</string>
+	<string name="have_arrived">क्या आप पहुंच गए हैं?</string>
 
 	<string name="invite_earn">Invite &amp; Earn</string>
-	<string name="create_new_account_msg">If you would still like to create a new account</string>
-	<string name="not_recived_otp">I didn\'t receive the OTP</string>
+	<string name="create_new_account_msg">अगर आप अब भी एक नया खता बनाना चाहते </string>
+	<string name="not_recived_otp">मुझे ओ टी प प्राप्त नहीं हुआ </string>
 
 	<string name="jugnoo_cash">Jugnoo Cash</string>
 	<string name="jugnoo">Jugnoo</string>
-	<string name="jugnoo_off">जुगनू अब बंद है.</string>
-	<string name="jugnoo_cut">Jugnoo Cut</string>
+	<string name="jugnoo_off">Jugnoo अब बंद है।</string>
+	<string name="jugnoo_cut">Jugnoo कटौती</string>
 
 	<string name="loading">Loading ...</string>
-	<string name="local_position">Local position</string>
-	<string name="location_setting">Location Settings</string>
+	<string name="local_position">स्थानीय स्थिति</string>
+	<string name="location_setting">Location सेटिंग्स</string>
 	<string name="location_setting_enable_message">Location is not enabled. Do you want to enable it from settings menu?</string>
-	<string name="luggage_charge">Luggage Charge</string>
-	<string name="login">LOGIN</string>
+	<string name="luggage_charge">सामान लागत</string>
+	<string name="login">लॉग इन करें</string>
 
-	<string name="restart_phone">Please Restart Your Phone</string>
-	<string name="monthly">Monthly</string>
-	<string name="money_to_take">Money To take: Rs</string>
-	<string name="min_fare">Min Fare</string>
+	<string name="restart_phone">कृपया फोन पुनः आरंभ करें</string>
+	<string name="money_to_take">राशि: रुपये</string>
+	<string name="min_fare">न्यूनतम कर</string>
 	<string name="meals_on">Meals ON</string>
-	<string name="mail_us">MAIL US</string>
-	<string name="message">MESSAGE</string>
+	<string name="mail_us">हमें मेल करें।</string>
+	<string name="message">संदेश</string>
 
-	<string name="no">No</string>
-	<string name="yes">Yes</string>
-	<string name="no_luggage">No luggage added</string>
-	<string name="luggage_added">luggage items added</string>
-	<string name="no_lugage">NO LUGGAGE</string>
-	<string name="network_problem">Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using Jugnoo.</string>
-	<string name="no_data_to_show">No data to show</string>
-	<string name="no_cash">NO CASH</string>
-	<string name="no_of_rides">No of rides</string>
-	<string name="name">Name</string>
-	<string name="name_colon">Name:</string>
+	<string name="no">नहीं</string>
+	<string name="yes">हाँ</string>
+	<string name="no_luggage">कोई सामान नहीं जोड़ा गया । </string>
+	<string name="luggage_added">सामान जोड़ा गया है। </string>
+	<string name="no_lugage">कोई सामान नहीं जोड़ा गया है। </string>
+	<string name="network_problem">नेटवर्क समस्या। Jugnoo का उपयोग जारी रखने के लिएअपने फ़ोन को स्विच ऑफ करें और पुनः ओन करें।</string>
+	<string name="no_data_to_show"> प्रदर्शन के लिए कोई डेटा नहीं है </string>
+	<string name="no_cash">कोई नकद नहीं</string>
+	<string name="no_of_rides">राइड्स की संख्या</string>
+	<string name="name">नाम </string>
+	<string name="name_colon">नाम :</string>
 
 	<string name="overall_position">Overall position</string>
 	<string name="of_upto_100">of upto Rs. 100/-</string>
 
-	<string name="some_amount">Please enter some amount</string>
-	<string name="less_amount">Please enter less amount</string>
-	<string name="valid_amount">Please enter valid amount</string>
-	<string name="Phone_number_not_empty">Phone number can\'t be empty</string>
-	<string name="valid_phone_number">Please enter valid phone number</string>
-	<string name="please_wait">Please Wait ...</string>
-	<string name="enter_some_fare">Please enter some fare</string>
-	<string name="please_reach">Please reach </string>
-	<string name="by">by</string>
-	<string name="take_fare_from_customer">Please take the fare as shown above from the customer.</string>
-	<string name="enter_name">Please enter name</string>
-	<string name="Pls_enter_email">Please enter email id</string>
-	<string name="confirm_email">Please confirm email id</string>
-	<string name="enter_phone_number">Please enter Phone No.</string>
-	<string name="enter_valid_phone_number">Please enter valid Phone No.</string>
-	<string name="enter_password">Please enter password</string>
-	<string name="pls_confirm_password">Please confirm password</string>
-	<string name="password_atleast_6">Password must be of atleast six characters</string>
-	<string name="valid_email">Please enter valid email id</string>
-	<string name="password_not_match">Passwords does not match</string>
-	<string name="password_to_continue">Please enter password to continue.</string>
-	<string name="enter_new_phone_number">Please enter your new phone number</string>
-	<string name="position">POSITION</string>
-	<string name="enter_email_to_have_instruction">Please provide your email address to get instructions for reseting your password.</string>
-	<string name="pay">Pay</string>
-	<string name="please_login_from_these_accounts">Please login through one of these accounts</string>
-	<string name="please_contact_customer_care">Please contact our customer care</string>
-	<string name="paid_cash">Paid in Cash</string>
+	<string name="some_amount">कुछ राशि प्रवेश करें</string>
+	<string name="less_amount">कम राशि प्रवेश करें</string>
+	<string name="valid_amount">वैध राशि प्रवेश करें</string>
+	<string name="Phone_number_not_empty">फ़ोन नंबर खली नहीं रख सकते। </string>
+	<string name="valid_phone_number">कृपया एक वैध नंबर डालें</string>
+	<string name="please_wait">कृपया प्रतीक्षा करें ...</string>
+	<string name="enter_some_fare">कृपया कुछ किराया दर्ज करें</string>
+	<string name="please_reach"> कृपया </string>
+	<string name="by">पहुंचे </string>
+	<string name="take_fare_from_customer"> कृपया ग्राहक से ऊपर दिखाया गया किराया लें ।</string>
+	<string name="enter_name">नाम दर्ज करें</string>
+	<string name="Pls_enter_email">ईमेल आईडी दर्ज करें</string>
+	<string name="confirm_email">ईमेल आईडी की पुष्टि करें</string>
+	<string name="pls_enter_phone_number">फोन नं दर्ज करें.</string>
+	<string name="enter_valid_phone_number">वैध फोन नं दर्ज करें</string>
+	<string name="enter_password">कृपया पासवर्ड दर्ज करें</string>
+	<string name="pls_confirm_password">पासवर्ड की पुष्टि करें</string>
+	<string name="password_atleast_6">पासवर्ड कम से कम छह वर्ण का होना चाहिए</string>
+	<string name="valid_email">वैध ईमेल आईडी दर्ज करें</string>
+	<string name="password_not_match">पासवर्डों मेल नहीं खाता</string>
+	<string name="password_to_continue">जारी रखने के लिए पासवर्ड दर्ज करें।</string>
+	<string name="enter_new_phone_number">अपना नया  फोन नंबर दर्ज करें</string>
+	<string name="position">स्थिति</string>
+	<string name="enter_phone_to_have_instruction">अपना पासवर्ड रिसेट करने क लिए कृपया अपना पासवर्ड प्रदान करें </string>
+	<string name="pay">मूल्य</string>
+	<string name="please_login_from_these_accounts">इन खातों में से एक के माध्यम से लॉग इन करें</string>
+	<string name="please_contact_customer_care">हमारे कस्टमर केयर से संपर्क करें</string>
+	<string name="paid_cash">नकद में भुगतान</string>
+
+	<string name="ride_id">राइड आईडी</string>
+	<string name="rupees">₹.</string>
+	<string name="ride_time2"> राइड काल: </string>
+	<string name="rate">रेट: </string>
+	<string name="ride_in_progress_cant_logout">राइड प्रगति में। आप राइड समाप्त होने क बाद लॉगआउट कर सकते हैं।  </string>
+	<string name="rate_applied">दर लागू</string>
+	<string name="register">पंजीकरण</string>
+	<string name="request_registration">पंजीकरण अनुरोध </string>
+	<string name="reg_info">पंजीकरण सूचना</string>
+	<string name="ride_details"> राइड विवरण</string>
+	<string name="ride_fare"> राइड किराया</string>
+
+	<string name="can_not_calculated_distance">क्षमा करें, हम अभी आपके दूरी की गणना नहीं कर सकते </string>
+	<string name="set">सेट</string>
+	<string name="SUBMIT">सबमिट </string>
+	<string name="super_driver">सुपर ड्राइवर</string>
+	<string name="sharing_rides"> राइड सहभाजन</string>
+	<string name="sharing_on"> सहभाजन ओन </string>
+	<string name="SIGN_UP">साइन अप करें</string>
+	<string name="submit_request">अनुरोध सबमिट करें </string>
+	<string name="status">स्टेटस </string>
+
+	<string name="total_time">कुल समय</string>
+	<string name="min">न्यूनतम</string>
+	<string name="app_need_active_gps">एप्लिकेशन को सक्रिय जीपीएस कनेक्शन की जरूरत है. Enable it from Settings.</string>
+	<string name="app_needs_network_time">एप्लिकेशन को नेटवर्क द्वारा प्रदान किये गए समय क ज़रूरत है। </string>
+	<string name="take">ग्रहण करें </string>
+	<string name="req_accepted_by_other_driver">यह अनुरोध दूसरे ड्राइवर द्वारा स्वीकार किया गया है</string>
+	<string name="amount_entered">दर्ज की गई राशि है</string>
+	<string name="time">अवधि</string>
+	<string name="time_new">अवधि /n</string>
+	<string name="jugnoo_ride_over"> Jugnoo राइड खत्म हो गई है </string>
+	<string name="today">आज</string>
+	<string name="this_month">इस महीने</string>
+	<string name="title"> शीर्षक </string>
+	<string name="two_account_on_device">दो खातों पहले से ही इस डिवाइस पर बनाए जा चुके हैं </string>
+	<string name="total_fare">कुल कर</string>
+
+	<string name="updating">अद्यतीकरण ...</string>
+	<string name="user_cancel_request">उपयोगकर्ता ने अनुरोध को रद्द कर दिया है</string>
+
+	<string name="verification">पुष्टि</string>
+	<string name="verify_me">पुष्टि करें </string>
+
+	<string name="waiting_for_location">स्थान के लिए प्रतीक्षा कर रहा है...</string>
+	<string name="wait">प्रतीक्षा</string>
+	<string name="whatsapp_not_installed">WhatsApp स्थापित नहीं</string>
+	<string name="weekly">साप्ताहिक</string>
+	<string name="will_revert_you">हम जल्द ही आपसे सम्पर्क करेंगे </string>
+
+	<string name="cannot_add_less_than">आप \n ₹. कम राशि नहीं जोड़ सकते हैं</string>
+	<string name="your_position">आपकी स्तिथि </string>
+	<string name="your_overall_position">आपकी स्ओवरआल तिथि </string>
+	<string name="got_new_request">आपको  एक नया अनुरोध मिला है।</string>
+	<string name="present_near_customer_location">चिह्नित करने के लिए ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
+	<string name="present_near_customer_location_to_start">राइड शुरू करने क लिए आपका  ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
+	<string name="You_have_already_created">आप पहले से ही इस डिवाइसपर %1$d कहते बना चुके हैं . एक नया खाता बनाने के लिए कारण की व्याख्या करें ।</string>
+	<string name="your_referral_code"> आपका रेफरल कोड है
+	</string>
+
+	<string name="tap_to_retry">फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
+	<string name="error_occured_tap_to_retry">कुछ त्रुटि हुई । फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
+	<string name="no_missed_rides">वर्तमान में कोई राइड मिस नहीं हुई </string>
+	<string name="no_internet_tap_to_retry">कोई इंटरनेट कनेक्शन नहीं। फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
+	<string name="no_rides">वर्तमान में कोई राइड नहीं </string>
+	<string name="pickup_location">आपका पिकअप स्थान </string>
+	<string name="money_to_pay">पैसे का भुगतान करने के लिए: Rs.</string>
+	<string name="money_to">Money to </string>
+	<string name="start_ride_loc">start ride location</string>
+
+	<string name="sec_left">sec left</string>
+	<string name="km_away">km दूर </string>
+	<string name="m_away">m दूर </string>
+	<string name="some_error_occured">कुछ त्रुटि हुई है</string>
+	<string name="take_cash">नकदी ले</string>
+	<string name="wallet">बटुआ</string>
+	<string name="Scheduled_Ride_Pickup">अनुसूचित राइड  पिकअप: </string>
 
 
-	<string-array name="CountryCodes" >
+
+	<string name="referral_msg">"Use my code %1$s to download Jugnoo customer App and earn jugnoo cash.\n Download it from here\nhttp://smarturl.it/jugnoo</string>
+	<string name="no_of_account">खाते पहले से ही इस डिवाइस पर बनाए जा चुके हैं।  </string>
+
+	<string name="enter_otp_received">एसएमएस के माध्यम से प्राप्त वन टाइम पासवर्ड दर्ज करें</string>
+	<string name="select_reason">एक कारण का चयन करें</string>
+	<string name="referral_money">रेफरल मनी</string>
+	<string name="send"> भेजें </string>
+
+	<string name="wait_here">यहाँ प्रतीक्षा करें...</string>
+	<string name="use_jugnoo_fare">USE JUGNOO FARE</string>
+	<string name="view_account">खाता देखें</string>
+	<string name="hint_created_multiple_account">आपने पहले से ही इस डिवाइस से 2 खातों बनाए है। एक नया खाता बनाने के लिए कारण की व्याख्या करें ।</string>
+	<string name="convenience_charge">सुविधा प्रभार</string>
+	<string name="cancel_subsidy">सब्सिडी रद्द</string>
+
+	<string name="inc_subsidy">(inc. Subsidy)</string>
+
+
+<string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>
