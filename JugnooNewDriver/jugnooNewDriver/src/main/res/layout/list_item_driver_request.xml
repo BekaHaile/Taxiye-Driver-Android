@@ -77,8 +77,8 @@
                 android:layout_marginTop="10px"
                 android:singleLine="true"
                 android:text="30 sec ago"
-                android:textColor="@color/black_translucent"
-                android:textSize="30px"
+                android:textColor="@color/black_grey"
+                android:textSize="32px"
                 android:layout_below="@+id/textViewRequestDistance"
                 />
 

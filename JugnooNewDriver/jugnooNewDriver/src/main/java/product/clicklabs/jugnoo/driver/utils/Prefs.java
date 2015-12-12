@@ -125,4 +125,34 @@ public class Prefs {
 			return new Prefs(context);
 		}
 	}
+
+////	to save object in prefrence
+//	public void save(String key, Object object) {
+//		if (object == null) {
+//			throw new IllegalArgumentException("object is null");
+//		}
+//
+//		if (key.equals("") || key == null) {
+//			throw new IllegalArgumentException("key is empty or null");
+//		}
+//
+//		editor.putString(key, GSON.toJson(object)).apply();
+//	}
+//
+//	// To get object from prefrences
+//
+//	public <T> T getObject(String key, Class<T> a) {
+//
+//		String gson = preferences.getString(key, null);
+//		if (gson == null) {
+//			return null;
+//		} else {
+//			try {
+//				return GSON.fromJson(gson, a);
+//			} catch (Exception e) {
+//				throw new IllegalArgumentException("Object storaged with key "
+//						+ key + " is instanceof other class");
+//			}
+//		}
+//	}
 }

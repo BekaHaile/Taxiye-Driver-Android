@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -70,6 +71,21 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		try {
+			String type = getIntent().getStringExtra("type");
+			if(type.equalsIgnoreCase("accept")){
+				Intent intent = new Intent(DriverProfileActivity.this, HomeActivity.class);
+				intent.putExtras(getIntent().getExtras());
+//				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intent);
+				finish();
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		setContentView(R.layout.activity_profile_screen);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
@@ -138,7 +154,11 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
