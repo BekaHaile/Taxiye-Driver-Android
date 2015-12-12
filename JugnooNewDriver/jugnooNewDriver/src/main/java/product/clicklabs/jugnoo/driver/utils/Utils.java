@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-
 import com.google.android.gms.location.FusedLocationProviderApi;
 
 import org.apache.http.NameValuePair;
@@ -32,6 +31,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import product.clicklabs.jugnoo.driver.Data;
 
 

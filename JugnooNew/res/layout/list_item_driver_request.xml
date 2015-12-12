@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="30px"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_bg_bordered_selector"
+        android:splitMotionEvents="false"
+            android:padding="30px"
+            
+             >
+
+         <TextView
+                android:id="@+id/textViewRequestAddress"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Sector 28, Chandigarh"
+                android:textColor="@color/black"
+                android:textSize="30px" />
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" 
+                android:layout_below="@+id/textViewRequestAddress"
+                android:layout_marginTop="10px"
+                android:paddingRight="60px"
+            
+            >
+		<TextView
+                android:id="@+id/textViewRequestDistance"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="10 km away"
+                android:textColor="@color/black"
+                android:textSize="30px"
+                android:singleLine="true" />
+
+		<TextView
+                android:id="@+id/textViewRequestTime"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="30 sec ago"
+                android:textColor="@color/black_translucent"
+                android:textSize="30px" 
+                android:layout_marginTop="10px"
+                android:singleLine="true"/>
+           
+        </LinearLayout>
+        
+        
+        <TextView
+                android:id="@+id/textViewRequestNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:textColor="@color/black_translucent_level_2"
+                android:textSize="60px"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/textViewRequestAddress"
+                android:layout_marginTop="20px"
+                 />
+        
+    </RelativeLayout>
+
+</RelativeLayout>

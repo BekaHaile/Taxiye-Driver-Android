@@ -1,0 +1,340 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px" >
+
+    <RelativeLayout
+        android:id="@+id/scheduleLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:splitMotionEvents="false"
+        android:visibility="visible" >
+
+        <fragment
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+
+        <RelativeLayout
+            android:id="@+id/scheduleOptionsMainRl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="90px"
+            android:background="@color/white_more_translucent"
+            android:splitMotionEvents="false"
+            android:visibility="visible"
+             >
+
+            <LinearLayout
+                android:id="@+id/scheduleOptionsInnerLinear"
+                android:layout_width="640px"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40px"
+                android:background="@drawable/white_bg_bordered"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/scheduleRideText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="35px"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="Schedule Ride"
+                        android:textColor="@color/black"
+                        android:textSize="40px" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="580px"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20px"
+                    android:background="@color/grey_light" />
+
+                <LinearLayout
+                    android:id="@+id/schedulePickupLocationLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:orientation="vertical"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/schedulePickupLocationText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="PICKUP LOCATION"
+                        android:textColor="@drawable/blue_alpha_color_selector"
+                        android:textSize="24px" />
+
+                    <TextView
+                        android:id="@+id/schedulePickupLocationValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:layout_marginRight="30px"
+                        android:layout_marginTop="5px"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="Sector 28, Madhyamarg"
+                        android:textColor="@drawable/black_color_selector"
+                        android:textSize="34px" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="580px"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20px"
+                    android:background="@color/grey_light" />
+
+                <LinearLayout
+                    android:id="@+id/scheduleDateTimeLinear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:orientation="vertical"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/scheduleDateTimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="DATE AND TIME"
+                        android:textColor="@drawable/blue_alpha_color_selector"
+                        android:textSize="24px" />
+
+                    <TextView
+                        android:id="@+id/scheduleDateTimeValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:layout_marginRight="30px"
+                        android:layout_marginTop="5px"
+                        android:gravity="center_vertical"
+                        android:maxLines="3"
+                        android:text="Fri, 28 Nov 2014, 6:00 PM"
+                        android:textColor="@drawable/black_color_selector"
+                        android:textSize="34px" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="580px"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20px"
+                    android:background="@color/grey_light" />
+
+                <Button
+                    android:id="@+id/scheduleBtn"
+                    android:layout_width="300px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="20px"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/blue_btn_selector"
+                    android:text="SCHEDULE"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size" />
+                
+                <TextView
+	                android:id="@+id/textTerms"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_gravity="center_horizontal"
+	                android:layout_marginTop="10px"
+	                android:layout_marginBottom="20px"
+	                android:gravity="center"
+	                android:maxHeight="800px"
+	                android:paddingLeft="20px"
+	                android:paddingRight="20px"
+	                android:text="Terms and Conditions"
+	                android:textColor="@drawable/blue_alpha_color_selector"
+	                android:textSize="34px" />
+                
+            </LinearLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/scheduleSetPickupLocationRl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:splitMotionEvents="false"
+            android:visibility="gone" >
+
+
+            <Button
+                android:id="@+id/scheduleMyLocationBtn"
+                android:layout_width="80px"
+                android:layout_height="80px"
+                android:layout_above="@+id/pickThisLocationBtn"
+                android:layout_margin="40px"
+                android:background="@drawable/mylocation_btn_selector"
+                android:tag="mwar" />
+
+            <Button
+                android:id="@+id/pickThisLocationBtn"
+                android:layout_width="640px"
+                android:layout_height="99px"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="40px"
+                android:background="@drawable/blue_btn_selector"
+                android:text="PICK THIS LOCATION"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size" />
+
+            <ImageView
+                android:id="@+id/schedulePickupLocationCentrePin"
+                android:layout_width="40px"
+                android:layout_height="63px"
+                android:layout_above="@+id/schedulePickupLocationCentrePivot"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/pin_ball"
+                android:tag="mwar" />
+
+            <ImageView
+                android:id="@+id/schedulePickupLocationCentrePivot"
+                android:layout_width="1px"
+                android:layout_height="1px"
+                android:layout_centerInParent="true" />
+            
+            
+            <LinearLayout
+                android:id="@+id/searchListRl"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="90px"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:visibility="gone"
+                
+                
+                 >
+
+                <ListView 
+                    android:id="@+id/searchListView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+			        android:divider="@drawable/transparent"
+			        android:dividerHeight="0px"
+			        android:listSelector="@drawable/transparent"
+			        android:splitMotionEvents="false"
+			        android:layout_marginTop="150px"
+                    ></ListView>
+                
+                
+            </LinearLayout>
+            
+            <RelativeLayout
+                    android:id="@+id/searchBarRl"
+                    android:layout_width="640px"
+                    android:layout_height="90px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="130px"
+                    android:background="@drawable/edittext_background" >
+
+                    <EditText
+                        android:id="@+id/searchBarEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="90px"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="0px"
+                        android:layout_toLeftOf="@+id/searchBtn"
+                        android:background="@drawable/transparent"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"
+                        android:hint="Search Place"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textSize="38px" />
+                    
+                    <Button
+                        android:id="@+id/searchBtn"
+                        android:layout_width="100px"
+                        android:layout_height="80px"
+                        android:layout_centerVertical="true"
+                        android:text="Go"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@drawable/blue_alpha_color_selector"
+                        android:background="@color/transparent"
+                        android:textSize="38px"
+                         />
+                    
+                    
+                    <ProgressBar 
+                        android:id="@+id/progressBarSearch"
+                        android:layout_width="80px"
+                        android:layout_height="80px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10px"
+                        
+                        />
+                    
+                </RelativeLayout>
+            
+            
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/topRl"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:background="@color/bg_grey"
+            android:splitMotionEvents="false" >
+
+            <Button
+                android:id="@+id/backBtn"
+                android:layout_width="82px"
+                android:layout_height="82px"
+                android:layout_centerVertical="true"
+                android:background="@drawable/back_btn_selector"
+                android:tag="mwar" />
+
+            <ImageView
+                android:id="@+id/jugnooLogo"
+                android:layout_width="185px"
+                android:layout_height="60px"
+                android:layout_centerInParent="true"
+                android:background="@drawable/jugnoo_text_small"
+                android:tag="mwar" />
+            
+            
+            <Button
+            android:id="@+id/cancelBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10px"
+            android:text="Cancel"
+            android:background="@drawable/transparent"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"
+             />
+            
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

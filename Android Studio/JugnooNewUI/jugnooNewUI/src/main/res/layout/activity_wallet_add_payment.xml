@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/yellow" >
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="ADD CASH"
+            android:textColor="@color/white"
+            android:textSize="30.6px" />
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="60.7px"
+            android:layout_height="76.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="20px"
+            android:src="@drawable/back_white_selector" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/textViewHelp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60px"
+            android:gravity="center"
+            android:text="How much would you like to add?"
+            android:textColor="@color/grey_text"
+            android:textSize="30px" />
+
+        <EditText
+            android:id="@+id/editTextAmount"
+            android:layout_width="628px"
+            android:layout_height="80px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70px"
+            android:background="#0000"
+            android:gravity="center"
+            android:hint="@string/rupee_0"
+            android:inputType="numberDecimal"
+            android:maxLength="10"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
+            android:singleLine="true"
+            android:textColor="@color/black_text"
+            android:textColorHint="@color/black_text_alpha"
+            android:textSize="70px" />
+
+        <ImageView
+            android:layout_width="628px"
+            android:layout_height="2px"
+            android:layout_gravity="center_horizontal"
+            android:src="@color/yellow_alpha" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDefaultPayments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70px"
+            android:splitMotionEvents="false" >
+
+            <Button
+                android:id="@+id/button100"
+                android:layout_width="110px"
+                android:layout_height="78px"
+                android:layout_marginLeft="65px"
+                android:background="@drawable/button_grey_light_alpha_selector"
+                android:text="100"
+                android:textColor="@drawable/text_color_black_alpha_selector"
+                android:textSize="@dimen/button_text_size" />
+
+            <Button
+                android:id="@+id/button200"
+                android:layout_width="110px"
+                android:layout_height="78px"
+                android:layout_centerInParent="true"
+                android:background="@drawable/button_grey_light_alpha_selector"
+                android:text="200"
+                android:textColor="@drawable/text_color_black_alpha_selector"
+                android:textSize="@dimen/button_text_size" />
+
+            <Button
+                android:id="@+id/button500"
+                android:layout_width="110px"
+                android:layout_height="78px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="65px"
+                android:background="@drawable/button_grey_light_alpha_selector"
+                android:text="500"
+                android:textColor="@drawable/text_color_black_alpha_selector"
+                android:textSize="@dimen/button_text_size" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutBalance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70px"
+            android:splitMotionEvents="false"
+            android:orientation="horizontal"
+             >
+
+            <TextView
+                android:id="@+id/textViewCurrentBalance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Current Balance"
+                android:textColor="@color/grey_text"
+                android:textSize="34px" />
+            
+            
+            <TextView
+                android:id="@+id/textViewCurrentBalanceValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/rupee_0"
+                android:layout_marginLeft="30px"
+                android:textColor="@color/grey_text"
+                android:textSize="34px" />
+            
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonMakePayment"
+            android:layout_width="648px"
+            android:layout_height="100px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70px"
+            android:background="@drawable/button_yellow_selector"
+            android:text="ADD"
+            android:textColor="@drawable/text_color_white_alpha_selector"
+            android:textSize="@dimen/button_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

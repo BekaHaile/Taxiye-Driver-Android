@@ -38,4 +38,5 @@ public class SPLabels {
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 
     public static final String HEAT_MAP_RESPONSE = "heatmapresponse";
+	public static final String CUSTOM_SERVER_URL = "customServer";
 }

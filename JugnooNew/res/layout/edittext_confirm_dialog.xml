@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:orientation="vertical"
+        android:splitMotionEvents="false"
+         >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30px"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false"
+         >
+        
+        
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="60px"
+            android:paddingBottom="60px"
+        android:splitMotionEvents="false"
+        
+             >
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="@string/confirmation_code"
+                android:textColor="@color/blue_btn"
+                android:textSize="50px" 
+                android:paddingLeft="40px"
+                android:paddingRight="40px"
+                
+                />
+		 
+            
+            <TextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/check_your_registered_email_phone_number_for_otp"
+                android:layout_marginTop="20px"
+                android:textColor="@color/black"
+                android:textSize="32px" 
+                android:paddingLeft="40px"
+                android:paddingRight="40px"
+                
+                />
+            
+            
+             <EditText
+            android:id="@+id/etCode"
+            android:layout_width="480px"
+            android:layout_height="105px"
+             android:layout_gravity="center_horizontal"
+             android:layout_marginTop="30px"
+            android:gravity="center"
+            android:paddingLeft="30px"
+            android:paddingRight="30px"
+            android:hint="@string/enter_code" 
+            android:textSize="38px"
+            android:textColor="@color/black"
+            android:inputType="number"
+            android:textCursorDrawable="@null"
+             android:background="@drawable/edittext_background"
+            
+            
+            />
+            
+            
+
+                     <Button
+            android:id="@+id/btnConfirm"
+                        android:layout_width="247px"
+                        android:layout_height="83px"
+            android:gravity="center"
+                     android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="40px"
+                        android:layout_alignParentBottom="true"
+            android:background="@drawable/blue_btn_selector"
+            android:text="@string/done"
+                        android:textSize="@dimen/button_text_size" 
+            android:textColor="@drawable/white_color_selector"
+            
+            />
+
+            
+            
+        </LinearLayout>
+
+      <Button
+            android:id="@+id/crossbtn"
+            android:layout_width="62px"
+            android:layout_height="62px"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/cross_circle"
+            android:singleLine="true" 
+            android:layout_marginRight="20px"
+            android:layout_marginTop="20px"
+                android:tag="mwar"
+                
+                />
+    </RelativeLayout>
+
+</FrameLayout>

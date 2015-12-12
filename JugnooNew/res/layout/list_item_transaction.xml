@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <LinearLayout
+        android:id="@+id/linearLayoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+         android:background="@color/grey_light_more"
+         >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+             >
+
+            <TextView
+                android:id="@+id/textViewTransactionDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="36px"
+                android:text="27 Feb, 2015"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="34px" />
+
+            <TextView
+                android:id="@+id/textViewTransactionAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="36px"
+                android:text="Rs. 100"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="38px" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px"
+            android:layout_marginBottom="20px" >
+
+            <TextView
+                android:id="@+id/textViewTransactionTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="36px"
+                android:text="12:00 PM"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px" />
+
+            <TextView
+                android:id="@+id/textViewTransactionType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="36px"
+                android:text="Cash Added"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <ImageView 
+        android:layout_width="match_parent"
+        android:layout_height="15px"
+        />
+        
+        
+    
+    <RelativeLayout 
+        android:id="@+id/relativeLayoutShowMore"
+        android:layout_width="match_parent"
+        android:layout_height="96px"
+        android:visibility="visible"
+        android:background="@drawable/background_black_selector"
+        
+        >
+        
+        <ImageView 
+            android:layout_width="17px"
+            android:layout_height="17px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        <ImageView 
+            android:layout_width="17px"
+            android:layout_height="17px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="53px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        <ImageView 
+            android:layout_width="17px"
+            android:layout_height="17px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="76px"
+            android:src="@drawable/ellipse"
+            android:tag="mwar"
+            />
+        
+        
+       <TextView
+                android:id="@+id/textViewShowMore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="106px"
+                android:text="Show More"
+                android:textColor="@color/white"
+                android:textSize="34px" />
+        
+        
+    </RelativeLayout>
+    
+</LinearLayout>
