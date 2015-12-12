@@ -30,9 +30,12 @@ public class SPLabels {
             METERING_STATE = "meteringstate";
     public static final String
             GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
+    public static final String
+            NOTIFICATION_ID = "notificationId";
 
     public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 
+    public static final String HEAT_MAP_RESPONSE = "heatmapresponse";
 }

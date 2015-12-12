@@ -21,4 +21,16 @@ public class SharingRideData {
 		this.completed = 0;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		try{
+			if(((SharingRideData)o).sharingEngagementId.equalsIgnoreCase(this.sharingEngagementId)){
+				return true;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

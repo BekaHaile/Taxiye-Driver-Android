@@ -25,7 +25,9 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import rmn.androidscreenlibrary.ASSL;
@@ -69,6 +71,22 @@ public class ShareActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		try {
+			String type = getIntent().getStringExtra("type");
+			if(type.equalsIgnoreCase("cancel")){
+				Intent intent = new Intent(ShareActivity.this, HomeActivity.class);
+				intent.putExtras(getIntent().getExtras());
+//				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intent);
+				finish();
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		setContentView(R.layout.activity_share);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
@@ -226,7 +244,10 @@ public class ShareActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+		}
 		System.gc();
 	}
 

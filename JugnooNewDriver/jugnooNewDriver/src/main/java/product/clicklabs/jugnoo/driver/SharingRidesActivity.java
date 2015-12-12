@@ -80,8 +80,10 @@ public class SharingRidesActivity extends Activity {
 					jObj.getDouble("actual_fare"),
 					jObj.getDouble("paid_in_cash"),
 					jObj.getDouble("account_balance"));
-			sharedRides.add(0, sharingRideData);
-			sharingRidesAdapter.notifyDataSetChanged();
+			if(!sharedRides.contains(sharingRideData)){
+				sharedRides.add(0, sharingRideData);
+				sharingRidesAdapter.notifyDataSetChanged();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
