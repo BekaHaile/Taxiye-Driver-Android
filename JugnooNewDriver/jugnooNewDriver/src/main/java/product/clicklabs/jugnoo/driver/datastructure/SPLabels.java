@@ -44,6 +44,9 @@ public class SPLabels {
 	public static final String DRIVER_ENGAGEMENT_ID = "driverEngagementId";
 	public static final String DRIVER_CUSTOMER_ID = "driverCustomerId";
 	public static final String DRIVER_REFERENCE_ID = "driverReferenceId";
+    public static final String DRIVER_C_PICKUP_LATITUDE = "driverCPickupLatitude";
+    public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
+    public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
 
 
 }

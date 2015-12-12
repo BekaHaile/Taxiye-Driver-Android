@@ -1570,8 +1570,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							map.setInfoWindowAdapter(customIW);
 
 
-							//TODO 30.7500  76.7800
-	//						updateDropLatLngandPath(new LatLng(30.7500,76.7800));
 
 							return false;
 						}
@@ -2690,6 +2688,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, Data.dEngagementId);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, Data.dCustomerId);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, ""+Data.assignedCustomerInfo.referenceId);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, ""+Data.assignedCustomerInfo.requestlLatLng.latitude);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, ""+Data.assignedCustomerInfo.requestlLatLng.longitude);
+
+					//TODO to fetch from server
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
 				} else{
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, -1);
 
@@ -2697,6 +2700,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, "");
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, "");
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -5964,7 +5969,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public boolean endRideGPSCorrection(BusinessType businessType){
-		//TODO end ride location check
 		try {
 			if (distanceUpdateFromService) {
 				Location locationToUse;
@@ -7262,6 +7266,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+
+
 	@Override
 	public void onStationChangedPushReceived() {
 		runOnUiThread(new Runnable() {
@@ -7425,5 +7432,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						  }
 					  }
 		);
+	}
+
+
+	@Override
+	public void markArrivedInterrupt(final LatLng latLng) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				GCMIntentService.clearNotifications(activity);
+				driverMarkArriveRideAsync(activity, latLng);
+			}
+		});
 	}
 }
