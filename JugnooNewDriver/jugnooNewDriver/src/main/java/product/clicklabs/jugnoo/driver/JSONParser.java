@@ -313,11 +313,15 @@ public class JSONParser {
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
+		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
+
+
 		
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer,
+			driverArrivalDistance);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

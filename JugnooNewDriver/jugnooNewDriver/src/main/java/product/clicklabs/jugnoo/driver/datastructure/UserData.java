@@ -7,10 +7,11 @@ public class UserData {
 	public int sharingEnabled, sharingAvailable;
     public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer;
 	public String driverOnlineHours;
+	public double driverArrivalDistance;
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 			int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
 			int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus, int sharingEnabled, int sharingAvailable,
-					String driverSupportNumber, String referralSMSToCustomer){
+					String driverSupportNumber, String referralSMSToCustomer, double driverArrivalDistance){
 		this.accessToken = accessToken;
 		this.userName = userName;
 		this.userImage = userImage;
@@ -33,6 +34,7 @@ public class UserData {
 		this.driverSupportNumber = driverSupportNumber;
 		this.referralSMSToCustomer = referralSMSToCustomer;
 		this.driverOnlineHours = "00:00";
+		this.driverArrivalDistance = driverArrivalDistance;
 	}
 
 }
