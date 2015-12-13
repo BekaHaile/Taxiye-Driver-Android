@@ -2,17 +2,12 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.os.PowerManager;
 import android.os.SystemClock;
-import android.support.v4.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationServices;
 
@@ -41,13 +36,14 @@ public class LocationReceiverDriver extends BroadcastReceiver {
                 double speed_1 = displacement_1/timediff_1;
 
 
-                if(((Utils.compareDouble(location.getLatitude(), oldlocation.getLatitude()) == 0)
-                        && (Utils.compareDouble(location.getLongitude(), oldlocation.getLongitude()) == 0))){
-                    Log.i("equal_loc", "");
-					context.stopService(new Intent(context, DriverLocationUpdateService.class));
-                    setAlarm(context);
-                }
-                else if(speed_1 > 17){
+//                if(((Utils.compareDouble(location.getLatitude(), oldlocation.getLatitude()) == 0)
+//                        && (Utils.compareDouble(location.getLongitude(), oldlocation.getLongitude()) == 0))){
+//                    Log.i("equal_loc", "");
+//					context.stopService(new Intent(context, DriverLocationUpdateService.class));
+//                    setAlarm(context);
+//                }
+//                else
+                if(speed_1 > 20){
                     Log.i("equal_speed", "");
 					context.stopService(new Intent(context, DriverLocationUpdateService.class));
                     setAlarm(context);
@@ -62,15 +58,6 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 					long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
 					if(timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))){
 						if(5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
-//							String restartMessageHindi = "अपने फोन को बंद करें और इसे फिर से चालू करें";
-//
-//							SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 1, true, false);
-//							Intent dialogIntent = new Intent(context, BlankActivityForDialog.class);
-//							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//							dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//							dialogIntent.putExtra("message2", restartMessageHindi);
-//							context.startActivity(dialogIntent);
-//							generateNotification(context, restartMessageHindi);
 
 							location.setAccuracy(3000.001f);
 
@@ -137,46 +124,6 @@ public class LocationReceiverDriver extends BroadcastReceiver {
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
-
-	public static void generateNotification(Context context, String message) {
-
-		try {
-			long when = System.currentTimeMillis();
-
-			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-			Log.v("message", "," + message);
-
-			Intent notificationIntent = new Intent(context, SplashNewActivity.class);
-
-			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
-			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
-			builder.setContentText(message);
-			builder.setTicker(message);
-			builder.setDefaults(Notification.DEFAULT_ALL);
-			builder.setWhen(when);
-			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
-			builder.setSmallIcon(R.drawable.notif_icon);
-			builder.setContentIntent(intent);
-
-
-			Notification notification = builder.build();
-			notificationManager.notify(123, notification);
-
-			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
     
 }
