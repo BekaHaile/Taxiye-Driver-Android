@@ -5865,79 +5865,82 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
+	private Dialog dialogEndRidePopup;
 	void endRidePopup(final Activity activity, final BusinessType businessType) {
 		try {
-			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-			dialog.setContentView(R.layout.dialog_custom_two_buttons);
+			if(dialogEndRidePopup == null || !dialogEndRidePopup.isShowing()) {
+				dialogEndRidePopup = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
-			new ASSL(activity, frameLayout, 1134, 720, true);
+				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
+				new ASSL(activity, frameLayout, 1134, 720, true);
 
-			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-			layoutParams.dimAmount = 0.6f;
-			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(false);
-			dialog.setCanceledOnTouchOutside(false);
-
-
-
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+				WindowManager.LayoutParams layoutParams = dialogEndRidePopup.getWindow().getAttributes();
+				layoutParams.dimAmount = 0.6f;
+				dialogEndRidePopup.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				dialogEndRidePopup.setCancelable(false);
+				dialogEndRidePopup.setCanceledOnTouchOutside(false);
 
 
-			if(BusinessType.AUTOS == businessType){
-				textMessage.setText("Are you sure you want to end ride?");
-			}
-			else if(BusinessType.FATAFAT == businessType){
-				textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
-						+Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
-						+" from customer.");
-			}
+				TextView textHead = (TextView) dialogEndRidePopup.findViewById(R.id.textHead);
+				textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+				TextView textMessage = (TextView) dialogEndRidePopup.findViewById(R.id.textMessage);
+				textMessage.setTypeface(Data.latoRegular(activity));
 
 
-			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
-			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+				if (BusinessType.AUTOS == businessType) {
+					textMessage.setText("Are you sure you want to end ride?");
+				} else if (BusinessType.FATAFAT == businessType) {
+					textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
+							+ Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
+							+ " from customer.");
+				}
 
-			btnOk.setOnClickListener(new View.OnClickListener() {
-				@SuppressWarnings("unused")
-				@Override
-				public void onClick(View view) {
-					if(AppStatus.getInstance(activity).isOnline(activity)) {
-						if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-							if (Data.assignedCustomerInfo != null
-									&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-									&& (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable
-									|| 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable)) {
-								driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
-								switchDriverScreen(driverScreenMode);
-								dialog.dismiss();
-							} else {
-								boolean success = endRideGPSCorrection(businessType);
-								if (success) {
-									dialog.dismiss();
+
+				Button btnOk = (Button) dialogEndRidePopup.findViewById(R.id.btnOk);
+				btnOk.setTypeface(Data.latoRegular(activity));
+				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
+				btnCancel.setTypeface(Data.latoRegular(activity));
+
+				btnOk.setOnClickListener(new View.OnClickListener() {
+					@SuppressWarnings("unused")
+					@Override
+					public void onClick(View view) {
+						if (AppStatus.getInstance(activity).isOnline(activity)) {
+							if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+								if (Data.assignedCustomerInfo != null
+										&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+										&& (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable
+										|| 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable)) {
+									driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
+									switchDriverScreen(driverScreenMode);
+									dialogEndRidePopup.dismiss();
+								} else {
+									boolean success = endRideGPSCorrection(businessType);
+									if (success) {
+										dialogEndRidePopup.dismiss();
+									}
 								}
+								FlurryEventLogger.event(END_RIDE_CONFIRMED);
 							}
-							FlurryEventLogger.event(END_RIDE_CONFIRMED);
+						} else {
+							DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 						}
 					}
-					else{
-						DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+				});
+
+				btnCancel.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						dialogEndRidePopup.dismiss();
+						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
 					}
-				}
-			});
 
-			btnCancel.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					dialog.dismiss();
-					FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
-				}
+				});
 
-			});
-
-			dialog.show();
+				dialogEndRidePopup.show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
