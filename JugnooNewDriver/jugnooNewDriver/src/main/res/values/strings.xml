@@ -374,7 +374,7 @@
 	<string name="no_rides">No rides currently</string>
 	<string name="pickup_location">Your Pickup Location</string>
 	<string name="money_to_pay">Money to pay: Rs.</string>
-	<string name="money_to">Money to </string>
+	<string name="money_to">Money to \n Jugnoo</string>
 	<string name="start_ride_loc">start ride location</string>
 
 	<string name="sec_left">sec left</string>
@@ -403,6 +403,7 @@
 	<string name="cancel_subsidy">Cancel Subsidy</string>
 
 	<string name="inc_subsidy">(inc. Subsidy)</string>
+	<string name="to_end">To: </string>
 	<!--<string name="send">Send</string>-->
 	<!--<string name="send">Send</string>-->
 	<!--<string name="send">Send</string>-->

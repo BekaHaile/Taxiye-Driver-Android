@@ -66,6 +66,7 @@
 
 	<string name="from">आरंभ: </string>
 	<string name="to">To: </string>
+	<string name="to_end">अंत: </string>
 	<string name="rides"> राइड </string>
 	<string name="no_rides_currently">इस वक़्त कोई  राइड  उपलब्ध नहीं </string>
 
@@ -173,7 +174,7 @@
 	<string name="uncheck_all">सभी अचयनित करें</string>
 	<string name="add_cash">नकद जोड़े</string>
 	<string name="add_customer_cash">ग्राहक नकद जोड़ें</string>
-	<string name="arrived">Arrived</string>
+	<string name="arrived">पहुंच गया</string>
 	<string name="accept_subsidy">सब्सिडी को स्वीकार करें</string>
 	<string name="account">खाता</string>
 	<string name="accept">स्वीकार करें </string>
@@ -267,7 +268,7 @@
 	<string name="name">नाम </string>
 	<string name="name_colon">नाम :</string>
 
-	<string name="overall_position">Overall position</string>
+	<string name="overall_position">संपूर्ण स्थिति</string>
 	<string name="of_upto_100">of upto Rs. 100/-</string>
 
 	<string name="some_amount">कुछ राशि प्रवेश करें</string>
@@ -366,7 +367,7 @@
 	<string name="no_rides">वर्तमान में कोई राइड नहीं </string>
 	<string name="pickup_location">आपका पिकअप स्थान </string>
 	<string name="money_to_pay">पैसे का भुगतान करने के लिए: Rs.</string>
-	<string name="money_to">Money to </string>
+	<string name="money_to">पैसे Jugnoo को</string>
 	<string name="start_ride_loc">start ride location</string>
 
 	<string name="sec_left">sec left</string>
@@ -394,7 +395,7 @@
 	<string name="convenience_charge">सुविधा प्रभार</string>
 	<string name="cancel_subsidy">सब्सिडी रद्द</string>
 
-	<string name="inc_subsidy">(inc. Subsidy)</string>
+	<string name="inc_subsidy">(इंक. सब्सिडी)</string>
 
 
 <string-array name="CountryCodes" >
