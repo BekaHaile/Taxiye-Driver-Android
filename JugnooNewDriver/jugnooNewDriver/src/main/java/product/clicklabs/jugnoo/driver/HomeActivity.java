@@ -5433,51 +5433,56 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public void fetchHeatMapData(final Activity activity) {
+		try {
+			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
 
-		if (AppStatus.getInstance(activity).isOnline(activity)) {
-
-			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
-				@Override
-				public void success(HeatMapResponse heatMapResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i("heat", jsonString);
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
-						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
-								heatMapResponseGlobal = heatMapResponse;
-								drawHeatMapData(heatMapResponseGlobal);
-								Log.i("Heat Map response", String.valueOf(heatMapResponse));
-								Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+					@Override
+					public void success(HeatMapResponse heatMapResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							Log.i("heat", jsonString);
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
+									heatMapResponseGlobal = heatMapResponse;
+									drawHeatMapData(heatMapResponseGlobal);
+									Log.i("Heat Map response", String.valueOf(heatMapResponse));
+									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+								}
 							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
+
 					}
 
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-				}
-			});
+					@Override
+					public void failure(RetrofitError error) {
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	private void drawHeatMapData(HeatMapResponse heatMapResponse){
 		try{
-			map.clear();
-			for(HeatMapResponse.Region region : heatMapResponse.getRegions()){
-				ArrayList<LatLng> arrLatLng = new ArrayList<>();
-				List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
-				for(HeatMapResponse.Region_ region_ : regionList){
-					arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
+			if (DriverScreenMode.D_INITIAL == driverScreenMode) {
+				map.clear();
+				for (HeatMapResponse.Region region : heatMapResponse.getRegions()) {
+					ArrayList<LatLng> arrLatLng = new ArrayList<>();
+					List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
+					for (HeatMapResponse.Region_ region_ : regionList) {
+						arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
+					}
+					addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+							region.getColor(), region.getStrokeColor());
 				}
-				addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-						region.getColor(), region.getStrokeColor());
 			}
 		} catch (Exception e){
 			e.printStackTrace();
