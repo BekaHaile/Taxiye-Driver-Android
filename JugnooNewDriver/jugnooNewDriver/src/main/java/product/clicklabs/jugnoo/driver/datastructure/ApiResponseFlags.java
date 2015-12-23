@@ -74,6 +74,10 @@ public enum ApiResponseFlags {
 
 
 
+	HEATMAP_DATA(530)
+
+
+
 		;
 
 	private int ordinal;

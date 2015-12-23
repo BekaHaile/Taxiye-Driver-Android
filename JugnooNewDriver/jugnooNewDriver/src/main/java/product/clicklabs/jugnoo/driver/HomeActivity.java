@@ -61,6 +61,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
@@ -111,7 +112,9 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -178,7 +181,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	RelativeLayout logoutRl;
 	TextView logoutText;
-
+	HeatMapResponse heatMapResponseGlobal;
 
 
 
@@ -434,6 +437,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			setContentView(R.layout.activity_home);
 
+//        String languageToLoad = "hi";
+//        Locale locale = new Locale(languageToLoad);
+//        Locale.setDefault(locale);
+//        Configuration config = new Configuration();
+//        config.locale = locale;
+//        getBaseContext().getResources().updateConfiguration(config,
+//            getBaseContext().getResources().getDisplayMetrics());
 
 			decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 			decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
@@ -492,7 +502,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
 			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
 			textViewDEI.setTypeface(Data.latoRegular(this));
-
 
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
@@ -995,6 +1004,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+			relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(SHARING_RIDES_OPENED);
+				}
+			});
 
 			logoutRl.setOnClickListener(new OnClickListener() {
 
@@ -1440,6 +1457,56 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+
+		try {
+			String type = intent.getStringExtra("type");
+			if(type.equalsIgnoreCase("accept")){
+				DriverRideRequest driverRideRequest = driverRequestListAdapter
+						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
+								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
+
+				driverRideRequestsList.setVisibility(View.GONE);
+
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
+
+				acceptRequestFunc();
+				FlurryEventLogger.event(RIDE_ACCEPTED);
+
+			} else if(type.equalsIgnoreCase("cancel")){
+
+				DriverRideRequest driverRideRequest = driverRequestListAdapter
+						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
+								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
+
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
+
+				rejectRequestFunc();
+				FlurryEventLogger.event(RIDE_CANCELLED);
+
+			}
+			else{
+
+			}
+
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+
+	}
+
+	@Override
 	public void onMapReady(GoogleMap gMap) {
 		this.map = gMap;
 		// map object initialized
@@ -1587,23 +1654,38 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			Crashlytics.logException(e);
 		}
+
+		try{
+			if(getIntent().hasExtra("type")){
+				Handler handler = new Handler();
+				handler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						onNewIntent(getIntent());
+					}
+				},0);
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
 	public void acceptRequestFunc(){
 		if(getBatteryPercentage() >= 20){
 			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing();
+			GCMIntentService.stopRing(true);
 			driverAcceptRideAsync(HomeActivity.this);
 		}
 		else{
+			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
 		}
 	}
 
 	public void rejectRequestFunc(){
 		GCMIntentService.clearNotifications(HomeActivity.this);
-		GCMIntentService.stopRing();
+		GCMIntentService.stopRing(true);
 		driverRejectRequestAsync(HomeActivity.this);
 	}
 
@@ -1898,11 +1980,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable && 0 == Data.userData.sharingAvailable){
 							if(isDriverStateFree()){
 								jugnooOffLayout.setVisibility(View.VISIBLE);
-
+								map.clear();
 								new DriverServiceOperations().stopAndScheduleDriverService(HomeActivity.this);
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
-								GCMIntentService.stopRing();
+								GCMIntentService.stopRing(true);
 
 								if(map != null){
 									map.clear();
@@ -1914,7 +1996,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						else{
 							if(isDriverStateFree()) {
 								jugnooOffLayout.setVisibility(View.GONE);
-
+								fetchHeatMapData(HomeActivity.this);
 								new DriverServiceOperations().startDriverService(HomeActivity.this);
 								initializeStationDataProcedure();
 							}
@@ -1926,7 +2008,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						if(Data.driverRideRequests.size() == 0){
 							GCMIntentService.clearNotifications(HomeActivity.this);
-							GCMIntentService.stopRing();
+							GCMIntentService.stopRing(true);
 						}
 
 						showAllRideRequestsOnMap();
@@ -2325,6 +2407,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					if(map != null){
 						map.clear();
+						drawHeatMapData(heatMapResponseGlobal);
 					}
 
 					showAllRideRequestsOnMap();
@@ -3152,6 +3235,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
+		fetchHeatMapData(HomeActivity.this);
 
 	}
 
@@ -3214,7 +3298,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			saveDataOnPause(true);
 
 			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing();
+			GCMIntentService.stopRing(true);
 
 			MeteringService.clearNotifications(HomeActivity.this);
 
@@ -3343,7 +3427,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if(Data.fareStructure != null){
-				driverIRFareValue.setText(getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
+				driverIRFareValue.setText(getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(getTotalFare(distance,
 						elapsedTime, waitTime)));
 			}
 		} catch (Exception e) {
@@ -3423,9 +3507,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		ArrayList<DriverRideRequest> driverRideRequests;
 
+		Handler handlerRefresh;
+		Runnable runnableRefresh;
+
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			driverRideRequests = new ArrayList<DriverRideRequest>();
+			handlerRefresh = new Handler();
+			runnableRefresh = new Runnable() {
+				@Override
+				public void run() {
+					if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+						DriverRequestListAdapter.this.notifyDataSetChanged();
+					}
+					handlerRefresh.postDelayed(runnableRefresh, 1000);
+				}
+			};
+			handlerRefresh.postDelayed(runnableRefresh, 1000);
 		}
 
 		@Override
@@ -3500,10 +3598,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), driverRideRequest.latLng);
 				distance = distance * 1.5;
 				if(distance >= 1000){
-					holder.textViewRequestDistance.setText(""+decimalFormat.format(distance/1000)+" km away");
+					holder.textViewRequestDistance.setText(""+decimalFormatNoDecimal.format(distance/1000)+" km away");
 				}
 				else{
-					holder.textViewRequestDistance.setText(""+decimalFormat.format(distance)+" m away");
+					holder.textViewRequestDistance.setText(""+decimalFormatNoDecimal.format(distance)+" m away");
 				}
 			}
 			else{
@@ -3609,6 +3707,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			return convertView;
 		}
+
+
+
 
 	}
 
@@ -3741,6 +3842,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Log.e("accept_a_request jsonString", "=" + jsonString);
 						if (!jObj.isNull("error")) {
 
+							driverRideRequestsList.setVisibility(View.VISIBLE);
 							int flag = jObj.getInt("flag");
 							Log.e("accept_a_request flag", "=" + flag);
 							String errorMessage = jObj.getString("error");
@@ -3925,15 +4027,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									switchDriverScreen(driverScreenMode);
 
 								} else {
+									driverRideRequestsList.setVisibility(View.VISIBLE);
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 								}
 
 
 							} else {
+								driverRideRequestsList.setVisibility(View.VISIBLE);
 								try {
 									Log.e("accept_a_request flag", "=" + flag);
 									String logMessage = jObj.getString("log");
 									DialogPopup.alertPopup(activity, "", "" + logMessage);
+									new Handler().postDelayed(new Runnable() {
+										@Override
+										public void run() {
+											DialogPopup.dismissAlertPopup();
+										}
+									}, 3000);
 									reduceRideRequest(Data.dEngagementId);
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -3943,6 +4053,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							DialogPopup.dismissLoadingDialog();
 						}
 					} catch (Exception exception) {
+						driverRideRequestsList.setVisibility(View.VISIBLE);
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -3953,6 +4064,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void failure(RetrofitError error) {
+					driverRideRequestsList.setVisibility(View.VISIBLE);
 					DialogPopup.dismissLoadingDialog();
 					callAndHandleStateRestoreAPI();
 				}
@@ -3961,6 +4073,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		}
 		else {
+			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 	}
@@ -3983,7 +4096,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+//			DialogPopup.showLoadingDialog(activity, "Loading...");
 
 //			RequestParams params = new RequestParams();
 
@@ -4025,6 +4138,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							if (map != null) {
 								map.clear();
+								drawHeatMapData(heatMapResponseGlobal);
 							}
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
@@ -4036,12 +4150,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
 
-					DialogPopup.dismissLoadingDialog();
+//					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
+//					DialogPopup.dismissLoadingDialog();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
@@ -4559,6 +4673,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						if (map != null) {
 							map.clear();
+							drawHeatMapData(heatMapResponseGlobal);
 						}
 
 						waitStart = 2;
@@ -5314,6 +5429,86 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+
+
+	public void fetchHeatMapData(final Activity activity) {
+
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+				@Override
+				public void success(HeatMapResponse heatMapResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						Log.i("heat", jsonString);
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
+						String message = JSONParser.getServerMessage(jObj);
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
+								heatMapResponseGlobal = heatMapResponse;
+								drawHeatMapData(heatMapResponseGlobal);
+								Log.i("Heat Map response", String.valueOf(heatMapResponse));
+								Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+							}
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+					}
+
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+				}
+			});
+		}
+	}
+
+	private void drawHeatMapData(HeatMapResponse heatMapResponse){
+		try{
+			map.clear();
+			for(HeatMapResponse.Region region : heatMapResponse.getRegions()){
+				ArrayList<LatLng> arrLatLng = new ArrayList<>();
+				List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
+				for(HeatMapResponse.Region_ region_ : regionList){
+					arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
+				}
+				addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+						region.getColor(), region.getStrokeColor());
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public void addPolygon(ArrayList<LatLng> arg, double fareFactor, int zIndex, String color, String strokeColor) {
+		try {
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			PolygonOptions polygonOptions = new PolygonOptions();
+			polygonOptions.strokeColor(Color.parseColor(strokeColor))
+					.strokeWidth((4))
+					.fillColor(Color.parseColor(color));
+			for(LatLng latLng : arg) {
+				polygonOptions.add(latLng);
+				builder.include(latLng);
+			}
+			polygonOptions.zIndex(100/zIndex);
+			LatLngBounds latLngBounds = builder.build();
+			CustomMapMarkerCreator.addTextMarkerToMap(this, map,
+					latLngBounds.getCenter(),
+					decimalFormat.format(fareFactor), 2, 20);
+
+			map.addPolygon(polygonOptions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	void logoutPopup(final Activity activity) {
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -6063,6 +6258,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				Log.e("driverRideRequests", "="+Data.driverRideRequests);
 
 				map.clear();
+				drawHeatMapData(heatMapResponseGlobal);
 
 				if(Data.driverRideRequests.size() > 0){
 
@@ -6148,9 +6344,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							switchDriverScreen(driverScreenMode);
 							if(acceptedByOtherDriver){
 								DialogPopup.alertPopup(HomeActivity.this, "", "This request has been accepted by other driver");
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										DialogPopup.dismissAlertPopup();
+									}
+								}, 3000);
 							}
 							else{
 								DialogPopup.alertPopup(HomeActivity.this, "", "User has canceled the request");
+								new Handler().postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										DialogPopup.dismissAlertPopup();
+									}
+								}, 4000);
 							}
 						}
 					}
@@ -6539,7 +6747,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						DialogPopup.alertPopupWithListener(HomeActivity.this, "", "A pickup has been assigned to you. Please pick the customer.", new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								GCMIntentService.stopRing();
+								GCMIntentService.stopRing(true);
 								Database2.getInstance(HomeActivity.this).updateDriverManualPatchPushReceived(Database2.NO);
 								manualPatchPushAckAPI(HomeActivity.this);
 							}
@@ -7107,7 +7315,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void run() {
 					updateDistanceFareTexts(distance, elapsedTime, waitTime);
-					if(rideStartPositionMarker == null){
+					if (rideStartPositionMarker == null) {
 						displayOldPath();
 					}
 				}
@@ -7150,25 +7358,26 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void run() {
-				if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+				if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 
 					PolylineOptions polylineOptions = new PolylineOptions();
 					polylineOptions.width(ASSL.Xscale() * 5);
 					polylineOptions.color(MAP_PATH_COLOR);
 					polylineOptions.geodesic(false);
 
-					for(CurrentPathItem currentPathItem : currentPathItems){
-						if(1 != currentPathItem.googlePath) {
+					for (CurrentPathItem currentPathItem : currentPathItems) {
+						if (1 != currentPathItem.googlePath) {
 							polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
 						}
 					}
 
-					if(Color.TRANSPARENT != MAP_PATH_COLOR){
+					if (Color.TRANSPARENT != MAP_PATH_COLOR) {
 						map.addPolyline(polylineOptions);
 					}
 				}
 			}
 		});
+
 	}
 
 
