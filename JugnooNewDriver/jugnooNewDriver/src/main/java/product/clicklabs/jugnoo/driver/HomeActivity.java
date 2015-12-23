@@ -2775,7 +2775,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			rideStartPositionMarker = null;
 		}
 
-		if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+		if(DriverScreenMode.D_ARRIVED == driverScreenMode
+				|| DriverScreenMode.D_IN_RIDE == driverScreenMode){
 			String meteringState = Database2.getInstance(this).getMetringState();
 			String meteringStateSp= Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
 
@@ -4023,6 +4024,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 									GCMIntentService.clearNotifications(getApplicationContext());
 
+									initializeStartRideVariables();
+
 									driverScreenMode = DriverScreenMode.D_ARRIVED;
 									switchDriverScreen(driverScreenMode);
 
@@ -4187,6 +4190,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("customer_id", Data.dCustomerId);
 			params.put("pickup_latitude", ""+driverAtPickupLatLng.latitude);
 			params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
+			params.put("dryrun_distance", "" + totalDistance);
 
 			if(Data.assignedCustomerInfo != null){
 				params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
