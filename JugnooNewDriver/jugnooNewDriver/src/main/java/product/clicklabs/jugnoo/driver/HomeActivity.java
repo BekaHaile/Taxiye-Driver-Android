@@ -3395,7 +3395,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	private double getTotalFare(double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis){
-		double totalDistanceInKm = Math.abs(totalDistance);
+		double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 
 		if(BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()){
 			if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
@@ -3427,7 +3427,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if(Data.fareStructure != null){
-				driverIRFareValue.setText(getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(getTotalFare(totalDistanceInKm,
+				driverIRFareValue.setText(getResources().getString(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(getTotalFare(distance,
 						elapsedTime, waitTime)));
 			}
 		} catch (Exception e) {
