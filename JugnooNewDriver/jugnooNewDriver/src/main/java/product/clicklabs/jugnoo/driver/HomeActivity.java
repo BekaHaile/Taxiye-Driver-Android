@@ -2779,7 +2779,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			rideStartPositionMarker = null;
 		}
 
-		if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+		if(DriverScreenMode.D_ARRIVED == driverScreenMode
+				|| DriverScreenMode.D_IN_RIDE == driverScreenMode){
 			String meteringState = Database2.getInstance(this).getMetringState();
 			String meteringStateSp= Prefs.with(this).getString(SPLabels.METERING_STATE, Database2.OFF);
 
@@ -4028,6 +4029,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 									GCMIntentService.clearNotifications(getApplicationContext());
 
+									initializeStartRideVariables();
+
 									driverScreenMode = DriverScreenMode.D_ARRIVED;
 									switchDriverScreen(driverScreenMode);
 
@@ -4192,6 +4195,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("customer_id", Data.dCustomerId);
 			params.put("pickup_latitude", ""+driverAtPickupLatLng.latitude);
 			params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
+			params.put("dryrun_distance", "" + totalDistance);
+			Log.i("dryrun_distance", String.valueOf(totalDistance));
 
 			if(Data.assignedCustomerInfo != null){
 				params.put("reference_id", ""+Data.assignedCustomerInfo.referenceId);
@@ -7317,7 +7322,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void updateMeteringUI(final double distance, final long elapsedTime, final long waitTime,
 								 final Location lastGPSLocation, final Location lastFusedLocation, final double totalHaversineDistance) {
-		if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
+		if(UserMode.DRIVER == userMode
+				&& (DriverScreenMode.D_IN_RIDE == driverScreenMode
+		|| DriverScreenMode.D_ARRIVED == driverScreenMode)){
 			totalDistance = distance;
 			HomeActivity.totalHaversineDistance = totalHaversineDistance;
 			HomeActivity.totalWaitTime = waitTime;
@@ -7328,9 +7335,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void run() {
-					updateDistanceFareTexts(distance, elapsedTime, waitTime);
-					if (rideStartPositionMarker == null) {
-						displayOldPath();
+					if(UserMode.DRIVER == userMode
+							&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+						updateDistanceFareTexts(distance, elapsedTime, waitTime);
+						if (rideStartPositionMarker == null) {
+							displayOldPath();
+						}
 					}
 				}
 			});
