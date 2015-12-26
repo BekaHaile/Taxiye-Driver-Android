@@ -115,6 +115,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
@@ -1815,6 +1816,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								Data.userData.mealsAvailable = jugnooOnFlag;
 							}
 							changeJugnooONUIAndInitService();
+							if(jugnooOnFlag == 1){
+								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+							}
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
@@ -3928,6 +3932,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									}
 									if (userData.has("jugnoo_balance")) {
 										jugnooBalance = userData.getDouble("jugnoo_balance");
+										Log.i("jugnooblance", String.valueOf(jugnooBalance));
 									}
 
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
@@ -4697,8 +4702,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					rideTimeChronometer.start();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 				}
-
+				AGPSRefresh.hardRefreshGpsData(HomeActivity.this);
 				DialogPopup.dismissLoadingDialog();
+
 			}
 
 			@Override
@@ -7378,6 +7384,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		});
 
+	}
+
+	private void deleteGpsData(){
+        /* Cold start */
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("all", true);
+		LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+		locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER,"delete_aiding_data", null);
+		locationManager.sendExtraCommand("gps", "force_xtra_injection", bundle);
+		locationManager.sendExtraCommand("gps", "force_time_injection", bundle);
 	}
 
 
