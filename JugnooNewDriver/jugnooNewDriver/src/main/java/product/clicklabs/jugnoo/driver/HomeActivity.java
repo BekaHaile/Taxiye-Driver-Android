@@ -5439,51 +5439,56 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public void fetchHeatMapData(final Activity activity) {
+		try {
+			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
 
-		if (AppStatus.getInstance(activity).isOnline(activity)) {
-
-			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
-				@Override
-				public void success(HeatMapResponse heatMapResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i("heat", jsonString);
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
-						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
-								heatMapResponseGlobal = heatMapResponse;
-								drawHeatMapData(heatMapResponseGlobal);
-								Log.i("Heat Map response", String.valueOf(heatMapResponse));
-								Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+					@Override
+					public void success(HeatMapResponse heatMapResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							Log.i("heat", jsonString);
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
+									heatMapResponseGlobal = heatMapResponse;
+									drawHeatMapData(heatMapResponseGlobal);
+									Log.i("Heat Map response", String.valueOf(heatMapResponse));
+									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+								}
 							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
+
 					}
 
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-				}
-			});
+					@Override
+					public void failure(RetrofitError error) {
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	private void drawHeatMapData(HeatMapResponse heatMapResponse){
 		try{
-			map.clear();
-			for(HeatMapResponse.Region region : heatMapResponse.getRegions()){
-				ArrayList<LatLng> arrLatLng = new ArrayList<>();
-				List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
-				for(HeatMapResponse.Region_ region_ : regionList){
-					arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
+			if (DriverScreenMode.D_INITIAL == driverScreenMode) {
+				map.clear();
+				for (HeatMapResponse.Region region : heatMapResponse.getRegions()) {
+					ArrayList<LatLng> arrLatLng = new ArrayList<>();
+					List<HeatMapResponse.Region_> regionList = region.getRegion().get(0);
+					for (HeatMapResponse.Region_ region_ : regionList) {
+						arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
+					}
+					addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+							region.getColor(), region.getStrokeColor());
 				}
-				addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-						region.getColor(), region.getStrokeColor());
 			}
 		} catch (Exception e){
 			e.printStackTrace();
@@ -5871,79 +5876,82 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-
+	private Dialog dialogEndRidePopup;
 	void endRidePopup(final Activity activity, final BusinessType businessType) {
 		try {
-			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-			dialog.setContentView(R.layout.dialog_custom_two_buttons);
+			if(dialogEndRidePopup == null || !dialogEndRidePopup.isShowing()) {
+				dialogEndRidePopup = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+				dialogEndRidePopup.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+				dialogEndRidePopup.setContentView(R.layout.dialog_custom_two_buttons);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
-			new ASSL(activity, frameLayout, 1134, 720, true);
+				FrameLayout frameLayout = (FrameLayout) dialogEndRidePopup.findViewById(R.id.rv);
+				new ASSL(activity, frameLayout, 1134, 720, true);
 
-			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-			layoutParams.dimAmount = 0.6f;
-			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(false);
-			dialog.setCanceledOnTouchOutside(false);
-
-
-
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+				WindowManager.LayoutParams layoutParams = dialogEndRidePopup.getWindow().getAttributes();
+				layoutParams.dimAmount = 0.6f;
+				dialogEndRidePopup.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+				dialogEndRidePopup.setCancelable(false);
+				dialogEndRidePopup.setCanceledOnTouchOutside(false);
 
 
-			if(BusinessType.AUTOS == businessType){
-				textMessage.setText("Are you sure you want to end ride?");
-			}
-			else if(BusinessType.FATAFAT == businessType){
-				textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
-						+Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
-						+" from customer.");
-			}
+				TextView textHead = (TextView) dialogEndRidePopup.findViewById(R.id.textHead);
+				textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+				TextView textMessage = (TextView) dialogEndRidePopup.findViewById(R.id.textMessage);
+				textMessage.setTypeface(Data.latoRegular(activity));
 
 
-			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
-			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+				if (BusinessType.AUTOS == businessType) {
+					textMessage.setText("Are you sure you want to end ride?");
+				} else if (BusinessType.FATAFAT == businessType) {
+					textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
+							+ Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
+							+ " from customer.");
+				}
 
-			btnOk.setOnClickListener(new View.OnClickListener() {
-				@SuppressWarnings("unused")
-				@Override
-				public void onClick(View view) {
-					if(AppStatus.getInstance(activity).isOnline(activity)) {
-						if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-							if (Data.assignedCustomerInfo != null
-									&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
-									&& (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable
-									|| 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable)) {
-								driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
-								switchDriverScreen(driverScreenMode);
-								dialog.dismiss();
-							} else {
-								boolean success = endRideGPSCorrection(businessType);
-								if (success) {
-									dialog.dismiss();
+
+				Button btnOk = (Button) dialogEndRidePopup.findViewById(R.id.btnOk);
+				btnOk.setTypeface(Data.latoRegular(activity));
+				Button btnCancel = (Button) dialogEndRidePopup.findViewById(R.id.btnCancel);
+				btnCancel.setTypeface(Data.latoRegular(activity));
+
+				btnOk.setOnClickListener(new View.OnClickListener() {
+					@SuppressWarnings("unused")
+					@Override
+					public void onClick(View view) {
+						if (AppStatus.getInstance(activity).isOnline(activity)) {
+							if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+								if (Data.assignedCustomerInfo != null
+										&& BusinessType.AUTOS == Data.assignedCustomerInfo.businessType
+										&& (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable
+										|| 1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable)) {
+									driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
+									switchDriverScreen(driverScreenMode);
+									dialogEndRidePopup.dismiss();
+								} else {
+									boolean success = endRideGPSCorrection(businessType);
+									if (success) {
+										dialogEndRidePopup.dismiss();
+									}
 								}
+								FlurryEventLogger.event(END_RIDE_CONFIRMED);
 							}
-							FlurryEventLogger.event(END_RIDE_CONFIRMED);
+						} else {
+							DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 						}
 					}
-					else{
-						DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+				});
+
+				btnCancel.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						dialogEndRidePopup.dismiss();
+						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
 					}
-				}
-			});
 
-			btnCancel.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					dialog.dismiss();
-					FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
-				}
+				});
 
-			});
-
-			dialog.show();
+				dialogEndRidePopup.show();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

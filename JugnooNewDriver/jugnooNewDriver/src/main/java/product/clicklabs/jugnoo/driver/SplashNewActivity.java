@@ -87,7 +87,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 	Button buttonLogin, buttonRegister;
 	
-	boolean loginDataFetched = false, loginFailed = false;
+	static boolean loginDataFetched = false;
+	boolean loginFailed = false;
 	
 
 	// *****************************Used for flurry work***************//
@@ -892,6 +893,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					loginDataFetched = false;
 					dialog.dismiss();
 					Intent intent = new Intent(Intent.ACTION_VIEW);
 					intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
