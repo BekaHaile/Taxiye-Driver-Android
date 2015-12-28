@@ -33,7 +33,8 @@ public class LocationReceiverDriver extends BroadcastReceiver {
     public void onReceive(final Context context, Intent intent) {
 		final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
         if(!Utils.mockLocationEnabled(location)) {
-
+			Log.writePathLogToFile("service_log",
+					"LocationReceiverDriver onReceive location="+location);
             if (location != null) {
                 Location oldlocation = Database2.getInstance(context).getDriverCurrentLocation();
                 double displacement_1 = MapUtils.distance(oldlocation, location);
@@ -112,7 +113,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
     public void setAlarm(Context context) {
         boolean alarmUp = (PendingIntent.getBroadcast(context, PI_REQUEST_CODE,
-                new Intent(context, DriverLocationUpdateAlarmReceiver.class).setAction(RESTART_SERVICE),
+                new Intent(context, DriverServiceRestartReceiver.class).setAction(RESTART_SERVICE),
                 PendingIntent.FLAG_NO_CREATE) != null);
         if (alarmUp) {
             cancelAlarm(context);

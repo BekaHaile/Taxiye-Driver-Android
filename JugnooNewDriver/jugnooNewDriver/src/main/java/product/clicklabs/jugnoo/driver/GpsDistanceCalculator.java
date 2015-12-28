@@ -175,7 +175,7 @@ public class GpsDistanceCalculator {
 	public void setupMeteringAlarm(Context context) {
 		// check task is scheduled or not
 		boolean alarmUp = (PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
-				new Intent(context, DriverLocationUpdateAlarmReceiver.class).setAction(CHECK_LOCATION),
+				new Intent(context, MeteringAlarmReceiver.class).setAction(CHECK_LOCATION),
 				PendingIntent.FLAG_NO_CREATE) != null);
 		if (alarmUp) {
 			cancelMeteringAlarm(context);

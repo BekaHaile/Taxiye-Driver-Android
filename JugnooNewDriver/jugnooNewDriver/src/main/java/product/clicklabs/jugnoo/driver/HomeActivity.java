@@ -6217,14 +6217,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(loggedOut){
 				loggedOut = false;
 
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						Database2.getInstance(HomeActivity.this).updateUserMode(Database2.UM_OFFLINE);
-					}
-				}).start();
-
-				stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+				Database2.getInstance(HomeActivity.this).updateUserMode(Database2.UM_OFFLINE);
+				new DriverServiceOperations().stopService(this);
 
 				Intent intent = new Intent(HomeActivity.this, SplashNewActivity.class);
 				intent.putExtra("no_anim", "yes");

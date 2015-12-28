@@ -47,6 +47,8 @@ public class MeteringService extends Service {
 	
     @Override
     public void onStart(Intent intent, int startId) {
+		Log.writePathLogToFile("service_log",
+				"MeteringService onStart meteringState=" + Database2.getInstance(this).getMetringState());
     	cancelAlarm();
         gpsInstance(this).start();
         startUploadPathAlarm();
@@ -63,8 +65,18 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
+		Log.writePathLogToFile("service_log",
+				"MeteringService onTaskRemoved meteringState=" + Database2.getInstance(this).getMetringState());
     	restartServiceViaAlarm();
     }
+
+	@Override
+	public void onDestroy() {
+		Log.e("MeteringService onDestroy","=");
+		Log.writePathLogToFile("service_log",
+				"MeteringService onDestroy meteringState=" + Database2.getInstance(this).getMetringState());
+		restartServiceViaAlarm();
+	}
 
 
 
@@ -89,7 +101,7 @@ public class MeteringService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
 
     }
@@ -155,11 +167,7 @@ public class MeteringService extends Service {
     }
     
  
-    @Override
-    public void onDestroy() {
-    	Log.e("MeteringService onDestroy","=");
-    	restartServiceViaAlarm();
-    }
+
     
     
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
