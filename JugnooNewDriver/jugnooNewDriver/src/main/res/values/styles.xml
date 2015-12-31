@@ -23,8 +23,18 @@
         <item name="android:minHeight">56dip</item>
         <item name="android:maxHeight">56dip</item>
     </style>
+
+        <style name="RatingBarBlue" parent="@android:style/Widget.RatingBar">
+            <item name="android:progressDrawable">@drawable/rating_star_blue_selector</item>
+            <item name="android:minHeight">56dp</item>
+            <item name="android:maxHeight">56dp</item>
+        </style>
     
-     
+        <style name="RatingBarWhite" parent="@android:style/Widget.RatingBar">
+            <item name="android:progressDrawable">@drawable/rating_star_white_selector</item>
+            <item name="android:minHeight">50dp</item>
+            <item name="android:maxHeight">50dp</item>
+        </style>
      
       <style name="Animations" />
 

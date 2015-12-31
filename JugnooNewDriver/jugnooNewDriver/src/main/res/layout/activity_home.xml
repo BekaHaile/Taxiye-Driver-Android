@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="visible" >
+                    android:visibility="gone" >
 
                     <TextView
                         android:id="@+id/textViewBeforeAcceptRequestInfo"
@@ -187,7 +187,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="visible" >
+                    android:visibility="gone" >
 
                     <!-- customer info layout -->
                     <LinearLayout
@@ -763,6 +763,7 @@
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
+                android:layout_marginTop="90px"
                 android:visibility="visible"
                 >
 
@@ -786,93 +787,36 @@
                             android:splitMotionEvents="false">
 
                             <!-- up layout -->
-                            <RelativeLayout
+                            <LinearLayout
                                 android:id="@+id/upLayout"
                                 android:layout_width="match_parent"
-                                android:layout_height="580px"
-                                android:splitMotionEvents="false">
-
-                                <ImageView
-                                    android:id="@+id/reviewUserImgBlured"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:scaleType="centerCrop"/>
-
-                                <ImageView
-                                    android:id="@+id/reviewUserImgBluredTop"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:background="#11000000"
-                                    android:scaleType="centerCrop"/>
-
-                                <RelativeLayout
-                                    android:id="@+id/reviewUserImageRL"
-                                    android:layout_width="220px"
-                                    android:layout_height="220px"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="110px"
-                                    android:splitMotionEvents="false"
-                                    android:tag="mwar">
-
-                                    <ImageView
-                                        android:id="@+id/reviewUserImgBack"
-                                        android:layout_width="220px"
-                                        android:layout_height="220px"
-                                        android:layout_centerHorizontal="true"
-                                        android:background="@drawable/ring_white"
-                                        android:tag="mwar"/>
-
-                                    <ImageView
-                                        android:id="@+id/reviewUserImage"
-                                        android:layout_width="180px"
-                                        android:layout_height="180px"
-                                        android:layout_centerInParent="true"
-                                        android:tag="mwar"/>
-                                </RelativeLayout>
+                                android:layout_height="wrap_content"
+                                android:splitMotionEvents="false"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/reviewUserName"
-                                    android:layout_width="680px"
+                                    android:id="@+id/reviewReachedDestinationText"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/reviewUserImageRL"
                                     android:layout_centerHorizontal="true"
-                                    android:layout_marginTop="10px"
+                                    android:layout_marginTop="15px"
+                                    android:layout_marginBottom="10px"
                                     android:gravity="center"
                                     android:singleLine="true"
-                                    android:text=" "
-                                    android:textColor="@color/grey_dark_button"
-                                    android:textSize="34px"/>
+                                    android:text="@string/reached_destination"
+                                    android:textColor="@color/grey_black"
+                                    android:textSize="36px"/>
 
                                 <!-- reached distance km, time, fare layout -->
-                                <RelativeLayout
-                                    android:id="@+id/reviewReachedDistanceRl"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="180px"
-                                    android:layout_alignParentBottom="true"
-                                    android:background="@color/black_translucent"
-                                    android:splitMotionEvents="false"
-                                    android:visibility="visible"
-                                    >
-
-                                    <TextView
-                                        android:id="@+id/reviewReachedDestinationText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_centerHorizontal="true"
-                                        android:layout_marginTop="10px"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="@string/reached_destination"
-                                        android:textColor="@color/white"
-                                        android:textSize="40px"/>
-
                                     <LinearLayout
+                                        android:id="@+id/reviewReachedDistanceRl"
                                         android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
+                                        android:layout_height="126px"
                                         android:orientation="horizontal"
-                                        android:layout_below="@+id/reviewReachedDestinationText"
                                         android:layout_marginTop="15px"
-                                        android:gravity="center_vertical">
+                                        android:gravity="center_vertical"
+                                        android:background="@color/black_translucent"
+                                        >
 
                                         <RelativeLayout
                                             android:id="@+id/reviewDistanceRl"
@@ -1024,16 +968,11 @@
 
                                     </LinearLayout>
 
-
-
-                                </RelativeLayout>
-
                                 <!-- meter fare layout-->
                                 <LinearLayout
                                     android:id="@+id/linearLayoutMeterFare"
                                     android:layout_width="match_parent"
                                     android:layout_height="180px"
-                                    android:layout_alignParentBottom="true"
                                     android:background="@color/black_translucent"
                                     android:gravity="center"
                                     android:orientation="vertical"
@@ -1095,7 +1034,7 @@
 
                                 </LinearLayout>
 
-                            </RelativeLayout>
+                            </LinearLayout>
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -1395,7 +1334,7 @@
                                 android:layout_width="648px"
                                 android:layout_height="99px"
                                 android:layout_centerHorizontal="true"
-                                android:layout_above="@+id/reviewSubmitBtn"
+                                android:layout_above="@+id/linearLayoutReviewSubmit"
                                 android:layout_marginBottom="40px"
                                 android:background="@color/white_dark1"
                                 android:visibility="gone"
@@ -1462,19 +1401,91 @@
                             </RelativeLayout>
 
 
-
-                            <Button
-                                android:id="@+id/reviewSubmitBtn"
-                                android:layout_width="648px"
-                                android:layout_height="99px"
+                            <LinearLayout
+                                android:id="@+id/linearLayoutReviewSubmit"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_centerHorizontal="true"
-                                android:layout_marginBottom="150px"
-                                android:background="@drawable/blue_btn_selector"
-                                android:text="@string/submit"
-                                android:textColor="@drawable/white_color_selector"
-                                android:textSize="@dimen/button_text_size"/>
+                                android:layout_marginBottom="128px"
+                                android:gravity="center_horizontal"
+                                android:orientation="vertical"
+                                >
 
+                                <RelativeLayout
+                                    android:id="@+id/relativeLayoutRateCustomer"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:visibility="visible"
+                                    >
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="2px"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginRight="10px"
+                                        android:layout_toLeftOf="@+id/textViewRateYourCustomer"
+                                        android:src="@color/black_translucent"
+
+                                        />
+
+                                    <TextView
+                                        android:id="@+id/textViewRateYourCustomer"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_centerHorizontal="true"
+                                        android:gravity="center"
+                                        android:text="Rate Your Customer"
+                                        android:textColor="@color/black"
+                                        android:textSize="32px"
+                                        />
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="2px"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="10px"
+                                        android:layout_toRightOf="@+id/textViewRateYourCustomer"
+                                        android:src="@color/black_translucent"
+                                        />
+
+                                </RelativeLayout>
+
+                                <RatingBar
+                                    android:id="@+id/ratingBarFeedback"
+                                    style="@style/RatingBarBlue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="48px"
+                                    android:numStars="5"
+                                    android:rating="1"
+                                    android:stepSize="1.0"
+                                    android:visibility="visible"
+                                    />
+
+                                <Button
+                                    android:id="@+id/reviewSubmitBtn"
+                                    android:layout_width="648px"
+                                    android:layout_height="99px"
+                                    android:layout_marginTop="48px"
+                                    android:background="@drawable/blue_btn_selector"
+                                    android:text="@string/submit"
+                                    android:textColor="@drawable/white_color_selector"
+                                    android:textSize="@dimen/button_text_size"/>
+
+                                <Button
+                                    android:id="@+id/reviewSkipBtn"
+                                    android:layout_width="648px"
+                                    android:layout_height="99px"
+                                    android:layout_marginTop="24px"
+                                    android:background="@drawable/white_bg"
+                                    android:text="Skip"
+                                    android:textColor="@drawable/blue_btn_color_selector"
+                                    android:textSize="@dimen/button_text_size"
+                                    android:visibility="visible"
+                                    />
+
+                            </LinearLayout>
 
                             <!-- below layout-->
                             <LinearLayout
@@ -1684,6 +1695,7 @@
                                 </RelativeLayout>
 
                             </LinearLayout>
+
                         </RelativeLayout>
 
                         <TextView
