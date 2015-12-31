@@ -5300,6 +5300,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				params.put("access_token", Data.userData.accessToken);
 				params.put("given_rating", "" + givenRating);
 				params.put("engagement_id", engagementId);
+				params.put("customer_id", Data.dCustomerId);
 
 				Log.i("params", "=" + params);
 

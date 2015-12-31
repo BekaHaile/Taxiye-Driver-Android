@@ -301,7 +301,7 @@ public class JSONParser {
         String deiValue = userData.optString("driver_dei", "-1");
 
         String accessToken = userData.getString("access_token");
-		double showDriverRating = userData.getDouble("showDriverRating");
+		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
 		String referralCode = userData.getString("referral_code");
