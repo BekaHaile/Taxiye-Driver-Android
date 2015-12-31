@@ -155,8 +155,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	ImageView profileImg;
-	TextView userName, textViewDEI;
+	ImageView profileImg, seprator;
+	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
@@ -328,7 +328,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	Button reviewSubmitBtn;
 	RelativeLayout relativeLayoutRateCustomer;
-	RatingBar ratingBarFeedback;
+	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
 	Button reviewSkipBtn;
 	RelativeLayout reviewFareInfoInnerRl;
 	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue, textViewReviewConvenienceCharges;
@@ -497,14 +497,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			profileImg = (ImageView) findViewById(R.id.profileImg);
+			seprator = (ImageView) findViewById(R.id.seprator);
 			userName = (TextView) findViewById(R.id.userName);
+			ratingValue = (TextView) findViewById(R.id.ratingValue);
 			userName.setTypeface(Data.latoRegular(getApplicationContext()));
+			ratingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
-			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
-			textViewDEI.setTypeface(Data.latoRegular(this));
+//			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
+//			textViewDEI.setTypeface(Data.latoRegular(this));
 
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
@@ -775,6 +778,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			relativeLayoutRateCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutRateCustomer);
 			((TextView)findViewById(R.id.textViewRateYourCustomer)).setTypeface(Data.latoRegular(this));
 			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
+			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
+			ratingBarFeedbackSide.setEnabled(false);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
 			reviewSkipBtn.setTypeface(Data.latoRegular(this));
 
@@ -1350,7 +1355,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if (0 == rating) {
 								DialogPopup.alertPopup(HomeActivity.this, "", "We take your feedback seriously. Please give us a rating");
 							} else {
-								submitFeedbackToDriverAsync(HomeActivity.this, Data.cEngagementId, rating);
+								submitFeedbackToDriverAsync(HomeActivity.this, Data.dEngagementId, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
 								driverScreenMode = DriverScreenMode.D_INITIAL;
 								switchDriverScreen(driverScreenMode);
@@ -2203,6 +2208,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
+			ratingBarFeedbackSide.setRating((float) Math.floor( Data.userData.showDriverRating));
+			ratingValue.setText(""+decimalFormat.format(Data.userData.showDriverRating));
 
 		} catch(Exception e){
 			e.printStackTrace();

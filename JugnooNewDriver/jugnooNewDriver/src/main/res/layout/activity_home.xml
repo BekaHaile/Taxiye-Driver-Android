@@ -1830,10 +1830,10 @@
         android:layout_width="495px"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/bg_grey"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:splitMotionEvents="false"
-        android:background="@color/bg_grey">
+        android:splitMotionEvents="false">
 
 
         <ScrollView
@@ -1854,71 +1854,106 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/profileRl"
-                    android:layout_width="220px"
-                    android:layout_height="220px"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="30px"
-                    android:splitMotionEvents="false"
-                    android:tag="mwar">
-
-                    <ImageView
-                        android:id="@+id/profileBack"
+                    <RelativeLayout
+                        android:id="@+id/profileRl"
                         android:layout_width="220px"
                         android:layout_height="220px"
-                        android:background="@drawable/ring"
-                        android:tag="mwar"/>
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30px"
+                        android:splitMotionEvents="false"
+                        android:tag="mwar">
 
-                    <ImageView
-                        android:id="@+id/profileImg"
-                        android:layout_width="200px"
-                        android:layout_height="200px"
-                        android:layout_centerInParent="true"
-                        android:tag="mwar"/>
-                </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/profileBack"
+                            android:layout_width="220px"
+                            android:layout_height="220px"
+                            android:background="@drawable/ring"
+                            android:tag="mwar"/>
 
+                        <ImageView
+                            android:id="@+id/profileImg"
+                            android:layout_width="200px"
+                            android:layout_height="200px"
+                            android:layout_centerInParent="true"
+                            android:tag="mwar"/>
+                    </RelativeLayout>
 
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutDEI"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10px"
-                    android:orientation="horizontal"
-                    >
 
                     <LinearLayout
+                        android:id="@+id/linearLayoutDEI"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical"
+                        android:layout_marginTop="10px"
+                        android:orientation="horizontal"
                         >
 
-                        <TextView
-                            android:id="@+id/userName"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginTop="15px"
-                            android:text="Dr"
-                            android:textColor="@color/white"
-                            android:textSize="34px"/>
+                            android:gravity="center_horizontal"
+                            android:orientation="vertical"
+                            >
+
+                            <TextView
+                                android:id="@+id/userName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="15px"
+                                android:text="Dr"
+                                android:textColor="@color/white"
+                                android:textSize="34px"/>
 
 
-                        <TextView
-                            android:id="@+id/textViewDEI"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="15px"
-                            android:gravity="center"
-                            android:text="View Account"
-                            android:textColor="@color/white"
-                            android:textSize="32px"/>
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal">
 
+                                <RatingBar
+                                    android:id="@+id/ratingBarFeedbackSide"
+                                    style="@style/RatingBarWhite"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="15px"
+                                    android:gravity="center"
+                                    android:numStars="5"
+                                    android:rating="1"
+                                    android:stepSize="1.0"
+                                    />
+
+                                <ImageView
+                                    android:id="@+id/seprator"
+                                    android:layout_width="4px"
+                                    android:layout_height="40px"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginLeft="15px"
+                                    android:layout_marginRight="15px"
+                                    android:layout_marginTop="17px"
+                                    android:layout_toRightOf="@+id/ratingBarFeedbackSide"
+                                    android:background="@drawable/driver_rating_seperation_line"
+                                    android:tag="mwar"/>
+
+                                <TextView
+                                    android:id="@+id/ratingValue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_marginTop="17px"
+                                    android:layout_toRightOf="@+id/seprator"
+                                    android:text="4.5"
+                                    android:textColor="@color/white"
+                                    android:textSize="40px"/>
+
+
+                            </RelativeLayout>
+
+
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
+
+
+
                 </LinearLayout>
 
 
@@ -2270,6 +2305,5 @@
         </ScrollView>
 
     </LinearLayout>
-
 
 </android.support.v4.widget.DrawerLayout>
