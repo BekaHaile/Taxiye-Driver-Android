@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-
 import com.google.android.gms.location.FusedLocationProviderApi;
 
 import org.apache.http.NameValuePair;
@@ -32,6 +31,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
 import product.clicklabs.jugnoo.driver.Data;
 
 
@@ -169,22 +169,22 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
-//		return false;
-		try {
-			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-				boolean isMockLocation = false;
-				if(location != null){
-					Bundle extras = location.getExtras();
-					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-				}
-				return isMockLocation;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
+		return false;
+//		try {
+//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+//				boolean isMockLocation = false;
+//				if(location != null){
+//					Bundle extras = location.getExtras();
+//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+//				}
+//				return isMockLocation;
+//			} else {
+//				return false;
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return false;
+//		}
 
 	}
 

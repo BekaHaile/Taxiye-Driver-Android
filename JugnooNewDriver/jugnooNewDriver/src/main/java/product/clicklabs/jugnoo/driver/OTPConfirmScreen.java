@@ -293,7 +293,6 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 						public void failure(RetrofitError error) {
 							DialogPopup.dismissLoadingDialog();
 							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-
 						}
 					});
 

@@ -12,6 +12,9 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+
 public class DriverLocationUpdateService extends Service {
 	
 	LocationFetcherDriver locationFetcherDriver;
@@ -84,7 +87,9 @@ public class DriverLocationUpdateService extends Service {
         String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
 		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
-		
+
+		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
+
 		
 		
 		
@@ -102,6 +107,9 @@ public class DriverLocationUpdateService extends Service {
 		else if(link.equalsIgnoreCase(DEV_SERVER_URL)){
 			SERVER_URL = DEV_SERVER_URL.substring(0, DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
 		}
+		else if(link.equalsIgnoreCase(LIVE_SERVER_URL)){
+			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+		}
         else if(link.equalsIgnoreCase(DEV_1_SERVER_URL)){
             SERVER_URL = DEV_1_SERVER_URL;
         }
@@ -112,7 +120,7 @@ public class DriverLocationUpdateService extends Service {
             SERVER_URL = DEV_3_SERVER_URL;
         }
 		else{
-			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			SERVER_URL = CUSTOM_URL;
 		}
 
 		
