@@ -720,6 +720,18 @@ public class GpsDistanceCalculator {
 		}
 	}
 
+	public void updateDistanceInCaseOfReset(double distance){
+		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+				"updateDistanceInCaseOfReset func distance from server:"+distance
+						+" & totalDistance:"+totalDistance);
+		if(distance > totalDistance){
+			totalDistance = totalDistance + distance;
+			saveTotalDistanceToSP(context, totalDistance);
+			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+					"updateDistanceInCaseOfReset func totalDistance updated:"+ totalDistance);
+		}
+	}
+
 	public static synchronized void saveEngagementIdToSP(Context context, String engagementId) {
 		Prefs.with(context).save(SPLabels.ENGAGEMENT_ID, engagementId);
 	}

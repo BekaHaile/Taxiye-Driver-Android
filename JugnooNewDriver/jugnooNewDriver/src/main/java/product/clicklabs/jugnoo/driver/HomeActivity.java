@@ -283,6 +283,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public static int waitStart = 2;
 	double distanceAfterWaitStarted = 0;
+	int lastLogId = 0;
+
 
 
 
@@ -4252,7 +4254,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		Database2.getInstance(this).deleteRideData();
 		Database2.getInstance(this).deleteAllCurrentPathItems();
-
 		Database.getInstance(this).deleteSavedPath();
 
 		HomeActivity.previousWaitTime = 0;
@@ -4263,6 +4264,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.dEngagementId);
 		MeteringService.gpsInstance(this).stop();
+		Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
 
 		waitStart = 2;
 	}
@@ -5401,10 +5403,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
 				if(myLocation != null){
 					double totalDistanceInKm = Math.abs(totalDistance/1000.0);
-
 					long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
 					double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-
+					int lastLogId = Integer.parseInt((Prefs.with(HomeActivity.this).getString(SPLabels.DISTANCE_RESET_LOG_ID,""+ 0)));
 					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("access_token", Data.userData.accessToken);
@@ -5414,13 +5415,29 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
 					params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
 					params.put("wait_time", "0");
+					params.put("last_log_id",""+lastLogId);
 
 					Log.i("update_in_ride_data nameValuePairs", "="+nameValuePairs);
 
 					Response response = RestClient.getApiServices().updateInRideDataRetro(params);
-					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+					if(response != null) {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj= new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
 
-					Log.i("update_in_ride_data result", "="+result);
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							lastLogId = jObj.getInt("last_log_id");
+							Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
+							if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
+								try {
+									double distance = jObj.getDouble("total_distance");
+									MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}
+					}
 				}
 			}
 		} catch (Exception e) {

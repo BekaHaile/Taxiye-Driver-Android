@@ -32,6 +32,8 @@ public class SPLabels {
             GPS_GSM_DISTANCE_COUNT = "GpsGsmDistanceCount";
     public static final String
             NOTIFICATION_ID = "notificationId";
+    public static final String
+            DISTANCE_RESET_LOG_ID = "distanceResetLogId";
 
     public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 
