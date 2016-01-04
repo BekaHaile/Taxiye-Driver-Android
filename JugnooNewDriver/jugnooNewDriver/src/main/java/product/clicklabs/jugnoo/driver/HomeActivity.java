@@ -5420,19 +5420,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Response response = RestClient.getApiServices().updateInRideDataRetro(params);
 					if(response != null) {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj= new JSONObject(jsonString);
-						int flag = jObj.getInt("flag");
-
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							lastLogId = jObj.getInt("last_log_id");
-							Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
-							if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
-								try {
-									double distance = jObj.getDouble("total_distance") * 1000;
-									MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+						JSONObject jObj = new JSONObject(jsonString);
+						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+						lastLogId = jObj.optInt("last_log_id", 0);
+						Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
+						if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
+							try {
+								double distance = jObj.getDouble("total_distance") * 1000;
+								MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 						}
 					}
