@@ -4669,9 +4669,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 
 						JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
-
 						applyCouponAndPromoOnSuccess();
-
 
 						if (map != null) {
 							map.clear();
@@ -5430,7 +5428,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
 							if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
 								try {
-									double distance = jObj.getDouble("total_distance");
+									double distance = jObj.getDouble("total_distance") * 1000;
 									MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
 								} catch (Exception e) {
 									e.printStackTrace();
