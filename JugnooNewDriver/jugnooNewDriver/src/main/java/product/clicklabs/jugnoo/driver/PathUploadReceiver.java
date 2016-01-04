@@ -21,6 +21,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
@@ -151,6 +152,18 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                     cancelUploadPathAlarm(context);
                                 }
                             }
+
+                            String meteringState = Database2.getInstance(context).getMetringState();
+                            Log.writePathLogToFile("service_log",
+                                    "PathUploadReceiver onReceive meteringState=" + meteringState
+                                            + " and MeteringService isRunning="+Utils.isServiceRunning(context, MeteringService.class));
+                            if(Database2.ON.equalsIgnoreCase(meteringState)) {
+                                if (!Utils.isServiceRunning(context, MeteringService.class)) {
+                                    Log.writePathLogToFile("service_log",
+                                            "PathUploadReceiver onReceive gone in");
+                                    context.startService(new Intent(context, MeteringService.class));
+                                }
+                            }
                         } catch(Exception e){
                             e.printStackTrace();
                         }
@@ -161,6 +174,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
+
     }
 
 
