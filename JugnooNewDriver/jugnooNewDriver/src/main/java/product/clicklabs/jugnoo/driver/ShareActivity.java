@@ -2,7 +2,11 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -298,9 +302,7 @@ public class ShareActivity extends Activity {
 								customerNumber.setError("Please enter valid phone number");
 							} else {
 								SmsManager smsManager = SmsManager.getDefault();
-								smsManager.sendTextMessage("+91" + code, null, Data.userData.referralSMSToCustomer, null, null);
-
-								DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + code + " के साथ शेयर कर दिया गया है।");
+								sendSMS("+91" + code, Data.userData.referralSMSToCustomer);
 								dialog.dismiss();
 							}
 						}
@@ -350,5 +352,59 @@ public class ShareActivity extends Activity {
 		}
 
 	}
+	//---sends an SMS message to another device---
+	private void sendSMS(final String phoneNumber, String message)
+	{
+		String SENT = "SMS_SENT";
+		String DELIVERED = "SMS_DELIVERED";
 
+		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
+				new Intent(SENT), 0);
+
+		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
+				new Intent(DELIVERED), 0);
+
+		//---when the SMS has been sent---
+		registerReceiver(new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				switch (getResultCode())
+				{
+					case Activity.RESULT_OK:
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
+						break;
+					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+						break;
+					case SmsManager.RESULT_ERROR_NO_SERVICE:
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+						break;
+					case SmsManager.RESULT_ERROR_NULL_PDU:
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+						break;
+					case SmsManager.RESULT_ERROR_RADIO_OFF:
+						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+						break;
+				}
+			}
+		}, new IntentFilter(SENT));
+
+		//---when the SMS has been delivered---
+		registerReceiver(new BroadcastReceiver(){
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				switch (getResultCode())
+				{
+					case Activity.RESULT_OK:
+						break;
+//					case Activity.RESULT_CANCELED:
+//						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
+//						break;
+				}
+			}
+		}, new IntentFilter(DELIVERED));
+
+		SmsManager sms = SmsManager.getDefault();
+		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+	}
 }
