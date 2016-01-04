@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rv"
     android:layout_width="720px"
     android:layout_height="1134px"
-    android:orientation="vertical"
     android:splitMotionEvents="false" >
 
     <RelativeLayout
         android:id="@+id/innerRl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="50px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250px"
+        android:layout_marginLeft="50px"
+        android:layout_marginRight="50px"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false" >
 
@@ -102,4 +103,4 @@
         </LinearLayout>
     </RelativeLayout>
 
-</FrameLayout>
+</RelativeLayout>

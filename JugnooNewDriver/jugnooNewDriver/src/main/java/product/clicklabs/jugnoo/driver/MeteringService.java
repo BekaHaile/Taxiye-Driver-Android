@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -182,7 +183,8 @@ public class MeteringService extends Service {
 						boolean showWait = false;
 						if(Data.assignedCustomerInfo != null){
 							if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
-								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
+								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1
+										&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
 									showWait = true;
 								}
 							}
