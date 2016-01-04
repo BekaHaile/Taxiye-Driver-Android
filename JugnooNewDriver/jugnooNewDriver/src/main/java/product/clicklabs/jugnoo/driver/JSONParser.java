@@ -301,6 +301,7 @@ public class JSONParser {
         String deiValue = userData.optString("driver_dei", "-1");
 
         String accessToken = userData.getString("access_token");
+		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
 		String referralCode = userData.getString("referral_code");
@@ -317,7 +318,7 @@ public class JSONParser {
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer, showDriverRating);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

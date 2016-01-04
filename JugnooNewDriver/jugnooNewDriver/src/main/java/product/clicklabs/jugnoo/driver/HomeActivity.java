@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -155,8 +156,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	ImageView profileImg;
-	TextView userName, textViewDEI;
+	ImageView profileImg, seprator;
+	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
@@ -292,10 +293,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	//Review layout
 	RelativeLayout endRideReviewRl;
 
-	ImageView reviewUserImgBlured, reviewUserImage;
-	RelativeLayout reviewReachedDistanceRl;
+	LinearLayout reviewReachedDistanceRl;
 	LinearLayout linearLayoutMeterFare;
-	TextView reviewUserName, reviewReachedDestinationText,
+	TextView reviewReachedDestinationText,
 			reviewDistanceText, reviewDistanceValue,
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
@@ -328,6 +328,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			textViewFatafatBillFinalAmountValue, textViewFatafatBillJugnooCashValue, textViewFatafatBillToPay;
 
 	Button reviewSubmitBtn;
+	RelativeLayout relativeLayoutRateCustomer;
+	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
+	Button reviewSkipBtn;
 	RelativeLayout reviewFareInfoInnerRl;
 	TextView reviewMinFareText, reviewMinFareValue, reviewFareAfterText, reviewFareAfterValue, textViewReviewConvenienceCharges;
 	Button reviewFareInfoBtn;
@@ -495,14 +498,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			profileImg = (ImageView) findViewById(R.id.profileImg);
+			seprator = (ImageView) findViewById(R.id.seprator);
 			userName = (TextView) findViewById(R.id.userName);
+			ratingValue = (TextView) findViewById(R.id.ratingValue);
 			userName.setTypeface(Data.latoRegular(getApplicationContext()));
+			ratingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
 			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
-			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
-			textViewDEI.setTypeface(Data.latoRegular(this));
+//			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
+//			textViewDEI.setTypeface(Data.latoRegular(this));
 
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
@@ -703,11 +709,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			//Review Layout
 			endRideReviewRl = (RelativeLayout) findViewById(R.id.endRideReviewRl);
 
-			reviewUserImgBlured = (ImageView) findViewById(R.id.reviewUserImgBlured);
-			reviewUserImage = (ImageView) findViewById(R.id.reviewUserImage);
-
-			reviewUserName = (TextView) findViewById(R.id.reviewUserName);
-			reviewUserName.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewReachedDestinationText = (TextView) findViewById(R.id.reviewReachedDestinationText);
 			reviewReachedDestinationText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
@@ -733,7 +734,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			imageViewEndRideWaitSep.setVisibility(View.GONE);
 
 
-			reviewReachedDistanceRl = (RelativeLayout) findViewById(R.id.reviewReachedDistanceRl);
+			reviewReachedDistanceRl = (LinearLayout) findViewById(R.id.reviewReachedDistanceRl);
 
 			linearLayoutMeterFare = (LinearLayout) findViewById(R.id.linearLayoutMeterFare);
 			((TextView)findViewById(R.id.textViewEnterMeterFare)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
@@ -771,8 +772,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			relativeLayoutRateCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutRateCustomer);
+			((TextView)findViewById(R.id.textViewRateYourCustomer)).setTypeface(Data.latoRegular(this));
+			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
+			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
+			ratingBarFeedbackSide.setEnabled(false);
+			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
+			reviewSkipBtn.setTypeface(Data.latoRegular(this));
+
+
 
 			relativeLayoutCoupon = (RelativeLayout) findViewById(R.id.relativeLayoutCoupon);
 			textViewCouponTitle = (TextView) findViewById(R.id.textViewCouponTitle);
@@ -1338,16 +1350,37 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								}
 							}
 						} else if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
-							MeteringService.clearNotifications(HomeActivity.this);
-							driverScreenMode = DriverScreenMode.D_INITIAL;
-							switchDriverScreen(driverScreenMode);
-							FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+
+							int rating = (int) ratingBarFeedback.getRating();
+							rating = Math.abs(rating);
+							if (0 == rating) {
+								DialogPopup.alertPopup(HomeActivity.this, "", "We take your feedback seriously. Please give us a rating");
+							} else {
+								submitFeedbackToDriverAsync(HomeActivity.this, Data.dEngagementId, rating);
+								MeteringService.clearNotifications(HomeActivity.this);
+								driverScreenMode = DriverScreenMode.D_INITIAL;
+								switchDriverScreen(driverScreenMode);
+								FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+							}
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
+
+			reviewSkipBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
+						MeteringService.clearNotifications(HomeActivity.this);
+						driverScreenMode = DriverScreenMode.D_INITIAL;
+						switchDriverScreen(driverScreenMode);
+						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+					}
+				}
+			});
+
 
 			editTextEnterMeterFare.addTextChangedListener(new TextWatcher() {
 				@Override
@@ -2179,6 +2212,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
+			ratingBarFeedbackSide.setRating((float) Math.floor( Data.userData.showDriverRating));
+			ratingValue.setText(""+decimalFormat.format(Data.userData.showDriverRating));
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2227,30 +2262,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(mode == DriverScreenMode.D_RIDE_END){
 				if(Data.endRideData != null){
 					mapLayout.setVisibility(View.GONE);
-					RelativeLayoutDailyHours.setVisibility(View.GONE);
-					linearLayout_DEI.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
-					topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 
 					double totalDistanceInKm = Math.abs(totalDistance/1000.0);
 					String kmsStr = "";
 					if(totalDistanceInKm > 1){
 						kmsStr = "kms";
-					}
-					else{
+					} else {
 						kmsStr = "km";
 					}
 
-					reviewDistanceValue.setText(""+decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
+					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime+" min");
 					reviewRideTimeValue.setText(rideTime+" min");
 					reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(totalFare));
-
-					reviewUserName.setText(Data.assignedCustomerInfo.name);
-
-					try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
-					try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
 
 					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
@@ -2263,13 +2289,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					reviewReachedDistanceRl.setVisibility(View.VISIBLE);
 					linearLayoutMeterFare.setVisibility(View.GONE);
+					relativeLayoutRateCustomer.setVisibility(View.VISIBLE);
+					ratingBarFeedback.setVisibility(View.VISIBLE);
+					reviewSkipBtn.setVisibility(View.VISIBLE);
+					ratingBarFeedback.setRating(0);
 
 					relativeLayoutEndRideCustomerAmount.setVisibility(View.VISIBLE);
 
-					RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
-					layoutParams.setMargins(0, 0, 0, (int) (150 * ASSL.Yscale()));
-					reviewSubmitBtn.setLayoutParams(layoutParams);
-					reviewSubmitBtn.setText("OK");
+
 
 					relativeLayoutUseJugnooFare.setVisibility(View.GONE);
 					relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
@@ -2319,21 +2346,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			else if(mode == DriverScreenMode.D_BEFORE_END_OPTIONS){
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
-				RelativeLayoutDailyHours.setVisibility(View.GONE);
-				linearLayout_DEI.setVisibility(View.GONE);
-				topRl.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 				editTextEnterMeterFare.setText("");
-
-				reviewUserName.setText(Data.assignedCustomerInfo.name);
-
-				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new BlurTransform()).into(reviewUserImgBlured);}catch(Exception e){}
-				try{Picasso.with(HomeActivity.this).load(((AutoCustomerInfo)Data.assignedCustomerInfo).image).skipMemoryCache().transform(new CircleTransform()).into(reviewUserImage);}catch(Exception e){}
 
 				setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
 				reviewReachedDistanceRl.setVisibility(View.GONE);
 				linearLayoutMeterFare.setVisibility(View.VISIBLE);
+				relativeLayoutRateCustomer.setVisibility(View.GONE);
+				ratingBarFeedback.setVisibility(View.GONE);
+				reviewSkipBtn.setVisibility(View.GONE);
 
 				relativeLayoutEndRideCustomerAmount.setVisibility(View.GONE);
 
@@ -2385,10 +2407,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 			else{
 				mapLayout.setVisibility(View.VISIBLE);
-				RelativeLayoutDailyHours.setVisibility(View.VISIBLE);
-				linearLayout_DEI.setVisibility(View.VISIBLE);
 				endRideReviewRl.setVisibility(View.GONE);
-				topRl.setBackgroundColor(getResources().getColor(R.color.bg_grey));
 
 			}
 
@@ -5281,8 +5300,62 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+	public void submitFeedbackToDriverAsync(final Activity activity, String engagementId, final int givenRating) {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
+				DialogPopup.showLoadingDialog(activity, "Loading...");
 
+				RequestParams params = new RequestParams();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("given_rating", "" + givenRating);
+				params.put("engagement_id", engagementId);
+				params.put("customer_id", Data.dCustomerId);
+
+				Log.i("params", "=" + params);
+
+				AsyncHttpClient client = Data.getClient();
+				client.post(Data.SERVER_URL + "/rate_the_customer", params,
+						new CustomAsyncHttpResponseHandler() {
+							private JSONObject jObj;
+
+							@Override
+							public void onFailure(Throwable arg3) {
+								Log.e("request fail", arg3.toString());
+								DialogPopup.dismissLoadingDialog();
+								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+							}
+
+							@Override
+							public void onSuccess(String response) {
+								Log.i("Server response", "response = " + response);
+								try {
+									jObj = new JSONObject(response);
+									int flag = jObj.getInt("flag");
+									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+										Toast.makeText(activity, "Thank you for your valuable feedback", Toast.LENGTH_SHORT).show();
+
+									} else {
+										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+									}
+								} catch (Exception exception) {
+									exception.printStackTrace();
+									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								}
+								DialogPopup.dismissLoadingDialog();
+							}
+						});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
 
 //	Retrofit
 
