@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -273,14 +272,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		
 		try {																						// to get AppVersion, OS version, country code and device name
-			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			Data.appVersion = pInfo.versionCode;
+			Data.appVersion = Utils.getAppVersion(this);
 			Log.i("appVersion", Data.appVersion + "..");
 			Data.osVersion = android.os.Build.VERSION.RELEASE;
 			Log.i("osVersion", Data.osVersion + "..");
 			Data.country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry(Locale.getDefault());
 			Log.i("countryCode", Data.country + "..");
-			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
+			Data.deviceName = Utils.getDeviceName();
 			Log.i("deviceName", Data.deviceName + "..");
 
 			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);

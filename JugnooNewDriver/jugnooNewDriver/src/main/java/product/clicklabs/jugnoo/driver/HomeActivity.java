@@ -122,6 +122,7 @@ import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -1607,8 +1608,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							map.setInfoWindowAdapter(customIW);
 
 
-							//TODO 30.7500  76.7800
-	//						updateDropLatLngandPath(new LatLng(30.7500,76.7800));
 
 							return false;
 						}
@@ -2706,6 +2705,33 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					cancelMapAnimateAndUpdateRideDataTimer();
 					cancelStationPathUpdateTimer();
 
+			}
+
+			try {
+				if(DriverScreenMode.D_ARRIVED == mode) {
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
+
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, Data.userData.accessToken);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, Data.dEngagementId);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, Data.dCustomerId);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, ""+Data.assignedCustomerInfo.referenceId);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, ""+Data.assignedCustomerInfo.requestlLatLng.latitude);
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, ""+Data.assignedCustomerInfo.requestlLatLng.longitude);
+
+					//TODO to fetch from server
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, ""+Data.userData.driverArrivalDistance);
+				} else{
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, -1);
+
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 			updateReceiveRequestsFlag();
@@ -3851,6 +3877,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("engagement_id", Data.dEngagementId);
 			params.put("latitude", ""+Data.latitude);
 			params.put("longitude", "" + Data.longitude);
+
+			params.put("device_name", Utils.getDeviceName());
+			params.put("imei", DeviceUniqueID.getUniqueId(this));
+			params.put("app_version", "" + Utils.getAppVersion(this));
 
 			if(Data.openedDriverRideRequest != null){
 				params.put("reference_id", ""+Data.openedDriverRideRequest.referenceId);
@@ -6049,7 +6079,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public boolean endRideGPSCorrection(BusinessType businessType){
-		//TODO end ride location check
 		try {
 			if (distanceUpdateFromService) {
 				Location locationToUse;
@@ -7341,6 +7370,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
+
+
+
 	@Override
 	public void onStationChangedPushReceived() {
 		runOnUiThread(new Runnable() {
@@ -7519,5 +7551,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						  }
 					  }
 		);
+	}
+
+
+	@Override
+	public void markArrivedInterrupt(final LatLng latLng) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				GCMIntentService.clearNotifications(activity);
+				driverMarkArriveRideAsync(activity, latLng);
+			}
+		});
 	}
 }

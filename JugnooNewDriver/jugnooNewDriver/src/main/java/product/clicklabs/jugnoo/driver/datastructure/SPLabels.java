@@ -42,6 +42,16 @@ public class SPLabels {
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 
-    public static final String HEAT_MAP_RESPONSE = "heatmapresponse";
 	public static final String CUSTOM_SERVER_URL = "customServer";
+
+	public static final String DRIVER_SCREEN_MODE = "driverScreenMode";
+	public static final String DRIVER_ACCESS_TOKEN = "driverAccessToken";
+	public static final String DRIVER_ENGAGEMENT_ID = "driverEngagementId";
+	public static final String DRIVER_CUSTOMER_ID = "driverCustomerId";
+	public static final String DRIVER_REFERENCE_ID = "driverReferenceId";
+    public static final String DRIVER_C_PICKUP_LATITUDE = "driverCPickupLatitude";
+    public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
+    public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
+
+
 }
