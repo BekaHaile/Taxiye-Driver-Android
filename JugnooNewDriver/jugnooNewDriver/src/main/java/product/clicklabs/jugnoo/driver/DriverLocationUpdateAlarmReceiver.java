@@ -19,7 +19,7 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-//		Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
+		Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
 		String userMode = Database2.getInstance(context).getUserMode();
 		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
 	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);

@@ -164,7 +164,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
-	RelativeLayout inviteFriendRl;
+	RelativeLayout inviteFriendRl, driverRatingRl;
 	TextView inviteFriendText;
 
 	RelativeLayout bookingsRl;
@@ -531,6 +531,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
+			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -2213,8 +2214,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
-			ratingBarFeedbackSide.setRating((float) Math.floor( Data.userData.showDriverRating));
-			ratingValue.setText(""+decimalFormat.format(Data.userData.showDriverRating));
+			if(Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6 ) {
+				driverRatingRl.setVisibility(View.VISIBLE);
+				ratingBarFeedbackSide.setRating((float) Data.userData.showDriverRating);
+				ratingValue.setText("" + new DecimalFormat("#.#").format(Data.userData.showDriverRating));
+			}
+			else {
+				driverRatingRl.setVisibility(View.GONE);
+			}
 
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2440,6 +2447,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					cancelMapAnimateAndUpdateRideDataTimer();
 
 					initializeStationDataProcedure();
+
 
 					break;
 
@@ -2689,8 +2697,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					cancelStationPathUpdateTimer();
-
-
 
 					break;
 
