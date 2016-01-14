@@ -74,6 +74,7 @@
 	<string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
 
 	<string name="cancel">Cancel</string>
+	<string name="retry">Retry</string>
 
 	<string name="select_language">Select Language</string>
 	<string name="enter_phone_number">Enter Phone No.</string>
@@ -196,13 +197,17 @@
 	<string name="profile">Profile</string>
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
-
-
-
-
-
-
-
+	<string name="local_leaderboard">LOCAL</string>
+	<string name="global_leaderboard">GLOBAL</string>
+	<string name="daily_leaderboard">Daily</string>
+	<string name="weekly_leaderboard">Weekly</string>
+	<string name="lb_rank">Rank</string>
+	<string name="lb_name">Name</string>
+	<string name="lb_no_downloads">No. of Downloads</string>
+	<string name="number_of_downloads">No. of Downloads</string>
+	<string name="number_of_first_rides">Number of First Rides Taken</string>
+	<string name="money_earned">Money Earned from Referrals</string>
+	<string name="data_effective_format">*Data effective from %s</string>
 
 
 	<string-array name="CountryCodes" >

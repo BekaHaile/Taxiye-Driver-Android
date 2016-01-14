@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -21,7 +20,6 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
@@ -218,7 +216,7 @@ public class GCMIntentService extends IntentService {
 				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
-				Intent intentCanc = new Intent(context, ShareActivity.class);
+				Intent intentCanc = new Intent(context, ShareActivity1.class);
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
 				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

@@ -24,6 +24,7 @@
 
 
     <color name="black_text_grey">#4C4C4C</color>
+    <color name="leaderboard_activity_text_color">#9D9D9D</color>
    
    
    
@@ -61,6 +62,8 @@
     
     <color name="yellow_jugnoo">#FAA31C</color>
     <color name="musturd_jugnoo">#FFAC00</color>
+    <color name="grey_leader">#54585d</color>
+    <color name="blue_leader">#4cc1d2</color>
 
 
 
@@ -101,6 +104,20 @@
     <color name="green_transaction_type">#46B82F</color>
     
     <color name="dialog_border_color">#AA7E7D78</color>
+
+    <!-- share lb colors-->
+    <color name="grey_lb_list">#f6f6f6</color>
+    <color name="white_60">#9AFFFFFF</color>
+    <color name="white_40">#66FFFFFF</color>
+    <color name="white_20">#33FFFFFF</color>
+
+
+    <integer-array name="gplus_colors">
+        <item>@color/yellow_jugnoo</item>
+        <item>@color/transparent</item>
+        <item>@color/yellow_jugnoo</item>
+        <item>@color/transparent</item>
+    </integer-array>
     
    
 </resources>
