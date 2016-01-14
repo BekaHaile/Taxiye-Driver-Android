@@ -1,10 +1,12 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -169,22 +171,22 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 
 	}
 
@@ -422,6 +424,35 @@ public class Utils {
 		}
 		return telerickshawDriver;
 
+	}
+
+
+
+	public static boolean isServiceRunning(Context context, Class serviceClass) {
+		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if (serviceClass.getName().equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+
+	public static String getDeviceName(){
+		return (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
+	}
+
+	public static int getAppVersion(Context context){
+		PackageInfo pInfo = null;
+		try {
+			pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			return pInfo.versionCode;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 

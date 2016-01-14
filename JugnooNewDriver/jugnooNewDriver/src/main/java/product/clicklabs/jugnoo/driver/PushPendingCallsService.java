@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -36,7 +38,13 @@ public class PushPendingCallsService extends Service {
     public void onStart(Intent intent, int startId) {
         try{
         	Log.i("PushPendinsCallsService started", "=======");
-        	pushAPIs(this);
+
+			new Timer().schedule(new TimerTask() {
+				@Override
+				public void run() {
+					pushAPIs(PushPendingCallsService.this);
+				}
+			}, 30000);
         } catch(Exception e){
         	e.printStackTrace();
         }
@@ -107,7 +115,7 @@ public class PushPendingCallsService extends Service {
 		restartService.setPackage(getPackageName());
 		PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
 		AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-		alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + (1 * 30000), restartServicePI);
+		alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + (60000), restartServicePI);
     }
     
     
@@ -123,6 +131,8 @@ public class PushPendingCallsService extends Service {
     
 	public void startAPI(Context context, PendingAPICall pendingAPICall) {
 		if (AppStatus.getInstance(context).isOnline(context)) {
+			HttpRequester.TIMEOUT_CONNECTION = 30000;
+			HttpRequester.TIMEOUT_SOCKET = 30000;
 			HttpRequester simpleJSONParser = new HttpRequester();
 			String result = simpleJSONParser.getJSONFromUrlParams(pendingAPICall.url, pendingAPICall.nameValuePairs);
 			Log.e("result in pendingAPICall ", "=" + pendingAPICall + " and result = "+ result);

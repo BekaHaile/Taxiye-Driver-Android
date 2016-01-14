@@ -107,8 +107,7 @@ public class Database2 {																	// class for handling database related 
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
 	
-	
-	
+
 	public static final String ON = "on", OFF = "off";
 	
 	private static final String TABLE_METERING_STATE = "table_metering_state";

@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.squareup.okhttp.internal.Util;
+
 public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 
 	private static final String SEND_LOCATION = "product.clicklabs.jugnoo.driver.SEND_LOCATION";
@@ -49,6 +51,17 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 				finally{
 				}
 			}
+			Log.writePathLogToFile("service_log",
+					"DriverLocationUpdateAlarmReceiver onReceive userMode=" + Database2.getInstance(context).getUserMode()
+							+ " and DriverLocationUpdateService running=" + Utils.isServiceRunning(context, DriverLocationUpdateService.class));
+			if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
+				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
+					Log.writePathLogToFile("service_log",
+							"DriverLocationUpdateAlarmReceiver onReceive gone in");
+					new DriverServiceOperations().startDriverService(context);
+				}
+			}
+
 		}
 		else{
 			new DriverServiceOperations().stopService(context);
