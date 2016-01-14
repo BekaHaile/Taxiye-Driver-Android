@@ -9,17 +9,21 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.SmsManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -258,7 +262,7 @@ public class ShareActivity extends Activity {
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_share_enter_number);
 
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
 			new ASSL(activity, frameLayout, 1134, 720, true);
 
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
@@ -315,8 +319,31 @@ public class ShareActivity extends Activity {
 					dialog.dismiss();
 				}
 			});
+			customerNumber.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				@Override
+				public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+					int result = actionId & EditorInfo.IME_MASK_ACTION;
+					switch (result) {
+						case EditorInfo.IME_ACTION_DONE:
+							btnOk.performClick();
+							break;
+
+						case EditorInfo.IME_ACTION_NEXT:
+							break;
+
+						default:
+					}
+					return true;
+				}
+			});
 
 			dialog.show();
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					Utils.showSoftKeyboard(activity, customerNumber);
+				}
+			}, 200);
 
 		} catch (Exception e) {
 			e.printStackTrace();
