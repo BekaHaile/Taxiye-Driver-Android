@@ -49,11 +49,14 @@ public class DriverLocationDispatcher {
 						nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
 						nameValuePairs.add(new BasicNameValuePair("latitude", "" + location.getLatitude()));
 						nameValuePairs.add(new BasicNameValuePair("longitude", "" + location.getLongitude()));
+						nameValuePairs.add(new BasicNameValuePair("bearing", "" + location.getBearing()));
 						nameValuePairs.add(new BasicNameValuePair("device_token", deviceToken));
 						nameValuePairs.add(new BasicNameValuePair("location_accuracy",""+ location.getAccuracy()));
 						nameValuePairs.add(new BasicNameValuePair("pushy_token", pushyToken));
 
-			
+						Log.i("bearing", String.valueOf(location.getBearing()));
+//						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
+
 						HttpRequester simpleJSONParser = new HttpRequester();
 						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
 									
