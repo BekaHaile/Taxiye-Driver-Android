@@ -179,6 +179,16 @@
                         android:layout_marginLeft="40px"
                         android:background="@drawable/mylocation_btn_selector"
                         android:tag="mwar" />
+
+                    <!--<Button-->
+                        <!--android:id="@+id/driverRequestAcceptMyLocationBtn2"-->
+                        <!--android:layout_width="80px"-->
+                        <!--android:layout_height="80px"-->
+                        <!--android:layout_above="@+id/driverAcceptRideBtn"-->
+                        <!--android:layout_marginBottom="27px"-->
+                        <!--android:layout_marginLeft="120px"-->
+                        <!--android:background="@drawable/mylocation_btn_selector"-->
+                        <!--android:tag="mwar" />-->
                 </RelativeLayout>
 
                 <!-- engaged layout-->
@@ -187,7 +197,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone" >
+                    android:visibility="visible" >
 
                     <!-- customer info layout -->
                     <LinearLayout
@@ -364,6 +374,17 @@
                         android:tag="mwar"
                         android:visibility="gone" />
 
+                    <Button
+                        android:id="@+id/driverRequestAcceptMyLocationBtn2"
+                        android:layout_width="80px"
+                        android:layout_height="80px"
+                        android:layout_below="@+id/driverPassengerInfoRl"
+                        android:layout_marginTop="27px"
+                        android:layout_marginLeft="40px"
+                        android:background="@drawable/navigation_blue"
+                        android:tag="mwar" />
+
+
                     <!-- start ride layout-->
                     <RelativeLayout
                         android:id="@+id/driverStartRideMainRl"
@@ -442,6 +463,7 @@
                             android:tag="mwar"
                             android:layout_above="@+id/driverInRideInnerRl"
                             />
+
 
                         <ImageView
                             android:layout_width="match_parent"
@@ -764,7 +786,7 @@
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
                 android:layout_marginTop="90px"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
 
