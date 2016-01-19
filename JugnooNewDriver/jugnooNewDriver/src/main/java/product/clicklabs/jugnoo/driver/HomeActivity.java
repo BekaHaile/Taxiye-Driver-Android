@@ -117,6 +117,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
@@ -2149,6 +2150,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 				mapIntent.setPackage("com.google.android.apps.maps");
 				startActivity(mapIntent);
+				Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+				startService(intent);
 			}
 			else{
 				Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
