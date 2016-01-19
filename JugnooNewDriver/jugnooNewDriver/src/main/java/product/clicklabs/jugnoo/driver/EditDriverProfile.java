@@ -21,23 +21,15 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
-import product.clicklabs.jugnoo.driver.datastructure.UserData;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 /**
@@ -47,7 +39,7 @@ public class EditDriverProfile extends Activity {
 	LinearLayout relative;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;
-	ImageView editIcon1, editIcon2;
+	ImageView imageViewEditName, imageViewEditPhone;
 	TextView title;
 	ScrollView scrollView;
 
@@ -57,7 +49,6 @@ public class EditDriverProfile extends Activity {
 	ImageView profileImg, imageViewTitleBarDEI;
 
 
-	public ProfileInfo openedProfileInfo;
 
 	@Override
 	protected void onStart() {
@@ -81,7 +72,7 @@ public class EditDriverProfile extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_profile_screen);
+		setContentView(R.layout.activty_edit_driver_profile);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
@@ -89,8 +80,8 @@ public class EditDriverProfile extends Activity {
 		new ASSL(this, relative, 1134, 720, false);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
-		editIcon1 = (ImageView) findViewById(R.id.editIcon1);
-		editIcon2 = (ImageView) findViewById(R.id.editIcon2);
+		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
+		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
 
@@ -113,32 +104,7 @@ public class EditDriverProfile extends Activity {
 		});
 
 
-
-		editTextUserName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					scrollView.smoothScrollTo(0, editTextUserName.getTop());
-				}
-				editTextUserName.setError(null);
-			}
-		});
-
-
-		editTextPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (hasFocus) {
-					scrollView.smoothScrollTo(0, editTextPhone.getTop());
-				}
-				editTextPhone.setError(null);
-			}
-		});
-
-
-		editIcon1.setOnClickListener(new View.OnClickListener() {
+		imageViewEditName.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -165,25 +131,59 @@ public class EditDriverProfile extends Activity {
 			}
 		});
 
+		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editTextPhone.setError(null);
+				if (editTextPhone.isEnabled()) {
+					String phoneChanged = editTextPhone.getText().toString().trim();
+					if ("".equalsIgnoreCase(phoneChanged)) {
+						editTextPhone.requestFocus();
+						editTextPhone.setError("Phone number can't be empty");
+					} else {
+						phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
+						if(Utils.validPhoneNumber(phoneChanged)){
+							phoneChanged = "+91"+phoneChanged;
+							if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged)) {
+								editTextPhone.requestFocus();
+								editTextPhone.setError("Changed phone number is same as the previous one.");
+							} else {
+								updateUserProfileAPI(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
+							}
+						}
+						else{
+							editTextPhone.requestFocus();
+							editTextPhone.setError("Phone number is invalid");
+						}
+					}
+				} else {
+					editTextPhone.requestFocus();
+					editTextPhone.setEnabled(true);
+					editTextPhone.setSelection(editTextPhone.getText().length());
+					Utils.showSoftKeyboard(EditDriverProfile.this, editTextPhone);
+				}
+			}
+		});
+
 		editTextUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 			@Override
 			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				int result = actionId & EditorInfo.IME_MASK_ACTION;
-				switch (result) {
-					case EditorInfo.IME_ACTION_DONE:
-						editIcon1.performClick();
-						break;
-
-					case EditorInfo.IME_ACTION_NEXT:
-						editIcon1.performClick();
-						break;
-
-					default:
-				}
+				imageViewEditName.performClick();
 				return true;
 			}
 		});
+		editTextPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				imageViewEditPhone.performClick();
+				return true;
+			}
+		});
+
+		setUserData();
+
 	}
 
 
@@ -213,6 +213,8 @@ public class EditDriverProfile extends Activity {
 
 	public void setUserData() {
 		try {
+			editTextUserName.setEnabled(false);
+			editTextPhone.setEnabled(false);
 			try {
 				Picasso.with(this).load(Data.userData.userImage)
 						.transform(new CircleTransform())
@@ -220,9 +222,10 @@ public class EditDriverProfile extends Activity {
 			} catch (Exception e) {
 			}
 
-			if (openedProfileInfo != null) {
-				editTextUserName.setText("" + openedProfileInfo.textViewDriverName);
-
+			if (Data.userData != null) {
+				editTextUserName.setText(Data.userData.userName);
+				textViewDriverEmailId.setText(Data.userData.userName);
+				editTextPhone.setText(Data.userData.phoneNo);
 			}
 
 
@@ -232,76 +235,81 @@ public class EditDriverProfile extends Activity {
 	}
 
 	public void updateUserProfileAPI(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
-		if(AppStatus.getInstance(activity).isOnline(activity)) {
+		try {
+			if(AppStatus.getInstance(activity).isOnline(activity)) {
 
-			DialogPopup.showLoadingDialog(activity, "Updating...");
+				DialogPopup.showLoadingDialog(activity, "Updating...");
 
-			RequestParams params = new RequestParams();
+				RequestParams params = new RequestParams();
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("is_access_token_new", "1");
+				params.put("access_token", Data.userData.accessToken);
+				params.put("is_access_token_new", "1");
+				params.put("login_type", Data.LOGIN_TYPE);
+				params.put("client_id", Data.CLIENT_ID);
 
-			if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
-				params.put("updated_phone_no", updatedField);
-			}
-			else{
-				params.put("updated_user_name", updatedField);
-			}
+				if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
+					params.put("updated_phone_no", updatedField);
+				}
+				else{
+					params.put("updated_user_name", updatedField);
+				}
 
 
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/update_user_profile", params,
-					new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
+				AsyncHttpClient client = Data.getClient();
+				client.post(Data.SERVER_URL + "/update_user_profile", params,
+						new CustomAsyncHttpResponseHandler() {
+							private JSONObject jObj;
 
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
+							@Override
+							public void onFailure(Throwable arg3) {
+								Log.e("request fail", arg3.toString());
+								DialogPopup.dismissLoadingDialog();
+								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+							}
 
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-							DialogPopup.dismissLoadingDialog();
-							try {
-								jObj = new JSONObject(response);
-								int flag = jObj.getInt("flag");
-								if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-									if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-										String error = jObj.getString("error");
-										DialogPopup.dialogBanner(activity, error);
-									}
-									else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-										String message = jObj.getString("message");
-										if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
-											Intent intent = new Intent(activity, OTPConfirmScreen.class);
-											intent.putExtra("phone_no_verify", updatedField);
-											activity.startActivity(intent);
-											activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							@Override
+							public void onSuccess(String response) {
+								Log.i("Server response", "response = " + response);
+								DialogPopup.dismissLoadingDialog();
+								try {
+									jObj = new JSONObject(response);
+									int flag = jObj.getInt("flag");
+									String message = JSONParser.getServerMessage(jObj);
+									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+										if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+											DialogPopup.dialogBanner(activity, message);
+										}
+										else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+											if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
+												Intent intent = new Intent(activity, PhoneEditOTPConfirmScreen.class);
+												intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
+												activity.startActivity(intent);
+												activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+											}
+											else{
+												DialogPopup.dialogBanner(activity, message);
+												Data.userData.userName = updatedField;
+												editTextUserName.setEnabled(false);
+												editTextUserName.setText(Data.userData.userName);
+											}
 										}
 										else{
-											DialogPopup.dialogBanner(activity, message);
-											Data.userData.userName = updatedField;
-											editTextUserName.setEnabled(false);
-											editTextUserName.setText(Data.userData.userName);
+											DialogPopup.alertPopup(activity, "", message);
 										}
 									}
-									else{
-										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-									}
+								}  catch (Exception exception) {
+									exception.printStackTrace();
+									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+									DialogPopup.dismissLoadingDialog();
 								}
-							}  catch (Exception exception) {
-								exception.printStackTrace();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-								DialogPopup.dismissLoadingDialog();
 							}
-						}
-					});
-		}
-		else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+						});
+			}
+			else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

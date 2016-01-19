@@ -167,6 +167,18 @@
             android:screenOrientation="portrait" >
         </activity>
 
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.EditDriverProfile"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.PhoneEditOTPConfirmScreen"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
 
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"

@@ -162,6 +162,7 @@
                 android:textSize="40px" />
 
            <RelativeLayout
+               android:id="@+id/layoutEditProfile"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_below="@+id/textViewRankOverall">

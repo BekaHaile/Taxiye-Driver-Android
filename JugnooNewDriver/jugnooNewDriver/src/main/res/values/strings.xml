@@ -197,7 +197,7 @@
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
-	<string name="INFO">INFO</string>
+	<string name="info">INFO</string>
 
 
 	<string-array name="CountryCodes" >

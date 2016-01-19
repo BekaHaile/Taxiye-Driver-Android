@@ -128,7 +128,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginBottom="32px"
                 android:layout_marginLeft="42px"
-                android:text="@string/INFO"
+                android:text="@string/info"
                 android:textColor="@color/blue_btn_pressed"
                 android:textSize="48px"/>
 
@@ -161,7 +161,7 @@
 
 
                 <ImageView
-                    android:id="@+id/editIcon1"
+                    android:id="@+id/imageViewEditName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -192,7 +192,9 @@
                     android:layout_marginLeft="42px"
                     android:text="@string/email_id"
                     android:textColor="@color/black_grey"
-                    android:textSize="40px"/>
+                    android:textSize="40px"
+                    android:singleLine="true"
+                    />
 
 
             </RelativeLayout>
@@ -214,11 +216,11 @@
                     android:layout_height="70px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
-                    android:layout_toLeftOf="@+id/editIcon2"
+                    android:layout_toLeftOf="@+id/imageViewEditPhone"
                     android:background="#0000"
                     android:hint="Phone Number"
                     android:inputType="number"
-                    android:maxLength="10"
+                    android:maxLength="14"
                     android:singleLine="true"
                     android:textColor="@color/black_text"
                     android:textColorHint="@color/black_text_alpha"
@@ -226,7 +228,7 @@
                     android:textSize="42px"/>
 
                 <ImageView
-                    android:id="@+id/editIcon2"
+                    android:id="@+id/imageViewEditPhone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
