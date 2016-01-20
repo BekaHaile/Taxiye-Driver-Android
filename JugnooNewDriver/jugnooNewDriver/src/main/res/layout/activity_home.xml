@@ -478,7 +478,7 @@
                             android:layout_height="280px"
                             android:background="@color/white_translucent"
                             android:splitMotionEvents="false"
-                            android:layout_above="@+id/inrideFareInfoRl"
+                            android:layout_alignParentBottom="true"
                             >
 
                             <!-- reached distance km, time, fare layout -->
@@ -666,7 +666,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:background="@color/white_translucent"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             >
 
                             <ImageView
@@ -800,7 +800,8 @@
                         android:id="@+id/linearLayoutEndRideMain"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        >
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -1837,6 +1838,7 @@
                             android:layout_marginLeft="45px"
                             android:src="@drawable/oval"
                             android:tag="mwar"
+                            android:visibility="gone"
                             />
 
 
@@ -1872,7 +1874,7 @@
 
                 <LinearLayout
                     android:id="@+id/driverImageRL"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
@@ -1907,12 +1909,13 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10px"
                         android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
                         >
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
+                            android:layout_gravity="center_horizontal"
                             android:orientation="vertical"
                             >
 
@@ -1920,7 +1923,7 @@
                                 android:id="@+id/userName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_marginTop="15px"
                                 android:text="Dr"
                                 android:textColor="@color/white"
@@ -1928,20 +1931,22 @@
 
 
                             <RelativeLayout
+                                android:id="@+id/driverRatingRl"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal">
+                                android:layout_gravity="center_horizontal"
+                                android:visibility="gone">
 
                                 <RatingBar
                                     android:id="@+id/ratingBarFeedbackSide"
-                                    style="@style/RatingBarWhite"
+                                    android:progressDrawable="@drawable/rating_star_white_selector"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:isIndicator="true"
+                                    android:visibility="visible"
                                     android:layout_marginTop="15px"
                                     android:gravity="center"
-                                    android:numStars="5"
-                                    android:rating="1"
-                                    android:stepSize="1.0"
+                                    android:stepSize="0.5"
                                     />
 
                                 <ImageView
