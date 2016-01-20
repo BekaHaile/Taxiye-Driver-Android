@@ -68,7 +68,6 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
-import com.squareup.picasso.BlurTransform;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
@@ -116,7 +115,6 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -254,7 +252,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	// Driver Request Accept layout
 	RelativeLayout driverRequestAcceptLayout;
 	TextView textViewBeforeAcceptRequestInfo;
-	Button driverRequestAcceptBackBtn, driverAcceptRideBtn, driverCancelRequestBtn, driverRequestAcceptMyLocationBtn, driverRequestAcceptMyLocationBtn2;
+	Button driverRequestAcceptBackBtn, driverAcceptRideBtn, driverCancelRequestBtn, driverRequestAcceptMyLocationBtn, buttonDriverNavigation;
 
 
 	// Driver Engaged layout
@@ -619,7 +617,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
 			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
-			driverRequestAcceptMyLocationBtn2 = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn2);
+			buttonDriverNavigation = (Button) findViewById(R.id.buttonDriverNavigation);
 
 
 			// Driver engaged layout
@@ -1629,7 +1627,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
-				driverRequestAcceptMyLocationBtn2.setOnClickListener(startNavigation);
+				buttonDriverNavigation.setOnClickListener(startNavigation);
 				driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
 
@@ -3057,10 +3055,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					if(DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode){
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						buttonDriverNavigation.setVisibility(View.GONE);
 						updateCustomerPickupAddress(Data.assignedCustomerInfo.requestlLatLng);
 					}
 					else{
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						buttonDriverNavigation.setVisibility(View.GONE);
+						if(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null){
+							updateCustomerPickupAddress(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng);
+						}
 					}
 
 					textViewAfterAcceptRequestInfo.setVisibility(View.GONE);
@@ -3106,9 +3109,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
-	String address;
+	String address = "";
 	private void updateCustomerPickupAddress(final LatLng latLng){
-		textViewCustomerPickupAddress.setText("Loading...");
+		if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
+			textViewCustomerPickupAddress.setText("Loading...");
+		}
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -3119,6 +3124,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						public void run() {
 							if(DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode){
 								textViewCustomerPickupAddress.setText(address);
+								if("".equalsIgnoreCase(address)){
+									buttonDriverNavigation.setVisibility(View.GONE);
+								} else{
+									buttonDriverNavigation.setVisibility(View.VISIBLE);
+								}
+							} else{
+								if("".equalsIgnoreCase(address)){
+									buttonDriverNavigation.setVisibility(View.GONE);
+								} else{
+									buttonDriverNavigation.setVisibility(View.VISIBLE);
+								}
 							}
 						}
 					});
@@ -7443,6 +7459,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())) {
 			((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = dropLatLng;
 			startCustomerPathUpdateTimer();
+			if(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null){
+				updateCustomerPickupAddress(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng);
+			}
 		}
 	}
 

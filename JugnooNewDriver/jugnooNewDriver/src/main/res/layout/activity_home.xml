@@ -375,13 +375,13 @@
                         android:visibility="gone" />
 
                     <Button
-                        android:id="@+id/driverRequestAcceptMyLocationBtn2"
+                        android:id="@+id/buttonDriverNavigation"
                         android:layout_width="80px"
                         android:layout_height="80px"
                         android:layout_below="@+id/driverPassengerInfoRl"
                         android:layout_marginTop="27px"
                         android:layout_marginLeft="40px"
-                        android:background="@drawable/navigation_blue"
+                        android:background="@drawable/navigation_blue_boarderd2"
                         android:tag="mwar" />
 
 

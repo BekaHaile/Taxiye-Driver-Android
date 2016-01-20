@@ -285,6 +285,7 @@ public class EditDriverProfile extends Activity {
 												intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
 												activity.startActivity(intent);
 												activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+												finish();
 											}
 											else{
 												DialogPopup.dialogBanner(activity, message);
