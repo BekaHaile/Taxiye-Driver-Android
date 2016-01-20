@@ -21,15 +21,25 @@ import com.loopj.android.http.RequestParams;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 /**
@@ -119,7 +129,7 @@ public class EditDriverProfile extends Activity {
 							editTextUserName.requestFocus();
 							editTextUserName.setError("Changed Username is same as the previous one.");
 						} else {
-							updateUserProfileAPI(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
+							updateUserProfileAPIRetroo(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
 						}
 					}
 				} else {
@@ -148,7 +158,7 @@ public class EditDriverProfile extends Activity {
 								editTextPhone.requestFocus();
 								editTextPhone.setError("Changed phone number is same as the previous one.");
 							} else {
-								updateUserProfileAPI(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
+								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
 							}
 						}
 						else{
@@ -234,83 +244,72 @@ public class EditDriverProfile extends Activity {
 		}
 	}
 
-	public void updateUserProfileAPI(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
-		try {
-			if(AppStatus.getInstance(activity).isOnline(activity)) {
-
-				DialogPopup.showLoadingDialog(activity, "Updating...");
-
-				RequestParams params = new RequestParams();
-
-				params.put("access_token", Data.userData.accessToken);
-				params.put("is_access_token_new", "1");
-				params.put("login_type", Data.LOGIN_TYPE);
-				params.put("client_id", Data.CLIENT_ID);
-
-				if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
-					params.put("updated_phone_no", updatedField);
-				}
-				else{
-					params.put("updated_user_name", updatedField);
-				}
 
 
-				AsyncHttpClient client = Data.getClient();
-				client.post(Data.SERVER_URL + "/update_user_profile", params,
-						new CustomAsyncHttpResponseHandler() {
-							private JSONObject jObj;
+	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
+		if(AppStatus.getInstance(activity).isOnline(activity)) {
 
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								DialogPopup.dismissLoadingDialog();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+			DialogPopup.showLoadingDialog(activity, "Updating...");
+
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("access_token", Data.userData.accessToken);
+			params.put("is_access_token_new", "1");
+			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("client_id", Data.CLIENT_ID);
+
+			if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
+				params.put("updated_phone_no", updatedField);
+			} else {
+				params.put("updated_user_name", updatedField);
+			}
+
+			RestClient.getApiServices().updateUserProfileAPIRetroo(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					DialogPopup.dismissLoadingDialog();
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+								DialogPopup.dialogBanner(activity, message);
 							}
-
-							@Override
-							public void onSuccess(String response) {
-								Log.i("Server response", "response = " + response);
-								DialogPopup.dismissLoadingDialog();
-								try {
-									jObj = new JSONObject(response);
-									int flag = jObj.getInt("flag");
-									String message = JSONParser.getServerMessage(jObj);
-									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-										if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
-											DialogPopup.dialogBanner(activity, message);
-										}
-										else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-											if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
-												Intent intent = new Intent(activity, PhoneEditOTPConfirmScreen.class);
-												intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
-												activity.startActivity(intent);
-												activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-												finish();
-											}
-											else{
-												DialogPopup.dialogBanner(activity, message);
-												Data.userData.userName = updatedField;
-												editTextUserName.setEnabled(false);
-												editTextUserName.setText(Data.userData.userName);
-											}
-										}
-										else{
-											DialogPopup.alertPopup(activity, "", message);
-										}
-									}
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-									DialogPopup.dismissLoadingDialog();
+							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+								if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
+									Intent intent = new Intent(activity, PhoneEditOTPConfirmScreen.class);
+									intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
+									activity.startActivity(intent);
+									activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+									finish();
+								}
+								else{
+									DialogPopup.dialogBanner(activity, message);
+									Data.userData.userName = updatedField;
+									editTextUserName.setEnabled(false);
+									editTextUserName.setText(Data.userData.userName);
 								}
 							}
-						});
-			}
-			else {
-				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+							else{
+								DialogPopup.alertPopup(activity, "", message);
+							}
+						}
+					}  catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
 		}
 
 	}
