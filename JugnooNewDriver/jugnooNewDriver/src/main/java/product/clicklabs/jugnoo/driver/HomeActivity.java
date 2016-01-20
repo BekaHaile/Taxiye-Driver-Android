@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
@@ -116,6 +117,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
@@ -252,7 +254,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	// Driver Request Accept layout
 	RelativeLayout driverRequestAcceptLayout;
 	TextView textViewBeforeAcceptRequestInfo;
-	Button driverRequestAcceptBackBtn, driverAcceptRideBtn, driverCancelRequestBtn, driverRequestAcceptMyLocationBtn;
+	Button driverRequestAcceptBackBtn, driverAcceptRideBtn, driverCancelRequestBtn, driverRequestAcceptMyLocationBtn, driverRequestAcceptMyLocationBtn2;
 
 
 	// Driver Engaged layout
@@ -616,6 +618,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
 			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
+			driverRequestAcceptMyLocationBtn2 = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn2);
 
 
 			// Driver engaged layout
@@ -1587,43 +1590,36 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@Override
 					public boolean onMarkerClick(Marker arg0) {
 
-						if(arg0.getTitle().equalsIgnoreCase("pickup location")){
+						if (arg0.getTitle().equalsIgnoreCase("pickup location")) {
 
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Your Pickup Location", "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
-						}
-						else if(arg0.getTitle().equalsIgnoreCase("customer_current_location")){
+						} else if (arg0.getTitle().equalsIgnoreCase("customer_current_location")) {
 
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
 							map.setInfoWindowAdapter(customIW);
 
 							return true;
-						}
-
-						else if(arg0.getTitle().equalsIgnoreCase("start ride location")){
+						} else if (arg0.getTitle().equalsIgnoreCase("start ride location")) {
 
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Start Location", "");
 							map.setInfoWindowAdapter(customIW);
 
 
-
 							return false;
-						}
-						else if(arg0.getTitle().equalsIgnoreCase("driver position")){
+						} else if (arg0.getTitle().equalsIgnoreCase("driver position")) {
 
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Driver Location", "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
-						}
-						else if(arg0.getTitle().equalsIgnoreCase("station_marker")){
+						} else if (arg0.getTitle().equalsIgnoreCase("station_marker")) {
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
 							map.setInfoWindowAdapter(customIW);
 							return false;
-						}
-						else{
+						} else {
 							return true;
 						}
 					}
@@ -1632,6 +1628,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverRequestAcceptMyLocationBtn2.setOnClickListener(startNavigation);
 				driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
 
@@ -2144,9 +2141,23 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 	};
 
+	OnClickListener startNavigation = new OnClickListener() {
 
-
-
+		@Override
+		public void onClick(View v) {
+			if(myLocation != null){
+				Uri gmmIntentUri = Uri.parse("google.navigation:q="+address);
+				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+				mapIntent.setPackage("com.google.android.apps.maps");
+				startActivity(mapIntent);
+				Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+				startService(intent);
+			}
+			else{
+				Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
+			}
+		}
+	};
 
 
 
@@ -3089,14 +3100,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
-
+	String address;
 	private void updateCustomerPickupAddress(final LatLng latLng){
 		textViewCustomerPickupAddress.setText("Loading...");
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try{
-					final String address = MapUtils.getGAPIAddress(latLng, language);
+					address = MapUtils.getGAPIAddress(latLng, language);
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
