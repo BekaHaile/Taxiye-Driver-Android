@@ -3,8 +3,10 @@ package product.clicklabs.jugnoo.driver;
 /**
  * Created by Shankar on 12/1/2015.
  */
-public class Constants {
+public interface Constants {
 
-    public static final long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3; //in seconds
+    long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3; //in seconds
+
+    String PHONE_NO_VERIFY = "phone_no_verify";
 
 }

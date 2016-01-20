@@ -161,6 +161,32 @@
                 android:textColor="@color/white"
                 android:textSize="40px" />
 
+           <RelativeLayout
+               android:id="@+id/layoutEditProfile"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/textViewRankOverall">
+            <TextView
+                android:id="@+id/textViewEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="42px"
+                android:layout_marginTop="5px"
+                android:text="@string/Edit_profile"
+                android:textColor="@color/white"
+                android:textSize="40px" />
+
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="42px"
+                android:layout_height="42px"
+                android:layout_marginTop="5px"
+                android:layout_marginLeft="10px"
+                android:background="@drawable/edit_icon_white"
+                android:layout_toRightOf="@+id/textViewEditProfile"
+                android:tag="mwar"/>
+           </RelativeLayout>
 
         </RelativeLayout>
 
