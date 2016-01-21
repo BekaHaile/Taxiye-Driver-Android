@@ -65,6 +65,11 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		try {
+			textViewDriverName.setText(Data.userData.userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

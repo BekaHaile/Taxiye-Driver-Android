@@ -3321,6 +3321,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
 		fetchHeatMapData(HomeActivity.this);
+		stopService(new Intent(HomeActivity.this, GeanieView.class));
+
 
 	}
 

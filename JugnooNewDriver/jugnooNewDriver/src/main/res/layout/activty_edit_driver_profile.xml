@@ -35,34 +35,6 @@
             android:textColor="@color/white"
             android:textSize="48px"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20px"
-            android:layout_marginTop="15px"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewTitleBarDEI"
-                android:layout_width="53px"
-                android:layout_height="53px"
-                android:layout_marginRight="10px"
-                android:src="@drawable/ic_dei"
-                android:tag="mwar"
-                />
-
-            <TextView
-                android:id="@+id/textViewTitleBarDEI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="4.5"
-                android:textColor="@color/white"
-                android:textSize="38px"/>
-
-        </LinearLayout>
     </RelativeLayout>
 
 
@@ -115,6 +87,7 @@
 
 
         <LinearLayout
+            android:id="@+id/infoLLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/driverDetailsRL"
@@ -179,32 +152,6 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/grey_light_more"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="98px">
-
-                <TextView
-                    android:id="@+id/textViewDriverEmailId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:text="@string/email_id"
-                    android:textColor="@color/black_grey"
-                    android:textSize="40px"
-                    android:singleLine="true"
-                    />
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal3"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

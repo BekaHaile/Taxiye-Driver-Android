@@ -46,7 +46,7 @@ import rmn.androidscreenlibrary.ASSL;
  * Created by aneeshbansal on 14/01/16.
  */
 public class EditDriverProfile extends Activity {
-	LinearLayout relative;
+	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;
 	ImageView imageViewEditName, imageViewEditPhone;
@@ -54,10 +54,7 @@ public class EditDriverProfile extends Activity {
 	ScrollView scrollView;
 
 	EditText editTextUserName, editTextPhone;
-	TextView textViewDriverEmailId;
-
 	ImageView profileImg, imageViewTitleBarDEI;
-
 
 
 	@Override
@@ -85,6 +82,7 @@ public class EditDriverProfile extends Activity {
 		setContentView(R.layout.activty_edit_driver_profile);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
+		activity_profile_screen = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
 
 		new ASSL(this, relative, 1134, 720, false);
@@ -97,8 +95,6 @@ public class EditDriverProfile extends Activity {
 
 		editTextUserName = (EditText) findViewById(R.id.editTextUserName);
 		editTextUserName.setTypeface(Data.latoRegular(this));
-		textViewDriverEmailId = (TextView) findViewById(R.id.textViewDriverEmailId);
-		textViewDriverEmailId.setTypeface(Data.latoRegular(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		editTextPhone.setTypeface(Data.latoRegular(this));
 
@@ -127,6 +123,7 @@ public class EditDriverProfile extends Activity {
 					} else {
 						if (Data.userData.userName.equalsIgnoreCase(nameChanged)) {
 							editTextUserName.requestFocus();
+							editTextUserName.getOnFocusChangeListener();
 							editTextUserName.setError("Changed Username is same as the previous one.");
 						} else {
 							updateUserProfileAPIRetroo(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
@@ -152,16 +149,15 @@ public class EditDriverProfile extends Activity {
 						editTextPhone.setError("Phone number can't be empty");
 					} else {
 						phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
-						if(Utils.validPhoneNumber(phoneChanged)){
-							phoneChanged = "+91"+phoneChanged;
+						if (Utils.validPhoneNumber(phoneChanged)) {
+							phoneChanged = "+91" + phoneChanged;
 							if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged)) {
 								editTextPhone.requestFocus();
 								editTextPhone.setError("Changed phone number is same as the previous one.");
 							} else {
 								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
 							}
-						}
-						else{
+						} else {
 							editTextPhone.requestFocus();
 							editTextPhone.setError("Phone number is invalid");
 						}
@@ -192,8 +188,36 @@ public class EditDriverProfile extends Activity {
 			}
 		});
 
-		setUserData();
+		editTextUserName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					editTextUserName.setError(null);
+				}
+			}
+		});
+
+		editTextPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					editTextPhone.setError(null);
+				}
+			}
+		});
+
+		activity_profile_screen.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				editTextUserName.setError(null);
+				editTextPhone.setError(null);
+
+			}
+		});
+
+		setUserData();
 	}
 
 
@@ -205,7 +229,6 @@ public class EditDriverProfile extends Activity {
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
-		super.onBackPressed();
 	}
 
 
@@ -234,7 +257,6 @@ public class EditDriverProfile extends Activity {
 
 			if (Data.userData != null) {
 				editTextUserName.setText(Data.userData.userName);
-				textViewDriverEmailId.setText(Data.userData.userName);
 				editTextPhone.setText(Data.userData.phoneNo);
 			}
 
@@ -245,9 +267,8 @@ public class EditDriverProfile extends Activity {
 	}
 
 
-
 	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
-		if(AppStatus.getInstance(activity).isOnline(activity)) {
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 			DialogPopup.showLoadingDialog(activity, "Updating...");
 
@@ -274,30 +295,27 @@ public class EditDriverProfile extends Activity {
 						jObj = new JSONObject(jsonString);
 						int flag = jObj.getInt("flag");
 						String message = JSONParser.getServerMessage(jObj);
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(activity, message);
-							}
-							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
-								if(ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()){
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
 									Intent intent = new Intent(activity, PhoneEditOTPConfirmScreen.class);
 									intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
 									activity.startActivity(intent);
 									activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 									finish();
-								}
-								else{
+								} else {
 									DialogPopup.dialogBanner(activity, message);
 									Data.userData.userName = updatedField;
 									editTextUserName.setEnabled(false);
 									editTextUserName.setText(Data.userData.userName);
 								}
-							}
-							else{
+							} else {
 								DialogPopup.alertPopup(activity, "", message);
 							}
 						}
-					}  catch (Exception exception) {
+					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -306,8 +324,7 @@ public class EditDriverProfile extends Activity {
 
 				@Override
 				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
-					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
 				}
 			});
 		}
