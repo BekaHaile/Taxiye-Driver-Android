@@ -198,6 +198,12 @@
 	<string name="call_us">Call Us</string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
 	<string name="info">INFO</string>
+	<string name="Documents">Documents</string>
+	<string name="Document_type">Document type</string>
+	<string name="Requirement">Requirement</string>
+	<string name="add_image">ADD IMAGE</string>
+	<string name="status">Status</string>
+	<string name="Submit">Submit</string>
 
 
 	<string-array name="CountryCodes" >

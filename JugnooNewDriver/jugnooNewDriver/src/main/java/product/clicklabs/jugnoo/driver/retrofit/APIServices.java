@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -213,5 +214,11 @@ public interface APIServices {
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
+
+
+	@FormUrlEncoded
+	@POST("/make_driver_from_app")
+	void docRequest(@Field("access_token") String accessToken,
+						Callback<DocRequirementResponse> callback);
 
 }

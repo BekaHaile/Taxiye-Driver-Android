@@ -8,10 +8,12 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -25,6 +27,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -452,6 +455,30 @@ public class Utils {
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	public static File getStorageDirectory(Context context) {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+			return context.getExternalFilesDir(null);
+		else
+			return context.getFilesDir();
+	}
+
+	public static void saveImage(final Bitmap bitmap, final String saveToFile, Context context) {
+
+		File mImagefile = new File(Utils.getStorageDirectory(context), saveToFile);
+
+		if (mImagefile.exists()) {
+			mImagefile.delete();
+		}
+		try {
+			final FileOutputStream out = new FileOutputStream(mImagefile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+			out.flush();
+			out.close();
+		} catch (final Exception e) {
+			e.printStackTrace();
 		}
 	}
 
