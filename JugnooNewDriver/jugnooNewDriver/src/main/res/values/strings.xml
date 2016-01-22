@@ -186,6 +186,12 @@
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
 
+	<string name="Documents">Documents</string>
+	<string name="Document_type">Document type</string>
+	<string name="Requirement">Requirement</string>
+	<string name="add_image">ADD IMAGE</string>
+	<string name="Submit">Submit</string>
+
 
 	<string name="check_all">Check All</string>
 	<string name="uncheck_all">Uncheck All</string>

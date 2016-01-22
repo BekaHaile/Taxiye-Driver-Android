@@ -861,7 +861,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 			callUsRl.setOnClickListener(new OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
@@ -888,6 +887,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+//		Intent intent = new Intent(HomeActivity.this, DriverDocumentActivity.class);
+//		startActivity(intent);
 
 			languagePrefrencesRl.setOnClickListener(new OnClickListener() {
 

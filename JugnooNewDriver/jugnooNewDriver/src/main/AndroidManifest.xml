@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="product.clicklabs.jugnoo.driver"
-    android:versionCode="238"
-    android:versionName="2.3.8" >
+          xmlns:tools="http://schemas.android.com/tools"
+          package="product.clicklabs.jugnoo.driver"
+          android:versionCode="238"
+          android:versionName="2.3.8">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -53,6 +54,7 @@
         android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/jugnoo_icon"
+        tools:replace="android:icon"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
@@ -188,7 +190,22 @@
         <activity
             android:name=".InvoiceDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DriverDocumentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
+
+
+        <service
+            android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":DriverLocationUpdateService" >
+        </service>
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
@@ -335,12 +352,15 @@
 
         <activity
             android:name="com.nudgespot.notification.ReceiverActivity"
-            android:theme="@android:style/Theme.NoDisplay"></activity>
+            android:theme="@android:style/Theme.NoDisplay">
+        </activity>
 
         <service
             android:name=".pubnub.PubnubService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true">
+        </service>
+
     </application>
 
 </manifest>
