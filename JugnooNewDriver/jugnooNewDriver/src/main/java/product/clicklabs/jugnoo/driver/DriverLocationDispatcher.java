@@ -55,7 +55,7 @@ public class DriverLocationDispatcher {
 						nameValuePairs.add(new BasicNameValuePair("pushy_token", pushyToken));
 
 						Log.i("bearing", String.valueOf(location.getBearing()));
-//						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
+						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
 
 						HttpRequester simpleJSONParser = new HttpRequester();
 						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);

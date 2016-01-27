@@ -8,5 +8,6 @@ public interface Constants {
     long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3; //in seconds
 
     String PHONE_NO_VERIFY = "phone_no_verify";
+    public static final String MIME_TYPE = "application/octet-stream";
 
 }

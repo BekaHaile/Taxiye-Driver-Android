@@ -98,7 +98,7 @@ public class DocRequirementResponse {
 
 	public class DocumentData {
 
-		@SerializedName("doc_type")
+		@SerializedName("doc_type_text")
 		@Expose
 		private String docType;
 		@SerializedName("doc_type_num")

@@ -13,7 +13,13 @@ import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.http.Query;
+import retrofit.http.QueryMap;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -215,10 +221,15 @@ public interface APIServices {
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
 
-
 	@FormUrlEncoded
 	@POST("/make_driver_from_app")
 	void docRequest(@Field("access_token") String accessToken,
-						Callback<DocRequirementResponse> callback);
+					Callback<DocRequirementResponse> callback);
+
+	@Multipart
+	@POST("/service_cards")
+	void uploadImageToServer(@Part("image") TypedFile image,
+							 @QueryMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
 
 }
