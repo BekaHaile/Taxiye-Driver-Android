@@ -32,6 +32,7 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"
@@ -193,12 +194,6 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <activity
-            android:name=".DriverDocumentActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
-
 
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
@@ -324,6 +319,12 @@
             android:name=".BlankActivityForDialog"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.DriverDocumentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 
         <service android:name=".sticky.GeanieView" />
 

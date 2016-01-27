@@ -6,6 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -27,6 +30,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
@@ -36,17 +40,26 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RoundBorderTransform;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -54,6 +67,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedFile;
 import rmn.androidscreenlibrary.ASSL;
 
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
@@ -72,6 +86,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	AsyncHttpClient fetchRidesClient;
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
+	int index = 0;
 
 	UpdateDriverEarnings updateDriverEarnings;
 
@@ -124,8 +139,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	class ViewHolderDriverRides {
 		TextView docType, docRequirement, docStatus;
-		LinearLayout addImageLayout, addImageLayout2;
+		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative;
+		ImageView setCapturedImage;
 		int id;
 	}
 
@@ -164,23 +180,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docRequirement.setTypeface(Data.latoRegular(getActivity()));
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
 				holder.docStatus.setTypeface(Data.latoRegular(getActivity()));
+				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 
 
-				holder.addImageLayout = (LinearLayout) convertView.findViewById(R.id.addImageLayout);
+				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
 
 				holder.addImageLayout.setTag(holder);
 
-				holder.addImageLayout2 = (LinearLayout) convertView.findViewById(R.id.addImageLayout2);
+				holder.addImageLayout2 = (RelativeLayout) convertView.findViewById(R.id.addImageLayout2);
 
 				holder.addImageLayout2.setTag(holder);
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 				holder.relative.setTag(holder);
-
+				holder.addImageLayout.setTag(position);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
+
+
 
 				convertView.setTag(holder);
 			} else {
@@ -188,14 +207,25 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			}
 
 
-			//DocInfo docInfo = docs.get(position);
+			DocInfo docInfo = docs.get(position);
 
 			holder.id = position;
+
+			holder.docType.setText(docInfo.docType);
+			holder.docRequirement.setText(docInfo.docRequirement);
+			holder.docStatus.setText(docInfo.status);
+
+			if (docInfo.getFile() != null) {
+				Picasso.with(getActivity()).load(docInfo.getFile())
+						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+						.into(holder.setCapturedImage);
+			}
 
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					uploadfile(getActivity());
+					int position = (int) v.getTag();
+					uploadfile(getActivity(), position);
 				}
 			});
 
@@ -217,9 +247,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						String errorMessage = jObj.getString("error");
 						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 							HomeActivity.logoutUser(activity);
-						} else {
 						}
-
 					} else {
 
 						for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
@@ -238,12 +266,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			@Override
 			public void failure(RetrofitError error) {
-
+				Log.i("DocError", error.toString());
 			}
 		});
 	}
 
-	public void uploadfile(final Activity activity) {
+	public void uploadfile(final Activity activity, final int index) {
 
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -266,6 +294,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			final Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Data.latoRegular(activity));
+
+			DocumentListFragment.this.index = index;
 
 			LayoutGallery.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -302,7 +332,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void chooseImageFromCamera() {
-		// int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+		 int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
 		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
 		imageChooserManager.setImageChooserListener(this);
 		try {
@@ -315,9 +345,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 
-
 	private void chooseImageFromGallery() {
-		// int chooserType = ChooserType.REQUEST_PICK_PICTURE;
+		 int chooserType = ChooserType.REQUEST_PICK_PICTURE;
 		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
 		imageChooserManager.setImageChooserListener(this);
 		try {
@@ -332,17 +361,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	private final int RESULT_OK = 1;
 
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		if (resultCode == RESULT_OK
-				&& (requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if ((requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
 			imageChooserManager.submit(requestCode, data);
 		}
 
 	}
-
-
-
-
 
 
 	@Override
@@ -360,8 +385,35 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					// image.getFilePathOriginal();
 					// image.getFileThumbnail();
 					// image.getFileThumbnailSmall();
-					bitmap = BitmapFactory.decodeFile(image.getFileThumbnail());
-					Utils.saveImage(bitmap, "abc", getActivity());
+
+					BitmapFactory.Options options = new BitmapFactory.Options();
+					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
+//					selected_photo.setImageBitmap(bitmap);
+
+					Bitmap compress = codec(bitmap, Bitmap.CompressFormat.JPEG, 3);
+
+
+					File f = new File(getActivity().getExternalCacheDir(), "temp"+index+".jpg");
+						try {
+						f.createNewFile();
+						ByteArrayOutputStream bos = new ByteArrayOutputStream();
+						compress.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
+						byte[] bitmapdata = bos.toByteArray();
+
+						FileOutputStream fos = new FileOutputStream(f);
+						fos.write(bitmapdata);
+						fos.flush();
+						fos.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+
+					docs.get(index).setFile(new File(image.getFileThumbnail()));
+					driverDocumentListAdapter.notifyDataSetChanged();
+					uploadPicToServer(getActivity(), f);
+
 
 					// reload();
 //					Picasso.with(getActivity()).load(CommonUtil.getTempImageFile())
@@ -374,8 +426,73 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	@Override
-	public void onError(String s) {
+	public void onError(final String reason) {
+		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+	}
 
+	private void uploadPicToServer(final Activity activity, File photoFile) {
+		progressBar.setVisibility(View.VISIBLE);
+		HashMap<String, String> params = new HashMap<String, String>();
+
+		params.put("access_token", Data.userData.accessToken);
+		params.put("user_email", Data.userData.userName);
+		params.put("doc_numType", Data.userData.userName);
+
+		TypedFile typedFile;
+		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
+
+		RestClient.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
+			@Override
+			public void success(DocRequirementResponse docRequirementResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+
+					if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+							if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
+
+							} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
+
+							} else {
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							DialogPopup.dismissLoadingDialog();
+						}
+					} else {
+						DialogPopup.dismissLoadingDialog();
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					DialogPopup.dismissLoadingDialog();
+				}
+				progressBar.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+			}
+		});
+	}
+
+	private static Bitmap codec(Bitmap src, Bitmap.CompressFormat format,
+								int quality) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		src.compress(format, quality, os);
+
+		byte[] array = os.toByteArray();
+		return BitmapFactory.decodeByteArray(array, 0, array.length);
 	}
 
 

@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
@@ -16,6 +17,8 @@ public class DriverDocumentActivity extends FragmentActivity{
 
 	RelativeLayout relativeLayoutRides;
 
+	DocumentListFragment documentListFragment;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,13 +30,19 @@ public class DriverDocumentActivity extends FragmentActivity{
 		submitButton = (Button) findViewById(R.id.submitButton);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
+		documentListFragment = new DocumentListFragment();
 
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.fragment, new DocumentListFragment(), DocumentListFragment.class.getName())
+				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
 				.addToBackStack(DocumentListFragment.class.getName())
 				.commit();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		documentListFragment.onActivityResult(requestCode, resultCode, data);
+	}
 
 	@Override
 	public void onBackPressed() {

@@ -7,6 +7,7 @@ public interface Constants {
 
 
     String PHONE_NO_VERIFY = "phone_no_verify";
+    public static final String MIME_TYPE = "application/octet-stream";
 
     String FIRST_TIME_DB= "first_time_db";
 
