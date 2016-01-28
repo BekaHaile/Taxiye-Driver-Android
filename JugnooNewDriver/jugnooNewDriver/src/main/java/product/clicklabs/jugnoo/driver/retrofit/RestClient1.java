@@ -15,11 +15,7 @@ import retrofit.client.OkClient;
 public class RestClient1 {
 	private static APIServices API_SERVICES;
 
-	static {
-		setupRestClient();
-	}
-
-	public static void setupRestClient() {
+	public static void setupRestClient(String url) {
 
 		RestAdapter.Log fooLog = new RestAdapter.Log() {
 			@Override public void log(String message) {
@@ -32,7 +28,7 @@ public class RestClient1 {
 		okHttpClient.setWriteTimeout(15, TimeUnit.SECONDS);
 		okHttpClient.setRetryOnConnectionFailure(false);
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint(Data.IMAGE_SERVER_URL)
+				.setEndpoint("https://"+url)
 				.setClient(new OkClient(okHttpClient))
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;

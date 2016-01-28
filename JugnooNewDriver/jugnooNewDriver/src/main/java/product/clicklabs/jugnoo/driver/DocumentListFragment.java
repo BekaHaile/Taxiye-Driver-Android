@@ -73,7 +73,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	AsyncHttpClient fetchRidesClient;
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
-	String userEmail;
+	String userEmail, docUrl;
 	int index = 0;
 
 	UpdateDriverEarnings updateDriverEarnings;
@@ -247,6 +247,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							docs.add(docInfo);
 						}
 						userEmail = docRequirementResponse.getUserEmail();
+						docUrl = docRequirementResponse.getDocUrl();
+						RestClient1.setupRestClient(docUrl);
 
 					}
 				} catch (Exception exception) {
@@ -404,13 +406,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		progressBar.setVisibility(View.VISIBLE);
 		HashMap<String, String> params = new HashMap<String, String>();
 
-		params.put("access_token", Data.userData.accessToken);
 		params.put("user_email", userEmail);
-		params.put("doc_numType", String.valueOf(docNumType));
+		params.put("doc_type", String.valueOf(docNumType));
 
 		TypedFile typedFile;
 		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-
 		RestClient1.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
 			@Override
 			public void success(DocRequirementResponse docRequirementResponse, Response response) {

@@ -25,6 +25,9 @@ public class DocRequirementResponse {
 	@SerializedName("user_email")
 	@Expose
 	private String userEmail;
+	@SerializedName("doc_url")
+	@Expose
+	private String docUrl;
 
 	/**
 	 * @return The log
@@ -95,6 +98,21 @@ public class DocRequirementResponse {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+
+	/**
+	 * @return The docUrl
+	 */
+	public String getDocUrl() {
+		return docUrl;
+	}
+
+	/**
+	 * @param docUrl The doc_url
+	 */
+	public void setDocUrl(String docUrl) {
+		this.docUrl = docUrl;
+	}
+
 
 	public class DocumentData {
 
