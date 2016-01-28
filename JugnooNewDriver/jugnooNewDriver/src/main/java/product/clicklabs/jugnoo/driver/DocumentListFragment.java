@@ -6,23 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsManager;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -37,7 +29,6 @@ import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
 import com.loopj.android.http.AsyncHttpClient;
-import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RoundBorderTransform;
@@ -53,16 +44,12 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient1;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -86,6 +73,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	AsyncHttpClient fetchRidesClient;
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
+	String userEmail;
 	int index = 0;
 
 	UpdateDriverEarnings updateDriverEarnings;
@@ -137,7 +125,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 
-	class ViewHolderDriverRides {
+	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus;
 		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative;
@@ -147,7 +135,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	class DriverDocumentListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
-		ViewHolderDriverRides holder;
+		//ViewHolderDriverDoc holder;
 
 		public DriverDocumentListAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -169,9 +157,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolderDriverDoc holder = new ViewHolderDriverDoc();
 			if (convertView == null) {
-				holder = new ViewHolderDriverRides();
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
@@ -191,21 +179,20 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				holder.addImageLayout2.setTag(holder);
 
+
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 				holder.relative.setTag(holder);
-				holder.addImageLayout.setTag(position);
+				holder.addImageLayout.setTag(holder);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
 
 
-
 				convertView.setTag(holder);
 			} else {
-				holder = (ViewHolderDriverRides) convertView.getTag();
+				holder = (ViewHolderDriverDoc) convertView.getTag();
 			}
-
 
 			DocInfo docInfo = docs.get(position);
 
@@ -217,15 +204,18 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			if (docInfo.getFile() != null) {
 				Picasso.with(getActivity()).load(docInfo.getFile())
-						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
+			} else {
+				holder.setCapturedImage.setImageResource(R.drawable.transparent);
 			}
 
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					int position = (int) v.getTag();
-					uploadfile(getActivity(), position);
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					uploadfile(getActivity(), holder.id);
 				}
 			});
 
@@ -256,6 +246,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 									data.getDocStatus());
 							docs.add(docInfo);
 						}
+						userEmail = docRequirementResponse.getUserEmail();
 
 					}
 				} catch (Exception exception) {
@@ -271,7 +262,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		});
 	}
 
-	public void uploadfile(final Activity activity, final int index) {
+	public void uploadfile(final Activity activity, int index) {
 
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -332,9 +323,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void chooseImageFromCamera() {
-		 int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
 		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
 		imageChooserManager.setImageChooserListener(this);
+		imageChooserManager.clearOldFiles();
 		try {
 			String filePath = imageChooserManager.choose();
 		} catch (IllegalArgumentException e) {
@@ -346,7 +338,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 
 	private void chooseImageFromGallery() {
-		 int chooserType = ChooserType.REQUEST_PICK_PICTURE;
+		int chooserType = ChooserType.REQUEST_PICK_PICTURE;
 		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
 		imageChooserManager.setImageChooserListener(this);
 		try {
@@ -391,34 +383,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
 //					selected_photo.setImageBitmap(bitmap);
 
-					Bitmap compress = codec(bitmap, Bitmap.CompressFormat.JPEG, 3);
-
-
-					File f = new File(getActivity().getExternalCacheDir(), "temp"+index+".jpg");
-						try {
-						f.createNewFile();
-						ByteArrayOutputStream bos = new ByteArrayOutputStream();
-						compress.compress(Bitmap.CompressFormat.JPEG, 0 /*ignored for PNG*/, bos);
-						byte[] bitmapdata = bos.toByteArray();
-
-						FileOutputStream fos = new FileOutputStream(f);
-						fos.write(bitmapdata);
-						fos.flush();
-						fos.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-
+					File f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
 
 					docs.get(index).setFile(new File(image.getFileThumbnail()));
 					driverDocumentListAdapter.notifyDataSetChanged();
-					uploadPicToServer(getActivity(), f);
+					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userEmail);
 
-
-					// reload();
-//					Picasso.with(getActivity()).load(CommonUtil.getTempImageFile())
-//							.transform(new CircleTransform()).resize(300, 300).centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-//							.into(addImageLayout);
 
 				}
 			}
@@ -430,18 +400,18 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile) {
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userEmail) {
 		progressBar.setVisibility(View.VISIBLE);
 		HashMap<String, String> params = new HashMap<String, String>();
 
 		params.put("access_token", Data.userData.accessToken);
-		params.put("user_email", Data.userData.userName);
-		params.put("doc_numType", Data.userData.userName);
+		params.put("user_email", userEmail);
+		params.put("doc_numType", String.valueOf(docNumType));
 
 		TypedFile typedFile;
 		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
 
-		RestClient.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
+		RestClient1.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
 			@Override
 			public void success(DocRequirementResponse docRequirementResponse, Response response) {
 				try {
@@ -486,13 +456,23 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		});
 	}
 
-	private static Bitmap codec(Bitmap src, Bitmap.CompressFormat format,
-								int quality) {
+	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
+									   int quality, int index) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		src.compress(format, quality, os);
+		File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+		try {
+			f.createNewFile();
+			byte[] bitmapdata = os.toByteArray();
 
-		byte[] array = os.toByteArray();
-		return BitmapFactory.decodeByteArray(array, 0, array.length);
+			FileOutputStream fos = new FileOutputStream(f);
+			fos.write(bitmapdata);
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
 	}
 
 

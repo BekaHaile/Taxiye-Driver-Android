@@ -26,6 +26,7 @@ import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
+import retrofit.http.PartMap;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
@@ -383,9 +384,9 @@ public interface APIServices {
 					Callback<DocRequirementResponse> callback);
 
 	@Multipart
-	@POST("/service_cards")
+	@POST("/upload_docs_from_app")
 	void uploadImageToServer(@Part("image") TypedFile image,
-							 @QueryMap Map<String, String> params,
+							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
 
 }

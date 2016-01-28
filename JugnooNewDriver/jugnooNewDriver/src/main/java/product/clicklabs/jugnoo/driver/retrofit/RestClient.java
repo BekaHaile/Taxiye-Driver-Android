@@ -85,7 +85,6 @@ public class RestClient {
 			Log.i(TAG, "setupRestClient");
 		}
 	}
-
 	public static APIServices getApiServices() {
 		return API_SERVICES;
 	}
