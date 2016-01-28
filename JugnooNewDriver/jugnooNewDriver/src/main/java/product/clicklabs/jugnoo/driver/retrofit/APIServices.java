@@ -28,7 +28,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/share_ride_history")
 	void getSharedRidesAsync(@Field("access_token") String accessToken,
-						Callback<SharedRideResponse> callback);
+							 Callback<SharedRideResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")
@@ -77,7 +77,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/register_using_email")
 	void registerUsingEmail(@FieldMap Map<String, String> params,
-									Callback<RegisterScreenResponse> callback);
+							Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/logout_driver")
@@ -88,60 +88,61 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_nearest_station")
 	void fetchStationDataAPIRetro(@FieldMap Map<String, String> params,
-					 Callback<RegisterScreenResponse> callback);
+								  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/mark_delivered")
 	void fatafatEndRideAPIRetro(@FieldMap Map<String, String> params,
-								  Callback<RegisterScreenResponse> callback);
+								Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/upload_ride_data")
 	void driverUploadPathDataFileRetro(@FieldMap Map<String, String> params,
-								Callback<RegisterScreenResponse> callback);
+									   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/start_ride")
 	void driverStartRideRetro(@FieldMap Map<String, String> params,
-									   Callback<RegisterScreenResponse> callback);
+							  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/reject_a_request")
 	void driverRejectRequestRetro(@FieldMap Map<String, String> params,
-							  Callback<RegisterScreenResponse> callback);
+								  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/mark_arrived")
 	void driverMarkArriveRideRetro(@FieldMap Map<String, String> params,
-								  Callback<RegisterScreenResponse> callback);
+								   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/cancel_the_ride")
 	void driverCancelRideRetro(@FieldMap Map<String, String> params,
-								   Callback<RegisterScreenResponse> callback);
+							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/accept_a_request")
 	void driverAcceptRideRetro(@FieldMap Map<String, String> params,
-								   Callback<RegisterScreenResponse> callback);
+							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/end_ride")
 	void autoEndRideAPIRetro(@FieldMap Map<String, String> params,
-							   Callback<RegisterScreenResponse> callback);
+							 Callback<RegisterScreenResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/get_current_user_status")
-	Response getUserStatusRetro(@Field ("access_token") String accessToken);
+	Response getUserStatusRetro(@Field("access_token") String accessToken);
 
 	@FormUrlEncoded
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetro(@FieldMap Map<String, String> params,
-							 Callback<RegisterScreenResponse> callback);
+								   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/request_dup_registration")
 	void submitDuplicateRegistrationRequestAPIRetro(@FieldMap Map<String, String> params,
-								   Callback<RegisterScreenResponse> callback);
+													Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/add_money_to_wallet")
@@ -151,12 +152,12 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/start_end_wait")
 	void startEndWaitRetro(@FieldMap Map<String, String> params,
-							  Callback<RegisterScreenResponse> callback);
+						   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_stationing")
 	void acknowledgeStationDataReadRetro(@FieldMap Map<String, String> params,
-						   Callback<RegisterScreenResponse> callback);
+										 Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/change_availability")
@@ -168,12 +169,12 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/acknowledge_port_change")
-	Response sendChangePortAckToServerRetro(@Field ("access_token") String accessToken);
+	Response sendChangePortAckToServerRetro(@Field("access_token") String accessToken);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_heartbeat")
 	void sendHeartbeatAckToServerRetro(@FieldMap Map<String, String> params,
-										   Callback<RegisterScreenResponse> callback);
+									   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_request")
@@ -182,12 +183,12 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/login_using_email")
 	void sendLoginValuesRetro(@FieldMap Map<String, String> params,
-										 Callback<RegisterScreenResponse> callback);
+							  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/login_using_access_token")
 	void accessTokenLoginRetro(@FieldMap Map<String, String> params,
-							  Callback<RegisterScreenResponse> callback);
+							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/update_in_ride_data")
@@ -196,15 +197,21 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/driver_profile")
 	void driverProfileInfo(@Field("access_token") String accessToken,
-						Callback<BookingHistoryResponse> callback);
+						   Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/daily_online_hours")
 	void dailyOnlineHours(@Field("access_token") String accessToken,
-						   Callback<RegisterScreenResponse> callback);
+						  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/heat_map_data")
 	void getHeatMapAsync(@Field("access_token") String accessToken,
 						 Callback<HeatMapResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_user_profile")
+	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
+									Callback<RegisterScreenResponse> callback);
+
 }

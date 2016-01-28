@@ -37,7 +37,7 @@ import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 public class DriverProfileActivity extends Activity {
 
 	LinearLayout relative;
-	RelativeLayout driverDetailsRLL;
+	RelativeLayout driverDetailsRLL, layoutEditProfile;
 	Button backBtn;
 	TextView title;
 
@@ -65,6 +65,11 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		try {
+			textViewDriverName.setText(Data.userData.userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -90,6 +95,7 @@ public class DriverProfileActivity extends Activity {
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
+		layoutEditProfile = (RelativeLayout) findViewById(R.id.layoutEditProfile);
 
 		new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
@@ -136,6 +142,15 @@ public class DriverProfileActivity extends Activity {
 
 
 		getProfileInfoAsync(DriverProfileActivity.this);
+
+		layoutEditProfile.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
 	}
 
 
@@ -292,6 +307,8 @@ public class DriverProfileActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+
 
 
 
