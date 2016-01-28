@@ -122,7 +122,8 @@ public class Data {
 
 	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 
-	
+	public static final String IMAGE_SERVER_URL = "https://test-panels.jugnoo.in:8003";
+
 
 
 

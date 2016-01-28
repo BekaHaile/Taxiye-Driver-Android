@@ -5,13 +5,14 @@ import com.squareup.okhttp.OkHttpClient;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.retrofit.APIServices;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
 
 /**
  * Created by aneeshbansal on 08/09/15.
  */
-public class RestClient {
+public class RestClient1 {
 	private static APIServices API_SERVICES;
 
 	static {
@@ -31,9 +32,8 @@ public class RestClient {
 		okHttpClient.setWriteTimeout(15, TimeUnit.SECONDS);
 		okHttpClient.setRetryOnConnectionFailure(false);
 		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint(Data.SERVER_URL)
+				.setEndpoint(Data.IMAGE_SERVER_URL)
 				.setClient(new OkClient(okHttpClient))
-//				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
@@ -42,20 +42,6 @@ public class RestClient {
 	}
 	public static APIServices getApiServices() {
 		return API_SERVICES;
-	}
-
-	public static APIServices getApiServiceForLink(String url) {
-		OkHttpClient okHttpClient = new OkHttpClient();
-		okHttpClient.setReadTimeout(30, TimeUnit.SECONDS);
-		okHttpClient.setConnectTimeout(30, TimeUnit.SECONDS);
-		okHttpClient.setWriteTimeout(30, TimeUnit.SECONDS);
-		okHttpClient.setRetryOnConnectionFailure(false);
-		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint(url)
-				.setClient(new OkClient(okHttpClient))
-				.setLogLevel(RestAdapter.LogLevel.FULL);
-		RestAdapter restAdapter = builder.build();
-		return restAdapter.create(APIServices.class);
 	}
 
 }
