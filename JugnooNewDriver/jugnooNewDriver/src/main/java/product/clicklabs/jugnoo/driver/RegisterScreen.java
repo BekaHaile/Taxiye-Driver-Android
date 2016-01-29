@@ -1,17 +1,29 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.res.Resources;
+=======
+import android.database.DataSetObserver;
+>>>>>>> feature_make_driver_new: Register screen ui changes
 import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -21,10 +33,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.zip.Inflater;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -40,27 +55,33 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
+<<<<<<< HEAD
 public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	
+=======
+public class RegisterScreen extends Activity implements LocationUpdate {
+
+>>>>>>> feature_make_driver_new: Register screen ui changes
 	Button backBtn;
 	TextView title;
-	
-	EditText nameEt, emailIdEt, confirmEmailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
-	Button signUpBtn;
 
+	EditText nameEt, autoNumEt, phoneNoEt;
+	Button signUpBtn;
+	Spinner selectCitySp;
+	CheckBox isRentedCheck, isOwnedCheck;
 	LinearLayout relative;
-	
-	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "";
-	
+
+	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "";
+	Integer cityposition;
 	boolean sendToOtpScreen = false;
 
-    public static JSONObject multipleCaseJSON;
+	public static JSONObject multipleCaseJSON;
 
 
-	public void resetFlags(){
+	public void resetFlags() {
 		sendToOtpScreen = false;
 	}
-	
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -75,8 +96,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,20 +106,25 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
-		
-		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Data.latoRegular(this));
-		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		
-		signUpBtn = (Button) findViewById(R.id.signUpBtn); signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		
+		nameEt = (EditText) findViewById(R.id.nameEt);
+		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		autoNumEt = (EditText) findViewById(R.id.autoNumEt);
+		autoNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		isRentedCheck = (CheckBox) findViewById(R.id.isRentedCheck);
+		isOwnedCheck = (CheckBox) findViewById(R.id.isOwnedCheck);
+		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+
+		signUpBtn = (Button) findViewById(R.id.signUpBtn);
+		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -107,7 +133,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				performBackPressed();
 			}
 		});
-		
+
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -116,54 +142,31 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			}
 		});
-		
-		
-		emailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				emailIdEt.setError(null);
-			}
-		});
-		confirmEmailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+
+		autoNumEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
-				confirmEmailIdEt.setError(null);
+				autoNumEt.setError(null);
 			}
 		});
-		emailIdEt.setLongClickable(false);
-		confirmEmailIdEt.setLongClickable(false);
-		
+
+		autoNumEt.setLongClickable(false);
+
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				phoneNoEt.setError(null);
 			}
 		});
 
-		passwordEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				passwordEt.setError(null);
-			}
-		});
 
-		confirmPasswordEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				confirmPasswordEt.setError(null);
-			}
-		});
-		
-		
-		
-		
+
+
 		signUpBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 
@@ -171,15 +174,11 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
-				String emailId = emailIdEt.getText().toString().trim();
-				String confirmEmail = confirmEmailIdEt.getText().toString().trim();
-
-
+				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
-				String password = passwordEt.getText().toString().trim();
-				String confirmPassword = confirmPasswordEt.getText().toString().trim();
 
 
+<<<<<<< HEAD
 				try {
 					if ("".equalsIgnoreCase(name)) {
                         nameEt.requestFocus();
@@ -267,119 +266,158 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
                     }
 				} catch (Resources.NotFoundException e) {
 					e.printStackTrace();
+=======
+				if ("".equalsIgnoreCase(name)) {
+					nameEt.requestFocus();
+					nameEt.setError("Please enter name");
+				} else {
+					if ("".equalsIgnoreCase(autoNum)) {
+						autoNumEt.requestFocus();
+						autoNumEt.setError("Please enter auto number");
+					} else {
+						if ("".equalsIgnoreCase(phoneNo)) {
+							phoneNoEt.requestFocus();
+							phoneNoEt.setError("Please enter phone number");
+						} else {
+							//TODO remove extra characters phoneNo
+							phoneNo = phoneNo.replace(" ", "");
+							phoneNo = phoneNo.replace("(", "");
+							phoneNo = phoneNo.replace("/", "");
+							phoneNo = phoneNo.replace(")", "");
+							phoneNo = phoneNo.replace("N", "");
+							phoneNo = phoneNo.replace(",", "");
+							phoneNo = phoneNo.replace("*", "");
+							phoneNo = phoneNo.replace(";", "");
+							phoneNo = phoneNo.replace("#", "");
+							phoneNo = phoneNo.replace("-", "");
+							phoneNo = phoneNo.replace(".", "");
+
+							if (phoneNo.length() >= 10) {
+								phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+								if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+									phoneNoEt.requestFocus();
+									phoneNoEt.setError("Please enter valid phone number");
+								} else {
+									phoneNo = "+91" + phoneNo;
+									if (isPhoneValid(phoneNo)) {
+										sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
+										FlurryEventLogger.emailSignupClicked(emailId);
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
+									}
+								}
+							} else {
+								phoneNoEt.requestFocus();
+								phoneNoEt.setError("Please enter valid phone number");
+							}
+						}
+
+					}
+>>>>>>> feature_make_driver_new: Register screen ui changes
 				}
 			}
+
 		});
 
 
-		confirmPasswordEt.setOnEditorActionListener(new OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				int result = actionId & EditorInfo.IME_MASK_ACTION;
-				switch (result) {
-					case EditorInfo.IME_ACTION_DONE:
-						signUpBtn.performClick();
-					break;
 
-					case EditorInfo.IME_ACTION_NEXT:
-					break;
-
-					default:
-				}
-				return true;
-			}
-		});
-		
-		
 
 		try {
-			if(getIntent().hasExtra("back_from_otp")) {
+			if (getIntent().hasExtra("back_from_otp")) {
 				nameEt.setText(OTPConfirmScreen.emailRegisterData.name);
-				emailIdEt.setText(OTPConfirmScreen.emailRegisterData.emailId);
 				phoneNoEt.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-				passwordEt.setText(OTPConfirmScreen.emailRegisterData.password);
-				confirmPasswordEt.setText(OTPConfirmScreen.emailRegisterData.password);
+				autoNumEt.setText(OTPConfirmScreen.emailRegisterData.autoNum);
+				selectCitySp.setSelection(cityposition);
 			}
-            nameEt.setSelection(nameEt.getText().length());
+			nameEt.setSelection(nameEt.getText().length());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+		try{
+			CityResponse res =  (CityResponse)getIntent().getSerializableExtra("cityResponse");
+			selectCitySp.setAdapter(new CityArrayAdapter(this, R.layout.spinner_layout, res.getCities()));
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+<<<<<<< HEAD
+=======
+
+>>>>>>> feature_make_driver_new: Register screen ui changes
 			@Override
 			public void deviceTokenReceived(final String regId) {
 				Data.deviceToken = regId;
 				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 			}
 		});
-		
 
-		
-//		nameEt.setText("Test");
-//		lastNameEt.setText("Passenger84");
-//		emailIdEt.setText("passenger84@click-labs.com");
-//		phoneNoEt.setText("9999999999");
-//		passwordEt.setText("passenger");
-//		confirmPasswordEt.setText("passenger");
-		
-//		phoneNoEt.setText("+"+GetCountryZipCode());
-		
-//		Toast.makeText(getApplicationContext(), ""+GetCountryZipCode(), Toast.LENGTH_LONG).show();
-		
-		
+		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				cityposition = position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
+
+
 	}
-	
 
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		try {
-			if(Data.locationFetcher == null){
+			if (Data.locationFetcher == null) {
 				Data.locationFetcher = new LocationFetcher(this, 1000, 1);
 			}
 			Data.locationFetcher.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onPause() {
-		try{
-			if(Data.locationFetcher != null){
+		try {
+			if (Data.locationFetcher != null) {
 				Data.locationFetcher.destroy();
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		super.onPause();
-		
-		
+
+
 	}
-	
-	
-	
-	
+
 
 //	Retrofit
 
 	public void sendSignupValues(final Activity activity, final String name,
-								 final String emailId, final String phoneNo, final String password) {
+								  final String phoneNo, final String autoNum, final String city) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
-			if(Data.locationFetcher != null){
+			if (Data.locationFetcher != null) {
 				Data.latitude = Data.locationFetcher.getLatitude();
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
@@ -387,8 +425,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
-			params.put("email", emailId);
-			params.put("password", password);
+			params.put("auto_num", autoNum);
+			params.put("city", city);
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
 
@@ -403,10 +441,9 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
 
-			if(Utils.isDeviceRooted()){
+			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
-			}
-			else{
+			} else {
 				params.put("device_rooted", "0");
 			}
 
@@ -470,81 +507,77 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			});
 
 
-		}
-		else {
+		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 
 	}
-	
 
-	
+
 	public void sendIntentToOtpScreen() {
 		OTPConfirmScreen.intentFromRegister = true;
-		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
 		startActivity(new Intent(RegisterScreen.this, OTPConfirmScreen.class));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 
-    public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
-        OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
-        RegisterScreen.multipleCaseJSON = jObj;
-        if (Data.previousAccountInfoList == null) {
-            Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
-        }
-        Data.previousAccountInfoList.clear();
-        Data.previousAccountInfoList.addAll(JSONParser.parsePreviousAccounts(jObj));
-        startActivity(new Intent(activity, MultipleAccountsActivity.class));
-        finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
-    }
-	
-	
+	public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
+		RegisterScreen.multipleCaseJSON = jObj;
+		if (Data.previousAccountInfoList == null) {
+			Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+		}
+		Data.previousAccountInfoList.clear();
+		Data.previousAccountInfoList.addAll(JSONParser.parsePreviousAccounts(jObj));
+		startActivity(new Intent(activity, MultipleAccountsActivity.class));
+		finish();
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
-		if(hasFocus && sendToOtpScreen){
+
+		if (hasFocus && sendToOtpScreen) {
 			sendIntentToOtpScreen();
 		}
-		
+
 	}
-	
+
 	boolean isEmailValid(CharSequence email) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
-	
+
 	boolean isPhoneValid(CharSequence phone) {
 		return android.util.Patterns.PHONE.matcher(phone).matches();
 	}
-	
-	
+
+
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
 		super.onBackPressed();
 	}
-	
-	
-	public void performBackPressed(){
+
+
+	public void performBackPressed() {
 		Intent intent = new Intent(RegisterScreen.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
-	
-	
-	
-	
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 	}
 
 
@@ -553,5 +586,40 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		Data.latitude = location.getLatitude();
 		Data.longitude = location.getLongitude();
 	}
-	
+
+	public class CityArrayAdapter extends ArrayAdapter<CityResponse.City> {
+		private LayoutInflater inflater;
+		private List<CityResponse.City> data;
+		public CityArrayAdapter(Context context, int resource, List<CityResponse.City> objects) {
+			super(context, resource, objects);
+			data = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return data.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(data.get(position).getCityName());
+			return convertView;
+		}
+
+	}
+
 }

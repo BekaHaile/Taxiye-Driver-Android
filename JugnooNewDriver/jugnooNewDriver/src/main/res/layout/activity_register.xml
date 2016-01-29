@@ -66,39 +66,12 @@
                 android:textColor="@color/black"
                 android:textSize="34px"/>
 
-            <EditText
-                android:id="@+id/emailIdEt"
-                android:layout_width="650px"
-                android:layout_height="100px"
-                android:layout_marginTop="5px"
-                android:background="@drawable/white_bg_rounded"
-                android:hint="@string/email_id"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-            <EditText
-                android:id="@+id/confirmEmailIdEt"
-                android:layout_width="650px"
-                android:layout_height="100px"
-                android:layout_marginTop="5px"
-                android:background="@drawable/white_bg_rounded"
-                android:hint="@string/confirm_email_id"
-                android:inputType="textEmailAddress"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
 
             <EditText
                 android:id="@+id/phoneNoEt"
                 android:layout_width="650px"
                 android:layout_height="100px"
-                android:layout_marginTop="5px"
+                android:layout_marginTop="10px"
                 android:background="@drawable/white_bg_rounded"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
@@ -110,32 +83,117 @@
                 android:textSize="34px"/>
 
             <EditText
-                android:id="@+id/passwordEt"
+                android:id="@+id/autoNumEt"
                 android:layout_width="650px"
                 android:layout_height="100px"
-                android:layout_marginTop="5px"
+                android:layout_marginTop="10px"
                 android:background="@drawable/white_bg_rounded"
-                android:hint="@string/password"
-                android:inputType="textPassword"
+                android:hint="@string/auto_number"
+                android:inputType="textEmailAddress"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
                 android:textSize="34px"/>
 
-            <EditText
-                android:id="@+id/confirmPasswordEt"
+           <RelativeLayout
+               android:layout_width="650px"
+               android:layout_height="100px"
+               android:layout_marginTop="10px">
+
+               <Spinner
+                   android:id="@+id/selectCitySp"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:background="@drawable/white_bg_rounded"
+                   android:hint="@string/password"
+                   android:inputType="textPassword"
+                   android:paddingLeft="20px"
+                   android:paddingRight="20px"
+                   android:singleLine="true"
+                   android:spinnerMode="dropdown"
+                   android:textColor="@color/black"
+                   android:textSize="34px"/>
+
+               <ImageView
+                   android:layout_alignParentRight="true"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerVertical="true"
+                   android:layout_marginRight="20px"
+                   android:background="@drawable/drop_down_icon"/>
+
+           </RelativeLayout>
+
+
+            <RelativeLayout
                 android:layout_width="650px"
-                android:layout_height="100px"
-                android:layout_marginTop="5px"
+                android:layout_height="260px"
+                android:layout_marginTop="35px"
                 android:background="@drawable/white_bg_rounded"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+                android:paddingLeft="32px">
+
+                <TextView
+                    android:id="@+id/autoType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15px"
+                    android:text="@string/Choose_one"
+                    android:textSize="36px"
+                    android:textColor="@color/grey_dark_more"/>
+
+                <RelativeLayout
+                    android:id="@+id/isRentedRelative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/autoType"
+                    android:layout_marginTop="22px">
+
+                    <CheckBox
+                        android:id="@+id/isRentedCheck"
+                        android:layout_width="50px"
+                        android:layout_height="50px"/>
+
+                    <TextView
+                        android:id="@+id/isRentedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32px"
+                        android:layout_toRightOf="@+id/isRentedCheck"
+                        android:text="@string/is_rented"
+                        android:textSize="36px"
+                        android:textColor="@color/grey_dark_more"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/isOwnedRelative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/isRentedRelative"
+                    android:layout_marginTop="22px">
+
+                    <CheckBox
+                        android:id="@+id/isOwnedCheck"
+                        android:layout_width="50px"
+                        android:layout_height="50px"/>
+
+                    <TextView
+                        android:id="@+id/isOwnedText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32px"
+                        android:layout_toRightOf="@+id/isOwnedCheck"
+                        android:text="@string/is_owned"
+                        android:textSize="36px"
+                        android:textColor="@color/grey_dark_more"/>
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
         <Button

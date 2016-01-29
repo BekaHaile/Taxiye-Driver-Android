@@ -43,18 +43,23 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
+import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 //import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -86,7 +91,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	
 	RelativeLayout jugnooTextImgRl;
 	ImageView jugnooTextImg, jugnooTextImg2;
-	
+	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
 	Configuration conf;
 
@@ -217,9 +222,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(SplashNewActivity.this, RegisterScreen.class));
-				finish();
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				getCityAsync();
 			}
 		});
 		
@@ -292,29 +295,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-
-
-//		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
-//		if(installed){
-//			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
-//
-//		}
-//
-//		boolean installede = Utils.isAppInstalled(this, Data.UBER_APP);
-//		if(installede){
-//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " installed: " + installed);
-//
-//		}
-//
-//		boolean installedee = Utils.olaInstall(this);
-//		if(installedee){
-//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " olaaaaaa: " + installed);
-//
-//		}
-
-//
-//		Intent intent = new Intent(this, PubnubService.class);
-//		startService(intent);
 
 	}
 
@@ -711,6 +691,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		else{
 			buttonLogin.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(View.VISIBLE);
 		}
 
 	}
@@ -824,7 +805,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			textHead.setVisibility(View.VISIBLE);
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textMessage.setText(message);
 			
@@ -836,7 +817,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
-					if(isForced == 1){
+					if (isForced == 1) {
 						activity.finish();
 					}
 				}
@@ -1087,10 +1068,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						switch (result) {
 							case EditorInfo.IME_ACTION_DONE:
 								btnConfirm.performClick();
-							break;
+								break;
 
 							case EditorInfo.IME_ACTION_NEXT:
-							break;
+								break;
 
 							default:
 						}
@@ -1100,7 +1081,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				
 
 				dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 					}
@@ -1114,7 +1095,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						dialog.dismiss();
 					}
 				});
-				
+
 				dialog.show();
 
 				dialog.show();
@@ -1222,7 +1203,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							dialog.dismiss();
 						}
 					});
-					
+
 					dialog.show();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1473,5 +1454,35 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		return false;
 	}
-	
+
+
+	private void getCityAsync(){
+		RestClient.getApiServices().getCityRetro(new Callback<CityResponse>() {
+			@Override
+			public void success(CityResponse cityResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					String message = JSONParser.getServerMessage(jObj);
+					if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == cityResponse.getFlag()) {
+						String errorMessage = jObj.getString("error");
+					} else {
+						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
+						intent.putExtra("cityResponse", cityResponse);
+						startActivity(intent);
+						finish();
+						overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+
+			}
+		});
+	}
 }
