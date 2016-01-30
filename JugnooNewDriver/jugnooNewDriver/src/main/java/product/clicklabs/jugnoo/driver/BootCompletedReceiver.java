@@ -29,13 +29,15 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
         else if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             try {
-                final String serviceRestartOnReboot = Database2.getInstance(context).getDriverServiceRun();
-                Database2.getInstance(context).updateDriverLastLocationTime();
+                if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
+                    final String serviceRestartOnReboot = Database2.getInstance(context).getDriverServiceRun();
+                    Database2.getInstance(context).updateDriverLastLocationTime();
 
-                if (Database2.YES.equalsIgnoreCase(serviceRestartOnReboot)) {
-                    new DriverServiceOperations().startDriverService(context);
-                } else if (Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)) {
-                    new DriverServiceOperations().rescheduleDriverService(context);
+                    if (Database2.YES.equalsIgnoreCase(serviceRestartOnReboot)) {
+                        new DriverServiceOperations().startDriverService(context);
+                    } else if (Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)) {
+                        new DriverServiceOperations().rescheduleDriverService(context);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

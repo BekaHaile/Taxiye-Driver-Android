@@ -121,7 +121,7 @@ public class Data {
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
-	
+
 	
 
 

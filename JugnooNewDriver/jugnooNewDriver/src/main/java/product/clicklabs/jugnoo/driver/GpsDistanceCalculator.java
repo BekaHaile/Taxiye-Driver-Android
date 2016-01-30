@@ -175,7 +175,7 @@ public class GpsDistanceCalculator {
 	public void setupMeteringAlarm(Context context) {
 		// check task is scheduled or not
 		boolean alarmUp = (PendingIntent.getBroadcast(context, METERING_PI_REQUEST_CODE,
-				new Intent(context, DriverLocationUpdateAlarmReceiver.class).setAction(CHECK_LOCATION),
+				new Intent(context, MeteringAlarmReceiver.class).setAction(CHECK_LOCATION),
 				PendingIntent.FLAG_NO_CREATE) != null);
 		if (alarmUp) {
 			cancelMeteringAlarm(context);
@@ -717,6 +717,18 @@ public class GpsDistanceCalculator {
 					return true;
 				}
 			}
+		}
+	}
+
+	public void updateDistanceInCaseOfReset(double distance){
+		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+				"updateDistanceInCaseOfReset func distance from server:"+distance
+						+" & totalDistance:"+totalDistance);
+		if(distance > totalDistance){
+			totalDistance = totalDistance + distance;
+			saveTotalDistanceToSP(context, totalDistance);
+			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+					"updateDistanceInCaseOfReset func totalDistance updated:"+ totalDistance);
 		}
 	}
 
