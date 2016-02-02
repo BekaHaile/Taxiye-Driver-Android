@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayoutRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:splitMotionEvents="false"
+    >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutLocalGlobal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25px"
+        android:layout_marginBottom="30px"
+        >
+
+        <Button
+            android:id="@+id/buttonLocal"
+            android:layout_width="@dimen/share_lb_button_width"
+            android:layout_height="@dimen/share_lb_button_height"
+            android:layout_marginLeft="30px"
+            android:background="@drawable/background_white_bordered_blue_rounded_selector"
+            android:text="@string/local_leaderboard"
+            android:textColor="@drawable/text_color_grey_dark_white_selector"
+            android:textSize="@dimen/button_text_size" />
+
+        <Button
+            android:id="@+id/buttonGlobal"
+            android:layout_width="@dimen/share_lb_button_width"
+            android:layout_height="@dimen/share_lb_button_height"
+            android:layout_marginRight="30px"
+            android:background="@drawable/button_blue_normal"
+            android:text="@string/global_leaderboard"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutDailyWeekly"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/share_lb_text_view_layout_height"
+        android:layout_margin="-2px"
+        >
+
+        <TextView
+            android:id="@+id/textViewDaily"
+            android:layout_width="360px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/daily_leaderboard"
+            android:textColor="@color/white"
+            android:textSize="@dimen/share_lb_text_size"
+            android:background="@drawable/background_blue"
+            />
+        <TextView
+            android:id="@+id/textViewWeekly"
+            android:layout_width="360px"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/weekly_leaderboard"
+            android:textColor="@drawable/text_color_grey_dark_white_selector"
+            android:textSize="@dimen/share_lb_text_size"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/background_white_bordered"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutListTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15px"
+        >
+
+        <TextView
+            android:id="@+id/textViewRank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/lb_rank"
+            android:textColor="@color/grey_dark_less"
+            android:textSize="@dimen/share_lb_text_size_medium"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30px"
+            />
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/lb_name"
+            android:textColor="@color/grey_dark_less"
+            android:textSize="@dimen/share_lb_text_size_medium"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+
+        <TextView
+            android:id="@+id/textViewNoOfDownloads"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/lb_no_downloads"
+            android:textColor="@color/grey_dark_less"
+            android:textSize="@dimen/share_lb_text_size_small"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20px"
+            />
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/grey_light"
+        android:layout_marginTop="15px"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewLb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+
+</LinearLayout>

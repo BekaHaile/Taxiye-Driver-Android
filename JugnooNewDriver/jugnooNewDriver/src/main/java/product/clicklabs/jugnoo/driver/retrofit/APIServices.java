@@ -5,6 +5,8 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -213,5 +215,17 @@ public interface APIServices {
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/leaderboard/referrals/get_leaderboards")
+	void leaderboardServerCall(@Field("access_token") String accessToken,
+							   @Field("client_id") String clientId,
+							   Callback<LeaderboardResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/leaderboard/referrals/get_activity")
+	void leaderboardActivityServerCall(@Field("access_token") String accessToken,
+									   @Field("client_id") String clientId,
+									   Callback<LeaderboardActivityResponse> callback);
 
 }

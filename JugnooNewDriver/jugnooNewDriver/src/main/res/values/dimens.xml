@@ -15,4 +15,24 @@
     <dimen name="menu_width">495px</dimen>
     <dimen name="end_ride_details_text_size">32px</dimen>
 
+    <!-- share leaderboard screen-->
+    <dimen name="share_lb_button_width">310px</dimen>
+    <dimen name="share_lb_button_height">80px</dimen>
+    <dimen name="share_lb_text_view_layout_height">80px</dimen>
+    <dimen name="share_lb_text_size">34px</dimen>
+    <dimen name="share_lb_text_size_small">26px</dimen>
+    <dimen name="share_lb_text_size_medium">30px</dimen>
+
+
+    <!-- share activity screen -->
+    <dimen name="share_activity_bar_height">200px</dimen>
+    <dimen name="share_activity_text_size">40px</dimen>
+    <dimen name="share_activity_number_text_size">54px</dimen>
+    <dimen name="share_activity_text_size_small">28px</dimen>
+    <dimen name="share_activity_text_margin_left">30px</dimen>
+    <dimen name="share_activity_text_margin_right">45px</dimen>
+    <dimen name="share_activity_text_margin_top">62px</dimen>
+    <dimen name="share_activity_data_text_margin_top">62px</dimen>
+    <dimen name="share_activity_first_rl_margin_top">62px</dimen>
+
 </resources>
