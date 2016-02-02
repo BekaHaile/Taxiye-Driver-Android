@@ -1984,31 +1984,31 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				try {
 					if(Data.userData != null){
 						if(1 == Data.userData.autosAvailable){
-							imageViewAutosOnToggle.setImageResource(R.drawable.on);
+							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_on_button);
 						}
 						else{
-							imageViewAutosOnToggle.setImageResource(R.drawable.off);
+							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
 						if(1 == Data.userData.mealsAvailable){
-							imageViewMealsOnToggle.setImageResource(R.drawable.on);
+							imageViewMealsOnToggle.setImageResource(R.drawable.jugnoo_on_button);
 						}
 						else{
-							imageViewMealsOnToggle.setImageResource(R.drawable.off);
+							imageViewMealsOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
 						if(1 == Data.userData.fatafatAvailable){
-							imageViewFatafatOnToggle.setImageResource(R.drawable.on);
+							imageViewFatafatOnToggle.setImageResource(R.drawable.jugnoo_on_button);
 						}
 						else{
-							imageViewFatafatOnToggle.setImageResource(R.drawable.off);
+							imageViewFatafatOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
 						if(1 == Data.userData.sharingAvailable){
-							imageViewSharingOnToggle.setImageResource(R.drawable.on);
+							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_on_button);
 						}
 						else{
-							imageViewSharingOnToggle.setImageResource(R.drawable.off);
+							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
 						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable && 0 == Data.userData.sharingAvailable){
@@ -3583,7 +3583,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
 				textViewOtherRequestDetails, textViewRequestFareFactor;
 		Button buttonAcceptRide, buttonCancelRide;
-		ImageView imageViewRequestType;
+//		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
 	}
@@ -3648,7 +3648,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress); holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance); holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime); holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
+//				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails); holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor); holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide); holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -3697,16 +3697,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			if(BusinessType.AUTOS == driverRideRequest.businessType){
-				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
 				holder.textViewOtherRequestDetails.setVisibility(View.GONE);
 			}
 			else if(BusinessType.MEALS == driverRideRequest.businessType){
-				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
 				holder.textViewOtherRequestDetails.setText("Ride Time: "+((MealRideRequest)driverRideRequest).rideTime);
 			}
 			else if(BusinessType.FATAFAT == driverRideRequest.businessType){
-				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
 				holder.textViewOtherRequestDetails.setText("Cash Needed: Rs. "+((FatafatRideRequest)driverRideRequest).orderAmount);
 			}

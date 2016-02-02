@@ -32,6 +32,8 @@
     <color name="transparent">#0000</color>
     
     <color name="bg_grey">#D8242930</color>
+    <color name="menu_black">#3E3639</color>
+
     <color name="bg_grey_opaque">#242930</color>
     <color name="bg_white_translucent">#AAFFFFFF</color>
     
@@ -44,8 +46,10 @@
     
     <color name="grey_btn">#8E8E8E</color>
     <color name="grey_btn_pressed">#7E7E7E</color>
-    
-    
+    <color name="new_orange">#F8A654</color>
+    <color name="menu_black_pressed">#97918D</color>
+
+
     <color name="blue_dark_btn">#3B5999</color>
     <color name="blue_dark_btn_pressed">#1B3979</color>
     

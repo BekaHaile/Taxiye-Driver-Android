@@ -198,6 +198,7 @@
 	<string name="call_us">Call Us</string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
 	<string name="info">INFO</string>
+	<string name="arrived">Arrived</string>
 
 
 	<string-array name="CountryCodes" >

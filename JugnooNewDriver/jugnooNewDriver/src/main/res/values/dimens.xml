@@ -6,6 +6,7 @@
     <dimen name="shadow_width">30dp</dimen>
     <dimen name="actionbar_home_width">30dp</dimen>
     <dimen name="button_corner_radius">5dp</dimen>
+    <dimen name="button_corner_radius_less">4dp</dimen>
     <dimen name="bg_corner_radius">10px</dimen>
     <dimen name="image_bg_corner_radius">10px</dimen>
     <dimen name="image_bg_stroke">2px</dimen>

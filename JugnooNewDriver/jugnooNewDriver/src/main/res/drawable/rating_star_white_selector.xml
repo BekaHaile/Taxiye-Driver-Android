@@ -2,11 +2,11 @@
     <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
         <item
             android:id="@android:id/background"
-            android:drawable="@drawable/driver_rating_star_empty"/>
+            android:drawable="@drawable/driver_rating_star_white_new"/>
         <item
             android:id="@android:id/secondaryProgress"
-            android:drawable="@drawable/driver_rating_star_empty"/>
+            android:drawable="@drawable/driver_rating_star_white_new"/>
         <item
             android:id="@android:id/progress"
-            android:drawable="@drawable/driver_rating_star_white"/>
+            android:drawable="@drawable/driver_ratting_star_orange"/>
     </layer-list>
