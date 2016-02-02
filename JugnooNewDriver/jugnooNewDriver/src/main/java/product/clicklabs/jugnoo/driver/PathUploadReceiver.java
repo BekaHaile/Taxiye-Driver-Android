@@ -9,19 +9,20 @@ import android.content.Intent;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
@@ -103,26 +104,14 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                 String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 
                                 if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(engagementId)) && (!"".equalsIgnoreCase(serverUrl))){
-                                    ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-                                    nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-                                    nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
-                                    nameValuePairs.add(new BasicNameValuePair("locations", locations));
+                                    HashMap<String, String> nameValuePairs = new HashMap<>();
+                                    nameValuePairs.put("access_token", accessToken);
+                                    nameValuePairs.put("engagement_id", engagementId);
+                                    nameValuePairs.put("locations", locations);
 
-                                    Log.e("", "");
+                                    Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
+                                    String result = new String(((TypedByteArray)response.getBody()).getBytes());
 
-
-                                    HttpRequester.TIMEOUT_CONNECTION = 10000;
-                                    HttpRequester.TIMEOUT_SOCKET = 10000;
-
-                                    HttpRequester simpleJSONParser = new HttpRequester();
-                                    String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/log_ongoing_ride_path", nameValuePairs);
-
-                                    HttpRequester.TIMEOUT_CONNECTION = 30000;
-                                    HttpRequester.TIMEOUT_SOCKET = 30000;
-
-                                    if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
-
-                                    } else {
                                         try{
                                             //flag = 136
                                             JSONObject jObj = new JSONObject(result);
@@ -142,7 +131,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                         } catch(Exception e){
                                             e.printStackTrace();
                                         }
-                                    }
                                 }
                             }
                             else{
@@ -157,6 +145,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                             Log.writePathLogToFile("service_log",
                                     "PathUploadReceiver onReceive meteringState=" + meteringState
                                             + " and MeteringService isRunning="+Utils.isServiceRunning(context, MeteringService.class));
+
                             if(Database2.ON.equalsIgnoreCase(meteringState)) {
                                 if (!Utils.isServiceRunning(context, MeteringService.class)) {
                                     Log.writePathLogToFile("service_log",

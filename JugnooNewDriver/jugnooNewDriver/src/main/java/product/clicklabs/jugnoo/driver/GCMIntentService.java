@@ -12,7 +12,6 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -21,7 +20,6 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
@@ -48,7 +46,6 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -639,7 +636,6 @@ public class GCMIntentService extends IntentService {
                 vibrator.vibrate(pattern, 1);
             }
             AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
             am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
             mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
             mediaPlayer.setLooping(true);
@@ -931,10 +927,7 @@ public class GCMIntentService extends IntentService {
 					Response response = RestClient.getApiServices().sendChangePortAckToServerRetro(accessTokenPair.first);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
-					if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
-					} else {
-						new JSONParser().parsePortNumber(context, jObject1);
-					}
+					new JSONParser().parsePortNumber(context, jObject1);
 
 					nameValuePairs = null;
 				} catch (Exception e) {

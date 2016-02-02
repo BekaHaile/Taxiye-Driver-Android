@@ -6,8 +6,8 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import rmn.androidscreenlibrary.ASSL;
 
 public class BlankActivityForDialog extends Activity{
 
