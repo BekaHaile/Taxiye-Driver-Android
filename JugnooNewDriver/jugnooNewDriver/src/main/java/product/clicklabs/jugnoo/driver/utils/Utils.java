@@ -20,9 +20,6 @@ import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -30,7 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -138,12 +135,13 @@ public class Utils {
 	}
 
 
-	public static ArrayList<NameValuePair> convertQueryToNameValuePairArr(String query) throws UnsupportedEncodingException {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		String[] pairs = query.split("&");
+	public static HashMap<String, String> convertQueryToNameValuePairArr(String query)
+			throws UnsupportedEncodingException {
+		HashMap<String, String> nameValuePairs = new HashMap<>();
+		String[] pairs = query.substring(2, query.length()-2).split(", ");
 		for (String pair : pairs) {
 			int idx = pair.indexOf("=");
-			nameValuePairs.add(new BasicNameValuePair(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8")));
+			nameValuePairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
 		}
 		return nameValuePairs;
 	}

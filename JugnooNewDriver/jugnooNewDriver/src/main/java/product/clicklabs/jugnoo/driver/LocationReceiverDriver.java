@@ -52,7 +52,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
                 else{
 
 					if(location.getAccuracy() > FREE_MAX_ACCURACY) {
-                        Log.i("equal_Low_acc", "");
+//                        Log.i("equal_Low_acc", "");
 						Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
                     }
 
@@ -80,12 +80,12 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 								Log.writeLogToFile("LocationReciever", "Receiver " + DateOperations.getCurrentTime() + " = " + location + " hasNet = " + AppStatus.getInstance(context).isOnline(context));
 								new DriverLocationDispatcher().sendLocationToServer(context, "LocationReciever");
-								Log.i("equal_data", location.toString());
+//								Log.i("equal_data", location.toString());
 							}
 						}).start();
 
 					if(location.getAccuracy() > 200) {
-						Log.i("equal_Low_acc", "");
+//						Log.i("equal_Low_acc", "");
 						context.stopService(new Intent(context, DriverLocationUpdateService.class));
 						setAlarm(context);
 					}

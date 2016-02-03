@@ -9,4 +9,6 @@ public interface Constants {
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
+    String SERVER_TIMEOUT = "SERVER_TIMEOUT";
+
 }

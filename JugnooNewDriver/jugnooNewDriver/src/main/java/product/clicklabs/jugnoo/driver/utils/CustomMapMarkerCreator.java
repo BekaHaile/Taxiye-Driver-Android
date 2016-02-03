@@ -1,9 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import product.clicklabs.jugnoo.driver.R;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
-import android.app.Notification;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +15,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import product.clicklabs.jugnoo.driver.R;
 
 @SuppressWarnings("static-access")
 public class CustomMapMarkerCreator {
