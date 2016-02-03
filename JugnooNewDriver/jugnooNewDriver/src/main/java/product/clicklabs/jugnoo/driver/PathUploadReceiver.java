@@ -26,6 +26,8 @@ import retrofit.mime.TypedByteArray;
 
 public class PathUploadReceiver extends BroadcastReceiver {
 
+    private final String TAG = PathUploadReceiver.class.getSimpleName();
+
     @Override
     public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
@@ -111,7 +113,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                     Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
                                     String result = new String(((TypedByteArray)response.getBody()).getBytes());
-
+                                    Log.e(TAG, "result="+result);
                                         try{
                                             //flag = 136
                                             JSONObject jObj = new JSONObject(result);

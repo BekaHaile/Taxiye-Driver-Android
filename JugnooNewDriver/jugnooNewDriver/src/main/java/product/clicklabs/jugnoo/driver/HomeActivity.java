@@ -143,6 +143,7 @@ import retrofit.mime.TypedByteArray;
 public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate, FlurryEventNames, OnMapReadyCallback {
 
 
+	private final String TAG = HomeActivity.class.getSimpleName();
 
 	DrawerLayout drawerLayout;																		// views declaration
 
@@ -5075,7 +5076,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-
+					Log.e(TAG, "driverUploadPathDataFileRetro response="+new String(((TypedByteArray)response.getBody()).getBytes()));
 				}
 
 				@Override
@@ -5345,7 +5346,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i("Server response", "response = " + responseStr);
+						Log.i(TAG, "rateTheCustomer response = " + responseStr);
 						try {
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
@@ -5549,7 +5550,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			}
 		} catch (Exception e){
-			e.printStackTrace();
 		}
 	}
 

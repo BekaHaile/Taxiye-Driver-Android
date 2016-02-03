@@ -138,7 +138,7 @@ public interface APIServices {
 							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/end_ride1")
+	@POST("/end_ride")
 	void autoEndRideAPIRetro(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
 	@FormUrlEncoded

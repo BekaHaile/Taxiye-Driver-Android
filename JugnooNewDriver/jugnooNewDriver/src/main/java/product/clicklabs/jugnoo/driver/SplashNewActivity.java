@@ -359,7 +359,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 								checkForTokens();
 							}
-						}, 2000);
+						}, 500);
 					}
 				});
 			}
