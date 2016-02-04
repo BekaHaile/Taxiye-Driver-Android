@@ -13,7 +13,7 @@
         android:layout_height="96px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/grey_leader">
+        android:background="@color/menu_black">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -48,9 +48,9 @@
         android:layout_height="99px"
         android:visibility="visible"
         app:pstsIndicatorHeight="7px"
-        app:pstsDividerColor="@color/grey_light"
+        app:pstsDividerColor="@color/menu_black"
         app:pstsShouldExpand="true"
-        app:pstsUnderlineColor="@color/grey_light"
+        app:pstsUnderlineColor="@color/new_orange"
         app:pstsUnderlineHeight="2px"
         />
 

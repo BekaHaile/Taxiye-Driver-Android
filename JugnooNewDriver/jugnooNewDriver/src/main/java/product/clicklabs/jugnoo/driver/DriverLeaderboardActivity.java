@@ -1,8 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboardData;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardAreaMode;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardMode;
+import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -38,7 +43,7 @@ import rmn.androidscreenlibrary.ASSL;
 
 public class DriverLeaderboardActivity extends FragmentActivity implements FlurryEventNames {
 
-	LinearLayout linearLayoutRoot;
+	LinearLayout linearLayoutRoot, linearLayoutContainer;
 
 	Button buttonBack;
 	TextView textViewTitle;
@@ -74,6 +79,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		setContentView(R.layout.activity_driver_leaderboard);
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
+		linearLayoutContainer = (LinearLayout) findViewById(R.id.linearLayoutContainer);
 		new ASSL(DriverLeaderboardActivity.this, linearLayoutRoot, 1134, 720, false);
 
 
@@ -148,6 +154,13 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		listViewDriverLB.setAdapter(adapter);
 
 		getLeaderboardData(this);
+
+		ShareLeaderboardFragment shareLeaderboardFragment = new ShareLeaderboardFragment();
+
+		getSupportFragmentManager()
+				.beginTransaction()
+				.replace(linearLayoutContainer.getId(), shareLeaderboardFragment, ShareLeaderboardFragment.class.getSimpleName())
+				.commit();
 
 	}
 

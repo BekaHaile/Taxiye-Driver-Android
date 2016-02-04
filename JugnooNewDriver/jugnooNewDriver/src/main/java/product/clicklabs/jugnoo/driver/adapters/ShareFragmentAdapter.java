@@ -27,10 +27,6 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 				break;
 
 			case 1:
-				fragment = new ShareLeaderboardFragment();
-				break;
-
-			case 2:
 				fragment = new ShareActivityFragment();
 				break;
 		}
@@ -40,7 +36,7 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 3;
+		return 2;
 	}
 
 	@Override
@@ -49,8 +45,6 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 			case 0:
 				return "Earn";
 			case 1:
-				return "Leaderboard";
-			case 2:
 				return "Activity";
 		}
 

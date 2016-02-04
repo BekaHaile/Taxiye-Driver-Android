@@ -99,15 +99,14 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 		viewPager.setAdapter(shareFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-		tabs.setIndicatorColor(getResources().getColor(R.color.blue_leader));
-		tabs.setTextColorResource(R.color.blue_leader, R.color.grey_leader);
+		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
+		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
 		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-//		getLeaderboardCall();
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -162,118 +161,5 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
         ASSL.closeActivity(linearLayoutRoot);
         System.gc();
 		super.onDestroy();
-	}
-
-	public void getLeaderboardCall() {
-		try {
-			if(!HomeActivity.checkIfUserDataNull(this) && AppStatus.getInstance(this).isOnline(this)) {
-				DialogPopup.showLoadingDialog(this, "Loading...");
-				RestClient.getApiServices().leaderboardServerCall(Data.userData.accessToken, "",
-						new Callback<LeaderboardResponse>() {
-							@Override
-							public void success(LeaderboardResponse leaderboardResponse, Response response) {
-								DialogPopup.dismissLoadingDialog();
-								try {
-									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-									JSONObject jObj;
-									jObj = new JSONObject(jsonString);
-									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-									String message = JSONParser.getServerMessage(jObj);
-									if (!SplashNewActivity.checkIfTrivialAPIErrors(ShareActivity.this, jObj, flag)) {
-										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-											Log.v("success at", "leaderboeard");
-											ShareActivity.this.leaderboardResponse = leaderboardResponse;
-											updateLeaderboard(1);
-										}
-										else{
-											retryLeaderboardDialog(message);
-										}
-										getLeaderboardActivityCall();
-									}
-								} catch (Exception exception) {
-									exception.printStackTrace();
-									retryLeaderboardDialog(Data.SERVER_ERROR_MSG);
-								}
-							}
-
-							@Override
-							public void failure(RetrofitError error) {
-								DialogPopup.dismissLoadingDialog();
-								retryLeaderboardDialog(Data.SERVER_NOT_RESOPNDING_MSG);
-								getLeaderboardActivityCall();
-							}
-						});
-			} else {
-				retryLeaderboardDialog(Data.CHECK_INTERNET_MSG);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void updateLeaderboard(int pos) {
-		Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + viewPager.getId() + ":" + pos);
-		if (page != null) {
-			if(pos == 1){
-				((ShareLeaderboardFragment) page).update();
-			} else if(pos == 2){
-				((ShareActivityFragment) page).update();
-			}
-		}
-	}
-
-	public void retryLeaderboardDialog(String message){
-		DialogPopup.alertPopupTwoButtonsWithListeners(this, "", message,
-				getResources().getString(R.string.retry),
-				getResources().getString(R.string.cancel),
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						getLeaderboardCall();
-					}
-				},
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						performbackPressed();
-					}
-				}, true, false);
-	}
-
-	public void getLeaderboardActivityCall() {
-		if(!HomeActivity.checkIfUserDataNull(this) && AppStatus.getInstance(this).isOnline(this)) {
-			DialogPopup.showLoadingDialog(this, "Loading...");
-			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, "",
-					new Callback<LeaderboardActivityResponse>() {
-						@Override
-						public void success(LeaderboardActivityResponse leaderboardActivityResponse, Response response) {
-							DialogPopup.dismissLoadingDialog();
-							try {
-								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								JSONObject jObj;
-								jObj = new JSONObject(jsonString);
-								int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(ShareActivity.this, jObj, flag)) {
-									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-										ShareActivity.this.leaderboardActivityResponse = leaderboardActivityResponse;
-										updateLeaderboard(2);
-										Log.v("success at", "leaderboeard");
-									}
-									else{
-										DialogPopup.alertPopup(ShareActivity.this, "", message);
-									}
-								}
-							} catch (Exception exception) {
-								exception.printStackTrace();
-							}
-						}
-
-						@Override
-						public void failure(RetrofitError error) {
-							DialogPopup.dismissLoadingDialog();
-						}
-					});
-		}
 	}
 }

@@ -2,9 +2,11 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +16,27 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.LeaderboardItemsAdapter;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.Ranklist;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 
@@ -36,10 +51,11 @@ public class ShareLeaderboardFragment extends Fragment {
 	private ArrayList<Ranklist> leaderboardItems;
 
 	private View rootView;
-    private ShareActivity activity;
+    private FragmentActivity activity;
 
 	private LBLocationType lbLocationType;
 	private LBTimeType lbTimeType;
+	private LeaderboardResponse leaderboardResponse;
 
     @Override
     public void onStart() {
@@ -61,7 +77,7 @@ public class ShareLeaderboardFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_share_leaderboard, container, false);
 
 
-        activity = (ShareActivity) getActivity();
+        activity = getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		try {
@@ -141,54 +157,54 @@ public class ShareLeaderboardFragment extends Fragment {
 
 			if(LBTimeType.DAILY == lbTimeType){
 				if(this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.drawable.background_blue);
+					textViewDaily.setBackgroundResource(R.color.new_orange);
 					textViewDaily.setTextColor(getResources().getColor(R.color.white));
-					textViewWeekly.setBackgroundResource(R.drawable.background_white_bordered_blue_selector);
-					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.grey_leader));
+					textViewWeekly.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
 			}
 			else if(LBTimeType.WEEKLY == lbTimeType){
 				if(this.lbTimeType != lbTimeType) {
-					textViewDaily.setBackgroundResource(R.drawable.background_white_bordered_blue_selector);
-					textViewDaily.setTextColor(getResources().getColorStateList(R.color.grey_leader));
-					textViewWeekly.setBackgroundResource(R.drawable.background_blue);
+					textViewDaily.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
+					textViewDaily.setTextColor(getResources().getColorStateList(R.color.menu_black));
+					textViewWeekly.setBackgroundResource(R.color.new_orange);
 					textViewWeekly.setTextColor(getResources().getColor(R.color.white));
 				}
 			}
 
 			if(LBLocationType.LOCAL == lbLocationType){
 				if(this.lbLocationType != lbLocationType){
-					buttonLocal.setBackgroundResource(R.drawable.button_blue_normal);
+					buttonLocal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
 					buttonLocal.setTextColor(getResources().getColor(R.color.white));
-					buttonGlobal.setBackgroundResource(R.drawable.background_white_bordered_blue_rounded_selector);
-					buttonGlobal.setTextColor(getResources().getColorStateList(R.color.grey_leader));
+					buttonGlobal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+					buttonGlobal.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
 				if(LBTimeType.DAILY == lbTimeType){
-					leaderboardItems.addAll(activity.leaderboardResponse.getLocal().getDaily().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = activity.leaderboardResponse.getLocal().getDaily().getUserinfo();
+					leaderboardItems.addAll(leaderboardResponse.getLocal().getDaily().getRanklist());
+					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getLocal().getDaily().getUserinfo();
 					fillUserInfo(userInfo);
 				}
 				else if(LBTimeType.WEEKLY == lbTimeType){
-					leaderboardItems.addAll(activity.leaderboardResponse.getLocal().getWeekly().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = activity.leaderboardResponse.getLocal().getWeekly().getUserinfo();
+					leaderboardItems.addAll(leaderboardResponse.getLocal().getWeekly().getRanklist());
+					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getLocal().getWeekly().getUserinfo();
 					fillUserInfo(userInfo);
 				}
 			}
 			else if(LBLocationType.GLOBAL == lbLocationType){
 				if(this.lbLocationType != lbLocationType) {
-					buttonLocal.setBackgroundResource(R.drawable.background_white_bordered_blue_rounded_selector);
-					buttonLocal.setTextColor(getResources().getColorStateList(R.color.grey_leader));
-					buttonGlobal.setBackgroundResource(R.drawable.button_blue_normal);
+					buttonLocal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+					buttonLocal.setTextColor(getResources().getColorStateList(R.color.menu_black));
+					buttonGlobal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
 					buttonGlobal.setTextColor(getResources().getColor(R.color.white));
 				}
 				if(LBTimeType.DAILY == lbTimeType){
-					leaderboardItems.addAll(activity.leaderboardResponse.getGlobal().getDaily().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = activity.leaderboardResponse.getGlobal().getDaily().getUserinfo();
+					leaderboardItems.addAll(leaderboardResponse.getGlobal().getDaily().getRanklist());
+					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getGlobal().getDaily().getUserinfo();
 					fillUserInfo(userInfo);
 				}
 				else if(LBTimeType.WEEKLY == lbTimeType){
-					leaderboardItems.addAll(activity.leaderboardResponse.getGlobal().getWeekly().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = activity.leaderboardResponse.getGlobal().getWeekly().getUserinfo();
+					leaderboardItems.addAll(leaderboardResponse.getGlobal().getWeekly().getRanklist());
+					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getGlobal().getWeekly().getUserinfo();
 					fillUserInfo(userInfo);
 				}
 			}
@@ -225,6 +241,8 @@ public class ShareLeaderboardFragment extends Fragment {
 	}
 
 
+
+
     @Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -238,6 +256,69 @@ public class ShareLeaderboardFragment extends Fragment {
 
 	enum LBTimeType{
 		DAILY, WEEKLY
+	}
+
+	public void getLeaderboardCall() {
+		try {
+			if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, "Loading...");
+				RestClient.getApiServices().leaderboardServerCall(Data.userData.accessToken, "",
+						new Callback<LeaderboardResponse>() {
+							@Override
+							public void success(LeaderboardResponse leaderboardResponse, Response response) {
+								DialogPopup.dismissLoadingDialog();
+								try {
+									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									JSONObject jObj;
+									jObj = new JSONObject(jsonString);
+									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+									String message = JSONParser.getServerMessage(jObj);
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(getActivity(), jObj, flag)) {
+										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+											Log.v("success at", "leaderboeard");
+											ShareLeaderboardFragment.this.leaderboardResponse = leaderboardResponse;
+											update();
+										}
+										else{
+											retryLeaderboardDialog(message);
+										}
+									}
+								} catch (Exception exception) {
+									exception.printStackTrace();
+									retryLeaderboardDialog(Data.SERVER_ERROR_MSG);
+								}
+							}
+
+							@Override
+							public void failure(RetrofitError error) {
+								DialogPopup.dismissLoadingDialog();
+								retryLeaderboardDialog(Data.SERVER_NOT_RESOPNDING_MSG);
+							}
+						});
+			} else {
+				retryLeaderboardDialog(Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void retryLeaderboardDialog(String message){
+		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message,
+				getResources().getString(R.string.retry),
+				getResources().getString(R.string.cancel),
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						getLeaderboardCall();
+					}
+				},
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+					}
+				}, true, false);
 	}
 
 

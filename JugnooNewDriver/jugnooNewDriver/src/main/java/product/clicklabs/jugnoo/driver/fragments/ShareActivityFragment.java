@@ -3,6 +3,8 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +13,23 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 import rmn.androidscreenlibrary.ASSL;
 
 
@@ -25,7 +41,8 @@ public class ShareActivityFragment extends Fragment {
 			textViewMoneyEarnedValue, textViewDataEffective;
 
 	private View rootView;
-    private ShareActivity activity;
+    private FragmentActivity activity;
+	LeaderboardActivityResponse leaderboardActivityResponse;
 
     @Override
     public void onStart() {
@@ -47,7 +64,7 @@ public class ShareActivityFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_share_activity, container, false);
 
 
-        activity = (ShareActivity) getActivity();
+        activity = getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		try {
@@ -86,12 +103,12 @@ public class ShareActivityFragment extends Fragment {
 
 	public void update(){
 		try{
-			if(activity.leaderboardActivityResponse != null){
-				textViewNumberOfDownloadsValue.setText(""+activity.leaderboardActivityResponse.getNDownloads());
-				textViewNumberOfFirstRidesValue.setText(""+activity.leaderboardActivityResponse.getNFirstRides());
-				textViewMoneyEarnedValue.setText(""+activity.leaderboardActivityResponse.getNMoneyEarned());
+			if(leaderboardActivityResponse != null){
+				textViewNumberOfDownloadsValue.setText(""+leaderboardActivityResponse.getNDownloads());
+				textViewNumberOfFirstRidesValue.setText(""+leaderboardActivityResponse.getNFirstRides());
+				textViewMoneyEarnedValue.setText(""+leaderboardActivityResponse.getNMoneyEarned());
 				textViewDataEffective.setText(String.format(activity.getResources()
-						.getString(R.string.data_effective_format), activity.leaderboardActivityResponse.getDate()));
+						.getString(R.string.data_effective_format), leaderboardActivityResponse.getDate()));
 			}
 		} catch(Exception e){
 			e.printStackTrace();
@@ -103,6 +120,43 @@ public class ShareActivityFragment extends Fragment {
 		super.onDestroy();
         ASSL.closeActivity(linearLayoutRoot);
         System.gc();
+	}
+
+	public void getLeaderboardActivityCall() {
+		if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, "",
+					new Callback<LeaderboardActivityResponse>() {
+						@Override
+						public void success(LeaderboardActivityResponse leaderboardActivityResponse, Response response) {
+							DialogPopup.dismissLoadingDialog();
+							try {
+								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+								JSONObject jObj;
+								jObj = new JSONObject(jsonString);
+								int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+								String message = JSONParser.getServerMessage(jObj);
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+										ShareActivityFragment.this.leaderboardActivityResponse = leaderboardActivityResponse;
+										update();
+										Log.v("success at", "leaderboeard");
+									}
+									else{
+										DialogPopup.alertPopup(activity, "", message);
+									}
+								}
+							} catch (Exception exception) {
+								exception.printStackTrace();
+							}
+						}
+
+						@Override
+						public void failure(RetrofitError error) {
+							DialogPopup.dismissLoadingDialog();
+						}
+					});
+		}
 	}
 
 

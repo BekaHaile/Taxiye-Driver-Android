@@ -47,7 +47,8 @@
     
     <color name="grey_btn">#8E8E8E</color>
     <color name="grey_btn_pressed">#7E7E7E</color>
-    <color name="new_orange">#F8A654</color>
+    <color name="new_orange_pressed">#F8A654</color>
+    <color name="new_orange">#F6853A</color>
     <color name="menu_black_pressed">#97918D</color>
 
 
