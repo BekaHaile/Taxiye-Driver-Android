@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -399,8 +400,8 @@ public class GpsDistanceCalculator {
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
 		Log.e("window time", "="+lastWaitWindowTime);
-		Log.e("accumulativeSpeed time", "="+accumulativeSpeed);
-		Log.e("speedCounter time", "="+speedCounter);
+		Log.e("accumulativeSpeed time", "=" + accumulativeSpeed);
+		Log.e("speedCounter time", "=" + speedCounter);
 	}
 
 
@@ -421,16 +422,21 @@ public class GpsDistanceCalculator {
 			if (Utils.compareDouble(displacement, MAX_DISPLACEMENT_THRESHOLD) == -1) {
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if (validDistance) {
-					Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
-							currentLatLng.latitude, currentLatLng.longitude, 0, 0);
+					if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
+						Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
+								currentLatLng.latitude, currentLatLng.longitude, 0, 0);
+					}
 					GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 							getWaitTimeFromSP(context), lastGPSLocation,
 							lastFusedLocation, totalHaversineDistance, true);
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(lastLatLng, currentLatLng));
 				}
 			} else {
-				final long rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
-						currentLatLng.latitude, currentLatLng.longitude, 1, 1);
+				long rowId = -1;
+				if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
+					rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
+							currentLatLng.latitude, currentLatLng.longitude, 1, 1);
+				}
 				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
 			}
 		} catch (Exception e) {
@@ -569,11 +575,15 @@ public class GpsDistanceCalculator {
 						LatLng dest = list.get(z + 1);
 						polylineOptions.add(new LatLng(src.latitude, src.longitude), new LatLng(dest.latitude, dest.longitude));
 
-						Database2.getInstance(context).insertCurrentPathItem(rowId, src.latitude, src.longitude,
-								dest.latitude, dest.longitude, 0, 0);
+						if(rowId != -1) {
+							Database2.getInstance(context).insertCurrentPathItem(rowId, src.latitude, src.longitude,
+									dest.latitude, dest.longitude, 0, 0);
+						}
 					}
 
-					Database2.getInstance(context).updateCurrentPathItemSectionIncomplete(rowId, 0);
+					if(rowId != -1) {
+						Database2.getInstance(context).updateCurrentPathItemSectionIncomplete(rowId, 0);
+					}
 
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(polylineOptions);
 				}
@@ -590,7 +600,9 @@ public class GpsDistanceCalculator {
 						lastFusedLocation, totalHaversineDistance, true);
 				GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(source, destination));
 
-				Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
+				if(rowId != -1) {
+					Database2.getInstance(context).updateCurrentPathItemSectionIncompleteAndGooglePath(rowId, 0, 0);
+				}
 
 			}
 			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "gapi case unsuccessful");
@@ -734,12 +746,16 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	public static synchronized void saveEngagementIdToSP(Context context, String engagementId) {
+	public static synchronized void saveEngagementIdToSP(Context context, String engagementId, DriverScreenMode driverScreenMode) {
 		Prefs.with(context).save(SPLabels.ENGAGEMENT_ID, engagementId);
+		Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE_METERING, driverScreenMode.getOrdinal());
 	}
 
 	public static synchronized String getEngagementIdFromSP(Context context) {
 		return Prefs.with(context).getString(SPLabels.ENGAGEMENT_ID, "0");
+	}
+	public static synchronized int getDriverScreenModeSP(Context context) {
+		return Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE_METERING, DriverScreenMode.D_IN_RIDE.getOrdinal());
 	}
 
 	LocationListener GSMlistener = new LocationListener() {
