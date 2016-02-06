@@ -52,9 +52,9 @@ public class NotificationAlarmResponse {
 		@SerializedName("sound_id")
 		@Expose
 		private String soundId;
-		@SerializedName("sound_name")
+		@SerializedName("sound_url")
 		@Expose
-		private String soundName;
+		private String soundUrl;
 
 		/**
 		 * @return The soundId
@@ -64,7 +64,7 @@ public class NotificationAlarmResponse {
 		}
 
 		/**
-		 * @param soundId The region_id
+		 * @param soundId The sound_id
 		 */
 		public void setSoundId(String soundId) {
 			this.soundId = soundId;
@@ -73,19 +73,19 @@ public class NotificationAlarmResponse {
 		/**
 		 *
 		 * @return
-		 * The soundName
+		 * The soundUrl
 		 */
-		public String getSoundName() {
-			return soundName;
+		public String getSoundUrl() {
+			return soundUrl;
 		}
 
 		/**
 		 *
-		 * @param soundName
-		 * The sound_name
+		 * @param soundUrl
+		 * The sound_url
 		 */
-		public void setSoundName(String soundName) {
-			this.soundName = soundName;
+		public void setSoundUrl(String soundUrl) {
+			this.soundUrl = soundUrl;
 		}
 
 	}

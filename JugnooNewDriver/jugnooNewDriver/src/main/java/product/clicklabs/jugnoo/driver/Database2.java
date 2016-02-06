@@ -115,6 +115,10 @@ public class Database2 {																	// class for handling database related 
 	private static final String METERING_STATE = "metering_state";
 
 
+	private static final String TABLE_CUSTOM_AUDIO = "table_custom_audio";
+	private static final String CUSTOM_AUDIO_URL = "custom_audio_url";
+	private static final String CUSTOM_AUDIO_ID = "custom_audio_id";
+
 
 
     // ***************** // table_current_path table columns  // **********************//
@@ -234,6 +238,10 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
 				+ METERING_STATE + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOM_AUDIO + " ("
+				+ CUSTOM_AUDIO_URL + " TEXT, "
+				+ CUSTOM_AUDIO_ID + " TEXT" + ");");
 
 
         database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CURRENT_PATH + " ("
@@ -635,7 +643,7 @@ public class Database2 {																	// class for handling database related 
 
 	public void alterTableDriverCurrentLocation(){
 		try {
-			database.execSQL("DROP TABLE "+TABLE_DRIVER_CURRENT_LOCATION);
+			database.execSQL("DROP TABLE " + TABLE_DRIVER_CURRENT_LOCATION);
 			database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
 					+ DRIVER_CURRENT_LATITUDE + " TEXT, "
 					+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
@@ -1205,7 +1213,7 @@ public class Database2 {																	// class for handling database related 
 	public void deleteRideData(){
 		try{
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
-			database.execSQL("DROP TABLE "+Database2.TABLE_RIDE_DATA);
+			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
 			createAllTables(database);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -1262,6 +1270,32 @@ public class Database2 {																	// class for handling database related 
 	}
 
 
+
+
+	public void insertCustomAudioUrl(String url, String id) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.CUSTOM_AUDIO_URL, url);
+			contentValues.put(Database2.CUSTOM_AUDIO_ID, id);
+			database.insert(Database2.TABLE_CUSTOM_AUDIO, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public String getCustomAudioUrl(String id) {
+		String[] columns = new String[] { Database2.CUSTOM_AUDIO_URL };
+		Cursor cursor = database.query(Database2.TABLE_CUSTOM_AUDIO, columns, CUSTOM_AUDIO_ID+"=?",
+				new String[]{id}, null, null, null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			String choice = cursor.getString(cursor.getColumnIndex(Database2.CUSTOM_AUDIO_URL));
+			return choice;
+		} else {
+			return "";
+		}
+	}
 
 
 

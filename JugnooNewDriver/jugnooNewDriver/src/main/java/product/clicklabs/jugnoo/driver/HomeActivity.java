@@ -115,6 +115,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.DownloadActivity;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -987,7 +988,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                 @Override
                 public void onClick(View v) {
-                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
                     FlurryEventLogger.event(CALL_US);
                 }
             });

@@ -28,7 +28,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.JSONParser;
+import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
@@ -66,30 +68,10 @@ public class DownloadService extends IntentService {
 		Bundle bundle = new Bundle();
 
 		if (!TextUtils.isEmpty(url)) {
-			/* Update UI: Download Service is Running */
-			receiver.send(STATUS_RUNNING, Bundle.EMPTY);
+
 
 			try {
-				downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-				Uri Download_Uri = Uri.parse(url);
-				DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
-
-				//Restrict the types of networks over which this download may proceed.
-				request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-				//Set whether this download may proceed over a roaming connection.
-				request.setAllowedOverRoaming(false);
-				//Set the title of this download, to be displayed in notifications (if enabled).
-				request.setTitle("My Data Download");
-				//Set a description of this download, to be displayed in notifications (if enabled)
-				request.setDescription("Android Data download using DownloadManager.");
-				//Set the local destination for the downloaded file to a path within the application's external files directory
-				request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, "CountryList.json");
-
-				//Enqueue a new download and same the referenceId
-				downloadReference = downloadManager.enqueue(request);
-
-				receiver.send(STATUS_FINISHED, bundle);
-
+				fetchNotificationData();
 			} catch (Exception e) {
 
                 /* Sending error message back to activity */
@@ -101,14 +83,40 @@ public class DownloadService extends IntentService {
 		this.stopSelf();
 	}
 
+	public void downloadNotificationData(String url, String file) {
+
+		downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
+		Uri Download_Uri = Uri.parse(url);
+		DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
+
+		//Restrict the types of networks over which this download may proceed.
+		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+		//Set whether this download may proceed over a roaming connection.
+		request.setAllowedOverRoaming(false);
+		//Set the title of this download, to be displayed in notifications (if enabled).
+		request.setTitle("My Data Download");
+		//Set a description of this download, to be displayed in notifications (if enabled)
+		request.setDescription("Android Data download using DownloadManager.");
+		//Set the local destination for the downloaded file to a path within the application's external files directory
+		request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, file + ".mp3");
+
+		//Enqueue a new download and same the referenceId
+		downloadReference = downloadManager.enqueue(request);
+	}
+
 	public void fetchNotificationData() {
 		try {
-			Response response = RestClient.getApiServices().updateNotificationData(params);
-			String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-			JSONObject jObj;
-			jObj = new JSONObject(jsonString);
+			NotificationAlarmResponse response = RestClient.getApiServices().
+					updateNotificationData(Data.userData.accessToken, "jugnoo_audio");
 
+			for (int i = 0; i < response.getSound().size(); i++) {
 
+				String url = response.getSound().get(i).getSoundUrl();
+				String file = response.getSound().get(i).getSoundId();
+				Database2.getInstance(this).insertCustomAudioUrl(url, file);
+
+				downloadNotificationData(url, file);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

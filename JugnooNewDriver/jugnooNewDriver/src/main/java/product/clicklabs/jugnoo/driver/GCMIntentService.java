@@ -12,8 +12,10 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
@@ -28,6 +30,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -46,7 +49,9 @@ import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DownloadFile;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -440,7 +445,8 @@ public class GCMIntentService extends IntentService {
 														businessId, referenceId, orderAmount, fareFactor));
 											}
 
-											startRing(this);
+
+											startRingCustom(this, "/Abc.mp3");
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
@@ -454,7 +460,7 @@ public class GCMIntentService extends IntentService {
 //									notificationManager(this, "You have got a new request.", true);
 									notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, false);
 
-									startRing(this);
+									startRingCustom(this, "/Abc.mp3");
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
@@ -568,6 +574,21 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 								}
+							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
+								String url = jObj.getString("file_url");
+								String id = jObj.getString("file_id");
+								if (HomeActivity.appInterruptHandler != null) {
+									File extStore = Environment.getExternalStorageDirectory();
+									File myFile = new File(extStore.getAbsolutePath() + "/book1/page2.html");
+
+									if(myFile.exists()){
+										startRingCustom(this, "file_id");
+									}else{
+										DownloadFile downloadFile = new DownloadFile();
+										downloadFile.downloadNotificationData(this, url, id);
+										Database2.getInstance(this).insertCustomAudioUrl(url, id);
+									}
+								}
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
@@ -661,6 +682,50 @@ public class GCMIntentService extends IntentService {
             e.printStackTrace();
         }
     }
+
+
+	public static void startRingCustom(Context context, String file) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			Log.i("Music Path", "" + (Environment.getExternalStorageDirectory().getPath() + file));
+			mediaPlayer = MediaPlayer.create(context, Uri.parse(Environment.getExternalStorageDirectory().getPath()+file));
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     public static CountDownTimer ringStopTimer;
 

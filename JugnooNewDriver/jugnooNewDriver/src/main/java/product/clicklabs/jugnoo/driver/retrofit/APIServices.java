@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -213,5 +214,11 @@ public interface APIServices {
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/notification_alarm_list")
+	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
+													 @Field("file_type") String fileType);
+
 
 }

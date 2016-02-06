@@ -22,6 +22,7 @@ public enum PushFlags {
 	CHANGE_PORT(60),
 	UPDATE_CUSTOMER_BALANCE(71),
 	UPDATE_DROP_LOCATION(73),
+	JUGNOO_AUDIO(75),
 	SHARING_RIDE_ENDED(74);
 
 	private int ordinal;
