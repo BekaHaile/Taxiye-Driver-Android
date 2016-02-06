@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -41,8 +40,6 @@ public class DriverLocationUpdateService extends Service {
     public void onStart(Intent intent, int startId) {
         try{
         	String userMode = Database2.getInstance(this).getUserMode();
-			Log.writePathLogToFile("service_log",
-					"DriverLocationUpdateService onStart userMode="+userMode);
     		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
 	        	updateServerData(this);
 	    		String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
@@ -88,7 +85,7 @@ public class DriverLocationUpdateService extends Service {
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
         String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+		String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 
 		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
 
@@ -185,8 +182,6 @@ public class DriverLocationUpdateService extends Service {
         	locationFetcherDriver = null;
         }
 
-		Log.writePathLogToFile("service_log",
-				"DriverLocationUpdateService onDestroy userMode=" + Database2.getInstance(this).getUserMode());
 		if (!Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(this).getUserMode())) {
 			cancelLocationUpdateAlarm();
 		}

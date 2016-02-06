@@ -88,8 +88,6 @@ public class GpsDistanceCalculator {
 		this.fusedLocationFetcherBackgroundBalanced = null;
 		initializeGPSForegroundLocationFetcher(context);
 
-
-		Log.e("GpsDistanceCalculator constructor", "=totalDistance=" + totalDistance);
 	}
 
 	public static GpsDistanceCalculator getInstance(Context context, GpsDistanceTimeUpdater gpsDistanceUpdater,
@@ -123,7 +121,6 @@ public class GpsDistanceCalculator {
 		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 				getWaitTimeFromSP(context), lastGPSLocation,
 				lastFusedLocation, totalHaversineDistance, true);
-		Log.e("GpsDistanceCalculator start", "=totalDistance=" + totalDistance);
 		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at start =" + totalDistance);
 	}
 
@@ -166,7 +163,6 @@ public class GpsDistanceCalculator {
 		instance.lastWaitWindowTime = System.currentTimeMillis();
 
 		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at stop =" + totalDistance);
-		Log.e("stop instance=", "=" + instance);
 	}
 
 
@@ -229,14 +225,9 @@ public class GpsDistanceCalculator {
 
 				@Override
 				public void onGPSLocationChanged(Location location) {
-
-					long lastUpdateTime = System.currentTimeMillis();
 					try {
 						if (location.getAccuracy() < MAX_ACCURACY) {
 							if (10 >= (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
-								Log.v("gsmgpsdist", String.valueOf(MapUtils.distance(gsmLocation, location)));
-								Log.v("gsmgpscount", String.valueOf(Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0)));
-
 								if (MapUtils.distance(gsmLocation, location) < 2000) {
 									if ((Utils.compareDouble(location.getLatitude(), 0.0) != 0) && (Utils.compareDouble(location.getLongitude(), 0.0) != 0)) {
 										drawLocationChanged(location);
@@ -249,7 +240,6 @@ public class GpsDistanceCalculator {
 									drawLocationChanged(location);
 								}
 
-								Log.v("gsmgpscount2", String.valueOf(Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0)));
 								try {
 									if (11 == (Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0))) {
 										Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0) + 1);
@@ -262,8 +252,6 @@ public class GpsDistanceCalculator {
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 								getWaitTimeFromSP(context), lastGPSLocation,
 								lastFusedLocation, totalHaversineDistance, true);
-
-						Log.v("diff", String.valueOf(System.currentTimeMillis() - lastUpdateTime));
 
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -362,7 +350,6 @@ public class GpsDistanceCalculator {
 
 			if (speedMPS <= MAX_SPEED_THRESHOLD) {
 				if ((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)) {
-//					Log.e("speedCounter", "="+speedCounter);
 					calculateWaitTime(speedMPS);
 					addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
@@ -399,9 +386,6 @@ public class GpsDistanceCalculator {
 			this.speedCounter = 0;
 			this.lastWaitWindowTime = System.currentTimeMillis();
 		}
-		Log.e("window time", "="+lastWaitWindowTime);
-		Log.e("accumulativeSpeed time", "=" + accumulativeSpeed);
-		Log.e("speedCounter time", "=" + speedCounter);
 	}
 
 
@@ -779,7 +763,6 @@ public class GpsDistanceCalculator {
 				GSMmgr = null;
 				Prefs.with(context).save(SPLabels.GPS_GSM_DISTANCE_COUNT, Prefs.with(context).getInt(SPLabels.GPS_GSM_DISTANCE_COUNT, 0) + 1);
 			}
-			Log.v("gsm location", "="+location);
 			gsmLocation = location;
 		}
 	};

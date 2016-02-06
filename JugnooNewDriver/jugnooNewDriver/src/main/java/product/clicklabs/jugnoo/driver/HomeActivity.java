@@ -4345,13 +4345,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public void initializeStartRideVariables(){
-
 		Utils.deleteCache(this);
 
 		lastLocation = null;
 		lastLocationTime = System.currentTimeMillis();
 
-		Database2.getInstance(this).deleteRideData();
+		if(DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode.getOrdinal()
+				|| DriverScreenMode.D_ARRIVED.getOrdinal() == driverScreenMode.getOrdinal()
+				|| DriverScreenMode.D_START_RIDE.getOrdinal() == driverScreenMode.getOrdinal()
+				|| DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode.getOrdinal()){
+
+		} else{
+			Database2.getInstance(this).deleteRideData();
+		}
 		Database2.getInstance(this).deleteAllCurrentPathItems();
 		Database.getInstance(this).deleteSavedPath();
 
@@ -5085,6 +5091,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("access_token", Data.userData.accessToken);
 			params.put("engagement_id", engagementId);
 			params.put("ride_path_data", rideDataStr);
+
+			Log.i(TAG, "driverUploadPathDataFileAsync params="+params);
 
 			RestClient.getApiServices().driverUploadPathDataFileRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
