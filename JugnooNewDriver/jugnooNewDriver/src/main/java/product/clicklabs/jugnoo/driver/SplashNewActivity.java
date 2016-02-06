@@ -344,7 +344,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
-		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
 			public void deviceTokenReceived(final String regId) {

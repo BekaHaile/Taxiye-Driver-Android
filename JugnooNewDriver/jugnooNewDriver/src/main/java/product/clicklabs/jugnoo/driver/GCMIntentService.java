@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,6 +11,7 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -20,6 +20,7 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
+import com.google.android.gms.gcm.GcmListenerService;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
@@ -55,14 +56,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class GCMIntentService extends IntentService {
+public class GCMIntentService extends GcmListenerService {
 
 	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	NotificationCompat.Builder builder;
 
 	public GCMIntentService() {
-		super("GcmIntentService");
 	}
 
 	protected void onError(Context arg0, String arg1) {
@@ -317,9 +317,9 @@ public class GCMIntentService extends IntentService {
 
 
 	@Override
-	public void onHandleIntent(Intent intent) {
+	public void onMessageReceived(String from, Bundle data) {
 		try {
-			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+			Log.i("Recieved a gcm message arg1...", "," + data);
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -330,11 +330,11 @@ public class GCMIntentService extends IntentService {
 			if (!"".equalsIgnoreCase(accessToken)) {
 
 				try {
-					Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+					Log.i("Recieved a gcm message arg1...", "," + data);
 
-					if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
+					if (!"".equalsIgnoreCase(data.getString("message", ""))) {
 
-						String message = intent.getExtras().getString("message");
+						String message = data.getString("message");
 
 						try {
 							JSONObject jObj = new JSONObject(message);
@@ -608,9 +608,6 @@ public class GCMIntentService extends IntentService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		// Release the wake lock provided by the WakefulBroadcastReceiver.
-        GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
 

@@ -54,6 +54,33 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme" >
 
+        <receiver
+            android:name="com.google.android.gms.gcm.GcmReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+                <category android:name="product.clicklabs.jugnoo" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="product.clicklabs.jugnoo.driver.GCMIntentService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="product.clicklabs.jugnoo.driver.MyInstanceIDListenerService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.android.gms.iid.InstanceID"/>
+            </intent-filter>
+        </service>
+
+
+
         <activity
             android:name="product.clicklabs.jugnoo.driver.SplashNewActivity"
             android:label="@string/app_name"
@@ -202,19 +229,6 @@
         <receiver android:name="product.clicklabs.jugnoo.driver.FusedLocationReceiverBackgroundBalanced" />
         <receiver android:name="product.clicklabs.jugnoo.driver.FusedLocationReceiverBackgroundHigh" />
 
-
-        <receiver
-            android:name="product.clicklabs.jugnoo.driver.GcmBroadcastReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-
-                <category android:name="product.clicklabs.jugnoo.driver" />
-            </intent-filter>
-        </receiver>
-
-        <service android:name="product.clicklabs.jugnoo.driver.GCMIntentService" />
 
         <receiver android:name="product.clicklabs.jugnoo.driver.BootCompletedReceiver" >
             <intent-filter>

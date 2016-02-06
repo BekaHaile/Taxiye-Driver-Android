@@ -303,7 +303,7 @@ public class RegisterScreen extends Activity implements LocationUpdate{
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 		
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(this, new IDeviceTokenReceiver() {
 			
 			@Override
 			public void deviceTokenReceived(final String regId) {
