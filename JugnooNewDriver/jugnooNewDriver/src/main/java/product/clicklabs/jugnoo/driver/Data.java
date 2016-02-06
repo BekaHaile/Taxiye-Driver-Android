@@ -11,9 +11,7 @@ import android.graphics.Typeface;
 import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.loopj.android.http.AsyncHttpClient;
 
-import java.security.KeyStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MySSLSocketFactory;
 
 /**
  * Stores common static data for access for all activities across the application
@@ -172,7 +169,7 @@ public class Data {
 	
 
 	public static final String DEVICE_TYPE = "0";
-	public static String deviceToken = "", pushyToken = "",
+	public static String deviceToken = "",
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
 	public static int appVersion;
 	
@@ -290,34 +287,4 @@ public class Data {
 
 
 
-
-
-
-    public static AsyncHttpClient mainClient;
-	
-	public static final int SOCKET_TIMEOUT = 30000;
-	public static final int CONNECTION_TIMEOUT = 30000;
-	public static final int MAX_RETRIES = 0;
-	public static final int RETRY_TIMEOUT = 1000;
-	
-	public static AsyncHttpClient getClient() {
-		if (mainClient == null) {
-			mainClient = new AsyncHttpClient();
-			try {
-				KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-				trustStore.load(null, null);
-				MySSLSocketFactory sf = new MySSLSocketFactory(trustStore);
-				sf.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-				mainClient.setSSLSocketFactory(sf);
-			} catch (Exception e) {
-				Log.e("exception in https hostname", "="+e.toString());
-			}
-			mainClient.setConnectTimeout(CONNECTION_TIMEOUT);
-			mainClient.setResponseTimeout(SOCKET_TIMEOUT);
-			mainClient.setMaxRetriesAndTimeout(MAX_RETRIES, RETRY_TIMEOUT);
-		}
-		return mainClient;
-	}
-	
-	
 }

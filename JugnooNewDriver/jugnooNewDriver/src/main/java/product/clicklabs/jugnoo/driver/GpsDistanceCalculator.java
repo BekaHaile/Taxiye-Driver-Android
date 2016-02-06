@@ -24,12 +24,14 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class GpsDistanceCalculator {
 
@@ -483,7 +485,6 @@ public class GpsDistanceCalculator {
 	}
 
 	private class DirectionsAsyncTask extends AsyncTask<Void, Void, String> {
-		String url;
 		double displacementToCompare;
 		LatLng source, destination;
 		Location currentLocation;
@@ -492,7 +493,6 @@ public class GpsDistanceCalculator {
 		public DirectionsAsyncTask(LatLng source, LatLng destination, double displacementToCompare, Location currentLocation, long rowId) {
 			this.source = source;
 			this.destination = destination;
-			this.url = MapUtils.makeDirectionsURL(source, destination);
 			this.displacementToCompare = displacementToCompare;
 			this.currentLocation = currentLocation;
 			this.rowId = rowId;
@@ -505,7 +505,9 @@ public class GpsDistanceCalculator {
 
 		@Override
 		protected String doInBackground(Void... params) {
-			return new HttpRequester().getJSONFromUrl(url);
+			Response response = RestClient.getGoogleApiServices().getDirections(source.latitude+","+source.longitude,
+					destination.latitude+","+destination.longitude, false, "driving", false);
+			return new String(((TypedByteArray)response.getBody()).getBytes());
 		}
 
 		@Override

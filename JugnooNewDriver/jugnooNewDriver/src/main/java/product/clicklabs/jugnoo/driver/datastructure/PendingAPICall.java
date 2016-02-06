@@ -1,16 +1,14 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
+import java.util.HashMap;
 
 public class PendingAPICall {
 	
 	public int id;
 	public String url;
-	public ArrayList<NameValuePair> nameValuePairs;
+	public HashMap<String, String> nameValuePairs;
 	
-	public PendingAPICall(int id, String url, ArrayList<NameValuePair> nameValuePairs){
+	public PendingAPICall(int id, String url, HashMap<String, String> nameValuePairs){
 		this.id = id;
 		this.url = url;
 		this.nameValuePairs = nameValuePairs;

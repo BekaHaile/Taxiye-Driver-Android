@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
@@ -34,14 +33,11 @@ import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -408,8 +404,8 @@ public class JSONParser {
 
 //			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
 			Log.e("result of = user_status", "="+result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				returnResponse = HttpRequester.SERVER_TIMEOUT;
+			if(response == null || result == null){
+				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
 			}
 			else{
@@ -419,7 +415,7 @@ public class JSONParser {
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-			returnResponse = HttpRequester.SERVER_TIMEOUT;
+			returnResponse = Constants.SERVER_TIMEOUT;
 			return returnResponse;
 		}
 	}
@@ -589,7 +585,7 @@ public class JSONParser {
 			try{
 							
 							if(jObject1.has("error")){
-								returnResponse = HttpRequester.SERVER_TIMEOUT;
+								returnResponse = Constants.SERVER_TIMEOUT;
 								return returnResponse;
 							}
 							else{
@@ -881,7 +877,7 @@ public class JSONParser {
 			} catch(Exception e){
 				e.printStackTrace();
 				engagementStatus = -1;
-				returnResponse = HttpRequester.SERVER_TIMEOUT;
+				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
 			}
 			
@@ -1132,15 +1128,4 @@ public class JSONParser {
 
 	}
 
-
-    public static void parsePushyInterval(Context context, JSONObject jObj){
-        try{
-            long pushyInterval = jObj.optLong("pushy_interval", Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
-            Prefs.with(context).save(SPLabels.PUSHY_REFRESH_INTERVAL, pushyInterval);
-            Pushy.setHeartbeatInterval((1000 * pushyInterval), context);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-	
 }
