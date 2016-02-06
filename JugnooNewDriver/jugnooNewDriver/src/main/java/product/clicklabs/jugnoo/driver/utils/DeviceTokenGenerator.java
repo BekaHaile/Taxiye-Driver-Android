@@ -41,4 +41,21 @@ public class DeviceTokenGenerator {
 		}
 	}
 
+	public String forceGenerateDeviceToken(Context context){
+		String token = "";
+		try {
+			InstanceID instanceID = InstanceID.getInstance(context);
+			token = instanceID.getToken(Data.GOOGLE_PROJECT_ID, GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if(token == null){
+				token = "not_found";
+			} else if(token.equalsIgnoreCase("")){
+				token = "not_found";
+			}
+		}
+		return token;
+	}
+
 }

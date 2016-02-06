@@ -11,9 +11,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -73,6 +75,13 @@ public class DriverLocationDispatcher {
 									Database2.getInstance(context).updateDriverLastLocationTime();
 								}
 							}
+
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
+								String deviceTokenNew = new DeviceTokenGenerator().forceGenerateDeviceToken(context);
+								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
+								sendLocationToServer(context);
+							}
 						} catch(Exception e){
 							e.printStackTrace();
 						}
@@ -112,7 +121,7 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put("reference_id", referenceId);
 
 							Response response = RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
-//22595684
+
 						}
 					}
 				}

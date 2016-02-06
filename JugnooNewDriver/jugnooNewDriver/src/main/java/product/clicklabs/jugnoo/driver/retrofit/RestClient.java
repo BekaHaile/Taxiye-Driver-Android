@@ -61,6 +61,24 @@ public class RestClient {
 		API_SERVICES = restAdapter.create(APIServices.class);
 	}
 
+	public static void setupRestClient(String url) {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint(url)
+				.setClient(new OkClient(getOkHttpClient()))
+				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL)
+				;
+
+		RestAdapter restAdapter = builder.build();
+		API_SERVICES = restAdapter.create(APIServices.class);
+	}
+
 	public static APIServices getApiServices() {
 		return API_SERVICES;
 	}

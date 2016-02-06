@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -134,6 +135,9 @@ public class DriverLocationUpdateService extends Service {
 
 		Database2.getInstance(context).insertDriverLocData(accessToken, deviceToken, SERVER_URL);
 		Database2.getInstance(context).updatePushyToken(pushyToken);
+
+		RestClient.setupRestClient(SERVER_URL);
+
     }
     
     
