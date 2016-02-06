@@ -174,7 +174,6 @@ public class MapUtils {
 
 				if (zero.has("address_components")) {
 					try {
-
 						ArrayList<String> selectedAddressComponentsArr = new ArrayList<String>();
 						JSONArray addressComponents = zero.getJSONArray("address_components");
 
