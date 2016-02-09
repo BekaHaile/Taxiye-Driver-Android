@@ -144,14 +144,9 @@ public class PathUploadReceiver extends BroadcastReceiver {
                             }
 
                             String meteringState = Database2.getInstance(context).getMetringState();
-                            Log.writePathLogToFile("service_log",
-                                    "PathUploadReceiver onReceive meteringState=" + meteringState
-                                            + " and MeteringService isRunning="+Utils.isServiceRunning(context, MeteringService.class));
 
                             if(Database2.ON.equalsIgnoreCase(meteringState)) {
                                 if (!Utils.isServiceRunning(context, MeteringService.class)) {
-                                    Log.writePathLogToFile("service_log",
-                                            "PathUploadReceiver onReceive gone in");
                                     context.startService(new Intent(context, MeteringService.class));
                                 }
                             }

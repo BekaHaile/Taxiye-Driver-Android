@@ -138,7 +138,7 @@ public class Utils {
 	public static HashMap<String, String> convertQueryToNameValuePairArr(String query)
 			throws UnsupportedEncodingException {
 		HashMap<String, String> nameValuePairs = new HashMap<>();
-		String[] pairs = query.substring(2, query.length()-2).split(", ");
+		String[] pairs = query.substring(1, query.length()-1).split(", ");
 		for (String pair : pairs) {
 			int idx = pair.indexOf("=");
 			nameValuePairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
@@ -185,7 +185,6 @@ public class Utils {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 

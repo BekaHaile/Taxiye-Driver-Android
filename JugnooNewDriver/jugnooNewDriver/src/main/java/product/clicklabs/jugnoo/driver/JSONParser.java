@@ -42,7 +42,7 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class JSONParser {
+public class JSONParser implements Constants {
 
 	public JSONParser(){
 		
@@ -499,10 +499,11 @@ public class JSONParser {
 			}
 			
 			int referenceId = 0;
-			
+			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
+
 			Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(Data.dCustomerId),
 					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
-					new LatLng(0, 0),
+					new LatLng(0, 0), cachedApiEnabled,
 					jLastRideData.getString("user_image"), couponInfo, promoInfo);
 			
 			
@@ -576,7 +577,7 @@ public class JSONParser {
 			int dBusinessId = BusinessType.AUTOS.getOrdinal();
 			int dReferenceId = 0;
 			String storeAddress = "";
-			int storeOrderAmount = 0;
+			int storeOrderAmount = 0, cachedApiEnabled = 0;
 			FatafatDeliveryInfo deliveryInfo = null;
 			FatafatCustomerInfo customerInfo = null;
 			
@@ -811,6 +812,7 @@ public class JSONParser {
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
 											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
 											waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
+											cachedApiEnabled = jObject.optInt(KEY_CACHED_API_ENABLED, 0);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -911,7 +913,7 @@ public class JSONParser {
 				
 				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
+							dReferenceId, customerName, customerPhone, Data.dCustLatLng, cachedApiEnabled,
 							customerImage, customerRating, schedulePickupTime, freeRide, 
 							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){

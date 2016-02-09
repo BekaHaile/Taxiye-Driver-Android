@@ -18,14 +18,16 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED) &&
                 (GpsState.GREATER_SIX.getOrdinal() == Database2.getInstance(context).getGpsState())) {
 
+            String userMode = Database2.getInstance(context).getUserMode();
+            if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)) {
+                GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis() - 270000;
+                GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
 
-            GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis()-270000;
-            GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
-
-            Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            context.startActivity(i);
-            Database2.getInstance(context).updateGpsState(GpsState.ZERO_TWO.getOrdinal());
+                Intent i = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                context.startActivity(i);
+                Database2.getInstance(context).updateGpsState(GpsState.ZERO_TWO.getOrdinal());
+            }
         }
         else if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             try {

@@ -11,19 +11,23 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 public class DriverLocationDispatcher {
 
-	public void sendLocationToServer(Context context, String filePrefix){
+	private final String TAG = DriverLocationDispatcher.class.getSimpleName();
+
+	public void sendLocationToServer(Context context){
 		
 		double LOCATION_TOLERANCE = 0.0001;
 		
@@ -54,19 +58,16 @@ public class DriverLocationDispatcher {
 						nameValuePairs.put("device_token", deviceToken);
 						nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
 						nameValuePairs.put("pushy_token", pushyToken);
+						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
-						Log.i("bearing", String.valueOf(location.getBearing()));
-//						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
+						Log.i(TAG, "sendLocationToServer nameValuePairs="+nameValuePairs.toString());
 
-//						HttpRequester simpleJSONParser = new HttpRequester();
-//						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
 
 						Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 						String result = new String(((TypedByteArray)response.getBody()).getBytes());
 
-						Log.e("equal_Low_acc2 result in DLD", "=" + result);
-						Log.writeLogToFile(filePrefix, "Server result "+DateOperations.getCurrentTime()+" = "+result);
-						
+						Log.i(TAG, "sendLocationToServer result=" + result);
+
 						try{
 							//{"log":"Updated"}
 							JSONObject jObj = new JSONObject(result);
@@ -75,6 +76,13 @@ public class DriverLocationDispatcher {
 								if("Updated".equalsIgnoreCase(log)){
 									Database2.getInstance(context).updateDriverLastLocationTime();
 								}
+							}
+
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
+								String deviceTokenNew = new DeviceTokenGenerator().forceGenerateDeviceToken(context);
+								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
+								sendLocationToServer(context);
 							}
 						} catch(Exception e){
 							e.printStackTrace();
@@ -89,9 +97,6 @@ public class DriverLocationDispatcher {
 					String pickupLatitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
 					String pickupLongitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
-
-					double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
 
 					if(!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
@@ -133,7 +138,6 @@ public class DriverLocationDispatcher {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			Log.writeLogToFile(filePrefix, "Exception in sending to server "+DateOperations.getCurrentTime()+" = "+e);
 		}
 		finally{
     	}

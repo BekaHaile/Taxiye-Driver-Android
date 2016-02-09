@@ -50,7 +50,7 @@ public class PushPendingCallsService extends Service {
 				public void run() {
 					pushAPIs(PushPendingCallsService.this);
 				}
-			}, 30000);
+			}, 10);
         } catch(Exception e){
         	e.printStackTrace();
         }
