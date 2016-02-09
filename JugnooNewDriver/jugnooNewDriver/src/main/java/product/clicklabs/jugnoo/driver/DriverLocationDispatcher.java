@@ -19,6 +19,7 @@ import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -57,6 +58,7 @@ public class DriverLocationDispatcher {
 						nameValuePairs.put("device_token", deviceToken);
 						nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
 						nameValuePairs.put("pushy_token", pushyToken);
+						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
 						Log.i(TAG, "sendLocationToServer nameValuePairs="+nameValuePairs.toString());
 
