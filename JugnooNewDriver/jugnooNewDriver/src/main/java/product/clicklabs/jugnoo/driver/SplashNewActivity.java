@@ -645,6 +645,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
 
+				params.put("device_name", Utils.getDeviceName());
+				params.put("imei", DeviceUniqueID.getUniqueId(this));
+
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");
 				}

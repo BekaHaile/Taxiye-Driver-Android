@@ -42,6 +42,8 @@ public class GpsDistanceCalculator {
 	private static final double MAX_DISPLACEMENT_THRESHOLD = 200; //in meters
 	public static final double MAX_SPEED_THRESHOLD = 15; //in meters per second
 	public static final double MAX_ACCURACY = 200;
+	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
+
 
 	public double totalDistance;
 	public double totalHaversineDistance;
@@ -373,13 +375,13 @@ public class GpsDistanceCalculator {
 
 	private void calculateWaitTime(double speedMPS){
 		long millisTillWaitWindow = System.currentTimeMillis() - lastWaitWindowTime;
-		if(millisTillWaitWindow < 20000){
+		if(millisTillWaitWindow < WAITING_WINDOW_TIME_MILLIS){
 			accumulativeSpeed = accumulativeSpeed + speedMPS;
 			speedCounter++;
 		} else{
 			double speedAvg = accumulativeSpeed / speedCounter;
 			if(speedAvg < 1.4){
-				long waitTime = getWaitTimeFromSP(context) + 20000l;
+				long waitTime = getWaitTimeFromSP(context) + WAITING_WINDOW_TIME_MILLIS;
 				saveWaitTimeToSP(context, waitTime);
 			}
 			this.accumulativeSpeed = 0;
