@@ -504,7 +504,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
 						if(pendingApisCount > 0){
-							pushAPIs(context);
+							recallCachedApis();
 						}
 						else{
 							stopPendingAPIs();
@@ -517,6 +517,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	    	}
 		}
     }
+
+	private void recallCachedApis(){
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				pushAPIs(SplashNewActivity.this);
+			}
+		}, 60000);
+	}
     
     public void stopPushApiThread(){
     	try{

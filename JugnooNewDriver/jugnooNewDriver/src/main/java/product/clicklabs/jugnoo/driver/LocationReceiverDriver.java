@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import com.google.android.gms.location.LocationServices;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -20,6 +21,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 	public static final double FREE_MAX_ACCURACY = 200;
 	public static final double MAX_TIME_WINDOW = 3600000;
 
+	public final String TAG = LocationReceiverDriver.class.getSimpleName();
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -32,6 +34,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 				double speed_1 = displacement_1 / timediff_1;
 
 				if (speed_1 > 20) {
+					Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
 					context.stopService(new Intent(context, DriverLocationUpdateService.class));
 					setAlarm(context);
 				} else {
@@ -63,6 +66,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 					}).start();
 
 					if (location.getAccuracy() > 200) {
+						Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
 						context.stopService(new Intent(context, DriverLocationUpdateService.class));
 						setAlarm(context);
 					}

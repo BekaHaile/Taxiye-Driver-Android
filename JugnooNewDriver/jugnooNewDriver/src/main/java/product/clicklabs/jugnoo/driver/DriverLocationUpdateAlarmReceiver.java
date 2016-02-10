@@ -14,6 +14,8 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	private static final String SEND_LOCATION = "product.clicklabs.jugnoo.driver.SEND_LOCATION";
 	
 	private static final long MAX_TIME_BEFORE_LOCATION_UPDATE = 3 * 60000;
+
+	private final String TAG = DriverLocationUpdateAlarmReceiver.class.getSimpleName();
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
@@ -50,6 +52,7 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 			}
 			if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
 				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
+					Log.i(TAG, "onReceive startDriverService called");
 					new DriverServiceOperations().startDriverService(context);
 				}
 			}
