@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,7 +14,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 /**
  * Created by aneeshbansal on 24/10/15.

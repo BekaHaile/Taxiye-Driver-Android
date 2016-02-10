@@ -16,7 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 public class DriverHistoryActivity extends FragmentActivity{
 	

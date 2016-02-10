@@ -17,19 +17,17 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class HelpParticularActivity extends FragmentActivity {
 
@@ -42,7 +40,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	TextView textViewInfo;
 	WebView webview;
 
-	AsyncHttpClient fetchHelpDataClient;
 
 	public static HelpSection helpSection = HelpSection.FARE_DETAILS;
 
@@ -181,66 +178,57 @@ public class HelpParticularActivity extends FragmentActivity {
 
 
 	public void getFareDetailsAsync(final Activity activity) {
-		if (fetchHelpDataClient == null) {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if (helpSection != null) {
-					progressBar.setVisibility(View.VISIBLE);
-					textViewInfo.setVisibility(View.GONE);
-					webview.setVisibility(View.GONE);
-					loadHTMLContent("");
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+			if (helpSection != null) {
+				progressBar.setVisibility(View.VISIBLE);
+				textViewInfo.setVisibility(View.GONE);
+				webview.setVisibility(View.GONE);
+				loadHTMLContent("");
 
 
-					RestClient.getApiServices().getHelpSection(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().getHelpSection(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
 
 
-						@Override
-						public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
-							try {
-								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								JSONObject jObj;
-								jObj = new JSONObject(jsonString);
-								if (!jObj.isNull("error")) {
-									String errorMessage = jObj.getString("error");
-									if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-										HomeActivity.logoutUser(activity);
-									} else {
-										openHelpData("Some error occured. Tap to retry.", true);
-									}
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
 								} else {
-									String data = jObj.getString("data");
-									openHelpData(data, false);
+									openHelpData("Some error occured. Tap to retry.", true);
 								}
-
-							} catch (Exception exception) {
-								exception.printStackTrace();
-								openHelpData("Some error occured. Tap to retry.", true);
+							} else {
+								String data = jObj.getString("data");
+								openHelpData(data, false);
 							}
-							progressBar.setVisibility(View.GONE);
-						}
 
-						@Override
-						public void failure(RetrofitError error) {
-							progressBar.setVisibility(View.GONE);
+						} catch (Exception exception) {
+							exception.printStackTrace();
 							openHelpData("Some error occured. Tap to retry.", true);
-
 						}
-					});
-				}
-			} else {
-				openHelpData("No internet connection. Tap to retry.", true);
+						progressBar.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						progressBar.setVisibility(View.GONE);
+						openHelpData("Some error occured. Tap to retry.", true);
+
+					}
+				});
 			}
+		} else {
+			openHelpData("No internet connection. Tap to retry.", true);
 		}
 	}
 
 
 	public void performBackPressed() {
-		try {
-			if (fetchHelpDataClient != null) {
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
@@ -254,13 +242,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		try {
-			if (fetchHelpDataClient != null) {
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		ASSL.closeActivity(relative);
 		System.gc();
 	}

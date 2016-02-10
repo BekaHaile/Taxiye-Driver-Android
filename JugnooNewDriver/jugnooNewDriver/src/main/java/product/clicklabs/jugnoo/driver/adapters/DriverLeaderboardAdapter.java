@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 /**
  * Created by socomo20 on 7/24/15.

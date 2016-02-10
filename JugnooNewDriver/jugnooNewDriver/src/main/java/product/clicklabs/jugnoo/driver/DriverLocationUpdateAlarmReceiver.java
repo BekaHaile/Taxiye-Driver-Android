@@ -1,15 +1,13 @@
 package product.clicklabs.jugnoo.driver;
 
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.squareup.okhttp.internal.Util;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 
@@ -19,7 +17,6 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
 		String userMode = Database2.getInstance(context).getUserMode();
 		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
 	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
@@ -40,7 +37,7 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 						new Thread(new Runnable() {
 							@Override
 							public void run() {
-								new DriverLocationDispatcher().sendLocationToServer(context, "AlarmReceiver");
+								new DriverLocationDispatcher().sendLocationToServer(context);
 							}
 						}).start();
 					}
@@ -51,13 +48,8 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 				finally{
 				}
 			}
-			Log.writePathLogToFile("service_log",
-					"DriverLocationUpdateAlarmReceiver onReceive userMode=" + Database2.getInstance(context).getUserMode()
-							+ " and DriverLocationUpdateService running=" + Utils.isServiceRunning(context, DriverLocationUpdateService.class));
 			if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
 				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
-					Log.writePathLogToFile("service_log",
-							"DriverLocationUpdateAlarmReceiver onReceive gone in");
 					new DriverServiceOperations().startDriverService(context);
 				}
 			}

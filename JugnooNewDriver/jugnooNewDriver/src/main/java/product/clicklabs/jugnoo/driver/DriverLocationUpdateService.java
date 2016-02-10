@@ -11,7 +11,9 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -41,8 +43,6 @@ public class DriverLocationUpdateService extends Service {
     public void onStart(Intent intent, int startId) {
         try{
         	String userMode = Database2.getInstance(this).getUserMode();
-			Log.writePathLogToFile("service_log",
-					"DriverLocationUpdateService onStart userMode="+userMode);
     		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
 	        	updateServerData(this);
 	    		String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
@@ -74,7 +74,7 @@ public class DriverLocationUpdateService extends Service {
     }
     
     
-    public static void updateServerData(Context context){
+    public static void updateServerData(final Context context){
     	String SHARED_PREF_NAME = "myPref";
     	String SP_ACCESS_TOKEN_KEY = "access_token";
     	String accessToken = "", deviceToken = "", SERVER_URL = "";
@@ -88,7 +88,7 @@ public class DriverLocationUpdateService extends Service {
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
         String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-		String DEFAULT_SERVER_URL = DEV_SERVER_URL;
+		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
 		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
 
@@ -128,15 +128,19 @@ public class DriverLocationUpdateService extends Service {
 		
 		SharedPreferences pref = context.getSharedPreferences(SHARED_PREF_NAME, 0);
 		accessToken = pref.getString(SP_ACCESS_TOKEN_KEY, "");
-		
-		deviceToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(), 
-				Context.MODE_PRIVATE).getString("registration_id", "");
-		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
-				Context.MODE_PRIVATE).getString("pushy_registration_id", "");
-    	
 
-		Database2.getInstance(context).insertDriverLocData(accessToken, deviceToken, SERVER_URL);
-		Database2.getInstance(context).updatePushyToken(pushyToken);
+		final String finalAccessToken = accessToken;
+		final String finalSERVER_URL = SERVER_URL;
+		new DeviceTokenGenerator().generateDeviceToken(context, new IDeviceTokenReceiver() {
+			@Override
+			public void deviceTokenReceived(String deviceToken) {
+				Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+			}
+		});
+
+
+		RestClient.setupRestClient(SERVER_URL);
+
     }
     
     
@@ -185,8 +189,6 @@ public class DriverLocationUpdateService extends Service {
         	locationFetcherDriver = null;
         }
 
-		Log.writePathLogToFile("service_log",
-				"DriverLocationUpdateService onDestroy userMode=" + Database2.getInstance(this).getUserMode());
 		if (!Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(this).getUserMode())) {
 			cancelLocationUpdateAlarm();
 		}

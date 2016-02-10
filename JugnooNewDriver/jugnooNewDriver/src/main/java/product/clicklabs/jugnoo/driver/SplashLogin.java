@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -37,13 +37,11 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class SplashLogin extends Activity implements LocationUpdate, FlurryEventNames{
 	
@@ -251,7 +249,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		}
 		
 		
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(this, new IDeviceTokenReceiver() {
 
             @Override
             public void deviceTokenReceived(final String regId) {
@@ -390,7 +388,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", Data.pushyToken);
+			params.put("pushy_token", "");
 
 			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 				params.put("auto_n_cab_installed", "1");
@@ -465,7 +463,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
 									new DriverServiceOperations().startDriverService(activity);
 									Database.getInstance(SplashLogin.this).insertEmail(emailId);
-                                    JSONParser.parsePushyInterval(activity, jObj);
 									loginDataFetched = true;
 								}
 							}

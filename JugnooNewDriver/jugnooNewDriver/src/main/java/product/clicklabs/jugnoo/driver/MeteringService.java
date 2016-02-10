@@ -48,8 +48,6 @@ public class MeteringService extends Service {
 	
     @Override
     public void onStart(Intent intent, int startId) {
-		Log.writePathLogToFile("service_log",
-				"MeteringService onStart meteringState=" + Database2.getInstance(this).getMetringState());
     	cancelAlarm();
         gpsInstance(this).start();
         startUploadPathAlarm();
@@ -66,16 +64,12 @@ public class MeteringService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	Log.e("MeteringService onTaskRemoved","="+rootIntent);
-		Log.writePathLogToFile("service_log",
-				"MeteringService onTaskRemoved meteringState=" + Database2.getInstance(this).getMetringState());
     	restartServiceViaAlarm();
     }
 
 	@Override
 	public void onDestroy() {
 		Log.e("MeteringService onDestroy","=");
-		Log.writePathLogToFile("service_log",
-				"MeteringService onDestroy meteringState=" + Database2.getInstance(this).getMetringState());
 		restartServiceViaAlarm();
 	}
 

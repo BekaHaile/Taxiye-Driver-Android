@@ -9,4 +9,9 @@ public interface Constants {
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
+    String SERVER_TIMEOUT = "SERVER_TIMEOUT";
+
+    String KEY_CACHED_API_ENABLED = "cached_api_enabled";
+    String KEY_FLAG = "flag";
+
 }

@@ -1,13 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -16,8 +8,22 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
 
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+
 public class PushPendingCallsService extends Service {
-	
+
+	private final String TAG = PushPendingCallsService.class.getSimpleName();
+
 	public PushPendingCallsService() {
 		Log.e("PushPendinsCallsService"," instance created");
 	}
@@ -44,7 +50,7 @@ public class PushPendingCallsService extends Service {
 				public void run() {
 					pushAPIs(PushPendingCallsService.this);
 				}
-			}, 30000);
+			}, 10);
         } catch(Exception e){
         	e.printStackTrace();
         }
@@ -90,7 +96,7 @@ public class PushPendingCallsService extends Service {
 				public void run() {
 					ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(context).getAllPendingAPICalls();
 					for(PendingAPICall pendingAPICall : pendingAPICalls){
-						Log.e("pendingAPICall", "="+pendingAPICall);
+						Log.e(TAG, "pendingApiCall="+pendingAPICall);
 						startAPI(context, pendingAPICall);
 					}
 					
@@ -130,18 +136,27 @@ public class PushPendingCallsService extends Service {
     }
     
 	public void startAPI(Context context, PendingAPICall pendingAPICall) {
-		if (AppStatus.getInstance(context).isOnline(context)) {
-			HttpRequester.TIMEOUT_CONNECTION = 30000;
-			HttpRequester.TIMEOUT_SOCKET = 30000;
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(pendingAPICall.url, pendingAPICall.nameValuePairs);
-			Log.e("result in pendingAPICall ", "=" + pendingAPICall + " and result = "+ result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				
+		try {
+			if (AppStatus.getInstance(context).isOnline(context)) {
+				Response response = null;
+				if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.MARK_DELIVERED.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().markDeliveredSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.UPLOAD_RIDE_DATA.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().uploadRideDataSync(pendingAPICall.nameValuePairs);
+				}
+				Log.e(TAG, "response="+response);
+				if(response != null){
+					Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+					Log.e(TAG, "responseto string=" + new String(((TypedByteArray)response.getBody()).getBytes()));
+				}
 			}
-			else{
-				Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.e(TAG, "e="+e);
 		}
 	}
     

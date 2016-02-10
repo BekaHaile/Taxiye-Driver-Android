@@ -9,9 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.loopj.android.http.RequestParams;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
@@ -966,7 +965,7 @@ public class Database2 {																	// class for handling database related 
 		return 0;
 	}
 	
-	public void insertPendingAPICall(Context context, String url, RequestParams requestParams) {
+	public void insertPendingAPICall(Context context, String url, HashMap<String, String> requestParams) {
 		try{
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.API_URL, url);
