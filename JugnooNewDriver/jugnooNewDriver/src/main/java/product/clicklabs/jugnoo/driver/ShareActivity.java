@@ -32,10 +32,23 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class ShareActivity extends Activity {
 
@@ -48,17 +61,16 @@ public class ShareActivity extends Activity {
 	TextView textViewReferralCodeDisplay, textViewReferralCodeValue;
 	TextView textViewShareReferral;
 
-
-	String str1 = "Share your referral code ",
-			str2 = " with your friends and they will get a FREE ride because of your referral and once they have used Jugnoo, " +
-					"you will earn a FREE ride (upto Rs. 100) as well.",
-			str3 = "Your Referral Code is ";
+//	 str1 = "Share your referral code ",
+//			str2 = " with your friends and they will get a FREE ride because of your referral and once they have used Jugnoo, " +
+//					"you will earn a FREE ride (upto Rs. 100) as well.",
+	String str3 = "Your Referral Code is ";
 	SpannableString sstr;
 
 
-	String shareStr1 = "Hey, \nUse Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr11 = "Use Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr2 = " to get FREE ride upto Rs. 100.\nDownload it from here: http://smarturl.it/jugnoo";
+//	String shareStr1 = "Hey, \nUse Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
+//	String shareStr11 = "Use Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
+//	String shareStr2 = " to get FREE ride upto Rs. 100.\nDownload it from here: http://smarturl.it/jugnoo";
 
 	@Override
 	protected void onStart() {
@@ -100,6 +112,7 @@ public class ShareActivity extends Activity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		buttonShare = (Button) findViewById(R.id.buttonShare);
+		buttonShare.setText(Data.userData.referralButtonText);
 
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -119,10 +132,10 @@ public class ShareActivity extends Activity {
 			sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			textViewShareReferral.setText("");
-			textViewShareReferral.append(str1);
-			textViewShareReferral.append(sstr);
-			textViewShareReferral.append(str2);
+//			textViewShareReferral.setText("");
+//			textViewShareReferral.append(str1);
+//			textViewShareReferral.append(sstr);
+//			textViewShareReferral.append(str2);
 
 			textViewReferralCodeDisplay.setText("");
 			textViewReferralCodeDisplay.append(str3);
@@ -136,10 +149,10 @@ public class ShareActivity extends Activity {
 			String hindi1 = "कस्टमर को अपने Referral code ";
 			String hindi2 = " से Jugnoo App डाउनलोड करवाएँ और पाएँ " + getResources().getString(R.string.rupee) + " " + Data.userData.customerReferralBonus + " और कस्टमर को दिलवाएँ Jugnoo कैश ।";
 
-			textViewShareReferral.setText("");
-			textViewShareReferral.append(hindi1);
-			textViewShareReferral.append(sstr);
-			textViewShareReferral.append(hindi2);
+			textViewShareReferral.setText(Data.userData.referralMessage);
+//			textViewShareReferral.append(hindi1);
+//			textViewShareReferral.append(sstr);
+//			textViewShareReferral.append(hindi2);
 
 
 		} catch (Exception e) {
@@ -168,74 +181,10 @@ public class ShareActivity extends Activity {
 		});
 
 
-//		shareWhatsappImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				shareToWhatsapp(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaWhatsapp(Data.userData.accessToken);
-//			}
-//		});
-//
-//
-//		shareSMSImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				sendSMSIntent(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaSMS(Data.userData.accessToken);
-//			}
-//		});
-//
-//		shareEMailImg.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				openMailIntent(Data.userData.referralCode);
-//				FlurryEventLogger.sharedViaEmail(Data.userData.accessToken);
-//			}
-//		});
-
-
 	}
 
 
-	public void shareToWhatsapp(String referralCode) {
-		PackageManager pm = getPackageManager();
-		try {
-			Intent waIntent = new Intent(Intent.ACTION_SEND);
-			waIntent.setType("text/plain");
-			String text = shareStr1 + referralCode + shareStr2;
 
-			PackageInfo info = pm.getPackageInfo("com.whatsapp", PackageManager.GET_META_DATA);
-			Log.d("info", "=" + info);
-			waIntent.setPackage("com.whatsapp");
-
-			waIntent.putExtra(Intent.EXTRA_TEXT, text);
-			startActivity(Intent.createChooser(waIntent, "Share with"));
-
-		} catch (NameNotFoundException e) {
-			Toast.makeText(this, "WhatsApp not Installed", Toast.LENGTH_SHORT).show();
-		}
-	}
-
-
-	public void sendSMSIntent(String referralCode) {
-		Uri sms_uri = Uri.parse("smsto:");
-		Intent sms_intent = new Intent(Intent.ACTION_SENDTO, sms_uri);
-		sms_intent.putExtra("sms_body", shareStr1 + referralCode + shareStr2);
-		startActivity(sms_intent);
-	}
-
-
-	public void openMailIntent(String referralCode) {
-		Intent email = new Intent(Intent.ACTION_SEND);
-		email.putExtra(Intent.EXTRA_EMAIL, new String[]{""});
-		email.putExtra(Intent.EXTRA_SUBJECT, "Jugnoo Invite");
-		email.putExtra(Intent.EXTRA_TEXT, shareStr1 + referralCode + shareStr2);
-		email.setType("message/rfc822");
-		startActivity(Intent.createChooser(email, "Choose an Email client:"));
-	}
 
 
 	@Override
@@ -273,11 +222,12 @@ public class ShareActivity extends Activity {
 			dialog.setCanceledOnTouchOutside(true);
 
 
-			TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-			textViewTitle.setTypeface(Data.latoRegular(activity));
+			TextView textViewDialogTitle = (TextView) dialog.findViewById(R.id.textViewDialogTitle);
+			textViewDialogTitle.setTypeface(Data.latoRegular(activity));
 			final EditText customerNumber = (EditText) dialog.findViewById(R.id.customerNumber);
 			customerNumber.setTypeface(Data.latoRegular(activity));
-
+			customerNumber.setHint(Data.userData.referralDialogHintText);
+			textViewDialogTitle.setText(Data.userData.referralDialogText);
 
 			final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
 			btnOk.setTypeface(Data.latoRegular(activity));
@@ -298,8 +248,7 @@ public class ShareActivity extends Activity {
 								customerNumber.requestFocus();
 								customerNumber.setError("Please enter valid phone number");
 							} else {
-								SmsManager smsManager = SmsManager.getDefault();
-								sendSMS("+91" + code, Data.userData.referralSMSToCustomer);
+								sendReferralMessage(ShareActivity.this, "+91"+code);
 								dialog.dismiss();
 							}
 						}
@@ -350,58 +299,104 @@ public class ShareActivity extends Activity {
 
 	}
 	//---sends an SMS message to another device---
-	private void sendSMS(final String phoneNumber, String message)
-	{
-		String SENT = "SMS_SENT";
-		String DELIVERED = "SMS_DELIVERED";
-
-		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
-				new Intent(SENT), 0);
-
-		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
-				new Intent(DELIVERED), 0);
-
-		//---when the SMS has been sent---
-		registerReceiver(new BroadcastReceiver(){
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				switch (getResultCode())
-				{
-					case Activity.RESULT_OK:
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
-						break;
-					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_NO_SERVICE:
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_NULL_PDU:
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_RADIO_OFF:
-						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-				}
-			}
-		}, new IntentFilter(SENT));
-
-		//---when the SMS has been delivered---
-		registerReceiver(new BroadcastReceiver(){
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				switch (getResultCode())
-				{
-					case Activity.RESULT_OK:
-						break;
-//					case Activity.RESULT_CANCELED:
+//	private void sendSMS(final String phoneNumber, String message)
+//	{
+//		String SENT = "SMS_SENT";
+//		String DELIVERED = "SMS_DELIVERED";
+//
+//		PendingIntent sentPI = PendingIntent.getBroadcast(this, 0,
+//				new Intent(SENT), 0);
+//
+//		PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0,
+//				new Intent(DELIVERED), 0);
+//
+//		//---when the SMS has been sent---
+//		registerReceiver(new BroadcastReceiver(){
+//			@Override
+//			public void onReceive(Context arg0, Intent arg1) {
+//				switch (getResultCode())
+//				{
+//					case Activity.RESULT_OK:
 //						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
 //						break;
-				}
-			}
-		}, new IntentFilter(DELIVERED));
+//					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+//						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_NO_SERVICE:
+//						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_NULL_PDU:
+//						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_RADIO_OFF:
+//						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//				}
+//			}
+//		}, new IntentFilter(SENT));
+//
+//		//---when the SMS has been delivered---
+//		registerReceiver(new BroadcastReceiver(){
+//			@Override
+//			public void onReceive(Context arg0, Intent arg1) {
+//				switch (getResultCode())
+//				{
+//					case Activity.RESULT_OK:
+//						break;
+////					case Activity.RESULT_CANCELED:
+////						DialogPopup.alertPopup(ShareActivity.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
+////						break;
+//				}
+//			}
+//		}, new IntentFilter(DELIVERED));
+//
+//		SmsManager sms = SmsManager.getDefault();
+//		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+//	}
 
-		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+	public void sendReferralMessage(final Activity activity, String phone_no) {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+				DialogPopup.showLoadingDialog(activity, "Loading...");
+
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("phone_no", phone_no);
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(ShareActivity.this, "", jObj.getString("message"));
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
