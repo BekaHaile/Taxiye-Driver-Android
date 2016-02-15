@@ -216,9 +216,9 @@ public interface APIServices {
 									Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/notification_alarm_list")
+	@POST("/fetch_media_data")
 	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
-													 @Field("file_type") String fileType);
+													 @Field("file_category") String fileType);
 
 
 }

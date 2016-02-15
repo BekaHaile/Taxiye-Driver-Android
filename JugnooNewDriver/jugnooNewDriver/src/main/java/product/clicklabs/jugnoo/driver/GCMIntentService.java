@@ -215,7 +215,7 @@ public class GCMIntentService extends IntentService {
 			builder.setContentIntent(intent);
 
 
-			if(appstate) {
+			if (appstate) {
 				Intent intentAcc = new Intent(context, DriverProfileActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
@@ -227,10 +227,10 @@ public class GCMIntentService extends IntentService {
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
 				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
-			}else{
+			} else {
 				Intent intentAccKill = new Intent(context, SplashNewActivity.class);
 				intentAccKill.putExtra("type", "accept");
 				intentAccKill.putExtra("engagement_id", engagementId);
@@ -242,19 +242,15 @@ public class GCMIntentService extends IntentService {
 				intentCancKill.putExtra("type", "cancel");
 				intentCancKill.putExtra("engagement_id", engagementId);
 				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 			}
-
-
-
 
 
 			Notification notification = builder.build();
 
 			Prefs.with(context).save(SPLabels.NOTIFICATION_ID, Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0) + 1);
 			notificationManager.notify(Integer.parseInt(engagementId), notification);
-
 
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -434,7 +430,7 @@ public class GCMIntentService extends IntentService {
 												MealRideRequest mealRideRequest = new MealRideRequest(engagementId, userId,
 														new LatLng(latitude, longitude), startTime, address,
 														businessId, referenceId, rideTime, fareFactor);
-												if(!Data.driverRideRequests.contains(mealRideRequest)){
+												if (!Data.driverRideRequests.contains(mealRideRequest)) {
 													Data.driverRideRequests.add(mealRideRequest);
 												}
 											} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
@@ -446,11 +442,11 @@ public class GCMIntentService extends IntentService {
 											}
 
 
-											startRingCustom(this, "/Abc.mp3");
+											startRing(this);
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, true);
+											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
 											HomeActivity.appInterruptHandler.onNewRideRequest();
 
 											Log.e("referenceId", "=" + referenceId);
@@ -458,9 +454,9 @@ public class GCMIntentService extends IntentService {
 									}
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, false);
+									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
 
-									startRingCustom(this, "/Abc.mp3");
+									startRing(this);
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
@@ -577,18 +573,28 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
 								String url = jObj.getString("file_url");
 								String id = jObj.getString("file_id");
-								if (HomeActivity.appInterruptHandler != null) {
-									File extStore = Environment.getExternalStorageDirectory();
-									File myFile = new File(extStore.getAbsolutePath() + "/book1/page2.html");
+								int download = jObj.optInt("set_download", 0);
 
-									if(myFile.exists()){
-										startRingCustom(this, "file_id");
-									}else{
-										DownloadFile downloadFile = new DownloadFile();
-										downloadFile.downloadNotificationData(this, url, id);
+									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
+
+									if (myFile.exists() && download == 0) {
+										startRingCustom(this, myFile.getAbsolutePath());
+									} else {
+										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+										intent1.putExtra("downloadOnly",download);
+										intent1.putExtra("file_url", url);
+										intent1.putExtra("file_id", id);
+										startService(intent1);
 										Database2.getInstance(this).insertCustomAudioUrl(url, id);
 									}
-								}
+
+							} else if (PushFlags.GET_JUGNOO_AUDIO.getOrdinal() == flag) {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+									int downloadList = 2;
+									intent1.putExtra("downloadOnly",downloadList);
+									startService(intent1);
+
+
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
@@ -601,26 +607,26 @@ public class GCMIntentService extends IntentService {
 //												"paid_in_cash": 10
 //										}
 
-										SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
-												jObj.getString("transaction_time"),
-												jObj.getString("customer_phone_no"),
-												jObj.getDouble("actual_fare"),
-												jObj.getDouble("paid_in_cash"),
-												jObj.getDouble("account_balance"));
+								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
+										jObj.getString("transaction_time"),
+										jObj.getString("customer_phone_no"),
+										jObj.getDouble("actual_fare"),
+										jObj.getDouble("paid_in_cash"),
+										jObj.getDouble("account_balance"));
 
-										if(HomeActivity.appInterruptHandler != null){
-											Intent intent1 = new Intent(this, SharingRidesActivity.class);
-											intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-											intent1.putExtra("sharing_engagement_data", jObj.toString());
-											startActivity(intent1);
-										}
-										notificationManagerCustomID(this, "Sharing payment recieved for Phone "
-														+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
-												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
-									}
+								if (HomeActivity.appInterruptHandler != null) {
+									Intent intent1 = new Intent(this, SharingRidesActivity.class);
+									intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+									intent1.putExtra("sharing_engagement_data", jObj.toString());
+									startActivity(intent1);
+								}
+								notificationManagerCustomID(this, "Sharing payment recieved for Phone "
+												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
+										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
+							}
 
-								} catch (Exception e) {
-									e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					}
 
@@ -634,54 +640,54 @@ public class GCMIntentService extends IntentService {
 		}
 
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
-        GcmBroadcastReceiver.completeWakefulIntent(intent);
-    }
+		GcmBroadcastReceiver.completeWakefulIntent(intent);
+	}
 
 
-    public static MediaPlayer mediaPlayer;
-    public static Vibrator vibrator;
+	public static MediaPlayer mediaPlayer;
+	public static Vibrator vibrator;
 
-    public static void startRing(Context context) {
-        try {
-            stopRing(true);
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            if (vibrator.hasVibrator()) {
-                long[] pattern = {0, 1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900};
-                vibrator.vibrate(pattern, 1);
-            }
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+	public static void startRing(Context context) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-            mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    try {
-                        vibrator.cancel();
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mediaPlayer.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	public static void startRingCustom(Context context, String file) {
@@ -705,8 +711,8 @@ public class GCMIntentService extends IntentService {
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			Log.i("Music Path", "" + (Environment.getExternalStorageDirectory().getPath() + file));
-			mediaPlayer = MediaPlayer.create(context, Uri.parse(Environment.getExternalStorageDirectory().getPath()+file));
+			Log.i("Music Path", "" + file);
+			mediaPlayer = MediaPlayer.create(context, Uri.parse(file));
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
@@ -727,83 +733,83 @@ public class GCMIntentService extends IntentService {
 		}
 	}
 
-    public static CountDownTimer ringStopTimer;
+	public static CountDownTimer ringStopTimer;
 
-    public static void startRingWithStopHandler(Context context) {
-        try {
-            stopRing(true);
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            if (vibrator.hasVibrator()) {
-                long[] pattern = {0, 1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900};
-                vibrator.vibrate(pattern, 1);
-            }
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+	public static void startRingWithStopHandler(Context context) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-            mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    try {
-                        vibrator.cancel();
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mediaPlayer.start();
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
 
 
-            ringStopTimer = new CountDownTimer(20000, 1000) {
+			ringStopTimer = new CountDownTimer(20000, 1000) {
 
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    Log.e("millisUntilFinished", "=" + millisUntilFinished);
-                }
+				@Override
+				public void onTick(long millisUntilFinished) {
+					Log.e("millisUntilFinished", "=" + millisUntilFinished);
+				}
 
-                @Override
-                public void onFinish() {
-                    stopRing(true);
-                }
-            };
-            ringStopTimer.start();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+				@Override
+				public void onFinish() {
+					stopRing(true);
+				}
+			};
+			ringStopTimer.start();
 
 
-    public static void stopRing(boolean manual) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static void stopRing(boolean manual) {
 		boolean stopRing;
 		if (HomeActivity.appInterruptHandler != null) {
-			if(Data.driverRideRequests != null && Data.driverRideRequests.size() > 0){
+			if (Data.driverRideRequests != null && Data.driverRideRequests.size() > 0) {
 				stopRing = false;
-			} else{
+			} else {
 				stopRing = true;
 			}
-		} else{
+		} else {
 			stopRing = true;
 		}
-		if(manual){
+		if (manual) {
 			stopRing = true;
 		}
-		if(stopRing){
+		if (stopRing) {
 			try {
 				if (vibrator != null) {
 					vibrator.cancel();
@@ -820,12 +826,7 @@ public class GCMIntentService extends IntentService {
 				e.printStackTrace();
 			}
 		}
-    }
-
-
-
-
-
+	}
 
 
 	class RequestTimeoutTimerTask {

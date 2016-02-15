@@ -7,13 +7,18 @@ package product.clicklabs.jugnoo.driver.services;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.ResultReceiver;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,23 +26,31 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.JSONParser;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DownloadFile;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -48,11 +61,11 @@ public class DownloadService extends IntentService {
 	public static final int STATUS_RUNNING = 0;
 	public static final int STATUS_FINISHED = 1;
 	public static final int STATUS_ERROR = 2;
+	private Bundle bundle;
 
+	int downloadOnly;
+	String fileID, fileURL;
 	private static final String TAG = "DownloadService";
-	private DownloadManager downloadManager;
-	private long downloadReference;
-
 	public DownloadService() {
 		super(DownloadService.class.getName());
 	}
@@ -61,65 +74,81 @@ public class DownloadService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 
 		Log.d(TAG, "Service Started!");
+		 downloadOnly = intent.getIntExtra("downloadOnly", 0);
+		 fileID = intent.getStringExtra("file_id");
+		 fileURL = intent.getStringExtra("file_url");
 
-		final ResultReceiver receiver = intent.getParcelableExtra("receiver");
-		String url = intent.getStringExtra("url");
-
-		Bundle bundle = new Bundle();
-
-		if (!TextUtils.isEmpty(url)) {
+		bundle = intent.getExtras();
 
 
 			try {
-				fetchNotificationData();
-			} catch (Exception e) {
+				if(downloadOnly == 0) {
+					Utils.enableReceiver(this, DownloadBroadcastReceiver.class, true);
+					DownloadFile downloadFile = new DownloadFile();
+					long referenceId = downloadFile.downloadNotificationData(DownloadService.this, fileURL, fileID);
+					Prefs.with(DownloadService.this).save(SPLabels.DOWNLOADED_FILE_ID, fileID);
 
+//					registerReceiver(onComplete,
+//							new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+				}else if(downloadOnly == 1){
+					DownloadFile downloadFile = new DownloadFile();
+					downloadFile.downloadNotificationData(DownloadService.this, fileURL, fileID);
+				}else{
+					fetchNotificationData();
+				}
+			} catch (Exception e) {
                 /* Sending error message back to activity */
-				bundle.putString(Intent.EXTRA_TEXT, e.toString());
-				receiver.send(STATUS_ERROR, bundle);
+//				bundle.putString(Intent.EXTRA_TEXT, e.toString());
 			}
-		}
 		Log.d(TAG, "Service Stopping!");
 		this.stopSelf();
 	}
 
-	public void downloadNotificationData(String url, String file) {
+//	BroadcastReceiver onComplete=new BroadcastReceiver() {
+//		public void onReceive(Context ctxt, Intent intent) {
+//			Log.e(TAG, "intent.getExtras" + intent.getExtras());
+//
+//			Toast.makeText(DownloadService.this, "download intent here", Toast.LENGTH_SHORT).show();
+//
+//
+//				unregisterReceiver(onComplete);
+//				File myFile = new File("/storage/emulated/0/jugnooFiles/" + fileURL + ".mp3");
+//
+//				if (myFile.exists()) {
+//					GCMIntentService.startRingCustom(DownloadService.this, myFile.getAbsolutePath());
+//				}
+//			}
+//
+//	};
 
-		downloadManager = (DownloadManager) getSystemService(DOWNLOAD_SERVICE);
-		Uri Download_Uri = Uri.parse(url);
-		DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
+	public void playDownloadedFile(Context context){
+		String newFileID = Prefs.with(DownloadService.this).getString(SPLabels.DOWNLOADED_FILE_ID,"");
+		File myFile = new File("/storage/emulated/0/jugnooFiles/"+newFileID + ".mp3");
 
-		//Restrict the types of networks over which this download may proceed.
-		request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-		//Set whether this download may proceed over a roaming connection.
-		request.setAllowedOverRoaming(false);
-		//Set the title of this download, to be displayed in notifications (if enabled).
-		request.setTitle("My Data Download");
-		//Set a description of this download, to be displayed in notifications (if enabled)
-		request.setDescription("Android Data download using DownloadManager.");
-		//Set the local destination for the downloaded file to a path within the application's external files directory
-		request.setDestinationInExternalFilesDir(this, Environment.DIRECTORY_DOWNLOADS, file + ".mp3");
-
-		//Enqueue a new download and same the referenceId
-		downloadReference = downloadManager.enqueue(request);
+		if (myFile.exists()) {
+			GCMIntentService.startRingCustom(context, myFile.getAbsolutePath());
+		}
 	}
 
 	public void fetchNotificationData() {
 		try {
 			NotificationAlarmResponse response = RestClient.getApiServices().
-					updateNotificationData(Data.userData.accessToken, "jugnoo_audio");
+					updateNotificationData(Data.userData.accessToken, Constants.JUGNOO_AUDIO);
 
-			for (int i = 0; i < response.getSound().size(); i++) {
+			for (int i = 0; i < response.getLinks().size(); i++) {
 
-				String url = response.getSound().get(i).getSoundUrl();
-				String file = response.getSound().get(i).getSoundId();
+				String url = response.getLinks().get(i).getFileUrl();
+				String file = response.getLinks().get(i).getFileId();
 				Database2.getInstance(this).insertCustomAudioUrl(url, file);
 
-				downloadNotificationData(url, file);
+				new DownloadFile().downloadNotificationData(DownloadService.this, url, file);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
+
+
 
 }

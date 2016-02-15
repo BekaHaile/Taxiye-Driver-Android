@@ -51,19 +51,19 @@ public class DriverLocationDispatcher {
 						nameValuePairs.add(new BasicNameValuePair("longitude", "" + location.getLongitude()));
 						nameValuePairs.add(new BasicNameValuePair("bearing", "" + location.getBearing()));
 						nameValuePairs.add(new BasicNameValuePair("device_token", deviceToken));
-						nameValuePairs.add(new BasicNameValuePair("location_accuracy",""+ location.getAccuracy()));
+						nameValuePairs.add(new BasicNameValuePair("location_accuracy", "" + location.getAccuracy()));
 						nameValuePairs.add(new BasicNameValuePair("pushy_token", pushyToken));
 
 						Log.i("bearing", String.valueOf(location.getBearing()));
-//						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
+						Log.writePathLogToFile("deviceToken", "" + deviceToken);
 
 						HttpRequester simpleJSONParser = new HttpRequester();
 						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
 									
 						Log.e("equal_Low_acc2 result in DLD", "=" + result);
-						Log.writeLogToFile(filePrefix, "Server result "+DateOperations.getCurrentTime()+" = "+result);
-						
-						try{
+						Log.writeLogToFile(filePrefix, "Server result " + DateOperations.getCurrentTime() + " = " + result);
+
+						try {
 							//{"log":"Updated"}
 							JSONObject jObj = new JSONObject(result);
 							if(jObj.has("log")){
@@ -88,9 +88,9 @@ public class DriverLocationDispatcher {
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
 
 					double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
+							new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
 
-					if(!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
+					if (!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
@@ -110,7 +110,7 @@ public class DriverLocationDispatcher {
 							nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenA));
 							nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
 							nameValuePairs.add(new BasicNameValuePair("customer_id", customerId));
-							nameValuePairs.add(new BasicNameValuePair("pickup_latitude", ""+location.getLatitude()));
+							nameValuePairs.add(new BasicNameValuePair("pickup_latitude", "" + location.getLatitude()));
 							nameValuePairs.add(new BasicNameValuePair("pickup_longitude", ""+location.getLongitude()));
 							nameValuePairs.add(new BasicNameValuePair("reference_id", referenceId));
 
@@ -132,10 +132,9 @@ public class DriverLocationDispatcher {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			Log.writeLogToFile(filePrefix, "Exception in sending to server "+DateOperations.getCurrentTime()+" = "+e);
+			Log.writeLogToFile(filePrefix, "Exception in sending to server " + DateOperations.getCurrentTime() + " = " + e);
+		} finally {
 		}
-		finally{
-    	}
 	}
 	
 	

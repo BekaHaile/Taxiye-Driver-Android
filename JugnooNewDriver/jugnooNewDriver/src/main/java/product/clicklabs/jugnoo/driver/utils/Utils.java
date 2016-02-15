@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -456,6 +457,23 @@ public class Utils {
 	}
 
 
+	public static void enableReceiver(Context context, Class classT, boolean enable){
+		try {
+			ComponentName receiver = new ComponentName(context, classT);
+			PackageManager pm = context.getPackageManager();
+			if(enable) {
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+						PackageManager.DONT_KILL_APP);
+			} else{
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+						PackageManager.DONT_KILL_APP);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

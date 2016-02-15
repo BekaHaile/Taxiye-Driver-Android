@@ -10,82 +10,95 @@ import java.util.List;
  * Created by aneeshbansal on 24/11/15.
  */
 
+
 public class NotificationAlarmResponse {
 
 	@SerializedName("flag")
 	@Expose
 	private Integer flag;
-	@SerializedName("regions")
+	@SerializedName("links")
 	@Expose
-	private List<Sound> sound = new ArrayList<Sound>();
+	private List<Link> links = new ArrayList<Link>();
 
 	/**
-	 * @return The flag
+	 *
+	 * @return
+	 * The flag
 	 */
 	public Integer getFlag() {
 		return flag;
 	}
 
 	/**
-	 * @param flag The flag
+	 *
+	 * @param flag
+	 * The flag
 	 */
 	public void setFlag(Integer flag) {
 		this.flag = flag;
 	}
 
 	/**
-	 * @return The sound
+	 *
+	 * @return
+	 * The links
 	 */
-	public List<Sound> getSound() {
-		return sound;
+	public List<Link> getLinks() {
+		return links;
 	}
 
 	/**
-	 * @param sound The sound
+	 *
+	 * @param links
+	 * The links
 	 */
-	public void setSound(List<Sound> sound) {
-		this.sound = sound;
+	public void setLinks(List<Link> links) {
+		this.links = links;
 	}
 
-	public class Sound {
+	public class Link {
 
-		@SerializedName("sound_id")
+		@SerializedName("file_id")
 		@Expose
-		private String soundId;
-		@SerializedName("sound_url")
+		private String fileId;
+		@SerializedName("file_url")
 		@Expose
-		private String soundUrl;
+		private String fileUrl;
 
 		/**
-		 * @return The soundId
+		 *
+		 * @return
+		 * The fileId
 		 */
-		public String getSoundId() {
-			return soundId;
+		public String getFileId() {
+			return fileId;
 		}
 
 		/**
-		 * @param soundId The sound_id
+		 *
+		 * @param fileId
+		 * The file_id
 		 */
-		public void setSoundId(String soundId) {
-			this.soundId = soundId;
+		public void setFileId(String fileId) {
+			this.fileId = fileId;
 		}
 
 		/**
 		 *
 		 * @return
-		 * The soundUrl
+		 * The fileUrl
 		 */
-		public String getSoundUrl() {
-			return soundUrl;
+		public String getFileUrl() {
+			return fileUrl;
 		}
 
 		/**
 		 *
-		 * @param soundUrl
-		 * The sound_url
+		 * @param fileUrl
+		 * The file_url
 		 */
-		public void setSoundUrl(String soundUrl) {
-			this.soundUrl = soundUrl;
+		public void setFileUrl(String fileUrl) {
+			this.fileUrl = fileUrl;
 		}
 
 	}

@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -452,6 +453,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,
 //            getBaseContext().getResources().getDisplayMetrics());
+
 
 			decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 			decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));

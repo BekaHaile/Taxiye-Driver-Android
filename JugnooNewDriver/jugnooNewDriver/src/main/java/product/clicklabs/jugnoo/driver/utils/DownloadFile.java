@@ -10,12 +10,8 @@ import android.os.Environment;
  */
 public class DownloadFile {
 
-	private DownloadManager downloadManager;
-	private long downloadReference;
-	private Context context;
-
-	public void downloadNotificationData(Context context, String url, String file) {
-		downloadManager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
+	public long downloadNotificationData(Context context, String url, String file) {
+		DownloadManager downloadManager = (DownloadManager) context.getSystemService(context.DOWNLOAD_SERVICE);
 		Uri Download_Uri = Uri.parse(url);
 		DownloadManager.Request request = new DownloadManager.Request(Download_Uri);
 
@@ -28,9 +24,9 @@ public class DownloadFile {
 		//Set a description of this download, to be displayed in notifications (if enabled)
 		request.setDescription("Android Data download using DownloadManager.");
 		//Set the local destination for the downloaded file to a path within the application's external files directory
-		request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, file + ".mp3");
+		request.setDestinationInExternalPublicDir("/jugnooFiles", file + ".mp3");
 
 		//Enqueue a new download and same the referenceId
-		downloadReference = downloadManager.enqueue(request);
+		return downloadManager.enqueue(request);
 	}
 }

@@ -9,4 +9,5 @@ public interface Constants {
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
+    String JUGNOO_AUDIO = "jugnoo_audio";
 }
