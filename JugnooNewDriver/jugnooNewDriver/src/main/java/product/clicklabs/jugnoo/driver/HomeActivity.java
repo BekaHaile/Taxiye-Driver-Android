@@ -2771,6 +2771,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			}).start();
 
+			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, mode);
 		}
 	}
 
@@ -4367,7 +4368,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		clearSPData();
 
-		MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.dEngagementId, driverScreenMode);
+		MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.dEngagementId);
+		MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
 		MeteringService.gpsInstance(this).stop();
 		Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
 

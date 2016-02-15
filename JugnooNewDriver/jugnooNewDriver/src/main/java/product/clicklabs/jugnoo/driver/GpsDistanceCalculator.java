@@ -36,6 +36,8 @@ import retrofit.mime.TypedByteArray;
 
 public class GpsDistanceCalculator {
 
+	private static final String TAG = GpsDistanceCalculator.class.getSimpleName();
+
 	private static GpsDistanceCalculator instance;
 
 	private static long LOCATION_UPDATE_INTERVAL = 2000; // in milliseconds
@@ -732,8 +734,10 @@ public class GpsDistanceCalculator {
 		}
 	}
 
-	public static synchronized void saveEngagementIdToSP(Context context, String engagementId, DriverScreenMode driverScreenMode) {
+	public static synchronized void saveEngagementIdToSP(Context context, String engagementId) {
 		Prefs.with(context).save(SPLabels.ENGAGEMENT_ID, engagementId);
+	}
+	public static synchronized void saveDriverScreenModeMetering(Context context, DriverScreenMode driverScreenMode) {
 		Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE_METERING, driverScreenMode.getOrdinal());
 	}
 
@@ -741,7 +745,9 @@ public class GpsDistanceCalculator {
 		return Prefs.with(context).getString(SPLabels.ENGAGEMENT_ID, "0");
 	}
 	public static synchronized int getDriverScreenModeSP(Context context) {
-		return Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE_METERING, DriverScreenMode.D_IN_RIDE.getOrdinal());
+		int state = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE_METERING, DriverScreenMode.D_IN_RIDE.getOrdinal());
+		Log.i(TAG, "getDriverScreenModeSP state="+state);
+		return state;
 	}
 
 	LocationListener GSMlistener = new LocationListener() {
