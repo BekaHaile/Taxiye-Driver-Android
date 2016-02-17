@@ -7,6 +7,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -217,10 +218,10 @@ public interface APIServices {
 									Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/leaderboard/referrals/get_leaderboards")
+	@POST("/driver/show/leader_board")
 	void leaderboardServerCall(@Field("access_token") String accessToken,
 							   @Field("client_id") String clientId,
-							   Callback<LeaderboardResponse> callback);
+							   Callback<NewLeaderBoard> callback);
 
 	@FormUrlEncoded
 	@POST("/leaderboard/referrals/get_activity")

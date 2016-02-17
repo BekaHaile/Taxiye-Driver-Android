@@ -29,7 +29,9 @@ import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.LeaderboardItemsAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.Item;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.Ranklist;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -45,60 +47,62 @@ public class ShareLeaderboardFragment extends Fragment {
 	private LinearLayout linearLayoutRoot;
 
 	private Button buttonLocal, buttonGlobal;
-	private TextView textViewDaily, textViewWeekly;
+	private TextView textViewDaily, textViewWeekly, textViewNoOfDownloads;
 	private RecyclerView recyclerViewLb;
 	private LeaderboardItemsAdapter leaderboardItemsAdapter;
-	private ArrayList<Ranklist> leaderboardItems;
+	private ArrayList<Item> leaderboardItems;
 
 	private View rootView;
-    private FragmentActivity activity;
+	private FragmentActivity activity;
 
 	private LBLocationType lbLocationType;
 	private LBTimeType lbTimeType;
-	private LeaderboardResponse leaderboardResponse;
+	private NewLeaderBoard newLeaderBoard;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FlurryAgent.init(activity, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-        FlurryAgent.onEvent(ShareLeaderboardFragment.class.getSimpleName() + " started");
-    }
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.init(activity, Data.FLURRY_KEY);
+		FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
+		FlurryAgent.onEvent(ShareLeaderboardFragment.class.getSimpleName() + " started");
+	}
 
-    @Override
-    public void onStop() {
+	@Override
+	public void onStop() {
 		super.onStop();
-        FlurryAgent.onEndSession(activity);
-    }
-	
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_share_leaderboard, container, false);
+		FlurryAgent.onEndSession(activity);
+	}
 
 
-        activity = getActivity();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.fragment_share_leaderboard, container, false);
+
+
+		activity = getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		try {
-			if(linearLayoutRoot != null) {
+			if (linearLayoutRoot != null) {
 				new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		buttonLocal = (Button)rootView.findViewById(R.id.buttonLocal);
+		buttonLocal = (Button) rootView.findViewById(R.id.buttonLocal);
 		buttonLocal.setTypeface(Data.latoRegular(activity));
-		buttonGlobal = (Button)rootView.findViewById(R.id.buttonGlobal);
+		buttonGlobal = (Button) rootView.findViewById(R.id.buttonGlobal);
 		buttonGlobal.setTypeface(Data.latoRegular(activity));
 
-		textViewDaily = (TextView)rootView.findViewById(R.id.textViewDaily);
+		textViewDaily = (TextView) rootView.findViewById(R.id.textViewDaily);
 		textViewDaily.setTypeface(Data.latoRegular(activity));
-		textViewWeekly = (TextView)rootView.findViewById(R.id.textViewWeekly);
+		textViewWeekly = (TextView) rootView.findViewById(R.id.textViewWeekly);
 		textViewWeekly.setTypeface(Data.latoRegular(activity));
 
-		recyclerViewLb = (RecyclerView)rootView.findViewById(R.id.recyclerViewLb);
+		textViewNoOfDownloads = (TextView) rootView.findViewById(R.id.textViewNoOfDownloads);
+
+		recyclerViewLb = (RecyclerView) rootView.findViewById(R.id.recyclerViewLb);
 		recyclerViewLb.setLayoutManager(new LinearLayoutManager(activity));
 		recyclerViewLb.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewLb.setHasFixedSize(false);
@@ -135,9 +139,10 @@ public class ShareLeaderboardFragment extends Fragment {
 			}
 		});
 
+		getLeaderboardCall();
 
 		try {
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -146,25 +151,25 @@ public class ShareLeaderboardFragment extends Fragment {
 		return rootView;
 	}
 
-	public void update(){
+	public void update() {
 		updateList(lbLocationType, lbTimeType);
 	}
 
 
-	private void updateList(LBLocationType lbLocationType, LBTimeType lbTimeType){
+	private void updateList(LBLocationType lbLocationType, LBTimeType lbTimeType) {
 		try {
 			leaderboardItems.clear();
+			textViewNoOfDownloads.setText(newLeaderBoard.getDynamicColumnName());
 
-			if(LBTimeType.DAILY == lbTimeType){
-				if(this.lbTimeType != lbTimeType) {
+			if (LBTimeType.DAILY == lbTimeType) {
+				if (this.lbTimeType != lbTimeType) {
 					textViewDaily.setBackgroundResource(R.color.new_orange);
 					textViewDaily.setTextColor(getResources().getColor(R.color.white));
 					textViewWeekly.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
 					textViewWeekly.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
-			}
-			else if(LBTimeType.WEEKLY == lbTimeType){
-				if(this.lbTimeType != lbTimeType) {
+			} else if (LBTimeType.WEEKLY == lbTimeType) {
+				if (this.lbTimeType != lbTimeType) {
 					textViewDaily.setBackgroundResource(R.drawable.background_white_corner_orange_bordered);
 					textViewDaily.setTextColor(getResources().getColorStateList(R.color.menu_black));
 					textViewWeekly.setBackgroundResource(R.color.new_orange);
@@ -172,45 +177,50 @@ public class ShareLeaderboardFragment extends Fragment {
 				}
 			}
 
-			if(LBLocationType.LOCAL == lbLocationType){
-				if(this.lbLocationType != lbLocationType){
+			if (LBLocationType.LOCAL == lbLocationType) {
+				if (this.lbLocationType != lbLocationType) {
 					buttonLocal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
 					buttonLocal.setTextColor(getResources().getColor(R.color.white));
 					buttonGlobal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 					buttonGlobal.setTextColor(getResources().getColorStateList(R.color.menu_black));
 				}
-				if(LBTimeType.DAILY == lbTimeType){
-					leaderboardItems.addAll(leaderboardResponse.getLocal().getDaily().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getLocal().getDaily().getUserinfo();
-					fillUserInfo(userInfo);
+				if (LBTimeType.DAILY == lbTimeType) {
+					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getCityLeaderBoard().getDay());
+					int cityDriverRankDaily = newLeaderBoard.getDriverLeaderBoard().getCityDriverRank().getDay();
+					int cityDriverCustomValueDaily = newLeaderBoard.getDriverLeaderBoard().getCityDriverRank().getDayScore();
+					int totalDriverCityDaily = newLeaderBoard.getDriverLeaderBoard().getTotalDriversCity().getDay();
+					fillUserInfo(cityDriverRankDaily, cityDriverCustomValueDaily, totalDriverCityDaily);
+				} else if (LBTimeType.WEEKLY == lbTimeType) {
+					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getCityLeaderBoard().getWeek());
+					int cityDriverRankWeekly = newLeaderBoard.getDriverLeaderBoard().getCityDriverRank().getWeek();
+					int cityDriverCustomValueWeekly = newLeaderBoard.getDriverLeaderBoard().getCityDriverRank().getWeekScore();
+					int totalDriverCityWeek = newLeaderBoard.getDriverLeaderBoard().getTotalDriversCity().getWeek();
+					fillUserInfo(cityDriverRankWeekly, cityDriverCustomValueWeekly, totalDriverCityWeek);
 				}
-				else if(LBTimeType.WEEKLY == lbTimeType){
-					leaderboardItems.addAll(leaderboardResponse.getLocal().getWeekly().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getLocal().getWeekly().getUserinfo();
-					fillUserInfo(userInfo);
-				}
-			}
-			else if(LBLocationType.GLOBAL == lbLocationType){
-				if(this.lbLocationType != lbLocationType) {
+			} else if (LBLocationType.GLOBAL == lbLocationType) {
+				if (this.lbLocationType != lbLocationType) {
 					buttonLocal.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 					buttonLocal.setTextColor(getResources().getColorStateList(R.color.menu_black));
 					buttonGlobal.setBackgroundResource(R.drawable.new_orange_btn_round_corner_normal);
 					buttonGlobal.setTextColor(getResources().getColor(R.color.white));
 				}
-				if(LBTimeType.DAILY == lbTimeType){
-					leaderboardItems.addAll(leaderboardResponse.getGlobal().getDaily().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getGlobal().getDaily().getUserinfo();
-					fillUserInfo(userInfo);
-				}
-				else if(LBTimeType.WEEKLY == lbTimeType){
-					leaderboardItems.addAll(leaderboardResponse.getGlobal().getWeekly().getRanklist());
-					LeaderboardResponse.Userinfo userInfo = leaderboardResponse.getGlobal().getWeekly().getUserinfo();
-					fillUserInfo(userInfo);
+				if (LBTimeType.DAILY == lbTimeType) {
+					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getOverallLeaderBoard().getDay());
+					int overallDriverRankDaily = newLeaderBoard.getDriverLeaderBoard().getOverallDriverRank().getDay();
+					int overallDriverCustomValueDaily = newLeaderBoard.getDriverLeaderBoard().getOverallDriverRank().getDayScore();
+					int totalDriverOverallDaily = newLeaderBoard.getDriverLeaderBoard().getTotalDriversOverall().getDay();
+					fillUserInfo(overallDriverRankDaily, overallDriverCustomValueDaily, totalDriverOverallDaily);
+				} else if (LBTimeType.WEEKLY == lbTimeType) {
+					leaderboardItems.addAll(newLeaderBoard.getDriverLeaderBoard().getOverallLeaderBoard().getWeek());
+					int overallDriverRankDaily = newLeaderBoard.getDriverLeaderBoard().getOverallDriverRank().getWeek();
+					int overallDriverCustomValueDaily = newLeaderBoard.getDriverLeaderBoard().getOverallDriverRank().getWeekScore();
+					int totalDriverOverallWeek = newLeaderBoard.getDriverLeaderBoard().getTotalDriversOverall().getWeek();
+					fillUserInfo(overallDriverRankDaily, overallDriverCustomValueDaily, totalDriverOverallWeek);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			this.lbLocationType = lbLocationType;
 			this.lbTimeType = lbTimeType;
 
@@ -218,57 +228,54 @@ public class ShareLeaderboardFragment extends Fragment {
 		}
 	}
 
-	private void fillUserInfo(LeaderboardResponse.Userinfo userInfo){
-		if(userInfo != null && userInfo.getRank() != null){
-			if(userInfo.getRank() > 5){
-				leaderboardItems.add(new Ranklist(userInfo.getRank(),
-						userInfo.getDownloads(), Data.userData.userName, true));
-			}
-			else if(userInfo.getRank() < 0){
-				leaderboardItems.add(new Ranklist(userInfo.getRank(),
-						userInfo.getDownloads(), Data.userData.userName, true));
-			}
-			else {
-				for (int i=0; i<leaderboardItems.size(); i++) {
-					Ranklist ranklist = leaderboardItems.get(i);
-					if (ranklist.getRank().equals(userInfo.getRank())) {
-						leaderboardItems.get(i).setIsUser(true);
-						break;
-					}
+	private void fillUserInfo(int rank, int customColumnValue, int totalRank) {
+
+		if (rank > 5) {
+			leaderboardItems.add(new Item(0, Data.userData.userName, "", "", rank,
+					customColumnValue, true));
+		} else if (rank < 0) {
+			leaderboardItems.add(new Item(0, Data.userData.userName, "", "", totalRank,
+					customColumnValue, true));
+		} else {
+			for (int i = 0; i < leaderboardItems.size(); i++) {
+				Item item = leaderboardItems.get(i);
+				if (item.getCityRank().equals(rank)) {
+					leaderboardItems.get(i).setIsUser(true);
+					break;
 				}
 			}
 		}
+
 	}
 
 
-
-
-    @Override
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(linearLayoutRoot);
-        System.gc();
+		ASSL.closeActivity(linearLayoutRoot);
+		System.gc();
 	}
 
-	enum LBLocationType{
+	enum LBLocationType {
 		LOCAL, GLOBAL
 	}
 
-	enum LBTimeType{
+	enum LBTimeType {
 		DAILY, WEEKLY
 	}
 
 	public void getLeaderboardCall() {
 		try {
-			if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+			if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, "Loading...");
 				RestClient.getApiServices().leaderboardServerCall(Data.userData.accessToken, "",
-						new Callback<LeaderboardResponse>() {
+						new Callback<NewLeaderBoard>() {
 							@Override
-							public void success(LeaderboardResponse leaderboardResponse, Response response) {
+							public void success(NewLeaderBoard newLeaderBoard, Response response) {
 								DialogPopup.dismissLoadingDialog();
 								try {
 									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									Log.i("ShareLeaderbord", jsonString);
 									JSONObject jObj;
 									jObj = new JSONObject(jsonString);
 									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
@@ -276,10 +283,9 @@ public class ShareLeaderboardFragment extends Fragment {
 									if (!SplashNewActivity.checkIfTrivialAPIErrors(getActivity(), jObj, flag)) {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 											Log.v("success at", "leaderboeard");
-											ShareLeaderboardFragment.this.leaderboardResponse = leaderboardResponse;
+											ShareLeaderboardFragment.this.newLeaderBoard = newLeaderBoard;
 											update();
-										}
-										else{
+										} else {
 											retryLeaderboardDialog(message);
 										}
 									}
@@ -304,7 +310,7 @@ public class ShareLeaderboardFragment extends Fragment {
 	}
 
 
-	public void retryLeaderboardDialog(String message){
+	public void retryLeaderboardDialog(String message) {
 		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message,
 				getResources().getString(R.string.retry),
 				getResources().getString(R.string.cancel),

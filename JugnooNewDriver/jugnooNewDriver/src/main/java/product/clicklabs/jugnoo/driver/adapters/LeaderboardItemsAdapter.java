@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.retrofit.model.Item;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.Ranklist;
 import rmn.androidscreenlibrary.ASSL;
 
@@ -24,10 +26,10 @@ public class LeaderboardItemsAdapter extends RecyclerView.Adapter<LeaderboardIte
 
     private Activity activity;
     private int rowLayout;
-    Ranklist leaderboardItem;
-    private ArrayList<Ranklist> leaderboardItems = new ArrayList<>();
+	Item leaderboardItem;
+    private ArrayList<Item> leaderboardItems = new ArrayList<>();
 
-    public LeaderboardItemsAdapter(ArrayList<Ranklist> leaderboardItems, Activity activity, int rowLayout) {
+    public LeaderboardItemsAdapter(ArrayList<Item> leaderboardItems, Activity activity, int rowLayout) {
         this.leaderboardItems = leaderboardItems;
         this.activity = activity;
         this.rowLayout = rowLayout;
@@ -48,9 +50,9 @@ public class LeaderboardItemsAdapter extends RecyclerView.Adapter<LeaderboardIte
     public void onBindViewHolder(LeaderboardItemsAdapter.ViewHolder holder, int position) {
         leaderboardItem = leaderboardItems.get(position);
 
-        holder.textViewRank.setText(leaderboardItem.getRankStr());
-        holder.textViewName.setText(leaderboardItem.getName());
-        holder.textViewNoOfDownloads.setText(leaderboardItem.getDownloadsStr());
+        holder.textViewRank.setText(String.valueOf(leaderboardItem.getCityRank()));
+        holder.textViewName.setText(leaderboardItem.getDriverName());
+        holder.textViewNoOfDownloads.setText(String.valueOf(leaderboardItem.getCustomColumnValue()));
 
         switch(position){
             case 0:
