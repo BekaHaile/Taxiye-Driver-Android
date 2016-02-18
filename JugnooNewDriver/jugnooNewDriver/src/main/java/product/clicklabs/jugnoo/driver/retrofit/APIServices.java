@@ -258,4 +258,9 @@ public interface APIServices {
 	@POST("/log_ongoing_ride_path")
 	Response logOngoingRidePath(@FieldMap Map<String, String> params);
 
+	@FormUrlEncoded
+	@POST("/send_referral_sms")
+	void sendReferralMessage(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
 }

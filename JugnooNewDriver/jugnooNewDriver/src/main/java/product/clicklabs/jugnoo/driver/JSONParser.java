@@ -305,6 +305,10 @@ public class JSONParser implements Constants {
 		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
 				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
 						"Download it from here\nhttp://smarturl.it/jugnoo");
+		String referralMessage = userData.optString("referral_message");
+		String referralButtonText = userData.optString("referral_button_text", "Share");
+		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
+		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
 
 		Data.termsAgreed = 1;
@@ -318,7 +322,8 @@ public class JSONParser implements Constants {
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
-				referralSMSToCustomer, showDriverRating, driverArrivalDistance);
+				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
+				referralButtonText,referralDialogText, referralDialogHintText);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
