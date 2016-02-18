@@ -98,7 +98,10 @@ public class DriverLocationDispatcher {
 					String pickupLongitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
 
-					if(!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
+					double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
+							new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
+
+					if (!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
@@ -139,8 +142,6 @@ public class DriverLocationDispatcher {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		finally{
-    	}
 	}
 	
 	

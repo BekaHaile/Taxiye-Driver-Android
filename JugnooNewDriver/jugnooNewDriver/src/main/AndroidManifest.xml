@@ -204,12 +204,23 @@
             android:screenOrientation="portrait" >
         </activity>
 
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.services.DownloadActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+        </activity>
 
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
             android:process=":DriverLocationUpdateService" >
+        </service>
+
+        <service
+            android:name="product.clicklabs.jugnoo.driver.services.DownloadService"
+            android:enabled="true"
+            android:exported="true" >
         </service>
 
 
@@ -265,6 +276,17 @@
                 <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE" />
             </intent-filter>
         </receiver>
+
+        <receiver
+            android:name=".services.DownloadBroadcastReceiver"
+            android:exported="true"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+
+        [
 
 
 
