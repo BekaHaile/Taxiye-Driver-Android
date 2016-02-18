@@ -60,8 +60,9 @@ public class DriverLocationDispatcher {
 						nameValuePairs.put("pushy_token", pushyToken);
 						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
-						Log.i(TAG, "sendLocationToServer nameValuePairs="+nameValuePairs.toString());
+						Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
+						RestClient.setupRestClient(serverUrl);
 
 						Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 						String result = new String(((TypedByteArray)response.getBody()).getBytes());

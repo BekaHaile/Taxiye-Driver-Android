@@ -9,12 +9,15 @@ import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.RestAdapter;
 
 /**
  * Created by aneeshbansal on 08/09/15.
  */
 public class RestClient {
+	private static final String TAG = RestClient.class.getSimpleName();
+	private static String CURRENT_URL;
 	private static APIServices API_SERVICES;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
 
@@ -53,34 +56,42 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
+//				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
 		RestAdapter restAdapter = builder.build();
 		API_SERVICES = restAdapter.create(APIServices.class);
+		CURRENT_URL = Data.SERVER_URL;
 	}
 
 	public static void setupRestClient(String url) {
+		if (!url.equalsIgnoreCase(CURRENT_URL)) {
+			RestAdapter.Log fooLog = new RestAdapter.Log() {
+				@Override
+				public void log(String message) {
+				}
+			};
 
-		RestAdapter.Log fooLog = new RestAdapter.Log() {
-			@Override public void log(String message) {
-			}
-		};
+			RestAdapter.Builder builder = new RestAdapter.Builder()
+					.setEndpoint(url)
+					.setClient(new Ok3Client(getOkHttpClient()))
+//					.setLog(fooLog)
+					.setLogLevel(RestAdapter.LogLevel.FULL);
 
-		RestAdapter.Builder builder = new RestAdapter.Builder()
-				.setEndpoint(url)
-				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
-				.setLogLevel(RestAdapter.LogLevel.FULL)
-				;
-
-		RestAdapter restAdapter = builder.build();
-		API_SERVICES = restAdapter.create(APIServices.class);
+			RestAdapter restAdapter = builder.build();
+			API_SERVICES = restAdapter.create(APIServices.class);
+			CURRENT_URL = url;
+			Log.i(TAG, "setupRestClient");
+		}
 	}
 
 	public static APIServices getApiServices() {
 		return API_SERVICES;
+	}
+
+	public static void setCurrentUrl(String url){
+		CURRENT_URL = url;
 	}
 
 

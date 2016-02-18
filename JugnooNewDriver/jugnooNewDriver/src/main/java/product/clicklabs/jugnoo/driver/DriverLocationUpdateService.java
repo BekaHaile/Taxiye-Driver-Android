@@ -88,7 +88,7 @@ public class DriverLocationUpdateService extends Service {
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
         String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+		String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 
 		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
 
@@ -104,13 +104,13 @@ public class DriverLocationUpdateService extends Service {
 		String link = preferences.getString(SP_SERVER_LINK, DEFAULT_SERVER_URL);
 		
 		if(link.equalsIgnoreCase(TRIAL_SERVER_URL)){
-			SERVER_URL = TRIAL_SERVER_URL.substring(0, TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
+			SERVER_URL = TRIAL_SERVER_URL;
 		}
 		else if(link.equalsIgnoreCase(DEV_SERVER_URL)){
-			SERVER_URL = DEV_SERVER_URL.substring(0, DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
+			SERVER_URL = DEV_SERVER_URL;
 		}
 		else if(link.equalsIgnoreCase(LIVE_SERVER_URL)){
-			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			SERVER_URL = LIVE_SERVER_URL;
 		}
         else if(link.equalsIgnoreCase(DEV_1_SERVER_URL)){
             SERVER_URL = DEV_1_SERVER_URL;
@@ -153,6 +153,7 @@ public class DriverLocationUpdateService extends Service {
     	}
     	
     	super.onStartCommand(intent, flags, startId);
+		RestClient.setCurrentUrl("");
     	return Service.START_STICKY;
     }
     
