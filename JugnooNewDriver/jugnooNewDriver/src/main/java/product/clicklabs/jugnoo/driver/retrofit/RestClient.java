@@ -1,15 +1,15 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
-import com.squareup.okhttp.ConnectionPool;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.Protocol;
+import com.jakewharton.retrofit.Ok3Client;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import product.clicklabs.jugnoo.driver.Data;
 import retrofit.RestAdapter;
-import retrofit.client.OkClient;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -30,17 +30,17 @@ public class RestClient {
 		protocolList.add(Protocol.SPDY_3);
 		protocolList.add(Protocol.HTTP_1_1);
 
-		ConnectionPool connectionPool = new ConnectionPool(3, 5 * 60 * 1000);
+		ConnectionPool connectionPool = new ConnectionPool(3, 5 * 60 * 1000, TimeUnit.MILLISECONDS);
 
-		OkHttpClient okHttpClient = new OkHttpClient();
-		okHttpClient.setConnectionPool(connectionPool);
-		okHttpClient.setReadTimeout(15, TimeUnit.SECONDS);
-		okHttpClient.setConnectTimeout(15, TimeUnit.SECONDS);
-		okHttpClient.setWriteTimeout(15, TimeUnit.SECONDS);
-		okHttpClient.setRetryOnConnectionFailure(false);
-		okHttpClient.setProtocols(protocolList);
+		OkHttpClient.Builder builder = new OkHttpClient.Builder();
+		builder.connectionPool(connectionPool);
+		builder.readTimeout(15, TimeUnit.SECONDS);
+		builder.connectTimeout(15, TimeUnit.SECONDS);
+		builder.writeTimeout(15, TimeUnit.SECONDS);
+		builder.retryOnConnectionFailure(false);
+		builder.protocols(protocolList);
 
-		return okHttpClient;
+		return builder.build();
 	}
 
 	public static void setupRestClient() {
@@ -52,7 +52,7 @@ public class RestClient {
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
-				.setClient(new OkClient(getOkHttpClient()))
+				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
@@ -70,7 +70,7 @@ public class RestClient {
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(url)
-				.setClient(new OkClient(getOkHttpClient()))
+				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
@@ -96,7 +96,7 @@ public class RestClient {
 
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint("http://maps.googleapis.com/maps/api")
-				.setClient(new OkClient(getOkHttpClient()))
+				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
