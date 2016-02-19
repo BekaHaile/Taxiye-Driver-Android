@@ -19,8 +19,8 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		String userMode = Database2.getInstance(context).getUserMode();
-		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
+		String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
+		if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
 			String action = intent.getAction();
 			if (SEND_LOCATION.equals(action)) {
@@ -50,16 +50,16 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 				finally{
 				}
 			}
-			if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
+			if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
 				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
 					Log.i(TAG, "onReceive startDriverService called");
-					new DriverServiceOperations().startDriverService(context);
+					context.startService(new Intent(context, DriverLocationUpdateService.class));
 				}
 			}
 
 		}
 		else{
-			new DriverServiceOperations().stopService(context);
+			context.stopService(new Intent(context, DriverLocationUpdateService.class));
 		}
 	}
 	

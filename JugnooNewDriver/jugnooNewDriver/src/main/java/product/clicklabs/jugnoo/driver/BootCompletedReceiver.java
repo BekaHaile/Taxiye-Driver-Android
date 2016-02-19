@@ -14,12 +14,11 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, Intent arg1) {
         Log.w(TAG, "starting service...");
-
+        String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
         if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED) &&
                 (GpsState.GREATER_SIX.getOrdinal() == Database2.getInstance(context).getGpsState())) {
 
-            String userMode = Database2.getInstance(context).getUserMode();
-            if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)) {
+            if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
                 GpsDistanceCalculator.lastLocationTime = System.currentTimeMillis() - 270000;
                 GpsDistanceCalculator.saveLastLocationTimeToSP(context, GpsDistanceCalculator.lastLocationTime);
 
@@ -31,15 +30,9 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
         else if (arg1.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             try {
-                if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
-                    final String serviceRestartOnReboot = Database2.getInstance(context).getDriverServiceRun();
+                if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
                     Database2.getInstance(context).updateDriverLastLocationTime();
-
-                    if (Database2.YES.equalsIgnoreCase(serviceRestartOnReboot)) {
-                        new DriverServiceOperations().startDriverService(context);
-                    } else if (Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)) {
-                        new DriverServiceOperations().rescheduleDriverService(context);
-                    }
+                    context.startService(new Intent(context, DriverLocationUpdateService.class));
                 }
             } catch (Exception e) {
                 e.printStackTrace();

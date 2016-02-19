@@ -520,14 +520,7 @@ public class GCMIntentService extends GcmListenerService {
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
-							} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
-								int toggleLocation = jObj.getInt("toggle_location");
-								if (1 == toggleLocation) {
-									new DriverServiceOperations().startDriverService(GCMIntentService.this);
-								} else {
-									new DriverServiceOperations().stopAndScheduleDriverService(GCMIntentService.this);
-								}
-							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
+							}else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
 								String message1 = jObj.getString("message");

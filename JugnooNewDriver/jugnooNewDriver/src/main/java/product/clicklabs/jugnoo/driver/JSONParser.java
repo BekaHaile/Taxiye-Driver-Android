@@ -317,7 +317,16 @@ public class JSONParser implements Constants {
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
 
-		
+		if(autosAvailable == 1
+				|| mealsAvailable == 1
+				|| fatafatAvailable == 1
+				|| sharingAvailable == 1){
+			Database2.getInstance(context).updateDriverServiceRun(Database2.YES);
+		} else{
+			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
+		}
+
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
@@ -337,19 +346,11 @@ public class JSONParser implements Constants {
 
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
-		
+
 		//current_user_status = 1 driver or 2 user
 		int currentUserStatus = jLoginObject.getInt("current_user_status");
-		if(currentUserStatus == 1){
-			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-		}
-		else if(currentUserStatus == 2){
-			Database2.getInstance(context).updateUserMode(Database2.UM_PASSENGER);
-		}
-		
-		parsePortNumber(context, jLoginObject);
-		
-		
+
+
 		//Fetching user current status
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);

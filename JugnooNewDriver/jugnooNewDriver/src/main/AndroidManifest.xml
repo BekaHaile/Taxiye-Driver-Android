@@ -251,11 +251,6 @@
                 <action android:name="product.clicklabs.jugnoo.driver.SEND_LOCATION" />
             </intent-filter>
         </receiver>
-        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartAlarmReceiver" >
-            <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.START_SERVICE" />
-            </intent-filter>
-        </receiver>
 
         <receiver android:name="product.clicklabs.jugnoo.driver.MeteringAlarmReceiver" >
             <intent-filter>

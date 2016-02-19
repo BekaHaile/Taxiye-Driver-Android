@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -32,9 +33,9 @@ public class DriverLocationDispatcher {
 		double LOCATION_TOLERANCE = 0.0001;
 		
 		try {
-			String userMode = Database2.getInstance(context).getUserMode();
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
 			
-			if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
+			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 				WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
@@ -135,7 +136,7 @@ public class DriverLocationDispatcher {
 				wakeLock.release();
 			}
 			else{
-				new DriverServiceOperations().stopService(context);
+				context.stopService(new Intent(context, DriverLocationUpdateService.class));
 			}
 
 			
