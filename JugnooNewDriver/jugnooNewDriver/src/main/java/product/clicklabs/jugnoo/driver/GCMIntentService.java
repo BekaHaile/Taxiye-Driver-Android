@@ -708,7 +708,7 @@ public class GCMIntentService extends GcmListenerService {
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			Log.i("Music Path", "" + file);
 			mediaPlayer = MediaPlayer.create(context, Uri.parse(file));
-			mediaPlayer.setLooping(true);
+			mediaPlayer.setLooping(false);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
 				public void onCompletion(MediaPlayer mp) {
