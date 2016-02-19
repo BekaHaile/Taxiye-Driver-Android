@@ -237,15 +237,20 @@ public class ShareLeaderboardFragment extends Fragment {
 			leaderboardItems.add(new Item(0, Data.userData.userName, "", "", totalRank,
 					customColumnValue, true));
 		} else {
+			boolean userFound = false;
 			for (int i = 0; i < leaderboardItems.size(); i++) {
 				Item item = leaderboardItems.get(i);
-				if (item.getCityRank().equals(rank)) {
+				if (item.getCityRank() == rank) {
 					leaderboardItems.get(i).setIsUser(true);
+					userFound = true;
 					break;
 				}
 			}
+			if(!userFound){
+				leaderboardItems.add(new Item(0, Data.userData.userName, "", "", rank,
+						customColumnValue, true));
+			}
 		}
-
 	}
 
 

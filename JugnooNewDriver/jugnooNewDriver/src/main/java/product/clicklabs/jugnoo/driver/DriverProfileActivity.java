@@ -122,8 +122,8 @@ public class DriverProfileActivity extends Activity {
 		textViewRidesMissedValue.setTypeface(Data.latoRegular(this));
 		textViewOnlineHoursValue = (TextView) findViewById(R.id.textViewOnlineHoursValue);
 		textViewOnlineHoursValue.setTypeface(Data.latoRegular(this));
-		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+//		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
+//		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
 
 
 
@@ -272,11 +272,11 @@ public class DriverProfileActivity extends Activity {
 			if ("-1".equalsIgnoreCase(Data.userData.deiValue)) {
 
 				imageViewTitleBarDEI.setVisibility(View.GONE);
-				textViewTitleBarDEI.setText("Jugnoo");
+//				textViewTitleBarDEI.setText("Jugnoo");
 			} else {
 
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
-				textViewTitleBarDEI.setText(Data.userData.deiValue);
+//				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
 			if (openedProfileInfo != null) {
 				textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
