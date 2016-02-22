@@ -15,4 +15,6 @@ public interface Constants {
     String KEY_FLAG = "flag";
 
     String JUGNOO_AUDIO = "jugnoo_audio";
+
+    long HEAT_MAP_FETCH_DELAY = 120000;
 }
