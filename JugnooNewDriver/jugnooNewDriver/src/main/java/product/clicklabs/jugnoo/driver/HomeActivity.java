@@ -366,7 +366,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
-
+	long fetchHeatMapTime = 0;
 
 	static long previousWaitTime = 0, previousRideTime = 0;
 
@@ -3322,7 +3322,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
-		fetchHeatMapData(HomeActivity.this);
+		long timediff = System.currentTimeMillis()-fetchHeatMapTime;
+		if(timediff > Constants.HEAT_MAP_FETCH_DELAY) {
+			fetchHeatMapData(HomeActivity.this);
+			fetchHeatMapTime = System.currentTimeMillis();
+		}
 		stopService(new Intent(HomeActivity.this, GeanieView.class));
 
 
