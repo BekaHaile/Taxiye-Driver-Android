@@ -636,16 +636,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("pushy_token", "");
 
 
-				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-					params.put("latitude", "0");
-					params.put("longitude", "0");
-				}
-				else{
-					params.put("latitude", ""+Data.latitude);
-					params.put("longitude", ""+Data.longitude);
-				}
-
+				params.put("latitude", ""+Data.latitude);
+				params.put("longitude", ""+Data.longitude);
 
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
@@ -1390,7 +1382,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public static boolean isLastLocationUpdateFine(Activity activity){
 		try {
-			String userMode = Database2.getInstance(activity).getUserMode();
+			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
 			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
 			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
 			
@@ -1405,7 +1397,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			
 			
 			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.UM_DRIVER.equalsIgnoreCase(userMode) && 
+				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
 						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
 					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
 						showRestartPhonePopup(activity);

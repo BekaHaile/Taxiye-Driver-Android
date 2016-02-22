@@ -2013,11 +2013,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							imageViewSharingOnToggle.setImageResource(R.drawable.off);
 						}
 
-						if(0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable && 0 == Data.userData.sharingAvailable){
+						if(!checkIfDriverOnline()){
 							if(isDriverStateFree()){
+								setDriverServiceRunOnOnlineBasis();
 								jugnooOffLayout.setVisibility(View.VISIBLE);
 								map.clear();
-								new DriverServiceOperations().stopAndScheduleDriverService(HomeActivity.this);
+								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
 								GCMIntentService.stopRing(true);
@@ -2031,12 +2032,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 						else{
 							if(isDriverStateFree()) {
+								setDriverServiceRunOnOnlineBasis();
 								jugnooOffLayout.setVisibility(View.GONE);
 								fetchHeatMapData(HomeActivity.this);
-								new DriverServiceOperations().startDriverService(HomeActivity.this);
+								startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 								initializeStationDataProcedure();
 							}
 						}
+
 
 						updateReceiveRequestsFlag();
 
@@ -2057,6 +2060,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	}
 
+
+	private boolean checkIfDriverOnline(){
+		if(0 == Data.userData.autosAvailable
+				&& 0 == Data.userData.mealsAvailable
+				&& 0 == Data.userData.fatafatAvailable
+				&& 0 == Data.userData.sharingAvailable){
+			return false;
+		} else{
+			return true;
+		}
+	}
+
+	private void setDriverServiceRunOnOnlineBasis(){
+		if(checkIfDriverOnline()){
+			Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.YES);
+		} else{
+			Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
+		}
+	}
 
 
 	public void updateDriverRequestsAccAvailaviblity(){
@@ -2256,12 +2278,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void switchUserScreen(final UserMode mode){
 		switch(mode){
 			case DRIVER:
-				Database2.getInstance(HomeActivity.this).updateUserMode(Database2.UM_DRIVER);
+				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.YES);
 				driverMainLayout.setVisibility(View.VISIBLE);
 				break;
 
 			default:
-				Database2.getInstance(HomeActivity.this).updateUserMode(Database2.UM_DRIVER);
+				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.YES);
 				driverMainLayout.setVisibility(View.VISIBLE);
 		}
 	}
@@ -2443,7 +2465,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 
-					new DriverServiceOperations().checkStartService(HomeActivity.this);
+					setDriverServiceRunOnOnlineBasis();
+					if(checkIfDriverOnline()) {
+						startService(new Intent(this, DriverLocationUpdateService.class));
+					}
 
 					cancelCustomerPathUpdateTimer();
 
@@ -2467,6 +2492,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					updateDriverServiceFast("no");
 
+					setDriverServiceRunOnOnlineBasis();
 					if(!isServiceRunning(HomeActivity.this, DriverLocationUpdateService.class.getName())){
 						startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					}
@@ -2512,6 +2538,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					updateDriverServiceFast("yes");
 
+					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
@@ -2547,6 +2574,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					updateDriverServiceFast("yes");
 
+					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
@@ -2585,6 +2613,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					updateDriverServiceFast("no");
 
+					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 
@@ -2698,6 +2727,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					updateDriverServiceFast("no");
 
+					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
@@ -5451,7 +5481,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							userMode = UserMode.DRIVER;
 							driverScreenMode = DriverScreenMode.D_INITIAL;
 
-							new DriverServiceOperations().stopService(activity);
+							Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
+							activity.stopService(new Intent(activity, DriverLocationUpdateService.class));
 
 							loggedOut = true;
 						} else {
@@ -6317,8 +6348,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if(loggedOut){
 				loggedOut = false;
 
-				Database2.getInstance(HomeActivity.this).updateUserMode(Database2.UM_OFFLINE);
-				new DriverServiceOperations().stopService(this);
+				Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
+				stopService(new Intent(this, DriverLocationUpdateService.class));
 
 				Intent intent = new Intent(HomeActivity.this, SplashNewActivity.class);
 				intent.putExtra("no_anim", "yes");
