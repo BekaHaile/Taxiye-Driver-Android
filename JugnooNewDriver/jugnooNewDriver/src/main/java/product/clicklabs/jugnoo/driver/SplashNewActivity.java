@@ -115,15 +115,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
-			Data.SERVER_URL = Data.TRIAL_SERVER_URL.substring(0, Data.TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
+			Data.SERVER_URL = Data.TRIAL_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
-			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
+			Data.SERVER_URL = Data.DEV_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			Data.SERVER_URL = Data.LIVE_SERVER_URL;
 			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
@@ -504,7 +504,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
 						if(pendingApisCount > 0){
-							pushAPIs(context);
+							recallCachedApis();
 						}
 						else{
 							stopPendingAPIs();
@@ -517,6 +517,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	    	}
 		}
     }
+
+	private void recallCachedApis(){
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				pushAPIs(SplashNewActivity.this);
+			}
+		}, 60000);
+	}
     
     public void stopPushApiThread(){
     	try{
@@ -627,16 +636,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("pushy_token", "");
 
 
-				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-					params.put("latitude", "0");
-					params.put("longitude", "0");
-				}
-				else{
-					params.put("latitude", ""+Data.latitude);
-					params.put("longitude", ""+Data.longitude);
-				}
-
+				params.put("latitude", ""+Data.latitude);
+				params.put("longitude", ""+Data.longitude);
 
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
@@ -1381,7 +1382,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public static boolean isLastLocationUpdateFine(Activity activity){
 		try {
-			String userMode = Database2.getInstance(activity).getUserMode();
+			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
 			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
 			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
 			
@@ -1396,7 +1397,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			
 			
 			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.UM_DRIVER.equalsIgnoreCase(userMode) && 
+				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
 						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
 					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
 						showRestartPhonePopup(activity);

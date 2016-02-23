@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -21,7 +22,7 @@ public class DriverLocationUpdateService extends Service {
 	
 	LocationFetcherDriver locationFetcherDriver;
 
-	long serverUpdateTimePeriod = 90000;
+	long serverUpdateTimePeriod = 20000;
 	
 	
 	public DriverLocationUpdateService() {
@@ -42,8 +43,8 @@ public class DriverLocationUpdateService extends Service {
     @Override
     public void onStart(Intent intent, int startId) {
         try{
-        	String userMode = Database2.getInstance(this).getUserMode();
-    		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
+        	String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
+    		if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 	        	updateServerData(this);
 	    		String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
 	    		if(fast.equalsIgnoreCase(Database2.NO)){
@@ -51,7 +52,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 90000;
+	    			serverUpdateTimePeriod = 20000;
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{
@@ -65,7 +66,7 @@ public class DriverLocationUpdateService extends Service {
 	            setupLocationUpdateAlarm();
     		}
     		else{
-    			new DriverServiceOperations().stopService(this);
+				stopService(new Intent(this, DriverLocationUpdateService.class));
     		}
         	
         } catch(Exception e){
@@ -104,13 +105,13 @@ public class DriverLocationUpdateService extends Service {
 		String link = preferences.getString(SP_SERVER_LINK, DEFAULT_SERVER_URL);
 		
 		if(link.equalsIgnoreCase(TRIAL_SERVER_URL)){
-			SERVER_URL = TRIAL_SERVER_URL.substring(0, TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
+			SERVER_URL = TRIAL_SERVER_URL;
 		}
 		else if(link.equalsIgnoreCase(DEV_SERVER_URL)){
-			SERVER_URL = DEV_SERVER_URL.substring(0, DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
+			SERVER_URL = DEV_SERVER_URL;
 		}
 		else if(link.equalsIgnoreCase(LIVE_SERVER_URL)){
-			SERVER_URL = LIVE_SERVER_URL.substring(0, LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			SERVER_URL = LIVE_SERVER_URL;
 		}
         else if(link.equalsIgnoreCase(DEV_1_SERVER_URL)){
             SERVER_URL = DEV_1_SERVER_URL;
@@ -153,6 +154,7 @@ public class DriverLocationUpdateService extends Service {
     	}
     	
     	super.onStartCommand(intent, flags, startId);
+		RestClient.setCurrentUrl("");
     	return Service.START_STICKY;
     }
     
@@ -160,19 +162,18 @@ public class DriverLocationUpdateService extends Service {
     @Override
     public void onTaskRemoved(Intent rootIntent) {
     	try {
-    		String userMode = Database2.getInstance(this).getUserMode();
-    		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
-	    		String serviceRestartOnReboot = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceRun();
-	    		if(Database2.YES.equalsIgnoreCase(serviceRestartOnReboot)){
-	    			Intent restartService = new Intent(getApplicationContext(), this.getClass());
-	    			restartService.setPackage(getPackageName());
-	    			PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
-	    			AlarmManager alarmService = (AlarmManager)getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-	    			alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
-	    		}
-    		}
-    		else{
-    			new DriverServiceOperations().stopService(this);
+    		String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
+			android.util.Log.i("driverLocation","");
+    		if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+				android.util.Log.i("driverLocation", driverServiceRun);
+				android.util.Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);
+				Intent restartService = new Intent(getApplicationContext(), this.getClass());
+				restartService.setPackage(getPackageName());
+				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);
+				AlarmManager alarmService = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+				alarmService.set(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000, restartServicePI);
+			} else{
+				stopService(new Intent(this, DriverLocationUpdateService.class));
     		}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -189,11 +190,10 @@ public class DriverLocationUpdateService extends Service {
         	locationFetcherDriver = null;
         }
 
-		if (!Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(this).getUserMode())) {
+		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
         
-        Database2.getInstance(DriverLocationUpdateService.this).close();
     }
     
     

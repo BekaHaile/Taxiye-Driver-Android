@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -32,9 +33,9 @@ public class DriverLocationDispatcher {
 		double LOCATION_TOLERANCE = 0.0001;
 		
 		try {
-			String userMode = Database2.getInstance(context).getUserMode();
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
 			
-			if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
+			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 				WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
@@ -60,8 +61,9 @@ public class DriverLocationDispatcher {
 						nameValuePairs.put("pushy_token", pushyToken);
 						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
-						Log.i(TAG, "sendLocationToServer nameValuePairs="+nameValuePairs.toString());
+						Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
+						RestClient.setupRestClient(serverUrl);
 
 						Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 						String result = new String(((TypedByteArray)response.getBody()).getBytes());
@@ -98,7 +100,10 @@ public class DriverLocationDispatcher {
 					String pickupLongitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
 
-					if(!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
+					double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
+							new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
+
+					if (!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
@@ -131,7 +136,7 @@ public class DriverLocationDispatcher {
 				wakeLock.release();
 			}
 			else{
-				new DriverServiceOperations().stopService(context);
+				context.stopService(new Intent(context, DriverLocationUpdateService.class));
 			}
 
 			
@@ -139,8 +144,6 @@ public class DriverLocationDispatcher {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-		finally{
-    	}
 	}
 	
 	

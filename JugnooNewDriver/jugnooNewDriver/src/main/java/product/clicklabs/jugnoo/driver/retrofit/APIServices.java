@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -257,5 +258,15 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/log_ongoing_ride_path")
 	Response logOngoingRidePath(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/send_referral_sms")
+	void sendReferralMessage(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
+	@POST("/fetch_media_data")
+	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
+													 @Field("file_category") String fileType);
+
 
 }

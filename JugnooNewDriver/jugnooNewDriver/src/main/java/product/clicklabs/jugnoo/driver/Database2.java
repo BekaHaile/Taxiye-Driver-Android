@@ -47,13 +47,6 @@ public class Database2 {																	// class for handling database related 
 	private static final String DLD_DEVICE_TOKEN = "dld_device_token";
 	private static final String DLD_SERVER_URL = "dld_server_url";
 	
-	private static final String TABLE_USER_MODE = "table_user_mode";
-	private static final String USER_MODE = "user_mode";
-	
-	public static final String UM_DRIVER = "driver";
-	public static final String UM_PASSENGER = "passenger";
-	public static final String UM_OFFLINE = "offline";
-	
 	private static final String TABLE_DRIVER_SCREEN_MODE = "table_driver_screen_mode";
 	private static final String DRIVER_SCREEN_MODE = "driver_screen_mode";
 	
@@ -74,7 +67,7 @@ public class Database2 {																	// class for handling database related 
 	
 	private static final String TABLE_DRIVER_SERVICE = "table_driver_service";
 	private static final String DRIVER_SERVICE_RUN = "driver_service_run";
-	
+
 	private static final String TABLE_DRIVER_SERVICE_TIME_TO_RESTART = "table_driver_service_time_to_restart";
 	private static final String TIME_TO_RESTART = "time_to_restart";
 	
@@ -113,6 +106,10 @@ public class Database2 {																	// class for handling database related 
 	private static final String TABLE_METERING_STATE = "table_metering_state";
 	private static final String METERING_STATE = "metering_state";
 
+
+	private static final String TABLE_CUSTOM_AUDIO = "table_custom_audio";
+	private static final String CUSTOM_AUDIO_URL = "custom_audio_url";
+	private static final String CUSTOM_AUDIO_ID = "custom_audio_id";
 
 
 
@@ -178,9 +175,6 @@ public class Database2 {																	// class for handling database related 
 				+ DLD_SERVER_URL + " TEXT" 
 				+ ");");
 		
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_USER_MODE + " ("
-				+ USER_MODE + " TEXT" + ");");
-		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SCREEN_MODE + " ("
 				+ DRIVER_SCREEN_MODE + " TEXT" + ");");
 		
@@ -199,7 +193,7 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE + " ("
 				+ DRIVER_SERVICE_RUN + " TEXT" + ");");
-		
+
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE_TIME_TO_RESTART + " ("
 				+ TIME_TO_RESTART + " TEXT" + ");");
 		
@@ -233,6 +227,10 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
 				+ METERING_STATE + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOM_AUDIO + " ("
+				+ CUSTOM_AUDIO_URL + " TEXT, "
+				+ CUSTOM_AUDIO_ID + " TEXT" + ");");
 
 
         database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CURRENT_PATH + " ("
@@ -435,58 +433,7 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
-	public String getUserMode() {
-		try {
-			String[] columns = new String[] { Database2.USER_MODE };
-			Cursor cursor = database.query(Database2.TABLE_USER_MODE, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String userMode = cursor.getString(cursor.getColumnIndex(Database2.USER_MODE));
-				return userMode;
-			} else {
-				return Database2.UM_OFFLINE;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Database2.UM_OFFLINE;
-		}
-	}
-	
-	
-	
-	public void updateUserMode(String userMode) {
-		try {
-			deleteUserMode();
-			insertUserMode(userMode);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void insertUserMode(String userMode){
-		try{
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.USER_MODE, userMode);
-			database.insert(Database2.TABLE_USER_MODE, null, contentValues);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void deleteUserMode(){
-		try{
-			database.delete(Database2.TABLE_USER_MODE, null, null);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -634,7 +581,7 @@ public class Database2 {																	// class for handling database related 
 
 	public void alterTableDriverCurrentLocation(){
 		try {
-			database.execSQL("DROP TABLE "+TABLE_DRIVER_CURRENT_LOCATION);
+			database.execSQL("DROP TABLE " + TABLE_DRIVER_CURRENT_LOCATION);
 			database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
 					+ DRIVER_CURRENT_LATITUDE + " TEXT, "
 					+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
@@ -723,9 +670,9 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
-	
-	
-	
+
+
+
 	public String getDriverServiceRun() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_SERVICE_RUN };
@@ -742,7 +689,7 @@ public class Database2 {																	// class for handling database related 
 			return YES;
 		}
 	}
-	
+
 	public void updateDriverServiceRun(String choice) {
 		try{
 			deleteDriverServiceRun();
@@ -753,8 +700,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverServiceRun(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_SERVICE, null, null);
@@ -762,20 +709,20 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
@@ -1204,7 +1151,7 @@ public class Database2 {																	// class for handling database related 
 	public void deleteRideData(){
 		try{
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
-			database.execSQL("DROP TABLE "+Database2.TABLE_RIDE_DATA);
+			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
 			createAllTables(database);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -1261,6 +1208,32 @@ public class Database2 {																	// class for handling database related 
 	}
 
 
+
+
+	public void insertCustomAudioUrl(String url, String id) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.CUSTOM_AUDIO_URL, url);
+			contentValues.put(Database2.CUSTOM_AUDIO_ID, id);
+			database.insert(Database2.TABLE_CUSTOM_AUDIO, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public String getCustomAudioUrl(String id) {
+		String[] columns = new String[] { Database2.CUSTOM_AUDIO_URL };
+		Cursor cursor = database.query(Database2.TABLE_CUSTOM_AUDIO, columns, CUSTOM_AUDIO_ID+"=?",
+				new String[]{id}, null, null, null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			String choice = cursor.getString(cursor.getColumnIndex(Database2.CUSTOM_AUDIO_URL));
+			return choice;
+		} else {
+			return "";
+		}
+	}
 
 
 
