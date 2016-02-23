@@ -52,7 +52,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 20000;
+	    			serverUpdateTimePeriod = 120000;
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{
