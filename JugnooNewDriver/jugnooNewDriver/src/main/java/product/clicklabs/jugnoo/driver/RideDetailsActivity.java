@@ -14,9 +14,9 @@ import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 
 public class RideDetailsActivity extends Activity {
 

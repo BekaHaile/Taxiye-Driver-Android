@@ -1,10 +1,13 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -16,11 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-
 import com.google.android.gms.location.FusedLocationProviderApi;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -29,9 +28,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
 import product.clicklabs.jugnoo.driver.Data;
 
 
@@ -136,12 +136,13 @@ public class Utils {
 	}
 
 
-	public static ArrayList<NameValuePair> convertQueryToNameValuePairArr(String query) throws UnsupportedEncodingException {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		String[] pairs = query.split("&");
+	public static HashMap<String, String> convertQueryToNameValuePairArr(String query)
+			throws UnsupportedEncodingException {
+		HashMap<String, String> nameValuePairs = new HashMap<>();
+		String[] pairs = query.substring(1, query.length()-1).split(", ");
 		for (String pair : pairs) {
 			int idx = pair.indexOf("=");
-			nameValuePairs.add(new BasicNameValuePair(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8")));
+			nameValuePairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
 		}
 		return nameValuePairs;
 	}
@@ -185,7 +186,6 @@ public class Utils {
 			e.printStackTrace();
 			return false;
 		}
-
 	}
 
 
@@ -428,29 +428,52 @@ public class Utils {
 	}
 
 
-//	public static String languageTranslator(String InputString){
-//		String OutputString;
-//		try {
-//			// Set the HTTP referrer to your website address.
-//			GoogleAPI.setHttpReferrer("http://code.google.com/p/google-api-translate-java/");
-//
-//			// Set the Google Translate API key
-//			// See: http://code.google.com/apis/language/translate/v2/getting_started.html
-//			GoogleAPI.setKey("AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM");
-//
-//			OutputString = Translate.DEFAULT.execute(InputString, Language.ENGLISH, Language.HINDI);
-//			String translatedText = Translate.DEFAULT.execute("Bonjour le monde", Language.FRENCH, Language.ENGLISH);
-//			Log.i("translate",translatedText);
-//
-//		} catch (GoogleAPIException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			OutputString = "Error";
-//		}
-//		return OutputString;
 
-//	}
+	public static boolean isServiceRunning(Context context, Class serviceClass) {
+		ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+		for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+			if (serviceClass.getName().equals(service.service.getClassName())) {
+				return true;
+			}
+		}
+		return false;
+	}
 
+
+
+	public static String getDeviceName(){
+		return (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
+	}
+
+	public static int getAppVersion(Context context){
+		PackageInfo pInfo = null;
+		try {
+			pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+			return pInfo.versionCode;
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+
+	public static void enableReceiver(Context context, Class classT, boolean enable){
+		try {
+			ComponentName receiver = new ComponentName(context, classT);
+			PackageManager pm = context.getPackageManager();
+			if(enable) {
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+						PackageManager.DONT_KILL_APP);
+			} else{
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+						PackageManager.DONT_KILL_APP);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

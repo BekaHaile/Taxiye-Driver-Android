@@ -13,7 +13,7 @@ public class MealCustomerInfo extends CustomerInfo{
 	
 	public MealCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String address){
-		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
+		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, 0);
 		this.businessType = BusinessType.MEALS;
 		this.address = address;
 	}

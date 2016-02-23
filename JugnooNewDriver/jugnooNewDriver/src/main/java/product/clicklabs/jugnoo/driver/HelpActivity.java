@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
 
 import org.json.JSONObject;
 
@@ -28,6 +27,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -36,7 +36,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	
@@ -57,9 +56,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	
 	ArrayList<HelpSection> helpSections = new ArrayList<HelpSection>();
 	HelpSection selectedHelpSection;
-	
-	AsyncHttpClient fetchHelpDataClient;
-	
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -282,7 +279,6 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 
 
 	public void getHelpAsync(final Activity activity, final HelpSection helpSection) {
-		if(fetchHelpDataClient == null){
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 
 				helpExpandedRl.setVisibility(View.VISIBLE);
@@ -332,19 +328,11 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 			else {
 				openHelpData(helpSection, getResources().getString(R.string.no_internet_tap_to_retry), true);
 			}
-		}
 	}
 
 	
 	
 	public void performBackPressed(){
-		try {
-			if(fetchHelpDataClient != null){
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		if(helpExpandedRl.getVisibility() == View.VISIBLE){
 			helpExpandedRl.setVisibility(View.GONE);
 			title.setText(getResources().getString(R.string.help));
@@ -364,13 +352,6 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		try {
-			if(fetchHelpDataClient != null){
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
         ASSL.closeActivity(relative);
         System.gc();
 	}

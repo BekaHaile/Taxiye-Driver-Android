@@ -20,10 +20,10 @@ public class AutoCustomerInfo extends CustomerInfo{
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable;
 	
-	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
+	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 			String image, String rating, String schedulePickupTime, int freeRide,
 			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable){
-		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
+		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, cachedApiEnabled);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
 		this.rating = rating;
@@ -47,9 +47,9 @@ public class AutoCustomerInfo extends CustomerInfo{
 //		this.waitingChargesApplicable = 0;
 	}
 	
-	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
+	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 			String image, CouponInfo couponInfo, PromoInfo promoInfo){
-		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
+		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, cachedApiEnabled);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
 		this.rating = "4";

@@ -13,7 +13,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
@@ -27,6 +26,7 @@ import product.clicklabs.jugnoo.driver.datastructure.LeaderboardAreaMode;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -34,7 +34,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class DriverLeaderboardActivity extends FragmentActivity implements FlurryEventNames {
 
@@ -233,11 +232,7 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 		if (!HomeActivity.checkIfUserDataNull(activity)) {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-				RequestParams params = new RequestParams();
-
-				params.put("access_token", Data.userData.accessToken);
-
-				RestClient.getApiServices().driverLeaderBoard(Data.userData.accessToken,
+			RestClient.getApiServices().driverLeaderBoard(Data.userData.accessToken,
 						new Callback<DriverLeaderBoard>() {
 							@Override
 							public void success(DriverLeaderBoard driverLeaderBoard, Response response) {

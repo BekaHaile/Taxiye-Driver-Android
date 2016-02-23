@@ -10,8 +10,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class MapUtils {
 
@@ -36,15 +37,6 @@ public class MapUtils {
 	public static double distance(Location start, Location end) {
 		try {
 			double distance = start.distanceTo(end);
-			return distance;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	public static double distanceGPS_GSM(Location GSM, Location GPS) {
-		try {
-			double distance = GSM.distanceTo(GPS);
 			return distance;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,19 +74,17 @@ public class MapUtils {
 	}
 	
 	
-	//https://maps.googleapis.com/maps/api/distancematrix/json?origins=30.75,76.78&destinations=30.78,76.79&language=EN&sensor=false
+	//http://maps.googleapis.com/maps/api/distancematrix/json?origins=30.75,76.78&destinations=30.78,76.79&language=EN&sensor=false
 	
 	public static String makeDistanceMatrixURL(LatLng source, LatLng destination){
         StringBuilder urlString = new StringBuilder();
-        urlString.append("https://maps.googleapis.com/maps/api/distancematrix/json");
+        urlString.append("http://maps.googleapis.com/maps/api/distancematrix/json");
         urlString.append("?origins=");// from
         urlString.append(Double.toString(source.latitude));
         urlString.append(",");
-        urlString
-                .append(Double.toString(source.longitude));
+        urlString.append(Double.toString(source.longitude));
         urlString.append("&destinations=");// to
-        urlString
-                .append(Double.toString(destination.latitude));
+        urlString.append(Double.toString(destination.latitude));
         urlString.append(",");
         urlString.append(Double.toString(destination.longitude));
         urlString.append("&language=EN&sensor=false&alternatives=false");
@@ -160,21 +150,17 @@ public class MapUtils {
 	public static String getGAPIAddress(LatLng latLng, String language) {
 		String fullAddress = "Unnamed";
 		try {
-
-            String url = "http://maps.googleapis.com/maps/api/geocode/json?"
-                + "latlng="
-                + latLng.latitude
-                + ","
-                + latLng.longitude + "&sensor=true";
-
-//            Log.e("language ", "="+language);
             if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
-                url = url + "&language=hi";
-            }
+				language = "hi";
+            } else{
+				language = "en";
+			}
 //            Log.e("getGAPIAddress url", "="+url);
 
-			JSONObject jsonObj = new JSONObject(
-					new HttpRequester().getJSONFromUrl(url));
+			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
+					language, false);
+			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
+			JSONObject jsonObj = new JSONObject(responseStr);
 
 //            Log.e("jsonObj", "="+jsonObj);
 
@@ -188,7 +174,6 @@ public class MapUtils {
 
 				if (zero.has("address_components")) {
 					try {
-
 						ArrayList<String> selectedAddressComponentsArr = new ArrayList<String>();
 						JSONArray addressComponents = zero.getJSONArray("address_components");
 
@@ -284,45 +269,6 @@ public class MapUtils {
 		}
 		return fullAddress;
 	}
-	
-	
-	
-	/**
-	 * To search addresses related to particular address available on google
-	 */
-	public static ArrayList<SearchResult> getSearchResultsFromGooglePlaces(String searchText) {
-		ArrayList<SearchResult> searchResults = new ArrayList<SearchResult>();
-		try{
-			String ignr2 = "https://maps.googleapis.com/maps/api/place/textsearch/json?location="
-					+ "30.75"
-					+ ","
-					+ "76.78"
-					+ "&radius=50"
-					+ "&query="
-					+ searchText
-					+ "&sensor=true&key="+Data.MAPS_BROWSER_KEY;
-			// "https://maps.googleapis.com/maps/api/place/textsearch/json?location=%f,%f&radius=2bb0000&query=%@&sensor=true&key=%@";
 
-			ignr2 = ignr2.replaceAll(" ", "%20");
-			
-			JSONObject jsonObj = new JSONObject(new HttpRequester().getJSONFromUrl(ignr2));
 
-//			Log.writeLogToFile("search", jsonObj.toString());
-			
-			JSONArray info = null;
-			info = jsonObj.getJSONArray("results");
-			for (int i = 0; i < info.length(); i++) {
-				SearchResult searchResult = new SearchResult(info.getJSONObject(i).getString("name"), 
-						info.getJSONObject(i).getString("formatted_address"),
-						new LatLng(info.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lat"),
-								info.getJSONObject(i).getJSONObject("geometry").getJSONObject("location").getDouble("lng")));
-
-				searchResults.add(searchResult);
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-		return searchResults;
-	}
-	
 }

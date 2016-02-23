@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -14,8 +13,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,13 +47,14 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
-import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -60,20 +62,19 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
-	
+
+	private final String TAG = SplashNewActivity.class.getSimpleName();
+
 	LinearLayout relative;
 	
 	ImageView imageViewJugnooLogo;
@@ -85,7 +86,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 	Button buttonLogin, buttonRegister;
 	
-	boolean loginDataFetched = false, loginFailed = false;
+	static boolean loginDataFetched = false;
+	boolean loginFailed = false;
 	
 
 	// *****************************Used for flurry work***************//
@@ -107,16 +109,22 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	public static void initializeServerURL(Context context){
 		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
 		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
-		
+
+		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, Data.DEFAULT_SERVER_URL);
+
 		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
-			Data.SERVER_URL = Data.TRIAL_SERVER_URL.substring(0, Data.TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
+			Data.SERVER_URL = Data.TRIAL_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
-			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
+			Data.SERVER_URL = Data.DEV_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			Data.SERVER_URL = Data.LIVE_SERVER_URL;
+			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
             Data.SERVER_URL = Data.DEV_1_SERVER_URL;
@@ -131,14 +139,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
             Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
         }
 		else{
-			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
-			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
+			Data.SERVER_URL = CUSTOM_URL;
+			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
 		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
 		RestClient.setupRestClient();
 		DriverLocationUpdateService.updateServerData(context);
 	}
-	
+
+	Bundle bundleHomePush= new Bundle();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -154,18 +163,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		    config.locale = locale;
 //		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 //		}
-		
-		
+
+		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-        long interval = (1000 * Prefs.with(this)
-                .getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
-        Pushy.setHeartbeatInterval(interval, this);
-		Pushy.listen(this);
 
-		
 //		Locale locale = new Locale("en");
 //	    Locale.setDefault(locale);
 //	    Configuration config = new Configuration();
@@ -263,14 +267,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		
 		try {																						// to get AppVersion, OS version, country code and device name
-			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-			Data.appVersion = pInfo.versionCode;
+			Data.appVersion = Utils.getAppVersion(this);
 			Log.i("appVersion", Data.appVersion + "..");
 			Data.osVersion = android.os.Build.VERSION.RELEASE;
 			Log.i("osVersion", Data.osVersion + "..");
 			Data.country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry(Locale.getDefault());
 			Log.i("countryCode", Data.country + "..");
-			Data.deviceName = (android.os.Build.MANUFACTURER + android.os.Build.MODEL).toString();
+			Data.deviceName = Utils.getDeviceName();
 			Log.i("deviceName", Data.deviceName + "..");
 
 			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
@@ -341,7 +344,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
-		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
@@ -356,22 +359,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 								checkForTokens();
 							}
-						}, 2000);
-					}
-				});
-			}
-		});
-
-		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Log.e("pushy regId", "=" + regId);
-						Data.pushyToken = regId;
-//						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
-						checkForTokens();
+						}, 500);
 					}
 				});
 			}
@@ -379,7 +367,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 	}
 	private void checkForTokens(){
-		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
+		if(!"".equalsIgnoreCase(Data.deviceToken)){
 			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
@@ -510,13 +498,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					public void run() {
 						ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(context).getAllPendingAPICalls();
 						for(PendingAPICall pendingAPICall : pendingAPICalls){
-							Log.e("pendingAPICall", "="+pendingAPICall);
+							Log.e(TAG, "pendingApiCall="+pendingAPICall);
 							startAPI(context, pendingAPICall);
 						}
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
 						if(pendingApisCount > 0){
-							pushAPIs(context);
+							recallCachedApis();
 						}
 						else{
 							stopPendingAPIs();
@@ -529,6 +517,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	    	}
 		}
     }
+
+	private void recallCachedApis(){
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				pushAPIs(SplashNewActivity.this);
+			}
+		}, 60000);
+	}
     
     public void stopPushApiThread(){
     	try{
@@ -541,16 +538,26 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
     }
     
 	public void startAPI(Context context, PendingAPICall pendingAPICall) {
-		if (AppStatus.getInstance(context).isOnline(context)) {
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(pendingAPICall.url, pendingAPICall.nameValuePairs);
-			Log.e("result in pendingAPICall ", "=" + pendingAPICall + " and result = "+ result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				
+		try {
+			if (AppStatus.getInstance(context).isOnline(context)) {
+				Response response = null;
+				if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.MARK_DELIVERED.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().markDeliveredSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.UPLOAD_RIDE_DATA.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().uploadRideDataSync(pendingAPICall.nameValuePairs);
+				}
+				Log.e(TAG, "response="+response);
+				if(response != null){
+					Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+					Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
+				}
 			}
-			else{
-				Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -626,19 +633,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", Data.pushyToken);
+				params.put("pushy_token", "");
 
 
-				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-					params.put("latitude", "0");
-					params.put("longitude", "0");
-				}
-				else{
-					params.put("latitude", ""+Data.latitude);
-					params.put("longitude", ""+Data.longitude);
-				}
-
+				params.put("latitude", ""+Data.latitude);
+				params.put("longitude", ""+Data.longitude);
 
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
@@ -646,6 +645,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("is_access_token_new", "1");
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
+
+				params.put("device_name", Utils.getDeviceName());
+				params.put("imei", DeviceUniqueID.getUniqueId(this));
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");
@@ -708,7 +710,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
-                                        JSONParser.parsePushyInterval(activity, jObj);
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();
@@ -770,7 +771,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				return resp;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return HttpRequester.SERVER_TIMEOUT;
+				return Constants.SERVER_TIMEOUT;
 			}
 		}
 		
@@ -778,7 +779,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
+			if(result.contains(Constants.SERVER_TIMEOUT)){
 				loginDataFetched = false;
 				DialogPopup.alertPopup(activity, "", message);
 			}
@@ -883,6 +884,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					loginDataFetched = false;
 					dialog.dismiss();
 					Intent intent = new Intent(Intent.ACTION_VIEW);
 					intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
@@ -921,7 +923,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textHead.setText(title);
 			textMessage.setText(message);
@@ -962,7 +964,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
+
 		if(hasFocus && noNetFirstTime){
 			noNetFirstTime = false;
 			checkNetHandler.postDelayed(checkNetRunnable, 4000);
@@ -973,7 +975,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		}
 		else if(hasFocus && loginDataFetched){
 			loginDataFetched = false;
-			startActivity(new Intent(SplashNewActivity.this, HomeActivity.class));
+			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
+			if(bundleHomePush != null)
+			intent.putExtras(bundleHomePush);
+
+			startActivity(intent);
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
@@ -1200,7 +1206,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					btnNeutral.setText("DEV");
 					
 					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
-					btnCancel.setText("SALES");
+					btnCancel.setText("CUSTOM");
 					
 					
 					btnOk.setOnClickListener(new View.OnClickListener() {
@@ -1224,9 +1230,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							SharedPreferences.Editor editor = preferences.edit();
 							editor.putString(Data.SP_SERVER_LINK, Data.DEV_SERVER_URL);
 							editor.commit();
-							
+
 							initializeServerURL(activity);
-							
+
 							dialog.dismiss();
 						}
 					});
@@ -1234,15 +1240,8 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					btnCancel.setOnClickListener(new View.OnClickListener() {
 						@Override
 						public void onClick(View view) {
-							
-							SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-							SharedPreferences.Editor editor = preferences.edit();
-							editor.putString(Data.SP_SERVER_LINK, Data.TRIAL_SERVER_URL);
-							editor.commit();
-							
-							initializeServerURL(activity);
-							
 							dialog.dismiss();
+							saveCustomURLDialog(activity);
 						}
 					});
 
@@ -1255,7 +1254,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					
 					
 					dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
-						
+
 						@Override
 						public void onClick(View v) {
 							dialog.dismiss();
@@ -1267,7 +1266,109 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					e.printStackTrace();
 				}
 			}
-	
+
+
+	public void saveCustomURLDialog(final Activity activity){
+		try {
+			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_edittext);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
+			final EditText etCode = (EditText) dialog.findViewById(R.id.etCode); etCode.setTypeface(Data.latoRegular(activity));
+
+			etCode.setInputType(InputType.TYPE_CLASS_TEXT);
+			etCode.setTextSize(TypedValue.COMPLEX_UNIT_PX, 30);
+
+			etCode.setText(Prefs.with(activity).getString(SPLabels.CUSTOM_SERVER_URL, Data.SERVER_URL));
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+
+			textHead.setText("Custom URL");
+
+			textMessage.setText("Please enter Custom URL");
+
+			textMessage.setVisibility(View.GONE);
+
+
+			final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Data.latoRegular(activity));
+
+			btnConfirm.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					String code = etCode.getText().toString().trim();
+					if ("".equalsIgnoreCase(code)) {
+						etCode.requestFocus();
+						etCode.setError("URL can't be empty.");
+					} else {
+						Prefs.with(activity).save(SPLabels.CUSTOM_SERVER_URL, code);
+						SharedPreferences preferences = activity.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+						SharedPreferences.Editor editor = preferences.edit();
+						editor.putString(Data.SP_SERVER_LINK, code);
+						editor.commit();
+
+						initializeServerURL(activity);
+						dialog.dismiss();
+					}
+				}
+
+			});
+
+
+			etCode.setOnEditorActionListener(new OnEditorActionListener() {
+
+				@Override
+				public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+					int result = actionId & EditorInfo.IME_MASK_ACTION;
+					switch (result) {
+						case EditorInfo.IME_ACTION_DONE:
+							btnConfirm.performClick();
+							break;
+
+						case EditorInfo.IME_ACTION_NEXT:
+							break;
+
+						default:
+					}
+					return true;
+				}
+			});
+
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+				}
+			});
+
+			dialog.show();
+			etCode.setSelection(etCode.getText().length());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 
@@ -1281,7 +1382,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public static boolean isLastLocationUpdateFine(Activity activity){
 		try {
-			String userMode = Database2.getInstance(activity).getUserMode();
+			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
 			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
 			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
 			
@@ -1296,7 +1397,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			
 			
 			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.UM_DRIVER.equalsIgnoreCase(userMode) && 
+				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
 						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
 					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
 						showRestartPhonePopup(activity);

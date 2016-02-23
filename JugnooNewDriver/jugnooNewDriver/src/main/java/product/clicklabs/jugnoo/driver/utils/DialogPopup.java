@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import rmn.androidscreenlibrary.ASSL;
 
 public class DialogPopup {
 

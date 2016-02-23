@@ -8,7 +8,6 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
-import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 
 public interface AppInterruptHandler {
 	
@@ -41,5 +40,7 @@ public interface AppInterruptHandler {
 
 	void handleCancelRideSuccess();
 	void handleCancelRideFailure();
+
+	void markArrivedInterrupt(LatLng latLng);
 
 }

@@ -22,6 +22,7 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -66,6 +67,12 @@ public class MeteringService extends Service {
     	restartServiceViaAlarm();
     }
 
+	@Override
+	public void onDestroy() {
+		Log.e("MeteringService onDestroy","=");
+		restartServiceViaAlarm();
+	}
+
 
 
     public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
@@ -89,7 +96,7 @@ public class MeteringService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
 
     }
@@ -155,11 +162,7 @@ public class MeteringService extends Service {
     }
     
  
-    @Override
-    public void onDestroy() {
-    	Log.e("MeteringService onDestroy","=");
-    	restartServiceViaAlarm();
-    }
+
     
     
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
@@ -182,7 +185,8 @@ public class MeteringService extends Service {
 						boolean showWait = false;
 						if(Data.assignedCustomerInfo != null){
 							if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
-								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1){
+								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1
+										&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
 									showWait = true;
 								}
 							}

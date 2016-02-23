@@ -161,6 +161,33 @@
                 android:textColor="@color/white"
                 android:textSize="40px" />
 
+           <RelativeLayout
+               android:id="@+id/layoutEditProfile"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@+id/textViewRankOverall">
+            <TextView
+                android:id="@+id/textViewEditProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="42px"
+                android:layout_marginTop="5px"
+                android:text="@string/Edit_profile"
+                android:textColor="@color/white"
+                android:textSize="40px"
+                android:layout_centerVertical="true"
+                />
+
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="42px"
+                android:layout_height="42px"
+                android:layout_marginLeft="10px"
+                android:background="@drawable/edit_icon_white"
+                android:layout_toRightOf="@+id/textViewEditProfile"
+                android:layout_centerVertical="true"
+                android:tag="mwar"/>
+           </RelativeLayout>
 
         </RelativeLayout>
 
@@ -169,25 +196,29 @@
 
 
 
+<<<<<<< HEAD
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:splitMotionEvents="false"
         >
+=======
+
+>>>>>>> develop_new
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="648px"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="24px"
             android:layout_marginRight="24px"
-            android:layout_marginBottom="30px"
-            android:layout_alignParentBottom="true"
+            android:layout_marginTop="55px"
+            android:layout_below="@+id/driverDetailsRL"
             android:background="@drawable/background_grey_rounded_blue_border">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="117px">
 
                 <TextView
                     android:id="@+id/textViewmonthlyText"
@@ -212,7 +243,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="117px">
 
             <TextView
                 android:id="@+id/textViewMonthlyText"
@@ -247,7 +278,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="117px">
 
                 <TextView
                     android:id="@+id/textViewRidesTakenText"
@@ -281,7 +312,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="117px">
 
                 <TextView
                     android:id="@+id/textViewRidesMissedText"
@@ -316,7 +347,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="117px">
 
                 <TextView
                     android:id="@+id/textViewRidesCancelledText"
@@ -352,7 +383,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="107px">
+                android:layout_height="107px"
+                android:visibility="gone"
+                >
 
                 <TextView
                     android:id="@+id/textViewOnlineHoursText"
@@ -384,7 +417,7 @@
 
 
 
-    </RelativeLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

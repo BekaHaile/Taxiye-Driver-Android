@@ -15,7 +15,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
@@ -34,19 +33,16 @@ import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class JSONParser {
+public class JSONParser implements Constants {
 
 	public JSONParser(){
 		
@@ -301,21 +297,43 @@ public class JSONParser {
         String deiValue = userData.optString("driver_dei", "-1");
 
         String accessToken = userData.getString("access_token");
+		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
 		String referralCode = userData.getString("referral_code");
 
-		String referralSMSToCustomer = userData.optString("referral_sms_to_customer", context.getResources().getString(R.string.referral_msg, referralCode));
+
+		String referralSMSToCustomer = userData.optString("referral_sms_to_customer",
+				"Use my code " + referralCode + " to download Jugnoo customer App and earn jugnoo cash.\n" +
+						"Download it from here\nhttp://smarturl.it/jugnoo");
+		String referralMessage = userData.optString("referral_message");
+		String referralButtonText = userData.optString("referral_button_text", "Share");
+		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
+		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
 
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
-		
+		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
+
+
+		if(autosAvailable == 1
+				|| mealsAvailable == 1
+				|| fatafatAvailable == 1
+				|| sharingAvailable == 1){
+			Database2.getInstance(context).updateDriverServiceRun(Database2.YES);
+		} else{
+			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
+		}
+
+
 		return new UserData(accessToken, userData.getString("user_name"),
 				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
-				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber, referralSMSToCustomer);
+				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
+				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
+				referralButtonText,referralDialogText, referralDialogHintText);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
@@ -329,19 +347,11 @@ public class JSONParser {
 
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
-		
+
 		//current_user_status = 1 driver or 2 user
 		int currentUserStatus = jLoginObject.getInt("current_user_status");
-		if(currentUserStatus == 1){
-			Database2.getInstance(context).updateUserMode(Database2.UM_DRIVER);
-		}
-		else if(currentUserStatus == 2){
-			Database2.getInstance(context).updateUserMode(Database2.UM_PASSENGER);
-		}
-		
-		parsePortNumber(context, jLoginObject);
-		
-		
+
+
 		//Fetching user current status
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
@@ -401,8 +411,8 @@ public class JSONParser {
 
 //			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
 			Log.e("result of = user_status", "="+result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				returnResponse = HttpRequester.SERVER_TIMEOUT;
+			if(response == null || result == null){
+				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
 			}
 			else{
@@ -412,7 +422,7 @@ public class JSONParser {
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-			returnResponse = HttpRequester.SERVER_TIMEOUT;
+			returnResponse = Constants.SERVER_TIMEOUT;
 			return returnResponse;
 		}
 	}
@@ -496,10 +506,11 @@ public class JSONParser {
 			}
 			
 			int referenceId = 0;
-			
+			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
+
 			Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(Data.dCustomerId),
 					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
-					new LatLng(0, 0),
+					new LatLng(0, 0), cachedApiEnabled,
 					jLastRideData.getString("user_image"), couponInfo, promoInfo);
 			
 			
@@ -573,7 +584,7 @@ public class JSONParser {
 			int dBusinessId = BusinessType.AUTOS.getOrdinal();
 			int dReferenceId = 0;
 			String storeAddress = "";
-			int storeOrderAmount = 0;
+			int storeOrderAmount = 0, cachedApiEnabled = 0;
 			FatafatDeliveryInfo deliveryInfo = null;
 			FatafatCustomerInfo customerInfo = null;
 			
@@ -582,7 +593,7 @@ public class JSONParser {
 			try{
 							
 							if(jObject1.has("error")){
-								returnResponse = HttpRequester.SERVER_TIMEOUT;
+								returnResponse = Constants.SERVER_TIMEOUT;
 								return returnResponse;
 							}
 							else{
@@ -697,7 +708,7 @@ public class JSONParser {
 									
 									
 									if(jActiveRequests.length() == 0){
-										GCMIntentService.stopRing();
+										GCMIntentService.stopRing(true);
 									}
 									
 								}
@@ -808,6 +819,7 @@ public class JSONParser {
                                             getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
 											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
 											waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
+											cachedApiEnabled = jObject.optInt(KEY_CACHED_API_ENABLED, 0);
                                         }
 									}
 									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
@@ -874,7 +886,7 @@ public class JSONParser {
 			} catch(Exception e){
 				e.printStackTrace();
 				engagementStatus = -1;
-				returnResponse = HttpRequester.SERVER_TIMEOUT;
+				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
 			}
 			
@@ -908,7 +920,7 @@ public class JSONParser {
 				
 				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-							dReferenceId, customerName, customerPhone, Data.dCustLatLng, 
+							dReferenceId, customerName, customerPhone, Data.dCustLatLng, cachedApiEnabled,
 							customerImage, customerRating, schedulePickupTime, freeRide, 
 							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
@@ -1125,15 +1137,4 @@ public class JSONParser {
 
 	}
 
-
-    public static void parsePushyInterval(Context context, JSONObject jObj){
-        try{
-            long pushyInterval = jObj.optLong("pushy_interval", Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
-            Prefs.with(context).save(SPLabels.PUSHY_REFRESH_INTERVAL, pushyInterval);
-            Pushy.setHeartbeatInterval((1000 * pushyInterval), context);
-        } catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-	
 }

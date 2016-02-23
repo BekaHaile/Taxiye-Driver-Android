@@ -9,9 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
 
-import com.loopj.android.http.RequestParams;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
@@ -48,13 +47,6 @@ public class Database2 {																	// class for handling database related 
 	private static final String DLD_DEVICE_TOKEN = "dld_device_token";
 	private static final String DLD_SERVER_URL = "dld_server_url";
 	
-	private static final String TABLE_USER_MODE = "table_user_mode";
-	private static final String USER_MODE = "user_mode";
-	
-	public static final String UM_DRIVER = "driver";
-	public static final String UM_PASSENGER = "passenger";
-	public static final String UM_OFFLINE = "offline";
-	
 	private static final String TABLE_DRIVER_SCREEN_MODE = "table_driver_screen_mode";
 	private static final String DRIVER_SCREEN_MODE = "driver_screen_mode";
 	
@@ -67,6 +59,7 @@ public class Database2 {																	// class for handling database related 
 	private static final String DRIVER_CURRENT_LONGITUDE = "driver_current_longitude";
 	private static final String DRIVER_CURRENT_LOCATION_ACCURACY = "driver_current_location_accuracy";
 	private static final String DRIVER_CURRENT_LOCATION_TIME = "driver_current_location_time";
+	private static final String DRIVER_CURRENT_LOCATION_BEARING = "driver_current_location_bearing";
 	
 	
 	private static final String TABLE_DRIVER_LAST_LOCATION_TIME = "table_driver_last_location_time";
@@ -74,7 +67,7 @@ public class Database2 {																	// class for handling database related 
 	
 	private static final String TABLE_DRIVER_SERVICE = "table_driver_service";
 	private static final String DRIVER_SERVICE_RUN = "driver_service_run";
-	
+
 	private static final String TABLE_DRIVER_SERVICE_TIME_TO_RESTART = "table_driver_service_time_to_restart";
 	private static final String TIME_TO_RESTART = "time_to_restart";
 	
@@ -107,13 +100,16 @@ public class Database2 {																	// class for handling database related 
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
 	
-	
-	
+
 	public static final String ON = "on", OFF = "off";
 	
 	private static final String TABLE_METERING_STATE = "table_metering_state";
 	private static final String METERING_STATE = "metering_state";
 
+
+	private static final String TABLE_CUSTOM_AUDIO = "table_custom_audio";
+	private static final String CUSTOM_AUDIO_URL = "custom_audio_url";
+	private static final String CUSTOM_AUDIO_ID = "custom_audio_id";
 
 
 
@@ -179,9 +175,6 @@ public class Database2 {																	// class for handling database related 
 				+ DLD_SERVER_URL + " TEXT" 
 				+ ");");
 		
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_USER_MODE + " ("
-				+ USER_MODE + " TEXT" + ");");
-		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SCREEN_MODE + " ("
 				+ DRIVER_SCREEN_MODE + " TEXT" + ");");
 		
@@ -189,7 +182,8 @@ public class Database2 {																	// class for handling database related 
 				+ DRIVER_CURRENT_LATITUDE + " TEXT, " 
 				+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
 				+ DRIVER_CURRENT_LOCATION_ACCURACY + " TEXT, "
-				+ DRIVER_CURRENT_LOCATION_TIME + " TEXT"
+				+ DRIVER_CURRENT_LOCATION_TIME + " TEXT, "
+				+ DRIVER_CURRENT_LOCATION_BEARING + " TEXT"
 				+ ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_LAST_LOCATION_TIME + " ("
@@ -199,7 +193,7 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE + " ("
 				+ DRIVER_SERVICE_RUN + " TEXT" + ");");
-		
+
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_SERVICE_TIME_TO_RESTART + " ("
 				+ TIME_TO_RESTART + " TEXT" + ");");
 		
@@ -233,6 +227,10 @@ public class Database2 {																	// class for handling database related 
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
 				+ METERING_STATE + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOM_AUDIO + " ("
+				+ CUSTOM_AUDIO_URL + " TEXT, "
+				+ CUSTOM_AUDIO_ID + " TEXT" + ");");
 
 
         database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CURRENT_PATH + " ("
@@ -435,58 +433,7 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
-	public String getUserMode() {
-		try {
-			String[] columns = new String[] { Database2.USER_MODE };
-			Cursor cursor = database.query(Database2.TABLE_USER_MODE, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String userMode = cursor.getString(cursor.getColumnIndex(Database2.USER_MODE));
-				return userMode;
-			} else {
-				return Database2.UM_OFFLINE;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return Database2.UM_OFFLINE;
-		}
-	}
-	
-	
-	
-	public void updateUserMode(String userMode) {
-		try {
-			deleteUserMode();
-			insertUserMode(userMode);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void insertUserMode(String userMode){
-		try{
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.USER_MODE, userMode);
-			database.insert(Database2.TABLE_USER_MODE, null, contentValues);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	public void deleteUserMode(){
-		try{
-			database.delete(Database2.TABLE_USER_MODE, null, null);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	
@@ -550,20 +497,22 @@ public class Database2 {																	// class for handling database related 
 		Location location = new Location(LocationManager.GPS_PROVIDER);
 		try {
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
-					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME, Database2.DRIVER_CURRENT_LOCATION_BEARING };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
 			
 			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
 			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
 			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
 			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
-			
+			int in4 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_BEARING);
+
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
 				location.setLatitude(Double.parseDouble(cursor.getString(in0)));
 				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
 				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
 				location.setTime(Long.parseLong(cursor.getString(in3)));
+				location.setBearing(Float.parseFloat(cursor.getString(in4)));
 
 			}
 		} catch (Exception e) {
@@ -571,13 +520,14 @@ public class Database2 {																	// class for handling database related 
 			alterTableDriverCurrentLocation();
 
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
-					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME };
+					Database2.DRIVER_CURRENT_LOCATION_ACCURACY, Database2.DRIVER_CURRENT_LOCATION_TIME, Database2.DRIVER_CURRENT_LOCATION_BEARING };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_CURRENT_LOCATION, columns, null, null, null, null, null);
 
 			int in0 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LATITUDE);
 			int in1 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LONGITUDE);
 			int in2 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_ACCURACY);
 			int in3 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_TIME);
+			int in4 = cursor.getColumnIndex(Database2.DRIVER_CURRENT_LOCATION_BEARING);
 
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
@@ -585,7 +535,7 @@ public class Database2 {																	// class for handling database related 
 				location.setLongitude(Double.parseDouble(cursor.getString(in1)));
 				location.setAccuracy(Float.parseFloat(cursor.getString(in2)));
 				location.setTime(Long.parseLong(cursor.getString(in3)));
-
+				location.setBearing(Float.parseFloat(cursor.getString(in4)));
 			}
 		}
 		return location;
@@ -600,6 +550,7 @@ public class Database2 {																	// class for handling database related 
 			contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
 			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+			contentValues.put(Database2.DRIVER_CURRENT_LOCATION_BEARING, ""+location.getBearing());
 			long rowId = database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 			Log.e("insert successful", "= rowId =" + rowId);
 
@@ -620,6 +571,7 @@ public class Database2 {																	// class for handling database related 
 				contentValues.put(Database2.DRIVER_CURRENT_LONGITUDE, ""+location.getLongitude());
 				contentValues.put(Database2.DRIVER_CURRENT_LOCATION_ACCURACY, ""+location.getAccuracy());
 				contentValues.put(Database2.DRIVER_CURRENT_LOCATION_TIME, "" + location.getTime());
+				contentValues.put(Database2.DRIVER_CURRENT_LOCATION_BEARING, ""+location.getBearing());
 				database.insert(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, contentValues);
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -629,8 +581,14 @@ public class Database2 {																	// class for handling database related 
 
 	public void alterTableDriverCurrentLocation(){
 		try {
-			database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+DRIVER_CURRENT_LOCATION_ACCURACY+" TEXT DEFAULT '10'");
-			database.execSQL("ALTER TABLE "+TABLE_DRIVER_CURRENT_LOCATION+" ADD COLUMN "+ DRIVER_CURRENT_LOCATION_TIME+ " TEXT DEFAULT '0'");
+			database.execSQL("DROP TABLE " + TABLE_DRIVER_CURRENT_LOCATION);
+			database.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_DRIVER_CURRENT_LOCATION + " ("
+					+ DRIVER_CURRENT_LATITUDE + " TEXT, "
+					+ DRIVER_CURRENT_LONGITUDE + " TEXT, "
+					+ DRIVER_CURRENT_LOCATION_ACCURACY + " TEXT, "
+					+ DRIVER_CURRENT_LOCATION_TIME + " TEXT, "
+					+ DRIVER_CURRENT_LOCATION_BEARING + " TEXT"
+					+ ");");
 			Log.e("drop query", "done");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -712,9 +670,9 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
-	
-	
-	
+
+
+
 	public String getDriverServiceRun() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_SERVICE_RUN };
@@ -731,7 +689,7 @@ public class Database2 {																	// class for handling database related 
 			return YES;
 		}
 	}
-	
+
 	public void updateDriverServiceRun(String choice) {
 		try{
 			deleteDriverServiceRun();
@@ -742,8 +700,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverServiceRun(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_SERVICE, null, null);
@@ -751,20 +709,20 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 	
@@ -954,7 +912,7 @@ public class Database2 {																	// class for handling database related 
 		return 0;
 	}
 	
-	public void insertPendingAPICall(Context context, String url, RequestParams requestParams) {
+	public void insertPendingAPICall(Context context, String url, HashMap<String, String> requestParams) {
 		try{
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.API_URL, url);
@@ -1193,7 +1151,7 @@ public class Database2 {																	// class for handling database related 
 	public void deleteRideData(){
 		try{
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
-			database.execSQL("DROP TABLE "+Database2.TABLE_RIDE_DATA);
+			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
 			createAllTables(database);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -1250,6 +1208,32 @@ public class Database2 {																	// class for handling database related 
 	}
 
 
+
+
+	public void insertCustomAudioUrl(String url, String id) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.CUSTOM_AUDIO_URL, url);
+			contentValues.put(Database2.CUSTOM_AUDIO_ID, id);
+			database.insert(Database2.TABLE_CUSTOM_AUDIO, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public String getCustomAudioUrl(String id) {
+		String[] columns = new String[] { Database2.CUSTOM_AUDIO_URL };
+		Cursor cursor = database.query(Database2.TABLE_CUSTOM_AUDIO, columns, CUSTOM_AUDIO_ID+"=?",
+				new String[]{id}, null, null, null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			String choice = cursor.getString(cursor.getColumnIndex(Database2.CUSTOM_AUDIO_URL));
+			return choice;
+		} else {
+			return "";
+		}
+	}
 
 
 

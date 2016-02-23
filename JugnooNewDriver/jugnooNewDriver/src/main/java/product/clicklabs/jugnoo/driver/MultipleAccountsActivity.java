@@ -17,9 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.EnglishNumberToWords;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 
 public class MultipleAccountsActivity extends Activity {
 

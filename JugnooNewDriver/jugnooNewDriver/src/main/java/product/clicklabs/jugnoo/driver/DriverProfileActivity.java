@@ -1,13 +1,13 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,22 +21,18 @@ import org.json.JSONObject;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
-
-import static com.squareup.picasso.MemoryPolicy.NO_CACHE;
-import static com.squareup.picasso.MemoryPolicy.NO_STORE;
 
 public class DriverProfileActivity extends Activity {
 
 	LinearLayout relative;
-	RelativeLayout driverDetailsRLL;
+	RelativeLayout driverDetailsRLL, layoutEditProfile;
 	Button backBtn;
 	TextView title;
 
@@ -64,16 +60,37 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		try {
+			textViewDriverName.setText(Data.userData.userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		try {
+			String type = getIntent().getStringExtra("type");
+			if(type.equalsIgnoreCase("accept")){
+				Intent intent = new Intent(DriverProfileActivity.this, HomeActivity.class);
+				intent.putExtras(getIntent().getExtras());
+//				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intent);
+				finish();
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		setContentView(R.layout.activity_profile_screen);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
+		layoutEditProfile = (RelativeLayout) findViewById(R.id.layoutEditProfile);
 
 		new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
@@ -120,6 +137,15 @@ public class DriverProfileActivity extends Activity {
 
 
 		getProfileInfoAsync(DriverProfileActivity.this);
+
+		layoutEditProfile.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
 	}
 
 
@@ -138,7 +164,11 @@ public class DriverProfileActivity extends Activity {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
@@ -272,6 +302,8 @@ public class DriverProfileActivity extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+
 
 
 
