@@ -1594,7 +1594,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					public boolean onMarkerClick(Marker arg0) {
 
 
-						if (arg0.getTitle().equalsIgnoreCase((getResources().getString(R.string.pickup_location))) {
+						if (arg0.getTitle().equalsIgnoreCase((getResources().getString(R.string.pickup_location)))) {
 
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.pickup_location), "");
 							map.setInfoWindowAdapter(customIW);
