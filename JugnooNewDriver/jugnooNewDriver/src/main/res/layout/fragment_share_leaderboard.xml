@@ -21,9 +21,9 @@
             android:layout_width="@dimen/share_lb_button_width"
             android:layout_height="@dimen/share_lb_button_height"
             android:layout_marginLeft="30px"
-            android:background="@drawable/new_orange_btn_selector"
+            android:background="@drawable/new_orange_btn_selector_rounded"
             android:text="@string/local_leaderboard"
-            android:textColor="@drawable/text_color_grey_dark_white_selector"
+            android:textColor="@color/white"
             android:textSize="@dimen/button_text_size" />
 
         <Button
@@ -31,9 +31,9 @@
             android:layout_width="@dimen/share_lb_button_width"
             android:layout_height="@dimen/share_lb_button_height"
             android:layout_marginRight="30px"
-            android:background="@drawable/new_orange_btn_round_corner_normal"
+            android:background="@drawable/background_white_rounded_orange_bordered"
             android:text="@string/global_leaderboard"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/button_text_size"
             android:layout_alignParentRight="true"
             />

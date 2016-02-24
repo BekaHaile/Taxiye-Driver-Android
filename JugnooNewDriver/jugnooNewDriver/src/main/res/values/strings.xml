@@ -210,7 +210,7 @@
 	<string name="number_of_downloads">No. of Downloads</string>
 	<string name="number_of_first_rides">Number of First Rides Taken</string>
 	<string name="money_earned">Money Earned from Referrals</string>
-	<string name="data_effective_format">*Data effective from %s</string>
+	<string name="data_effective_format">*Data effective from</string>
 
 
 	<string-array name="CountryCodes" >

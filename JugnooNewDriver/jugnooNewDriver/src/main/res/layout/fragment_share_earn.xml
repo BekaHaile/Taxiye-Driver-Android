@@ -21,13 +21,13 @@
             <RelativeLayout
                 android:id="@+id/shareImgRl"
                 android:layout_width="match_parent"
-                android:layout_height="650px">
+                android:layout_height="620px">
 
 
                 <ImageView
                     android:id="@+id/imageViewJugnooLogo"
                     android:layout_width="match_parent"
-                    android:layout_height="505px"
+                    android:layout_height="485px"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/invite_earn_image"
                     android:tag="mwar"
@@ -36,7 +36,7 @@
                 <RelativeLayout
                     android:id="@+id/showReferralRLayout"
                     android:layout_width="500px"
-                    android:layout_height="142px"
+                    android:layout_height="130px"
                     android:layout_below="@+id/imageViewJugnooLogo"
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/referral_box">
@@ -66,7 +66,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="20px"
                         android:layout_marginRight="20px"
-                        android:layout_marginTop="20px"
+                        android:layout_marginTop="15px"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="12345678"
@@ -93,7 +93,7 @@
                     <Button
                         android:id="@+id/buttonShare"
                         android:layout_width="648px"
-                        android:layout_height="100px"
+                        android:layout_height="90px"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32px"
                         android:background="@drawable/new_orange_btn_selector"

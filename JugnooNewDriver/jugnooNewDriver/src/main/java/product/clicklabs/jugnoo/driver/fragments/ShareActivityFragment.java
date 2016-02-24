@@ -88,6 +88,7 @@ public class ShareActivityFragment extends Fragment {
 		textViewDataEffective = (TextView)rootView.findViewById(R.id.textViewDataEffective);
 		textViewDataEffective.setTypeface(Data.latoRegular(activity));
 
+		getLeaderboardActivityCall();
 
 
 		try {
@@ -125,7 +126,7 @@ public class ShareActivityFragment extends Fragment {
 	public void getLeaderboardActivityCall() {
 		if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
-			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, "",
+			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, Data.LOGIN_TYPE,
 					new Callback<LeaderboardActivityResponse>() {
 						@Override
 						public void success(LeaderboardActivityResponse leaderboardActivityResponse, Response response) {
