@@ -31,7 +31,11 @@
 
 	<string name="rupee">\u20B9</string>
 	<string name="rupee_zero">\u20B9 0.0</string>
-    <string name="rupee_zero_zero">\u20B9 0000.00</string>
+	<string name="rupee_100">\u20B9 100</string>
+	<string name="rupee_200">\u20B9 200</string>
+	<string name="rupee_500">\u20B9 500</string>
+
+	<string name="rupee_zero_zero">\u20B9 0000.00</string>
 
 
 
@@ -211,6 +215,12 @@
 	<string name="number_of_first_rides">Number of First Rides Taken</string>
 	<string name="money_earned">Money Earned from Referrals</string>
 	<string name="data_effective_format">*Data effective from</string>
+	<string name="customer_phone_number">Customer Phone Number</string>
+	<string name="recharge_amount">Amount to be Recharged</string>
+	<string name="enter_amount">Enter Amount</string>
+	<string name="paytm_recharge">PAYTM RECHARGE</string>
+	<string name="Confirm">Confirm</string>
+	<string name="Paytm_recharge">Paytm Recharge</string>
 
 
 	<string-array name="CountryCodes" >
