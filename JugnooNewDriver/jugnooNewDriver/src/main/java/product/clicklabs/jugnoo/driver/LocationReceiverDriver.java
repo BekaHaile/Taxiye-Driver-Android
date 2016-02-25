@@ -25,53 +25,57 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
-		if (!Utils.mockLocationEnabled(location)) {
-			if (location != null) {
-				Location oldlocation = Database2.getInstance(context).getDriverCurrentLocation();
-				double displacement_1 = MapUtils.distance(oldlocation, location);
-				double timediff_1 = (System.currentTimeMillis() - oldlocation.getTime()) / 1000;
-				double speed_1 = displacement_1 / timediff_1;
+		try {
+			final Location location = (Location) intent.getExtras().get(LocationServices.FusedLocationApi.KEY_LOCATION_CHANGED);
+			if (!Utils.mockLocationEnabled(location)) {
+				if (location != null) {
+					Location oldlocation = Database2.getInstance(context).getDriverCurrentLocation(context);
+					double displacement_1 = MapUtils.distance(oldlocation, location);
+					double timediff_1 = (System.currentTimeMillis() - oldlocation.getTime()) / 1000;
+					double speed_1 = displacement_1 / timediff_1;
 
-				if (speed_1 > 20) {
-					Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
-					context.stopService(new Intent(context, DriverLocationUpdateService.class));
-					setAlarm(context);
-				} else {
-
-					if (location.getAccuracy() > FREE_MAX_ACCURACY) {
-						Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
-					}
-
-					long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
-					if (timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))) {
-						if (5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
-
-							location.setAccuracy(3000.001f);
-
-							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
-							Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
-						}
-					} else if (timeLapse > MAX_TIME_WINDOW) {
-						Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
-						Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
-						Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
-					}
-					new Thread(new Runnable() {
-						@Override
-						public void run() {
-							Database2.getInstance(context).updateDriverCurrentLocation(context, location);
-							new DriverLocationDispatcher().sendLocationToServer(context);
-						}
-					}).start();
-
-					if (location.getAccuracy() > 200) {
-						Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
+					if (speed_1 > 20) {
+						Log.i(TAG, "onReceive DriverLocationUpdateService restarted speed_1="+speed_1);
 						context.stopService(new Intent(context, DriverLocationUpdateService.class));
 						setAlarm(context);
+					} else {
+
+						if (location.getAccuracy() > FREE_MAX_ACCURACY) {
+							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0) + 1);
+						}
+
+						long timeLapse = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.ACCURACY_SAVED_TIME, 0);
+						if (timeLapse <= MAX_TIME_WINDOW && (0 == (Prefs.with(context).getInt(SPLabels.TIME_WINDOW_FLAG, 0)))) {
+							if (5 <= Prefs.with(context).getInt(SPLabels.BAD_ACCURACY_COUNT, 0)) {
+
+								location.setAccuracy(3000.001f);
+
+								Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
+								Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 1);
+							}
+						} else if (timeLapse > MAX_TIME_WINDOW) {
+							Prefs.with(context).save(SPLabels.ACCURACY_SAVED_TIME, System.currentTimeMillis());
+							Prefs.with(context).save(SPLabels.BAD_ACCURACY_COUNT, 0);
+							Prefs.with(context).save(SPLabels.TIME_WINDOW_FLAG, 0);
+						}
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
+								new DriverLocationDispatcher().sendLocationToServer(context);
+							}
+						}).start();
+
+						if (location.getAccuracy() > 200) {
+							Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
+							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+							setAlarm(context);
+						}
 					}
 				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

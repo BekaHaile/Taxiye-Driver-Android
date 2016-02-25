@@ -493,7 +493,7 @@ public class Database2 {																	// class for handling database related 
 	
 
 	
-	public Location getDriverCurrentLocation() {
+	public Location getDriverCurrentLocation(Context context) {
 		Location location = new Location(LocationManager.GPS_PROVIDER);
 		try {
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
@@ -517,6 +517,12 @@ public class Database2 {																	// class for handling database related 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				dbInstance = null;
+				Database2.getInstance(context);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			alterTableDriverCurrentLocation();
 
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
