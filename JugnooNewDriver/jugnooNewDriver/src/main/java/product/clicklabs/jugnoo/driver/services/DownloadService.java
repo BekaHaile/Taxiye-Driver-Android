@@ -49,6 +49,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DownloadFile;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -127,6 +129,7 @@ public class DownloadService extends IntentService {
 		File myFile = new File("/storage/emulated/0/jugnooFiles/"+newFileID + ".mp3");
 
 		if (myFile.exists()) {
+			FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
 			GCMIntentService.startRingCustom(context, myFile.getAbsolutePath());
 		}
 	}

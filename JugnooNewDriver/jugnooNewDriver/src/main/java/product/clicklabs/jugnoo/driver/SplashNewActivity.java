@@ -519,12 +519,18 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
     }
 
 	private void recallCachedApis(){
-		new Handler().postDelayed(new Runnable() {
+		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				pushAPIs(SplashNewActivity.this);
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						Log.e(TAG, "reached inside handler");
+						pushAPIs(SplashNewActivity.this);
+					}
+				}, 60000);
 			}
-		}, 60000);
+		});
 	}
     
     public void stopPushApiThread(){

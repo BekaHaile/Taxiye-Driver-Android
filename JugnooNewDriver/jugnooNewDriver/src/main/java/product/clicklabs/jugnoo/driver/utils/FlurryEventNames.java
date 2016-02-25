@@ -68,6 +68,7 @@ public interface FlurryEventNames {
 			UPDATE_DRIVER_LOC_RESPONSE = "Update Driver Loc Response",
 			HEARTBEAT_RESPONSE = "Heartbeat Response",
 			LOGIN_ACCESSTOKEN_RESPONSE= "Login Accesstoken Response",
-			UPDATE_IN_RIDE_DATA_RESPONSE= "Update in Ride Data Response";
+			UPDATE_IN_RIDE_DATA_RESPONSE= "Update in Ride Data Response",
+			CUSTOM_VOICE_NOTIFICATION = "Custom Voice Nottification";
 
 }

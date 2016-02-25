@@ -569,6 +569,7 @@ public class GCMIntentService extends GcmListenerService {
 									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
 
 									if (myFile.exists() && download == 0) {
+										FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
 										startRingCustom(this, myFile.getAbsolutePath());
 									} else {
 										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
