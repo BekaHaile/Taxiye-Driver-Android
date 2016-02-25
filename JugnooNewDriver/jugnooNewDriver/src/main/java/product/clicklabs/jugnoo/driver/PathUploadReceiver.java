@@ -18,6 +18,8 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -104,7 +106,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                 String locations = locationDataArr.toString();
                                 String engagementId = MeteringService.gpsInstance(context).getEngagementIdFromSP(context);
                                 String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-
+                                long responseTime = System.currentTimeMillis();
                                 if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(engagementId)) && (!"".equalsIgnoreCase(serverUrl))){
                                     HashMap<String, String> nameValuePairs = new HashMap<>();
                                     nameValuePairs.put("access_token", accessToken);
@@ -123,6 +125,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                     ArrayList<Long> rowIds = new ArrayList<Long>();
                                                     for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                                         rowIds.add(currentPathItem.id);
+                                                        FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     }
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
 //                                                    if(HomeActivity.appInterruptHandler != null){
