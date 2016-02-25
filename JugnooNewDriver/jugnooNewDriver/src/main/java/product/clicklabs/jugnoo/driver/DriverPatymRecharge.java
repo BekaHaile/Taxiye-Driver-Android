@@ -182,6 +182,7 @@ public class DriverPatymRecharge extends Activity {
 						break;
 
 					case EditorInfo.IME_ACTION_NEXT:
+						btnConfirm.performClick();
 						break;
 
 					default:
@@ -195,6 +196,7 @@ public class DriverPatymRecharge extends Activity {
 
 			@Override
 			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				btnConfirm.requestFocus();
 				return true;
 			}
 		});
@@ -202,6 +204,7 @@ public class DriverPatymRecharge extends Activity {
 
 			@Override
 			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				editTextCashAmount.requestFocus();
 				return true;
 			}
 		});

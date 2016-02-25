@@ -52,7 +52,7 @@
             android:id="@+id/etLayout"
             android:layout_width="648px"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72px"
+            android:layout_marginTop="64px"
             android:layout_below="@+id/jugnooLogoBig"
             android:layout_centerHorizontal="true"
             android:background="@drawable/transparent"
@@ -67,20 +67,20 @@
                 android:layout_gravity="center"
                 android:background="@drawable/paytmlogo_icon"/>
 
-            <TextView
-                android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/customer_phone_number"
-                android:textColor="@color/black"
-                android:layout_marginTop="54px"
-                android:textSize="40px"/>
+            <!--<TextView-->
+                <!--android:id="@+id/textViewTitle"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/customer_phone_number"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:layout_marginTop="54px"-->
+                <!--android:textSize="40px"/>-->
 
             <LinearLayout
                 android:layout_width="640px"
                 android:layout_height="98px"
                 android:padding="2px"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="64px"
                 android:gravity="center_horizontal"
                 android:background="@drawable/background_white_rounded_orange_bordered"
                 android:orientation="horizontal">
@@ -106,8 +106,9 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="10px"
                     android:layout_marginBottom="2px"
+                    android:nextFocusDown="@+id/editTextCashAmount"
                     android:background="@drawable/background_white"
-                    android:hint="@string/phone_number"
+                    android:hint="@string/enter_phone_number"
                     android:inputType="phone"
                     android:maxLength="14"
                     android:singleLine="true"
@@ -116,20 +117,20 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textViewTitle1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/recharge_amount"
-                android:layout_marginTop="72px"
-                android:textColor="@color/black"
-                android:textSize="40px"/>
+            <!--<TextView-->
+                <!--android:id="@+id/textViewTitle1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/recharge_amount"-->
+                <!--android:layout_marginTop="72px"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="40px"/>-->
 
             <LinearLayout
                 android:id="@+id/enterAmountLL"
                 android:layout_width="640px"
                 android:layout_height="98px"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="40px"
                 android:background="@drawable/background_white_rounded_orange_bordered"
                 android:orientation="horizontal"
                 android:padding="2px">
@@ -155,6 +156,7 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="10px"
                     android:layout_marginBottom="2px"
+                    android:nextFocusDown="@+id/btnConfirm"
                     android:background="@drawable/background_white"
                     android:hint="@string/enter_amount"
                     android:inputType="number"
