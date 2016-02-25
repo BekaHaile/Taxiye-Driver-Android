@@ -5513,6 +5513,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void updateInRideData(){
 		try {
+			long responseTime = System.currentTimeMillis();
 			if(UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode){
 				if(myLocation != null){
 					double totalDistanceInKm = Math.abs(totalDistance/1000.0);
@@ -5543,6 +5544,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							try {
 								double distance = jObj.getDouble("total_distance") * 1000;
 								MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
+								FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_IN_RIDE_DATA_RESPONSE);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -5562,11 +5564,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void fetchHeatMapData(final Activity activity) {
 		try {
 			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
-
+				final long responseTime = System.currentTimeMillis();
 				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
 					@Override
 					public void success(HeatMapResponse heatMapResponse, Response response) {
 						try {
+
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							Log.i("heat", jsonString);
 							JSONObject jObj;
@@ -5579,6 +5582,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									drawHeatMapData(heatMapResponseGlobal);
 									Log.i("Heat Map response", String.valueOf(heatMapResponse));
 									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime,FlurryEventNames.HEAT_MAP_RESPONSE);
 								}
 							}
 						} catch (Exception exception) {

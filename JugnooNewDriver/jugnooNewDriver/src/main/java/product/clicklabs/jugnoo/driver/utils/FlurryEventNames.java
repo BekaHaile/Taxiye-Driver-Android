@@ -62,7 +62,12 @@ public interface FlurryEventNames {
 			RIDE_ENDED = "Ride ended",
 			END_RIDE_CONFIRMED = "End ride confirmed",
 			END_RIDE_NOT_CONFIRMED = "End ride not confirmed",
-			OK_ON_FARE_SCREEN = "OK on Fare screen"
-					;
+			OK_ON_FARE_SCREEN = "OK on Fare screen",
+			HEAT_MAP_RESPONSE= "Heat Map Response",
+			PATH_UPLOAD_RESPONSE = "Path Upload Response",
+			UPDATE_DRIVER_LOC_RESPONSE = "Update Driver Loc Response",
+			HEARTBEAT_RESPONSE = "Heartbeat Response",
+			LOGIN_ACCESSTOKEN_RESPONSE= "Login Accesstoken Response",
+			UPDATE_IN_RIDE_DATA_RESPONSE= "Update in Ride Data Response";
 
 }

@@ -25,6 +25,19 @@ public class FlurryEventLogger {
 			e.printStackTrace();
 		}
 	}
+
+	public static void logResponseTime(Context context, long respTime, String event){
+		try{
+			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("response_time", String.valueOf(respTime));
+			params.put("event", event);
+			FlurryAgent.logEvent("Api response log", params);
+			FlurryAgent.onEndSession(context);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	public static void requestPushReceived(Context context, String engagementId, String startTime, String receivedTime){
 		try{
