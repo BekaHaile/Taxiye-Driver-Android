@@ -46,7 +46,7 @@ public class DriverLocationDispatcher {
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 				String pushyToken = Database2.getInstance(context).getPushyToken();
 
-				Location location = Database2.getInstance(context).getDriverCurrentLocation();
+				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
