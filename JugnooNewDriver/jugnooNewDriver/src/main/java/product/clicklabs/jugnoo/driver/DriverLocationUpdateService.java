@@ -52,7 +52,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 20000;
+	    			serverUpdateTimePeriod = 120000;
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{
@@ -82,7 +82,7 @@ public class DriverLocationUpdateService extends Service {
     	
     	//TODO Toggle live to trial
 		String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-		String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
+		String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
 		String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
         String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";

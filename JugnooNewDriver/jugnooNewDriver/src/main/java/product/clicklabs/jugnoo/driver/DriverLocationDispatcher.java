@@ -17,6 +17,8 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -34,7 +36,7 @@ public class DriverLocationDispatcher {
 		
 		try {
 			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
-			
+			long responseTime = System.currentTimeMillis();
 			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -46,7 +48,7 @@ public class DriverLocationDispatcher {
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 				String pushyToken = Database2.getInstance(context).getPushyToken();
 
-				Location location = Database2.getInstance(context).getDriverCurrentLocation();
+				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
@@ -77,6 +79,7 @@ public class DriverLocationDispatcher {
 								String log = jObj.getString("log");
 								if("Updated".equalsIgnoreCase(log)){
 									Database2.getInstance(context).updateDriverLastLocationTime();
+									FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 								}
 							}
 

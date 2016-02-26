@@ -519,12 +519,18 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
     }
 
 	private void recallCachedApis(){
-		new Handler().postDelayed(new Runnable() {
+		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				pushAPIs(SplashNewActivity.this);
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						Log.e(TAG, "reached inside handler");
+						pushAPIs(SplashNewActivity.this);
+					}
+				}, 60000);
 			}
-		}, 60000);
+		});
 	}
     
     public void stopPushApiThread(){
@@ -616,7 +622,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	public void accessTokenLogin(final Activity activity) {
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
-
+		final long responseTime = System.currentTimeMillis();
 		if(!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
@@ -710,6 +716,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();

@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DownloadFile;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -568,6 +569,7 @@ public class GCMIntentService extends GcmListenerService {
 									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
 
 									if (myFile.exists() && download == 0) {
+										FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
 										startRingCustom(this, myFile.getAbsolutePath());
 									} else {
 										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
@@ -940,6 +942,7 @@ public class GCMIntentService extends GcmListenerService {
 			@Override
 			public void run() {
 				try {
+					final long resposeTime = System.currentTimeMillis();
 					String networkName = getNetworkName(context);
 
 					HashMap<String, String> params = new HashMap<String, String>();
@@ -951,6 +954,7 @@ public class GCMIntentService extends GcmListenerService {
 						@Override
 						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 							Log.v("RetroFIT11", String.valueOf(response));
+							FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - resposeTime, FlurryEventNames.HEARTBEAT_RESPONSE);
 						}
 
 						@Override
