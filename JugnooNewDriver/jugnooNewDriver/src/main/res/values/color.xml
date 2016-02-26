@@ -22,6 +22,7 @@
    <color name="black_translucent">#77000000</color>
     <color name="black_translucent_level_2">#55000000</color>
 
+    <color name="sliding_bottom_bg_color">#F7F7F7</color>
 
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>

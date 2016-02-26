@@ -45,6 +45,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -341,6 +342,8 @@ public class GCMIntentService extends IntentService {
 							JSONObject jObj = new JSONObject(message);
 
 							int flag = jObj.getInt("flag");
+							String title = jObj.getString("title");
+							String message1 = jObj.getString("message");
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
@@ -517,7 +520,7 @@ public class GCMIntentService extends IntentService {
 									notificationManager(this, logMessage, false);
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
-								String message1 = jObj.getString("message");
+								 message1 = jObj.getString("message");
 								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
 							} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
 								int toggleLocation = jObj.getInt("toggle_location");
@@ -529,7 +532,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
-								String message1 = jObj.getString("message");
+								 message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
 									notificationManagerResume(this, message1, true);
@@ -544,7 +547,7 @@ public class GCMIntentService extends IntentService {
 									e.printStackTrace();
 								}
 							} else if (PushFlags.STATION_CHANGED.getOrdinal() == flag) {
-								String message1 = jObj.getString("message");
+								 message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onStationChangedPushReceived();
 									notificationManagerResume(this, message1, false);
@@ -595,6 +598,8 @@ public class GCMIntentService extends IntentService {
 														+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
 												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 									}
+
+							savePush(jObj, flag, title, message1);
 
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -757,7 +762,71 @@ public class GCMIntentService extends IntentService {
 
 
 
+	private ArrayList<Integer> dontSavePushes = null;
+	private ArrayList<Integer> getDontSavePushesArray(){
+		if(dontSavePushes == null){
+			dontSavePushes = new ArrayList<>();
+//			dontSavePushes.add(PushFlags.WAITING_STARTED.getOrdinal());
+//			dontSavePushes.add(PushFlags.WAITING_ENDED.getOrdinal());
+//			dontSavePushes.add(PushFlags.NO_DRIVERS_AVAILABLE.getOrdinal());
+//			dontSavePushes.add(PushFlags.CHANGE_STATE.getOrdinal());
+//			dontSavePushes.add(PushFlags.PAYMENT_RECEIVED.getOrdinal());
+//			dontSavePushes.add(PushFlags.CLEAR_ALL_MESSAGE.getOrdinal());
+//			dontSavePushes.add(PushFlags.DELETE_NOTIFICATION_ID.getOrdinal());
+//			dontSavePushes.add(PushFlags.UPLOAD_CONTACTS_ERROR.getOrdinal());
+//			dontSavePushes.add(PushFlags.DRIVER_ETA.getOrdinal());
+		}
+		return dontSavePushes;
+	}
 
+	private void savePush(JSONObject jObj, int flag, String title, String message1){
+		try {
+			boolean tryToSave = false;
+			if(PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag){
+				tryToSave = true;
+			} else if(!getDontSavePushesArray().contains(flag)){
+				int saveNotification = jObj.optInt(Constants.KEY_SAVE_NOTIFICATION, 0);
+				if(1 == saveNotification){
+					tryToSave = true;
+				}
+			}
+
+			if(tryToSave && !"".equalsIgnoreCase(message1)) {
+				String picture = jObj.optString("image", "");
+				if ("".equalsIgnoreCase(picture)) {
+					picture = jObj.optString("picture", "");
+				}
+//				if(PushFlags.DISPLAY_MESSAGE.getOrdinal() != flag) {
+//					message1 = title + "\n" + message1;
+//				}
+
+				message1 = title + "\n" + message1;
+
+				int notificationId = jObj.optInt(Constants.KEY_NOTIFICATION_ID, flag);
+
+				// store push in database for notificaion center screen...
+				String pushArrived = DateOperations.getCurrentTimeInUTC();
+				if (jObj.has("timeToDisplay") && jObj.has("timeTillDisplay")) {
+					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
+							jObj.getString("timeToDisplay"), jObj.getString("timeTillDisplay"), picture);
+					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
+				} else if (jObj.has("timeToDisplay")) {
+					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
+							jObj.getString("timeToDisplay"), "", picture);
+					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
+				} else if (jObj.has("timeTillDisplay")) {
+					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
+							"0", jObj.getString("timeTillDisplay"), picture);
+					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
+				}
+				if (EventsHolder.displayPushHandler != null) {
+					EventsHolder.displayPushHandler.onDisplayMessagePushReceived();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 

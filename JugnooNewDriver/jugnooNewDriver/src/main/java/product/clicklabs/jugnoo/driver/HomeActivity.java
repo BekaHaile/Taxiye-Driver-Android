@@ -987,7 +987,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                 @Override
                 public void onClick(View v) {
-                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
                     FlurryEventLogger.event(CALL_US);
                 }
             });

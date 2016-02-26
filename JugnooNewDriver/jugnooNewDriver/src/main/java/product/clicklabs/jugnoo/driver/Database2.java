@@ -15,9 +15,12 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -128,6 +131,16 @@ public class Database2 {																	// class for handling database related 
     private static final String SECTION_INCOMPLETE = "section_incomplete";
     private static final String GOOGLE_PATH = "google_path";
     private static final String ACKNOWLEDGED = "acknowledged";
+
+
+	// Notification center table name and row names...
+	private static final String TABLE_NOTIFICATION_CENTER = "table_notification_center";
+	private static final String NOTIFICATION_ID = "notification_id";
+	private static final String TIME_PUSH_ARRIVED = "time_push_arrived";
+	private static final String MESSAGE = "message";
+	private static final String TIME_TO_DISPLAY = "time_to_display";
+	private static final String TIME_TILL_DISPLAY = "time_till_display";
+	private static final String NOTIFICATION_IMAGE = "notification_image";
 
 
 
@@ -248,6 +261,15 @@ public class Database2 {																	// class for handling database related 
             + ACKNOWLEDGED + " INTEGER"
             + ");");
 
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_NOTIFICATION_CENTER + " ("
+				+ NOTIFICATION_ID + " INTEGER, "
+				+ TIME_PUSH_ARRIVED + " TEXT, "
+				+ MESSAGE + " TEXT, "
+				+ TIME_TO_DISPLAY + " TEXT, "
+				+ TIME_TILL_DISPLAY + " TEXT, "
+				+ NOTIFICATION_IMAGE + " TEXT"
+				+ ");");
+
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
 				+ GPS_STATE + " INTEGER" + ");");
 
@@ -281,7 +303,30 @@ public class Database2 {																	// class for handling database related 
 	}
 
 
+	private void dropAndCreateNotificationTable(SQLiteDatabase database, Context context){
+		if(Prefs.with(context).getInt(Constants.FIRST_TIME_DB, 1) == 1) {
+			ArrayList<NotificationData> notifications = getAllNotification();
+			database.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATION_CENTER);
+			database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_NOTIFICATION_CENTER + " ("
+					+ NOTIFICATION_ID + " INTEGER, "
+					+ TIME_PUSH_ARRIVED + " TEXT, "
+					+ MESSAGE + " TEXT, "
+					+ TIME_TO_DISPLAY + " TEXT, "
+					+ TIME_TILL_DISPLAY + " TEXT, "
+					+ NOTIFICATION_IMAGE + " TEXT"
+					+ ");");
 
+			for(NotificationData data : notifications){
+				insertNotification(context, data.getNotificationId(),
+						data.getTimePushArrived(),
+						data.getMessage(),
+						data.getTimeToDisplay(),
+						data.getTimeTillDisplay(),
+						data.getNotificationImage());
+			}
+			Prefs.with(context).save(Constants.FIRST_TIME_DB, 0);
+		}
+	}
 
 
 
@@ -1567,6 +1612,114 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+
+	public ArrayList<NotificationData> getAllNotification() {
+		ArrayList<NotificationData> allNotification = new ArrayList<NotificationData>();
+		try {
+			String[] columns = new String[] { NOTIFICATION_ID, TIME_PUSH_ARRIVED, MESSAGE, TIME_TO_DISPLAY, TIME_TILL_DISPLAY, NOTIFICATION_IMAGE };
+			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+				int in0 = cursor.getColumnIndex(NOTIFICATION_ID);
+				int in1 = cursor.getColumnIndex(TIME_PUSH_ARRIVED);
+				int in2 = cursor.getColumnIndex(MESSAGE);
+				int in4 = cursor.getColumnIndex(TIME_TO_DISPLAY);
+				int in5 = cursor.getColumnIndex(TIME_TILL_DISPLAY);
+				int in6 = cursor.getColumnIndex(NOTIFICATION_IMAGE);
+
+				long currentTimeLong = DateOperations.getMilliseconds(DateOperations.getCurrentTimeInUTC());
+
+				for(cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()){
+					try {
+						long savedIn4 = 600000;
+						try{
+							savedIn4 = Long.parseLong(cursor.getString(in4));
+						} catch(Exception e){
+							e.printStackTrace();
+						}
+						long pushArrAndTimeToDisVal = (savedIn4 + DateOperations.getMilliseconds(cursor.getString(in1)));
+
+						boolean added = false;
+						if((!"0".equalsIgnoreCase(cursor.getString(in4))) && (!"".equalsIgnoreCase(cursor.getString(in5)))) { //if both values
+							if ((currentTimeLong < pushArrAndTimeToDisVal) &&
+									(currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2), cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}else if((!"0".equalsIgnoreCase(cursor.getString(in4))) && ("".equalsIgnoreCase(cursor.getString(in5)))){ // only timeToDisplay
+							if ((currentTimeLong < pushArrAndTimeToDisVal)) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
+										 cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}else if((!"".equalsIgnoreCase(cursor.getString(in5))) && ("0".equalsIgnoreCase(cursor.getString(in4)))){ //only timeTillDisplay
+							if (   (currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
+										 cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}
+						if(!added){
+							deleteNotification(cursor.getInt(in0));
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allNotification;
+	}
+
+	public int getAllNotificationCount() {
+		try {
+			String[] columns = new String[] { NOTIFICATION_ID };
+			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			return cursor.getCount();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void insertNotification(Context context, int id, String timePushArrived, String message, String timeToDisplay,
+								   String timeTillDisplay, String notificationImage) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(NOTIFICATION_ID, id);
+			contentValues.put(TIME_PUSH_ARRIVED, timePushArrived);
+			contentValues.put(MESSAGE, message);
+			contentValues.put(TIME_TO_DISPLAY, timeToDisplay);
+			contentValues.put(TIME_TILL_DISPLAY, timeTillDisplay);
+			contentValues.put(NOTIFICATION_IMAGE, notificationImage);
+			database.insert(TABLE_NOTIFICATION_CENTER, null, contentValues);
+			int rowCount = getAllNotificationCount();
+		} catch(Exception e){
+			e.printStackTrace();
+			dropAndCreateNotificationTable(database, context);
+			insertNotification(context, id, timePushArrived, message, timeToDisplay, timeTillDisplay, notificationImage);
+		}
+	}
+
+	public int deleteNotification(int notificationId){
+		try{
+			return database.delete(TABLE_NOTIFICATION_CENTER, NOTIFICATION_ID + "=" + notificationId, null);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void deleteNotificationTable(){
+		try{
+			database.execSQL("delete from "+ TABLE_NOTIFICATION_CENTER);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
 	}
 
 

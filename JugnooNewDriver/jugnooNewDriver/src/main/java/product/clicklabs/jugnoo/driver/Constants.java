@@ -9,4 +9,8 @@ public interface Constants {
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
+    String FIRST_TIME_DB= "first_time_db";
+
+	String KEY_SAVE_NOTIFICATION = "save_notification";
+	String KEY_NOTIFICATION_ID = "notification_id";
 }

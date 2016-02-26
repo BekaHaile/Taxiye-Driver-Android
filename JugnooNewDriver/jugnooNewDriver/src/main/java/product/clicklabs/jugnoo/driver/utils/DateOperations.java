@@ -332,9 +332,17 @@ public class DateOperations {
 	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    return formatter.format(date);
 	}
-	
-	
-	
-	
-	
+
+
+	public static String convertDateViaFormat(String dateTime) {
+		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("dd MMM, yyyy hh:mm a");
+		try {
+			Date myDate = sdfFrom.parse(dateTime);
+			return sdfTo.format(myDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return convertDate(dateTime);
+		}
+	}
 }
