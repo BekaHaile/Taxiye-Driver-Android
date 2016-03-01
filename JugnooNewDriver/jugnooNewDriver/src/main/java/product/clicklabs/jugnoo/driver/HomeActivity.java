@@ -6202,65 +6202,69 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			@Override
 			public void run() {
-				double lastTimeDiff = (System.currentTimeMillis() - lastloctime)/1000; // in seconds
-				double displacement = MapUtils.distance(source, destination);
-				double endDisplacementSpeed = displacement / lastTimeDiff;
-				double endDistanceSpeed = -1;
+				try {
+					double lastTimeDiff = (System.currentTimeMillis() - lastloctime)/1000; // in seconds
+					double displacement = MapUtils.distance(source, destination);
+					double endDisplacementSpeed = displacement / lastTimeDiff;
+					double endDistanceSpeed = -1;
 
-				Log.v("lasttime diff",""+ lastTimeDiff);
-				Log.v("displacement",""+ displacement);
-				Log.v("displacement speed",""+endDisplacementSpeed);
+					Log.v("lasttime diff",""+ lastTimeDiff);
+					Log.v("displacement",""+ displacement);
+					Log.v("displacement speed",""+endDisplacementSpeed);
 
-				Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(source.latitude + "," + source.longitude,
-						destination.latitude + "," + destination.longitude, "EN", false, false);
-				String response = new String(((TypedByteArray)responseR.getBody()).getBytes());
+					Response responseR = RestClient.getGoogleApiServices().getDistanceMatrix(source.latitude + "," + source.longitude,
+							destination.latitude + "," + destination.longitude, "EN", false, false);
+					String response = new String(((TypedByteArray)responseR.getBody()).getBytes());
 
-				if (endDisplacementSpeed < 19) {
-					try {
-						double distanceOfPath = -1;
-						JSONObject jsonObject = new JSONObject(response);
-						String status = jsonObject.getString("status");
-						if ("OK".equalsIgnoreCase(status)) {
-							JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-							distanceOfPath = element0.getJSONObject("distance").getDouble("value");
-							endDistanceSpeed = distanceOfPath / lastTimeDiff;
-							Log.v("dist",""+ distanceOfPath);
-							Log.v("displacement speed",""+endDistanceSpeed);
+					if (endDisplacementSpeed < 19) {
+						try {
+							double distanceOfPath = -1;
+							JSONObject jsonObject = new JSONObject(response);
+							String status = jsonObject.getString("status");
+							if ("OK".equalsIgnoreCase(status)) {
+								JSONObject element0 = jsonObject.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+								distanceOfPath = element0.getJSONObject("distance").getDouble("value");
+								endDistanceSpeed = distanceOfPath / lastTimeDiff;
+								Log.v("dist",""+ distanceOfPath);
+								Log.v("displacement speed",""+endDistanceSpeed);
+							}
+							Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
+							if (distanceOfPath > 0.0001 && endDistanceSpeed < 14) {
+								totalDistance = totalDistance + distanceOfPath;
+								flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
+								Log.writePathLogToFile(Data.dEngagementId + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + totalDistance);
+							} else {
+
+								throw new Exception();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							totalDistance = totalDistance + displacement;
+							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal();
+							Log.writePathLogToFile(Data.dEngagementId + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + totalDistance);
+
 						}
-						Log.e("calculateFusedLocationDistance distanceOfPath ", "=" + distanceOfPath);
-						if (distanceOfPath > 0.0001 && endDistanceSpeed < 14) {
-							totalDistance = totalDistance + distanceOfPath;
-							flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISTANCE.getOrdinal();
-							Log.writePathLogToFile(Data.dEngagementId + "m", "GAPI distanceOfPath=" + distanceOfPath + " and totalDistance=" + totalDistance);
-						} else {
-
-							throw new Exception();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-						totalDistance = totalDistance + displacement;
-						flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_DISPLACEMENT.getOrdinal();
-						Log.writePathLogToFile(Data.dEngagementId + "m", "GAPI excep displacement=" + displacement + " and totalDistance=" + totalDistance);
+					} else {
+						double complimentaryDistance = 4.5 * lastTimeDiff;
+						Log.v("distComp",""+ complimentaryDistance);
+						totalDistance = totalDistance + complimentaryDistance;
+						flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal();
 
 					}
-				} else {
-					double complimentaryDistance = 4.5 * lastTimeDiff;
-					Log.v("distComp",""+ complimentaryDistance);
-					totalDistance = totalDistance + complimentaryDistance;
-					flagDistanceTravelled = FlagRideStatus.END_RIDE_ADDED_COMP_DIST.getOrdinal();
+					Log.e("calculateFusedLocationDistance totalDistance ", "=" + totalDistance);
 
+					activity.runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							DialogPopup.dismissLoadingDialog();
+							driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+									rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
+						}
+					});
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-				Log.e("calculateFusedLocationDistance totalDistance ", "=" + totalDistance);
-
-				activity.runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						DialogPopup.dismissLoadingDialog();
-						driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
-								rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
-					}
-				});
 
 
 			}
