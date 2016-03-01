@@ -343,6 +343,7 @@ public class GCMIntentService extends IntentService {
 
 							int flag = jObj.getInt("flag");
 							String title = jObj.getString("title");
+							int canStore = jObj.getInt("canStore");
 							String message1 = jObj.getString("message");
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
@@ -806,6 +807,7 @@ public class GCMIntentService extends IntentService {
 
 				// store push in database for notificaion center screen...
 				String pushArrived = DateOperations.getCurrentTimeInUTC();
+
 				if (jObj.has("timeToDisplay") && jObj.has("timeTillDisplay")) {
 					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
 							jObj.getString("timeToDisplay"), jObj.getString("timeTillDisplay"), picture);
@@ -817,7 +819,8 @@ public class GCMIntentService extends IntentService {
 				} else if (jObj.has("timeTillDisplay")) {
 					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
 							"0", jObj.getString("timeTillDisplay"), picture);
-					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
+					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT,
+							(Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
 				}
 				if (EventsHolder.displayPushHandler != null) {
 					EventsHolder.displayPushHandler.onDisplayMessagePushReceived();

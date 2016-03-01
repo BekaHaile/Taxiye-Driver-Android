@@ -11,6 +11,6 @@ public interface Constants {
 
     String FIRST_TIME_DB= "first_time_db";
 
-	String KEY_SAVE_NOTIFICATION = "save_notification";
+	String KEY_SAVE_NOTIFICATION = "canStore";
 	String KEY_NOTIFICATION_ID = "notification_id";
 }

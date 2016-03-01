@@ -639,8 +639,8 @@ public class Database2 {																	// class for handling database related 
 		}
 		return location;
 	}
-	
-	
+
+
 	public void updateDriverCurrentLocation(Context context, Location location){
 		try{
 			deleteDriverCurrentLocation();
@@ -693,8 +693,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public int deleteDriverCurrentLocation(){
 		try{
 			return database.delete(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, null);
@@ -703,31 +703,31 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public long getDriverLastLocationTime() {
 		long lastTimeInMillis = 0;
 		try {
 			String[] columns = new String[] { Database2.LAST_LOCATION_TIME };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, columns, null, null, null, null, null);
-			
+
 			int in0 = cursor.getColumnIndex(Database2.LAST_LOCATION_TIME);
-			
+
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
 				lastTimeInMillis = Long.parseLong(cursor.getString(in0));
@@ -737,8 +737,8 @@ public class Database2 {																	// class for handling database related 
 		}
 		return lastTimeInMillis;
 	}
-	
-	
+
+
 	public void updateDriverLastLocationTime(){
 		try{
 			long timeInMillis = System.currentTimeMillis();
@@ -750,9 +750,9 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+
 	public int deleteDriverLastLocationTime(){
 		try{
 			return database.delete(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, null);
@@ -761,17 +761,17 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
 	public String getDriverServiceRun() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_SERVICE_RUN };
@@ -788,7 +788,7 @@ public class Database2 {																	// class for handling database related 
 			return YES;
 		}
 	}
-	
+
 	public void updateDriverServiceRun(String choice) {
 		try{
 			deleteDriverServiceRun();
@@ -799,8 +799,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverServiceRun(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_SERVICE, null, null);
@@ -808,23 +808,23 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public long getDriverServiceTimeToRestart() {
 		long timeToRestart = System.currentTimeMillis() - 1000;
 		try {
@@ -839,9 +839,9 @@ public class Database2 {																	// class for handling database related 
 		}
 		return timeToRestart;
 	}
-	
-	
-	
+
+
+
 	public void updateDriverServiceTimeToRestart(long timeToRestart) {
 		try {
 			deleteDriverServiceTimeToRestart();
@@ -852,8 +852,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverServiceTimeToRestart(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_SERVICE_TIME_TO_RESTART, null, null);
@@ -861,18 +861,18 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 	public String getDriverManualPatchPushReceived() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED };
@@ -889,7 +889,7 @@ public class Database2 {																	// class for handling database related 
 			return NO;
 		}
 	}
-	
+
 	public void updateDriverManualPatchPushReceived(String choice) {
 		try{
 			deleteDriverManualPatchPushReceived();
@@ -900,8 +900,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverManualPatchPushReceived(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_MANUAL_PATCH, null, null);
@@ -909,22 +909,22 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public int getDriverGcmIntent() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_GCM_INTENT };
@@ -941,7 +941,7 @@ public class Database2 {																	// class for handling database related 
 			return 1;
 		}
 	}
-	
+
 	public void updateDriverGcmIntent(int choice) {
 		try{
 			deleteDriverGcmIntent();
@@ -952,8 +952,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverGcmIntent(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_GCM_INTENT, null, null);
@@ -961,21 +961,21 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public ArrayList<PendingAPICall> getAllPendingAPICalls() {
 		ArrayList<PendingAPICall> pendingAPICalls = new ArrayList<PendingAPICall>();
 		try {
@@ -985,7 +985,7 @@ public class Database2 {																	// class for handling database related 
 				int in0 = cursor.getColumnIndex(Database2.API_ID);
 				int in1 = cursor.getColumnIndex(Database2.API_URL);
 				int in2 = cursor.getColumnIndex(Database2.API_REQUEST_PARAMS);
-				
+
 				for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 					try {
 						pendingAPICalls.add(new PendingAPICall(cursor.getInt(in0), cursor.getString(in1), Utils.convertQueryToNameValuePairArr(cursor.getString(in2))));
@@ -999,7 +999,7 @@ public class Database2 {																	// class for handling database related 
 		}
 		return pendingAPICalls;
 	}
-	
+
 	public int getAllPendingAPICallsCount() {
 		try {
 			String[] columns = new String[] { Database2.API_ID };
@@ -1010,7 +1010,7 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
+
 	public void insertPendingAPICall(Context context, String url, RequestParams requestParams) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1022,7 +1022,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int deletePendingAPICall(int apiId){
 		try{
 			return database.delete(Database2.TABLE_PENDING_API_CALLS, Database2.API_ID + "=" + apiId, null);
@@ -1031,36 +1031,36 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
+
+
 	public void checkStartPendingApisService(Context context){
 		if(!HomeActivity.isServiceRunning(context, PushPendingCallsService.class.getName())){
 			context.startService(new Intent(context, PushPendingCallsService.class));
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public int insertDefaultPorts(){
 		deletePortNumbers();
 		try{
@@ -1075,9 +1075,9 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
+
+
+
 	public String getLivePortNumber() {
 		try {
 			String[] columns = new String[] { Database2.LIVE_PORT_NUMBER };
@@ -1096,7 +1096,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_LIVE_PORT;
 		}
 	}
-	
+
 	public void updateLivePortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1106,7 +1106,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getDevPortNumber() {
 		try {
 			String[] columns = new String[] { Database2.DEV_PORT_NUMBER };
@@ -1125,7 +1125,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_DEV_PORT;
 		}
 	}
-	
+
 	public void updateDevPortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1135,7 +1135,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getSalesPortNumber() {
 		try {
 			String[] columns = new String[] { Database2.SALES_PORT_NUMBER };
@@ -1154,7 +1154,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_SALES_PORT;
 		}
 	}
-	
+
 	public void updateSalesPortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1164,9 +1164,9 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+
 	public void deletePortNumbers(){
 		try{
 			database.delete(Database2.TABLE_PORT_NUMBER, null, null);
@@ -1174,29 +1174,29 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public String getRideData() {
 		String rideDataStr = "";
 		String template = "i,lat,long,t";
@@ -1205,19 +1205,19 @@ public class Database2 {																	// class for handling database related 
 		try {
 			String[] columns = new String[] { Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T };
 			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns, null, null, null, null, null);
-			
+
 			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
 			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
 			int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 			int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
-			
+
 			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 				try {
-					RideData rideData = new RideData(cursor.getInt(i0), 
-							Double.parseDouble(cursor.getString(i1)), 
-							Double.parseDouble(cursor.getString(i2)), 
+					RideData rideData = new RideData(cursor.getInt(i0),
+							Double.parseDouble(cursor.getString(i1)),
+							Double.parseDouble(cursor.getString(i2)),
 							Long.parseLong(cursor.getString(i3)));
-					
+
 					rideDataStr = rideDataStr + rideData.toString() + newLine;
 					hasValues = true;
 				} catch (Exception e) {
@@ -1230,10 +1230,10 @@ public class Database2 {																	// class for handling database related 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return rideDataStr;
 	}
-	
+
 	public void insertRideData(String lat, String lng, String t) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1245,8 +1245,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteRideData(){
 		try{
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
@@ -1256,25 +1256,25 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public String getMetringState() {
 		String[] columns = new String[] { Database2.METERING_STATE };
 		Cursor cursor = database.query(Database2.TABLE_METERING_STATE, columns, null, null, null, null, null);
@@ -1286,8 +1286,8 @@ public class Database2 {																	// class for handling database related 
 			return OFF;
 		}
 	}
-	
-	
+
+
 	public int updateMetringState(String choice){
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1629,6 +1629,7 @@ public class Database2 {																	// class for handling database related 
 				int in6 = cursor.getColumnIndex(NOTIFICATION_IMAGE);
 
 				long currentTimeLong = DateOperations.getMilliseconds(DateOperations.getCurrentTimeInUTC());
+				Log.i("current time is ","---->"+currentTimeLong);
 
 				for(cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()){
 					try {
@@ -1654,15 +1655,15 @@ public class Database2 {																	// class for handling database related 
 								added = true;
 							}
 						}else if((!"".equalsIgnoreCase(cursor.getString(in5))) && ("0".equalsIgnoreCase(cursor.getString(in4)))){ //only timeTillDisplay
-							if (   (currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
+							if ((currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
 								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
 										 cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
 								added = true;
 							}
 						}
-						if(!added){
+						/*if(!added){
 							deleteNotification(cursor.getInt(in0));
-						}
+						}*/
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

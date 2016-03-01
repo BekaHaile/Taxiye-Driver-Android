@@ -319,6 +319,16 @@ public class DateOperations {
 			return millis;
 		} catch (ParseException e) {
 			e.printStackTrace();
+			try {
+				time1 = time1.replace("T", " ");
+				time1 = time1.split("\\.")[0];
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date date1 = format.parse(time1);
+				long millis = date1.getTime();
+				return millis;
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return 60000;
 	}

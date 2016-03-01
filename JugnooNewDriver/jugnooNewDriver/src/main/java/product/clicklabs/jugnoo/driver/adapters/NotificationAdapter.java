@@ -152,7 +152,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         public ViewHolder(View itemView, Activity activity) {
             super(itemView);
             container = (LinearLayout) itemView.findViewById(R.id.container);
-            notificationImage = (ImageView)itemView.findViewById(R.id.notification_image);
+//            notificationImage = (ImageView)itemView.findViewById(R.id.notification_image);
             descriptionTxt = (TextView) itemView.findViewById(R.id.description);
             textViewTime = (TextView) itemView.findViewById(R.id.textViewTime);
 
