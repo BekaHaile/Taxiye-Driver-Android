@@ -1,17 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
