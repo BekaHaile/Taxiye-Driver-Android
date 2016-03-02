@@ -20,6 +20,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -38,6 +39,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -77,10 +79,12 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -988,8 +992,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
                 @Override
                 public void onClick(View v) {
-                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
+					driverTimeOutPopup(HomeActivity.this,120000);
                     FlurryEventLogger.event(CALL_US);
                 }
             });
@@ -1770,7 +1775,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void changeJugnooON(BusinessType businessType, int mode, boolean enableSharing){
 		if(mode == 1){
 			if(myLocation != null){
-				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing);
+				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing,0);
 			}
 			else{
 				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
@@ -1781,7 +1786,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				toggleSharingMode(businessType, 0, true);
 			}
 			else{
-				switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
+				switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false,0);
 			}
 		}
 	}
@@ -1811,7 +1816,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing){
+	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing, final int timeoutPenalty){
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1829,6 +1834,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					params.put("longitude", ""+latLng.longitude);
 					params.put("flag", ""+jugnooOnFlag);
 					params.put("business_id", ""+businessType.getOrdinal());
+					params.put("timeout_penalty",""+timeoutPenalty);
 
 					Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -1851,6 +1857,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if(jugnooOnFlag == 1){
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
 							}
+						}
+						else if(ApiResponseFlags.DRIVER_TIMEOUT.getOrdinal() == flag){
+							long timeoutIntewal = jObj.optLong("timeout_penalty_period",0);
+							driverTimeOutPopup(HomeActivity.this,timeoutIntewal);
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
@@ -1910,7 +1920,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 				dismissLoadingFromBackground();
 				if(mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
-					switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
+					switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false,0);
 				}
 			}
 		}).start();
@@ -7448,7 +7458,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void run() {
-					if(UserMode.DRIVER == userMode
+					if (UserMode.DRIVER == userMode
 							&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 						updateDistanceFareTexts(distance, elapsedTime, waitTime);
 						if (rideStartPositionMarker == null) {
@@ -7565,5 +7575,60 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverMarkArriveRideAsync(activity, latLng);
 			}
 		});
+	}
+
+
+	public void driverTimeOutPopup(final Activity activity, long timeoutInterwal) {
+
+		try {
+			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_ride_request_timeout);
+
+			RelativeLayout frameLayout = (RelativeLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity));
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
+			textMessage.setTypeface(Data.latoRegular(activity));
+			TextView timeOutText = (TextView) dialog.findViewById(R.id.timeOutText);
+			timeOutText.setTypeface(Data.latoRegular(activity));
+			final TextView timeOutValue = (TextView) dialog.findViewById(R.id.timeOutValue);
+			timeOutValue.setTypeface(Data.latoRegular(activity));
+
+			new CountDownTimer(timeoutInterwal, 1000) {
+
+				public void onTick(long millisUntilFinished) {
+					timeOutValue.setText(new SimpleDateFormat("mm:ss:SS").format(new Date( millisUntilFinished)));
+				}
+
+				public void onFinish() {
+					timeOutValue.setText("done!");
+					dialog.dismiss();
+				}
+			}.start();
+
+
+
+			dialog.show();
+//			new Handler().postDelayed(new Runnable() {
+//				@Override
+//				public void run() {
+//					Utils.showSoftKeyboard(activity, customerNumber);
+//				}
+//			}, 200);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

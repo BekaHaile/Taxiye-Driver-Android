@@ -310,6 +310,9 @@ public class JSONParser implements Constants {
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
+		int ignoreRideCount = userData.optInt("max_allowed_timeouts", 0);
+		long timeoutRelief = userData.optLong("timeout_relief", 30000);
+		long timeoutIntewal = userData.optLong("timeout_penalty_period",0);
 
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
@@ -332,7 +335,7 @@ public class JSONParser implements Constants {
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText,referralDialogText, referralDialogHintText);
+				referralButtonText,referralDialogText, referralDialogHintText,ignoreRideCount);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

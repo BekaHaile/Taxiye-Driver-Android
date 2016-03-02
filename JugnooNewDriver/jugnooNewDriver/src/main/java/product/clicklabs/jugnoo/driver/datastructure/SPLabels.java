@@ -54,6 +54,6 @@ public class SPLabels {
     public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
     public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
     public static final String DOWNLOADED_FILE_ID = "downloadFileId";
-
+    public static final String INGNORE_RIDEREQUEST_COUNT = "ignoreRideRequestCount";
 
 }

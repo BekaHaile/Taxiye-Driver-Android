@@ -253,7 +253,13 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver">
+        <receiver android:name="product.clicklabs.jugnoo.driver.TimeOutAlarmReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver" >
             <intent-filter>
                 <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE"/>
             </intent-filter>
