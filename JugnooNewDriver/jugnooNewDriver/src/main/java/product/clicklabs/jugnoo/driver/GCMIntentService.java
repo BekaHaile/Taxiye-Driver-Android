@@ -71,7 +71,6 @@ public class GCMIntentService extends IntentService {
 
 	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
-	public static final long ALARM_REPEAT_INTERVAL = 30000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 	NotificationCompat.Builder builder;
 
@@ -450,7 +449,9 @@ public class GCMIntentService extends IntentService {
 
 
 											startRing(this);
-											startTimeoutAlarm(this);
+											if(jObj.optInt("penalise_driver_timeout",0)==1) {
+												startTimeoutAlarm(this);
+											}
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
@@ -463,10 +464,10 @@ public class GCMIntentService extends IntentService {
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
 									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
-
 									startRing(this);
-									startTimeoutAlarm(this);
-
+									if(jObj.optInt("penalise_driver_timeout",0)==1) {
+										startTimeoutAlarm(this);
+									}
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
@@ -511,8 +512,11 @@ public class GCMIntentService extends IntentService {
 								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
 								Boolean ignoreRideRequest = jObj.optBoolean("update_penalty_ctr", false);
 								if(ignoreRideRequest){
-									Prefs.with(this).save(SPLabels.INGNORE_RIDEREQUEST_COUNT,
-											Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT,0) +1);
+									Prefs.with(this).save(SPLabels.INGNORE_RIDEREQUEST_COUNT, Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0) + 1);
+									if(Prefs.with(this).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT,0) <= Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT,0)){
+										Intent timeoutIntent = new Intent(this, DriverTimeoutIntentService.class);
+										this.startService(timeoutIntent);
+									}
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
@@ -668,12 +672,12 @@ public class GCMIntentService extends IntentService {
 					intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+ALARM_REPEAT_INTERVAL, pendingIntent);
+			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+Data.userData.timeoutRelief, pendingIntent);
 		}
 	}
 
-	public void cancelUploadPathAlarm(Context context) {
-		Intent intent = new Intent(context, PathUploadReceiver.class);
+	public static void cancelUploadPathAlarm(Context context) {
+		Intent intent = new Intent(context, TimeOutAlarmReceiver.class);
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
 				intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);

@@ -4,18 +4,19 @@ public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
-	public int sharingEnabled, sharingAvailable, ignoreRideCount;
+	public int sharingEnabled, sharingAvailable;
 	public double showDriverRating;
 	public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer, referralDialogText;
-	public String driverOnlineHours, referralDialogHintText;
+	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
+	public long remainigPenaltyPeriod, timeoutRelief;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
 					int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus,
 					int sharingEnabled, int sharingAvailable, String driverSupportNumber, String referralSMSToCustomer,
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
-					String referralDialogText, String referralDialogHintText, int ignoreRideCount) {
+					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod, long timeoutRelief, String timeoutMessage) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -46,7 +47,9 @@ public class UserData {
 		this.referralButtonText = referralButtonText;
 		this.referralDialogText = referralDialogText;
 		this.referralDialogHintText = referralDialogHintText;
-		this.ignoreRideCount = ignoreRideCount;
+		this.remainigPenaltyPeriod = remainigPenaltyPeriod;
+		this.timeoutRelief = timeoutRelief;
+		this.timeoutMessage = timeoutMessage;
 	}
 
 }

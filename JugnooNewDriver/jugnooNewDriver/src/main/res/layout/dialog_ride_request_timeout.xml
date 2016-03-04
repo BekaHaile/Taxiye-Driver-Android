@@ -51,12 +51,12 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="Message"
-                android:layout_marginTop="20px"
+                android:layout_marginTop="32px"
                 android:textColor="@color/black"
                 android:lineSpacingExtra="10px"
                 android:textSize="34px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
+                android:paddingLeft="32px"
+                android:paddingRight="32px"
 
                 />
 
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="92px"
             android:orientation="horizontal"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="32px"
             android:background="@drawable/blue_btn_selector">
 
             <TextView

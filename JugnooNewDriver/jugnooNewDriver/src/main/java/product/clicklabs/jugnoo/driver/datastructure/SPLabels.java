@@ -56,4 +56,6 @@ public class SPLabels {
     public static final String DOWNLOADED_FILE_ID = "downloadFileId";
     public static final String INGNORE_RIDEREQUEST_COUNT = "ignoreRideRequestCount";
 
+    public static final String MAX_INGNORE_RIDEREQUEST_COUNT = "maxIgnoreRideRequestCount";
+
 }

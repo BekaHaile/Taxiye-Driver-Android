@@ -209,6 +209,12 @@
             android:exported="true">
         </service>
 
+        <service
+            android:name="product.clicklabs.jugnoo.driver.DriverTimeoutIntentService"
+            android:enabled="true"
+            >
+        </service>
+
 
         <service
             android:name="product.clicklabs.jugnoo.driver.PushPendingCallsService"
