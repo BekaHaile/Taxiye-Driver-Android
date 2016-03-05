@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -62,14 +63,16 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class GCMIntentService extends GcmListenerService {
+public class GCMIntentService extends IntentService {
 
 	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	NotificationCompat.Builder builder;
 
 	public GCMIntentService() {
+		super("GcmIntentService");
 	}
+
 
 	protected void onError(Context arg0, String arg1) {
 		Log.e("Registration", "Got an error1!");
@@ -319,9 +322,9 @@ public class GCMIntentService extends GcmListenerService {
 
 
 	@Override
-	public void onMessageReceived(String from, Bundle data) {
+	public void onHandleIntent(Intent intent) {
 		try {
-			Log.i("Recieved a gcm message arg1...", "," + data);
+			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -332,11 +335,11 @@ public class GCMIntentService extends GcmListenerService {
 			if (!"".equalsIgnoreCase(accessToken)) {
 
 				try {
-					Log.i("Recieved a gcm message arg1...", "," + data);
+					Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 
-					if (!"".equalsIgnoreCase(data.getString("message", ""))) {
+					if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
 
-						String message = data.getString("message");
+						String message = intent.getExtras().getString("message");
 
 						try {
 							JSONObject jObj = new JSONObject(message);
@@ -624,6 +627,9 @@ public class GCMIntentService extends GcmListenerService {
 
 				} catch (Exception e) {
 					e.printStackTrace();
+
+					// Release the wake lock provided by the WakefulBroadcastReceiver.
+					        GcmBroadcastReceiver.completeWakefulIntent(intent);
 
 				}
 			}
