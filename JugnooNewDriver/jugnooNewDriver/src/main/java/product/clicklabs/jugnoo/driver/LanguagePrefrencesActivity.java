@@ -1,10 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
-import product.clicklabs.jugnoo.driver.datastructure.LanguageInfo;
-import rmn.androidscreenlibrary.ASSL;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -20,6 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Locale;
+
+import product.clicklabs.jugnoo.driver.datastructure.LanguageInfo;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 public class LanguagePrefrencesActivity extends Activity{
 	

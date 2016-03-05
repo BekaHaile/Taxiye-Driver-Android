@@ -3,35 +3,20 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.flurry.android.FlurryAgent;
-
-import org.json.JSONObject;
-
 import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.fragments.ShareActivityFragment;
-import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
+
 
 
 public class ShareActivity extends FragmentActivity implements FlurryEventNames {
@@ -47,6 +32,10 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 
 	public LeaderboardResponse leaderboardResponse;
 	public LeaderboardActivityResponse leaderboardActivityResponse;
+
+
+	String str3 = "Your Referral Code is ";
+	SpannableString sstr;
 
 
 
@@ -92,6 +81,7 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
 		new ASSL(ShareActivity.this, linearLayoutRoot, 1134, 720, false);
+
 
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -149,6 +139,7 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 	
+
 	@Override
 	public void onBackPressed() {
 		performbackPressed();
@@ -161,5 +152,6 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
         ASSL.closeActivity(linearLayoutRoot);
         System.gc();
 		super.onDestroy();
+
 	}
 }

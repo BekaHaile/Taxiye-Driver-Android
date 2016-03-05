@@ -1,36 +1,43 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class DriverLocationDispatcher {
 
-	public void sendLocationToServer(Context context, String filePrefix){
+	private final String TAG = DriverLocationDispatcher.class.getSimpleName();
+
+	public void sendLocationToServer(Context context){
 		
 		double LOCATION_TOLERANCE = 0.0001;
 		
 		try {
-			String userMode = Database2.getInstance(context).getUserMode();
-			
-			if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
+			long responseTime = System.currentTimeMillis();
+			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 				WakeLock wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyWakelockTag2");
@@ -41,28 +48,30 @@ public class DriverLocationDispatcher {
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 				String pushyToken = Database2.getInstance(context).getPushyToken();
 
-				Location location = Database2.getInstance(context).getDriverCurrentLocation();
+				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
-						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-						nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-						nameValuePairs.add(new BasicNameValuePair("latitude", "" + location.getLatitude()));
-						nameValuePairs.add(new BasicNameValuePair("longitude", "" + location.getLongitude()));
-						nameValuePairs.add(new BasicNameValuePair("bearing", "" + location.getBearing()));
-						nameValuePairs.add(new BasicNameValuePair("device_token", deviceToken));
-						nameValuePairs.add(new BasicNameValuePair("location_accuracy",""+ location.getAccuracy()));
-						nameValuePairs.add(new BasicNameValuePair("pushy_token", pushyToken));
 
-						Log.i("bearing", String.valueOf(location.getBearing()));
-//						Log.writePathLogToFile("BearingC", "" + String.valueOf(location.getBearing()));
+						HashMap<String, String> nameValuePairs = new HashMap<>();
+						nameValuePairs.put("access_token", accessToken);
+						nameValuePairs.put("latitude", "" + location.getLatitude());
+						nameValuePairs.put("longitude", "" + location.getLongitude());
+						nameValuePairs.put("bearing", "" + location.getBearing());
+						nameValuePairs.put("device_token", deviceToken);
+						nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
+						nameValuePairs.put("pushy_token", pushyToken);
+						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
-						HttpRequester simpleJSONParser = new HttpRequester();
-						String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/update_driver_location", nameValuePairs);
-									
-						Log.e("equal_Low_acc2 result in DLD", "=" + result);
-						Log.writeLogToFile(filePrefix, "Server result "+DateOperations.getCurrentTime()+" = "+result);
-						
+						Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
+
+						RestClient.setupRestClient(serverUrl);
+
+						Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
+						String result = new String(((TypedByteArray)response.getBody()).getBytes());
+
+						Log.i(TAG, "sendLocationToServer result=" + result);
+
 						try{
 							//{"log":"Updated"}
 							JSONObject jObj = new JSONObject(result);
@@ -70,13 +79,20 @@ public class DriverLocationDispatcher {
 								String log = jObj.getString("log");
 								if("Updated".equalsIgnoreCase(log)){
 									Database2.getInstance(context).updateDriverLastLocationTime();
+									FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 								}
+							}
+
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
+								String deviceTokenNew = new DeviceTokenGenerator().forceGenerateDeviceToken(context);
+								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
+								sendLocationToServer(context);
 							}
 						} catch(Exception e){
 							e.printStackTrace();
 						}
 						
-						simpleJSONParser = null;
 						nameValuePairs = null;
 					}
 				}
@@ -88,9 +104,9 @@ public class DriverLocationDispatcher {
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
 
 					double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
+							new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
 
-					if(!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
+					if (!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
@@ -106,18 +122,16 @@ public class DriverLocationDispatcher {
 							String customerId = Prefs.with(context).getString(SPLabels.DRIVER_CUSTOMER_ID, "");
 							String referenceId = Prefs.with(context).getString(SPLabels.DRIVER_REFERENCE_ID, "");
 
-							ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-							nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenA));
-							nameValuePairs.add(new BasicNameValuePair("engagement_id", engagementId));
-							nameValuePairs.add(new BasicNameValuePair("customer_id", customerId));
-							nameValuePairs.add(new BasicNameValuePair("pickup_latitude", ""+location.getLatitude()));
-							nameValuePairs.add(new BasicNameValuePair("pickup_longitude", ""+location.getLongitude()));
-							nameValuePairs.add(new BasicNameValuePair("reference_id", referenceId));
+							HashMap<String, String> nameValuePairs = new HashMap<>();
+							nameValuePairs.put("access_token", accessTokenA);
+							nameValuePairs.put("engagement_id", engagementId);
+							nameValuePairs.put("customer_id", customerId);
+							nameValuePairs.put("pickup_latitude", "" + location.getLatitude());
+							nameValuePairs.put("pickup_longitude", "" + location.getLongitude());
+							nameValuePairs.put("reference_id", referenceId);
 
-							HttpRequester simpleJSONParser = new HttpRequester();
-							String result = simpleJSONParser.getJSONFromUrlParams(serverUrl + "/mark_arrived", nameValuePairs);
-							simpleJSONParser = null;
-							result = null;
+							Response response = RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
+
 						}
 					}
 				}
@@ -125,17 +139,14 @@ public class DriverLocationDispatcher {
 				wakeLock.release();
 			}
 			else{
-				new DriverServiceOperations().stopService(context);
+				context.stopService(new Intent(context, DriverLocationUpdateService.class));
 			}
 
 			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			Log.writeLogToFile(filePrefix, "Exception in sending to server "+DateOperations.getCurrentTime()+" = "+e);
 		}
-		finally{
-    	}
 	}
 	
 	

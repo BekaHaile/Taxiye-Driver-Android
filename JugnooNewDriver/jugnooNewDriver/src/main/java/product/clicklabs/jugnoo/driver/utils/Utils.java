@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.utils;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -20,9 +21,6 @@ import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -30,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -138,12 +136,13 @@ public class Utils {
 	}
 
 
-	public static ArrayList<NameValuePair> convertQueryToNameValuePairArr(String query) throws UnsupportedEncodingException {
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		String[] pairs = query.split("&");
+	public static HashMap<String, String> convertQueryToNameValuePairArr(String query)
+			throws UnsupportedEncodingException {
+		HashMap<String, String> nameValuePairs = new HashMap<>();
+		String[] pairs = query.substring(1, query.length()-1).split(", ");
 		for (String pair : pairs) {
 			int idx = pair.indexOf("=");
-			nameValuePairs.add(new BasicNameValuePair(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8")));
+			nameValuePairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
 		}
 		return nameValuePairs;
 	}
@@ -171,23 +170,23 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
 
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -452,6 +451,25 @@ public class Utils {
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+
+	public static void enableReceiver(Context context, Class classT, boolean enable){
+		try {
+			ComponentName receiver = new ComponentName(context, classT);
+			PackageManager pm = context.getPackageManager();
+			if(enable) {
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+						PackageManager.DONT_KILL_APP);
+			} else{
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+						PackageManager.DONT_KILL_APP);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

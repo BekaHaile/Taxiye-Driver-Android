@@ -18,26 +18,23 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
-import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdate {
 
@@ -183,7 +180,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 	public void sendSignupValues(final Activity activity, final String phoneNo, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
-			RequestParams params = new RequestParams();
+			HashMap<String, String> params = new HashMap<>();
 
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("access_token", Data.userData.accessToken);
@@ -193,49 +190,45 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 
 			Log.i("params", ">"+params);
 
-			AsyncHttpClient client = Data.getClient();
-			client.post(Data.SERVER_URL + "/verify_my_contact_number", params,
-					new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-
-						@Override
-						public void onFailure(Throwable arg3) {
-							Log.e("request fail", arg3.toString());
-							DialogPopup.dismissLoadingDialog();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-						}
-
-						@Override
-						public void onSuccess(String response) {
-							Log.i("Server response", "response = " + response);
-							try {
-								jObj = new JSONObject(response);
-								int flag = jObj.getInt("flag");
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-									if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-										String error = jObj.getString("error");
-										DialogPopup.dialogBanner(activity, error);
-									} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-										String message = jObj.getString("message");
-										DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
-											@Override
-											public void onClick(View v) {
-												performBackPressed();
-												Data.userData.phoneNo = phoneNo;
-											}
-										});
-									} else {
-										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+			RestClient.getApiServices().verifyMyContactNumber(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					Log.i("Server response", "response = " + response);
+					try {
+						String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
+						JSONObject jObj = new JSONObject(responseStr);
+						int flag = jObj.getInt("flag");
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+								String error = jObj.getString("error");
+								DialogPopup.dialogBanner(activity, error);
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								String message = jObj.getString("message");
+								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										performBackPressed();
+										Data.userData.phoneNo = phoneNo;
 									}
-								}
-							} catch (Exception exception) {
-								exception.printStackTrace();
+								});
+							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}
-							DialogPopup.dismissLoadingDialog();
 						}
-					});
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+					DialogPopup.dismissLoadingDialog();
+				}
 
+				@Override
+				public void failure(RetrofitError error) {
+					Log.e("request fail", error.toString());
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
 
 		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);

@@ -47,13 +47,14 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
-import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -61,20 +62,19 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
-	
+
+	private final String TAG = SplashNewActivity.class.getSimpleName();
+
 	LinearLayout relative;
 	
 	ImageView imageViewJugnooLogo;
@@ -115,15 +115,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
 		
 		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
-			Data.SERVER_URL = Data.TRIAL_SERVER_URL.substring(0, Data.TRIAL_SERVER_URL.length()-4) + Database2.getInstance(context).getSalesPortNumber();
+			Data.SERVER_URL = Data.TRIAL_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
-			Data.SERVER_URL = Data.DEV_SERVER_URL.substring(0, Data.DEV_SERVER_URL.length()-4) + Database2.getInstance(context).getDevPortNumber();
+			Data.SERVER_URL = Data.DEV_SERVER_URL;
 			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
 		}
 		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			Data.SERVER_URL = Data.LIVE_SERVER_URL.substring(0, Data.LIVE_SERVER_URL.length()-4) + Database2.getInstance(context).getLivePortNumber();
+			Data.SERVER_URL = Data.LIVE_SERVER_URL;
 			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
 		}
         else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
@@ -169,12 +169,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-        long interval = (1000 * Prefs.with(this)
-                .getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
-        Pushy.setHeartbeatInterval(interval, this);
-		Pushy.listen(this);
 
-		
 //		Locale locale = new Locale("en");
 //	    Locale.setDefault(locale);
 //	    Configuration config = new Configuration();
@@ -349,7 +344,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
-		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
@@ -364,22 +359,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 								checkForTokens();
 							}
-						}, 2000);
-					}
-				});
-			}
-		});
-
-		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
-			@Override
-			public void deviceTokenReceived(final String regId) {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						Log.e("pushy regId", "=" + regId);
-						Data.pushyToken = regId;
-//						Toast.makeText(SplashNewActivity.this, "" + regId, Toast.LENGTH_LONG).show();
-						checkForTokens();
+						}, 500);
 					}
 				});
 			}
@@ -387,7 +367,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 	}
 	private void checkForTokens(){
-		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
+		if(!"".equalsIgnoreCase(Data.deviceToken)){
 			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
@@ -518,13 +498,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					public void run() {
 						ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(context).getAllPendingAPICalls();
 						for(PendingAPICall pendingAPICall : pendingAPICalls){
-							Log.e("pendingAPICall", "="+pendingAPICall);
+							Log.e(TAG, "pendingApiCall="+pendingAPICall);
 							startAPI(context, pendingAPICall);
 						}
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
 						if(pendingApisCount > 0){
-							pushAPIs(context);
+							recallCachedApis();
 						}
 						else{
 							stopPendingAPIs();
@@ -537,6 +517,21 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	    	}
 		}
     }
+
+	private void recallCachedApis(){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						Log.e(TAG, "reached inside handler");
+						pushAPIs(SplashNewActivity.this);
+					}
+				}, 60000);
+			}
+		});
+	}
     
     public void stopPushApiThread(){
     	try{
@@ -549,16 +544,26 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
     }
     
 	public void startAPI(Context context, PendingAPICall pendingAPICall) {
-		if (AppStatus.getInstance(context).isOnline(context)) {
-			HttpRequester simpleJSONParser = new HttpRequester();
-			String result = simpleJSONParser.getJSONFromUrlParams(pendingAPICall.url, pendingAPICall.nameValuePairs);
-			Log.e("result in pendingAPICall ", "=" + pendingAPICall + " and result = "+ result);
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
-				
+		try {
+			if (AppStatus.getInstance(context).isOnline(context)) {
+				Response response = null;
+				if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.MARK_DELIVERED.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().markDeliveredSync(pendingAPICall.nameValuePairs);
+				}
+				else if(PendingCall.UPLOAD_RIDE_DATA.getPath().equalsIgnoreCase(pendingAPICall.url)){
+					response = RestClient.getApiServices().uploadRideDataSync(pendingAPICall.nameValuePairs);
+				}
+				Log.e(TAG, "response="+response);
+				if(response != null){
+					Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+					Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
+				}
 			}
-			else{
-				Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -617,7 +622,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	public void accessTokenLogin(final Activity activity) {
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
-
+		final long responseTime = System.currentTimeMillis();
 		if(!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
@@ -634,19 +639,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", Data.pushyToken);
+				params.put("pushy_token", "");
 
 
-				final String serviceRestartOnReboot = Database2.getInstance(activity).getDriverServiceRun();
-				if(Database2.NO.equalsIgnoreCase(serviceRestartOnReboot)){
-					params.put("latitude", "0");
-					params.put("longitude", "0");
-				}
-				else{
-					params.put("latitude", ""+Data.latitude);
-					params.put("longitude", ""+Data.longitude);
-				}
-
+				params.put("latitude", ""+Data.latitude);
+				params.put("longitude", ""+Data.longitude);
 
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
@@ -654,6 +651,9 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("is_access_token_new", "1");
 				params.put("client_id", Data.CLIENT_ID);
 				params.put("login_type", Data.LOGIN_TYPE);
+
+				params.put("device_name", Utils.getDeviceName());
+				params.put("imei", DeviceUniqueID.getUniqueId(this));
 
 				if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 					params.put("auto_n_cab_installed", "1");
@@ -716,7 +716,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
-                                        JSONParser.parsePushyInterval(activity, jObj);
+										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();
@@ -778,7 +778,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				return resp;
 			} catch (Exception e) {
 				e.printStackTrace();
-				return HttpRequester.SERVER_TIMEOUT;
+				return Constants.SERVER_TIMEOUT;
 			}
 		}
 		
@@ -786,7 +786,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		protected void onPostExecute(String result) {
 			super.onPostExecute(result);
 
-			if(result.contains(HttpRequester.SERVER_TIMEOUT)){
+			if(result.contains(Constants.SERVER_TIMEOUT)){
 				loginDataFetched = false;
 				DialogPopup.alertPopup(activity, "", message);
 			}
@@ -1389,7 +1389,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	
 	public static boolean isLastLocationUpdateFine(Activity activity){
 		try {
-			String userMode = Database2.getInstance(activity).getUserMode();
+			String driverServiceRun = Database2.getInstance(activity).getDriverServiceRun();
 			String driverScreenMode = Database2.getInstance(activity).getDriverScreenMode();
 			long lastLocationUpdateTime = Database2.getInstance(activity).getDriverLastLocationTime();
 			
@@ -1404,7 +1404,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			
 			
 			if(systemUpTime > HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT){
-				if(Database2.UM_DRIVER.equalsIgnoreCase(userMode) && 
+				if(Database2.YES.equalsIgnoreCase(driverServiceRun) &&
 						(currentTime >= (lastLocationUpdateTime + HomeActivity.MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT))){
 					if(Database2.VULNERABLE.equalsIgnoreCase(driverScreenMode)){
 						showRestartPhonePopup(activity);

@@ -1,70 +1,66 @@
 package product.clicklabs.jugnoo.driver;
 
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Utils;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.squareup.okhttp.internal.Util;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 
 	private static final String SEND_LOCATION = "product.clicklabs.jugnoo.driver.SEND_LOCATION";
 	
 	private static final long MAX_TIME_BEFORE_LOCATION_UPDATE = 3 * 60000;
+
+	private final String TAG = DriverLocationUpdateAlarmReceiver.class.getSimpleName();
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		Log.writePathLogToFile("batteryC", "" + Utils.getBatteryPercentage(context));
-		String userMode = Database2.getInstance(context).getUserMode();
-		if(Database2.UM_DRIVER.equalsIgnoreCase(userMode)){
-	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
-			String action = intent.getAction();
-			if (SEND_LOCATION.equals(action)) {
-				try {
-					long lastTime = Database2.getInstance(context).getDriverLastLocationTime();
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if("".equalsIgnoreCase(accessToken)){
-						DriverLocationUpdateService.updateServerData(context);
-					}
-					long currentTime = System.currentTimeMillis();
+		try {
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
+			if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+				GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
+				String action = intent.getAction();
+				if (SEND_LOCATION.equals(action)) {
+					try {
+						long lastTime = Database2.getInstance(context).getDriverLastLocationTime();
+						String accessToken = Database2.getInstance(context).getDLDAccessToken();
+						if ("".equalsIgnoreCase(accessToken)) {
+							DriverLocationUpdateService.updateServerData(context);
+						}
+						long currentTime = System.currentTimeMillis();
 
-			    	Log.writeLogToFile("AlarmReceiver", "Receiver "+DateOperations.getCurrentTime()+" = "+(currentTime - lastTime) 
-			    			+ " hasNet = "+AppStatus.getInstance(context).isOnline(context));
-					
-					if(currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)){
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								new DriverLocationDispatcher().sendLocationToServer(context, "AlarmReceiver");
-							}
-						}).start();
-					}
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally{
-				}
-			}
-			Log.writePathLogToFile("service_log",
-					"DriverLocationUpdateAlarmReceiver onReceive userMode=" + Database2.getInstance(context).getUserMode()
-							+ " and DriverLocationUpdateService running=" + Utils.isServiceRunning(context, DriverLocationUpdateService.class));
-			if (Database2.UM_DRIVER.equalsIgnoreCase(Database2.getInstance(context).getUserMode())) {
-				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
-					Log.writePathLogToFile("service_log",
-							"DriverLocationUpdateAlarmReceiver onReceive gone in");
-					new DriverServiceOperations().startDriverService(context);
-				}
-			}
+						Log.writeLogToFile("AlarmReceiver", "Receiver " + DateOperations.getCurrentTime() + " = " + (currentTime - lastTime)
+								+ " hasNet = " + AppStatus.getInstance(context).isOnline(context));
 
-		}
-		else{
-			new DriverServiceOperations().stopService(context);
+						if (currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)) {
+							new Thread(new Runnable() {
+								@Override
+								public void run() {
+									new DriverLocationDispatcher().sendLocationToServer(context);
+								}
+							}).start();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+					}
+				}
+				if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+					if (!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
+						Log.i(TAG, "onReceive startDriverService called");
+						context.startService(new Intent(context, DriverLocationUpdateService.class));
+					}
+				}
+
+			} else {
+				context.stopService(new Intent(context, DriverLocationUpdateService.class));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

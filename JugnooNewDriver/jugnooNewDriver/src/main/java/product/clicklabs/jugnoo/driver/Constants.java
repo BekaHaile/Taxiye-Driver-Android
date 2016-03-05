@@ -13,4 +13,12 @@ public interface Constants {
 
 	String KEY_SAVE_NOTIFICATION = "canStore";
 	String KEY_NOTIFICATION_ID = "notification_id";
+    String SERVER_TIMEOUT = "SERVER_TIMEOUT";
+
+    String KEY_CACHED_API_ENABLED = "cached_api_enabled";
+    String KEY_FLAG = "flag";
+
+    String JUGNOO_AUDIO = "jugnoo_audio";
+
+    long HEAT_MAP_FETCH_DELAY = 120000;
 }
