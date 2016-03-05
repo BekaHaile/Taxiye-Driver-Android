@@ -161,13 +161,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl;
-	TextView inviteFriendText;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl;
+	TextView inviteFriendText, notificationCenterText;
 
-	RelativeLayout bookingsRl;
+	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter;
 	TextView bookingsText;
 
 	RelativeLayout relativeLayoutSharingRides;
@@ -201,8 +201,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI, textViewTitleBarOvalText;
-	ProgressBar progressBarDriverOnlineHours;
+	TextView textViewTitleBarDEI;
+//	ProgressBar progressBarDriverOnlineHours;
 
 
 
@@ -340,7 +340,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ScrollView scrollViewEndRide;
 	LinearLayout linearLayoutEndRideMain;
-	TextView textViewScroll;
+	TextView textViewScroll, textViewNotificationValue;
 
 
 
@@ -509,7 +509,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
-			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
+//			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 //			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
 //			textViewDEI.setTypeface(Data.latoRegular(this));
 
@@ -535,7 +535,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
+			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
+			notificationCenterText.setTypeface(Data.latoRegular(getApplicationContext()));
+
 			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
+			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 			bookingsText = (TextView) findViewById(R.id.bookingsText);
 			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -571,11 +576,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			menuBtn = (Button) findViewById(R.id.menuBtn);
 			checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 			imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
-			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
+//			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
 			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
-			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
+//			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
+//			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
+			textViewNotificationValue = (TextView) findViewById(R.id.textViewNotificationValue);
+			textViewNotificationValue.setTypeface(Data.latoRegular(this));
+			textViewNotificationValue.setVisibility(View.GONE);
 
 
 			menuBtn.setVisibility(View.VISIBLE);
@@ -950,6 +958,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+			notificationCenterRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+				}
+			});
+
+			RelativeLayoutNotificationCenter.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+				}
+			});
+
 
 			driverImageRL.setOnClickListener(new OnClickListener() {
 
@@ -1272,6 +1294,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				}
 			});
+
 
 
 			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
@@ -2222,7 +2245,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
-			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
+//			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 			if(Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6 ) {
 				driverRatingRl.setVisibility(View.VISIBLE);
 				ratingBarFeedbackSide.setRating((float) Data.userData.showDriverRating);
@@ -2232,6 +2255,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverRatingRl.setVisibility(View.GONE);
 			}
 
+			int unreadNotificationsCount = Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0);
+			if(unreadNotificationsCount > 0){
+				textViewNotificationValue.setVisibility(View.VISIBLE);
+				textViewNotificationValue.setText("" + unreadNotificationsCount);
+			}
+			else{
+				textViewNotificationValue.setVisibility(View.GONE);
+			}
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -2432,7 +2463,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			switch(mode){
 
 				case D_INITIAL:
-					getDriverOnlineHours(HomeActivity.this);
+//					getDriverOnlineHours(HomeActivity.this);
 					updateDriverServiceFast("no");
 
 					textViewDriverInfo.setVisibility(View.GONE);
@@ -3841,50 +3872,50 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 
-	public void getDriverOnlineHours(final Activity activity) {
-		try {
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
-				textViewTitleBarOvalText.setVisibility(View.GONE);
-				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						try {
-							progressBarDriverOnlineHours.setVisibility(View.GONE);
-							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									String onlineHours = jObj.getString("driver_online_hours");
-									Log.i("Online hours",onlineHours);
-									if(Data.userData != null) {
-										Data.userData.driverOnlineHours = onlineHours;
-										setUserData();
-									}
-								}
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						progressBarDriverOnlineHours.setVisibility(View.GONE);
-						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-					}
-				});
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			progressBarDriverOnlineHours.setVisibility(View.GONE);
-			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-		}
-
-	}
+//	public void getDriverOnlineHours(final Activity activity) {
+//		try {
+//			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+//				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
+//				textViewTitleBarOvalText.setVisibility(View.GONE);
+//				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+//					@Override
+//					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+//						try {
+//							progressBarDriverOnlineHours.setVisibility(View.GONE);
+//							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+//							JSONObject jObj;
+//							jObj = new JSONObject(jsonString);
+//							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+//							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+//								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+//									String onlineHours = jObj.getString("driver_online_hours");
+//									Log.i("Online hours",onlineHours);
+//									if(Data.userData != null) {
+//										Data.userData.driverOnlineHours = onlineHours;
+//										setUserData();
+//									}
+//								}
+//							}
+//						} catch (Exception exception) {
+//							exception.printStackTrace();
+//						}
+//					}
+//
+//					@Override
+//					public void failure(RetrofitError error) {
+//						progressBarDriverOnlineHours.setVisibility(View.GONE);
+//						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//					}
+//				});
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			progressBarDriverOnlineHours.setVisibility(View.GONE);
+//			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//		}
+//
+//	}
 
 
 
