@@ -42,7 +42,7 @@ import android.widget.TextView;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.R;
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 
 public class PagerSlidingTabStrip extends HorizontalScrollView {

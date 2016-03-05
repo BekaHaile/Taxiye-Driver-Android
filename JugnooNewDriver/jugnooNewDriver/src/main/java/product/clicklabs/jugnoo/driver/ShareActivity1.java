@@ -32,10 +32,10 @@ import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import rmn.androidscreenlibrary.ASSL;
 
 public class ShareActivity1 extends Activity {
 
