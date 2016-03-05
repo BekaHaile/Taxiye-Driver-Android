@@ -224,7 +224,7 @@ public interface APIServices {
 							   Callback<NewLeaderBoard> callback);
 
 	@FormUrlEncoded
-	@POST("/leaderboard/referrals/get_activity")
+	@POST("/driver/referrals/get_activity")
 	void leaderboardActivityServerCall(@Field("access_token") String accessToken,
 									   @Field("login_type") String loginType,
 									   Callback<LeaderboardActivityResponse> callback);

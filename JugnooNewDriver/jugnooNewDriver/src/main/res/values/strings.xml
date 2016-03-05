@@ -194,7 +194,7 @@
 	<string name="Customer_asked_to_cancel">Customer asked to cancel the ride</string>
 	<string name="Not_able_to_contact_customer">Not able to contact customer</string>
 	<string name="Customer_behavior">Customer\'s bad behavior</string>
-	<string name="profile">Profile</string>
+	<string name="profile">PROFILE</string>
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
@@ -211,7 +211,7 @@
 	<string name="number_of_first_rides">Number of First Rides Taken</string>
 	<string name="money_earned">Money Earned from Referrals</string>
 	<string name="data_effective_format">*Data effective from</string>
-	<string name="notifications">Notifications</string>
+	<string name="notifications">NOTIFICATION CENTER</string>
 
 
 	<string-array name="CountryCodes" >

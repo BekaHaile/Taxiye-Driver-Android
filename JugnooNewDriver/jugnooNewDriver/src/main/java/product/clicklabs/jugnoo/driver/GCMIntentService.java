@@ -342,9 +342,8 @@ public class GCMIntentService extends IntentService {
 							JSONObject jObj = new JSONObject(message);
 
 							int flag = jObj.getInt("flag");
-							String title = jObj.getString("title");
-							int canStore = jObj.getInt("canStore");
-							String message1 = jObj.getString("message");
+							String title = jObj.optString("title", "");
+							int canStore = jObj.optInt("canStore",0);
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
@@ -521,7 +520,7 @@ public class GCMIntentService extends IntentService {
 									notificationManager(this, logMessage, false);
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
-								 message1 = jObj.getString("message");
+								String message1 = jObj.getString("message");
 								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
 							} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
 								int toggleLocation = jObj.getInt("toggle_location");
@@ -533,7 +532,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
-								 message1 = jObj.getString("message");
+								String message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
 									notificationManagerResume(this, message1, true);
@@ -548,7 +547,7 @@ public class GCMIntentService extends IntentService {
 									e.printStackTrace();
 								}
 							} else if (PushFlags.STATION_CHANGED.getOrdinal() == flag) {
-								 message1 = jObj.getString("message");
+								String message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onStationChangedPushReceived();
 									notificationManagerResume(this, message1, false);
@@ -600,7 +599,7 @@ public class GCMIntentService extends IntentService {
 												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 									}
 
-							savePush(jObj, flag, title, message1);
+							savePush(jObj, flag, title, message);
 
 								} catch (Exception e) {
 									e.printStackTrace();

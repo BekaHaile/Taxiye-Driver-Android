@@ -29,9 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Ride Details"
+            android:text="RIDE DETAILS"
             android:textColor="@color/white"
-            android:textSize="48px"/>
+            android:textSize="40px"/>
     </RelativeLayout>
 
     <ScrollView

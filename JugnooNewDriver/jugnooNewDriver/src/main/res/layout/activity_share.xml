@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:text="FREE RIDES"
             android:textColor="@color/white"
-            android:textSize="32px"/>
+            android:textSize="40px"/>
 
         <ImageView
             android:id="@+id/imageViewBack"

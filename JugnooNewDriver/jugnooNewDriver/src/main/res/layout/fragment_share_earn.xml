@@ -96,7 +96,7 @@
                         android:layout_height="90px"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32px"
-                        android:background="@drawable/new_orange_btn_selector"
+                        android:background="@drawable/new_orange_btn_selector_rounded"
                         android:text="शेयर करें"
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="48px"/>
