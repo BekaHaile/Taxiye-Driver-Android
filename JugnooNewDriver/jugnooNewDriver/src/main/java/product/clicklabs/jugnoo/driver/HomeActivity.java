@@ -195,7 +195,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI, textViewTitleBarOvalText;
+	TextView textViewTitleBarDEI, textViewTitleBarOvalText, temptext;
 	ProgressBar progressBarDriverOnlineHours;
 
 
@@ -516,6 +516,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
 			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+			temptext = (TextView) findViewById(R.id.temptext);
+			temptext.setTypeface(Data.latoRegular(this));
 			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
 			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
@@ -924,9 +926,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-//                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+                    Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
-					driverTimeOutPopup(HomeActivity.this, 120000);
 					FlurryEventLogger.event(CALL_US);
 				}
 			});
@@ -1687,7 +1688,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void changeJugnooON(BusinessType businessType, int mode, boolean enableSharing) {
 		if (mode == 1) {
 			if (myLocation != null) {
-				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing, 0);
+				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing);
 			} else {
 				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
 			}
@@ -1695,7 +1696,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1) {
 				toggleSharingMode(businessType, 0, true);
 			} else {
-				switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false, 0);
+				switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
 			}
 		}
 	}
@@ -1718,7 +1719,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing, final int timeoutPenalty) {
+	public void switchJugnooOnThroughServer(final BusinessType businessType, final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1736,7 +1737,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					params.put("longitude", "" + latLng.longitude);
 					params.put("flag", "" + jugnooOnFlag);
 					params.put("business_id", "" + businessType.getOrdinal());
-					params.put("timeout_penalty", "" + timeoutPenalty);
 
 					Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -1757,9 +1757,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if (jugnooOnFlag == 1) {
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
 							}
-						} else if (ApiResponseFlags.DRIVER_TIMEOUT.getOrdinal() == flag) {
-							long remainigPenaltyPeriod = jObj.optLong("remaining_penalty_period", 0);
-							driverTimeOutPopup(HomeActivity.this, remainigPenaltyPeriod);
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
@@ -1818,7 +1815,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 				dismissLoadingFromBackground();
 				if (mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
-					switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false, 0);
+					switchJugnooOnThroughServer(businessType, 0, new LatLng(0, 0), false);
 				}
 			}
 		}).start();
@@ -2093,6 +2090,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
+			textViewTitleBarDEI.setText(Data.userData.deiValue);
 			try {
 				if (resumed) {
 					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
@@ -2115,8 +2113,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //				textViewDEI.setText(Data.userData.deiValue);
 
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
-				textViewTitleBarDEI.setText(Data.userData.deiValue);
 			}
+			temptext.setText(" "+Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0));
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 			if (Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6) {
 				driverRatingRl.setVisibility(View.VISIBLE);
@@ -3575,7 +3573,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Data.dCustomerId = driverRideRequest.customerId;
 						Data.dCustLatLng = driverRideRequest.latLng;
 						Data.openedDriverRideRequest = driverRideRequest;
-						GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
 						acceptRequestFunc();
 						FlurryEventLogger.event(RIDE_ACCEPTED);
 
@@ -3717,6 +3714,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				params.put("reference_id", "" + Data.openedDriverRideRequest.referenceId);
 				Log.i("request", String.valueOf(params));
 			}
+			GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
 			RestClient.getApiServices().driverAcceptRideRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
@@ -4031,6 +4029,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							reduceRideRequest(Data.dEngagementId);
 
 						}
+
+						new DriverTimeoutCheck().timeoutBuffer(activity);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4271,6 +4271,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							switchDriverScreen(driverScreenMode);
 
 						}
+						new DriverTimeoutCheck().clearCount(activity);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4348,11 +4349,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 							reduceRideRequest(Data.dEngagementId);
 						}
-						Prefs.with(activity).save(SPLabels.INGNORE_RIDEREQUEST_COUNT, Prefs.with(activity).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0) + 1);
-						if(Prefs.with(activity).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT,0) <= Prefs.with(activity).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT,0)){
-							Intent timeoutIntent = new Intent(activity, DriverTimeoutIntentService.class);
-							activity.startService(timeoutIntent);
-						}
+						new DriverTimeoutCheck().timeoutBuffer(activity);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

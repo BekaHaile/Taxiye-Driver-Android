@@ -12,6 +12,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -57,15 +58,17 @@ public class DriverTimeoutIntentService extends IntentService implements Constan
 
 			Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
+			Log.i("TimeOutAlarmReceiver", "2");
 
 			JSONObject jObj = new JSONObject(result);
 
 			if (jObj.has("flag")) {
 				int flag = jObj.getInt("flag");
 				if (ApiResponseFlags.DRIVER_TIMEOUT.getOrdinal() == flag) {
+					new DriverTimeoutCheck().clearCount(this);
 					long remainingPenaltyPeriod = jObj.optLong("remaining_penalty_period", 0);
+					Log.i("remaining_penalty", String.valueOf(remainingPenaltyPeriod));
 					if (HomeActivity.appInterruptHandler != null) {
-						Prefs.with(DriverTimeoutIntentService.this).save(SPLabels.INGNORE_RIDEREQUEST_COUNT,0);
 						HomeActivity.appInterruptHandler.driverTimeoutDialogPopup(remainingPenaltyPeriod);
 					}
 				}

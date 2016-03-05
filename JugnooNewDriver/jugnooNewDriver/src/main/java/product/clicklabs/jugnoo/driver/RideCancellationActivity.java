@@ -205,11 +205,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 								HomeActivity.appInterruptHandler.handleCancelRideSuccess();
 							}
 						}
-						Prefs.with(activity).save(SPLabels.INGNORE_RIDEREQUEST_COUNT, Prefs.with(activity).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0) + 1);
-						if (Prefs.with(activity).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, 0) <= Prefs.with(activity).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0)) {
-							Intent timeoutIntent = new Intent(activity, DriverTimeoutIntentService.class);
-							activity.startService(timeoutIntent);
-						}
+						new DriverTimeoutCheck().timeoutBuffer(activity);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

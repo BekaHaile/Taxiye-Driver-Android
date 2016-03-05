@@ -11,6 +11,7 @@ import android.location.Location;
 import android.widget.Toast;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
@@ -24,12 +25,6 @@ public class TimeOutAlarmReceiver extends BroadcastReceiver {
 		// For our recurring task, we'll just display a message
 		Toast.makeText(context, "i m running", Toast.LENGTH_SHORT).show();
 
- 		Prefs.with(context).save(SPLabels.INGNORE_RIDEREQUEST_COUNT, Prefs.with(context).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0) + 1);
-
-		if(Prefs.with(context).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT,0) <= Prefs.with(context).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT,0)){
-			Intent timeoutIntent = new Intent(context, DriverTimeoutIntentService.class);
-					context.startService(timeoutIntent);
-		}
-		GCMIntentService.cancelUploadPathAlarm(context);
+		new DriverTimeoutCheck().timeoutBuffer(context);
 	}
 }

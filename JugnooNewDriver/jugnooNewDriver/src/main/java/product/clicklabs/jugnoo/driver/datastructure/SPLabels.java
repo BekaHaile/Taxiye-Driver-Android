@@ -57,5 +57,9 @@ public class SPLabels {
     public static final String INGNORE_RIDEREQUEST_COUNT = "ignoreRideRequestCount";
 
     public static final String MAX_INGNORE_RIDEREQUEST_COUNT = "maxIgnoreRideRequestCount";
+    public static final String MAX_TIMEOUT_RELIEF = "maxTimeoutRelief";
+	public static final String BUFFER_TIMEOUT_PERIOD ="bufferTimeoutPeriod";
+	public static final String BUFFER_TIMEOUT_VALUE ="bufferTimeoutValue";
+	public static final String DRIVER_TIMEOUT_FLAG = "driverTimeoutFlag";
 
 }
