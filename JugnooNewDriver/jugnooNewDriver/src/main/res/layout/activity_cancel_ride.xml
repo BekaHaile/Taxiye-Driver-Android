@@ -73,7 +73,7 @@
                 android:layout_height="100px"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30px"
-                android:background="@drawable/blue_btn_normal"
+                android:background="@drawable/new_orange_btn_selector_rounded"
                 android:text="@string/ok"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
