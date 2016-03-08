@@ -1,35 +1,28 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.loopj.android.http.AsyncHttpClient;
 
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class HelpParticularActivity extends FragmentActivity {
 
@@ -42,7 +35,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	TextView textViewInfo;
 	WebView webview;
 
-	AsyncHttpClient fetchHelpDataClient;
 
 	public static HelpSection helpSection = HelpSection.FARE_DETAILS;
 
@@ -72,9 +64,6 @@ public class HelpParticularActivity extends FragmentActivity {
 		//enable Javascript
 		webview.getSettings().setJavaScriptEnabled(true);
 
-		//override the web client to open all links in the same webview
-		webview.setWebViewClient(new MyWebViewClient());
-		webview.setWebChromeClient(new MyWebChromeClient());
 
 
 		if (helpSection != null) {
@@ -104,57 +93,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	}
 
 
-	private class MyWebViewClient extends WebViewClient {
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			Log.i("shouldOverrideUrlLoading", "url=" + url);
-			return false;
-		}
-
-		@Override
-		public void onLoadResource(WebView view, String url) {
-			Log.i("onLoadResource", "url=" + url);
-			super.onLoadResource(view, url);
-		}
-
-		@Override
-		public void onPageFinished(WebView view, String url) {
-			Log.i("onPageFinished", "url=" + url);
-			super.onPageFinished(view, url);
-		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			Log.i("onPageStarted", "url=" + url);
-			super.onPageStarted(view, url, favicon);
-		}
-
-		@Override
-		public void onReceivedError(WebView view, int errorCode,
-									String description, String failingUrl) {
-			Log.e("onReceivedError", "url=" + failingUrl);
-			super.onReceivedError(view, errorCode, description, failingUrl);
-		}
-
-
-		@Override
-		public void onReceivedSslError(WebView view, SslErrorHandler handler,
-									   SslError error) {
-			Log.e("onReceivedSslError", "error=" + error);
-			handler.proceed();
-		}
-	}
-
-	private class MyWebChromeClient extends WebChromeClient {
-
-		//display alert message in Web View
-		@Override
-		public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-			Log.d("message", message);
-			return false;
-		}
-
-	}
 
 
 	public void openHelpData(String data, boolean errorOccured) {
@@ -181,66 +119,57 @@ public class HelpParticularActivity extends FragmentActivity {
 
 
 	public void getFareDetailsAsync(final Activity activity) {
-		if (fetchHelpDataClient == null) {
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				if (helpSection != null) {
-					progressBar.setVisibility(View.VISIBLE);
-					textViewInfo.setVisibility(View.GONE);
-					webview.setVisibility(View.GONE);
-					loadHTMLContent("");
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+			if (helpSection != null) {
+				progressBar.setVisibility(View.VISIBLE);
+				textViewInfo.setVisibility(View.GONE);
+				webview.setVisibility(View.GONE);
+				loadHTMLContent("");
 
 
-					RestClient.getApiServices().getHelpSection(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().getHelpSection(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
 
 
-						@Override
-						public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
-							try {
-								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								JSONObject jObj;
-								jObj = new JSONObject(jsonString);
-								if (!jObj.isNull("error")) {
-									String errorMessage = jObj.getString("error");
-									if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-										HomeActivity.logoutUser(activity);
-									} else {
-										openHelpData("Some error occured. Tap to retry.", true);
-									}
+					@Override
+					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
 								} else {
-									String data = jObj.getString("data");
-									openHelpData(data, false);
+									openHelpData("Some error occured. Tap to retry.", true);
 								}
-
-							} catch (Exception exception) {
-								exception.printStackTrace();
-								openHelpData("Some error occured. Tap to retry.", true);
+							} else {
+								String data = jObj.getString("data");
+								openHelpData(data, false);
 							}
-							progressBar.setVisibility(View.GONE);
-						}
 
-						@Override
-						public void failure(RetrofitError error) {
-							progressBar.setVisibility(View.GONE);
+						} catch (Exception exception) {
+							exception.printStackTrace();
 							openHelpData("Some error occured. Tap to retry.", true);
-
 						}
-					});
-				}
-			} else {
-				openHelpData("No internet connection. Tap to retry.", true);
+						progressBar.setVisibility(View.GONE);
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						progressBar.setVisibility(View.GONE);
+						openHelpData("Some error occured. Tap to retry.", true);
+
+					}
+				});
 			}
+		} else {
+			openHelpData("No internet connection. Tap to retry.", true);
 		}
 	}
 
 
 	public void performBackPressed() {
-		try {
-			if (fetchHelpDataClient != null) {
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
@@ -254,13 +183,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		try {
-			if (fetchHelpDataClient != null) {
-				fetchHelpDataClient.cancelAllRequests(true);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		ASSL.closeActivity(relative);
 		System.gc();
 	}

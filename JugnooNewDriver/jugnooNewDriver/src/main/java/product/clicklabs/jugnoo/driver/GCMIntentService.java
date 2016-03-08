@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -12,8 +11,10 @@ import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
@@ -21,13 +22,14 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.android.gms.gcm.GcmListenerService;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -46,9 +48,11 @@ import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DownloadFile;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.HttpRequester;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -58,14 +62,13 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class GCMIntentService extends IntentService {
+public class GCMIntentService extends GcmListenerService {
 
 	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	NotificationCompat.Builder builder;
 
 	public GCMIntentService() {
-		super("GcmIntentService");
 	}
 
 	protected void onError(Context arg0, String arg1) {
@@ -210,7 +213,7 @@ public class GCMIntentService extends IntentService {
 			builder.setContentIntent(intent);
 
 
-			if(appstate) {
+			if (appstate) {
 				Intent intentAcc = new Intent(context, DriverProfileActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
@@ -222,10 +225,10 @@ public class GCMIntentService extends IntentService {
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
 				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
-			}else{
+			} else {
 				Intent intentAccKill = new Intent(context, SplashNewActivity.class);
 				intentAccKill.putExtra("type", "accept");
 				intentAccKill.putExtra("engagement_id", engagementId);
@@ -237,19 +240,15 @@ public class GCMIntentService extends IntentService {
 				intentCancKill.putExtra("type", "cancel");
 				intentCancKill.putExtra("engagement_id", engagementId);
 				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel =PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 			}
-
-
-
 
 
 			Notification notification = builder.build();
 
 			Prefs.with(context).save(SPLabels.NOTIFICATION_ID, Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0) + 1);
 			notificationManager.notify(Integer.parseInt(engagementId), notification);
-
 
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -320,9 +319,9 @@ public class GCMIntentService extends IntentService {
 
 
 	@Override
-	public void onHandleIntent(Intent intent) {
+	public void onMessageReceived(String from, Bundle data) {
 		try {
-			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+			Log.i("Recieved a gcm message arg1...", "," + data);
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -333,11 +332,11 @@ public class GCMIntentService extends IntentService {
 			if (!"".equalsIgnoreCase(accessToken)) {
 
 				try {
-					Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
+					Log.i("Recieved a gcm message arg1...", "," + data);
 
-					if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
+					if (!"".equalsIgnoreCase(data.getString("message", ""))) {
 
-						String message = intent.getExtras().getString("message");
+						String message = data.getString("message");
 
 						try {
 							JSONObject jObj = new JSONObject(message);
@@ -429,7 +428,7 @@ public class GCMIntentService extends IntentService {
 												MealRideRequest mealRideRequest = new MealRideRequest(engagementId, userId,
 														new LatLng(latitude, longitude), startTime, address,
 														businessId, referenceId, rideTime, fareFactor);
-												if(!Data.driverRideRequests.contains(mealRideRequest)){
+												if (!Data.driverRideRequests.contains(mealRideRequest)) {
 													Data.driverRideRequests.add(mealRideRequest);
 												}
 											} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
@@ -440,11 +439,12 @@ public class GCMIntentService extends IntentService {
 														businessId, referenceId, orderAmount, fareFactor));
 											}
 
+
 											startRing(this);
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, true);
+											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
 											HomeActivity.appInterruptHandler.onNewRideRequest();
 
 											Log.e("referenceId", "=" + referenceId);
@@ -452,7 +452,7 @@ public class GCMIntentService extends IntentService {
 									}
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, "You have got a new request."+"\n"+address, true, engagementId, false);
+									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
 
 									startRing(this);
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
@@ -521,14 +521,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
-							} else if (PushFlags.TOGGLE_LOCATION_UPDATES.getOrdinal() == flag) {
-								int toggleLocation = jObj.getInt("toggle_location");
-								if (1 == toggleLocation) {
-									new DriverServiceOperations().startDriverService(GCMIntentService.this);
-								} else {
-									new DriverServiceOperations().stopAndScheduleDriverService(GCMIntentService.this);
-								}
-							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
+							}else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
 								String message1 = jObj.getString("message");
@@ -568,6 +561,32 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 								}
+							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
+								String url = jObj.getString("file_url");
+								String id = jObj.getString("file_id");
+								int download = jObj.optInt("set_download", 0);
+
+									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
+
+									if (myFile.exists() && download == 0) {
+										FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
+										startRingCustom(this, myFile.getAbsolutePath());
+									} else {
+										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+										intent1.putExtra("downloadOnly",download);
+										intent1.putExtra("file_url", url);
+										intent1.putExtra("file_id", id);
+										startService(intent1);
+										Database2.getInstance(this).insertCustomAudioUrl(url, id);
+									}
+
+							} else if (PushFlags.GET_JUGNOO_AUDIO.getOrdinal() == flag) {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+									int downloadList = 2;
+									intent1.putExtra("downloadOnly",downloadList);
+									startService(intent1);
+
+
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
@@ -580,26 +599,26 @@ public class GCMIntentService extends IntentService {
 //												"paid_in_cash": 10
 //										}
 
-										SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
-												jObj.getString("transaction_time"),
-												jObj.getString("customer_phone_no"),
-												jObj.getDouble("actual_fare"),
-												jObj.getDouble("paid_in_cash"),
-												jObj.getDouble("account_balance"));
+								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
+										jObj.getString("transaction_time"),
+										jObj.getString("customer_phone_no"),
+										jObj.getDouble("actual_fare"),
+										jObj.getDouble("paid_in_cash"),
+										jObj.getDouble("account_balance"));
 
-										if(HomeActivity.appInterruptHandler != null){
-											Intent intent1 = new Intent(this, SharingRidesActivity.class);
-											intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-											intent1.putExtra("sharing_engagement_data", jObj.toString());
-											startActivity(intent1);
-										}
-										notificationManagerCustomID(this, "Sharing payment recieved for Phone "
-														+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
-												Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
-									}
+								if (HomeActivity.appInterruptHandler != null) {
+									Intent intent1 = new Intent(this, SharingRidesActivity.class);
+									intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+									intent1.putExtra("sharing_engagement_data", jObj.toString());
+									startActivity(intent1);
+								}
+								notificationManagerCustomID(this, "Sharing payment recieved for Phone "
+												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
+										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
+							}
 
-								} catch (Exception e) {
-									e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					}
 
@@ -612,133 +631,175 @@ public class GCMIntentService extends IntentService {
 			e.printStackTrace();
 		}
 
-		// Release the wake lock provided by the WakefulBroadcastReceiver.
-        GcmBroadcastReceiver.completeWakefulIntent(intent);
-    }
+	}
 
 
-    public static MediaPlayer mediaPlayer;
-    public static Vibrator vibrator;
+	public static MediaPlayer mediaPlayer;
+	public static Vibrator vibrator;
 
-    public static void startRing(Context context) {
-        try {
-            stopRing(true);
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            if (vibrator.hasVibrator()) {
-                long[] pattern = {0, 1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900};
-                vibrator.vibrate(pattern, 1);
-            }
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+	public static void startRing(Context context) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-            mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    try {
-                        vibrator.cancel();
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mediaPlayer.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    public static CountDownTimer ringStopTimer;
 
-    public static void startRingWithStopHandler(Context context) {
-        try {
-            stopRing(true);
-            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-            if (vibrator.hasVibrator()) {
-                long[] pattern = {0, 1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900,
-                    1350, 3900};
-                vibrator.vibrate(pattern, 1);
-            }
-            AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+	public static void startRingCustom(Context context, String file) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-            mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    try {
-                        vibrator.cancel();
-                        mediaPlayer.stop();
-                        mediaPlayer.reset();
-                        mediaPlayer.release();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            mediaPlayer.start();
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			Log.i("Music Path", "" + file);
+			mediaPlayer = MediaPlayer.create(context, Uri.parse(file));
+			mediaPlayer.setLooping(false);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static CountDownTimer ringStopTimer;
+
+	public static void startRingWithStopHandler(Context context) {
+		try {
+			stopRing(true);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
 
 
-            ringStopTimer = new CountDownTimer(20000, 1000) {
+			ringStopTimer = new CountDownTimer(20000, 1000) {
 
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    Log.e("millisUntilFinished", "=" + millisUntilFinished);
-                }
+				@Override
+				public void onTick(long millisUntilFinished) {
+					Log.e("millisUntilFinished", "=" + millisUntilFinished);
+				}
 
-                @Override
-                public void onFinish() {
-                    stopRing(true);
-                }
-            };
-            ringStopTimer.start();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+				@Override
+				public void onFinish() {
+					stopRing(true);
+				}
+			};
+			ringStopTimer.start();
 
 
-    public static void stopRing(boolean manual) {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static void stopRing(boolean manual) {
 		boolean stopRing;
 		if (HomeActivity.appInterruptHandler != null) {
-			if(Data.driverRideRequests != null && Data.driverRideRequests.size() > 0){
+			if (Data.driverRideRequests != null && Data.driverRideRequests.size() > 0) {
 				stopRing = false;
-			} else{
+			} else {
 				stopRing = true;
 			}
-		} else{
+		} else {
 			stopRing = true;
 		}
-		if(manual){
+		if (manual) {
 			stopRing = true;
 		}
-		if(stopRing){
+		if (stopRing) {
 			try {
 				if (vibrator != null) {
 					vibrator.cancel();
@@ -755,12 +816,7 @@ public class GCMIntentService extends IntentService {
 				e.printStackTrace();
 			}
 		}
-    }
-
-
-
-
-
+	}
 
 
 	class RequestTimeoutTimerTask {
@@ -886,6 +942,7 @@ public class GCMIntentService extends IntentService {
 			@Override
 			public void run() {
 				try {
+					final long resposeTime = System.currentTimeMillis();
 					String networkName = getNetworkName(context);
 
 					HashMap<String, String> params = new HashMap<String, String>();
@@ -897,6 +954,7 @@ public class GCMIntentService extends IntentService {
 						@Override
 						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 							Log.v("RetroFIT11", String.valueOf(response));
+							FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - resposeTime, FlurryEventNames.HEARTBEAT_RESPONSE);
 						}
 
 						@Override
@@ -931,10 +989,7 @@ public class GCMIntentService extends IntentService {
 					Response response = RestClient.getApiServices().sendChangePortAckToServerRetro(accessTokenPair.first);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
-					if (result.contains(HttpRequester.SERVER_TIMEOUT)) {
-					} else {
-						new JSONParser().parsePortNumber(context, jObject1);
-					}
+					new JSONParser().parsePortNumber(context, jObject1);
 
 					nameValuePairs = null;
 				} catch (Exception e) {

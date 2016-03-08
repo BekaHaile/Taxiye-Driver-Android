@@ -75,7 +75,11 @@ public enum ApiResponseFlags {
 
 
 	HEATMAP_DATA(530),
-	DISTANCE_RESET(555);
+	DISTANCE_RESET(555),
+
+
+	RESET_DEVICE_TOKEN(556)
+	;
 
 	private int ordinal;
 

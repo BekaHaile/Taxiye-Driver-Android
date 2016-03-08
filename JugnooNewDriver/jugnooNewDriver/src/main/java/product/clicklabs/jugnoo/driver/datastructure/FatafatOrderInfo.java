@@ -16,7 +16,7 @@ public class FatafatOrderInfo extends CustomerInfo{
 	
 	public FatafatOrderInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng,
 			String address, int orderAmount){
-		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng);
+		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, 0);
 		this.businessType = BusinessType.FATAFAT;
 		this.address = address;
 		this.orderAmount = orderAmount;

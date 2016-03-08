@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -96,9 +97,17 @@ public interface APIServices {
 								Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/mark_delivered")
+	Response markDeliveredSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/upload_ride_data")
 	void driverUploadPathDataFileRetro(@FieldMap Map<String, String> params,
 									   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/upload_ride_data")
+	Response uploadRideDataSync(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/start_ride")
@@ -116,6 +125,10 @@ public interface APIServices {
 								   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/mark_arrived")
+	Response driverMarkArriveSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/cancel_the_ride")
 	void driverCancelRideRetro(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);
@@ -129,6 +142,9 @@ public interface APIServices {
 	@POST("/end_ride")
 	void autoEndRideAPIRetro(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/end_ride")
+	Response endRideSync(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/get_current_user_status")
@@ -213,5 +229,44 @@ public interface APIServices {
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_driver_location")
+	Response updateDriverLocation(@FieldMap Map<String, String> params);
+
+
+	@FormUrlEncoded
+	@POST("/verify_my_contact_number")
+	void verifyMyContactNumber(@FieldMap Map<String, String> params,
+							Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_missed_rides")
+	void getMissedRides(@FieldMap Map<String, String> params,
+							   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/rate_the_customer")
+	void rateTheCustomer(@FieldMap Map<String, String> params,
+						Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/acknowledge_manual_engagement")
+	void acknowledgeManualEngagement(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/log_ongoing_ride_path")
+	Response logOngoingRidePath(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/send_referral_sms")
+	void sendReferralMessage(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
+	@POST("/fetch_media_data")
+	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
+													 @Field("file_category") String fileType);
+
 
 }

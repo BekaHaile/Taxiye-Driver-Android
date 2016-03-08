@@ -16,25 +16,28 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.RequestParams;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.MissedRideInfo;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.CustomAsyncHttpResponseHandler;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import rmn.androidscreenlibrary.ASSL;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class DriverMissedRidesFragment extends Fragment implements FlurryEventNames{
 
@@ -47,9 +50,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 	RelativeLayout main;
 
 	ArrayList<MissedRideInfo> missedRideInfos = new ArrayList<MissedRideInfo>();
-	
-	AsyncHttpClient fetchMissedRidesClient;
-	
+
 	public DriverMissedRidesFragment() {
 	}
 
@@ -108,9 +109,6 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 	
 	@Override
 	public void onDestroy() {
-		if(fetchMissedRidesClient != null){
-			fetchMissedRidesClient.cancelAllRequests(true);
-		}
 		super.onDestroy();
 	}
 	
@@ -205,96 +203,80 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 	 * ASync for get rides from server
 	 */
 	public void getMissedRidesAsync(final Activity activity) {
-		if(fetchMissedRidesClient == null){
-			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				progressBar.setVisibility(View.VISIBLE);
-				textViewInfoDisplay.setVisibility(View.GONE);
-				RequestParams params = new RequestParams();
-				params.put("access_token", Data.userData.accessToken);
-				fetchMissedRidesClient = Data.getClient();
-				fetchMissedRidesClient.post(Data.SERVER_URL + "/get_missed_rides", params,
-						new CustomAsyncHttpResponseHandler() {
-						private JSONObject jObj;
-	
-							@Override
-							public void onFailure(Throwable arg3) {
-								Log.e("request fail", arg3.toString());
-								progressBar.setVisibility(View.GONE);
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
+			progressBar.setVisibility(View.VISIBLE);
+			textViewInfoDisplay.setVisibility(View.GONE);
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			RestClient.getApiServices().getMissedRides(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+
+					try {
+						JSONObject jObj = new JSONObject(responseStr);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							} else {
 								updateListData("Some error occurred. Tap to retry", true);
 							}
-	
-							
-							@Override
-							public void onSuccess(String response) {
-								Log.e("Server response", "response = " + response);
-								try {
-									jObj = new JSONObject(response);
-									if(!jObj.isNull("error")){
-										String errorMessage = jObj.getString("error");
-										if(Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())){
-											HomeActivity.logoutUser(activity);
-										}
-										else{
-											updateListData("Some error occurred. Tap to retry", true);
-										}
-									}
-									else{
-										
-	//									{
-	//									    "missed_rides": [
-	//									         {
+						} else {
+
+							//									{
+							//									    "missed_rides": [
+							//									         {
 //							            			"engagement_id": 250,
 //							            			"pickup_location_address": "1604, Sector 18D, Chandigarh 160018, India",
 //							            			"timestamp": "2014-07-30 05:51:42",
 //							            			"user_name": "Shankar Bhagwati",
 //							            			"distance": 0.42
 //							        			}
-	//									    ]
-	//									}
-										
-										JSONArray missedRidesData = jObj.getJSONArray("missed_rides");
-										missedRideInfos.clear();
-										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
-										if(missedRidesData.length() > 0){
-											for(int i=missedRidesData.length()-1; i>=0; i--){
-												JSONObject rideData = missedRidesData.getJSONObject(i);
-												Log.e("rideData"+i, "="+rideData);
-												if(rideData.has("user_name")){
-													missedRideInfos.add(new MissedRideInfo(rideData.getString("engagement_id"),
-															rideData.getString("pickup_location_address"),
-															rideData.getString("timestamp"),
-															rideData.getString("user_name"),
-															decimalFormat.format(rideData.getDouble("distance"))));
-												}
-												else{
-													missedRideInfos.add(new MissedRideInfo(rideData.getString("engagement_id"),
-															rideData.getString("pickup_location_address"),
-															rideData.getString("timestamp"),
-															"",
-															decimalFormat.format(rideData.getDouble("distance"))));
-												}
-											}
-										}
-										updateListData("No missed rides currently", false);
+							//									    ]
+							//									}
+
+							JSONArray missedRidesData = jObj.getJSONArray("missed_rides");
+							missedRideInfos.clear();
+							DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+							if (missedRidesData.length() > 0) {
+								for (int i = missedRidesData.length() - 1; i >= 0; i--) {
+									JSONObject rideData = missedRidesData.getJSONObject(i);
+									Log.e("rideData" + i, "=" + rideData);
+									if (rideData.has("user_name")) {
+										missedRideInfos.add(new MissedRideInfo(rideData.getString("engagement_id"),
+												rideData.getString("pickup_location_address"),
+												rideData.getString("timestamp"),
+												rideData.getString("user_name"),
+												decimalFormat.format(rideData.getDouble("distance"))));
+									} else {
+										missedRideInfos.add(new MissedRideInfo(rideData.getString("engagement_id"),
+												rideData.getString("pickup_location_address"),
+												rideData.getString("timestamp"),
+												"",
+												decimalFormat.format(rideData.getDouble("distance"))));
 									}
-								}  catch (Exception exception) {
-									exception.printStackTrace();
-									updateListData("Some error occurred. Tap to retry", true);
 								}
-								progressBar.setVisibility(View.GONE);
 							}
-							
-							@Override
-							public void onFinish() {
-								fetchMissedRidesClient = null;
-								super.onFinish();
-							}
-							
-						});
-			}
-			else {
-				updateListData("No Internet connection. Tap to retry", true);
-			}
+							updateListData("No missed rides currently", false);
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						updateListData("Some error occurred. Tap to retry", true);
+					}
+					progressBar.setVisibility(View.GONE);
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					Log.e("request fail", error.toString());
+					progressBar.setVisibility(View.GONE);
+					updateListData("Some error occurred. Tap to retry", true);
+				}
+			});
+
+		} else {
+			updateListData("No Internet connection. Tap to retry", true);
 		}
 
 	}

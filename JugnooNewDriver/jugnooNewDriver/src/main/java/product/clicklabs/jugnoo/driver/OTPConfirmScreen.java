@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -34,7 +35,6 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import rmn.androidscreenlibrary.ASSL;
 
 public class OTPConfirmScreen extends Activity implements LocationUpdate {
 
@@ -186,7 +186,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 		}
 
 
-		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator().generateDeviceToken(this, new IDeviceTokenReceiver() {
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
@@ -253,7 +253,8 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 			}
 
 
-			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password, Data.deviceToken, Data.pushyToken,
+			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
+					Data.deviceToken, "",
 					Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 
