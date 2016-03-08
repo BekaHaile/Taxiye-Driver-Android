@@ -262,17 +262,9 @@ public class DriverProfileActivity extends Activity {
 						.transform(new CircleTransform())
 						.into(profileImg);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			if ("-1".equalsIgnoreCase(Data.userData.deiValue)) {
-
-				imageViewTitleBarDEI.setVisibility(View.GONE);
-//				textViewTitleBarDEI.setText("Jugnoo");
-			} else {
-
-				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
-//				textViewTitleBarDEI.setText(Data.userData.deiValue);
-			}
 			if (openedProfileInfo != null) {
 				textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
 				textViewDriverId.setText(getResources().getString(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);
