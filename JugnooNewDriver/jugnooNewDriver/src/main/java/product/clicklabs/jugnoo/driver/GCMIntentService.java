@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.IntentService;
 import android.app.Activity;
 import android.app.AlarmManager;
->>>>>>> feature_driver_availability_timeout: UI and timeout alarm reciver created
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

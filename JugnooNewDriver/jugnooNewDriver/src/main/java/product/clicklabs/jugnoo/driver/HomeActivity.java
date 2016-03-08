@@ -2090,7 +2090,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			userName.setText(Data.userData.userName);
 			Data.userData.userImage = Data.userData.userImage.replace("http://graph.facebook", "https://graph.facebook");
-			textViewTitleBarDEI.setText(Data.userData.deiValue);
 			try {
 				if (resumed) {
 					Picasso.with(HomeActivity.this).load(Data.userData.userImage)
@@ -2111,7 +2110,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} else {
 				linearLayoutDEI.setVisibility(View.VISIBLE);
 //				textViewDEI.setText(Data.userData.deiValue);
-
+				textViewTitleBarDEI.setText(Data.userData.deiValue);
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 			}
 			temptext.setText(" "+Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0));
