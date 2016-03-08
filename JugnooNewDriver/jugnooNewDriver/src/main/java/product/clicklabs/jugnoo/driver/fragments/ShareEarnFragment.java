@@ -17,6 +17,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,17 +32,28 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
 import product.clicklabs.jugnoo.driver.ShareActivity1;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 
 public class ShareEarnFragment extends Fragment {
@@ -95,6 +107,7 @@ public class ShareEarnFragment extends Fragment {
 
 
 		buttonShare = (Button) rootView.findViewById(R.id.buttonShare);
+		buttonShare.setText(Data.userData.referralButtonText);
 
 		textViewReferralCodeDisplay = (TextView)rootView.findViewById(R.id.textViewReferralCodeDisplay);
 		textViewReferralCodeDisplay.setTypeface(Data.latoRegular(activity));
@@ -111,10 +124,10 @@ public class ShareEarnFragment extends Fragment {
 			sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-			textViewShareReferral.setText("");
-			textViewShareReferral.append(str1);
-			textViewShareReferral.append(sstr);
-			textViewShareReferral.append(str2);
+//			textViewShareReferral.setText("");
+//			textViewShareReferral.append(str1);
+//			textViewShareReferral.append(sstr);
+//			textViewShareReferral.append(str2);
 
 			textViewReferralCodeDisplay.setText("");
 			textViewReferralCodeDisplay.append(str3);
@@ -128,10 +141,11 @@ public class ShareEarnFragment extends Fragment {
 			String hindi1 = "कस्टमर को अपने Referral code ";
 			String hindi2 = " से Jugnoo App डाउनलोड करवाएँ और पाएँ " + getResources().getString(R.string.rupee) + " " + Data.userData.customerReferralBonus + " और कस्टमर को दिलवाएँ Jugnoo कैश ।";
 
-			textViewShareReferral.setText("");
-			textViewShareReferral.append(hindi1);
-			textViewShareReferral.append(sstr);
-			textViewShareReferral.append(hindi2);
+			textViewShareReferral.setText(Data.userData.referralMessage);
+//			textViewShareReferral.setText("");
+//			textViewShareReferral.append(hindi1);
+//			textViewShareReferral.append(sstr);
+//			textViewShareReferral.append(hindi2);
 
 
 		} catch (Exception e) {
@@ -184,11 +198,12 @@ public class ShareEarnFragment extends Fragment {
 			dialog.setCanceledOnTouchOutside(true);
 
 
-			TextView textViewTitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-			textViewTitle.setTypeface(Data.latoRegular(activity));
+			TextView textViewDialogTitle = (TextView) dialog.findViewById(R.id.textViewDialogTitle);
+			textViewDialogTitle.setTypeface(Data.latoRegular(activity));
 			final EditText customerNumber = (EditText) dialog.findViewById(R.id.customerNumber);
 			customerNumber.setTypeface(Data.latoRegular(activity));
-
+			customerNumber.setHint(Data.userData.referralDialogHintText);
+			textViewDialogTitle.setText(Data.userData.referralDialogText);
 
 			final Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
 			btnOk.setTypeface(Data.latoRegular(activity));
@@ -209,8 +224,7 @@ public class ShareEarnFragment extends Fragment {
 								customerNumber.requestFocus();
 								customerNumber.setError("Please enter valid phone number");
 							} else {
-								SmsManager smsManager = SmsManager.getDefault();
-								sendSMS("+91" + code, Data.userData.referralSMSToCustomer);
+								sendReferralMessage(activity, "+91" + code);
 								dialog.dismiss();
 							}
 						}
@@ -260,58 +274,104 @@ public class ShareEarnFragment extends Fragment {
 		}
 
 	}
-	//---sends an SMS message to another device---
-	private void sendSMS(final String phoneNumber, String message)
-	{
-		String SENT = "SMS_SENT";
-		String DELIVERED = "SMS_DELIVERED";
-
-		PendingIntent sentPI = PendingIntent.getBroadcast(activity, 0,
-				new Intent(SENT), 0);
-
-		PendingIntent deliveredPI = PendingIntent.getBroadcast(activity, 0,
-				new Intent(DELIVERED), 0);
-
-		//---when the SMS has been sent---
-		activity.registerReceiver(new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				switch (getResultCode()) {
-					case Activity.RESULT_OK:
-						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
-						break;
-					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_NO_SERVICE:
-						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_NULL_PDU:
-						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-					case SmsManager.RESULT_ERROR_RADIO_OFF:
-						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-						break;
-				}
-			}
-		}, new IntentFilter(SENT));
-
-		//---when the SMS has been delivered---
-		activity.registerReceiver(new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				switch (getResultCode()) {
-					case Activity.RESULT_OK:
-						break;
-//					case Activity.RESULT_CANCELED:
-//						DialogPopup.alertPopup(ShareActivity1.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
+//	//---sends an SMS message to another device---
+//	private void sendSMS(final String phoneNumber, String message)
+//	{
+//		String SENT = "SMS_SENT";
+//		String DELIVERED = "SMS_DELIVERED";
+//
+//		PendingIntent sentPI = PendingIntent.getBroadcast(activity, 0,
+//				new Intent(SENT), 0);
+//
+//		PendingIntent deliveredPI = PendingIntent.getBroadcast(activity, 0,
+//				new Intent(DELIVERED), 0);
+//
+//		//---when the SMS has been sent---
+//		activity.registerReceiver(new BroadcastReceiver() {
+//			@Override
+//			public void onReceive(Context arg0, Intent arg1) {
+//				switch (getResultCode()) {
+//					case Activity.RESULT_OK:
+//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
 //						break;
-				}
-			}
-		}, new IntentFilter(DELIVERED));
+//					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_NO_SERVICE:
+//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_NULL_PDU:
+//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//					case SmsManager.RESULT_ERROR_RADIO_OFF:
+//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
+//						break;
+//				}
+//			}
+//		}, new IntentFilter(SENT));
+//
+//		//---when the SMS has been delivered---
+//		activity.registerReceiver(new BroadcastReceiver() {
+//			@Override
+//			public void onReceive(Context arg0, Intent arg1) {
+//				switch (getResultCode()) {
+//					case Activity.RESULT_OK:
+//						break;
+////					case Activity.RESULT_CANCELED:
+////						DialogPopup.alertPopup(ShareActivity1.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
+////						break;
+//				}
+//			}
+//		}, new IntentFilter(DELIVERED));
+//
+//		SmsManager sms = SmsManager.getDefault();
+//		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+//	}
 
-		SmsManager sms = SmsManager.getDefault();
-		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+	public void sendReferralMessage(final Activity activity, String phone_no) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+
+				DialogPopup.showLoadingDialog(activity, "Loading...");
+
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("phone_no", phone_no);
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
