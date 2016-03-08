@@ -247,9 +247,9 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		new DeviceTokenGenerator().generateDeviceToken(this, new IDeviceTokenReceiver() {
+
+
+		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
 
             @Override
             public void deviceTokenReceived(final String regId) {
