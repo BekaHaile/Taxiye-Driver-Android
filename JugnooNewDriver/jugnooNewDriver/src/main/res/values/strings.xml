@@ -213,6 +213,7 @@
 	<string name="data_effective_format">*Data effective from </string>
 	<string name="notifications">NOTIFICATION CENTER</string>
 	<string name="click_for_direction">Click here for Directions</string>
+	<string name="time_left">Time left :</string>
 
 
 	<string-array name="CountryCodes" >

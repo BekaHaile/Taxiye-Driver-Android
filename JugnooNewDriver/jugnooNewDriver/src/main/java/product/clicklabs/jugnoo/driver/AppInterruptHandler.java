@@ -43,4 +43,6 @@ public interface AppInterruptHandler {
 
 	void markArrivedInterrupt(LatLng latLng);
 
+	void driverTimeoutDialogPopup(long timeoutInterwal);
+
 }

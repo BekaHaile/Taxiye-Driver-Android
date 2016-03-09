@@ -85,7 +85,7 @@ public class DriverLocationDispatcher {
 
 							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
-								String deviceTokenNew = new DeviceTokenGenerator().forceGenerateDeviceToken(context);
+								String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
 								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 								sendLocationToServer(context);
 							}

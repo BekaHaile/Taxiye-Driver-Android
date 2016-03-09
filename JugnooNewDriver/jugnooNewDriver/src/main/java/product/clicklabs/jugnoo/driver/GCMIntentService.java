@@ -1,5 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.IntentService;
+import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -17,6 +20,7 @@ import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -62,14 +66,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class GCMIntentService extends GcmListenerService {
+public class GCMIntentService extends IntentService {
 
 	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
+	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
 	NotificationCompat.Builder builder;
 
 	public GCMIntentService() {
+		super("GcmIntentService");
 	}
+
 
 	protected void onError(Context arg0, String arg1) {
 		Log.e("Registration", "Got an error1!");
@@ -319,9 +326,9 @@ public class GCMIntentService extends GcmListenerService {
 
 
 	@Override
-	public void onMessageReceived(String from, Bundle data) {
+	public void onHandleIntent(Intent intent) {
 		try {
-			Log.i("Recieved a gcm message arg1...", "," + data);
+			Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 			String currentTimeUTC = DateOperations.getCurrentTimeInUTC();
 			String currentTime = DateOperations.getCurrentTime();
 
@@ -332,11 +339,11 @@ public class GCMIntentService extends GcmListenerService {
 			if (!"".equalsIgnoreCase(accessToken)) {
 
 				try {
-					Log.i("Recieved a gcm message arg1...", "," + data);
+					Log.i("Recieved a gcm message arg1...", "," + intent.getExtras());
 
-					if (!"".equalsIgnoreCase(data.getString("message", ""))) {
+					if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
 
-						String message = data.getString("message");
+						String message = intent.getExtras().getString("message");
 
 						try {
 							JSONObject jObj = new JSONObject(message);
@@ -443,6 +450,11 @@ public class GCMIntentService extends GcmListenerService {
 
 
 											startRing(this);
+											Log.i("TimeOutAlarmReceiver", "4:"+jObj.optInt("penalise_driver_timeout", 0));
+											if(jObj.optInt("penalise_driver_timeout",0)==1) {
+												Log.i("TimeOutAlarmReceiver", "3");
+												startTimeoutAlarm(this);
+											}
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
@@ -455,11 +467,18 @@ public class GCMIntentService extends GcmListenerService {
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
 									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
-
 									startRing(this);
+									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
+									if(jObj.optInt("penalise_driver_timeout",0)==1) {
+										Log.i("TimeOutAlarmReceiver", "3");
+										startTimeoutAlarm(this);
+									}
+
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
+
+
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
 
@@ -470,7 +489,7 @@ public class GCMIntentService extends GcmListenerService {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
-
+								cancelUploadPathAlarm(this);
 								stopRing(false);
 
 							} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
@@ -482,7 +501,7 @@ public class GCMIntentService extends GcmListenerService {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
-
+								cancelUploadPathAlarm(this);
 								stopRing(false);
 
 							} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
@@ -494,11 +513,15 @@ public class GCMIntentService extends GcmListenerService {
 									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
-
+								cancelUploadPathAlarm(this);
 								stopRing(false);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
+								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
+								if(ignoreRideRequest==1){
+									new DriverTimeoutCheck().timeoutBuffer(this,true);
+								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
@@ -629,6 +652,9 @@ public class GCMIntentService extends GcmListenerService {
 				} catch (Exception e) {
 					e.printStackTrace();
 
+					// Release the wake lock provided by the WakefulBroadcastReceiver.
+					        GcmBroadcastReceiver.completeWakefulIntent(intent);
+
 				}
 			}
 		} catch (Exception e) {
@@ -640,6 +666,31 @@ public class GCMIntentService extends GcmListenerService {
 
 	public static MediaPlayer mediaPlayer;
 	public static Vibrator vibrator;
+
+	public static void startTimeoutAlarm(Context context){
+
+		boolean alarmUp = (PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
+				new Intent(context, TimeOutAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
+
+		if(!alarmUp) {
+			Intent intent = new Intent(context, TimeOutAlarmReceiver.class);
+			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
+					intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+			Log.i("TimeOutAlarmReceiver", "5");
+			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+(Prefs.with(context).getLong(SPLabels.MAX_TIMEOUT_RELIEF, 0)), pendingIntent);
+		}
+	}
+
+	public static void cancelUploadPathAlarm(Context context) {
+		Intent intent = new Intent(context, TimeOutAlarmReceiver.class);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
+		pendingIntent.cancel();
+	}
 
 	public static void startRing(Context context) {
 		try {

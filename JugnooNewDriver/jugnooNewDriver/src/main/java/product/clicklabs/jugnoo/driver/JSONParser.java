@@ -33,11 +33,13 @@ import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -310,7 +312,16 @@ public class JSONParser implements Constants {
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
+		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts",0));
+		Prefs.with(context).save(SPLabels.MAX_TIMEOUT_RELIEF, userData.optLong("timeout_relief", 30000));
+		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer",120000));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor",1));
 
+
+		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
+		String timeoutMessage = userData.optString("timeout_message","We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+		Log.i("timeOut",timeoutMessage);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -332,7 +343,7 @@ public class JSONParser implements Constants {
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText,referralDialogText, referralDialogHintText);
+				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod, timeoutMessage);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
