@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="product.clicklabs.jugnoo.driver"
           xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="222"
-          android:versionName="2.2.2">
+          android:versionCode="224"
+          android:versionName="2.2.4">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -209,6 +209,12 @@
             android:exported="true">
         </service>
 
+        <service
+            android:name="product.clicklabs.jugnoo.driver.DriverTimeoutIntentService"
+            android:enabled="true"
+            >
+        </service>
+
 
         <service
             android:name="product.clicklabs.jugnoo.driver.PushPendingCallsService"
@@ -253,7 +259,13 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver">
+        <receiver android:name="product.clicklabs.jugnoo.driver.TimeOutAlarmReceiver" >
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver" >
             <intent-filter>
                 <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE"/>
             </intent-filter>

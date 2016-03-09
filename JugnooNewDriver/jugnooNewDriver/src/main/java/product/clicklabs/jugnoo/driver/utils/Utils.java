@@ -361,6 +361,8 @@ public class Utils {
 				if (olaDriver) {
 					break;
 				}
+			}else if(appInfo.packageName.contains("com.olacabs.kpdriver")){
+				olaDriver = true;
 			}
 
 		}
