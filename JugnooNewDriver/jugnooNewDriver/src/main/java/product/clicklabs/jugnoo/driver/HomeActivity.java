@@ -4029,7 +4029,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						}
 
-						new DriverTimeoutCheck().timeoutBuffer(activity,1);
+						new DriverTimeoutCheck().timeoutBuffer(activity,false);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4348,7 +4348,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 							reduceRideRequest(Data.dEngagementId);
 						}
-						new DriverTimeoutCheck().timeoutBuffer(activity,2);
+						new DriverTimeoutCheck().timeoutBuffer(activity,true);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

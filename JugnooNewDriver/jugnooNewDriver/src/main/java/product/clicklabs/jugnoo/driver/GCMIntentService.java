@@ -518,8 +518,7 @@ public class GCMIntentService extends IntentService {
 								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if(ignoreRideRequest==1){
-									Prefs.with(this).save(SPLabels.BUFFER_TIMEOUT_VALUE, System.currentTimeMillis() - 5000);
-									new DriverTimeoutCheck().timeoutBuffer(this,Prefs.with(this).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR,1));
+									new DriverTimeoutCheck().timeoutBuffer(this,true);
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
