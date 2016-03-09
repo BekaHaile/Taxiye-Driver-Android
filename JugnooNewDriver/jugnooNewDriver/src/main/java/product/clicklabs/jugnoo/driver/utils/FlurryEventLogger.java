@@ -28,6 +28,7 @@ public class FlurryEventLogger {
 
 	public static void logResponseTime(Context context, long respTime, String event){
 		try{
+//			FlurryAgent.init(context, Data.FLURRY_KEY);
 			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("response_time", String.valueOf(respTime));
@@ -41,6 +42,7 @@ public class FlurryEventLogger {
 	
 	public static void requestPushReceived(Context context, String engagementId, String startTime, String receivedTime){
 		try{
+//			FlurryAgent.init(context, Data.FLURRY_KEY);
 			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
 			Map<String, String> articleParams = new HashMap<String, String>();
 			articleParams.put("engagement_id", engagementId);

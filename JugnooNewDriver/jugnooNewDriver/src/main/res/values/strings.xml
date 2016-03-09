@@ -199,6 +199,7 @@
 	<string name="Edit_profile"><u>Edit Profile</u></string>
 	<string name="info">INFO</string>
 	<string name="click_for_direction">Click here for Directions</string>
+	<string name="time_left">Time left :</string>
 
 
 	<string-array name="CountryCodes" >

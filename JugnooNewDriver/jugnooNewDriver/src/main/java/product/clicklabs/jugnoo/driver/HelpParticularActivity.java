@@ -1,17 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.webkit.JsResult;
-import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -69,9 +64,6 @@ public class HelpParticularActivity extends FragmentActivity {
 		//enable Javascript
 		webview.getSettings().setJavaScriptEnabled(true);
 
-		//override the web client to open all links in the same webview
-		webview.setWebViewClient(new MyWebViewClient());
-		webview.setWebChromeClient(new MyWebChromeClient());
 
 
 		if (helpSection != null) {
@@ -101,57 +93,6 @@ public class HelpParticularActivity extends FragmentActivity {
 	}
 
 
-	private class MyWebViewClient extends WebViewClient {
-		@Override
-		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			Log.i("shouldOverrideUrlLoading", "url=" + url);
-			return false;
-		}
-
-		@Override
-		public void onLoadResource(WebView view, String url) {
-			Log.i("onLoadResource", "url=" + url);
-			super.onLoadResource(view, url);
-		}
-
-		@Override
-		public void onPageFinished(WebView view, String url) {
-			Log.i("onPageFinished", "url=" + url);
-			super.onPageFinished(view, url);
-		}
-
-		@Override
-		public void onPageStarted(WebView view, String url, Bitmap favicon) {
-			Log.i("onPageStarted", "url=" + url);
-			super.onPageStarted(view, url, favicon);
-		}
-
-		@Override
-		public void onReceivedError(WebView view, int errorCode,
-									String description, String failingUrl) {
-			Log.e("onReceivedError", "url=" + failingUrl);
-			super.onReceivedError(view, errorCode, description, failingUrl);
-		}
-
-
-		@Override
-		public void onReceivedSslError(WebView view, SslErrorHandler handler,
-									   SslError error) {
-			Log.e("onReceivedSslError", "error=" + error);
-			handler.proceed();
-		}
-	}
-
-	private class MyWebChromeClient extends WebChromeClient {
-
-		//display alert message in Web View
-		@Override
-		public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
-			Log.d("message", message);
-			return false;
-		}
-
-	}
 
 
 	public void openHelpData(String data, boolean errorOccured) {
