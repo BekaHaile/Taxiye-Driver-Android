@@ -3506,7 +3506,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
-\
+
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 

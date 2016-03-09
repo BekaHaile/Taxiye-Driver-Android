@@ -109,7 +109,7 @@ public class ShareActivityFragment extends Fragment {
 				textViewNumberOfFirstRidesValue.setText(""+leaderboardActivityResponse.getNFirstRides());
 				textViewMoneyEarnedValue.setText(""+leaderboardActivityResponse.getNMoneyEarned());
 				textViewDataEffective.setText(activity.getResources()
-						.getString(R.string.data_effective_format)+ leaderboardActivityResponse.getDate());
+						.getString(R.string.data_effective_format)+" "+ leaderboardActivityResponse.getDate());
 			}
 		} catch(Exception e){
 			e.printStackTrace();

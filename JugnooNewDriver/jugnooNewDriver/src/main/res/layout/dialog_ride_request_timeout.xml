@@ -3,8 +3,6 @@
              android:id="@+id/rv"
              android:layout_width="720px"
              android:layout_height="1134px"
-             android:layout_marginTop="400px"
-             android:orientation="vertical"
              android:splitMotionEvents="false"
     >
 
@@ -12,7 +10,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="30px"
+        android:layout_marginTop="400px"
+        android:layout_marginLeft="42px"
+        android:layout_marginRight="42px"
         android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
         >
@@ -65,7 +65,7 @@
             android:layout_height="92px"
             android:orientation="horizontal"
             android:layout_marginTop="32px"
-            android:background="@drawable/blue_btn_selector">
+            android:background="@color/new_orange">
 
             <TextView
                 android:id="@+id/timeOutText"
@@ -83,8 +83,8 @@
                 android:id="@+id/timeOutValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="64px"
-                android:background="@drawable/blue_btn_selector"
+                android:layout_marginLeft="58px"
+                android:background="@color/new_orange"
                 android:singleLine="true"
                 android:text="@string/ok"
                 android:textColor="@drawable/white_color_selector"
