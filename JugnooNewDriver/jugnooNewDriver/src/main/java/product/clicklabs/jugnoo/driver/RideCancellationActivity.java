@@ -205,7 +205,8 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 								HomeActivity.appInterruptHandler.handleCancelRideSuccess();
 							}
 						}
-						new DriverTimeoutCheck().timeoutBuffer(activity);
+						Prefs.with(activity).save(SPLabels.BUFFER_TIMEOUT_VALUE, System.currentTimeMillis() - 5000);
+						new DriverTimeoutCheck().timeoutBuffer(activity,Prefs.with(activity).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR,1));
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

@@ -448,7 +448,7 @@ public class GCMIntentService extends IntentService {
 
 
 											startRing(this);
-											Log.i("TimeOutAlarmReceiver", "4:"+jObj.getInt("penalise_driver_timeout"));
+											Log.i("TimeOutAlarmReceiver", "4:"+jObj.optInt("penalise_driver_timeout", 0));
 											if(jObj.optInt("penalise_driver_timeout",0)==1) {
 												Log.i("TimeOutAlarmReceiver", "3");
 												startTimeoutAlarm(this);
@@ -466,7 +466,7 @@ public class GCMIntentService extends IntentService {
 //									notificationManager(this, "You have got a new request.", true);
 									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
 									startRing(this);
-									Log.i("TimeOutAlarmReceiver", "4:" + jObj.getInt("penalise_driver_timeout"));
+									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
 									if(jObj.optInt("penalise_driver_timeout",0)==1) {
 										Log.i("TimeOutAlarmReceiver", "3");
 										startTimeoutAlarm(this);
@@ -518,7 +518,8 @@ public class GCMIntentService extends IntentService {
 								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if(ignoreRideRequest==1){
-									new DriverTimeoutCheck().timeoutBuffer(this);
+									Prefs.with(this).save(SPLabels.BUFFER_TIMEOUT_VALUE, System.currentTimeMillis() - 5000);
+									new DriverTimeoutCheck().timeoutBuffer(this,Prefs.with(this).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR,1));
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);

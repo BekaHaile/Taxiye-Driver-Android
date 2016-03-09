@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="product.clicklabs.jugnoo.driver"
           xmlns:android="http://schemas.android.com/apk/res/android"
-          android:versionCode="222"
-          android:versionName="2.2.2">
+          android:versionCode="224"
+          android:versionName="2.2.4">
 
     <uses-sdk
         android:minSdkVersion="14"

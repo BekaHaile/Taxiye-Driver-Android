@@ -516,8 +516,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
 			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-			temptext = (TextView) findViewById(R.id.temptext);
-			temptext.setTypeface(Data.latoRegular(this));
+//			temptext = (TextView) findViewById(R.id.temptext);
+//			temptext.setTypeface(Data.latoRegular(this));
 			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
 			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
 
@@ -2113,7 +2113,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 			}
-			temptext.setText(" "+Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0));
+//			temptext.setText(" "+Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0));
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 			if (Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6) {
 				driverRatingRl.setVisibility(View.VISIBLE);
@@ -4029,7 +4029,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						}
 
-						new DriverTimeoutCheck().timeoutBuffer(activity);
+						new DriverTimeoutCheck().timeoutBuffer(activity,1);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4348,7 +4348,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 							reduceRideRequest(Data.dEngagementId);
 						}
-						new DriverTimeoutCheck().timeoutBuffer(activity);
+						new DriverTimeoutCheck().timeoutBuffer(activity,2);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
