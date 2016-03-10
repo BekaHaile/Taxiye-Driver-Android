@@ -448,6 +448,8 @@ public class GCMIntentService extends IntentService {
 
 
 											startRing(this);
+											flurryEventForRequestPush(engagementId);
+
 											Log.i("TimeOutAlarmReceiver", "4:"+jObj.optInt("penalise_driver_timeout", 0));
 											if(jObj.optInt("penalise_driver_timeout",0)==1) {
 												Log.i("TimeOutAlarmReceiver", "3");
@@ -466,6 +468,8 @@ public class GCMIntentService extends IntentService {
 //									notificationManager(this, "You have got a new request.", true);
 									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
 									startRing(this);
+									flurryEventForRequestPush(engagementId);
+
 									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
 									if(jObj.optInt("penalise_driver_timeout",0)==1) {
 										Log.i("TimeOutAlarmReceiver", "3");
@@ -690,6 +694,7 @@ public class GCMIntentService extends IntentService {
 
 	public static void startRing(Context context) {
 		try {
+
 			stopRing(true);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
@@ -1048,6 +1053,16 @@ public class GCMIntentService extends IntentService {
 				}
 			}
 		}).start();
+	}
+
+
+	private void flurryEventForRequestPush(String engagementId){
+		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, 0);
+		if(DriverScreenMode.D_INITIAL.getOrdinal() != mode
+				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
+				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
+			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
+		}
 	}
 
 }

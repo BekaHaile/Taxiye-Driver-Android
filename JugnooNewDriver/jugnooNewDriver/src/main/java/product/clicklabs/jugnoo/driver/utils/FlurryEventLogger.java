@@ -39,6 +39,21 @@ public class FlurryEventLogger {
 			e.printStackTrace();
 		}
 	}
+
+	public static void logStartRing(Context context, int screenMode, int appVersion, String engId, String event){
+		try{
+//			FlurryAgent.init(context, Data.FLURRY_KEY);
+			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("screen_mode", String.valueOf(screenMode));
+			params.put("app_version", String.valueOf(appVersion));
+			params.put("engagement_id", String.valueOf(engId));
+			FlurryAgent.logEvent(event, params);
+			FlurryAgent.onEndSession(context);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 	public static void requestPushReceived(Context context, String engagementId, String startTime, String receivedTime){
 		try{
