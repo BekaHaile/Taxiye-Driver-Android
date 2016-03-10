@@ -182,6 +182,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout callUsRl;
 	TextView callUsText;
 
+	RelativeLayout paytmRecharge;
+	TextView paytmRechargeText;
+
 	RelativeLayout languagePrefrencesRl;
 	TextView languagePrefrencesText;
 
@@ -501,6 +504,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			paytmRecharge = (RelativeLayout) findViewById(R.id.paytmRecharge);
+			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
+			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
+
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
 			languagePrefrencesText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -788,7 +795,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll, new KeyBoardStateHandler() {
+			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
+					new KeyboardLayoutListener.KeyBoardStateHandler() {
 				@Override
 				public void keyboardOpened() {
 
@@ -950,6 +958,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
 					FlurryEventLogger.event(CALL_US);
+				}
+			});
+
+			paytmRecharge.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverPatymRecharge.class));
 				}
 			});
 
@@ -4315,6 +4330,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						}
 						new DriverTimeoutCheck().clearCount(activity);
+						Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, Data.assignedCustomerInfo.phoneNumber);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

@@ -63,5 +63,6 @@ public class SPLabels {
 	public static final String BUFFER_TIMEOUT_VALUE ="bufferTimeoutValue";
 	public static final String DRIVER_TIMEOUT_FLAG = "driverTimeoutFlag";
     public static final String DRIVER_TIMEOUT_FACTOR = "driverTimeoutFactor";
+    public static final String CUSTOMER_PHONE_NUMBER = "customerPhoneNumer";
 
 }

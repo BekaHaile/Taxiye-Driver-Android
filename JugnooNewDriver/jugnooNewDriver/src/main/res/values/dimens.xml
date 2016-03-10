@@ -11,6 +11,7 @@
     <dimen name="image_bg_corner_radius">10px</dimen>
     <dimen name="image_bg_stroke">2px</dimen>
     <dimen name="button_text_size">36px</dimen>
+    <dimen name="button_text_size_large">42px</dimen>
     <dimen name="button_small_text_size">28px</dimen>
     <dimen name="menu_width">495px</dimen>
     <dimen name="end_ride_details_text_size">32px</dimen>
