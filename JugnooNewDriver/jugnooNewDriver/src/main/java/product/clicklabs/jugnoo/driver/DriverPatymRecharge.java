@@ -399,9 +399,8 @@ public class DriverPatymRecharge extends Activity {
 			HashMap<String, String> params = new HashMap<String, String>();
 
 			params.put("access_token", Data.userData.accessToken);
-			params.put("engagement_id", Data.dEngagementId);
-			params.put("customer_phone_number", String.valueOf(editTextPhone.getText()));
-			params.put("money_added", amount);
+			params.put("receiver_phone", String.valueOf(editTextPhone.getText()));
+			params.put("amount", amount);
 
 			RestClient.getApiServices().addCustomerCashRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override

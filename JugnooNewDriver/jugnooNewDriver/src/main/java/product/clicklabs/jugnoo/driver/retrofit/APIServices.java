@@ -164,7 +164,7 @@ public interface APIServices {
 													Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/add_money_to_wallet")
+	@POST("/initiate_user_paytm_recharge")
 	void addCustomerCashRetro(@FieldMap Map<String, String> params,
 							  Callback<RegisterScreenResponse> callback);
 
