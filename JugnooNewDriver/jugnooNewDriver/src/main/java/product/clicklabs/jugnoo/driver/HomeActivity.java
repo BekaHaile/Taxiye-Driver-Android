@@ -3741,7 +3741,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							reduceRideRequest(Data.dEngagementId);
 
-						} else {
+						} else if(ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == jObj.getInt("flag")){
+							double pickupLatitude = jObj.getDouble("pickup_latitude");
+							double pickupLongitude = jObj.getDouble("pickup_longitude");
+							LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
+							createPerfectRideMArker(pickuplLatLng);
+						} else{
 
 							int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
 
@@ -3965,6 +3970,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
+	}
+
+	public void createPerfectRideMArker(LatLng pickuplLatLng){
+		map.clear();
+		MarkerOptions markerOptionsStationLocation = new MarkerOptions();
+		markerOptionsStationLocation.title("station_marker");
+		markerOptionsStationLocation.snippet(assignedStationData.address);
+		markerOptionsStationLocation.position(pickuplLatLng);
+		markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
+
+		Marker stationMarker = map.addMarker(markerOptionsStationLocation);
+		CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, stationMarker.getSnippet(), "");
+		map.setInfoWindowAdapter(customIW);
+		stationMarker.showInfoWindow();
 	}
 
 

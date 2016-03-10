@@ -349,10 +349,12 @@ public class GCMIntentService extends IntentService {
 							JSONObject jObj = new JSONObject(message);
 
 							int flag = jObj.getInt("flag");
+							int perfectRide = jObj.getInt("perfect_ride");
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
-									(Prefs.with(this).getInt(SPLabels.RECEIVE_REQUESTS, 1) == 1)) {
+									((Prefs.with(this).getInt(SPLabels.RECEIVE_REQUESTS, 1) == 1)
+											|| (perfectRide==1))) {
 
 								//	    	    						 {   "engagement_id": engagement_id,
 								//	    	    							 "user_id": data.customer_id,
