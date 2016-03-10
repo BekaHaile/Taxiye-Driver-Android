@@ -93,6 +93,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
@@ -1026,7 +1027,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-					acceptRequestFunc();
+					acceptRequestFunc(Data.openedDriverRideRequest);
 					GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
 					FlurryEventLogger.event(RIDE_CHECKED_AND_ACCEPTED);
 				}
@@ -1084,7 +1085,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-					if (getBatteryPercentage() >= 10) {
+					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
 						startRidePopup(HomeActivity.this);
 						FlurryEventLogger.event(RIDE_STARTED);
 					} else {
@@ -1097,7 +1098,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (getBatteryPercentage() >= 10) {
+					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
 						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
 								new OnClickListener() {
 									@Override
@@ -1437,15 +1438,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				DriverRideRequest driverRideRequest = driverRequestListAdapter
 						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
 								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
-
-				driverRideRequestsList.setVisibility(View.GONE);
-
-				Data.dEngagementId = driverRideRequest.engagementId;
-				Data.dCustomerId = driverRideRequest.customerId;
-				Data.dCustLatLng = driverRideRequest.latLng;
-				Data.openedDriverRideRequest = driverRideRequest;
-
-				acceptRequestFunc();
+				acceptRequestFunc(driverRideRequest);
 				FlurryEventLogger.event(RIDE_ACCEPTED);
 
 			} else if (type.equalsIgnoreCase("cancel")) {
@@ -1627,14 +1620,32 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void acceptRequestFunc() {
-		if (getBatteryPercentage() >= 20) {
-			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing(true);
-			driverAcceptRideAsync(HomeActivity.this);
-		} else {
-			driverRideRequestsList.setVisibility(View.VISIBLE);
-			DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+	public void acceptRequestFunc(DriverRideRequest driverRideRequest) {
+		if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+			new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
+				@Override
+				public void onSuccess(LatLng pickupLatLng) {
+					createPerfectRideMArker(pickupLatLng);
+				}
+			}).acceptRide(Data.userData.accessToken,
+					driverRideRequest.customerId,
+					driverRideRequest.engagementId,
+					String.valueOf(driverRideRequest.referenceId),
+					myLocation.getLatitude(),
+					myLocation.getLongitude());
+		} else{
+			Data.dEngagementId = driverRideRequest.engagementId;
+			Data.dCustomerId = driverRideRequest.customerId;
+			Data.dCustLatLng = driverRideRequest.latLng;
+			Data.openedDriverRideRequest = driverRideRequest;
+
+			if (Utils.getBatteryPercentage(this) >= 20) {
+				GCMIntentService.clearNotifications(HomeActivity.this);
+				GCMIntentService.stopRing(true);
+				driverAcceptRideAsync(HomeActivity.this);
+			} else {
+				DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+			}
 		}
 	}
 
@@ -3446,6 +3457,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			this.driverRideRequests.clear();
 			this.driverRideRequests.addAll(driverRideRequests);
 			this.notifyDataSetChanged();
+			if(driverRideRequests.size() > 0){
+				driverRideRequestsList.setVisibility(View.VISIBLE);
+			} else{
+				driverRideRequestsList.setVisibility(View.GONE);
+			}
 		}
 
 		@Override
@@ -3539,20 +3555,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					try {
-						holder = (ViewHolderDriverRequest) v.getTag();
+						if(DriverScreenMode.D_IN_RIDE != driverScreenMode) {
+							holder = (ViewHolderDriverRequest) v.getTag();
 
-						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
+							DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
 
-						Data.dEngagementId = driverRideRequest.engagementId;
-						Data.dCustomerId = driverRideRequest.customerId;
-						Data.dCustLatLng = driverRideRequest.latLng;
-						Data.openedDriverRideRequest = driverRideRequest;
+							Data.dEngagementId = driverRideRequest.engagementId;
+							Data.dCustomerId = driverRideRequest.customerId;
+							Data.dCustLatLng = driverRideRequest.latLng;
+							Data.openedDriverRideRequest = driverRideRequest;
 
-						driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
-						switchDriverScreen(driverScreenMode);
+							driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
+							switchDriverScreen(driverScreenMode);
 
-						map.animateCamera(CameraUpdateFactory.newLatLng(driverRideRequest.latLng), 1000, null);
-						FlurryEventLogger.event(RIDE_CHECKED);
+							map.animateCamera(CameraUpdateFactory.newLatLng(driverRideRequest.latLng), 1000, null);
+							FlurryEventLogger.event(RIDE_CHECKED);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3565,16 +3583,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-
 						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
-
-						Data.dEngagementId = driverRideRequest.engagementId;
-						Data.dCustomerId = driverRideRequest.customerId;
-						Data.dCustLatLng = driverRideRequest.latLng;
-						Data.openedDriverRideRequest = driverRideRequest;
-						acceptRequestFunc();
+						acceptRequestFunc(driverRideRequest);
 						FlurryEventLogger.event(RIDE_ACCEPTED);
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3611,29 +3622,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	}
 
-
-	public float getBatteryPercentage() {
-		try {
-			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-			Intent batteryStatus = registerReceiver(null, ifilter);
-			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			float batteryPct = (level / (float) scale) * 100;
-
-			// Are we charging / charged?
-			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-					status == BatteryManager.BATTERY_STATUS_FULL;
-			if (isCharging) {
-				return 70;
-			} else {
-				return batteryPct;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 70;
-		}
-	}
 
 
 	public void getDriverOnlineHours(final Activity activity) {
@@ -3726,7 +3714,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						Log.e("accept_a_request jsonString", "=" + jsonString);
 						if (!jObj.isNull("error")) {
 
-							driverRideRequestsList.setVisibility(View.VISIBLE);
 							int flag = jObj.getInt("flag");
 							Log.e("accept_a_request flag", "=" + flag);
 							String errorMessage = jObj.getString("error");
@@ -3741,7 +3728,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							reduceRideRequest(Data.dEngagementId);
 
-						} else if(ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == jObj.getInt("flag")){
+						} else if(ApiResponseFlags.PERFECT_RIDE_ACCEPTED.getOrdinal() == jObj.optInt("flag",0)){
 							double pickupLatitude = jObj.getDouble("pickup_latitude");
 							double pickupLongitude = jObj.getDouble("pickup_longitude");
 							LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
@@ -3922,13 +3909,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									switchDriverScreen(driverScreenMode);
 
 								} else {
-									driverRideRequestsList.setVisibility(View.VISIBLE);
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 								}
 
 
 							} else {
-								driverRideRequestsList.setVisibility(View.VISIBLE);
 								try {
 									Log.e("accept_a_request flag", "=" + flag);
 									String logMessage = jObj.getString("log");
@@ -3948,7 +3933,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							DialogPopup.dismissLoadingDialog();
 						}
 					} catch (Exception exception) {
-						driverRideRequestsList.setVisibility(View.VISIBLE);
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -3959,7 +3943,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void failure(RetrofitError error) {
-					driverRideRequestsList.setVisibility(View.VISIBLE);
 					DialogPopup.dismissLoadingDialog();
 					callAndHandleStateRestoreAPI();
 				}
@@ -3967,7 +3950,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 		} else {
-			driverRideRequestsList.setVisibility(View.VISIBLE);
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 	}
@@ -6049,8 +6031,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				if (Data.driverRideRequests.size() > 0) {
 
-					driverRideRequestsList.setVisibility(View.VISIBLE);
-
 					LatLng last = map.getCameraPosition().target;
 
 					for (int i = 0; i < Data.driverRideRequests.size(); i++) {
@@ -6081,8 +6061,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					map.animateCamera(CameraUpdateFactory.newLatLng(last), 1000, null);
 
-				} else {
-					driverRideRequestsList.setVisibility(View.GONE);
 				}
 
 			}

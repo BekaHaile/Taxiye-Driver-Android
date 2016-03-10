@@ -347,9 +347,9 @@ public class GCMIntentService extends IntentService {
 
 						try {
 							JSONObject jObj = new JSONObject(message);
-
+							Log.i("push_notification", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
-							int perfectRide = jObj.getInt("perfect_ride");
+							int perfectRide = jObj.optInt("perfect_ride", 0);
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
@@ -420,7 +420,8 @@ public class GCMIntentService extends IntentService {
 									if (UserMode.DRIVER == HomeActivity.userMode) {
 										if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
 												DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
+												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode ||
+												DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 
 											int referenceId = jObj.getInt("reference_id");
 
