@@ -409,37 +409,14 @@ public class DriverPatymRecharge extends Activity {
 					DialogPopup.dismissLoadingDialog();
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
+						JSONObject jObj = new JSONObject(jsonString);
+						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.getInt("flag");
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								String errorMessage = jObj.getString("error");
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								if ("0".equalsIgnoreCase(amount)) {
-									if (HomeActivity.appInterruptHandler != null) {
-										HomeActivity.appInterruptHandler.onCustomerCashDone();
-										performBackPressed();
-									}
-								} else {
-									String message = jObj.getString("message");
-									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
-
-										@Override
-										public void onClick(View v) {
-											if (HomeActivity.appInterruptHandler != null) {
-												HomeActivity.appInterruptHandler.onCustomerCashDone();
-												performBackPressed();
-											}
-										}
-									});
-								}
-							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else{
+								DialogPopup.alertPopup(activity, "", message);
 							}
-						}
-
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
