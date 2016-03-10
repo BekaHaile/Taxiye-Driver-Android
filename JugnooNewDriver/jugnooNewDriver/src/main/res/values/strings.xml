@@ -214,6 +214,9 @@
 	<string name="notifications">NOTIFICATION CENTER</string>
 	<string name="click_for_direction">Click here for Directions</string>
 	<string name="time_left">Time left :</string>
+	<string name="enter_phone_no_to_reset_password">Enter your registered phone number for resetting
+		your password.
+	</string>
 
 
 	<string-array name="CountryCodes" >

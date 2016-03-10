@@ -200,7 +200,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!-- customer info layout -->
                     <LinearLayout
@@ -378,15 +378,15 @@
                         android:visibility="gone"/>
 
 
-                    <Button
-                        android:id="@+id/buttonDriverNavigation"
-                        android:layout_width="80px"
-                        android:layout_height="80px"
-                        android:layout_below="@+id/driverPassengerInfoRl"
-                        android:layout_marginLeft="40px"
-                        android:layout_marginTop="27px"
-                        android:background="@drawable/naviagtion_orange_icon"
-                        android:tag="mwar"/>
+                    <!--<Button-->
+                        <!--android:id="@+id/buttonDriverNavigation"-->
+                        <!--android:layout_width="80px"-->
+                        <!--android:layout_height="80px"-->
+                        <!--android:layout_below="@+id/driverPassengerInfoRl"-->
+                        <!--android:layout_marginLeft="40px"-->
+                        <!--android:layout_marginTop="27px"-->
+                        <!--android:background="@drawable/naviagtion_orange_icon"-->
+                        <!--android:tag="mwar"/>-->
 
 
                     <!-- start ride layout-->
