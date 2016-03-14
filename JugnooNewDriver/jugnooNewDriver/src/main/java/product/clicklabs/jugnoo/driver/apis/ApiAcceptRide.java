@@ -58,6 +58,7 @@ public class ApiAcceptRide {
 					params.put("device_name", Utils.getDeviceName());
 					params.put("imei", DeviceUniqueID.getUniqueId(activity));
 					params.put("app_version", "" + Utils.getAppVersion(activity));
+					params.put("is_accepting_perfect_ride", "1");
 
 					if (!"".equalsIgnoreCase(referenceId)) {
 						params.put("reference_id", referenceId);
@@ -69,14 +70,22 @@ public class ApiAcceptRide {
 							try {
 								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 								JSONObject jObj = new JSONObject(jsonString);
-								if (ApiResponseFlags.PERFECT_RIDE_ACCEPTED.getOrdinal() == jObj.optInt("flag", 0)) {
+								int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
+
+								if (jObj.has("flag")) {
+									flag = jObj.getInt("flag");
+								}
+								if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
 									double pickupLongitude = jObj.getDouble("pickup_longitude");
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
 									callback.onSuccess(pickupLatLng);
 								}
+
+								DialogPopup.dismissLoadingDialog();
 							} catch (Exception e) {
 								e.printStackTrace();
+								DialogPopup.dismissLoadingDialog();
 							}
 						}
 

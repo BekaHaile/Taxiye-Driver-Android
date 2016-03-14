@@ -1626,6 +1626,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onSuccess(LatLng pickupLatLng) {
 					createPerfectRideMArker(pickupLatLng);
+					Data.driverRideRequests.clear();
+					GCMIntentService.clearNotifications(getApplicationContext());
+					driverRequestListAdapter.setResults(Data.driverRideRequests);
 				}
 			}).acceptRide(Data.userData.accessToken,
 					driverRideRequest.customerId,
@@ -3912,6 +3915,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 								}
 
+								driverRequestListAdapter.setResults(Data.driverRideRequests);
 
 							} else {
 								try {
@@ -3958,14 +3962,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		map.clear();
 		MarkerOptions markerOptionsStationLocation = new MarkerOptions();
 		markerOptionsStationLocation.title("station_marker");
-		markerOptionsStationLocation.snippet(assignedStationData.address);
+//		markerOptionsStationLocation.snippet(assignedStationData.address);
 		markerOptionsStationLocation.position(pickuplLatLng);
 		markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
 
-		Marker stationMarker = map.addMarker(markerOptionsStationLocation);
-		CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, stationMarker.getSnippet(), "");
-		map.setInfoWindowAdapter(customIW);
-		stationMarker.showInfoWindow();
+//		Marker stationMarker = map.addMarker(markerOptionsStationLocation);
+//		CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, stationMarker.getSnippet(), "");
+//		map.setInfoWindowAdapter(customIW);
+//		stationMarker.showInfoWindow();
 	}
 
 
@@ -4027,7 +4031,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 							reduceRideRequest(Data.dEngagementId);
-
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity,false);
@@ -6057,11 +6060,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					});
 
-					driverRequestListAdapter.setResults(Data.driverRideRequests);
+
 
 					map.animateCamera(CameraUpdateFactory.newLatLng(last), 1000, null);
 
 				}
+				driverRequestListAdapter.setResults(Data.driverRideRequests);
 
 			}
 		} catch (Exception e) {
@@ -6071,8 +6075,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	@Override
-	public void onNewRideRequest() {
-		if (userMode == UserMode.DRIVER && (driverScreenMode == DriverScreenMode.D_INITIAL || driverScreenMode == DriverScreenMode.D_RIDE_END)) {
+	public void onNewRideRequest(int perfectRide) {
+		if (userMode == UserMode.DRIVER && (driverScreenMode == DriverScreenMode.D_INITIAL || driverScreenMode == DriverScreenMode.D_RIDE_END || (perfectRide==1))) {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

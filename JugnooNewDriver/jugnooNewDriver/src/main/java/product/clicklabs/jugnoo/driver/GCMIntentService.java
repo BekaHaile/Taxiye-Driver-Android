@@ -460,7 +460,7 @@ public class GCMIntentService extends IntentService {
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
 											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
-											HomeActivity.appInterruptHandler.onNewRideRequest();
+											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
 
 											Log.e("referenceId", "=" + referenceId);
 										}
