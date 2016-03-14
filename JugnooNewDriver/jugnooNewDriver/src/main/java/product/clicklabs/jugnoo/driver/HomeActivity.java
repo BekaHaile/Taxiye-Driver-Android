@@ -2013,13 +2013,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void updateReceiveRequestsFlag() {
 		if (Data.userData != null) {
 			if (0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable) {
-				Prefs.with(HomeActivity.this).save(SPLabels.RECEIVE_REQUESTS, 0);
-			} else {
-				if (isDriverEngaged()) {
-					Prefs.with(HomeActivity.this).save(SPLabels.RECEIVE_REQUESTS, 0);
-				} else {
-					Prefs.with(HomeActivity.this).save(SPLabels.RECEIVE_REQUESTS, 1);
-				}
+				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal());
 			}
 		}
 	}
@@ -2595,9 +2589,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 			try {
+				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
 				if (DriverScreenMode.D_ARRIVED == mode) {
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
-
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, Data.userData.accessToken);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, Data.dEngagementId);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, Data.dCustomerId);
@@ -2607,8 +2600,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				} else {
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, -1);
-
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, "");
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, "");
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, "");

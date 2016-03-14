@@ -98,7 +98,8 @@ public class DriverLocationDispatcher {
 				}
 
 
-				if(Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE, -1) == DriverScreenMode.D_ARRIVED.getOrdinal()){
+				if(Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
+						DriverScreenMode.D_INITIAL.getOrdinal()) == DriverScreenMode.D_ARRIVED.getOrdinal()){
 					String pickupLatitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
 					String pickupLongitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
@@ -110,8 +111,6 @@ public class DriverLocationDispatcher {
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
-
-						Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, -1);
 
 						if(HomeActivity.appInterruptHandler != null){
 							HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
@@ -133,6 +132,7 @@ public class DriverLocationDispatcher {
 							Response response = RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
 
 						}
+						Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_START_RIDE.getOrdinal());
 					}
 				}
 

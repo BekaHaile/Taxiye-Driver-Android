@@ -350,9 +350,14 @@ public class GCMIntentService extends IntentService {
 
 							int flag = jObj.getInt("flag");
 
+							int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
+									DriverScreenMode.D_INITIAL.getOrdinal());
+
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
-									(Prefs.with(this).getInt(SPLabels.RECEIVE_REQUESTS, 1) == 1)) {
+									(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
+											|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
+											|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
 
 								//	    	    						 {   "engagement_id": engagement_id,
 								//	    	    							 "user_id": data.customer_id,
@@ -519,7 +524,7 @@ public class GCMIntentService extends IntentService {
 								stopRing(false);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
+								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if(ignoreRideRequest==1){
 									new DriverTimeoutCheck().timeoutBuffer(this,true);
@@ -536,7 +541,7 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 
-								Prefs.with(this).save(SPLabels.RECEIVE_REQUESTS, 1);
+								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 
 								String logMessage = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
@@ -1057,7 +1062,7 @@ public class GCMIntentService extends IntentService {
 
 
 	private void flurryEventForRequestPush(String engagementId){
-		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, 0);
+		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 		if(DriverScreenMode.D_INITIAL.getOrdinal() != mode
 				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
 				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
