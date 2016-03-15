@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.PenalityData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -1185,39 +1186,25 @@ public class Database2 {																	// class for handling database related 
 
 
 
-	public String getPenalityData() {
-		String rideDataStr = "";
-		String template = "i,lat,long,t";
-		String newLine = "\n";
-		boolean hasValues = false;
+	public int getPenalityData(String timediff) {
 		try {
+			int count;
 			String[] columns = new String[] { Database2.PENALITY_ID, Database2.PENALITY_TIME, Database2.PENALITY_FACTOR };
-			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, null, null, null, null, null);
-
-			int i0 = cursor.getColumnIndex(Database2.PENALITY_ID);
-			int i1 = cursor.getColumnIndex(Database2.PENALITY_TIME);
-			int i2 = cursor.getColumnIndex(Database2.PENALITY_FACTOR);
-
-//			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-//				try {
-//					RideData rideData = new RideData(cursor.getInt(i0),
-//							Double.parseDouble(cursor.getString(i1)),
-//							Long.parseLong(cursor.getString(i2)));
-//
-//					rideDataStr = rideDataStr + rideData.toString() + newLine;
-//					hasValues = true;
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//			if(hasValues){
-//				rideDataStr = template + newLine + rideDataStr;
-//			}
+			String selection = Database2.PENALITY_TIME + ">";
+			Cursor cursor = database.rawQuery("select sum("+Database2.PENALITY_FACTOR+") from transaction_table where "+Database2.PENALITY_TIME+" >"+ timediff, null);
+//			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, selection, new String[]{timediff}, null, null, null);
+			if(cursor.moveToFirst()) {
+				count = cursor.getInt(0);
+				Log.i("DBcount", String.valueOf(count));
+			}else {
+				count = 0;
+			}
+			cursor.close();
+			return count;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		return rideDataStr;
+		return 0;
 	}
 
 	public void insertPenalityData(String penalityTime, double penalityFactor) {
@@ -1235,8 +1222,6 @@ public class Database2 {																	// class for handling database related 
 	public void deletePenalityData(){
 		try{
 			database.delete(Database2.TABLE_PENALITY_COUNT, null, null);
-			database.execSQL("DROP TABLE " + Database2.TABLE_PENALITY_COUNT);
-			createAllTables(database);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
