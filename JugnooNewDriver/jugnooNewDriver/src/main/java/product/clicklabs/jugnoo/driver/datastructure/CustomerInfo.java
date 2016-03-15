@@ -15,7 +15,7 @@ public class CustomerInfo {
 	public String name, phoneNumber;
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
-	
+
 	/**
 	 * Customer Info super constructor
 	 * @param engagementId
@@ -38,7 +38,9 @@ public class CustomerInfo {
 	
 	@Override
 	public String toString() {
-		return "engagementId = "+engagementId+" userId = "+userId+" referenceId = "+referenceId+" businessType = "+businessType+" name = "+name+" requestlLatLng = "+requestlLatLng+", cachedApiEnabled="+cachedApiEnabled;
+		return "engagementId = "+engagementId+" userId = "+userId+" referenceId = "+referenceId+
+				" businessType = "+businessType+" name = "+name+" requestlLatLng = "+requestlLatLng+
+				", cachedApiEnabled="+cachedApiEnabled;
 	}
 
 	public int getCachedApiEnabled() {

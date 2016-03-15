@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -39,7 +38,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +45,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -84,11 +81,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -121,7 +116,6 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.services.DownloadActivity;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -133,7 +127,6 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -171,7 +164,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView inviteFriendText, notificationCenterText;
 
 	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter;
-	TextView bookingsText;
+	TextView bookingsText, etaTimerText;
 
 	RelativeLayout relativeLayoutSharingRides;
 
@@ -374,6 +367,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
+	public CountDownTimer timer = null;
 
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
@@ -488,6 +482,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 			bookingsText = (TextView) findViewById(R.id.bookingsText);
 			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			etaTimerText = (TextView) findViewById(R.id.ETATimerText);
+			etaTimerText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
 			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
@@ -2455,6 +2452,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					etaTimerText.setVisibility(View.VISIBLE);
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2491,6 +2489,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					etaTimerText.setVisibility(View.GONE);
+					timer.cancel();
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2540,6 +2540,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					etaTimerText.setVisibility(View.GONE);
 
 					driverScheduledRideText.setVisibility(View.GONE);
 
@@ -2606,6 +2607,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					etaTimerText.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2625,6 +2627,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					etaTimerText.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3915,15 +3918,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
 									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
+									long eta = jObj.optLong("eta", 1000000);
 									int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 											Integer.parseInt(Data.dCustomerId), referenceId,
 											userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 											userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
-											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
+											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable,eta);
 
 
+									if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
+										etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
+									}
 									Data.driverRideRequests.clear();
 
 									GCMIntentService.clearNotifications(getApplicationContext());
@@ -7279,4 +7286,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
+
+	public void etaTimer(long eta){
+		timer = new CountDownTimer(eta, 1000) {
+
+			public void onTick(long millisUntilFinished) {
+				SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+				etaTimerText.setText("" + String.format("%02d:%02d",
+						TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+								TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+						TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+								TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+			}
+
+			public void onFinish() {
+			}
+		}.start();
+	}
+
 }
