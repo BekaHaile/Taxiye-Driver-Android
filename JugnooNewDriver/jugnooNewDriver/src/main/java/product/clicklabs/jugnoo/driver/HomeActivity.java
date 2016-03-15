@@ -94,6 +94,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
+import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
@@ -1038,7 +1039,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
-					rejectRequestFunc();
+					rejectRequestFuncCall(Data.openedDriverRideRequest);
 					FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
 				}
 			});
@@ -1446,15 +1447,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				DriverRideRequest driverRideRequest = driverRequestListAdapter
 						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
 								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
-
-				Data.dEngagementId = driverRideRequest.engagementId;
-				Data.dCustomerId = driverRideRequest.customerId;
-				Data.dCustLatLng = driverRideRequest.latLng;
-				Data.openedDriverRideRequest = driverRideRequest;
-
-				rejectRequestFunc();
+				rejectRequestFuncCall(driverRideRequest);
 				FlurryEventLogger.event(RIDE_CANCELLED);
-
 			} else {
 
 			}
@@ -1651,12 +1645,33 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		}
 	}
+	public void rejectRequestFuncCall(DriverRideRequest driverRideRequest) {
+		if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+			new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
+				@Override
+				public void onSuccess(String engagementId) {
+					Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+					GCMIntentService.clearNotifications(getApplicationContext());
+					driverRequestListAdapter.setResults(Data.driverRideRequests);
+				}
+			}).rejectRequestAsync(Data.userData.accessToken,
+					driverRideRequest.customerId,
+					driverRideRequest.engagementId,
+					String.valueOf(driverRideRequest.referenceId));
+		} else{
+			Data.dEngagementId = driverRideRequest.engagementId;
+			Data.dCustomerId = driverRideRequest.customerId;
+			Data.dCustLatLng = driverRideRequest.latLng;
+			Data.openedDriverRideRequest = driverRideRequest;
 
-	public void rejectRequestFunc() {
-		GCMIntentService.clearNotifications(HomeActivity.this);
-		GCMIntentService.stopRing(true);
-		driverRejectRequestAsync(HomeActivity.this);
+			GCMIntentService.clearNotifications(HomeActivity.this);
+			GCMIntentService.stopRing(true);
+			driverRejectRequestAsync(HomeActivity.this);
+		}
 	}
+
+
+
 
 
 	public void sendToFareDetails() {
@@ -3601,18 +3616,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-
 						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
-
-						Data.dEngagementId = driverRideRequest.engagementId;
-						Data.dCustomerId = driverRideRequest.customerId;
-						Data.dCustLatLng = driverRideRequest.latLng;
-						Data.openedDriverRideRequest = driverRideRequest;
-
-						rejectRequestFunc();
+						rejectRequestFuncCall(driverRideRequest);
 						FlurryEventLogger.event(RIDE_CANCELLED);
-
-
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
