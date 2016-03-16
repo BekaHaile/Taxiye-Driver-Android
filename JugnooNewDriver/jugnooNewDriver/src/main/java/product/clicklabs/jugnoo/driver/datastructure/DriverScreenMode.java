@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 public enum DriverScreenMode {
+	D_OFFLINE(-1),
 	D_INITIAL(0), 
 	D_REQUEST_ACCEPT(1),
     D_ARRIVED(2),

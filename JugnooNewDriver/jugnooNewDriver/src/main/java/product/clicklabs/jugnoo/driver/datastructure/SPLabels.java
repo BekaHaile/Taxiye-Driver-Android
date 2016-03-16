@@ -6,7 +6,7 @@ package product.clicklabs.jugnoo.driver.datastructure;
 public class SPLabels {
 
     public static final String SETTINGS_SP = "settingsPref",
-        RECEIVE_REQUESTS = "receiveRequests";
+        RECEIVE_REQUESTS1 = "receiveRequests";
 
 
     // variables for metering service
