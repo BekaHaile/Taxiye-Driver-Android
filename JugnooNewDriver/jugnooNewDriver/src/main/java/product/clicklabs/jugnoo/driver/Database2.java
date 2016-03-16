@@ -1209,7 +1209,7 @@ public class Database2 {																	// class for handling database related 
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-			return 0;
+			return 1;
 		}
 	}
 

@@ -2042,15 +2042,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		@Override
 		public void onClick(View v) {
-			if (myLocation != null) {
-				Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
-				Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-				mapIntent.setPackage("com.google.android.apps.maps");
-				startActivity(mapIntent);
-				Intent intent = new Intent(HomeActivity.this, GeanieView.class);
-				startService(intent);
-			} else {
-				Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
+
+			try {
+				if (myLocation != null) {
+					Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
+					Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+					mapIntent.setPackage("com.google.android.apps.maps");
+					startActivity(mapIntent);
+					Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+					startService(intent);
+				} else {
+					Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	};
@@ -2718,22 +2723,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}, 1000);
 			}
 
-			int rowsAffected = Database2.getInstance(this).updateMetringState(Database2.ON);
+			Database2.getInstance(this).updateMetringState(Database2.ON);
 			Prefs.with(this).save(SPLabels.METERING_STATE, Database2.ON);
-			if (rowsAffected > 0) {
-				startService(new Intent(this, MeteringService.class));
-			} else {
-				Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
-			}
-		} else {
-			int rowsAffected = Database2.getInstance(this).updateMetringState(Database2.OFF);
+			startService(new Intent(this, MeteringService.class));
+
+		}
+		else{
+			Database2.getInstance(this).updateMetringState(Database2.OFF);
 			Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
-			if (rowsAffected > 0) {
-				stopService(new Intent(this, MeteringService.class));
-			} else {
-				Toast.makeText(this, "Some error occured", Toast.LENGTH_SHORT).show();
-			}
-//			Prefs.with(this).save(SPLabels.GPS_STATE, GpsState.ZERO_TWO.getOrdinal());
+			stopService(new Intent(this, MeteringService.class));
+
 		}
 	}
 

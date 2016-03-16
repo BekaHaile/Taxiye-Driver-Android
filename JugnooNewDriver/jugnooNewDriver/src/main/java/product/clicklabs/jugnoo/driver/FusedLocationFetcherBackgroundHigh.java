@@ -122,10 +122,14 @@ public class FusedLocationFetcherBackgroundHigh implements GoogleApiClient.Conne
 	}
 
 	protected void startLocationUpdates(long interval) {
-		createLocationRequest(interval);
-		Intent intent = new Intent(context, FusedLocationReceiverBackgroundHigh.class);
-		locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-		LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
+		try {
+			createLocationRequest(interval);
+			Intent intent = new Intent(context, FusedLocationReceiverBackgroundHigh.class);
+			locationIntent = PendingIntent.getBroadcast(context, LOCATION_PI_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+			LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationrequest, locationIntent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
