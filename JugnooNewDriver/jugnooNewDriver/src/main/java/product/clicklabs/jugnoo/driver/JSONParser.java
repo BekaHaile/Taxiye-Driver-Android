@@ -786,7 +786,7 @@ public class JSONParser implements Constants {
 											customerName = jObject.getString("user_name");
 											customerImage = jObject.getString("user_image");
 											customerPhone = jObject.getString("phone_no");
-											eta = jObject.optLong("eta", 0);
+											eta = jObject.optLong("eta", 120000);
 
 											if(jObject.has("rating")){
 												customerRating = jObject.getString("rating");

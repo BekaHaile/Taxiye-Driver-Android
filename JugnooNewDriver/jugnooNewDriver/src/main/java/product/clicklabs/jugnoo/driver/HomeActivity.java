@@ -484,7 +484,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			etaTimerText = (TextView) findViewById(R.id.ETATimerText);
-			etaTimerText.setTypeface(Data.latoRegular(getApplicationContext()));
+			etaTimerText.setTypeface(Data.digitalRegular(getApplicationContext()));
 
 			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
 			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
@@ -2453,7 +2453,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					etaTimerText.setVisibility(View.VISIBLE);
-
+					if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
+						etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
+					}
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
 
@@ -3928,9 +3930,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable,eta);
 
 
-									if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
-										etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
-									}
+
 									Data.driverRideRequests.clear();
 
 									GCMIntentService.clearNotifications(getApplicationContext());
