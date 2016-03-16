@@ -237,16 +237,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView driverPassengerCallText;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
+	Button driverEngagedMyLocationBtn;
 
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
-	Button driverStartRideMyLocationBtn, driverStartRideBtn, buttonMarkArrived;
+	Button driverStartRideBtn, buttonMarkArrived;
 	Button driverCancelRideBtn;
 
 
 	//In ride layout
-	RelativeLayout driverInRideMainRl;
-	Button driverEndRideMyLocationBtn;
+	LinearLayout driverInRideMainRl;
 	TextView driverIRDistanceText, driverIRDistanceValue, driverIRFareText, driverIRFareValue,
 			driverRideTimeText, driverWaitText, driverWaitValue;
 	PausableChronometer rideTimeChronometer;
@@ -602,12 +602,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
 			driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverFreeRideIcon = (ImageView) findViewById(R.id.driverFreeRideIcon);
+			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
 			driverPassengerRatingValue.setVisibility(View.GONE);
 
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
-			driverStartRideMyLocationBtn = (Button) findViewById(R.id.driverStartRideMyLocationBtn);
 			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
 			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
@@ -617,9 +617,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			//In ride layout
-			driverInRideMainRl = (RelativeLayout) findViewById(R.id.driverInRideMainRl);
-
-			driverEndRideMyLocationBtn = (Button) findViewById(R.id.driverEndRideMyLocationBtn);
+			driverInRideMainRl = (LinearLayout) findViewById(R.id.driverInRideMainRl);
 
 			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
 			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -1593,8 +1591,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				buttonDriverNavigation.setOnClickListener(startNavigation);
-				driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
-				driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverEngagedMyLocationBtn.setOnClickListener(mapMyLocationClick);
 
 			}
 

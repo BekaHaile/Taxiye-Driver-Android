@@ -350,7 +350,7 @@ public class GCMIntentService extends IntentService {
 
 							int flag = jObj.getInt("flag");
 							String title = jObj.optString("title", "");
-							int canStore = jObj.optInt("canStore",0);
+							int canStore = jObj.optInt("canStore", 0);
 
 							if ((PushFlags.REQUEST.getOrdinal() == flag)
 									&&
@@ -631,7 +631,6 @@ public class GCMIntentService extends IntentService {
 										jObj.getDouble("paid_in_cash"),
 										jObj.getDouble("account_balance"));
 
-							savePush(jObj, flag, title, message);
 
 								if (HomeActivity.appInterruptHandler != null) {
 									Intent intent1 = new Intent(this, SharingRidesActivity.class);
@@ -643,6 +642,9 @@ public class GCMIntentService extends IntentService {
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
 										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 							}
+
+							String message1 = jObj.optString("message"," ");
+							savePush(jObj, flag, title, message1);
 
 						} catch (Exception e) {
 							e.printStackTrace();

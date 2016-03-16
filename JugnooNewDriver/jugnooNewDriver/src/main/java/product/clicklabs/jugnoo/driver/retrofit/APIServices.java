@@ -245,6 +245,7 @@ public interface APIServices {
 									   @Field("login_type") String loginType,
 									   Callback<LeaderboardActivityResponse> callback);
 
+	@FormUrlEncoded
 	@POST("/update_driver_location")
 	Response updateDriverLocation(@FieldMap Map<String, String> params);
 

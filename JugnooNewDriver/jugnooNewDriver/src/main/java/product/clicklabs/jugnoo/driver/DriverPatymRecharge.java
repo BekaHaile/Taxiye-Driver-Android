@@ -116,6 +116,12 @@ public class DriverPatymRecharge extends Activity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("500");
+				btnRupee500.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setTextColor(getResources().getColor(R.color.white));
+				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
 
 			}
 		});
@@ -125,7 +131,12 @@ public class DriverPatymRecharge extends Activity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("200");
-				;
+				btnRupee200.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee200.setTextColor(getResources().getColor(R.color.white));
+				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee100.setTextColor(getResources().getColor(R.color.new_orange));
 
 			}
 		});
@@ -135,7 +146,12 @@ public class DriverPatymRecharge extends Activity {
 			@Override
 			public void onClick(View v) {
 				editTextCashAmount.setText("100");
-				;
+				btnRupee100.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				btnRupee100.setTextColor(getResources().getColor(R.color.white));
+				btnRupee200.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee200.setTextColor(getResources().getColor(R.color.new_orange));
+				btnRupee500.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+				btnRupee500.setTextColor(getResources().getColor(R.color.new_orange));
 
 			}
 		});
@@ -274,7 +290,7 @@ public class DriverPatymRecharge extends Activity {
 	}
 
 
-	boolean validAmount(){
+	boolean validAmount() {
 		try {
 			String amountStr = editTextCashAmount.getText().toString().trim();
 			if ("".equalsIgnoreCase(amountStr)) {
@@ -286,6 +302,9 @@ public class DriverPatymRecharge extends Activity {
 					if (amount > 1000) {
 						editTextCashAmount.requestFocus();
 						editTextCashAmount.setError("Please enter less amount");
+					} else if (amount <= 0) {
+						editTextCashAmount.requestFocus();
+						editTextCashAmount.setError("Please enter some amount");
 					} else {
 						return true;
 
@@ -304,7 +323,7 @@ public class DriverPatymRecharge extends Activity {
 		return false;
 	}
 
-	boolean validPhoneNo(){
+	boolean validPhoneNo() {
 		if (editTextPhone.isEnabled()) {
 			String phoneChanged = editTextPhone.getText().toString().trim();
 			if ("".equalsIgnoreCase(phoneChanged)) {
@@ -330,7 +349,6 @@ public class DriverPatymRecharge extends Activity {
 	}
 
 
-
 	void confirmRechargePopup(final Activity activity) {
 		try {
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -352,7 +370,7 @@ public class DriverPatymRecharge extends Activity {
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText("You are recharging " + getResources().getString(R.string.rupee) +" "+ editTextCashAmount.getText() + " for customer with paytm account " + editTextPhone.getText());
+			textMessage.setText("You are recharging " + getResources().getString(R.string.rupee) + " " + editTextCashAmount.getText() + " for customer with paytm account " + editTextPhone.getText());
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
@@ -412,11 +430,11 @@ public class DriverPatymRecharge extends Activity {
 						JSONObject jObj = new JSONObject(jsonString);
 						String message = JSONParser.getServerMessage(jObj);
 						int flag = jObj.getInt("flag");
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", message);
-							} else{
-								DialogPopup.alertPopup(activity, "", message);
-							}
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+							DialogPopup.alertPopup(activity, "", message);
+						} else {
+							DialogPopup.alertPopup(activity, "", message);
+						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
