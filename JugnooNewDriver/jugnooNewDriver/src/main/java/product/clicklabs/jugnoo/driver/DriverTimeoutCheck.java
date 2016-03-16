@@ -15,7 +15,7 @@ public class DriverTimeoutCheck {
 	public void timeoutBuffer(Context context, boolean highPenalty) {
 		int penaltyFactor = 1;
 		try {
-			if(highPenalty){
+			if (highPenalty) {
 				penaltyFactor = Prefs.with(context).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR, 1);
 				Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_VALUE, System.currentTimeMillis() - 5000);
 			}
@@ -30,15 +30,13 @@ public class DriverTimeoutCheck {
 				}
 				Log.i("TimeOutAlarmReceiver", "1");
 
-				if (Prefs.with(context).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, 0) <= Prefs.with(context).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0)) {
-					long timeDiff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.DRIVER_TIMEOUT_TTL, 0);
-					if(Prefs.with(context).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, 0) <= Database2.getInstance(context).getPenalityData(String.valueOf(timeDiff)) ) {
-						Intent timeoutIntent = new Intent(context, DriverTimeoutIntentService.class);
-						context.startService(timeoutIntent);
-					}
+				long timeDiff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.DRIVER_TIMEOUT_TTL, 0);
+				if (Prefs.with(context).getInt(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, 0) <= Database2.getInstance(context).getPenalityData(String.valueOf(timeDiff))) {
+					Intent timeoutIntent = new Intent(context, DriverTimeoutIntentService.class);
+					context.startService(timeoutIntent);
 				}
-				GCMIntentService.cancelUploadPathAlarm(context);
 			}
+			GCMIntentService.cancelUploadPathAlarm(context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

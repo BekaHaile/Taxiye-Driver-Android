@@ -1191,10 +1191,10 @@ public class Database2 {																	// class for handling database related 
 			int count;
 			String[] columns = new String[] { Database2.PENALITY_ID, Database2.PENALITY_TIME, Database2.PENALITY_FACTOR };
 			String selection = Database2.PENALITY_TIME + ">";
-			Cursor cursor = database.rawQuery("select sum("+Database2.PENALITY_FACTOR+") from transaction_table where "+Database2.PENALITY_TIME+" >"+ timediff, null);
+			Cursor cursor = database.rawQuery("select sum("+Database2.PENALITY_FACTOR+") as sum_penalty from "+Database2.TABLE_PENALITY_COUNT+" where "+Database2.PENALITY_TIME+" >"+ timediff, null);
 //			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, selection, new String[]{timediff}, null, null, null);
 			if(cursor.moveToFirst()) {
-				count = cursor.getInt(0);
+				count = cursor.getInt(cursor.getColumnIndex("sum_penalty"));
 				Log.i("DBcount", String.valueOf(count));
 			}else {
 				count = 0;
