@@ -9,11 +9,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.MyApplication;
 
 public class FlurryEventLogger {
 
 	public static void event(String eventName){
 		try{ FlurryAgent.logEvent(eventName); } catch(Exception e){ e.printStackTrace(); }
+
 	}
 
 	public static void appStarted(String deviceToken){
@@ -22,6 +24,12 @@ public class FlurryEventLogger {
 			articleParams.put("device_token", deviceToken);
 			FlurryAgent.logEvent("App started", articleParams);
 		} catch(Exception e){
+			e.printStackTrace();
+		}
+
+		try {
+			MyApplication.getInstance().trackEvent("Driver", "App started", deviceToken);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

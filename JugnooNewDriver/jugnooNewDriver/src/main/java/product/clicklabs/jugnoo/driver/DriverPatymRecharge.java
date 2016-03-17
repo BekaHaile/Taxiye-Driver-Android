@@ -370,7 +370,7 @@ public class DriverPatymRecharge extends Activity {
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText("You are recharging " + getResources().getString(R.string.rupee) + " " + editTextCashAmount.getText() + " for customer with paytm account " + editTextPhone.getText());
+			textMessage.setText("You are recharging " + getResources().getString(R.string.rupee) + " " + editTextCashAmount.getText() + " for customer with paytm account on " + editTextPhone.getText());
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
