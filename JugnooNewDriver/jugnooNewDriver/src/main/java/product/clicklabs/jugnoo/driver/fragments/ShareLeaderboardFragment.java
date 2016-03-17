@@ -146,6 +146,9 @@ public class ShareLeaderboardFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		lbLocationType = LBLocationType.LOCAL;
+		lbTimeType = LBTimeType.DAILY;
+
 		//updateList(LBLocationType.LOCAL, LBTimeType.DAILY);
 
 		return rootView;

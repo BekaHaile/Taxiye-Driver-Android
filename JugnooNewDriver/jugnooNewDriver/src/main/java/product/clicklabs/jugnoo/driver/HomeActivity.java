@@ -738,7 +738,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			((TextView) findViewById(R.id.textViewRateYourCustomer)).setTypeface(Data.latoRegular(this));
 			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
 			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
-			ratingBarFeedbackSide.setEnabled(false);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
 			reviewSkipBtn.setTypeface(Data.latoRegular(this));
 
@@ -1456,8 +1455,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			lastLocation = null;
 			lastLocationTime = System.currentTimeMillis();
 
-			if (Data.userData.remainigPenaltyPeriod > 0) {
-				driverTimeOutPopup(HomeActivity.this, Data.userData.remainigPenaltyPeriod);
+			try {
+				if(Data.userData != null) {
+					if (Data.userData.remainigPenaltyPeriod > 0) {
+						driverTimeOutPopup(HomeActivity.this, Data.userData.remainigPenaltyPeriod);
+					}
+				} else{
+					finish();
+					startActivity(new Intent(this, SplashNewActivity.class));
+				}
+			} catch (Exception e){
+				e.printStackTrace();
 			}
 
 		} catch (Exception e) {
@@ -3916,7 +3924,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
 									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
-									long eta = jObj.optLong("eta", 1000000);
+									long eta = jObj.optLong("eta", 240000);
 									int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
@@ -6158,6 +6166,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverTimeOutPopup(HomeActivity.this, timeoutInterwal);
 			}
 		});
+	}
+
+	@Override
+	public void fetchHeatMapDataCall(Context context) {
+		fetchHeatMapData(this);
 	}
 
 	@Override

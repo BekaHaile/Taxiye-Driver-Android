@@ -588,7 +588,11 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
 								}
-							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
+							} else if (PushFlags.UPDATE_HEAT_MAP.getOrdinal() == flag) {
+								if (HomeActivity.appInterruptHandler != null) {
+								HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
+								}
+							}else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble("op_drop_latitude");
 								double dropLongitude = jObj.getDouble("op_drop_longitude");
 								String engagementId = jObj.getString("engagement_id");
@@ -617,7 +621,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.GET_JUGNOO_AUDIO.getOrdinal() == flag) {
 									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
 									int downloadList = 2;
-									intent1.putExtra("downloadOnly",downloadList);
+									intent1.putExtra("downloadOnly", downloadList);
 									startService(intent1);
 
 
