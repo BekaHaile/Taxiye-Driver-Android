@@ -14,6 +14,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.PenalityData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -99,6 +100,12 @@ public class Database2 {																	// class for handling database related 
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
+
+
+	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
+	private static final String PENALITY_ID = "penality_id";
+	private static final String PENALITY_TIME = "penality_time";
+	private static final String PENALITY_FACTOR= "penality_factor";
 	
 
 	public static final String ON = "on", OFF = "off";
@@ -223,6 +230,12 @@ public class Database2 {																	// class for handling database related 
 				+ RIDE_DATA_LAT + " TEXT, " 
 				+ RIDE_DATA_LNG + " TEXT, " 
 				+ RIDE_DATA_T + " TEXT" 
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
+				+ PENALITY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ PENALITY_TIME + " TEXT, "
+				+ PENALITY_FACTOR + " REAL "
 				+ ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
@@ -651,7 +664,7 @@ public class Database2 {																	// class for handling database related 
 			long timeInMillis = System.currentTimeMillis();
 			deleteDriverLastLocationTime();
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.LAST_LOCATION_TIME, ""+timeInMillis);
+			contentValues.put(Database2.LAST_LOCATION_TIME, "" + timeInMillis);
 			database.insert(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, contentValues);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -1159,6 +1172,56 @@ public class Database2 {																	// class for handling database related 
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
 			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
 			createAllTables(database);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+	public int getPenalityData(String timediff) {
+		try {
+			int count;
+			String[] columns = new String[] { Database2.PENALITY_ID, Database2.PENALITY_TIME, Database2.PENALITY_FACTOR };
+			String selection = Database2.PENALITY_TIME + ">";
+			Cursor cursor = database.rawQuery("select sum("+Database2.PENALITY_FACTOR+") as sum_penalty from "+Database2.TABLE_PENALITY_COUNT+" where "+Database2.PENALITY_TIME+" >"+ timediff, null);
+//			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, selection, new String[]{timediff}, null, null, null);
+			if(cursor.moveToFirst()) {
+				count = cursor.getInt(cursor.getColumnIndex("sum_penalty"));
+				Log.i("DBcount", String.valueOf(count));
+			}else {
+				count = 0;
+			}
+			cursor.close();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void insertPenalityData(String penalityTime, double penalityFactor) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.PENALITY_TIME, penalityTime);
+			contentValues.put(Database2.PENALITY_FACTOR, penalityFactor);
+			database.insert(Database2.TABLE_PENALITY_COUNT, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deletePenalityData(){
+		try{
+			database.delete(Database2.TABLE_PENALITY_COUNT, null, null);
 		} catch(Exception e){
 			e.printStackTrace();
 		}

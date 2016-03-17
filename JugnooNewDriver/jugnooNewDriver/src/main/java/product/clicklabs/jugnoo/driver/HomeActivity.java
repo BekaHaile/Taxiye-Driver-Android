@@ -2112,7 +2112,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 			}
-//			temptext.setText(" "+Prefs.with(this).getInt(SPLabels.INGNORE_RIDEREQUEST_COUNT, 0));
+//			long timeDiff = System.currentTimeMillis() - Prefs.with(this).getLong(SPLabels.DRIVER_TIMEOUT_TTL, 0);
+//			temptext.setText(" "+Database2.getInstance(this).getPenalityData(String.valueOf(timeDiff)));
 			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 			if (Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6) {
 				driverRatingRl.setVisibility(View.VISIBLE);
