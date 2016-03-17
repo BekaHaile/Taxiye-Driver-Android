@@ -360,10 +360,24 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:id="@+id/customerInfoLine"
                         android:layout_width="match_parent"
                         android:layout_height="6px"
                         android:layout_below="@+id/driverPassengerInfoRl"
                         android:background="@drawable/shadow_down"/>
+
+                    <TextView
+                        android:id="@+id/ETATimerText"
+                        android:layout_width="270px"
+                        android:layout_height="100px"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/customerInfoLine"
+                        android:text="00:00"
+                        android:textSize="72px"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:background="@color/menu_black"
+                        android:tag="mwar" />
 
                     <ImageView
                         android:id="@+id/driverFreeRideIcon"
