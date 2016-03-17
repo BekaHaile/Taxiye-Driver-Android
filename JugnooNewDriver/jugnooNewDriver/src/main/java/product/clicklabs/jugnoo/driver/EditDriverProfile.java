@@ -41,7 +41,7 @@ public class EditDriverProfile extends Activity {
 	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;
-	ImageView imageViewEditName, imageViewEditPhone;
+	ImageView  imageViewEditPhone;
 	TextView title;
 	ScrollView scrollView;
 

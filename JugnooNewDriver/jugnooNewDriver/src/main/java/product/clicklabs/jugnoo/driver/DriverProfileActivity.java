@@ -32,7 +32,7 @@ import retrofit.mime.TypedByteArray;
 public class DriverProfileActivity extends Activity {
 
 	LinearLayout relative;
-	RelativeLayout driverDetailsRLL, layoutEditProfile;
+	RelativeLayout driverDetailsRLL,driverDetailsRL;
 	Button backBtn;
 	TextView title;
 
@@ -90,7 +90,7 @@ public class DriverProfileActivity extends Activity {
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
-		layoutEditProfile = (RelativeLayout) findViewById(R.id.layoutEditProfile);
+		driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);
 
 		new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
@@ -138,7 +138,7 @@ public class DriverProfileActivity extends Activity {
 
 		getProfileInfoAsync(DriverProfileActivity.this);
 
-		layoutEditProfile.setOnClickListener(new View.OnClickListener() {
+		driverDetailsRL.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {

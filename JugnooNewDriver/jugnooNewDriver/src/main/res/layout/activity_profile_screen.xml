@@ -165,7 +165,8 @@
                android:id="@+id/layoutEditProfile"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               android:layout_below="@+id/textViewRankOverall">
+               android:layout_below="@+id/textViewRankOverall"
+               android:visibility="gone">
             <TextView
                 android:id="@+id/textViewEditProfile"
                 android:layout_width="wrap_content"
