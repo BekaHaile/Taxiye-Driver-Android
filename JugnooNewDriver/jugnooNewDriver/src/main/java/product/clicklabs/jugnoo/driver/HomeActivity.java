@@ -175,7 +175,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout callUsRl;
 	TextView callUsText;
 
-	RelativeLayout paytmRecharge;
+	RelativeLayout paytmRechargeRl;
 	TextView paytmRechargeText;
 
 	RelativeLayout languagePrefrencesRl;
@@ -501,7 +501,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
-			paytmRecharge = (RelativeLayout) findViewById(R.id.paytmRecharge);
+			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
 			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -956,7 +956,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
-			paytmRecharge.setOnClickListener(new OnClickListener() {
+			paytmRechargeRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, DriverPatymRecharge.class));
@@ -1016,11 +1016,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+
 			if (link.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				logoutRl.setVisibility(View.GONE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
 			}
+
+			if (1==Data.userData.paytmRechargeEnabled) {
+				paytmRechargeRl.setVisibility(View.VISIBLE);
+			} else {
+				paytmRechargeRl.setVisibility(View.GONE);
+			}
+
 
 
 			menuLayout.setOnClickListener(new OnClickListener() {

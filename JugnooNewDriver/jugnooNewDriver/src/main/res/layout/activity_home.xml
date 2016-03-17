@@ -2364,7 +2364,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/paytmRecharge"
+                    android:id="@+id/paytmRechargeRl"
                     android:layout_width="match_parent"
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
