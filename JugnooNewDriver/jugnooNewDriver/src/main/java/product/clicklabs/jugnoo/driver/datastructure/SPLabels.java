@@ -53,6 +53,7 @@ public class SPLabels {
     public static final String DRIVER_C_PICKUP_LATITUDE = "driverCPickupLatitude";
     public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
     public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
+    public static final String NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     public static final String DOWNLOADED_FILE_ID = "downloadFileId";
     public static final String INGNORE_RIDEREQUEST_COUNT = "ignoreRideRequestCount";
 
@@ -63,5 +64,6 @@ public class SPLabels {
 	public static final String DRIVER_TIMEOUT_FLAG = "driverTimeoutFlag";
     public static final String DRIVER_TIMEOUT_FACTOR = "driverTimeoutFactor";
     public static final String DRIVER_TIMEOUT_TTL = "driverTimeoutTtl";
+    public static final String CUSTOMER_PHONE_NUMBER = "customerPhoneNumer";
 
 }

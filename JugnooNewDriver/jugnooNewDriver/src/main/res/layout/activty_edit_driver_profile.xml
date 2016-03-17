@@ -14,7 +14,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/bg_grey_opaque"
+        android:background="@color/menu_black"
         android:splitMotionEvents="false">
 
         <Button
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:text="@string/profile"
             android:textColor="@color/white"
-            android:textSize="48px"/>
+            android:textSize="40px"/>
 
     </RelativeLayout>
 
@@ -47,7 +47,7 @@
             android:id="@+id/driverDetailsRL"
             android:layout_width="match_parent"
             android:layout_height="350px"
-            android:background="@drawable/driver_profile_bg">
+            android:background="@drawable/profile_pic_bg_image">
 
             <RelativeLayout
                 android:id="@+id/profileRl"
@@ -102,7 +102,7 @@
                 android:layout_marginBottom="32px"
                 android:layout_marginLeft="42px"
                 android:text="@string/info"
-                android:textColor="@color/blue_btn_pressed"
+                android:textColor="@color/new_orange"
                 android:textSize="48px"/>
 
 
@@ -127,7 +127,7 @@
                     android:capitalize="words"
                     android:hint="Name"
                     android:singleLine="true"
-                    android:textColor="@color/black_text"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
                     android:textSize="42px"/>
@@ -140,7 +140,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="42px"
-                    android:background="@drawable/edit_icon_blue"
+                    android:background="@drawable/edit_pencil_icon"
                     android:tag="mwar"/>
 
             </RelativeLayout>
@@ -169,7 +169,7 @@
                     android:inputType="number"
                     android:maxLength="14"
                     android:singleLine="true"
-                    android:textColor="@color/black_text"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
                     android:textSize="42px"/>
@@ -181,7 +181,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="42px"
-                    android:background="@drawable/edit_icon_blue"
+                    android:background="@drawable/edit_pencil_icon"
                     android:tag="mwar"/>
 
             </RelativeLayout>

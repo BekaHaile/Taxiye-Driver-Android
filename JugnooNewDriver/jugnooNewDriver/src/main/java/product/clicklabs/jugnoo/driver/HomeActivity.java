@@ -21,7 +21,6 @@ import android.os.AsyncTask;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -39,7 +38,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -47,7 +45,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -84,11 +81,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -121,7 +116,6 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.services.DownloadActivity;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -133,7 +127,6 @@ import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.KeyBoardStateHandler;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -164,14 +157,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn, RelativeLayoutDailyHours;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutMealsOn, relativeLayoutFatafatOn, relativeLayoutSharingOn;
 	ImageView imageViewAutosOnToggle, imageViewMealsOnToggle, imageViewFatafatOnToggle, imageViewSharingOnToggle;
 
-	RelativeLayout inviteFriendRl, driverRatingRl;
-	TextView inviteFriendText;
+	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl;
+	TextView inviteFriendText, notificationCenterText;
 
-	RelativeLayout bookingsRl;
-	TextView bookingsText;
+	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter;
+	TextView bookingsText, etaTimerText;
 
 	RelativeLayout relativeLayoutSharingRides;
 
@@ -181,6 +174,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	RelativeLayout callUsRl;
 	TextView callUsText;
+
+	RelativeLayout paytmRechargeRl;
+	TextView paytmRechargeText;
 
 	RelativeLayout languagePrefrencesRl;
 	TextView languagePrefrencesText;
@@ -195,8 +191,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	Button menuBtn;
 	Button checkServerBtn;
 	ImageView imageViewTitleBarDEI;
-	TextView textViewTitleBarDEI, textViewTitleBarOvalText, temptext;
-	ProgressBar progressBarDriverOnlineHours;
+	TextView textViewTitleBarDEI;
+//	ProgressBar progressBarDriverOnlineHours;
 
 
 	//Map layout
@@ -234,16 +230,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView driverPassengerCallText;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
+	Button driverEngagedMyLocationBtn;
 
 	//Start ride layout
 	RelativeLayout driverStartRideMainRl;
-	Button driverStartRideMyLocationBtn, driverStartRideBtn, buttonMarkArrived;
+	Button driverStartRideBtn, buttonMarkArrived;
 	Button driverCancelRideBtn;
 
 
 	//In ride layout
-	RelativeLayout driverInRideMainRl;
-	Button driverEndRideMyLocationBtn;
+	LinearLayout driverInRideMainRl;
 	TextView driverIRDistanceText, driverIRDistanceValue, driverIRFareText, driverIRFareValue,
 			driverRideTimeText, driverWaitText, driverWaitValue;
 	PausableChronometer rideTimeChronometer;
@@ -306,7 +302,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ScrollView scrollViewEndRide;
 	LinearLayout linearLayoutEndRideMain;
-	TextView textViewScroll;
+	TextView textViewScroll, textViewNotificationValue;
 
 
 	// data variables declaration
@@ -371,6 +367,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public static final long LOCATION_UPDATE_TIME_PERIOD = 10000; //in milliseconds
 
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
+	public CountDownTimer timer = null;
 
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
@@ -451,7 +448,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
-			RelativeLayoutDailyHours = (RelativeLayout) findViewById(R.id.RelativeLayoutDailyHours);
+//			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 //			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
 //			textViewDEI.setTypeface(Data.latoRegular(this));
 
@@ -477,9 +474,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
+			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
+			notificationCenterText.setTypeface(Data.latoRegular(getApplicationContext()));
+
 			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
+			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 			bookingsText = (TextView) findViewById(R.id.bookingsText);
 			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			etaTimerText = (TextView) findViewById(R.id.ETATimerText);
+			etaTimerText.setTypeface(Data.digitalRegular(getApplicationContext()));
 
 			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
 			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
@@ -495,6 +500,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
+			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
+			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
@@ -513,13 +522,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			menuBtn = (Button) findViewById(R.id.menuBtn);
 			checkServerBtn = (Button) findViewById(R.id.checkServerBtn);
 			imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
-			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
+//			progressBarDriverOnlineHours = (ProgressBar) findViewById(R.id.progressBarDriverOnlineHours);
 			textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
 			textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-//			temptext = (TextView) findViewById(R.id.temptext);
-//			temptext.setTypeface(Data.latoRegular(this));
-			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
-			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
+//			textViewTitleBarOvalText = (TextView) findViewById(R.id.textViewTitleBarOvalText);
+//			textViewTitleBarOvalText.setTypeface(Data.latoRegular(this));
+			textViewNotificationValue = (TextView) findViewById(R.id.textViewNotificationValue);
+			textViewNotificationValue.setTypeface(Data.latoRegular(this));
+			textViewNotificationValue.setVisibility(View.GONE);
+
 
 
 			menuBtn.setVisibility(View.VISIBLE);
@@ -588,12 +599,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
 			driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverFreeRideIcon = (ImageView) findViewById(R.id.driverFreeRideIcon);
+			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
 			driverPassengerRatingValue.setVisibility(View.GONE);
 
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
-			driverStartRideMyLocationBtn = (Button) findViewById(R.id.driverStartRideMyLocationBtn);
 			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
 			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
@@ -603,9 +614,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			//In ride layout
-			driverInRideMainRl = (RelativeLayout) findViewById(R.id.driverInRideMainRl);
-
-			driverEndRideMyLocationBtn = (Button) findViewById(R.id.driverEndRideMyLocationBtn);
+			driverInRideMainRl = (LinearLayout) findViewById(R.id.driverInRideMainRl);
 
 			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
 			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -781,7 +790,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
-			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll, new KeyBoardStateHandler() {
+			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
+					new KeyboardLayoutListener.KeyBoardStateHandler() {
 				@Override
 				public void keyboardOpened() {
 
@@ -889,6 +899,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+			notificationCenterRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+				}
+			});
+
+			RelativeLayoutNotificationCenter.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+				}
+			});
+
 
 			driverImageRL.setOnClickListener(new OnClickListener() {
 
@@ -929,6 +953,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
                     Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
 					FlurryEventLogger.event(CALL_US);
+				}
+			});
+
+			paytmRechargeRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverPatymRecharge.class));
 				}
 			});
 
@@ -985,11 +1016,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
 			String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+
 			if (link.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				logoutRl.setVisibility(View.GONE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
 			}
+
+			if (1==Data.userData.paytmRechargeEnabled) {
+				paytmRechargeRl.setVisibility(View.VISIBLE);
+			} else {
+				paytmRechargeRl.setVisibility(View.GONE);
+			}
+
 
 
 			menuLayout.setOnClickListener(new OnClickListener() {
@@ -1200,6 +1239,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				}
 			});
+
 
 
 			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
@@ -1556,8 +1596,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverInitialMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				driverRequestAcceptMyLocationBtn.setOnClickListener(mapMyLocationClick);
 				buttonDriverNavigation.setOnClickListener(startNavigation);
-				driverStartRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
-				driverEndRideMyLocationBtn.setOnClickListener(mapMyLocationClick);
+				driverEngagedMyLocationBtn.setOnClickListener(mapMyLocationClick);
 
 			}
 
@@ -1882,29 +1921,34 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			public void run() {
 				DialogPopup.dismissLoadingDialog();
 				try {
-					if (Data.userData != null) {
-						if (1 == Data.userData.autosAvailable) {
-							imageViewAutosOnToggle.setImageResource(R.drawable.on);
-						} else {
-							imageViewAutosOnToggle.setImageResource(R.drawable.off);
+					if(Data.userData != null){
+						if(1 == Data.userData.autosAvailable){
+							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+						}
+						else{
+							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
-						if (1 == Data.userData.mealsAvailable) {
-							imageViewMealsOnToggle.setImageResource(R.drawable.on);
-						} else {
-							imageViewMealsOnToggle.setImageResource(R.drawable.off);
+						if(1 == Data.userData.mealsAvailable){
+							imageViewMealsOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+						}
+						else{
+							imageViewMealsOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
-						if (1 == Data.userData.fatafatAvailable) {
-							imageViewFatafatOnToggle.setImageResource(R.drawable.on);
-						} else {
-							imageViewFatafatOnToggle.setImageResource(R.drawable.off);
+						if(1 == Data.userData.fatafatAvailable){
+							imageViewFatafatOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+						}
+						else{
+							imageViewFatafatOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
-						if (1 == Data.userData.sharingAvailable) {
-							imageViewSharingOnToggle.setImageResource(R.drawable.on);
-						} else {
-							imageViewSharingOnToggle.setImageResource(R.drawable.off);
+						if(1 == Data.userData.sharingAvailable){
+							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+						}
+						else{
+							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+
 						}
 
 						if (!checkIfDriverOnline()) {
@@ -2112,9 +2156,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textViewTitleBarDEI.setText(Data.userData.deiValue);
 				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
 			}
-//			long timeDiff = System.currentTimeMillis() - Prefs.with(this).getLong(SPLabels.DRIVER_TIMEOUT_TTL, 0);
+
+// long timeDiff = System.currentTimeMillis() - Prefs.with(this).getLong(SPLabels.DRIVER_TIMEOUT_TTL, 0);
 //			temptext.setText(" "+Database2.getInstance(this).getPenalityData(String.valueOf(timeDiff)));
-			textViewTitleBarOvalText.setText(Data.userData.driverOnlineHours);
 			if (Data.userData.showDriverRating > 0 && Data.userData.showDriverRating < 6) {
 				driverRatingRl.setVisibility(View.VISIBLE);
 				ratingBarFeedbackSide.setRating((float) Data.userData.showDriverRating);
@@ -2123,7 +2167,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				driverRatingRl.setVisibility(View.GONE);
 			}
 
-		} catch (Exception e) {
+			int unreadNotificationsCount = Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0);
+			if(unreadNotificationsCount > 0){
+				textViewNotificationValue.setVisibility(View.VISIBLE);
+				textViewNotificationValue.setText("" + unreadNotificationsCount);
+			}
+			else{
+				textViewNotificationValue.setVisibility(View.GONE);
+			}
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
@@ -2310,7 +2362,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			switch (mode) {
 
 				case D_INITIAL:
-					getDriverOnlineHours(HomeActivity.this);
+//					getDriverOnlineHours(HomeActivity.this);
 					updateDriverServiceFast("no");
 
 					textViewDriverInfo.setVisibility(View.GONE);
@@ -2405,7 +2457,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
-
+					etaTimerText.setVisibility(View.VISIBLE);
+					if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
+						etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
+					}
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
 
@@ -2441,6 +2496,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					etaTimerText.setVisibility(View.GONE);
+					timer.cancel();
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2490,6 +2547,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					etaTimerText.setVisibility(View.GONE);
 
 					driverScheduledRideText.setVisibility(View.GONE);
 
@@ -2556,6 +2614,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					etaTimerText.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2575,6 +2634,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					etaTimerText.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3385,7 +3445,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
 				textViewOtherRequestDetails, textViewRequestFareFactor;
 		Button buttonAcceptRide, buttonCancelRide;
-		ImageView imageViewRequestType;
+//		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
 	}
@@ -3453,7 +3513,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime);
 				holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
+//				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails);
 				holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor);
@@ -3462,6 +3522,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
@@ -3503,15 +3564,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 
-			if (BusinessType.AUTOS == driverRideRequest.businessType) {
-				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
+			if(BusinessType.AUTOS == driverRideRequest.businessType){
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
 				holder.textViewOtherRequestDetails.setVisibility(View.GONE);
-			} else if (BusinessType.MEALS == driverRideRequest.businessType) {
-				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
+			}
+			else if(BusinessType.MEALS == driverRideRequest.businessType){
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
-				holder.textViewOtherRequestDetails.setText("Ride Time: " + ((MealRideRequest) driverRideRequest).rideTime);
-			} else if (BusinessType.FATAFAT == driverRideRequest.businessType) {
-				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
+				holder.textViewOtherRequestDetails.setText("Ride Time: "+((MealRideRequest)driverRideRequest).rideTime);
+			}
+			else if(BusinessType.FATAFAT == driverRideRequest.businessType){
+//				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
 				holder.textViewOtherRequestDetails.setText("Cash Needed: Rs. " + ((FatafatRideRequest) driverRideRequest).orderAmount);
 			}
@@ -3627,50 +3690,56 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void getDriverOnlineHours(final Activity activity) {
-		try {
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
-				textViewTitleBarOvalText.setVisibility(View.GONE);
-				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						try {
-							progressBarDriverOnlineHours.setVisibility(View.GONE);
-							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									String onlineHours = jObj.getString("driver_online_hours");
-									Log.i("Online hours", onlineHours);
-									if (Data.userData != null) {
-										Data.userData.driverOnlineHours = onlineHours;
-										setUserData();
-									}
-								}
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
 
-					@Override
-					public void failure(RetrofitError error) {
-						progressBarDriverOnlineHours.setVisibility(View.GONE);
-						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-					}
-				});
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			progressBarDriverOnlineHours.setVisibility(View.GONE);
-			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-		}
 
-	}
+
+
+
+//	public void getDriverOnlineHours(final Activity activity) {
+//		try {
+//			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+//				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
+//				textViewTitleBarOvalText.setVisibility(View.GONE);
+//				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
+//					@Override
+//					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+//						try {
+//							progressBarDriverOnlineHours.setVisibility(View.GONE);
+//							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+//							JSONObject jObj;
+//							jObj = new JSONObject(jsonString);
+//							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+//							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+//								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+//									String onlineHours = jObj.getString("driver_online_hours");
+//									Log.i("Online hours",onlineHours);
+//									if(Data.userData != null) {
+//										Data.userData.driverOnlineHours = onlineHours;
+//										setUserData();
+//									}
+//								}
+//							}
+//						} catch (Exception exception) {
+//							exception.printStackTrace();
+//						}
+//					}
+//
+//					@Override
+//					public void failure(RetrofitError error) {
+//						progressBarDriverOnlineHours.setVisibility(View.GONE);
+//						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//					}
+//				});
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			progressBarDriverOnlineHours.setVisibility(View.GONE);
+//			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
+//		}
+//
+//	}
+
 
 
 //	Retrofit
@@ -3847,13 +3916,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
 									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
+									long eta = jObj.optLong("eta", 1000000);
 									int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 											Integer.parseInt(Data.dCustomerId), referenceId,
 											userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 											userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
-											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
+											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable,eta);
+
 
 
 									Data.driverRideRequests.clear();
@@ -4262,6 +4333,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 						}
 						new DriverTimeoutCheck().clearCount(activity);
+						Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, Data.assignedCustomerInfo.phoneNumber);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -7210,4 +7282,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
+
+	public void etaTimer(long eta){
+		timer = new CountDownTimer(eta, 1000) {
+
+			public void onTick(long millisUntilFinished) {
+				SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
+				etaTimerText.setText("" + String.format("%02d:%02d",
+						TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) - TimeUnit.HOURS.toMinutes(
+								TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+						TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
+								TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+			}
+
+			public void onFinish() {
+			}
+		}.start();
+	}
+
 }

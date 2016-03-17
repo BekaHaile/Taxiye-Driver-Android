@@ -14,7 +14,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/bg_grey_opaque"
+        android:background="@color/menu_black"
         android:splitMotionEvents="false" >
 
         <Button
@@ -33,36 +33,36 @@
             android:gravity="center"
             android:text="@string/profile"
             android:textColor="@color/white"
-            android:textSize="48px" />
+            android:textSize="40px" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="15px"
-            android:layout_marginRight="20px"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginTop="15px"-->
+            <!--android:layout_marginRight="20px"-->
+            <!--android:orientation="horizontal">-->
 
-            <ImageView
-                android:id="@+id/imageViewTitleBarDEI"
-                android:layout_width="53px"
-                android:layout_height="53px"
-                android:src="@drawable/ic_dei"
-                android:tag="mwar"
-                android:layout_marginRight="10px"
-                />
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewTitleBarDEI"-->
+                <!--android:layout_width="53px"-->
+                <!--android:layout_height="53px"-->
+                <!--android:src="@drawable/ic_dei"-->
+                <!--android:tag="mwar"-->
+                <!--android:layout_marginRight="10px"-->
+                <!--/>-->
 
-            <TextView
-                android:id="@+id/textViewTitleBarDEI"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="4.5"
-                android:textColor="@color/white"
-                android:textSize="38px"/>
+            <!--<TextView-->
+                <!--android:id="@+id/textViewTitleBarDEI"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center"-->
+                <!--android:text="4.5"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="38px"/>-->
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
     </RelativeLayout>
 
 
@@ -74,7 +74,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="350px"
-        android:background="@drawable/driver_profile_bg"
+        android:background="@drawable/profile_pic_bg_image"
         android:id="@+id/driverDetailsRL">
 
         <RelativeLayout
@@ -189,6 +189,7 @@
                 android:tag="mwar"/>
            </RelativeLayout>
 
+
         </RelativeLayout>
 
 
@@ -204,37 +205,35 @@
             android:layout_marginLeft="24px"
             android:layout_marginRight="24px"
             android:layout_marginTop="55px"
-            android:layout_below="@+id/driverDetailsRL"
-            android:background="@drawable/background_grey_rounded_blue_border">
+            android:layout_below="@+id/driverDetailsRL">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="117px">
+                android:layout_height="120px">
 
                 <TextView
                     android:id="@+id/textViewmonthlyText"
-                    android:layout_width="295px"
+                    android:layout_width="wrap_content"
                     android:gravity="center"
                     android:layout_height="65px"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:text="@string/monthly"
-                    android:textColor="@color/white"
-                    android:background="@color/grey_dark_less"
-                    android:textSize="42px" />
+                    android:textColor="@color/black"
+                    android:textSize="48px" />
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal0"
-                android:background="@color/blue_btn_pressed"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:id="@+id/imageViewHorizontal0"-->
+                <!--android:background="@color/blue_btn_pressed"/>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="117px">
+                android:layout_height="120px">
 
             <TextView
                 android:id="@+id/textViewMonthlyText"
@@ -244,7 +243,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="42px"
                 android:text="@string/earnings"
-                android:textColor="@color/black_grey"
+                android:textColor="@color/black"
                 android:textSize="40px" />
 
             <TextView
@@ -255,7 +254,7 @@
                 android:layout_centerVertical="true"
                 android:text="0000"
                 android:layout_marginRight="42px"
-                android:textColor="@color/blue_btn_pressed"
+                android:textColor="@color/black"
                 android:textSize="40px" />
 
             </RelativeLayout>
@@ -265,11 +264,11 @@
                 android:layout_height="2px"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/imageViewHorizontal1"
-                android:background="@color/blue_btn_pressed"/>
+                android:background="@color/black"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="117px">
+                android:layout_height="120px">
 
                 <TextView
                     android:id="@+id/textViewRidesTakenText"
@@ -279,7 +278,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
                     android:text="@string/rides_taken"
-                    android:textColor="@color/black_grey"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
                 <TextView
@@ -290,7 +289,7 @@
                     android:layout_centerVertical="true"
                     android:text="0000"
                     android:layout_marginRight="42px"
-                    android:textColor="@color/blue_btn_pressed"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
             </RelativeLayout>
@@ -299,11 +298,11 @@
                 android:layout_height="2px"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/imageViewHorizontal3"
-                android:background="@color/blue_btn_pressed"/>
+                android:background="@color/black"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="117px">
+                android:layout_height="120px">
 
                 <TextView
                     android:id="@+id/textViewRidesMissedText"
@@ -313,7 +312,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
                     android:text="@string/rides_cancelled"
-                    android:textColor="@color/black_grey"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
                 <TextView
@@ -324,7 +323,7 @@
                     android:layout_centerVertical="true"
                     android:text="0000"
                     android:layout_marginRight="42px"
-                    android:textColor="@color/blue_btn_pressed"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
             </RelativeLayout>
@@ -334,11 +333,11 @@
                 android:layout_height="2px"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/imageViewHorizontal2"
-                android:background="@color/blue_btn_pressed"/>
+                android:background="@color/black"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="117px">
+                android:layout_height="120px">
 
                 <TextView
                     android:id="@+id/textViewRidesCancelledText"
@@ -348,7 +347,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
                     android:text="@string/rides_missed"
-                    android:textColor="@color/black_grey"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
                 <TextView
@@ -359,18 +358,18 @@
                     android:layout_centerVertical="true"
                     android:text="0000"
                     android:layout_marginRight="42px"
-                    android:textColor="@color/blue_btn_pressed"
+                    android:textColor="@color/black"
                     android:textSize="40px" />
 
             </RelativeLayout>
 
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/imageViewHorizontal4"
-                android:background="@color/blue_btn_pressed"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:id="@+id/imageViewHorizontal4"-->
+                <!--android:background="@color/black"/>-->
 
             <RelativeLayout
                 android:layout_width="match_parent"

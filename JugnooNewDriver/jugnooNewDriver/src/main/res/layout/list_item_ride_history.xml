@@ -12,6 +12,7 @@
         android:layout_width="fill_parent"
         android:id="@+id/rideHistoryItem"
         android:layout_height="300px"
+        android:background="@drawable/text_box_icon"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -19,6 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/RideDetails"
+            android:layout_marginLeft="40px"
             android:layout_gravity="center_vertical"
             >
 
@@ -35,7 +37,7 @@
                     android:layout_height="30px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15px"
-                    android:src="@drawable/time"
+                    android:src="@drawable/date_orange_icon"
                     android:tag="mwar"/>
 
                 <TextView
@@ -125,12 +127,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="300px"
+            android:layout_width="290px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="10px"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/background_white_rounded_black_border">
+            android:background="@drawable/background_white_rounded_orange_bordered">
 
             <TextView
                 android:id="@+id/textViewActualFareFare"
@@ -139,14 +141,14 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/rupee_zero_zero"
-                android:textColor="@color/blue_btn"
+                android:textColor="@color/new_orange"
                 android:textSize="55px"/>
 
 
             <ImageView
                 android:layout_width="300px"
                 android:layout_height="2px"
-                android:background="@color/black"/>
+                android:background="@color/new_orange"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,7 +170,7 @@
                     android:singleLine="true"
                     android:text="@string/rupee_zero_zero"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
                 <TextView
                     android:id="@+id/textViewCustomerPaidtext"
                     android:layout_width="150px"
@@ -188,7 +190,7 @@
                     android:layout_height="match_parent"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/imageViewVertical"
-                    android:background="@color/black"/>
+                    android:background="@color/new_orange"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -205,7 +207,7 @@
                     android:layout_marginTop="10px"
                     android:text="@string/rupee_zero_zero"
                     android:textColor="@color/bg_grey_opaque"
-                    android:textSize="30px"/>
+                    android:textSize="28px"/>
 
                 <TextView
                     android:id="@+id/textViewBalanceText"
@@ -227,12 +229,12 @@
     </LinearLayout>
 
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="10px"
-        android:layout_marginTop="0px"
-        android:layout_below="@+id/rideHistoryItem"
-        android:background="@drawable/shadow_up"/>
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="10px"-->
+        <!--android:layout_marginTop="0px"-->
+        <!--android:layout_below="@+id/rideHistoryItem"-->
+        <!--android:background="@drawable/shadow_up"/>-->
 
 
 

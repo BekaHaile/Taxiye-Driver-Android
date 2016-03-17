@@ -5,6 +5,9 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
@@ -161,7 +164,7 @@ public interface APIServices {
 													Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/add_money_to_wallet")
+	@POST("/initiate_user_paytm_recharge")
 	void addCustomerCashRetro(@FieldMap Map<String, String> params,
 							  Callback<RegisterScreenResponse> callback);
 
@@ -229,6 +232,18 @@ public interface APIServices {
 	@POST("/update_user_profile")
 	void updateUserProfileAPIRetroo(@FieldMap Map<String, String> params,
 									Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/show/leader_board")
+	void leaderboardServerCall(@Field("access_token") String accessToken,
+							   @Field("client_id") String clientId,
+							   Callback<NewLeaderBoard> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/referrals/get_activity")
+	void leaderboardActivityServerCall(@Field("access_token") String accessToken,
+									   @Field("login_type") String loginType,
+									   Callback<LeaderboardActivityResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/update_driver_location")

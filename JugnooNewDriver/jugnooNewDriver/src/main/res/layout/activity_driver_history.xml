@@ -17,7 +17,7 @@
             android:id="@+id/topRl"
             android:layout_width="match_parent"
             android:layout_height="96px"
-            android:background="@color/bg_grey_opaque"
+            android:background="@color/menu_black"
             android:splitMotionEvents="false"
             android:orientation="horizontal"
             >

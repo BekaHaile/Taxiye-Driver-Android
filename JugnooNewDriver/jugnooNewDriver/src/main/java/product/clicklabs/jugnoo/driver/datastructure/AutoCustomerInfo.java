@@ -19,10 +19,11 @@ public class AutoCustomerInfo extends CustomerInfo{
     public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable;
+	private long eta;
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 			String image, String rating, String schedulePickupTime, int freeRide,
-			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable){
+			CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable, long eta){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, cachedApiEnabled);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
@@ -40,6 +41,7 @@ public class AutoCustomerInfo extends CustomerInfo{
         this.getJugnooFareEnabled = jugnooFareButton;
 		this.luggageChargesApplicable = luggageChargesApplicable;
 		this.waitingChargesApplicable = waitTimeApplicable;
+		this.eta = eta;
 
 //		this.luggageChargesApplicable = 1;
 //        this.meterFareApplicable = 1;
@@ -68,5 +70,13 @@ public class AutoCustomerInfo extends CustomerInfo{
 	@Override
 	public String toString() {
 		return super.toString()+" couponInfo = "+couponInfo+" promoInfo = "+promoInfo+" jugnooBalance = "+jugnooBalance;
+	}
+
+	public long getEta() {
+		return eta;
+	}
+
+	public void setEta(long eta) {
+		this.eta = eta;
 	}
 }

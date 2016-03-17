@@ -80,7 +80,7 @@ public class EditDriverProfile extends Activity {
 		new ASSL(this, relative, 1134, 720, false);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
-		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
+//		imageViewEditName = (ImageView) findViewById(R.id.imageViewEditName);
 		imageViewEditPhone = (ImageView) findViewById(R.id.imageViewEditPhone);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
@@ -102,33 +102,33 @@ public class EditDriverProfile extends Activity {
 		});
 
 
-		imageViewEditName.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				editTextUserName.setError(null);
-				if (editTextUserName.isEnabled()) {
-					String nameChanged = editTextUserName.getText().toString().trim();
-					if ("".equalsIgnoreCase(nameChanged)) {
-						editTextUserName.requestFocus();
-						editTextUserName.setError("Username can't be empty");
-					} else {
-						if (Data.userData.userName.equalsIgnoreCase(nameChanged)) {
-							editTextUserName.requestFocus();
-							editTextUserName.getOnFocusChangeListener();
-							editTextUserName.setError("Changed Username is same as the previous one.");
-						} else {
-							updateUserProfileAPIRetroo(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
-						}
-					}
-				} else {
-					editTextUserName.requestFocus();
-					editTextUserName.setEnabled(true);
-					editTextUserName.setSelection(editTextUserName.getText().length());
-					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserName);
-				}
-			}
-		});
+//		imageViewEditName.setOnClickListener(new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				editTextUserName.setError(null);
+//				if (editTextUserName.isEnabled()) {
+//					String nameChanged = editTextUserName.getText().toString().trim();
+//					if ("".equalsIgnoreCase(nameChanged)) {
+//						editTextUserName.requestFocus();
+//						editTextUserName.setError("Username can't be empty");
+//					} else {
+//						if (Data.userData.userName.equalsIgnoreCase(nameChanged)) {
+//							editTextUserName.requestFocus();
+//							editTextUserName.getOnFocusChangeListener();
+//							editTextUserName.setError("Changed Username is same as the previous one.");
+//						} else {
+//							updateUserProfileAPIRetroo(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
+//						}
+//					}
+//				} else {
+//					editTextUserName.requestFocus();
+//					editTextUserName.setEnabled(true);
+//					editTextUserName.setSelection(editTextUserName.getText().length());
+//					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserName);
+//				}
+//			}
+//		});
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -163,14 +163,14 @@ public class EditDriverProfile extends Activity {
 			}
 		});
 
-		editTextUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				imageViewEditName.performClick();
-				return true;
-			}
-		});
+//		editTextUserName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//
+//			@Override
+//			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+//				imageViewEditName.performClick();
+//				return true;
+//			}
+//		});
 		editTextPhone.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 			@Override
