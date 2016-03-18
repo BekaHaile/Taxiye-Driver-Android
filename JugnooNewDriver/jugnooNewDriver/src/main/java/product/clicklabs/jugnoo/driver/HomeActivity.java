@@ -2396,6 +2396,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					showAllRideRequestsOnMap();
 					try {
 						if(timer != null){
+							etaTimerText.setText(" ");
 							timer.cancel();
 						}
 					} catch (Exception e) {
@@ -2474,7 +2475,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
-					etaTimerText.setVisibility(View.VISIBLE);
+
+					if(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta() > 0) {
+						etaTimerText.setVisibility(View.VISIBLE);
+					}
+
 					if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
 						etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
 					}
@@ -2516,6 +2521,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					etaTimerText.setVisibility(View.GONE);
 					try {
 						if(timer != null){
+							etaTimerText.setText(" ");
 							timer.cancel();
 						}
 					} catch (Exception e) {
@@ -3939,7 +3945,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
 									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
-									long eta = jObj.optLong("eta", 240000);
+									long eta = jObj.optLong("eta", 0);
 									int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
@@ -7324,6 +7330,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 			public void onFinish() {
+				etaTimerText.setText("00:00");
 			}
 		}.start();
 	}
