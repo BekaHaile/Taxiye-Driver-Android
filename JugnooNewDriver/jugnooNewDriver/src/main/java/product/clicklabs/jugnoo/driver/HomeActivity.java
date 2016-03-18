@@ -2394,7 +2394,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 
 					showAllRideRequestsOnMap();
-					timer.cancel();
+					try {
+						if(timer != null){
+							timer.cancel();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2508,7 +2514,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					etaTimerText.setVisibility(View.GONE);
-					timer.cancel();
+					try {
+						if(timer != null){
+							timer.cancel();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
