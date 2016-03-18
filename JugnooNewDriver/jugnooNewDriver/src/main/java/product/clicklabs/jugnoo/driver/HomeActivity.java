@@ -1176,7 +1176,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					//				cancelRidePopup(HomeActivity.this);
-					timer.cancel();
+
 					Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -2394,6 +2394,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 
 					showAllRideRequestsOnMap();
+					timer.cancel();
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
