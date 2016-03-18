@@ -1619,7 +1619,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 				@Override
 				public void onSuccess(LatLng pickupLatLng) {
-					createPerfectRideMArker(pickupLatLng);
+					Data.nextPickupLatLng = pickupLatLng;
+					createPerfectRideMarker();
 					Data.driverRideRequests.clear();
 					GCMIntentService.clearNotifications(getApplicationContext());
 					driverRequestListAdapter.setResults(Data.driverRideRequests);
@@ -2573,6 +2574,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 					startMapAnimateAndUpdateRideDataTimer();
 					cancelStationPathUpdateTimer();
+
+					createPerfectRideMarker();
 
 
 					break;
@@ -3737,11 +3740,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							reduceRideRequest(Data.dEngagementId);
 
-						} else if(ApiResponseFlags.PERFECT_RIDE_ACCEPTED.getOrdinal() == jObj.optInt("flag",0)){
-							double pickupLatitude = jObj.getDouble("pickup_latitude");
-							double pickupLongitude = jObj.getDouble("pickup_longitude");
-							LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
-							createPerfectRideMArker(pickuplLatLng);
 						} else{
 
 							int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
@@ -3964,18 +3962,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 	}
 
-	public void createPerfectRideMArker(LatLng pickuplLatLng){
-		map.clear();
-		MarkerOptions markerOptionsStationLocation = new MarkerOptions();
-		markerOptionsStationLocation.title("station_marker");
-//		markerOptionsStationLocation.snippet(assignedStationData.address);
-		markerOptionsStationLocation.position(pickuplLatLng);
-		markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
-
-//		Marker stationMarker = map.addMarker(markerOptionsStationLocation);
-//		CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, stationMarker.getSnippet(), "");
-//		map.setInfoWindowAdapter(customIW);
-//		stationMarker.showInfoWindow();
+	public void createPerfectRideMarker(){
+		if(Data.nextPickupLatLng != null) {
+			MarkerOptions markerOptionsStationLocation = new MarkerOptions();
+			markerOptionsStationLocation.title("next_pickup_marker");
+			markerOptionsStationLocation.position(Data.nextPickupLatLng);
+			markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
+		}
 	}
 
 

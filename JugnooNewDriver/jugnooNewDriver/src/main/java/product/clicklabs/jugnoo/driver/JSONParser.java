@@ -312,15 +312,15 @@ public class JSONParser implements Constants {
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
-		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts",0));
+		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
 		Prefs.with(context).save(SPLabels.MAX_TIMEOUT_RELIEF, userData.optLong("timeout_relief", 30000));
-		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer",120000));
+		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer", 120000));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
-		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor",1));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor", 1));
 
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
-		String timeoutMessage = userData.optString("timeout_message","We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
 		Log.i("timeOut",timeoutMessage);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
@@ -766,6 +766,18 @@ public class JSONParser implements Constants {
 											e.printStackTrace();
 										}
 									}
+
+									if(jObject.has("perfect_pickup_latitude") && jObject.has("perfect_pickup_longitude")  ){
+										try{
+											double perfectPickupLatitude = jObject.getDouble("pickup_latitude");
+											double perfectPickupLongitude = jObject.getDouble("pickup_longitude");
+											Data.nextPickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
+
+
 //									"convenience_charge": 10,
 //									"convenience_charge_waiver": 0,
 
