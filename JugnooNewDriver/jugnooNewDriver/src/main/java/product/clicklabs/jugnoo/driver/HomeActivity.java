@@ -1568,10 +1568,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				switchUserScreen(userMode);
 
+				changeDriverOptionsUI();
+
 				switchDriverScreen(driverScreenMode);
 
-
-				changeDriverOptionsUI();
 
 				changeJugnooONUIAndInitService();
 
@@ -1942,7 +1942,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if (isDriverStateFree()) {
 								setDriverServiceRunOnOnlineBasis();
 								jugnooOffLayout.setVisibility(View.VISIBLE);
-								map.clear();
 								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
@@ -6051,7 +6050,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				Log.e("driverRideRequests", "=" + Data.driverRideRequests);
 
-				map.clear();
+				if(DriverScreenMode.D_IN_RIDE != driverScreenMode) {
+					map.clear();
+				}
 				drawHeatMapData(heatMapResponseGlobal);
 
 				if (Data.driverRideRequests.size() > 0) {
@@ -6432,6 +6433,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									@Override
 									public void run() {
 										DialogPopup.alertPopup(HomeActivity.this, "", Data.SERVER_NOT_RESOPNDING_MSG);
+
+										if (!Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").contains(" ")) {
+											acceptRideSucess(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " "));
+										}
 									}
 								});
 							}

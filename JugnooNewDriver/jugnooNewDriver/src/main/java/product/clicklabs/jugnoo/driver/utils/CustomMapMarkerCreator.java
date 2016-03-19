@@ -52,7 +52,7 @@ public class CustomMapMarkerCreator {
 		int height = (int)(63.0f * scale);
 		Bitmap mDotMarkerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(mDotMarkerBitmap);
-		Drawable shape = activity.getResources().getDrawable(R.drawable.purple_pin_ball);
+		Drawable shape = activity.getResources().getDrawable(R.drawable.passenger);
 		shape.setBounds(0, 0, mDotMarkerBitmap.getWidth(), mDotMarkerBitmap.getHeight());
 		shape.draw(canvas);
 		return mDotMarkerBitmap;
