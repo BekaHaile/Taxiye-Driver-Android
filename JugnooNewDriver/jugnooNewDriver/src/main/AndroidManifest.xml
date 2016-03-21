@@ -53,7 +53,8 @@
         android:icon="@drawable/jugnoo_icon"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name=".MyApplication">
 
         <receiver
             android:name="product.clicklabs.jugnoo.driver.GcmBroadcastReceiver"
