@@ -65,5 +65,8 @@ public class SPLabels {
     public static final String DRIVER_TIMEOUT_FACTOR = "driverTimeoutFactor";
     public static final String DRIVER_TIMEOUT_TTL = "driverTimeoutTtl";
     public static final String CUSTOMER_PHONE_NUMBER = "customerPhoneNumer";
+    public static final String CURRENT_ETA = "currentEta";
+	public static final String ETA_EXPIRE = "etaExpire";
+	public static final String ON_FINISH_CALLED = "onFinishCalled";
 
 }

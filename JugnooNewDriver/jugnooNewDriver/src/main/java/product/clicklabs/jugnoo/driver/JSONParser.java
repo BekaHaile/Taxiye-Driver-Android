@@ -598,8 +598,7 @@ public class JSONParser implements Constants {
 			int storeOrderAmount = 0, cachedApiEnabled = 0;
 			FatafatDeliveryInfo deliveryInfo = null;
 			FatafatCustomerInfo customerInfo = null;
-			long eta = 0;
-			
+
 			HomeActivity.userMode = UserMode.DRIVER;
 			
 			try{
@@ -787,7 +786,10 @@ public class JSONParser implements Constants {
 											customerName = jObject.getString("user_name");
 											customerImage = jObject.getString("user_image");
 											customerPhone = jObject.getString("phone_no");
-											eta = jObject.optLong("eta", 0);
+
+											if(Prefs.with(context).getLong(SPLabels.CURRENT_ETA,0)==0){
+												Prefs.with(context).save(SPLabels.CURRENT_ETA,System.currentTimeMillis()+jObject.optLong("eta", 0));
+											}
 
 											if(jObject.has("rating")){
 												customerRating = jObject.getString("rating");
@@ -936,7 +938,7 @@ public class JSONParser implements Constants {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, cachedApiEnabled,
 							customerImage, customerRating, schedulePickupTime, freeRide, 
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable,eta);
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
                         ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
                     }

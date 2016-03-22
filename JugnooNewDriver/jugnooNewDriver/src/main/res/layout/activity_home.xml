@@ -89,7 +89,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginBottom="60px"
                         android:layout_marginLeft="36px"
-                        android:background="@drawable/new_location_con"
+                        android:background="@drawable/new_my_loc_button"
                         android:tag="mwar"/>
 
                     <RelativeLayout
@@ -154,19 +154,21 @@
                         android:layout_above="@+id/driverRideButton"
                         android:layout_marginBottom="27px"
                         android:layout_marginLeft="40px"
-                        android:background="@drawable/new_location_con"
+                        android:background="@drawable/new_my_loc_button"
                         android:tag="mwar"/>
 
                     <RelativeLayout
                         android:id="@+id/driverRideButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="15px"
                         android:layout_alignParentBottom="true">
                         <Button
                             android:id="@+id/driverAcceptRideBtn"
-                            android:layout_width="480px"
+                            android:layout_width="410px"
                             android:layout_height="99px"
-                            android:background="@drawable/new_orange_btn_selector_rect"
+                            android:layout_marginLeft="25px"
+                            android:background="@drawable/new_orange_btn_selector_rounded"
                             android:text="@string/accept_ride"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size"/>
@@ -175,10 +177,11 @@
                             android:id="@+id/driverCancelRequestBtn"
                             android:layout_width="240px"
                             android:layout_height="99px"
+                            android:layout_marginLeft="15px"
                             android:layout_centerHorizontal="true"
                             android:layout_toRightOf="@+id/driverAcceptRideBtn"
-                            android:background="@drawable/new_menu_black_btn_selector"
-                            android:text="@string/cancel_ride"
+                            android:background="@drawable/new_menu_black_btn_selector_rounded"
+                            android:text="@string/cancel"
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size"/>
                     </RelativeLayout>
@@ -270,7 +273,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginRight="40px"
+                                android:layout_marginRight="30px"
                                 android:orientation="vertical"
                                 >
 
@@ -323,7 +326,7 @@
                             android:layout_marginBottom="20px"
                             android:layout_marginLeft="40px"
                             android:splitMotionEvents="false"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/driverPassengerRatingStar"
@@ -366,18 +369,45 @@
                         android:layout_below="@+id/driverPassengerInfoRl"
                         android:background="@drawable/shadow_down"/>
 
-                    <TextView
-                        android:id="@+id/ETATimerText"
-                        android:layout_width="270px"
-                        android:layout_height="100px"
+                    <RelativeLayout
+                        android:id="@+id/etaTimerRLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_below="@+id/customerInfoLine"
                         android:layout_centerHorizontal="true"
-                        android:background="@color/menu_black"
-                        android:gravity="center"
-                        android:tag="mwar"
-                        android:text="00:00"
-                        android:textColor="@color/white"
-                        android:textSize="72px"/>
+                        android:background="@drawable/menu_black_btn_normal_rounded">
+
+                        <TextView
+                            android:id="@+id/ETATimerText"
+                            android:layout_width="270px"
+                            android:layout_height="100px"
+                            android:gravity="center"
+                            android:tag="mwar"
+                            android:text="00:00"
+                            android:textColor="@color/white"
+                            android:textSize="72px"
+                            android:visibility="visible"/>
+
+                        <ImageView
+                            android:id="@+id/imageViewETASeprator"
+                            android:layout_toRightOf="@+id/ETATimerText"
+                            android:layout_width="2px"
+                            android:layout_height="90px"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginTop="5px"
+                            android:background="@color/white"/>
+
+                        <ImageView
+                            android:id="@+id/imageViewETASmily"
+                            android:layout_toRightOf="@+id/ETATimerText"
+                            android:layout_width="85px"
+                            android:layout_height="85px"
+                            android:layout_marginRight="25px"
+                            android:layout_marginLeft="25px"
+                            android:layout_marginTop="5px"
+                            android:src="@drawable/superhappy_face"/>
+
+                    </RelativeLayout>
 
                     <ImageView
                         android:id="@+id/driverFreeRideIcon"
@@ -408,28 +438,30 @@
                             android:id="@+id/driverStartRideMainRl"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="15px"
                             android:splitMotionEvents="false"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <RelativeLayout
                                 android:id="@+id/driverStartArrivedLayout"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="25px">
 
                                 <Button
                                     android:id="@+id/driverStartRideBtn"
-                                    android:layout_width="480px"
+                                    android:layout_width="410px"
                                     android:layout_height="99px"
-                                    android:background="@drawable/new_orange_btn_selector_rect"
+                                    android:background="@drawable/new_orange_btn_selector_rounded"
                                     android:text="@string/start_ride"
                                     android:textColor="@drawable/white_color_selector"
                                     android:textSize="@dimen/button_text_size"/>
 
                                 <Button
                                     android:id="@+id/buttonMarkArrived"
-                                    android:layout_width="480px"
+                                    android:layout_width="410px"
                                     android:layout_height="99px"
-                                    android:background="@drawable/new_orange_btn_selector_rect"
+                                    android:background="@drawable/new_orange_btn_selector_rounded"
                                     android:text="@string/arrived"
                                     android:textColor="@drawable/white_color_selector"
                                     android:textSize="@dimen/button_text_size"/>
@@ -440,10 +472,11 @@
                                 android:id="@+id/driverCancelRideBtn"
                                 android:layout_width="240px"
                                 android:layout_height="99px"
+                                android:layout_marginLeft="15px"
                                 android:layout_centerHorizontal="true"
                                 android:layout_toRightOf="@+id/driverStartArrivedLayout"
-                                android:background="@drawable/new_menu_black_btn_selector"
-                                android:text="@string/cancel_ride"
+                                android:background="@drawable/new_menu_black_btn_selector_rounded"
+                                android:text="@string/cancel"
                                 android:textColor="@drawable/white_color_selector"
                                 android:textSize="@dimen/button_text_size"/>
 
@@ -774,18 +807,18 @@
                         android:layout_above="@+id/linearLayoutStartEnd"
                         android:layout_marginBottom="40px"
                         android:layout_marginLeft="40px"
-                        android:background="@drawable/new_location_con"
+                        android:background="@drawable/new_my_loc_button"
                         android:tag="mwar"
                         />
 
                     <Button
                         android:id="@+id/buttonDriverNavigation"
-                        android:layout_width="250px"
-                        android:layout_height="140px"
+                        android:layout_width="240px"
+                        android:layout_height="120px"
                         android:layout_above="@+id/linearLayoutStartEnd"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="40px"
-                        android:layout_marginRight="40px"
+                        android:layout_marginRight="30px"
                         android:background="@drawable/new_orange_direction_btn_selector"
                         android:tag="mwar"
                         android:text="@string/click_for_direction"

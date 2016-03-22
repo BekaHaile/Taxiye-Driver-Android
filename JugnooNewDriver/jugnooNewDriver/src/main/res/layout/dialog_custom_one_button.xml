@@ -66,12 +66,13 @@
 
             <Button
                 android:id="@+id/btnOk"
-                android:layout_width="match_parent"
+                android:layout_width="400px"
                 android:layout_height="83px"
+                android:layout_marginBottom="15px"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30px"
-                android:background="@drawable/orange_btn_bottom_rounded"
+                android:background="@drawable/new_orange_btn_selector_rounded"
                 android:singleLine="true"
                 android:padding="3px"
                 android:text="@string/ok"

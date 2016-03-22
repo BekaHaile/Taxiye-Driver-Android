@@ -31,6 +31,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -163,7 +164,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl;
 	TextView inviteFriendText, notificationCenterText;
 
-	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter;
+	RelativeLayout bookingsRl, RelativeLayoutNotificationCenter, etaTimerRLayout;
 	TextView bookingsText, etaTimerText;
 
 	RelativeLayout relativeLayoutSharingRides;
@@ -244,7 +245,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRideTimeText, driverWaitText, driverWaitValue;
 	PausableChronometer rideTimeChronometer;
 	RelativeLayout driverWaitRl;
-	ImageView imageViewIRWaitSep;
+	ImageView imageViewIRWaitSep, imageViewETASmily;
 	RelativeLayout inrideFareInfoRl;
 	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue, textViewInRideConvenienceCharges;
 	Button inrideFareInfoBtn;
@@ -483,8 +484,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			bookingsText = (TextView) findViewById(R.id.bookingsText);
 			bookingsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
+			etaTimerRLayout = (RelativeLayout) findViewById(R.id.etaTimerRLayout);
 			etaTimerText = (TextView) findViewById(R.id.ETATimerText);
 			etaTimerText.setTypeface(Data.digitalRegular(getApplicationContext()));
+
+			imageViewETASmily = (ImageView) findViewById(R.id.imageViewETASmily);
 
 			relativeLayoutSharingRides = (RelativeLayout) findViewById(R.id.relativeLayoutSharingRides);
 			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
@@ -2398,6 +2402,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(timer != null){
 							etaTimerText.setText(" ");
 							timer.cancel();
+							smilyHandler.removeCallbacks(smilyRunnalble);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -2476,12 +2481,22 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 
-					if(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta() > 0) {
-						etaTimerText.setVisibility(View.VISIBLE);
+					if((Prefs.with(this).getLong(SPLabels.CURRENT_ETA,0)-System.currentTimeMillis()) > 0) {
+						etaTimerRLayout.setVisibility(View.VISIBLE);
 					}
 
-					if(Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
-						etaTimer(((AutoCustomerInfo) Data.assignedCustomerInfo).getEta());
+					if(Prefs.with(this).getLong(SPLabels.CURRENT_ETA,0)>0) {
+
+						long eta = Prefs.with(this).getLong(SPLabels.CURRENT_ETA,0)-System.currentTimeMillis();
+						if(eta > 0) {
+							etaTimer(eta);
+						}else{
+							if(Prefs.with(HomeActivity.this).getInt(SPLabels.ON_FINISH_CALLED, 0)==0) {
+								Prefs.with(HomeActivity.this).save(SPLabels.ETA_EXPIRE, System.currentTimeMillis());
+							}
+							changeSmilyTask();
+							imageViewETASmily.setImageResource(R.drawable.happy_face);
+						}
 					}
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2518,11 +2533,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
-					etaTimerText.setVisibility(View.GONE);
+					etaTimerRLayout.setVisibility(View.GONE);
 					try {
 						if(timer != null){
 							etaTimerText.setText(" ");
 							timer.cancel();
+							smilyHandler.removeCallbacks(smilyRunnalble);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -2576,7 +2592,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
-					etaTimerText.setVisibility(View.GONE);
+					etaTimerRLayout.setVisibility(View.GONE);
 
 					driverScheduledRideText.setVisibility(View.GONE);
 
@@ -2643,7 +2659,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
-					etaTimerText.setVisibility(View.GONE);
+					etaTimerRLayout.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2663,7 +2679,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
-					etaTimerText.setVisibility(View.GONE);
+					etaTimerRLayout.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3945,14 +3961,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
 									int luggageChargesApplicable = jObj.optInt("luggage_charges_applicable", 0);
 									int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
-									long eta = jObj.optLong("eta", 0);
+									Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis()+jObj.optLong("eta", 0));
 									int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 									Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 											Integer.parseInt(Data.dCustomerId), referenceId,
 											userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 											userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
-											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable,eta);
+											meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
 
 
 
@@ -7318,8 +7334,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	public void etaTimer(long eta){
+		imageViewETASmily.setImageResource(R.drawable.superhappy_face);
+		Prefs.with(HomeActivity.this).save(SPLabels.ON_FINISH_CALLED, 0);
 		timer = new CountDownTimer(eta, 1000) {
-
 			public void onTick(long millisUntilFinished) {
 				SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 				etaTimerText.setText("" + String.format("%02d:%02d",
@@ -7331,8 +7348,36 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			public void onFinish() {
 				etaTimerText.setText("00:00");
+				Prefs.with(HomeActivity.this).save(SPLabels.ETA_EXPIRE, System.currentTimeMillis());
+				Prefs.with(HomeActivity.this).save(SPLabels.ON_FINISH_CALLED, 1);
+				imageViewETASmily.setImageResource(R.drawable.happy_face);
+				changeSmilyTask();
+
 			}
 		}.start();
 	}
 
+	Handler smilyHandler = new Handler();
+	Runnable smilyRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				if((System.currentTimeMillis()-Prefs.with(HomeActivity.this).getLong(SPLabels.ETA_EXPIRE,0))>180000){
+					imageViewETASmily.setImageResource(R.drawable.supersad_face);
+					smilyHandler.removeCallbacks(smilyRunnalble);
+				}else if((System.currentTimeMillis()-Prefs.with(HomeActivity.this).getLong(SPLabels.ETA_EXPIRE,0))>120000){
+					imageViewETASmily.setImageResource(R.drawable.sad_face);
+				}else if ((System.currentTimeMillis()-Prefs.with(HomeActivity.this).getLong(SPLabels.ETA_EXPIRE,0))>60000){
+					imageViewETASmily.setImageResource(R.drawable.netural_face);
+				}
+			} catch (Exception e) {
+
+			}
+			smilyHandler.postDelayed(smilyRunnalble, 30000);
+		}
+	};
+	public void changeSmilyTask() {
+		smilyHandler.removeCallbacks(smilyRunnalble);
+		smilyHandler.postDelayed(smilyRunnalble, 1000);
+	}
 }
