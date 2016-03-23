@@ -16,27 +16,29 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-    
-    
-     <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
+
+
+    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/star_rating_bar_full</item>
         <item name="android:minHeight">56dip</item>
         <item name="android:maxHeight">56dip</item>
     </style>
 
-        <style name="RatingBarBlue" parent="@android:style/Widget.RatingBar">
-            <item name="android:progressDrawable">@drawable/rating_star_blue_selector</item>
-            <item name="android:minHeight">56dp</item>
-            <item name="android:maxHeight">56dp</item>
-        </style>
-    
-        <style name="RatingBarWhite" parent="@android:style/Widget.RatingBar">
-            <item name="android:progressDrawable">@drawable/rating_star_white_selector</item>
-            <item name="android:minHeight">50dp</item>
-            <item name="android:maxHeight">50dp</item>
-        </style>
-     
-      <style name="Animations" />
+    <style name="RatingBarBlue" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/driver_ratting_star_orange_selector</item>
+        <item name="android:minHeight">56dp</item>
+        <item name="android:maxHeight">56dp</item>
+    </style>
+
+    <style name="RatingBarWhite" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/rating_star_white_selector</item>
+        <item name="android:minHeight">50dp</item>
+        <item name="android:maxHeight">50dp</item>
+    </style>
+
+
+
+    <style name="Animations"/>
 
     <style name="Animations.LoadingDialogFade">
         <item name="@android:windowEnterAnimation">@anim/fade_in</item>
@@ -53,8 +55,6 @@
         <item name="android:shadowDy">1</item>
         <item name="android:shadowRadius">1</item>
     </style>
-    
-    
-    
+
 
 </resources>

@@ -12,7 +12,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/bg_grey_opaque"
+        android:background="@color/menu_black"
         android:splitMotionEvents="false">
 
         <Button
@@ -29,9 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="Ride Details"
+            android:text="RIDE DETAILS"
             android:textColor="@color/white"
-            android:textSize="48px"/>
+            android:textSize="40px"/>
     </RelativeLayout>
 
     <ScrollView
@@ -59,7 +59,7 @@
                     android:layout_height="32px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="30px"
-                    android:src="@drawable/time"
+                    android:src="@drawable/date_orange_icon"
                     android:tag="mwar"/>
 
                 <TextView
@@ -71,7 +71,7 @@
                     android:layout_toRightOf="@+id/imageViewTime"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
-                    android:textColor="@color/bg_grey_opaque"
+                    android:textColor="@color/new_orange"
                     android:textSize="32px"
                     />
 
@@ -153,7 +153,7 @@
             android:layout_marginLeft="20px"
             android:layout_marginTop="15px"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/background_white_rounded_black_border">
+            android:background="@drawable/background_white_rounded_orange_bordered">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -444,7 +444,7 @@
             android:layout_marginLeft="20px"
             android:layout_marginTop="15px"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/background_white_rounded_black_border">
+            android:background="@drawable/background_white_rounded_orange_bordered">
 
             <TextView
                 android:id="@+id/textViewActualFare"
@@ -454,7 +454,7 @@
                 android:singleLine="true"
                 android:layout_marginTop="15px"
                 android:text="@string/rupee_zero"
-                android:textColor="@color/black"
+                android:textColor="@color/new_orange"
                 android:textSize="52px"/>
             <TextView
                 android:id="@+id/textViewActualFareText"
@@ -464,7 +464,7 @@
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Total Fare"
-                android:textColor="@color/bg_grey_opaque"
+                android:textColor="@color/new_orange"
                 android:textSize="45px"/>
 
             <TextView
@@ -483,7 +483,7 @@
                 <ImageView
                 android:layout_width="720px"
                 android:layout_height="2px"
-                android:background="@color/black"/>
+                android:background="@color/new_orange"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -516,7 +516,7 @@
                     android:layout_height="115px"
                     android:layout_centerHorizontal="true"
                     android:id="@+id/imageViewVertical"
-                    android:background="@color/black"/>
+                    android:background="@color/new_orange"/>
 
                 <TextView
                     android:id="@+id/textViewAccountBalance"
@@ -554,27 +554,24 @@
                 android:id="@+id/linearLayoutFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24px"
+                android:layout_marginTop="32px"
                 android:layout_marginLeft="60px"
                 android:layout_marginRight="20px"
                 android:splitMotionEvents="false">
 
-                <TextView
-                    android:id="@+id/textViewFrom"
-                    android:layout_width="100px"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0px"
-                    android:singleLine="true"
-                    android:text="@string/from"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="28px"/>
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/from"
+                    android:background="@drawable/green_dot_icon"/>
 
                 <TextView
                     android:id="@+id/textViewFromValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="0px"
-                    android:layout_marginBottom="5px"
+                    android:layout_marginLeft="70px"
+                    android:layout_marginBottom="0px"
                     android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
@@ -589,21 +586,20 @@
                 android:layout_marginRight="20px"
                 android:splitMotionEvents="false">
 
-                <TextView
-                    android:id="@+id/textViewTo"
-                    android:layout_width="100px"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
-                    android:text="@string/to"
-                    android:textColor="@color/bg_grey_opaque"
-                    android:textSize="28px"/>
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/to"
+                    android:background="@drawable/red_dot_icon"/>
 
                 <TextView
                     android:id="@+id/textViewToValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="70px"
                     android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
-                    android:layout_marginBottom="5px"
+                    android:layout_marginBottom="0px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 

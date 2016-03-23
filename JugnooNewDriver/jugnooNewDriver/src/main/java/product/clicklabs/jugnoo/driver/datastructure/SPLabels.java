@@ -6,7 +6,7 @@ package product.clicklabs.jugnoo.driver.datastructure;
 public class SPLabels {
 
     public static final String SETTINGS_SP = "settingsPref",
-        RECEIVE_REQUESTS = "receiveRequests";
+        RECEIVE_REQUESTS1 = "receiveRequests";
 
 
     // variables for metering service
@@ -53,6 +53,7 @@ public class SPLabels {
     public static final String DRIVER_C_PICKUP_LATITUDE = "driverCPickupLatitude";
     public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
     public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
+    public static final String NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     public static final String DOWNLOADED_FILE_ID = "downloadFileId";
     public static final String INGNORE_RIDEREQUEST_COUNT = "ignoreRideRequestCount";
 
@@ -63,5 +64,9 @@ public class SPLabels {
 	public static final String DRIVER_TIMEOUT_FLAG = "driverTimeoutFlag";
     public static final String DRIVER_TIMEOUT_FACTOR = "driverTimeoutFactor";
     public static final String PERFECT_ACCEPT_RIDE_DATA = "perfectAcceptRideData";
-
+    public static final String DRIVER_TIMEOUT_TTL = "driverTimeoutTtl";
+    public static final String CUSTOMER_PHONE_NUMBER = "customerPhoneNumer";
+    public static final String CURRENT_ETA = "currentEta";
+	public static final String ETA_EXPIRE = "etaExpire";
+	public static final String ON_FINISH_CALLED = "onFinishCalled";
 }

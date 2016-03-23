@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="110px"
+    android:splitMotionEvents="false"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="120px"
+        android:layout_height="match_parent"
+        android:background="@color/grey_light_more"
+        >
+        <TextView
+            android:id="@+id/textViewRank"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20px"
+            android:background="@drawable/circle_white"
+            android:gravity="center"
+            android:tag="mwar"
+            android:text="1"
+            android:textColor="@color/grey_dark"
+            android:textSize="@dimen/share_lb_text_size"
+            />
+
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/textViewName"
+        android:layout_width="420px"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="150px"
+        android:text="@string/lb_name"
+        android:textColor="@color/grey_dark"
+        android:textSize="@dimen/share_lb_text_size"
+        android:singleLine="true"
+        />
+
+    <TextView
+        android:id="@+id/textViewNoOfDownloads"
+        android:layout_width="100px"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="40px"
+        android:gravity="center_vertical|right"
+        android:text="100"
+        android:textColor="@color/grey_black"
+        android:textSize="@dimen/share_lb_text_size"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey_light"
+        />
+
+</RelativeLayout>

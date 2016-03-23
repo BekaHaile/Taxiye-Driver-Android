@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -44,5 +45,7 @@ public interface AppInterruptHandler {
 	void markArrivedInterrupt(LatLng latLng);
 
 	void driverTimeoutDialogPopup(long timeoutInterwal);
+
+	void fetchHeatMapDataCall(Context context);
 
 }

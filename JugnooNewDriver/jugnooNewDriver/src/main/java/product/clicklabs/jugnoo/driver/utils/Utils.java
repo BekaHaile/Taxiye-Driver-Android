@@ -170,6 +170,7 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
+
 //		return false;
 		try {
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
