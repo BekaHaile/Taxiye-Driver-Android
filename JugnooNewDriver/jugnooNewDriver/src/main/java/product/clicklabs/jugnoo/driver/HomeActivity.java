@@ -2402,11 +2402,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						if(timer != null){
 							etaTimerText.setText(" ");
 							timer.cancel();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+					try {
+						if(smilyHandler != null && smilyRunnalble !=null){
 							smilyHandler.removeCallbacks(smilyRunnalble);
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
