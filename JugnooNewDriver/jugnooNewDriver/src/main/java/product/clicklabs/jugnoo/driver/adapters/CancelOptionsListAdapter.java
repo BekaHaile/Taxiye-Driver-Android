@@ -80,7 +80,7 @@ public class CancelOptionsListAdapter extends BaseAdapter {
 
 		if(cancelOption.checked){
 			holder.relative.setBackgroundColor(Color.WHITE);
-			holder.imageViewCancelOptionCheck.setImageResource(R.drawable.option_checked);
+			holder.imageViewCancelOptionCheck.setImageResource(R.drawable.option_checked_orange);
 		}
 		else{
 			holder.relative.setBackgroundColor(Color.TRANSPARENT);

@@ -3,7 +3,7 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
-              android:background="@drawable/common_bg"
+              android:background="@drawable/background_white"
               android:orientation="vertical"
               android:splitMotionEvents="false">
 
@@ -11,15 +11,15 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
+        android:background="@color/new_orange"
         android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@drawable/transparent"
-            android:text="Back"
+            android:background="@drawable/back_btn_selector"
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -30,8 +30,8 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="LOGIN"
-            android:textColor="@color/blue_btn"
-            android:textSize="@dimen/button_text_size"/>
+            android:textColor="@color/white"
+            android:textSize="40px"/>
     </RelativeLayout>
 
 
@@ -46,49 +46,97 @@
         <LinearLayout
             android:id="@+id/etLayout"
             android:layout_width="648px"
-            android:layout_height="198px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72px"
             android:layout_below="@+id/jugnooLogoBig"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20px"
-            android:background="@drawable/white_bg_rounded"
+            android:background="@drawable/transparent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:splitMotionEvents="false">
 
-            <AutoCompleteTextView
-                android:id="@+id/emailEt"
-                android:layout_width="620px"
-                android:layout_height="98px"
-                android:background="#0000"
-                android:hint="@string/email_id"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+            <LinearLayout
+                android:layout_width="640px"
+                android:layout_height="82px"
+                android:padding="2px"
+                android:gravity="center_horizontal"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="648px"
-                android:layout_height="2px"
-                android:background="#E7E7E7"/>
+                <ImageView
+                    android:layout_width="58px"
+                    android:layout_height="64px"
+                    android:layout_marginLeft="6px"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_email"/>
 
-            <EditText
-                android:id="@+id/passwordEt"
-                android:layout_width="620px"
-                android:layout_height="98px"
-                android:background="#0000"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6px"
+                    android:background="@color/new_orange"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/emailEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2px"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginBottom="2px"
+                    android:layout_marginRight="2px"
+                    android:background="@drawable/background_white"
+                    android:hint="@string/email_id"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="640px"
+                android:layout_height="82px"
+                android:layout_marginTop="72px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="horizontal"
+                android:padding="2px">
+
+                <ImageView
+                    android:layout_width="58px"
+                    android:layout_height="64px"
+                    android:layout_marginLeft="6px"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_password"/>
+
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6px"
+                    android:background="@color/new_orange"/>
+
+                <EditText
+                    android:id="@+id/passwordEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2px"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginBottom="2px"
+                    android:layout_marginRight="2px"
+                    android:background="@drawable/background_white"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+            </LinearLayout>
         </LinearLayout>
 
         <Button
             android:id="@+id/signInBtn"
             android:layout_width="648px"
             android:layout_height="99px"
-            android:layout_marginTop="40px"
-            android:background="@drawable/blue_btn_selector"
+            android:layout_marginTop="108px"
+            android:background="@drawable/orange_btn_selector"
             android:text="LOGIN"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
@@ -105,7 +153,7 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/transparent"
                 android:text="@string/forgot_password"
-                android:textColor="@drawable/blue_alpha_color_selector"
+                android:textColor="@color/new_orange"
                 android:textSize="36px"/>
         </RelativeLayout>
 

@@ -19,6 +19,7 @@ public class AutoCustomerInfo extends CustomerInfo{
     public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable;
+
 	
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 			String image, String rating, String schedulePickupTime, int freeRide,
