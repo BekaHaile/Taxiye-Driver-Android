@@ -43,7 +43,7 @@ public class FlurryEventLogger {
 			e.printStackTrace();
 		}
 
-		try {MyApplication.getInstance().trackEvent("Driver", "Api response log", "Api response log",params );} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Api response log", "Api response log", params);} catch (Exception e) {}
 	}
 
 	public static void logStartRing(Context context, int screenMode, int appVersion, String engId, String event){
@@ -60,7 +60,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", event, event,params);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", event, event, params);} catch (Exception e) {}
 
 	}
 	
@@ -77,7 +77,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Request push received", "Request push received",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Request push received", "Request push received", articleParams);} catch (Exception e) {}
 
 	}
 
@@ -91,7 +91,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Check server link pressed", "Check server link pressed",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Check server link pressed", "Check server link pressed", articleParams);} catch (Exception e) {}
 
 	}
 	
@@ -104,7 +104,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Debug pressed", "Debug pressed",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Debug pressed", "Debug pressed", articleParams);} catch (Exception e) {}
 
 	}
 
@@ -162,7 +162,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "OTP entered", "OTP entered",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "OTP entered", "OTP entered", articleParams);} catch (Exception e) {}
 
 	}
 	
@@ -174,7 +174,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "OTP through call clicked", "OTP through call clicked",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "OTP through call clicked", "OTP through call clicked", articleParams);} catch (Exception e) {}
 
 	}
 
@@ -188,7 +188,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Signup clicked via Email", "Signup clicked via Email",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Signup clicked via Email", "Signup clicked via Email", articleParams);} catch (Exception e) {}
 
 	}
 
@@ -204,7 +204,7 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Fare Details screen opened", "Fare Details screen opened",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Fare Details screen opened", "Fare Details screen opened", articleParams);} catch (Exception e) {}
 
 	}
 	
@@ -217,33 +217,41 @@ public class FlurryEventLogger {
 		} catch(Exception e){
 			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Connection Failure", "Connection Failure",articleParams);} catch (Exception e) {}
+		try {MyApplication.getInstance().trackEvent("Driver", "Connection Failure", "Connection Failure", articleParams);} catch (Exception e) {}
 
 	}
 	
 	
 	public static void locationLog(Location location){
-		Map<String, String> articleParams = new HashMap<String, String>();
-		articleParams.put("access_token", Data.userData.accessToken);
-		articleParams.put("latitude", ""+location.getLatitude());
-		articleParams.put("longitude", ""+location.getLongitude());
-		try{
-			FlurryAgent.logEvent("Location Log", articleParams);
-		} catch(Exception e){
+		try {
+			Map<String, String> articleParams = new HashMap<String, String>();
+			articleParams.put("access_token", Data.userData.accessToken);
+			articleParams.put("latitude", ""+location.getLatitude());
+			articleParams.put("longitude", ""+location.getLongitude());
+			try{
+				FlurryAgent.logEvent("Location Log", articleParams);
+			} catch(Exception e){
+			}
+			try {MyApplication.getInstance().trackEvent("Driver", "Location Log", "Location Log", articleParams);} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Location Log", "Location Log", articleParams);} catch (Exception e) {}
 
 	}
 	
 	public static void locationRestart(String cause){
-		Map<String, String> articleParams = new HashMap<String, String>();
-		articleParams.put("access_token", Data.userData.accessToken);
-		articleParams.put("cause", cause);
-		try{
-			FlurryAgent.logEvent("Location Restart", articleParams);
-		} catch(Exception e){
+		try {
+			Map<String, String> articleParams = new HashMap<String, String>();
+			articleParams.put("access_token", Data.userData.accessToken);
+			articleParams.put("cause", cause);
+			try{
+				FlurryAgent.logEvent("Location Restart", articleParams);
+			} catch(Exception e){
+			}
+			try {MyApplication.getInstance().trackEvent("Driver", "Location Restart", "Location Restart", articleParams);} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		try {MyApplication.getInstance().trackEvent("Driver", "Location Restart", "Location Restart", articleParams);} catch (Exception e) {}
 
 	}
 

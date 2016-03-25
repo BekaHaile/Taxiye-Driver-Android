@@ -1026,12 +1026,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				logoutRl.setVisibility(View.VISIBLE);
 			}
 
-			if (1==Data.userData.paytmRechargeEnabled) {
-				paytmRechargeRl.setVisibility(View.VISIBLE);
-			} else {
-				paytmRechargeRl.setVisibility(View.GONE);
-			}
-
 
 
 			menuLayout.setOnClickListener(new OnClickListener() {
@@ -1464,6 +1458,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (Data.userData.remainigPenaltyPeriod > 0) {
 						driverTimeOutPopup(HomeActivity.this, Data.userData.remainigPenaltyPeriod);
 					}
+
+					if (1==Data.userData.paytmRechargeEnabled) {
+						paytmRechargeRl.setVisibility(View.VISIBLE);
+					} else {
+						paytmRechargeRl.setVisibility(View.GONE);
+					}
+
 				} else{
 					finish();
 					startActivity(new Intent(this, SplashNewActivity.class));
