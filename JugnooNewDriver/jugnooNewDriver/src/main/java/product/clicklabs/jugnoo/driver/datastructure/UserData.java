@@ -4,7 +4,7 @@ public class UserData {
 	public String accessToken, userName, userImage, referralCode, phoneNo, referralMessage, referralButtonText;
 	public int freeRideIconDisable, autosEnabled, mealsEnabled, fatafatEnabled,
 			autosAvailable, mealsAvailable, fatafatAvailable;
-	public int sharingEnabled, sharingAvailable;
+	public int sharingEnabled, sharingAvailable, paytmRechargeEnabled;
 	public double showDriverRating;
 	public String deiValue, customerReferralBonus, driverSupportNumber, referralSMSToCustomer, referralDialogText;
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
@@ -16,7 +16,7 @@ public class UserData {
 					int autosAvailable, int mealsAvailable, int fatafatAvailable, String deiValue, String customerReferralBonus,
 					int sharingEnabled, int sharingAvailable, String driverSupportNumber, String referralSMSToCustomer,
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
-					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod, String timeoutMessage) {
+					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod, String timeoutMessage, int paytmRechargeEnabled) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -49,6 +49,7 @@ public class UserData {
 		this.referralDialogHintText = referralDialogHintText;
 		this.remainigPenaltyPeriod = remainigPenaltyPeriod;
 		this.timeoutMessage = timeoutMessage;
+		this.paytmRechargeEnabled = paytmRechargeEnabled;
 	}
 
 }

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayoutRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/shareImgRl"
+                android:layout_width="match_parent"
+                android:layout_height="620px">
+
+
+                <ImageView
+                    android:id="@+id/imageViewJugnooLogo"
+                    android:layout_width="match_parent"
+                    android:layout_height="485px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/invite_earn_image"
+                    android:tag="mwar"
+                    android:visibility="visible"/>
+
+                <RelativeLayout
+                    android:id="@+id/showReferralRLayout"
+                    android:layout_width="500px"
+                    android:layout_height="130px"
+                    android:layout_below="@+id/imageViewJugnooLogo"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/referral_box">
+
+
+                    <TextView
+                        android:id="@+id/textViewReferralCodeDisplay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginTop="15px"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="Your Referral Code is"
+                        android:textColor="@color/black"
+                        android:textSize="36px"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/textViewReferralCodeValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewReferralCodeDisplay"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginRight="20px"
+                        android:layout_marginTop="15px"
+                        android:gravity="center"
+                        android:singleLine="true"
+                        android:text="12345678"
+                        android:textColor="@color/black"
+                        android:textSize="44px"
+                        />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center">
+                    <Button
+                        android:id="@+id/buttonShare"
+                        android:layout_width="648px"
+                        android:layout_height="90px"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="32px"
+                        android:background="@drawable/new_orange_btn_selector_rounded"
+                        android:text="शेयर करें"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="48px"/>
+                    <ImageView
+                        android:id="@+id/imageShareLogo"
+                        android:layout_width="54px"
+                        android:layout_height="54px"
+                        android:layout_marginLeft="80px"
+                        android:layout_marginTop="50px"
+                        android:background="@drawable/share_button_icon"
+                        android:tag="mwar"
+                        android:visibility="visible"/>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textViewShareReferral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewReferUs"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="30px"
+                    android:gravity="center"
+                    android:lineSpacingExtra="10px"
+                    android:text="Share your referral code 12345678"
+                    android:textColor="@color/black"
+                    android:textSize="32px"
+                    />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>
