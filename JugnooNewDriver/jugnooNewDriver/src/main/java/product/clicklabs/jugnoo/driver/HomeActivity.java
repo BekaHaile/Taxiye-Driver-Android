@@ -2428,6 +2428,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 
 					showAllRideRequestsOnMap();
+
 					try {
 						if(timer != null){
 							etaTimerText.setText(" ");
@@ -4116,7 +4117,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 			DialogPopup.dismissLoadingDialog();
 		}
-		Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, "");
+		Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 		DialogPopup.dismissLoadingDialog();
 	}
 
@@ -7392,7 +7393,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void perfectRideStateRestore() {
 
-		if (!Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").contains(" ")) {
+		if (!Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") ) {
 			boolean endNotDone = false;
 			ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(HomeActivity.this).getAllPendingAPICalls();
 			for (PendingAPICall pendingAPICall : pendingAPICalls) {
