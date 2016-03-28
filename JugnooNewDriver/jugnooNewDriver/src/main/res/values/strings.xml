@@ -227,6 +227,7 @@
 	<string name="paytm_recharge">PAYTM RECHARGE</string>
 	<string name="Confirm">Confirm</string>
 	<string name="Paytm_recharge">Paytm Recharge</string>
+	<string name="phone_number_or_email">Phone No. or Email</string>
 
 
 	<string-array name="CountryCodes" >

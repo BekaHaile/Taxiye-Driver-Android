@@ -85,7 +85,7 @@
                     android:layout_marginBottom="2px"
                     android:layout_marginRight="2px"
                     android:background="@drawable/background_white"
-                    android:hint="@string/email_id"
+                    android:hint="@string/phone_number_or_email"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textColor="@color/black"
