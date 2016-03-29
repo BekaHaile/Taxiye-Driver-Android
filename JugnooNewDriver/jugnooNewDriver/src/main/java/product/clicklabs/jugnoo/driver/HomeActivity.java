@@ -6380,7 +6380,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	@Override
 	public void onChangeStatePushReceived() {
 		try {
-			callAndHandleStateRestoreAPI();
+			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") ) {
+				callAndHandleStateRestoreAPI();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -6572,10 +6574,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 					if (currentUserStatus != 0) {
 						String resp = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
-
+						Log.i("currentUserStatus0",resp);
 						if (resp.contains(Constants.SERVER_TIMEOUT)) {
 							String resp1 = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
-
+							Log.i("currentUserStatus1",resp);
 							if (resp1.contains(Constants.SERVER_TIMEOUT)) {
 								runOnUiThread(new Runnable() {
 									@Override
@@ -7401,6 +7403,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				Log.e(TAG, "pendingApiCall=" + pendingAPICall);
 				if (PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)) {
 					endNotDone = true;
+					Log.i("pendingCallStatus", String.valueOf(endNotDone));
 					break;
 				}
 			}
