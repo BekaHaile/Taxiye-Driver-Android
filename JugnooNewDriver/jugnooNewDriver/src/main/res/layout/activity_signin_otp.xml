@@ -68,7 +68,7 @@
                     android:layout_height="64px"
                     android:layout_gravity="center"
                     android:layout_marginLeft="6px"
-                    android:background="@drawable/ic_email"/>
+                    android:background="@drawable/phone_icon"/>
 
                 <ImageView
                     android:layout_width="2px"
@@ -77,7 +77,7 @@
                     android:background="@color/new_orange"/>
 
                 <AutoCompleteTextView
-                    android:id="@+id/emailEt"
+                    android:id="@+id/phoneNoEt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="2px"
@@ -85,7 +85,7 @@
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
                     android:background="@drawable/background_white"
-                    android:hint="@string/phone_number_or_email"
+                    android:hint="@string/phone_number"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"
                     android:textColor="@color/black"
@@ -115,7 +115,7 @@
                     android:background="@color/new_orange"/>
 
                 <EditText
-                    android:id="@+id/passwordEt"
+                    android:id="@+id/otpEt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="2px"
@@ -123,7 +123,8 @@
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
                     android:background="@drawable/background_white"
-                    android:hint="@string/password"
+                    android:hint="OTP"
+                    android:focusable="false"
                     android:inputType="textPassword"
                     android:singleLine="true"
                     android:textColor="@color/black"
@@ -132,73 +133,82 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:id="@+id/linearLayoutWaiting"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="100px"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone">
 
-            <Button
-                android:id="@+id/signInBtn"
-                android:layout_width="648px"
-                android:layout_height="99px"
-                android:layout_marginTop="108px"
-                android:background="@drawable/orange_btn_selector"
-                android:text="LOGIN"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"/>
-
-            <Button
-                android:id="@+id/forgotPasswordBtn"
+            <TextView
+                android:id="@+id/textViewWaiting"
                 android:layout_width="wrap_content"
-                android:layout_height="90px"
-                android:layout_gravity="center_horizontal"
-                android:layout_centerInParent="true"
-                android:background="@drawable/transparent"
-                android:text="@string/forgot_password"
-                android:textColor="@color/new_orange"
-                android:textSize="36px"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/nl_otp_waiting_to_detect_otp"
+                android:textColor="@color/black_text"
+                android:textSize="32px"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30px">
 
                 <ImageView
-                    android:layout_width="290px"
-                    android:layout_height="3px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/new_orange"
-                    />
-
-                <TextView
-                    android:id="@+id/or"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15px"
-                    android:layout_marginRight="15px"
-                    android:text="or"
-                    android:textColor="@color/new_orange"
-                    android:textSize="40px"/>
+                    android:layout_width="600px"
+                    android:layout_height="12px"
+                    android:src="@drawable/grey_loading_bar"
+                    android:tag="mwar"/>
 
                 <ImageView
-                    android:layout_width="290px"
-                    android:layout_height="3px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/new_orange"
-                    />
-            </LinearLayout>
+                    android:id="@+id/imageViewYellowLoadingBar"
+                    android:layout_width="600px"
+                    android:layout_height="12px"
+                    android:src="@drawable/theme_color_loading_bar"
+                    android:tag="mwar"/>
 
-            <Button
-                android:id="@+id/signInUsingOtp"
-                android:layout_width="648px"
-                android:layout_height="99px"
-                android:layout_marginTop="54px"
-                android:background="@drawable/orange_btn_selector"
-                android:text="Sign in via OTP"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textViewCounter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25px"
+                android:gravity="center"
+                android:text="0:30"
+                android:textColor="@color/black_text"
+                android:textSize="32px"/>
 
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/btnGenerateOtp"
+            android:layout_width="648px"
+            android:layout_height="99px"
+            android:layout_marginTop="108px"
+            android:background="@drawable/orange_btn_selector"
+            android:text="GENERATE OTP"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"/>
+
+
+        <Button
+            android:id="@+id/loginViaOtp"
+            android:layout_width="648px"
+            android:layout_height="99px"
+            android:layout_marginTop="108px"
+            android:background="@drawable/orange_btn_selector"
+            android:text="VERIFY"
+            android:visibility="gone"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"/>
+
+
 
     </LinearLayout>
 
