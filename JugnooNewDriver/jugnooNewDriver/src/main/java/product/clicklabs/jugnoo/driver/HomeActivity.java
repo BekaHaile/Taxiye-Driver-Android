@@ -6199,7 +6199,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				if (Data.driverRideRequests.size() > 0) {
 
-					if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode) {
+					if (DriverScreenMode.D_RIDE_END != driverScreenMode
+							&& DriverScreenMode.D_IN_RIDE != driverScreenMode) {
 						for (int i = 0; i < Data.driverRideRequests.size(); i++) {
 							MarkerOptions markerOptions = new MarkerOptions();
 							markerOptions.title(Data.driverRideRequests.get(i).engagementId);
