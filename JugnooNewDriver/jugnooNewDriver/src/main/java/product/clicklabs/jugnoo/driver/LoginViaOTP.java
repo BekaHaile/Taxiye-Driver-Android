@@ -1,13 +1,20 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
@@ -31,11 +38,43 @@ import retrofit.mime.TypedByteArray;
  */
 public class LoginViaOTP extends Activity {
 
-	LinearLayout linearLayoutWaiting, relative;
+	LinearLayout linearLayoutWaiting, relative, otpETextLLayout;
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
+	public static String OTP_SCREEN_OPEN = null;
+
+
+	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
+	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
+
+	String enteredEmail = "";
+	String enteredPhone = "";
+
+
+	public void resetFlags() {
+		loginDataFetched = false;
+		sendToOtpScreen = false;
+	}
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		retrieveOTPFromSMS(intent);
+		super.onNewIntent(intent);
+	}
+
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -50,6 +89,7 @@ public class LoginViaOTP extends Activity {
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		linearLayoutWaiting = (LinearLayout) findViewById(R.id.linearLayoutWaiting);
+		otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
@@ -60,6 +100,21 @@ public class LoginViaOTP extends Activity {
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		backBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				performbackPressed();
+			}
+		});
+
+		relative.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				otpEt.setError(null);
+			}
+		});
 
 		btnGenerateOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -77,14 +132,54 @@ public class LoginViaOTP extends Activity {
 			}
 		});
 
+		loginViaOtp.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				String otpCode = otpEt.getText().toString().trim();
+				if (otpCode.length() > 0) {
+					sendLoginValues(LoginViaOTP.this, "", String.valueOf(phoneNoEt.getText()), "", otpCode);
+					;
+				} else {
+					otpEt.requestFocus();
+					otpEt.setError("Code can't be empty");
+				}
+			}
+		});
+
+		otpEt.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.length() > 0) {
+					otpEt.setTextSize(20);
+				} else {
+					otpEt.setTextSize(15);
+				}
+			}
+		});
+
+
+		long timerDuration = 30000;
+		textViewCounter.setText("0:30");
+		CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(timerDuration, 5);
+		customCountDownTimer.start();
+
+
+		OTP_SCREEN_OPEN = "yes";
 	}
-
 
 
 	public void generateOTP(final String phoneNo) {
 		try {
-			if(AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
+			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
 				DialogPopup.showLoadingDialog(LoginViaOTP.this, "Loading...");
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", phoneNo);
@@ -107,11 +202,10 @@ public class LoginViaOTP extends Activity {
 							e.printStackTrace();
 							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
 						}
-
 						btnGenerateOtp.setVisibility(View.GONE);
 						loginViaOtp.setVisibility(View.VISIBLE);
-
-
+						otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+						otpEt.setFocusable(true);
 					}
 
 					@Override
@@ -120,10 +214,211 @@ public class LoginViaOTP extends Activity {
 						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
 					}
 				});
-			} 
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	class CustomCountDownTimer extends CountDownTimer {
+
+		private final long mMillisInFuture;
+
+		public CustomCountDownTimer(long millisInFuture, long countDownInterval) {
+			super(millisInFuture, countDownInterval);
+			mMillisInFuture = millisInFuture;
+		}
+
+		@Override
+		public void onTick(long millisUntilFinished) {
+			double percent = (((double) millisUntilFinished) * 100.0) / mMillisInFuture;
+
+			double widthToSet = percent * ((double) (ASSL.Xscale() * 530)) / 100.0;
+
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageViewYellowLoadingBar.getLayoutParams();
+			params.width = (int) widthToSet;
+			imageViewYellowLoadingBar.setLayoutParams(params);
+
+
+			long seconds = (long) Math.ceil(((double) millisUntilFinished) / 1000.0d);
+			String text = seconds < 10 ? "0:0" + seconds : "0:" + seconds;
+			textViewCounter.setText(text);
+		}
+
+		@Override
+		public void onFinish() {
+			linearLayoutWaiting.setVisibility(View.GONE);
+		}
+	}
+
+	private void retrieveOTPFromSMS(Intent intent) {
+		try {
+			String otp = "";
+			if (intent.hasExtra("message")) {
+				String message = intent.getStringExtra("message");
+
+				if (message.toLowerCase().contains("paytm")) {
+					otp = message.split("\\ ")[0];
+				} else {
+					String[] arr = message.split("Your\\ One\\ Time\\ Password\\ is\\ ");
+					otp = arr[1];
+					otp = otp.replaceAll("\\.", "");
+				}
+			}
+			if (Utils.checkIfOnlyDigits(otp)) {
+				if (!"".equalsIgnoreCase(otp)) {
+					otpEt.setText(otp);
+					otpEt.setSelection(otpEt.getText().length());
+					loginViaOtp.performClick();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void sendLoginValues(final Activity activity, final String emailId, final String phoneNo, final String password, final String otp) {
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+			resetFlags();
+			DialogPopup.showLoadingDialog(activity, "Loading...");
+
+//			RequestParams params = new RequestParams();
+
+			if (Data.locationFetcher != null) {
+				Data.latitude = Data.locationFetcher.getLatitude();
+				Data.longitude = Data.locationFetcher.getLongitude();
+			}
+
+			HashMap<String, String> params = new HashMap<String, String>();
+
+			params.put("email", emailId);
+			params.put("phone_no", phoneNo);
+			params.put("password", password);
+			params.put("login_otp", otp);
+			params.put("device_token", Data.deviceToken);
+			params.put("device_type", Data.DEVICE_TYPE);
+			params.put("device_name", Data.deviceName);
+			params.put("app_version", "" + Data.appVersion);
+			params.put("os_version", Data.osVersion);
+			params.put("country", Data.country);
+			params.put("unique_device_id", Data.uniqueDeviceId);
+			params.put("latitude", "" + Data.latitude);
+			params.put("longitude", "" + Data.longitude);
+			params.put("client_id", Data.CLIENT_ID);
+			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("pushy_token", "");
+
+			if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
+				params.put("auto_n_cab_installed", "1");
+			} else {
+				params.put("auto_n_cab_installed", "0");
+			}
+
+			if (Utils.isAppInstalled(activity, Data.UBER_APP)) {
+				params.put("uber_installed", "1");
+			} else {
+				params.put("uber_installed", "0");
+			}
+
+			if (Utils.telerickshawInstall(activity)) {
+				params.put("telerickshaw_installed", "1");
+			} else {
+				params.put("telerickshaw_installed", "0");
+			}
+
+
+			if (Utils.olaInstall(activity)) {
+				params.put("ola_installed", "1");
+			} else {
+				params.put("ola_installed", "0");
+			}
+
+			if (Utils.isDeviceRooted()) {
+				params.put("device_rooted", "1");
+			} else {
+				params.put("device_rooted", "0");
+
+			}
+
+			RestClient.getApiServices().sendLoginValuesRetro(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.INCORRECT_PASSWORD.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else if (ApiResponseFlags.CUSTOMER_LOGGING_IN.getOrdinal() == flag) {
+								SplashNewActivity.sendToCustomerAppPopup("Alert", message, activity);
+							} else if (ApiResponseFlags.AUTH_NOT_REGISTERED.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
+								enteredEmail = emailId;
+								phoneNoOfLoginAccount = jObj.getString("phone_no");
+								accessToken = jObj.getString("access_token");
+								otpErrorMsg = jObj.getString("error");
+								sendToOtpScreen = true;
+							} else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
+								if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
+									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+									startService(new Intent(activity, DriverLocationUpdateService.class));
+									Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
+									loginDataFetched = true;
+								}
+							} else {
+								DialogPopup.alertPopup(activity, "", message);
+							}
+							DialogPopup.dismissLoadingDialog();
+						} else {
+							DialogPopup.dismissLoadingDialog();
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+		} else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+	}
+
+	public void performbackPressed() {
+		Intent intent = new Intent(LoginViaOTP.this, SplashLogin.class);
+		intent.putExtra("no_anim", "yes");
+		startActivity(intent);
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+	}
+
+
+	@Override
+	public void onBackPressed() {
+		performbackPressed();
+		super.onBackPressed();
+	}
+
+	@Override
+	protected void onDestroy() {
+		OTP_SCREEN_OPEN = null;
+		super.onDestroy();
 	}
 
 

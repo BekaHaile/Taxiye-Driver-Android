@@ -280,7 +280,7 @@ public interface APIServices {
 						 Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/generate_otp")
+	@POST("/generate_login_otp")
 	void generateOtp(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
 

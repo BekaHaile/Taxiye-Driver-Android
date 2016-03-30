@@ -49,7 +49,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	Button backBtn;
 	AutoCompleteTextView emailEt;
 	EditText passwordEt;
-	Button signInBtn, forgotPasswordBtn;
+	Button signInBtn, forgotPasswordBtn,signInUsingOtp;
 
 
 	LinearLayout relative;
@@ -120,6 +120,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		signInBtn = (Button) findViewById(R.id.signInBtn); signInBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		signInUsingOtp = (Button) findViewById(R.id.signInUsingOtp); signInUsingOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		forgotPasswordBtn = (Button) findViewById(R.id.forgotPasswordBtn); forgotPasswordBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
@@ -160,13 +161,13 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 					} else {
 						if (isEmailValid(emailOrPhone)) {
 							enteredEmail = emailOrPhone;
-							sendLoginValues(SplashLogin.this, enteredEmail,"", password);
+							sendLoginValues(SplashLogin.this, enteredEmail, "", password, "");
 							FlurryEventLogger.event(LOGIN_EMAIL_ID);
 							FlurryEventLogger.event(LOGIN_PASSWORD);
 							FlurryEventLogger.event(LOGIN_IN_APP);
 						} else if ((Utils.validPhoneNumber(emailOrPhone))) {
-							enteredPhone = "+91"+emailOrPhone;
-							sendLoginValues(SplashLogin.this,"", enteredPhone, password);
+							enteredPhone = "+91" + emailOrPhone;
+							sendLoginValues(SplashLogin.this, "", enteredPhone, password, "");
 							FlurryEventLogger.event(LOGIN_EMAIL_ID);
 							FlurryEventLogger.event(LOGIN_PASSWORD);
 							FlurryEventLogger.event(LOGIN_IN_APP);
@@ -193,6 +194,16 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				finish();
 				FlurryEventLogger.event(FORGOT_PASSWORD);
+			}
+		});
+
+		signInUsingOtp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SplashLogin.this, LoginViaOTP.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				finish();
 			}
 		});
 
@@ -368,7 +379,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 //	Retrofit
 
 
-	public void sendLoginValues(final Activity activity, final String emailId,final String phoneNo, final String password) {
+	public void sendLoginValues(final Activity activity, final String emailId,final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, "Loading...");
@@ -385,6 +396,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("email", emailId);
 			params.put("phone_no", phoneNo);
 			params.put("password", password);
+			params.put("login_otp",otp);
 			params.put("device_token", Data.deviceToken);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);

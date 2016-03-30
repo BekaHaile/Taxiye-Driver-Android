@@ -94,10 +94,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/otpETextLLayout"
                 android:layout_width="640px"
                 android:layout_height="82px"
                 android:layout_marginTop="72px"
-                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:background="@drawable/background_grey_rounded_orange_bordered"
                 android:orientation="horizontal"
                 android:padding="2px">
 
@@ -122,7 +123,7 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
-                    android:background="@drawable/background_white"
+                    android:background="@color/transparent"
                     android:hint="OTP"
                     android:focusable="false"
                     android:inputType="textPassword"

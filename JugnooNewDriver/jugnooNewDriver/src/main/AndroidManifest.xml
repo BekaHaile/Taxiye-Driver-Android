@@ -203,6 +203,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.LoginViaOTP"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
             android:name="product.clicklabs.jugnoo.driver.services.DownloadActivity"
