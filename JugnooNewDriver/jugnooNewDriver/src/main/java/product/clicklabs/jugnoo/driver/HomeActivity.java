@@ -190,6 +190,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	HeatMapResponse heatMapResponseGlobal;
 
 
+
 	//Top RL
 	RelativeLayout topRl;
 	Button menuBtn;
@@ -372,6 +373,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
 	public CountDownTimer timer = null;
+	public Marker perfectRidestationMarker = null;
 
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
@@ -1709,6 +1711,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
 					GCMIntentService.clearNotifications(getApplicationContext());
 					GCMIntentService.stopRing(true);
+					try {
+						if(perfectRidestationMarker != null){
+							perfectRidestationMarker.remove();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					driverRequestListAdapter.setResults(Data.driverRideRequests);
 				}
 			}).rejectRequestAsync(Data.userData.accessToken,
@@ -2622,6 +2631,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
+
 					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.previousWaitTime);
 
 					setAssignedCustomerInfoToViews(mode);
@@ -2743,6 +2753,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					cancelStationPathUpdateTimer();
 
 			}
+			driverRequestListAdapter.notifyDataSetChanged();
 
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
@@ -3587,19 +3598,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			this.driverRideRequests.clear();
 			this.driverRideRequests.addAll(driverRideRequests);
 			this.notifyDataSetChanged();
+		}
 
-//			if (driverRideRequests.size() > 0) {
-//				driverRideRequestsList.setVisibility(View.VISIBLE);
-//			} else {
-//				driverRideRequestsList.setVisibility(View.GONE);
-//			}
-
-			if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode) {
-				if (driverRideRequests.size() > 0) {
-					driverRideRequestsList.setVisibility(View.VISIBLE);
-				} else {
-					driverRideRequestsList.setVisibility(View.GONE);
-				}
+		@Override
+		public void notifyDataSetChanged() {
+			super.notifyDataSetChanged();
+			if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
+					&& DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
+					&& driverRideRequests.size() > 0) {
+				driverRideRequestsList.setVisibility(View.VISIBLE);
 			}else{
 				driverRideRequestsList.setVisibility(View.GONE);
 			}
@@ -4127,8 +4134,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			markerOptionsStationLocation.title("next_pickup_marker");
 			markerOptionsStationLocation.position(Data.nextPickupLatLng);
 			markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPerfectRidePinMarkerBitmap(HomeActivity.this, assl)));
-			Marker stationMarker = map.addMarker(markerOptionsStationLocation);
-			stationMarker.showInfoWindow();
+			perfectRidestationMarker = map.addMarker(markerOptionsStationLocation);
+			perfectRidestationMarker.showInfoWindow();
 		}
 	}
 
@@ -6383,6 +6390,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") ) {
 				callAndHandleStateRestoreAPI();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(perfectRidestationMarker != null){
+						perfectRidestationMarker.remove();
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
