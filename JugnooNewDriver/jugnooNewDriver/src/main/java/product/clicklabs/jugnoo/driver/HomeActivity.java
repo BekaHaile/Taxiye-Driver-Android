@@ -7327,10 +7327,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 
 				public void onFinish() {
-					timeOutValue.setText("done!");
-					Data.userData.autosAvailable = 0;
-					changeJugnooONUIAndInitService();
-					dialog.dismiss();
+					try {
+						timeOutValue.setText("done!");
+						Data.userData.autosAvailable = 0;
+						changeJugnooONUIAndInitService();
+						dialog.dismiss();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}.start();
 			dialog.show();
