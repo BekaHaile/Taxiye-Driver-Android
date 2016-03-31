@@ -19,6 +19,7 @@ import com.flurry.android.FlurryAgent;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -87,7 +88,7 @@ public class LoginViaOTP extends Activity {
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt = (EditText) findViewById(R.id.otpEt);
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
-
+		otpEt.setEnabled(false);
 		linearLayoutWaiting = (LinearLayout) findViewById(R.id.linearLayoutWaiting);
 		otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 		backBtn = (Button) findViewById(R.id.backBtn);
@@ -125,6 +126,15 @@ public class LoginViaOTP extends Activity {
 					phoneNoEt.setError("Please enter Phone No.");
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
+					try {
+						long timerDuration = 30000;
+						textViewCounter.setText("0:30");
+						CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(timerDuration, 5);
+						customCountDownTimer.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+						linearLayoutWaiting.setVisibility(View.GONE);
+					}
 				} else {
 					phoneNoEt.requestFocus();
 					phoneNoEt.setError("Please enter valid email or phone no.");
@@ -138,7 +148,7 @@ public class LoginViaOTP extends Activity {
 			public void onClick(View v) {
 				String otpCode = otpEt.getText().toString().trim();
 				if (otpCode.length() > 0) {
-					sendLoginValues(LoginViaOTP.this, "", String.valueOf(phoneNoEt.getText()), "", otpCode);
+					sendLoginValues(LoginViaOTP.this, "", "+91"+String.valueOf(phoneNoEt.getText()), "", otpCode);
 					;
 				} else {
 					otpEt.requestFocus();
@@ -167,11 +177,6 @@ public class LoginViaOTP extends Activity {
 		});
 
 
-		long timerDuration = 30000;
-		textViewCounter.setText("0:30");
-		CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(timerDuration, 5);
-		customCountDownTimer.start();
-
 
 		OTP_SCREEN_OPEN = "yes";
 	}
@@ -182,7 +187,7 @@ public class LoginViaOTP extends Activity {
 			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
 				DialogPopup.showLoadingDialog(LoginViaOTP.this, "Loading...");
 				HashMap<String, String> params = new HashMap<>();
-				params.put("phone_no", phoneNo);
+				params.put("phone_no", "+91"+phoneNo);
 
 				RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -195,6 +200,11 @@ public class LoginViaOTP extends Activity {
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
+								btnGenerateOtp.setVisibility(View.GONE);
+								loginViaOtp.setVisibility(View.VISIBLE);
+								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
+								otpEt.setEnabled(true);
+								linearLayoutWaiting.setVisibility(View.VISIBLE);
 							} else {
 								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
 							}
@@ -202,10 +212,7 @@ public class LoginViaOTP extends Activity {
 							e.printStackTrace();
 							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
 						}
-						btnGenerateOtp.setVisibility(View.GONE);
-						loginViaOtp.setVisibility(View.VISIBLE);
-						otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
-						otpEt.setFocusable(true);
+
 					}
 
 					@Override
@@ -260,9 +267,10 @@ public class LoginViaOTP extends Activity {
 				if (message.toLowerCase().contains("paytm")) {
 					otp = message.split("\\ ")[0];
 				} else {
-					String[] arr = message.split("Your\\ One\\ Time\\ Password\\ is\\ ");
-					otp = arr[1];
-					otp = otp.replaceAll("\\.", "");
+					String[] arr = message.split("and\\ it\\ is\\ valid\\ till\\ ");
+					String[] arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ");
+					otp = arr2[1];
+					otp = otp.replaceAll("\\ ", "");
 				}
 			}
 			if (Utils.checkIfOnlyDigits(otp)) {
@@ -408,6 +416,16 @@ public class LoginViaOTP extends Activity {
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
+	@Override
+	public void onWindowFocusChanged(boolean hasFocus) {
+		super.onWindowFocusChanged(hasFocus);
+		if(hasFocus && loginDataFetched){
+			startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
+			loginDataFetched = false;
+			finish();
+			overridePendingTransition(R.anim.right_in, R.anim.right_out);
+		}
+	}
 
 	@Override
 	public void onBackPressed() {
