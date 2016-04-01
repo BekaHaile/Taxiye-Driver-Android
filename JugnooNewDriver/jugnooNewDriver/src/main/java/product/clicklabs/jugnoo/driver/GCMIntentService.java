@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
@@ -361,7 +362,8 @@ public class GCMIntentService extends IntentService {
 									&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
 									|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
 									|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode
-									|| perfectRide == 1)) {
+									|| perfectRide == 1)
+									&&(Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") )) {
 
 								//	    	    						 {   "engagement_id": engagement_id,
 								//	    	    							 "user_id": data.customer_id,
@@ -533,6 +535,7 @@ public class GCMIntentService extends IntentService {
 								if (ignoreRideRequest == 1) {
 									new DriverTimeoutCheck().timeoutBuffer(this, true);
 								}
+
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 

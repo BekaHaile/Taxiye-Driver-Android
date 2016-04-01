@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
@@ -833,7 +834,11 @@ public class JSONParser implements Constants {
 									parseLastRideData(jObject1);
 									return returnResponse;
 								}
-							
+
+								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
+									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+									new ApiAcceptRide().perfectRideVariables(context, "","","",0,0);
+								}
 							}
 			} catch(Exception e){
 				e.printStackTrace();

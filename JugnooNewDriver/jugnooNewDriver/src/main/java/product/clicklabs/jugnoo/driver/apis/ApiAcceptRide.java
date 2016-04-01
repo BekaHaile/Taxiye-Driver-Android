@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.apis;
 
 import android.app.Activity;
+import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -35,12 +36,15 @@ public class ApiAcceptRide {
 	private Activity activity;
 	private Callback callback;
 
+	public ApiAcceptRide(){
+	}
+
 	public ApiAcceptRide(Activity activity, Callback callback){
 		this.activity = activity;
 		this.callback = callback;
 	}
 
-	public void acceptRide(String accessToken, String customerId, String engagementId, String referenceId, double latitude, double longitude){
+	public void acceptRide(String accessToken, final String customerId, final String engagementId, final String referenceId, final double latitude, final double longitude){
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				if (Utils.getBatteryPercentage(activity) >= 20) {
@@ -71,7 +75,6 @@ public class ApiAcceptRide {
 						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 							try {
 								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								Prefs.with(activity).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, jsonString);
 								JSONObject jObj = new JSONObject(jsonString);
 								int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
 
@@ -79,6 +82,8 @@ public class ApiAcceptRide {
 									flag = jObj.getInt("flag");
 								}
 								if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
+									Prefs.with(activity).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, jsonString);
+									perfectRideVariables(activity,customerId, engagementId, referenceId, latitude, longitude);
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
 									double pickupLongitude = jObj.getDouble("pickup_longitude");
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
@@ -110,6 +115,16 @@ public class ApiAcceptRide {
 
 	public interface Callback{
 		void onSuccess(LatLng pickupLatLng);
+	}
+
+	public void perfectRideVariables(Context activity, String customerId, String engagementId, String referenceId, double latitude, double longitude){
+
+			Prefs.with(activity).save(SPLabels.PERFECT_ENGAGEMENT_ID, engagementId);
+			Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_ID, customerId);
+			Prefs.with(activity).save(SPLabels.PERFECT_REFERENCE_ID, referenceId);
+			Prefs.with(activity).save(SPLabels.PERFECT_LATITUDE, String.valueOf(latitude));
+			Prefs.with(activity).save(SPLabels.PERFECT_LONGITUDE, String.valueOf(longitude));
+
 	}
 
 }
