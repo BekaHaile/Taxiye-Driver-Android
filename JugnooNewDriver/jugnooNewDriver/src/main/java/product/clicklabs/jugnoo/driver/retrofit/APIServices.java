@@ -266,6 +266,11 @@ public interface APIServices {
 						Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/make_driver_eligible_for_pr")
+	void perfectRideRegionRequest(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/acknowledge_manual_engagement")
 	void acknowledgeManualEngagement(@FieldMap Map<String, String> params,
 						 Callback<RegisterScreenResponse> callback);

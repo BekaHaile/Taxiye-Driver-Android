@@ -4392,6 +4392,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 										if (jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
 											dropLatitude = jObj.getDouble("op_drop_latitude");
 											dropLongitude = jObj.getDouble("op_drop_longitude");
+											Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, jObj.getString("pr_distance"));
 										}
 									} catch (JSONException e) {
 										e.printStackTrace();
@@ -6567,10 +6568,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
 				&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)) {
 
-			if (MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-					(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng))
-					< Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
-				perectRideRequestRegion();
+			double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
+					(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
+
+			if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
+				perectRideRequestRegion(currentDropDist);
 			}
 		}
 	}
@@ -7508,17 +7510,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		smilyHandler.postDelayed(smilyRunnalble, 1000);
 	}
 
-	public void perectRideRequestRegion() {
+	public void perectRideRequestRegion(double currentDropDist) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("access_token", Data.userData.accessToken);
-				params.put("customer_id", Data.dCustomerId);
+				params.put("distance", String.valueOf(currentDropDist));
 
 				Log.i("params", "=" + params);
 
-				RestClient.getApiServices().rateTheCustomer(params, new Callback<RegisterScreenResponse>() {
+				RestClient.getApiServices().perfectRideRegionRequest(params, new Callback<RegisterScreenResponse>() {
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
