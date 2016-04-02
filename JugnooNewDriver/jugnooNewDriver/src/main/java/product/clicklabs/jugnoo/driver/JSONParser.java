@@ -21,6 +21,7 @@ import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DestinationOption;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -1115,6 +1116,27 @@ public class JSONParser implements Constants {
 
         return previousAccountInfoList;
     }
+
+
+	public static void parseDestinationData(String response) throws Exception{
+
+		Log.e("response ==", "="+response);
+
+		JSONObject jObj = new JSONObject(response);
+
+		try {
+			Data.destiantionOptionsList = new ArrayList<>();
+			JSONArray jDestination = jObj.getJSONArray("destination");
+			Data.destiantionOptionsList.clear();
+
+			for (int i = 0; i < jDestination.length(); i++) {
+				Data.destiantionOptionsList.add(new DestinationOption(jDestination.getString(i)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 
 	public static void parseCancellationReasons(JSONObject jObj, Context context) {
