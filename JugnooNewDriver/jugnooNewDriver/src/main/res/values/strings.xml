@@ -228,7 +228,7 @@
 	<string name="Confirm">Confirm</string>
 	<string name="Paytm_recharge">Paytm Recharge</string>
 	<string name="phone_number_or_email">Phone No. or Email</string>
-	<string name="nl_otp_waiting_to_detect_otp">\"Waiting to detect OTP Automaticaly\"</string>
+	<string name="nl_otp_waiting_to_detect_otp">Waiting to Automatically detect OTP</string>
 
 
 	<string-array name="CountryCodes" >

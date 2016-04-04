@@ -137,7 +137,7 @@ public class LoginViaOTP extends Activity {
 					}
 				} else {
 					phoneNoEt.requestFocus();
-					phoneNoEt.setError("Please enter valid email or phone no.");
+					phoneNoEt.setError("Please enter valid phone no.");
 				}
 			}
 		});
