@@ -22,6 +22,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
     <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -203,6 +205,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.LoginViaOTP"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <activity
             android:name="product.clicklabs.jugnoo.driver.services.DownloadActivity"
@@ -215,6 +222,12 @@
             android:enabled="true">
             <intent-filter>
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="product.clicklabs.jugnoo.driver.IncomingSmsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 

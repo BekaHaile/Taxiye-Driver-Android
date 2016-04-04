@@ -284,6 +284,11 @@ public interface APIServices {
 	void sendReferralMessage(@FieldMap Map<String, String> params,
 						 Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/generate_login_otp")
+	void generateOtp(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
 	@POST("/fetch_media_data")
 	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
 													 @Field("file_category") String fileType);
