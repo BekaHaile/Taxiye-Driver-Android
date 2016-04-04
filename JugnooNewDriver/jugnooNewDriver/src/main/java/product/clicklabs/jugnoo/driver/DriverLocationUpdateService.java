@@ -135,7 +135,11 @@ public class DriverLocationUpdateService extends Service {
 		new DeviceTokenGenerator(context).generateDeviceToken(context, new IDeviceTokenReceiver() {
 			@Override
 			public void deviceTokenReceived(String deviceToken) {
-				Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				try {
+					Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
