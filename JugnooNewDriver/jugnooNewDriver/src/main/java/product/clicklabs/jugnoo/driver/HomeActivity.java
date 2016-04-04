@@ -6312,15 +6312,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 				});
 			} else {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						driverRequestListAdapter.setResults(Data.driverRideRequests);
-						if (perfectRidestationMarker != null) {
-							perfectRidestationMarker.remove();
-						}
-					}
-				});
+				removePRMarkerAndRefreshList();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6342,19 +6334,27 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					} else if (driverScreenMode == DriverScreenMode.D_INITIAL) {
 						showAllRideRequestsOnMap();
 					} else {
-						runOnUiThread(new Runnable() {
-							@Override
-							public void run() {
-								driverRequestListAdapter.setResults(Data.driverRideRequests);
-								if (perfectRidestationMarker != null) {
-									perfectRidestationMarker.remove();
-								}
-							}
-						});
+						removePRMarkerAndRefreshList();
 					}
 				}
 			});
 		}
+	}
+
+	private void removePRMarkerAndRefreshList(){
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					driverRequestListAdapter.setResults(Data.driverRideRequests);
+					if (perfectRidestationMarker != null) {
+						perfectRidestationMarker.remove();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 
@@ -6402,18 +6402,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		try {
-			runOnUiThread(new Runnable() {
-				@Override
-				public void run() {
-					if (perfectRidestationMarker != null) {
-						perfectRidestationMarker.remove();
-					}
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		removePRMarkerAndRefreshList();
 	}
 
 
