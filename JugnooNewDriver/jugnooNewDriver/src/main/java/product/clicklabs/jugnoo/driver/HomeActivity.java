@@ -6554,7 +6554,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		if ((Data.assignedCustomerInfo instanceof AutoCustomerInfo
 				&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
-				&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)) {
+				&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
+				&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
 
 			double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 					(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
