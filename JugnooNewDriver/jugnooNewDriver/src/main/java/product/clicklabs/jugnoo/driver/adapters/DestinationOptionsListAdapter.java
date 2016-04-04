@@ -10,10 +10,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.DestinationOption;
+import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 
@@ -30,15 +30,17 @@ public class DestinationOptionsListAdapter extends BaseAdapter {
 	LayoutInflater mInflater;
 	ViewHolderDestinationOption holder;
 	Context context;
+	ArrayList<DestinationDataResponse.Region> destinationOptionList;
 
-	public DestinationOptionsListAdapter(Context context) {
+	public DestinationOptionsListAdapter(Context context, ArrayList<DestinationDataResponse.Region> destinationOptionList) {
 		this.context = context;
 		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.destinationOptionList = destinationOptionList;
 	}
 
 	@Override
 	public int getCount() {
-		return Data.destiantionOptionsList.size();
+		return destinationOptionList.size();
 	}
 
 	@Override
@@ -75,11 +77,11 @@ public class DestinationOptionsListAdapter extends BaseAdapter {
 
 		holder.id = position;
 
-		DestinationOption destinationOption = Data.destiantionOptionsList.get(position);
+		DestinationDataResponse.Region region = destinationOptionList.get(position);
 
-		holder.textViewDestinationOption.setText(destinationOption.name);
+		holder.textViewDestinationOption.setText(region.getRegion());
 
-		if(destinationOption.checked){
+		if(region.getIsSelected() ==1){
 			holder.relative.setBackgroundColor(Color.WHITE);
 			holder.imageViewDestinationOptionCheck.setImageResource(R.drawable.option_checked_orange);
 		}
@@ -94,14 +96,7 @@ public class DestinationOptionsListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				try {
 					holder = (ViewHolderDestinationOption) v.getTag();
-					for(int i=0; i<Data.destiantionOptionsList.size(); i++){
-						if(holder.id == i){
-							Data.destiantionOptionsList.get(i).checked = true;
-						}
-						else{
-							Data.destiantionOptionsList.get(i).checked = false;
-						}
-					}
+					destinationOptionList.get(holder.id).setIsSelected(destinationOptionList.get(holder.id).getIsSelected() == 0 ? 1 : 0);
 					notifyDataSetChanged();
 				} catch (Exception e) {
 					e.printStackTrace();

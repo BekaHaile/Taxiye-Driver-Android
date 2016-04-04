@@ -65,6 +65,7 @@
             android:orientation="vertical"
             android:splitMotionEvents="false"
             android:animateLayoutChanges="true"
+            android:padding="20px"
             >
 
 
@@ -73,7 +74,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="40px"
+                android:padding="5px"
                 android:divider="@color/transparent"
+                android:background="@drawable/background_white_rounded_orange_bordered"
                 android:dividerHeight="10px"
                 android:splitMotionEvents="false">
             </product.clicklabs.jugnoo.driver.utils.NonScrollListView>

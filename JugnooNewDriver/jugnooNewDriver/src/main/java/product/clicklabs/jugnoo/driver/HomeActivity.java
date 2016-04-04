@@ -953,7 +953,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			relativeLayoutDestination.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					fetchDestinationData(HomeActivity.this);
 					startActivity(new Intent(HomeActivity.this, TriCitySupplyActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
@@ -7383,35 +7382,5 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		smilyHandler.postDelayed(smilyRunnalble, 1000);
 	}
 
-	public void fetchDestinationData(final Activity activity) {
-		try {
-			final long responseTime = System.currentTimeMillis();
-			RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
-				@Override
-				public void success(HeatMapResponse heatMapResponse, Response response) {
-					try {
 
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i("heat", jsonString);
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
-						String message = JSONParser.getServerMessage(jObj);
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								JSONParser.parseDestinationData(jsonString);
-							}
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				}
-				@Override
-				public void failure(RetrofitError error) {
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 }

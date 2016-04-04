@@ -10,18 +10,28 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.DestinationOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -38,11 +48,13 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 	NonScrollListView listViewDestinationOptions;
 	DestinationOptionsListAdapter destinationOptionsListAdapter;
+	DestinationDataResponse destinationDataResponseGlobal;
 
 	Button buttonOk;
 
 	ScrollView scrollView;
 	LinearLayout linearLayoutMain;
+	ArrayList<DestinationDataResponse.Region> destinationOptionList = new ArrayList<>();
 
 	public static ActivityCloser activityCloser = null;
 
@@ -63,7 +75,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 
 		listViewDestinationOptions = (NonScrollListView) findViewById(R.id.listViewDestinationOptions);
-		destinationOptionsListAdapter = new DestinationOptionsListAdapter(TriCitySupplyActivity.this);
+		destinationOptionsListAdapter = new DestinationOptionsListAdapter(TriCitySupplyActivity.this, destinationOptionList);
 		listViewDestinationOptions.setAdapter(destinationOptionsListAdapter);
 
 
@@ -87,16 +99,15 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 			@Override
 			public void onClick(View v) {
-				if (Data.destiantionOptionsList != null) {
-					String destiantionData = "";
-					for (int i = 0; i < Data.destiantionOptionsList.size(); i++) {
-						if (Data.destiantionOptionsList.get(i).checked) {
-							destiantionData = Data.destiantionOptionsList.get(i).name;
-							break;
+				if (destinationOptionList != null) {
+					ArrayList<Integer> destiantionData = new ArrayList<>();
+					for (int i = 0; i < destinationOptionList.size(); i++) {
+						if (destinationOptionList.get(i).getIsSelected() == 1) {
+							destiantionData.add(destinationOptionList.get(i).getRegionId());
 						}
 					}
 
-					if ("".equalsIgnoreCase(destiantionData)) {
+					if (destiantionData.size() == 0) {
 						DialogPopup.alertPopup(TriCitySupplyActivity.this, "", "Please select one Destination");
 					} else {
 						driverDestinationAsync(TriCitySupplyActivity.this, destiantionData);
@@ -109,16 +120,13 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 		TriCitySupplyActivity.activityCloser = this;
 
-		setDestinationOptions();
+		fetchDestinationData(TriCitySupplyActivity.this);
 	}
 
 
 	private void setDestinationOptions() {
 		try {
-			if (Data.destiantionOptionsList != null) {
-				for (int i = 0; i < Data.destiantionOptionsList.size(); i++) {
-					Data.destiantionOptionsList.get(i).checked = false;
-				}
+			if (destinationOptionList != null) {
 				destinationOptionsListAdapter.notifyDataSetChanged();
 			} else {
 				performBackPressed();
@@ -157,20 +165,15 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 	}
 
 
-	public void driverDestinationAsync(final Activity activity, String destination) {
+	public void driverDestinationAsync(final Activity activity, ArrayList<Integer> destination) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
 
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", Data.dCustomerId);
-			params.put("engagement_id", Data.dEngagementId);
-			params.put("destiantion", destination);
+			params.put("region_ids", String.valueOf(destination));
 
-			if (Data.assignedCustomerInfo != null) {
-				params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
-			}
-			RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
+			RestClient.getApiServices().updateDriverRegion(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					DialogPopup.dismissLoadingDialog();
@@ -178,32 +181,14 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
-
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							} else {
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							}
-						} else {
-							try {
-								int flag = jObj.getInt("flag");
-								if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-									String log = jObj.getString("log");
-									DialogPopup.alertPopup(activity, "", "" + log);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-
-							performBackPressed();
-							if (HomeActivity.appInterruptHandler != null) {
-								HomeActivity.appInterruptHandler.handleCancelRideSuccess();
+						String message = JSONParser.getServerMessage(jObj);
+						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+								performBackPressed();
 							}
 						}
-
-						new DriverTimeoutCheck().timeoutBuffer(activity, true);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -214,13 +199,51 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 				public void failure(RetrofitError error) {
 					DialogPopup.dismissLoadingDialog();
 					performBackPressed();
-					if (HomeActivity.appInterruptHandler != null) {
-						HomeActivity.appInterruptHandler.handleCancelRideFailure();
-					}
 				}
 			});
 		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+	}
+
+	public void fetchDestinationData(final Activity activity) {
+		try {
+			RestClient.getApiServices().getDestinationData(Data.userData.accessToken, new Callback<DestinationDataResponse>() {
+				@Override
+				public void success(DestinationDataResponse destinationDataResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						String message = JSONParser.getServerMessage(jObj);
+						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								destinationDataResponseGlobal = destinationDataResponse;
+								parseDestinationData(destinationDataResponseGlobal);
+							}
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	private void parseDestinationData(DestinationDataResponse destinationDataResponse) {
+		try {
+			destinationOptionList.addAll(destinationDataResponse.getRegions());
+			setDestinationOptions();
+
+		} catch (Exception e) {
 		}
 	}
 

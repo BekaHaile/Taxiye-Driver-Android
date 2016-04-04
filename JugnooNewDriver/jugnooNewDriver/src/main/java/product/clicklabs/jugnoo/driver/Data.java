@@ -18,7 +18,6 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DestinationOption;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
@@ -179,8 +178,7 @@ public class Data {
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
 
 	public static ArrayList<CancelOption> cancelOptionsList;
-	public static ArrayList<DestinationOption> destiantionOptionsList;
-	
+
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;
 	public static DriverRideRequest openedDriverRideRequest;

@@ -2,27 +2,29 @@
 <RelativeLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="720px"
+    android:layout_width="660px"
     android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     >
 
     <TextView
         android:id="@+id/textViewDestinationOption"
-        android:layout_width="600px"
+        android:layout_width="560px"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="40px"
         android:text="Chandigarh"
         android:textColor="@color/black"
-        android:textSize="42px"/>
+        android:textSize="40px"/>
 
     <ImageView
         android:id="@+id/imageViewDestinationOptionCheck"
-        android:layout_width="36px"
-        android:layout_height="36px"
+        android:layout_width="40px"
+        android:layout_height="40px"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="40px"
+        android:layout_marginRight="60px"
+        android:padding="2px"
         android:src="@drawable/option_checked_orange"
         android:tag="mwar"
         />
