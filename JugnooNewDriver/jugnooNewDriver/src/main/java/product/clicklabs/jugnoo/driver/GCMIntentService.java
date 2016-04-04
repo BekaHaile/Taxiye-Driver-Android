@@ -733,8 +733,13 @@ public class GCMIntentService extends IntentService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}else{
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}
+
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
