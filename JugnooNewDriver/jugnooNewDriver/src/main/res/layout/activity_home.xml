@@ -69,18 +69,6 @@
                         android:layout_below="@+id/textViewDriverInfo"
                         android:background="@drawable/shadow_down"/>
 
-
-                    <ListView
-                        android:id="@+id/driverRideRequestsList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:divider="@color/transparent"
-                        android:splitMotionEvents="false"
-                        android:visibility="visible"
-                        >
-                    </ListView>
-
                     <Button
                         android:id="@+id/driverInitialMyLocationBtn"
                         android:layout_width="80px"
@@ -825,6 +813,17 @@
                         android:textColor="@color/white"/>
 
                 </RelativeLayout>
+
+
+                <ListView
+                    android:id="@+id/driverRideRequestsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/transparent"
+                    android:visibility="visible"
+                    android:layout_alignParentTop="true"
+                    android:splitMotionEvents="false"
+                    ></ListView>
 
 
             </RelativeLayout>

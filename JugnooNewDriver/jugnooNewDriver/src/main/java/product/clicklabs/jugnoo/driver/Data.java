@@ -194,7 +194,7 @@ public class Data {
 	public static String waitTime = "", rideTime = "";
 	
 	
-	public static LatLng pickupLatLng;
+	public static LatLng pickupLatLng, nextPickupLatLng;
 
 	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
 	

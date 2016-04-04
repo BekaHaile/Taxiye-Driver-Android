@@ -25,6 +25,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
+
 import com.google.android.gms.gcm.GcmListenerService;
 import com.google.android.gms.maps.model.LatLng;
 
@@ -38,6 +39,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
@@ -347,19 +349,21 @@ public class GCMIntentService extends IntentService {
 
 						try {
 							JSONObject jObj = new JSONObject(message);
-
+							Log.i("push_notification", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String title = jObj.optString("title", "");
 							int canStore = jObj.optInt("canStore", 0);
+							int perfectRide = jObj.optInt("perfect_ride", 0);
 
 							int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 									DriverScreenMode.D_INITIAL.getOrdinal());
 
-							if ((PushFlags.REQUEST.getOrdinal() == flag)
-									&&
-									(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-											|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-											|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
+							if (PushFlags.REQUEST.getOrdinal() == flag
+									&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
+									|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
+									|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode
+									|| perfectRide == 1)
+									&&(Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") )) {
 
 								//	    	    						 {   "engagement_id": engagement_id,
 								//	    	    							 "user_id": data.customer_id,
@@ -425,7 +429,8 @@ public class GCMIntentService extends IntentService {
 									if (UserMode.DRIVER == HomeActivity.userMode) {
 										if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
 												DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
+												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode ||
+												DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 
 											int referenceId = jObj.getInt("reference_id");
 
@@ -457,8 +462,8 @@ public class GCMIntentService extends IntentService {
 											startRing(this);
 											flurryEventForRequestPush(engagementId);
 
-											Log.i("TimeOutAlarmReceiver", "4:"+jObj.optInt("penalise_driver_timeout", 0));
-											if(jObj.optInt("penalise_driver_timeout",0)==1) {
+											Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
+											if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 												Log.i("TimeOutAlarmReceiver", "3");
 												startTimeoutAlarm(this);
 											}
@@ -466,7 +471,7 @@ public class GCMIntentService extends IntentService {
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
 											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
-											HomeActivity.appInterruptHandler.onNewRideRequest();
+											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
 
 											Log.e("referenceId", "=" + referenceId);
 										}
@@ -478,7 +483,7 @@ public class GCMIntentService extends IntentService {
 									flurryEventForRequestPush(engagementId);
 
 									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
-									if(jObj.optInt("penalise_driver_timeout",0)==1) {
+									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 										Log.i("TimeOutAlarmReceiver", "3");
 										startTimeoutAlarm(this);
 									}
@@ -486,7 +491,6 @@ public class GCMIntentService extends IntentService {
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
-
 
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
@@ -528,9 +532,10 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
-								if(ignoreRideRequest==1){
-									new DriverTimeoutCheck().timeoutBuffer(this,true);
+								if (ignoreRideRequest == 1) {
+									new DriverTimeoutCheck().timeoutBuffer(this, true);
 								}
+
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
@@ -555,7 +560,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
-							}else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
+							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
 								String message1 = jObj.getString("message");
@@ -590,9 +595,9 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.UPDATE_HEAT_MAP.getOrdinal() == flag) {
 								if (HomeActivity.appInterruptHandler != null) {
-								HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
+									HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
 								}
-							}else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
+							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble("op_drop_latitude");
 								double dropLongitude = jObj.getDouble("op_drop_longitude");
 								String engagementId = jObj.getString("engagement_id");
@@ -604,25 +609,25 @@ public class GCMIntentService extends IntentService {
 								String id = jObj.getString("file_id");
 								int download = jObj.optInt("set_download", 0);
 
-									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
+								File myFile = new File("/storage/emulated/0/jugnooFiles/" + id + ".mp3");
 
-									if (myFile.exists() && download == 0) {
-										FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
-										startRingCustom(this, myFile.getAbsolutePath());
-									} else {
-										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
-										intent1.putExtra("downloadOnly",download);
-										intent1.putExtra("file_url", url);
-										intent1.putExtra("file_id", id);
-										startService(intent1);
-										Database2.getInstance(this).insertCustomAudioUrl(url, id);
-									}
+								if (myFile.exists() && download == 0) {
+									FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
+									startRingCustom(this, myFile.getAbsolutePath());
+								} else {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+									intent1.putExtra("downloadOnly", download);
+									intent1.putExtra("file_url", url);
+									intent1.putExtra("file_id", id);
+									startService(intent1);
+									Database2.getInstance(this).insertCustomAudioUrl(url, id);
+								}
 
 							} else if (PushFlags.GET_JUGNOO_AUDIO.getOrdinal() == flag) {
-									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
-									int downloadList = 2;
-									intent1.putExtra("downloadOnly", downloadList);
-									startService(intent1);
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+								int downloadList = 2;
+								intent1.putExtra("downloadOnly", downloadList);
+								startService(intent1);
 
 
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
@@ -656,7 +661,7 @@ public class GCMIntentService extends IntentService {
 										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
 							}
 
-							String message1 = jObj.optString("message"," ");
+							String message1 = jObj.optString("message", " ");
 							savePush(jObj, flag, title, message1);
 
 						} catch (Exception e) {
@@ -668,7 +673,7 @@ public class GCMIntentService extends IntentService {
 					e.printStackTrace();
 
 					// Release the wake lock provided by the WakefulBroadcastReceiver.
-					        GcmBroadcastReceiver.completeWakefulIntent(intent);
+					GcmBroadcastReceiver.completeWakefulIntent(intent);
 
 				}
 			}
@@ -682,19 +687,19 @@ public class GCMIntentService extends IntentService {
 	public static MediaPlayer mediaPlayer;
 	public static Vibrator vibrator;
 
-	public static void startTimeoutAlarm(Context context){
+	public static void startTimeoutAlarm(Context context) {
 
 		boolean alarmUp = (PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
 				new Intent(context, TimeOutAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
 
-		if(!alarmUp) {
+		if (!alarmUp) {
 			Intent intent = new Intent(context, TimeOutAlarmReceiver.class);
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
 					intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			Log.i("TimeOutAlarmReceiver", "5");
-			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+(Prefs.with(context).getLong(SPLabels.MAX_TIMEOUT_RELIEF, 0)), pendingIntent);
+			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (Prefs.with(context).getLong(SPLabels.MAX_TIMEOUT_RELIEF, 0)), pendingIntent);
 		}
 	}
 
@@ -887,13 +892,13 @@ public class GCMIntentService extends IntentService {
 				e.printStackTrace();
 			}
 		}
-    }
-
+	}
 
 
 	private ArrayList<Integer> dontSavePushes = null;
-	private ArrayList<Integer> getDontSavePushesArray(){
-		if(dontSavePushes == null){
+
+	private ArrayList<Integer> getDontSavePushesArray() {
+		if (dontSavePushes == null) {
 			dontSavePushes = new ArrayList<>();
 //			dontSavePushes.add(PushFlags.WAITING_STARTED.getOrdinal());
 //			dontSavePushes.add(PushFlags.WAITING_ENDED.getOrdinal());
@@ -908,19 +913,19 @@ public class GCMIntentService extends IntentService {
 		return dontSavePushes;
 	}
 
-	private void savePush(JSONObject jObj, int flag, String title, String message1){
+	private void savePush(JSONObject jObj, int flag, String title, String message1) {
 		try {
 			boolean tryToSave = false;
-			if(PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag){
+			if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 				tryToSave = true;
-			} else if(!getDontSavePushesArray().contains(flag)){
+			} else if (!getDontSavePushesArray().contains(flag)) {
 				int saveNotification = jObj.optInt(Constants.KEY_SAVE_NOTIFICATION, 0);
-				if(1 == saveNotification){
+				if (1 == saveNotification) {
 					tryToSave = true;
 				}
 			}
 
-			if(tryToSave && !"".equalsIgnoreCase(message1)) {
+			if (tryToSave && !"".equalsIgnoreCase(message1)) {
 				String picture = jObj.optString("image", "");
 				if ("".equalsIgnoreCase(picture)) {
 					picture = jObj.optString("picture", "");
@@ -958,8 +963,6 @@ public class GCMIntentService extends IntentService {
 			e.printStackTrace();
 		}
 	}
-
-
 
 
 	class RequestTimeoutTimerTask {
@@ -1143,9 +1146,9 @@ public class GCMIntentService extends IntentService {
 	}
 
 
-	private void flurryEventForRequestPush(String engagementId){
+	private void flurryEventForRequestPush(String engagementId) {
 		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-		if(DriverScreenMode.D_INITIAL.getOrdinal() != mode
+		if (DriverScreenMode.D_INITIAL.getOrdinal() != mode
 				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
 				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
 			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);

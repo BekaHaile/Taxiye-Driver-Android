@@ -228,6 +228,8 @@
 	<string name="Confirm">Confirm</string>
 	<string name="Paytm_recharge">Paytm Recharge</string>
 
+	<string name="battery_low_message">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
+
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
