@@ -6562,16 +6562,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				reconnectLocationFetchers();
 			}
 		}
-		if ((Data.assignedCustomerInfo instanceof AutoCustomerInfo
-				&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
-				&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
-				&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
+		if (location.getExtras() == null
+				|| !location.getExtras().getBoolean("cached", false)) {
+			if ((Data.assignedCustomerInfo instanceof AutoCustomerInfo
+					&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
+					&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
+					&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
 
-			double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-					(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
+				double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
+						(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
 
-			if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
-				perectRideRequestRegion(currentDropDist);
+				if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
+					perectRideRequestRegion(currentDropDist);
+				}
 			}
 		}
 	}
@@ -7235,7 +7238,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if ((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())) {
 			((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = dropLatLng;
 			startCustomerPathUpdateTimer();
-			if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null) {
+			if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null && DriverScreenMode.D_IN_RIDE ==driverScreenMode) {
 				updateCustomerPickupAddress(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng);
 			}
 		}
@@ -7391,8 +7394,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
 			layoutParams.dimAmount = 0.8f;
 			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(true);
-			dialog.setCanceledOnTouchOutside(true);
+			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
