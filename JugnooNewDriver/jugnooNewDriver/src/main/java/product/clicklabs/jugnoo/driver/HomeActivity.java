@@ -173,8 +173,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout relativeLayoutSharingRides;
 
 	RelativeLayout fareDetailsRl;
-	TextView fareDetailsText;
-	RelativeLayout relativeLayoutSuperDrivers;
+	TextView fareDetailsText, textViewDestination;
+	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
 	RelativeLayout callUsRl;
 	TextView callUsText;
@@ -504,6 +504,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
 			((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
+
+			relativeLayoutDestination = (RelativeLayout) findViewById(R.id.relativeLayoutDestination);
+			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
 
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
@@ -951,6 +954,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+			relativeLayoutDestination.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, TriCitySupplyActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
 
 			callUsRl.setOnClickListener(new OnClickListener() {
 
@@ -1466,7 +1476,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						paytmRechargeRl.setVisibility(View.GONE);
 					}
 
-				} else{
+				} else {
 					finish();
 					startActivity(new Intent(this, SplashNewActivity.class));
 				}

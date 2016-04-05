@@ -229,8 +229,9 @@
 	<string name="Paytm_recharge">Paytm Recharge</string>
 	<string name="phone_number_or_email">Phone No. or Email</string>
 	<string name="nl_otp_waiting_to_detect_otp">Waiting to Automatically detect OTP</string>
-
 	<string name="battery_low_message">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
+	<string name="destination">DESTINATIONS</string>
+	<string name="destination_selection">Please select destination where you can go right now</string>
 
 
 	<string-array name="CountryCodes" >

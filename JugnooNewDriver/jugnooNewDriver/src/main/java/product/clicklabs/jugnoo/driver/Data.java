@@ -178,7 +178,7 @@ public class Data {
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
 
 	public static ArrayList<CancelOption> cancelOptionsList;
-	
+
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;
 	public static DriverRideRequest openedDriverRideRequest;
