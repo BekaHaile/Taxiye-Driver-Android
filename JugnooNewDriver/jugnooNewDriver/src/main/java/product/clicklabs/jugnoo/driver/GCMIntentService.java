@@ -188,7 +188,7 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId, boolean appstate) {
+	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -197,7 +197,12 @@ public class GCMIntentService extends IntentService {
 
 			Log.v("message", "," + message);
 
-			Intent notificationIntent = new Intent(context, HomeActivity.class);
+			Intent notificationIntent = new Intent();
+			if(HomeActivity.appInterruptHandler == null){
+				notificationIntent.setClass(context, SplashNewActivity.class);
+			} else{
+				notificationIntent.setClass(context, HomeActivity.class);
+			}
 
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -222,19 +227,19 @@ public class GCMIntentService extends IntentService {
 			builder.setContentIntent(intent);
 
 
-			if (appstate) {
-				Intent intentAcc = new Intent(context, DriverProfileActivity.class);
+			if (HomeActivity.appInterruptHandler != null) {
+				Intent intentAcc = new Intent(context, HomeActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
 				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
-				Intent intentCanc = new Intent(context, ShareActivity1.class);
+				Intent intentCanc = new Intent(context, HomeActivity.class);
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
 				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
 			} else {
@@ -242,14 +247,14 @@ public class GCMIntentService extends IntentService {
 				intentAccKill.putExtra("type", "accept");
 				intentAccKill.putExtra("engagement_id", engagementId);
 				intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
-				Intent intentCancKill = new Intent(context, SplashLogin.class);
+				Intent intentCancKill = new Intent(context, SplashNewActivity.class);
 				intentCancKill.putExtra("type", "cancel");
 				intentCancKill.putExtra("engagement_id", engagementId);
 				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 			}
 
@@ -470,7 +475,7 @@ public class GCMIntentService extends IntentService {
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
+											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
 											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
 
 											Log.e("referenceId", "=" + referenceId);
@@ -478,7 +483,7 @@ public class GCMIntentService extends IntentService {
 									}
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
+									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
 									startRing(this);
 									flurryEventForRequestPush(engagementId);
 
