@@ -129,9 +129,7 @@ public class LoginViaOTP extends Activity {
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
 					try {
-						long timerDuration = 30000;
 						textViewCounter.setText("0:30");
-						CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(timerDuration, 5);
 						customCountDownTimer.start();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -230,6 +228,8 @@ public class LoginViaOTP extends Activity {
 			e.printStackTrace();
 		}
 	}
+
+	CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(30000, 5);
 
 	class CustomCountDownTimer extends CountDownTimer {
 

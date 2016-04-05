@@ -6552,16 +6552,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				reconnectLocationFetchers();
 			}
 		}
-		if ((Data.assignedCustomerInfo instanceof AutoCustomerInfo
-				&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
-				&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
-				&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
+		if (location.getExtras() == null
+				|| !location.getExtras().getBoolean("cached", false)) {
+			if ((Data.assignedCustomerInfo instanceof AutoCustomerInfo
+					&& ((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null)
+					&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
+					&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
 
-			double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-					(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
+				double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
+						(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng));
 
-			if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
-				perectRideRequestRegion(currentDropDist);
+				if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
+					perectRideRequestRegion(currentDropDist);
+				}
 			}
 		}
 	}
