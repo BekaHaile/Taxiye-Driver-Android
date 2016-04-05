@@ -7225,7 +7225,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if ((Data.assignedCustomerInfo != null) && (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal())) {
 			((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = dropLatLng;
 			startCustomerPathUpdateTimer();
-			if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null) {
+			if (((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng != null && DriverScreenMode.D_IN_RIDE ==driverScreenMode) {
 				updateCustomerPickupAddress(((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng);
 			}
 		}
@@ -7381,8 +7381,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
 			layoutParams.dimAmount = 0.8f;
 			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(true);
-			dialog.setCanceledOnTouchOutside(true);
+			dialog.setCancelable(false);
+			dialog.setCanceledOnTouchOutside(false);
 
 
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
