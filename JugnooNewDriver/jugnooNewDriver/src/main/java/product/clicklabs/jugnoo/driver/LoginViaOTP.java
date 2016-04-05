@@ -22,12 +22,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -148,7 +150,7 @@ public class LoginViaOTP extends Activity {
 			public void onClick(View v) {
 				String otpCode = otpEt.getText().toString().trim();
 				if (otpCode.length() > 0) {
-					sendLoginValues(LoginViaOTP.this, "", "+91"+String.valueOf(phoneNoEt.getText()), "", otpCode);
+					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNoEt.getText()), "", otpCode);
 					;
 				} else {
 					otpEt.requestFocus();
@@ -177,6 +179,7 @@ public class LoginViaOTP extends Activity {
 		});
 
 
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
 
 		OTP_SCREEN_OPEN = "yes";
 	}
@@ -205,6 +208,7 @@ public class LoginViaOTP extends Activity {
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
+								Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
 							} else {
 								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
 							}
@@ -275,9 +279,11 @@ public class LoginViaOTP extends Activity {
 			}
 			if (Utils.checkIfOnlyDigits(otp)) {
 				if (!"".equalsIgnoreCase(otp)) {
-					otpEt.setText(otp);
-					otpEt.setSelection(otpEt.getText().length());
-					loginViaOtp.performClick();
+					if(Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+						otpEt.setText(otp);
+						otpEt.setSelection(otpEt.getText().length());
+						loginViaOtp.performClick();
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -409,6 +415,7 @@ public class LoginViaOTP extends Activity {
 	}
 
 	public void performbackPressed() {
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
 		Intent intent = new Intent(LoginViaOTP.this, SplashLogin.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);

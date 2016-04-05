@@ -76,5 +76,6 @@ public class SPLabels {
     public static final String PERFECT_LONGITUDE = "perfectLongitude";
 	public static final String PERFECT_DISTANCE = "perfectDistance";
 	public static final String PERFECT_RIDE_REGION_REQUEST_STATUS = "perfectRideRegionRequestStatus";
+    public static final String REQUEST_LOGIN_OTP_FLAG = "requestLoginOtpFlag";
 
 }

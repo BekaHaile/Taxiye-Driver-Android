@@ -123,6 +123,7 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
+                    android:inputType="number"
                     android:background="@color/transparent"
                     android:hint="OTP"
                     android:singleLine="true"
