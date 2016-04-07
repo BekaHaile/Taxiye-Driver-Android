@@ -318,7 +318,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer", 120000));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor", 1));
-		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor",1));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor", 1));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl",86400000));
 
 
@@ -326,6 +326,7 @@ public class JSONParser implements Constants {
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
 		Log.i("timeOut",timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
+		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -347,7 +348,8 @@ public class JSONParser implements Constants {
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod, timeoutMessage, paytmRechargeEnabled);
+				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
+				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{

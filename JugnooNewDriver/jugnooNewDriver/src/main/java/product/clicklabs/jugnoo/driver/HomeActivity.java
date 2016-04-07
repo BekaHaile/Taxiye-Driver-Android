@@ -1476,6 +1476,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						paytmRechargeRl.setVisibility(View.GONE);
 					}
 
+					if (1==Data.userData.destinationOptionEnable) {
+						relativeLayoutDestination.setVisibility(View.VISIBLE);
+					} else {
+						relativeLayoutDestination.setVisibility(View.GONE);
+					}
+
+
 				} else {
 					finish();
 					startActivity(new Intent(this, SplashNewActivity.class));
