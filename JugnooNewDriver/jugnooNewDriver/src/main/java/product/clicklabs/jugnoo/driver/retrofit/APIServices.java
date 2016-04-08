@@ -305,5 +305,11 @@ public interface APIServices {
 	void updateDriverRegion(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/update_wallet-balance")
+	void updateWalletBalance(@FieldMap Map<String, String> params,
+							Callback<RegisterScreenResponse> callback);
+
+
 
 }

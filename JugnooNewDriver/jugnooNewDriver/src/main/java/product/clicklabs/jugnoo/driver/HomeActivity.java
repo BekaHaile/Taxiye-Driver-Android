@@ -315,6 +315,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	long lastLocationTime;
 
 	public String language = "";
+	private Handler checkwalletUpdateTimeoutHandler;
+	private Runnable checkwalletUpdateTimeoutRunnable;
 
 
 	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
@@ -1240,13 +1242,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					if (Data.assignedCustomerInfo != null) {
-						if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
-							endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
-						} else {
-							//Meals case of end ride
-							endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
-						}
-						FlurryEventLogger.event(RIDE_ENDED);
+						updateWalletBalance();
 					}
 				}
 			});
@@ -7575,6 +7571,92 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+
+	Callback<RegisterScreenResponse> callback = new Callback<RegisterScreenResponse>() {
+		@Override
+		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+			String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+			Log.i(TAG, "rateTheCustomer response = " + responseStr);
+			try {
+				if(Data.userData.walletUpdateTimeout > (System.currentTimeMillis()-walletUpdateCallTime)) {
+					JSONObject jObj = new JSONObject(responseStr);
+					int flag = jObj.getInt("flag");
+					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+						stopWalletUpdateTimeout();
+						if (Data.assignedCustomerInfo != null) {
+							if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
+								endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+							} else {
+								//Meals case of end ride
+								endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+							}
+							FlurryEventLogger.event(RIDE_ENDED);
+						}
+					}
+				}
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+			perfectRideStateRestore();
+		}
+
+		@Override
+		public void failure(RetrofitError error) {
+			if (Data.assignedCustomerInfo != null) {
+				if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
+					endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+				} else {
+					//Meals case of end ride
+					endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
+				}
+				FlurryEventLogger.event(RIDE_ENDED);
+			}
+		}
+	};
+
+	long walletUpdateCallTime;
+	public void updateWalletBalance() {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("access_token", Data.userData.accessToken);
+				Log.i("params", "=" + params);
+
+				walletUpdateCallTime = System.currentTimeMillis();
+				RestClient.getApiServices().updateWalletBalance(params, callback);
+				startWalletUpdateTimeout();
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private synchronized void startWalletUpdateTimeout(){
+		checkwalletUpdateTimeoutHandler = new Handler();
+		checkwalletUpdateTimeoutRunnable = new Runnable() {
+			@Override
+			public void run() {
+			callback.failure(null);
+			}
+		};
+		checkwalletUpdateTimeoutHandler.postDelayed(checkwalletUpdateTimeoutRunnable, Data.userData.walletUpdateTimeout);
+	}
+
+	public synchronized void stopWalletUpdateTimeout(){
+		try{
+			if(checkwalletUpdateTimeoutHandler != null && checkwalletUpdateTimeoutRunnable != null){
+				checkwalletUpdateTimeoutHandler.removeCallbacks(checkwalletUpdateTimeoutRunnable);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		} finally{
+			checkwalletUpdateTimeoutHandler = null;
+			checkwalletUpdateTimeoutRunnable = null;
 		}
 	}
 
