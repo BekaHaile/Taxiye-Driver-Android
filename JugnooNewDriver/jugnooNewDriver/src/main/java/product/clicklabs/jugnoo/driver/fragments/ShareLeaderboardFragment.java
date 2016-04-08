@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -319,20 +320,24 @@ public class ShareLeaderboardFragment extends Fragment {
 
 
 	public void retryLeaderboardDialog(String message) {
-		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message,
-				getResources().getString(R.string.retry),
-				getResources().getString(R.string.cancel),
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						getLeaderboardCall();
-					}
-				},
-				new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-					}
-				}, true, false);
+		try {
+			DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", message,
+					getResources().getString(R.string.retry),
+					getResources().getString(R.string.cancel),
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							getLeaderboardCall();
+						}
+					},
+					new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+						}
+					}, true, false);
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 

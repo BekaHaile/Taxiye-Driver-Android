@@ -178,7 +178,7 @@ public class Data {
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
 
 	public static ArrayList<CancelOption> cancelOptionsList;
-	
+
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;
 	public static DriverRideRequest openedDriverRideRequest;
@@ -194,7 +194,7 @@ public class Data {
 	public static String waitTime = "", rideTime = "";
 	
 	
-	public static LatLng pickupLatLng;
+	public static LatLng pickupLatLng, nextPickupLatLng;
 
 	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
 	

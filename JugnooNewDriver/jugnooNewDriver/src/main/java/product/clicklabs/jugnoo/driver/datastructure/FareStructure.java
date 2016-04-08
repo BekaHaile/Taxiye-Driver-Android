@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import product.clicklabs.jugnoo.driver.utils.Log;
+
 public class FareStructure {
 	public double fixedFare;
 	public double thresholdDistance;
@@ -40,6 +42,10 @@ public class FareStructure {
 			totalWaitTimeInMin = 0;
 		}
 		double fareOfWaitTime = totalWaitTimeInMin * farePerWaitingMin;
+
+		Log.i("farePerWaitingMin", String.valueOf(farePerWaitingMin));
+		Log.i("fareWaitTimeInMin", String.valueOf(totalWaitTimeInMin));
+		Log.i("fareOfWaitTime", String.valueOf(fareOfWaitTime));
 		
 		double fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKm));
 		fare = fare * fareFactor;
