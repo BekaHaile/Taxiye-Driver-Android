@@ -242,8 +242,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
 
-			holder.distanceValue.setText("Distance: "+rideInfo.distance + " km");
-			holder.rideTimeValue.setText("Total Time: "+rideInfo.rideTime + " min");
+			holder.distanceValue.setText(rideInfo.distance + " km, ");
+			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
 
 
 			holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -297,8 +297,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 									rides.add(rideInfo);
 								}
 
-								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
-										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getReferralMoney());
+//								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
+//										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getReferralMoney());
 
 //								updateDriverEarnings.updateDriverEarnings(bookingHistoryResponse.getDailyEarnings(),
 //										bookingHistoryResponse.getMothlyEarnings(), bookingHistoryResponse.getRefferalMoney());

@@ -221,6 +221,11 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.PaymentActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
