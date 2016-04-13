@@ -36,8 +36,8 @@ public class EarningsFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 
-	private TextView textViewTodayValue, textViewWeekValue,
-			textViewMonthValue, textViewDataEffective;
+	private TextView textViewTodayValue, textViewWeekValue, textViewMonthRides, textViewWeekValueReferral,
+			textViewMonthValue, textViewTodayRides,textViewMonthValueReferral, textViewWeekRides, textViewTodayValueReferral;
 
 	private View rootView;
     private FragmentActivity activity;
@@ -79,13 +79,23 @@ public class EarningsFragment extends Fragment {
 		((TextView)rootView.findViewById(R.id.textViewWeek)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
 
 		textViewTodayValue = (TextView)rootView.findViewById(R.id.textViewTodayValue);
-		textViewTodayValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewTodayValue.setTypeface(Data.latoRegular(activity));
 		textViewMonthValue = (TextView)rootView.findViewById(R.id.textViewMonthValue);
-		textViewMonthValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		textViewMonthValue.setTypeface(Data.latoRegular(activity));
 		textViewWeekValue = (TextView)rootView.findViewById(R.id.textViewWeekValue);
-		textViewWeekValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		textViewDataEffective = (TextView)rootView.findViewById(R.id.textViewDataEffective);
-		textViewDataEffective.setTypeface(Data.latoRegular(activity));
+		textViewWeekValue.setTypeface(Data.latoRegular(activity));
+		textViewTodayRides = (TextView)rootView.findViewById(R.id.textViewTodayRides);
+		textViewTodayRides.setTypeface(Data.latoRegular(activity));
+		textViewTodayValueReferral = (TextView)rootView.findViewById(R.id.textViewTodayValueReferral);
+		textViewTodayValueReferral.setTypeface(Data.latoRegular(activity));
+		textViewWeekRides = (TextView)rootView.findViewById(R.id.textViewWeekRides);
+		textViewWeekRides.setTypeface(Data.latoRegular(activity));
+		textViewWeekValueReferral = (TextView)rootView.findViewById(R.id.textViewWeekValueReferral);
+		textViewWeekValueReferral.setTypeface(Data.latoRegular(activity));
+		textViewMonthRides = (TextView)rootView.findViewById(R.id.textViewMonthRides);
+		textViewMonthRides.setTypeface(Data.latoRegular(activity));
+		textViewMonthValueReferral = (TextView)rootView.findViewById(R.id.textViewMonthValueReferral);
+		textViewMonthValueReferral.setTypeface(Data.latoRegular(activity));
 
 		getLeaderboardActivityCall();
 
@@ -107,8 +117,8 @@ public class EarningsFragment extends Fragment {
 				textViewTodayValue.setText(getResources().getString(R.string.rupee) + " 78");
 				textViewWeekValue.setText(getResources().getString(R.string.rupee) + " 211");
 				textViewMonthValue.setText(getResources().getString(R.string.rupee) + " 1253");
-				textViewDataEffective.setText(activity.getResources()
-						.getString(R.string.data_effective_format)+" "+ leaderboardActivityResponse.getDate());
+//				textViewDataEffective.setText(activity.getResources()
+//						.getString(R.string.data_effective_format)+" "+ leaderboardActivityResponse.getDate());
 			}
 		} catch(Exception e){
 			e.printStackTrace();

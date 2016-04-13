@@ -12,12 +12,19 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutEarnings"
             android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24px"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="-4px"
-            android:layout_height="204px"
+            android:layout_height="220px"
+            android:background="@color/white_light_grey"
             >
 
+            <RelativeLayout
+                android:id="@+id/rlTodayEarnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32px">
             <TextView
                 android:id="@+id/textViewToday"
                 android:layout_width="wrap_content"
@@ -35,9 +42,42 @@
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/share_activity_text_margin_right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:text="@string/rupee_zero"
+                android:textColor="@color/new_orange"
+                android:textSize="58px" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlTodayEarningsDetails"
+                android:layout_below="@+id/rlTodayEarnings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24px">
+
+                <TextView
+                    android:id="@+id/textViewTodayRides"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:text="Rides: 22"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+
+
+                <TextView
+                    android:id="@+id/textViewTodayValueReferral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textViewTodayRides"
+                    android:layout_marginLeft="54px"
+                    android:text="Referral: 2"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+            </RelativeLayout>
+
+
 
             <ImageView
                 android:id="@+id/imageViewCurrentInv4"
@@ -54,30 +94,143 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutWeek"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/share_activity_bar_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24px"
+            android:layout_height="220px"
             android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px">
+            android:layout_marginRight="-4px"
+            >
 
-            <TextView
-                android:id="@+id/textViewWeek"
+
+            <RelativeLayout
+                android:id="@+id/rlWeekEarnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
-                android:text="@string/Last_week"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_text_size" />
+                android:layout_marginTop="0px">
+                <TextView
+                    android:id="@+id/textViewWeek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:text="@string/Last_week"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/share_activity_text_size" />
 
-            <TextView
-                android:id="@+id/textViewWeekValue"
+                <TextView
+                    android:id="@+id/textViewWeekValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/new_orange"
+                    android:textSize="58px" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12px"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:layout_below="@+id/textViewWeek">
+
+                    <RelativeLayout
+                        android:id="@+id/dateTimeRlFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:splitMotionEvents="false">
+
+                        <TextView
+                            android:id="@+id/dateTimeTextFrom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:singleLine="true"
+                            android:text="From:"
+                            android:textColor="@color/black"
+                            android:textSize="28px"
+                            />
+
+                        <TextView
+                            android:id="@+id/dateTimeValueFrom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5px"
+                            android:layout_toRightOf="@+id/dateTimeTextFrom"
+                            android:singleLine="true"
+                            android:text="23 June, 2014"
+                            android:textColor="@color/new_orange"
+                            android:textSize="28px"
+                            />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/dateTimeRlTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dateTimeRlFrom"
+                        android:layout_marginTop="12px"
+                        android:splitMotionEvents="false">
+
+                        <TextView
+                            android:id="@+id/dateTimeTextTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:singleLine="true"
+                            android:text="To:"
+                            android:textColor="@color/black"
+                            android:textSize="28px"
+                            />
+
+                        <TextView
+                            android:id="@+id/dateTimeValueTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5px"
+                            android:layout_toRightOf="@+id/dateTimeTextTo"
+                            android:singleLine="true"
+                            android:text="23 June, 2014"
+                            android:textColor="@color/new_orange"
+                            android:textSize="28px"
+                            />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlWeekEarningsDetails"
+                android:layout_below="@+id/rlWeekEarnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:layout_marginTop="12px">
+
+                <TextView
+                    android:id="@+id/textViewWeekRides"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:text="Rides: 22"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+
+
+                <TextView
+                    android:id="@+id/textViewWeekValueReferral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/textViewWeekRides"
+                    android:layout_marginLeft="54px"
+                    android:text="Referral: 2"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/imageViewCurrentInv2"
@@ -94,30 +247,144 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutMonth"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/share_activity_bar_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="36px"
+            android:layout_height="220px"
             android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px">
+            android:layout_marginRight="-4px"
+            >
 
-            <TextView
-                android:id="@+id/textViewMonth"
+            <RelativeLayout
+                android:id="@+id/rlMonthEarnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
-                android:text="@string/Last_month"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_text_size" />
+                android:layout_marginTop="0px">
+                <TextView
+                    android:id="@+id/textViewMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:text="@string/Last_month"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/share_activity_text_size" />
 
-            <TextView
-                android:id="@+id/textViewMonthValue"
+                <TextView
+                    android:id="@+id/textViewMonthValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/new_orange"
+                    android:textSize="58px" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12px"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:layout_below="@+id/textViewMonth">
+
+                    <RelativeLayout
+                        android:id="@+id/dateTimeRlFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:splitMotionEvents="false">
+
+                        <TextView
+                            android:id="@+id/dateTimeTextFrom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:singleLine="true"
+                            android:text="From:"
+                            android:textColor="@color/black"
+                            android:textSize="28px"
+                            />
+
+                        <TextView
+                            android:id="@+id/dateTimeValueFrom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5px"
+                            android:layout_toRightOf="@+id/dateTimeTextFrom"
+                            android:singleLine="true"
+                            android:text="23 June, 2014"
+                            android:textColor="@color/new_orange"
+                            android:textSize="28px"
+                            />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/dateTimeRlTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/dateTimeRlFrom"
+                        android:layout_marginTop="12px"
+                        android:splitMotionEvents="false">
+
+                        <TextView
+                            android:id="@+id/dateTimeTextTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:singleLine="true"
+                            android:text="To:"
+                            android:textColor="@color/black"
+                            android:textSize="28px"
+                            />
+
+                        <TextView
+                            android:id="@+id/dateTimeValueTo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5px"
+                            android:layout_toRightOf="@+id/dateTimeTextTo"
+                            android:singleLine="true"
+                            android:text="23 June, 2014"
+                            android:textColor="@color/new_orange"
+                            android:textSize="28px"
+                            />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlMonthEarningsDetails"
+                android:layout_below="@+id/rlMonthEarnings"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="@dimen/share_activity_number_text_size" />
+                android:layout_marginTop="12px">
+
+                <TextView
+                    android:id="@+id/textViewMonthRides"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                    android:text="Rides: 22"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+
+
+                <TextView
+                    android:id="@+id/textViewMonthValueReferral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textViewMonthRides"
+                    android:layout_marginLeft="54px"
+                    android:text="Referral: 2"
+                    android:textColor="@color/black"
+                    android:textSize="32px" />
+            </RelativeLayout>
 
             <ImageView
                 android:id="@+id/imageViewCurrentInv1"
@@ -131,14 +398,14 @@
         </RelativeLayout>
 
 
-        <TextView
-            android:id="@+id/textViewDataEffective"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/data_effective_format"
-            android:textColor="@color/black"
-            android:textSize="@dimen/share_activity_text_size_small"
-            android:layout_marginTop="@dimen/share_activity_data_text_margin_top" />
+        <!--<TextView-->
+            <!--android:id="@+id/textViewDataEffective"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:text="@string/data_effective_format"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="@dimen/share_activity_text_size_small"-->
+            <!--android:layout_marginTop="@dimen/share_activity_data_text_margin_top" />-->
 
 </LinearLayout>

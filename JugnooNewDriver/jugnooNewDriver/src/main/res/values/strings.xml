@@ -247,9 +247,9 @@
 	<string name="paid_by_jugnoo">Paid By Jugnoo</string>
 	<string name="paid_by_customer">Paid By Customer</string>
 	<string name="paid_using_customer">Paid Using Customer</string>
-	<string name="acc_credited">Account Credited With</string>
+	<string name="acc_credited">Amount Credited</string>
 	<string name="last_invoice">Last Invoice</string>
-	<string name="last_invoice_details">Last Payment Details</string>
+	<string name="last_invoice_details">Last Payment On :</string>
 	<string name="last_payments">Last Payments</string>
 	<string name="upcoming_payment_due_date">Upcoming Payment On :</string>
 

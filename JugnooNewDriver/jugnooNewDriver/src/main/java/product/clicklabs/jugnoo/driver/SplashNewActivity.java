@@ -143,7 +143,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
 		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
-		RestClient.setupRestClient();
+		RestClient.setupRestClient(Data.SERVER_URL);
 		DriverLocationUpdateService.updateServerData(context);
 	}
 

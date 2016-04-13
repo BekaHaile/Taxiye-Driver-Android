@@ -89,7 +89,7 @@ public class DriverLocationUpdateService extends Service {
         String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
         String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-		String DEFAULT_SERVER_URL = DEV_3_SERVER_URL;
+		String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
 		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, DEFAULT_SERVER_URL);
 

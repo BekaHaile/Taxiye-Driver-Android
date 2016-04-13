@@ -36,10 +36,10 @@ public class InvoiceFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 
-	private TextView textViewLastInvValue, textViewLastInvDate, textViewJugnooCmsnValue, textViewReferralValue,
+	private TextView textViewLastInvDate, textViewJugnooCmsnValue, textViewReferralValue,
 			textViewTotalAmntValue, textViewOutstandingAmntValue, textViewManualAdjValue, textViewPhoneDeductionValue,
 			textViewCancelSubsidyValue, textViewPaidByJugnooValue, textViewPaidUsingCstmrValue, textViewPaidByCstmrValue,
-			textViewCurrentInvoiceDate, textViewUpcomingInvoiceDate;
+			textViewUpcomingInvoiceDate;
 
 	private View rootView;
 	private FragmentActivity activity;
@@ -76,8 +76,8 @@ public class InvoiceFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		((TextView) rootView.findViewById(R.id.textViewUpcomingInvoice)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewCurrentInvoice)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+//		((TextView) rootView.findViewById(R.id.textViewUpcomingInvoice)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+//		((TextView) rootView.findViewById(R.id.textViewCurrentInvoice)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.textViewPaidByCstmr)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.textViewPaidUsingCstmr)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.textViewPaidByJugnoo)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
@@ -91,7 +91,7 @@ public class InvoiceFragment extends Fragment {
 //		((TextView) rootView.findViewById(R.id.textViewLastInv)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 
 
-		textViewUpcomingInvoiceDate = (TextView) rootView.findViewById(R.id.textViewUpcomingInvoiceDate);
+//		textViewUpcomingInvoiceDate = (TextView) rootView.findViewById(R.id.textViewUpcomingInvoiceDate);
 		textViewUpcomingInvoiceDate.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 		textViewPaidByCstmrValue = (TextView) rootView.findViewById(R.id.textViewPaidByCstmrValue);
 		textViewPaidByCstmrValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
@@ -112,9 +112,9 @@ public class InvoiceFragment extends Fragment {
 		textViewOutstandingAmntValue = (TextView) rootView.findViewById(R.id.textViewOutstandingAmntValue);
 		textViewOutstandingAmntValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 		textViewTotalAmntValue = (TextView) rootView.findViewById(R.id.textViewTotalAmntValue);
-		textViewTotalAmntValue.setTypeface(Data.latoRegular(activity));
-		textViewLastInvDate = (TextView) rootView.findViewById(R.id.textViewLastInvDate);
-		textViewLastInvDate.setTypeface(Data.latoRegular(activity));
+		textViewTotalAmntValue.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+//		textViewLastInvDate = (TextView) rootView.findViewById(R.id.textViewLastInvDate);
+//		textViewLastInvDate.setTypeface(Data.latoRegular(activity));
 //		textViewLastInvValue = (TextView) rootView.findViewById(R.id.textViewLastInvValue);
 //		textViewLastInvValue.setTypeface(Data.latoRegular(activity));
 

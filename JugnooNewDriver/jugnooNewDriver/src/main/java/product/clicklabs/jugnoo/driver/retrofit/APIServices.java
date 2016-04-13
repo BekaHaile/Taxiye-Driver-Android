@@ -6,6 +6,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
@@ -303,6 +305,18 @@ public interface APIServices {
 	@POST("/update_driver_regions")
 	void updateDriverRegion(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_all_invoices_for_driver")
+	void invoiceHistory(@Field("access_token") String accessToken,
+						@Field("current_mode") String currentMode,
+						Callback<InvoiceHistoryResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_invoice_details")
+	void invoiceDetail(@Field("access_token") String accessToken,
+						@Field("invoice_id") String invoiceId,
+						Callback<InvoiceDetailResponse> callback);
 
 
 }
