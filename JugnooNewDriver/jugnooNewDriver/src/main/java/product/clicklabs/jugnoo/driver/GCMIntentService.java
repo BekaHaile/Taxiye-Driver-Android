@@ -1,32 +1,30 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.IntentService;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
 
-import com.google.android.gms.gcm.GcmListenerService;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
@@ -34,12 +32,12 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
@@ -56,7 +54,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
-import product.clicklabs.jugnoo.driver.utils.DownloadFile;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -277,7 +274,8 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerCustomID(Context context, String message, int notificationId, Class notifClass) {
+	public static void notificationManagerCustomID(Context context, String title, String message, int notificationId,
+												   Class notifClass, Bitmap bitmap) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -291,8 +289,13 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
-			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			builder.setContentTitle(title);
+			if(bitmap == null) {
+				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			} else {
+				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+						.setBigContentTitle(title).setSummaryText(message));
+			}
 			builder.setContentText(message);
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
@@ -356,7 +359,7 @@ public class GCMIntentService extends IntentService {
 							JSONObject jObj = new JSONObject(message);
 							Log.i("push_notification", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
-							String title = jObj.optString("title", "");
+							String title = jObj.optString("title", "Jugnoo");
 							int canStore = jObj.optInt("canStore", 0);
 							int perfectRide = jObj.optInt("perfect_ride", 0);
 
@@ -564,7 +567,17 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
-								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
+
+								String picture = jObj.optString(Constants.KEY_PICTURE, "");
+								if("".equalsIgnoreCase(picture)){
+									picture = jObj.optString(Constants.KEY_IMAGE, "");
+								}
+								if(!"".equalsIgnoreCase(picture)){
+									new BigImageNotifAsync(title, message1, picture).execute();
+								} else{
+									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+								}
+
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
@@ -661,9 +674,9 @@ public class GCMIntentService extends IntentService {
 									intent1.putExtra("sharing_engagement_data", jObj.toString());
 									startActivity(intent1);
 								}
-								notificationManagerCustomID(this, "Sharing payment recieved for Phone "
+								notificationManagerCustomID(this, title, "Sharing payment recieved for Phone "
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
-										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
+										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class, null);
 							}
 
 							String message1 = jObj.optString("message", " ");
@@ -936,13 +949,10 @@ public class GCMIntentService extends IntentService {
 			}
 
 			if (tryToSave && !"".equalsIgnoreCase(message1)) {
-				String picture = jObj.optString("image", "");
-				if ("".equalsIgnoreCase(picture)) {
-					picture = jObj.optString("picture", "");
+				String picture = jObj.optString(Constants.KEY_PICTURE, "");
+				if("".equalsIgnoreCase(picture)){
+					picture = jObj.optString(Constants.KEY_IMAGE, "");
 				}
-//				if(PushFlags.DISPLAY_MESSAGE.getOrdinal() != flag) {
-//					message1 = title + "\n" + message1;
-//				}
 
 				message1 = title + "\n" + message1;
 
@@ -1163,6 +1173,55 @@ public class GCMIntentService extends IntentService {
 				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
 			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
 		}
+	}
+
+
+	private class BigImageNotifAsync extends AsyncTask<String, String, Bitmap> {
+
+		private Bitmap bitmap = null;
+		private String title, message, picture;
+
+		public BigImageNotifAsync(String title, String message, String picture){
+			this.picture = picture;
+			this.title = title;
+			this.message = message;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// Things to be done before execution of long running operation. For
+			// example showing ProgessDialog
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			try {
+				URL url = new URL(picture);
+				bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			return bitmap;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			// execution of result of Long time consuming operation
+			try {
+				if(result == null){
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+							null);
+				} else{
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+							result);
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+				notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+						null);
+			}
+		}
+
 	}
 
 }
