@@ -31,7 +31,6 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
 import android.text.style.StyleSpan;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -3464,23 +3463,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	private double getTotalFare(double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis) {
-		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
+		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
+
+		double rideTimeInMin = Math.round(((double) elapsedTimeInMillis) / 60000.0d);
+		double waitTimeInMin = Math.round(((double) waitTimeInMillis) / 60000.0d);
 
 		if (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 			if (((AutoCustomerInfo) Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
-				elapsedTimeInMillis = elapsedTimeInMillis - waitTimeInMillis;
+				rideTimeInMin = rideTimeInMin - waitTimeInMin;
 			} else {
-				waitTimeInMillis = 0;
+				waitTimeInMin = 0d;
 			}
 		} else {
-			waitTimeInMillis = 0;
+			waitTimeInMin = 0d;
 		}
-
-		long rideTimeSeconds = elapsedTimeInMillis / 1000;
-		double rideTimeInMin = Math.ceil(rideTimeSeconds / 60);
-
-		long waitTimeSeconds = waitTimeInMillis / 1000;
-		double waitTimeInMin = Math.ceil(waitTimeSeconds / 60);
 
 		return Data.fareStructure.calculateFare(totalDistanceInKm, rideTimeInMin, waitTimeInMin);
 	}
@@ -4607,8 +4603,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
 		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(activity, rideTimeInMillis);
-		double rideMinutes = Math.ceil(rideTimeInMillis / 60000);
-		double waitMinutes = Math.ceil(waitTimeInMillis / 60000);
+
+		double rideMinutes = Math.round(((double)rideTimeInMillis) / 60000.0d);
+		double waitMinutes = Math.round(((double)waitTimeInMillis) / 60000.0d);
+
 		if (rideMinutes < Limit_endRideMinute) {
 			rideTime = decimalFormatNoDecimal.format(rideMinutes);
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
@@ -4618,6 +4616,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
+
+		double rideTimeSeconds = Math.ceil(((double)rideTimeInMillis) / 1000d);
+		String rideTimeSecondsStr = decimalFormatNoDecimal.format(rideTimeSeconds);
+
 		final long eoRideTimeInMillis = rideTimeInMillis;
 		final long eoWaitTimeInMillis = waitTimeInMillis;
 
@@ -4634,6 +4636,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
 		params.put("wait_time", waitTime);
 		params.put("ride_time", rideTime);
+		params.put(KEY_RIDE_TIME_SECONDS, rideTimeSecondsStr);
 		params.put("is_cached", "0");
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
