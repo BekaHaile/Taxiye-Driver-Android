@@ -541,7 +541,7 @@ public class GCMIntentService extends IntentService {
 								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if (ignoreRideRequest == 1) {
-									new DriverTimeoutCheck().timeoutBuffer(this, true);
+									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
 

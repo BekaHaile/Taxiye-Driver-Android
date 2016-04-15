@@ -25,6 +25,6 @@ public class TimeOutAlarmReceiver extends BroadcastReceiver {
 		// For our recurring task, we'll just display a message
 //		Toast.makeText(context, "i m running", Toast.LENGTH_SHORT).show();
 
-		new DriverTimeoutCheck().timeoutBuffer(context,false);
+		new DriverTimeoutCheck().timeoutBuffer(context,0);
 	}
 }
