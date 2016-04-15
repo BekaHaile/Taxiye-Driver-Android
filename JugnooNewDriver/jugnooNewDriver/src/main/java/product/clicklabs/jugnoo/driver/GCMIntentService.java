@@ -647,6 +647,10 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("downloadOnly", downloadList);
 								startService(intent1);
 
+							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
+								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								startService(intent1);
 
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
