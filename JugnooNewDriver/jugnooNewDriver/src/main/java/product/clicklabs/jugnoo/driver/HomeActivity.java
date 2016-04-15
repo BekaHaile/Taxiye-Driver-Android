@@ -4973,6 +4973,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			params.put("is_cached", "1");
+			params.put("paid_in_cash", String.valueOf(finalToPay));
 
 			DialogPopup.dismissLoadingDialog();
 			Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
