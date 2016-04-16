@@ -172,7 +172,7 @@ public class InvoiceDetailsActivity extends Activity {
 		if (invoiceDetailResponse != null) {
 
 			textViewCurrentInvoiceGeneratedOn.setText(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate());
-			textViewCurrentInvoiceGeneratedOn.setText(invoiceDetailResponse.getInvoiceDetails().getInvoiceId());
+			textViewCurrentInvoiceId.setText(String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
 			textViewCurrentInvoiceStatus.setText(invoiceDetailResponse.getInvoiceDetails().getStatus());
 			dateTimeValueTo.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingToDate());
 			dateTimeValueFrom.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingFromDate());
@@ -204,31 +204,35 @@ public class InvoiceDetailsActivity extends Activity {
 	}
 
 	private void getInvoiceDetails(final Activity activity) {
-		RestClient.getApiServices().invoiceDetail(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponse>() {
-			@Override
-			public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
+		try {
+			RestClient.getApiServices().invoiceDetail(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponse>() {
+				@Override
+				public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							}
+						} else {
+							updateData(invoiceDetailResponse);
 						}
-					} else {
-						updateData(invoiceDetailResponse);
+					} catch (Exception exception) {
+						exception.printStackTrace();
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
 				}
-			}
 
-			@Override
-			public void failure(RetrofitError error) {
-				Log.i("error", String.valueOf(error));
-			}
-		});
+				@Override
+				public void failure(RetrofitError error) {
+					Log.i("error", String.valueOf(error));
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

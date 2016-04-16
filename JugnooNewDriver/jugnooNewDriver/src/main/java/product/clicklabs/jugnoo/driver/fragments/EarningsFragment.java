@@ -22,7 +22,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -37,71 +37,85 @@ public class EarningsFragment extends Fragment {
 	private LinearLayout linearLayoutRoot;
 
 	private TextView textViewTodayValue, textViewWeekValue, textViewMonthRides, textViewWeekValueReferral,
-			textViewMonthValue, textViewTodayRides,textViewMonthValueReferral, textViewWeekRides, textViewTodayValueReferral;
+			textViewMonthValue, textViewTodayRides, textViewMonthValueReferral, textViewWeekRides, textViewTodayValueReferral,
+			dateTimeValueFromWeek, dateTimeValueToWeek, dateTimeValueFromMonth, dateTimeValueToMonth;
 
 	private View rootView;
-    private FragmentActivity activity;
-	LeaderboardActivityResponse leaderboardActivityResponse;
+	private FragmentActivity activity;
+	EarningsDetailResponse earningsDetailResponse;
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FlurryAgent.init(activity, Data.FLURRY_KEY);
-        FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-        FlurryAgent.onEvent(EarningsFragment.class.getSimpleName() + " started");
-    }
+	@Override
+	public void onStart() {
+		super.onStart();
+		FlurryAgent.init(activity, Data.FLURRY_KEY);
+		FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
+		FlurryAgent.onEvent(EarningsFragment.class.getSimpleName() + " started");
+	}
 
-    @Override
-    public void onStop() {
+	@Override
+	public void onStop() {
 		super.onStop();
-        FlurryAgent.onEndSession(activity);
-    }
-	
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_earnings, container, false);
+		FlurryAgent.onEndSession(activity);
+	}
 
 
-        activity = getActivity();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.fragment_earnings, container, false);
+
+
+		activity = getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		try {
-			if(linearLayoutRoot != null) {
+			if (linearLayoutRoot != null) {
 				new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		((TextView)rootView.findViewById(R.id.textViewToday)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
-		((TextView)rootView.findViewById(R.id.textViewMonth)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
-		((TextView)rootView.findViewById(R.id.textViewWeek)).setTypeface(Data.latoLight(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewToday)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewMonth)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewWeek)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.dateTimeTextToWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.dateTimeTextFromWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.dateTimeTextFrom)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.dateTimeTextTo)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 
-		textViewTodayValue = (TextView)rootView.findViewById(R.id.textViewTodayValue);
+
+		textViewTodayValue = (TextView) rootView.findViewById(R.id.textViewTodayValue);
 		textViewTodayValue.setTypeface(Data.latoRegular(activity));
-		textViewMonthValue = (TextView)rootView.findViewById(R.id.textViewMonthValue);
+		textViewMonthValue = (TextView) rootView.findViewById(R.id.textViewMonthValue);
 		textViewMonthValue.setTypeface(Data.latoRegular(activity));
-		textViewWeekValue = (TextView)rootView.findViewById(R.id.textViewWeekValue);
+		textViewWeekValue = (TextView) rootView.findViewById(R.id.textViewWeekValue);
 		textViewWeekValue.setTypeface(Data.latoRegular(activity));
-		textViewTodayRides = (TextView)rootView.findViewById(R.id.textViewTodayRides);
+		textViewTodayRides = (TextView) rootView.findViewById(R.id.textViewTodayRides);
 		textViewTodayRides.setTypeface(Data.latoRegular(activity));
-		textViewTodayValueReferral = (TextView)rootView.findViewById(R.id.textViewTodayValueReferral);
+		textViewTodayValueReferral = (TextView) rootView.findViewById(R.id.textViewTodayValueReferral);
 		textViewTodayValueReferral.setTypeface(Data.latoRegular(activity));
-		textViewWeekRides = (TextView)rootView.findViewById(R.id.textViewWeekRides);
+		textViewWeekRides = (TextView) rootView.findViewById(R.id.textViewWeekRides);
 		textViewWeekRides.setTypeface(Data.latoRegular(activity));
-		textViewWeekValueReferral = (TextView)rootView.findViewById(R.id.textViewWeekValueReferral);
+		textViewWeekValueReferral = (TextView) rootView.findViewById(R.id.textViewWeekValueReferral);
 		textViewWeekValueReferral.setTypeface(Data.latoRegular(activity));
-		textViewMonthRides = (TextView)rootView.findViewById(R.id.textViewMonthRides);
+		textViewMonthRides = (TextView) rootView.findViewById(R.id.textViewMonthRides);
 		textViewMonthRides.setTypeface(Data.latoRegular(activity));
-		textViewMonthValueReferral = (TextView)rootView.findViewById(R.id.textViewMonthValueReferral);
+		textViewMonthValueReferral = (TextView) rootView.findViewById(R.id.textViewMonthValueReferral);
 		textViewMonthValueReferral.setTypeface(Data.latoRegular(activity));
+		dateTimeValueFromWeek = (TextView) rootView.findViewById(R.id.dateTimeValueFromWeek);
+		dateTimeValueFromWeek.setTypeface(Data.latoRegular(activity));
+		dateTimeValueToWeek = (TextView) rootView.findViewById(R.id.dateTimeValueToWeek);
+		dateTimeValueToWeek.setTypeface(Data.latoRegular(activity));
+		dateTimeValueFromMonth = (TextView) rootView.findViewById(R.id.dateTimeValueFromMonth);
+		dateTimeValueFromMonth.setTypeface(Data.latoRegular(activity));
+		dateTimeValueToMonth = (TextView) rootView.findViewById(R.id.dateTimeValueToMonth);
+		dateTimeValueToMonth.setTypeface(Data.latoRegular(activity));
 
 		getLeaderboardActivityCall();
 
 
 		try {
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -111,34 +125,42 @@ public class EarningsFragment extends Fragment {
 	}
 
 
-	public void update(){
-		try{
-			if(leaderboardActivityResponse != null){
-				textViewTodayValue.setText(getResources().getString(R.string.rupee) + " 78");
-				textViewWeekValue.setText(getResources().getString(R.string.rupee) + " 211");
-				textViewMonthValue.setText(getResources().getString(R.string.rupee) + " 1253");
-//				textViewDataEffective.setText(activity.getResources()
-//						.getString(R.string.data_effective_format)+" "+ leaderboardActivityResponse.getDate());
+	public void update() {
+		try {
+			if (earningsDetailResponse != null) {
+				textViewTodayValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getDaily().getEarnings());
+				textViewWeekValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getWeekly().getEarnings());
+				textViewMonthValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getMonthly().getEarnings());
+				textViewTodayRides.setText("Rides : "+earningsDetailResponse.getDaily().getRides());
+				textViewTodayValueReferral.setText("Referral : "+earningsDetailResponse.getDaily().getReferrals());
+				textViewWeekRides.setText("Rides : "+earningsDetailResponse.getWeekly().getRides());
+				textViewWeekValueReferral.setText("Referral : "+earningsDetailResponse.getWeekly().getReferrals());
+				textViewMonthRides.setText("Rides : "+earningsDetailResponse.getMonthly().getRides());
+				textViewMonthValueReferral.setText("Referral : "+earningsDetailResponse.getMonthly().getReferrals());
+				dateTimeValueFromWeek.setText(earningsDetailResponse.getWeekly().getStartDate());
+				dateTimeValueToWeek.setText(earningsDetailResponse.getWeekly().getEndDate());
+				dateTimeValueFromMonth.setText(earningsDetailResponse.getMonthly().getStartDate());
+				dateTimeValueToMonth.setText(earningsDetailResponse.getMonthly().getEndDate());
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-    @Override
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(linearLayoutRoot);
-        System.gc();
+		ASSL.closeActivity(linearLayoutRoot);
+		System.gc();
 	}
 
 	public void getLeaderboardActivityCall() {
-		if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+		if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
-			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, Data.LOGIN_TYPE,
-					new Callback<LeaderboardActivityResponse>() {
+			RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
+					new Callback<EarningsDetailResponse>() {
 						@Override
-						public void success(LeaderboardActivityResponse leaderboardActivityResponse, Response response) {
+						public void success(EarningsDetailResponse earningsDetailResponse, Response response) {
 							DialogPopup.dismissLoadingDialog();
 							try {
 								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -148,11 +170,10 @@ public class EarningsFragment extends Fragment {
 								String message = JSONParser.getServerMessage(jObj);
 								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-										EarningsFragment.this.leaderboardActivityResponse = leaderboardActivityResponse;
+										EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
 										update();
 										Log.v("success at", "leaderboeard");
-									}
-									else{
+									} else {
 										DialogPopup.alertPopup(activity, "", message);
 									}
 								}

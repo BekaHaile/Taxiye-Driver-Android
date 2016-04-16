@@ -58,7 +58,7 @@ public class InvoiceDetailResponse {
 		private Integer invoiceId;
 		@SerializedName("status")
 		@Expose
-		private Integer status;
+		private String status;
 		@SerializedName("amount_to_be_paid")
 		@Expose
 		private Double amountToBePaid;
@@ -137,7 +137,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The status
 		 */
-		public Integer getStatus() {
+		public String getStatus() {
 			return status;
 		}
 
@@ -146,7 +146,7 @@ public class InvoiceDetailResponse {
 		 * @param status
 		 * The status
 		 */
-		public void setStatus(Integer status) {
+		public void setStatus(String status) {
 			this.status = status;
 		}
 

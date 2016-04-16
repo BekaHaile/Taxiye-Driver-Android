@@ -123,6 +123,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/share_activity_text_margin_right"
                     android:text="@string/rupee_zero"
+                    android:layout_marginTop="54px"
                     android:textColor="@color/new_orange"
                     android:textSize="58px" />
 
@@ -134,13 +135,13 @@
                     android:layout_below="@+id/textViewWeek">
 
                     <RelativeLayout
-                        android:id="@+id/dateTimeRlFrom"
+                        android:id="@+id/dateTimeRlFromWeek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:splitMotionEvents="false">
 
                         <TextView
-                            android:id="@+id/dateTimeTextFrom"
+                            android:id="@+id/dateTimeTextFromWeek"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -151,12 +152,12 @@
                             />
 
                         <TextView
-                            android:id="@+id/dateTimeValueFrom"
+                            android:id="@+id/dateTimeValueFromWeek"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5px"
-                            android:layout_toRightOf="@+id/dateTimeTextFrom"
+                            android:layout_toRightOf="@+id/dateTimeTextFromWeek"
                             android:singleLine="true"
                             android:text="23 June, 2014"
                             android:textColor="@color/new_orange"
@@ -167,15 +168,15 @@
 
 
                     <RelativeLayout
-                        android:id="@+id/dateTimeRlTo"
+                        android:id="@+id/dateTimeRlToWeek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/dateTimeRlFrom"
+                        android:layout_below="@+id/dateTimeRlFromWeek"
                         android:layout_marginTop="12px"
                         android:splitMotionEvents="false">
 
                         <TextView
-                            android:id="@+id/dateTimeTextTo"
+                            android:id="@+id/dateTimeTextToWeek"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -186,12 +187,12 @@
                             />
 
                         <TextView
-                            android:id="@+id/dateTimeValueTo"
+                            android:id="@+id/dateTimeValueToWeek"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="5px"
-                            android:layout_toRightOf="@+id/dateTimeTextTo"
+                            android:layout_toRightOf="@+id/dateTimeTextToWeek"
                             android:singleLine="true"
                             android:text="23 June, 2014"
                             android:textColor="@color/new_orange"
@@ -274,6 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                    android:layout_marginTop="54px"
                     android:text="@string/rupee_zero"
                     android:textColor="@color/new_orange"
                     android:textSize="58px" />
@@ -303,7 +305,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/dateTimeValueFrom"
+                            android:id="@+id/dateTimeValueFromMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -338,7 +340,7 @@
                             />
 
                         <TextView
-                            android:id="@+id/dateTimeValueTo"
+                            android:id="@+id/dateTimeValueToMonth"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"

@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
+import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
@@ -318,5 +319,9 @@ public interface APIServices {
 						@Field("invoice_id") String invoiceId,
 						Callback<InvoiceDetailResponse> callback);
 
-
+	@FormUrlEncoded
+	@POST("/get_driver_earnings")
+	void earningDetails(@Field("access_token") String accessToken,
+									   @Field("login_type") String loginType,
+									   Callback<EarningsDetailResponse> callback);
 }
