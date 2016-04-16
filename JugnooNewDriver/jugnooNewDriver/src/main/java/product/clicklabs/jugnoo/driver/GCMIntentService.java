@@ -1,31 +1,30 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.IntentService;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.util.Pair;
-import com.google.android.gms.gcm.GcmListenerService;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.NameValuePair;
@@ -33,6 +32,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
@@ -54,7 +54,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
-import product.clicklabs.jugnoo.driver.utils.DownloadFile;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -186,7 +185,7 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId, boolean appstate) {
+	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -195,7 +194,12 @@ public class GCMIntentService extends IntentService {
 
 			Log.v("message", "," + message);
 
-			Intent notificationIntent = new Intent(context, HomeActivity.class);
+			Intent notificationIntent = new Intent();
+			if(HomeActivity.appInterruptHandler == null){
+				notificationIntent.setClass(context, SplashNewActivity.class);
+			} else{
+				notificationIntent.setClass(context, HomeActivity.class);
+			}
 
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
@@ -220,19 +224,19 @@ public class GCMIntentService extends IntentService {
 			builder.setContentIntent(intent);
 
 
-			if (appstate) {
-				Intent intentAcc = new Intent(context, DriverProfileActivity.class);
+			if (HomeActivity.appInterruptHandler != null) {
+				Intent intentAcc = new Intent(context, HomeActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
 				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
-				Intent intentCanc = new Intent(context, ShareActivity1.class);
+				Intent intentCanc = new Intent(context, HomeActivity.class);
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
 				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
 			} else {
@@ -240,14 +244,14 @@ public class GCMIntentService extends IntentService {
 				intentAccKill.putExtra("type", "accept");
 				intentAccKill.putExtra("engagement_id", engagementId);
 				intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 0, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
-				Intent intentCancKill = new Intent(context, SplashLogin.class);
+				Intent intentCancKill = new Intent(context, SplashNewActivity.class);
 				intentCancKill.putExtra("type", "cancel");
 				intentCancKill.putExtra("engagement_id", engagementId);
 				intentCancKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 0, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCancKill, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 			}
 
@@ -270,7 +274,8 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerCustomID(Context context, String message, int notificationId, Class notifClass) {
+	public static void notificationManagerCustomID(Context context, String title, String message, int notificationId,
+												   Class notifClass, Bitmap bitmap) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -284,8 +289,13 @@ public class GCMIntentService extends IntentService {
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
-			builder.setContentTitle("Jugnoo");
-			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			builder.setContentTitle(title);
+			if(bitmap == null) {
+				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			} else {
+				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+						.setBigContentTitle(title).setSummaryText(message));
+			}
 			builder.setContentText(message);
 			builder.setTicker(message);
 			builder.setDefaults(Notification.DEFAULT_ALL);
@@ -347,19 +357,21 @@ public class GCMIntentService extends IntentService {
 
 						try {
 							JSONObject jObj = new JSONObject(message);
-
+							Log.i("push_notification", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
-							String title = jObj.optString("title", "");
+							String title = jObj.optString("title", "Jugnoo");
 							int canStore = jObj.optInt("canStore", 0);
+							int perfectRide = jObj.optInt("perfect_ride", 0);
 
 							int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 									DriverScreenMode.D_INITIAL.getOrdinal());
 
-							if ((PushFlags.REQUEST.getOrdinal() == flag)
-									&&
-									(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-											|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-											|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
+							if (PushFlags.REQUEST.getOrdinal() == flag
+									&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
+									|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
+									|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode
+									|| perfectRide == 1)
+									&&(Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") )) {
 
 								//	    	    						 {   "engagement_id": engagement_id,
 								//	    	    							 "user_id": data.customer_id,
@@ -425,7 +437,8 @@ public class GCMIntentService extends IntentService {
 									if (UserMode.DRIVER == HomeActivity.userMode) {
 										if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
 												DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
+												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode ||
+												DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 
 											int referenceId = jObj.getInt("reference_id");
 
@@ -457,28 +470,28 @@ public class GCMIntentService extends IntentService {
 											startRing(this);
 											flurryEventForRequestPush(engagementId);
 
-											Log.i("TimeOutAlarmReceiver", "4:"+jObj.optInt("penalise_driver_timeout", 0));
-											if(jObj.optInt("penalise_driver_timeout",0)==1) {
+											Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
+											if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 												Log.i("TimeOutAlarmReceiver", "3");
 												startTimeoutAlarm(this);
 											}
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, true);
-											HomeActivity.appInterruptHandler.onNewRideRequest();
+											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
+											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
 
 											Log.e("referenceId", "=" + referenceId);
 										}
 									}
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId, false);
+									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
 									startRing(this);
 									flurryEventForRequestPush(engagementId);
 
 									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
-									if(jObj.optInt("penalise_driver_timeout",0)==1) {
+									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 										Log.i("TimeOutAlarmReceiver", "3");
 										startTimeoutAlarm(this);
 									}
@@ -486,7 +499,6 @@ public class GCMIntentService extends IntentService {
 									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
-
 
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
@@ -528,9 +540,10 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
-								if(ignoreRideRequest==1){
-									new DriverTimeoutCheck().timeoutBuffer(this,true);
+								if (ignoreRideRequest == 1) {
+									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
+
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
@@ -554,8 +567,18 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
-								notificationManagerCustomID(this, message1, PROMOTION_ID, SplashNewActivity.class);
-							}else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
+
+								String picture = jObj.optString(Constants.KEY_PICTURE, "");
+								if("".equalsIgnoreCase(picture)){
+									picture = jObj.optString(Constants.KEY_IMAGE, "");
+								}
+								if(!"".equalsIgnoreCase(picture)){
+									new BigImageNotifAsync(title, message1, picture).execute();
+								} else{
+									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+								}
+
+							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
 								startRingWithStopHandler(this);
 								String message1 = jObj.getString("message");
@@ -590,9 +613,9 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.UPDATE_HEAT_MAP.getOrdinal() == flag) {
 								if (HomeActivity.appInterruptHandler != null) {
-								HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
+									HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
 								}
-							}else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
+							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble("op_drop_latitude");
 								double dropLongitude = jObj.getDouble("op_drop_longitude");
 								String engagementId = jObj.getString("engagement_id");
@@ -604,25 +627,25 @@ public class GCMIntentService extends IntentService {
 								String id = jObj.getString("file_id");
 								int download = jObj.optInt("set_download", 0);
 
-									File myFile = new File("/storage/emulated/0/jugnooFiles/"+id + ".mp3");
+								File myFile = new File("/storage/emulated/0/jugnooFiles/" + id + ".mp3");
 
-									if (myFile.exists() && download == 0) {
-										FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
-										startRingCustom(this, myFile.getAbsolutePath());
-									} else {
-										Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
-										intent1.putExtra("downloadOnly",download);
-										intent1.putExtra("file_url", url);
-										intent1.putExtra("file_id", id);
-										startService(intent1);
-										Database2.getInstance(this).insertCustomAudioUrl(url, id);
-									}
+								if (myFile.exists() && download == 0) {
+									FlurryEventLogger.event(FlurryEventNames.CUSTOM_VOICE_NOTIFICATION);
+									startRingCustom(this, myFile.getAbsolutePath());
+								} else {
+									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+									intent1.putExtra("downloadOnly", download);
+									intent1.putExtra("file_url", url);
+									intent1.putExtra("file_id", id);
+									startService(intent1);
+									Database2.getInstance(this).insertCustomAudioUrl(url, id);
+								}
 
 							} else if (PushFlags.GET_JUGNOO_AUDIO.getOrdinal() == flag) {
-									Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
-									int downloadList = 2;
-									intent1.putExtra("downloadOnly", downloadList);
-									startService(intent1);
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, DownloadService.class);
+								int downloadList = 2;
+								intent1.putExtra("downloadOnly", downloadList);
+								startService(intent1);
 
 
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
@@ -651,12 +674,12 @@ public class GCMIntentService extends IntentService {
 									intent1.putExtra("sharing_engagement_data", jObj.toString());
 									startActivity(intent1);
 								}
-								notificationManagerCustomID(this, "Sharing payment recieved for Phone "
+								notificationManagerCustomID(this, title, "Sharing payment recieved for Phone "
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
-										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class);
+										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class, null);
 							}
 
-							String message1 = jObj.optString("message"," ");
+							String message1 = jObj.optString("message", " ");
 							savePush(jObj, flag, title, message1);
 
 						} catch (Exception e) {
@@ -668,7 +691,7 @@ public class GCMIntentService extends IntentService {
 					e.printStackTrace();
 
 					// Release the wake lock provided by the WakefulBroadcastReceiver.
-					        GcmBroadcastReceiver.completeWakefulIntent(intent);
+					GcmBroadcastReceiver.completeWakefulIntent(intent);
 
 				}
 			}
@@ -682,19 +705,19 @@ public class GCMIntentService extends IntentService {
 	public static MediaPlayer mediaPlayer;
 	public static Vibrator vibrator;
 
-	public static void startTimeoutAlarm(Context context){
+	public static void startTimeoutAlarm(Context context) {
 
 		boolean alarmUp = (PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
 				new Intent(context, TimeOutAlarmReceiver.class), PendingIntent.FLAG_NO_CREATE) != null);
 
-		if(!alarmUp) {
+		if (!alarmUp) {
 			Intent intent = new Intent(context, TimeOutAlarmReceiver.class);
 			PendingIntent pendingIntent = PendingIntent.getBroadcast(context, DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE,
 					intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 			AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 			Log.i("TimeOutAlarmReceiver", "5");
-			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()+(Prefs.with(context).getLong(SPLabels.MAX_TIMEOUT_RELIEF, 0)), pendingIntent);
+			alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (Prefs.with(context).getLong(SPLabels.MAX_TIMEOUT_RELIEF, 0)), pendingIntent);
 		}
 	}
 
@@ -728,8 +751,13 @@ public class GCMIntentService extends IntentService {
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 //				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
 			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}else{
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}
+
 			mediaPlayer.setLooping(true);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
 				@Override
@@ -887,13 +915,13 @@ public class GCMIntentService extends IntentService {
 				e.printStackTrace();
 			}
 		}
-    }
-
+	}
 
 
 	private ArrayList<Integer> dontSavePushes = null;
-	private ArrayList<Integer> getDontSavePushesArray(){
-		if(dontSavePushes == null){
+
+	private ArrayList<Integer> getDontSavePushesArray() {
+		if (dontSavePushes == null) {
 			dontSavePushes = new ArrayList<>();
 //			dontSavePushes.add(PushFlags.WAITING_STARTED.getOrdinal());
 //			dontSavePushes.add(PushFlags.WAITING_ENDED.getOrdinal());
@@ -908,26 +936,23 @@ public class GCMIntentService extends IntentService {
 		return dontSavePushes;
 	}
 
-	private void savePush(JSONObject jObj, int flag, String title, String message1){
+	private void savePush(JSONObject jObj, int flag, String title, String message1) {
 		try {
 			boolean tryToSave = false;
-			if(PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag){
+			if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 				tryToSave = true;
-			} else if(!getDontSavePushesArray().contains(flag)){
+			} else if (!getDontSavePushesArray().contains(flag)) {
 				int saveNotification = jObj.optInt(Constants.KEY_SAVE_NOTIFICATION, 0);
-				if(1 == saveNotification){
+				if (1 == saveNotification) {
 					tryToSave = true;
 				}
 			}
 
-			if(tryToSave && !"".equalsIgnoreCase(message1)) {
-				String picture = jObj.optString("image", "");
-				if ("".equalsIgnoreCase(picture)) {
-					picture = jObj.optString("picture", "");
+			if (tryToSave && !"".equalsIgnoreCase(message1)) {
+				String picture = jObj.optString(Constants.KEY_PICTURE, "");
+				if("".equalsIgnoreCase(picture)){
+					picture = jObj.optString(Constants.KEY_IMAGE, "");
 				}
-//				if(PushFlags.DISPLAY_MESSAGE.getOrdinal() != flag) {
-//					message1 = title + "\n" + message1;
-//				}
 
 				message1 = title + "\n" + message1;
 
@@ -958,8 +983,6 @@ public class GCMIntentService extends IntentService {
 			e.printStackTrace();
 		}
 	}
-
-
 
 
 	class RequestTimeoutTimerTask {
@@ -1143,13 +1166,62 @@ public class GCMIntentService extends IntentService {
 	}
 
 
-	private void flurryEventForRequestPush(String engagementId){
+	private void flurryEventForRequestPush(String engagementId) {
 		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-		if(DriverScreenMode.D_INITIAL.getOrdinal() != mode
+		if (DriverScreenMode.D_INITIAL.getOrdinal() != mode
 				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
 				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
 			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
 		}
+	}
+
+
+	private class BigImageNotifAsync extends AsyncTask<String, String, Bitmap> {
+
+		private Bitmap bitmap = null;
+		private String title, message, picture;
+
+		public BigImageNotifAsync(String title, String message, String picture){
+			this.picture = picture;
+			this.title = title;
+			this.message = message;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			// Things to be done before execution of long running operation. For
+			// example showing ProgessDialog
+		}
+
+		@Override
+		protected Bitmap doInBackground(String... params) {
+			try {
+				URL url = new URL(picture);
+				bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+			}catch (Exception e){
+				e.printStackTrace();
+			}
+			return bitmap;
+		}
+
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			// execution of result of Long time consuming operation
+			try {
+				if(result == null){
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+							null);
+				} else{
+					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+							result);
+				}
+			}catch (Exception e){
+				e.printStackTrace();
+				notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
+						null);
+			}
+		}
+
 	}
 
 }

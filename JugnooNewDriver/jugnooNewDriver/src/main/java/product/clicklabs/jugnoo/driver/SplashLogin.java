@@ -44,30 +44,31 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 public class SplashLogin extends Activity implements LocationUpdate, FlurryEventNames{
-	
+
 	TextView title;
 	Button backBtn;
 	AutoCompleteTextView emailEt;
 	EditText passwordEt;
-	Button signInBtn, forgotPasswordBtn;
+	Button signInBtn, forgotPasswordBtn,signInUsingOtp;
 
 
 	LinearLayout relative;
-	
+
 	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
 
 
 
-	
+
 	String enteredEmail = "";
-	
+	String enteredPhone = "";
+
 
 	public void resetFlags(){
 		loginDataFetched = false;
 		sendToOtpScreen = false;
 	}
-	
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -82,7 +83,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -104,124 +105,141 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		setContentView(R.layout.activity_splash_login);
 
 		Data.locationFetcher = null;
-		
+
 		resetFlags();
-		
+
 		enteredEmail = "";
-		
+
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(SplashLogin.this, relative, 1134, 720, false);
-		
+
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
 		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+
 		emailEt = (AutoCompleteTextView) findViewById(R.id.emailEt); emailEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+
 		signInBtn = (Button) findViewById(R.id.signInBtn); signInBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		signInUsingOtp = (Button) findViewById(R.id.signInUsingOtp); signInUsingOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		forgotPasswordBtn = (Button) findViewById(R.id.forgotPasswordBtn); forgotPasswordBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
-		
-		
+
+
 		String[] emails = Database.getInstance(this).getEmails();
 		Database.getInstance(this).close();
-		
+
 		Database2.getInstance(SplashLogin.this).updateDriverServiceFast("no");
-		
+
 		ArrayAdapter<String> adapter;
-		
+
 		if (emails == null) {																			// if emails from database are not null
 			emails = new String[]{};
 			adapter = new ArrayAdapter<String>(this, R.layout.dropdown_textview, emails);
 		} else {																						// else reinitializing emails to be empty
 			adapter = new ArrayAdapter<String>(this, R.layout.dropdown_textview, emails);
 		}
-		
+
 		adapter.setDropDownViewResource(R.layout.dropdown_textview);					// setting email array to EditText DropDown list
 		emailEt.setAdapter(adapter);
-		
-		
-		
+
+
+
 		signInBtn.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                String email = emailEt.getText().toString().trim();
-                String password = passwordEt.getText().toString().trim();
-                if ("".equalsIgnoreCase(email)) {
-                    emailEt.requestFocus();
-                    emailEt.setError("Please enter email");
-                } else {
-                    if ("".equalsIgnoreCase(password)) {
-                        passwordEt.requestFocus();
-                        passwordEt.setError("Please enter password");
-                    } else {
-                        if (isEmailValid(email)) {
-                            enteredEmail = email;
-                            sendLoginValues(SplashLogin.this, email, password);
+			@Override
+			public void onClick(View v) {
+				String emailOrPhone = emailEt.getText().toString().trim();
+				String password = passwordEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(emailOrPhone)) {
+					emailEt.requestFocus();
+					emailEt.setError("Please enter Phone No. or Email");
+				} else {
+					if ("".equalsIgnoreCase(password)) {
+						passwordEt.requestFocus();
+						passwordEt.setError("Please enter password");
+					} else {
+						if (isEmailValid(emailOrPhone)) {
+							enteredEmail = emailOrPhone;
+							sendLoginValues(SplashLogin.this, enteredEmail, "", password, "");
 							FlurryEventLogger.event(LOGIN_EMAIL_ID);
 							FlurryEventLogger.event(LOGIN_PASSWORD);
 							FlurryEventLogger.event(LOGIN_IN_APP);
-                        } else {
-                            emailEt.requestFocus();
-                            emailEt.setError("Please enter valid email");
-                        }
-                    }
-                }
-            }
-        });
-		
-		
-		
-		
+						} else if ((Utils.validPhoneNumber(emailOrPhone))) {
+							enteredPhone = "+91" + emailOrPhone;
+							sendLoginValues(SplashLogin.this, "", enteredPhone, password, "");
+							FlurryEventLogger.event(LOGIN_EMAIL_ID);
+							FlurryEventLogger.event(LOGIN_PASSWORD);
+							FlurryEventLogger.event(LOGIN_IN_APP);
+						} else {
+							emailEt.requestFocus();
+							emailEt.setError("Please enter valid email or phone no.");
+						}
+					}
+				}
+			}
+		});
+
+
+
+
 		forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-                Intent intent = new Intent(SplashLogin.this, ForgotPasswordScreen.class);
-                intent.putExtra("forgotEmail", emailEt.getText().toString());
-                intent.putExtra("fromPreviousAccounts", fromPreviousAccounts);
-                startActivity(intent);
+				Intent intent = new Intent(SplashLogin.this, ForgotPasswordScreen.class);
+				intent.putExtra("forgotEmail", emailEt.getText().toString());
+				intent.putExtra("fromPreviousAccounts", fromPreviousAccounts);
+				startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				finish();
 				FlurryEventLogger.event(FORGOT_PASSWORD);
 			}
 		});
-		
+
+		signInUsingOtp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(SplashLogin.this, LoginViaOTP.class);
+				startActivity(intent);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				finish();
+			}
+		});
+
 		backBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
 			}
 		});
-		
 
-		
+
+
 		passwordEt.setOnEditorActionListener(new OnEditorActionListener() {
 
-            @Override
-            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                int result = actionId & EditorInfo.IME_MASK_ACTION;
-                switch (result) {
-                    case EditorInfo.IME_ACTION_DONE:
-                        signInBtn.performClick();
-                        break;
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				int result = actionId & EditorInfo.IME_MASK_ACTION;
+				switch (result) {
+					case EditorInfo.IME_ACTION_DONE:
+						signInBtn.performClick();
+						break;
 
-                    case EditorInfo.IME_ACTION_NEXT:
-                        break;
+					case EditorInfo.IME_ACTION_NEXT:
+						break;
 
-                    default:
-                }
-                return true;
-            }
-        });
-		
-		
+					default:
+				}
+				return true;
+			}
+		});
 
 
-		
+
+
+
 		try {																						// to get AppVersion, OS version, country code and device name
 			PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 			Data.appVersion = pInfo.versionCode;
@@ -235,11 +253,11 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
 		}
-		
-		
+
+
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-		
-		
+
+
 		try {
 			if(getIntent().hasExtra("back_from_otp")){
 				emailEt.setText(OTPConfirmScreen.emailRegisterData.emailId);
@@ -251,46 +269,46 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 
 		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
 
-            @Override
-            public void deviceTokenReceived(final String regId) {
-                Data.deviceToken = regId;
-                Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
-            }
-        });
+			@Override
+			public void deviceTokenReceived(final String regId) {
+				Data.deviceToken = regId;
+				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+			}
+		});
 
-        try {
-            if (getIntent().hasExtra("previous_login_email")) {
-                String previousLoginEmail = getIntent().getStringExtra("previous_login_email");
-                emailEt.setText(previousLoginEmail);
-                emailEt.setSelection(emailEt.getText().length());
-                fromPreviousAccounts = true;
-            }
-            else{
-                fromPreviousAccounts = false;
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-            fromPreviousAccounts = false;
-        }
+		try {
+			if (getIntent().hasExtra("previous_login_email")) {
+				String previousLoginEmail = getIntent().getStringExtra("previous_login_email");
+				emailEt.setText(previousLoginEmail);
+				emailEt.setSelection(emailEt.getText().length());
+				fromPreviousAccounts = true;
+			}
+			else{
+				fromPreviousAccounts = false;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+			fromPreviousAccounts = false;
+		}
 
-        try {
-            if (getIntent().hasExtra("forgot_login_email")) {
-                String forgotLoginEmail = getIntent().getStringExtra("forgot_login_email");
-                emailEt.setText(forgotLoginEmail);
-                emailEt.setSelection(emailEt.getText().length());
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+		try {
+			if (getIntent().hasExtra("forgot_login_email")) {
+				String forgotLoginEmail = getIntent().getStringExtra("forgot_login_email");
+				emailEt.setText(forgotLoginEmail);
+				emailEt.setSelection(emailEt.getText().length());
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 
 
-    }
-	
-	
+	}
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		try {
 			if(Data.locationFetcher == null){
 				Data.locationFetcher = new LocationFetcher(this, 1000, 1);
@@ -299,8 +317,8 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
+
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		if(resp != ConnectionResult.SUCCESS){
 			Log.e("Google Play Service Error ","="+resp);
@@ -309,9 +327,9 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		else{
 			DialogPopup.showLocationSettingsAlert(SplashLogin.this);
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onPause() {
 		try{
@@ -323,36 +341,36 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		}
 		Database2.getInstance(this).close();
 		super.onPause();
-		
+
 	}
-	
-	
+
+
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
 		super.onBackPressed();
 	}
-	
-	
-	public void performBackPressed(){
-        if(fromPreviousAccounts){
-            Intent intent = new Intent(SplashLogin.this, MultipleAccountsActivity.class);
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-        }
-        else {
 
-            Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
-            intent.putExtra("no_anim", "yes");
-            startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.left_out);
-        }
+
+	public void performBackPressed(){
+		if(fromPreviousAccounts){
+			Intent intent = new Intent(SplashLogin.this, MultipleAccountsActivity.class);
+			startActivity(intent);
+			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		}
+		else {
+
+			Intent intent = new Intent(SplashLogin.this, SplashNewActivity.class);
+			intent.putExtra("no_anim", "yes");
+			startActivity(intent);
+			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		}
 	}
 
-	
-	
+
+
 	boolean isEmailValid(CharSequence email) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
@@ -361,7 +379,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 //	Retrofit
 
 
-	public void sendLoginValues(final Activity activity, final String emailId, final String password) {
+	public void sendLoginValues(final Activity activity, final String emailId,final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, "Loading...");
@@ -376,7 +394,9 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			HashMap<String, String> params = new HashMap<String, String>();
 
 			params.put("email", emailId);
+			params.put("phone_no", phoneNo);
 			params.put("password", password);
+			params.put("login_otp",otp);
 			params.put("device_token", Data.deviceToken);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
@@ -494,28 +514,28 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		}
 
 	}
-	
-	
+
+
 
 	public void sendIntentToOtpScreen() {
-        DialogPopup.alertPopupWithListener(SplashLogin.this, "", otpErrorMsg, new View.OnClickListener() {
+		DialogPopup.alertPopupWithListener(SplashLogin.this, "", otpErrorMsg, new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                OTPConfirmScreen.intentFromRegister = false;
-                OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
-                startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
-                finish();
-                overridePendingTransition(R.anim.right_in, R.anim.right_out);
-            }
-        });
-    }
+			@Override
+			public void onClick(View v) {
+				OTPConfirmScreen.intentFromRegister = false;
+				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
+				startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
+				finish();
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+	}
 
 
-    @Override
+	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
+
 		if(hasFocus && loginDataFetched){
 			Map<String, String> articleParams = new HashMap<String, String>();
 			articleParams.put("username", Data.userData.userName);
@@ -526,32 +546,32 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 		else if(hasFocus && sendToOtpScreen){
-            sendIntentToOtpScreen();
-        }
-		
+			sendIntentToOtpScreen();
+		}
+
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 	}
-	
+
 
 	@Override
 	public void onLocationChanged(Location location, int priority) {
 		Data.latitude = location.getLatitude();
 		Data.longitude = location.getLongitude();
 	}
-	
+
 }

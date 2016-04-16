@@ -65,7 +65,7 @@
             android:layout_height="92px"
             android:orientation="horizontal"
             android:layout_marginTop="32px"
-            android:background="@color/new_orange">
+            android:background="@drawable/new_orange_btn_top_normal_bottom_rounded">
 
             <TextView
                 android:id="@+id/timeOutText"
@@ -88,8 +88,9 @@
                 android:singleLine="true"
                 android:text="@string/ok"
                 android:textColor="@drawable/white_color_selector"
-                android:textSize="84px"
+                android:textSize="72px"
                 android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
                 />
         </LinearLayout>
 

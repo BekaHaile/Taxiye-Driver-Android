@@ -12,7 +12,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 
 public interface AppInterruptHandler {
 	
-	public void onNewRideRequest();
+	public void onNewRideRequest(int perfectRide);
 	
 	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver);
 	

@@ -69,18 +69,6 @@
                         android:layout_below="@+id/textViewDriverInfo"
                         android:background="@drawable/shadow_down"/>
 
-
-                    <ListView
-                        android:id="@+id/driverRideRequestsList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:divider="@color/transparent"
-                        android:splitMotionEvents="false"
-                        android:visibility="visible"
-                        >
-                    </ListView>
-
                     <Button
                         android:id="@+id/driverInitialMyLocationBtn"
                         android:layout_width="80px"
@@ -825,6 +813,17 @@
                         android:textColor="@color/white"/>
 
                 </RelativeLayout>
+
+
+                <ListView
+                    android:id="@+id/driverRideRequestsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:divider="@color/transparent"
+                    android:visibility="visible"
+                    android:layout_alignParentTop="true"
+                    android:splitMotionEvents="false"
+                    ></ListView>
 
 
             </RelativeLayout>
@@ -2358,6 +2357,8 @@
                         android:background="@drawable/line_menu"/>
                 </RelativeLayout>
 
+
+
                 <RelativeLayout
                     android:id="@+id/notificationCenterRl"
                     android:layout_width="match_parent"
@@ -2400,6 +2401,38 @@
                         android:text="@string/call_us"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="4px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/line_menu"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutDestination"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false">
+
+                    <TextView
+                        android:id="@+id/textViewDestination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Destination"
+                        android:textColor="@color/white"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="50px"
+                        android:layout_height="50px"
+                        android:layout_marginLeft="40px"
+                        android:layout_toRightOf="@+id/textViewDestination"
+                        android:src="@drawable/new_icon"
+                        android:tag="mwar"/>
 
                     <ImageView
                         android:layout_width="match_parent"

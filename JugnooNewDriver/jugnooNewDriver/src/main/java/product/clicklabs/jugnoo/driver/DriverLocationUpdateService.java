@@ -14,7 +14,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -135,7 +134,11 @@ public class DriverLocationUpdateService extends Service {
 		new DeviceTokenGenerator(context).generateDeviceToken(context, new IDeviceTokenReceiver() {
 			@Override
 			public void deviceTokenReceived(String deviceToken) {
-				Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				try {
+					Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 

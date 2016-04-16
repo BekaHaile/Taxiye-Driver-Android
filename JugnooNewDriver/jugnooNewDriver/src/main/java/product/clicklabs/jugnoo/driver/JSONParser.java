@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
@@ -316,13 +317,16 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.MAX_TIMEOUT_RELIEF, userData.optLong("timeout_relief", 30000));
 		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer", 120000));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
-		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("timeout_factor",1));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("customer_cancel_timeout_factor", 1));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, userData.optInt("driver_cancel_timeout_factor", 2));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl",86400000));
 
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+		Log.i("timeOut",timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
+		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -344,7 +348,8 @@ public class JSONParser implements Constants {
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod, timeoutMessage, paytmRechargeEnabled);
+				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
+				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
@@ -641,89 +646,10 @@ public class JSONParser implements Constants {
 //							]
 							
 								int flag = jObject1.getInt("flag");
+
+								fillDriverRideRequests(jObject1);
 								
-								if(ApiResponseFlags.ACTIVE_REQUESTS.getOrdinal() == flag){
-
-									JSONArray jActiveRequests = jObject1.getJSONArray("active_requests");
-									
-									Data.driverRideRequests.clear();
-									for(int i=0; i<jActiveRequests.length(); i++){
-										JSONObject jActiveRequest = jActiveRequests.getJSONObject(i);
-										 String requestEngagementId = jActiveRequest.getString("engagement_id");
-		    	    					 String requestUserId = jActiveRequest.getString("user_id");
-		    	    					 double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
-		    	    					 double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
-		    	    					 String requestAddress = jActiveRequest.getString("pickup_location_address");
-		    	    					 
-		    	    					 String startTime = jActiveRequest.getString("start_time");
-                                        String endTime = "";
-                                        if(jActiveRequest.has("end_time")){
-                                            endTime = jActiveRequest.getString("end_time");
-                                        }
-		    	    					 
-		    	    					 String startTimeLocal = DateOperations.utcToLocal(startTime);
-		    	    					 
-		    	    					 long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-		    	    					 if("".equalsIgnoreCase(endTime)){
-		    	    						 long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
-		    	    						 long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
-		    	    						 requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
-		    	    					 }
-		    	    					 else{
-		    	    						 long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime), 
-		    	    								 startTimeLocal);
-		    	    						 Log.i("startEndDiffMillis = ", "="+startEndDiffMillis);
-		    	    						 if(startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT){
-		    	    							 requestTimeOutMillis = startEndDiffMillis;
-		    	    						 }
-		    	    						 else{
-		    	    							 requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-		    	    						 }
-		    	    					 }
-		    	    					 
-		    	    					 startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
-		    	    					 
-		    	    					 int businessId = BusinessType.AUTOS.getOrdinal();
-		    	    					 if(jActiveRequest.has("business_id")){
-		    	    						 businessId = jActiveRequest.getInt("business_id");
-		    	    					 }
-		    	    					 
-		    	    					 int referenceId = jActiveRequest.getInt("reference_id");
-
-                                        double fareFactor = 1;
-                                        if(jActiveRequest.has("fare_factor")) {
-                                            fareFactor = jActiveRequest.getDouble("fare_factor");
-                                        }
-		    	    					 
-		    	    					 if(BusinessType.AUTOS.getOrdinal() == businessId){
-		    	    						 Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId, 
-			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, fareFactor));
-	    								 }
-	    								 else if(BusinessType.MEALS.getOrdinal() == businessId){
-	    									 String rideTime = jActiveRequest.getString("ride_time");
-	    									
-	    									 Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId, 
-			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, rideTime, fareFactor));
-	    								 }
-	    								 else if(BusinessType.FATAFAT.getOrdinal() == businessId){
-	    									 int orderAmount = jActiveRequest.getInt("order_amount");
-	    									 Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId, 
-			    	    								new LatLng(requestLatitude, requestLongitude), startTime, requestAddress, 
-			    	    								businessId, referenceId, orderAmount, fareFactor));
-	    								 }
-		    	    					 
-		    	    					 Log.i("inserter in db", "insertDriverRequest = "+requestEngagementId);
-									}
-									
-									
-									if(jActiveRequests.length() == 0){
-										GCMIntentService.stopRing(true);
-									}
-									
-								}
-								else if(ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag){
+								if(ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag){
 									JSONArray lastEngInfoArr = jObject1.getJSONArray("last_engagement_info");
 									JSONObject jObject = lastEngInfoArr.getJSONObject(0);
 									
@@ -767,6 +693,19 @@ public class JSONParser implements Constants {
 											e.printStackTrace();
 										}
 									}
+
+									if(jObject.has("perfect_pickup_latitude") && jObject.has("perfect_pickup_longitude")  ){
+										try{
+											double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
+											double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
+											Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
+										} catch(Exception e){
+											e.printStackTrace();
+										}
+									}
+									Log.i("nextPickupLatLng", String.valueOf(Data.nextPickupLatLng));
+
+
 //									"convenience_charge": 10,
 //									"convenience_charge_waiver": 0,
 
@@ -897,7 +836,11 @@ public class JSONParser implements Constants {
 									parseLastRideData(jObject1);
 									return returnResponse;
 								}
-							
+
+								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
+									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+									new ApiAcceptRide().perfectRideVariables(context, "","","",0,0);
+								}
 							}
 			} catch(Exception e){
 				e.printStackTrace();
@@ -1015,12 +958,96 @@ public class JSONParser implements Constants {
 		
 		return returnResponse;
 	}
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+	public void fillDriverRideRequests(JSONObject jObject1){
+
+		try {
+			Data.driverRideRequests.clear();
+
+			JSONArray jActiveRequests = jObject1.getJSONArray("active_requests");
+
+			for(int i=0; i<jActiveRequests.length(); i++){
+				JSONObject jActiveRequest = jActiveRequests.getJSONObject(i);
+				String requestEngagementId = jActiveRequest.getString("engagement_id");
+				String requestUserId = jActiveRequest.getString("user_id");
+				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
+				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
+				String requestAddress = jActiveRequest.getString("pickup_location_address");
+
+				String startTime = jActiveRequest.getString("start_time");
+				String endTime = "";
+				if(jActiveRequest.has("end_time")){
+					endTime = jActiveRequest.getString("end_time");
+				}
+
+				String startTimeLocal = DateOperations.utcToLocal(startTime);
+
+				long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+				if("".equalsIgnoreCase(endTime)){
+					long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
+					long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
+					requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
+				}
+				else{
+					long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
+							startTimeLocal);
+					Log.i("startEndDiffMillis = ", "="+startEndDiffMillis);
+					if(startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT){
+						requestTimeOutMillis = startEndDiffMillis;
+					}
+					else{
+						requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+					}
+				}
+
+				startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
+
+				int businessId = BusinessType.AUTOS.getOrdinal();
+				if(jActiveRequest.has("business_id")){
+					businessId = jActiveRequest.getInt("business_id");
+				}
+
+				int referenceId = jActiveRequest.getInt("reference_id");
+
+				double fareFactor = 1;
+				if(jActiveRequest.has("fare_factor")) {
+					fareFactor = jActiveRequest.getDouble("fare_factor");
+				}
+
+				if(BusinessType.AUTOS.getOrdinal() == businessId){
+					Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId,
+							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
+							businessId, referenceId, fareFactor));
+				}
+				else if(BusinessType.MEALS.getOrdinal() == businessId){
+					String rideTime = jActiveRequest.getString("ride_time");
+
+					Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId,
+							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
+							businessId, referenceId, rideTime, fareFactor));
+				}
+				else if(BusinessType.FATAFAT.getOrdinal() == businessId){
+					int orderAmount = jActiveRequest.getInt("order_amount");
+					Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId,
+							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
+							businessId, referenceId, orderAmount, fareFactor));
+				}
+
+				Log.i("inserter in db", "insertDriverRequest = "+requestEngagementId);
+			}
+
+
+			if(jActiveRequests.length() == 0){
+				GCMIntentService.stopRing(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public void clearSPData(final Context context) {
@@ -1115,6 +1142,10 @@ public class JSONParser implements Constants {
 
         return previousAccountInfoList;
     }
+
+
+
+
 
 
 	public static void parseCancellationReasons(JSONObject jObj, Context context) {

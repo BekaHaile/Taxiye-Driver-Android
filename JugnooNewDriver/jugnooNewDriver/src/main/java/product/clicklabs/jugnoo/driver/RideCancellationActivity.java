@@ -206,7 +206,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							}
 						}
 
-						new DriverTimeoutCheck().timeoutBuffer(activity, true);
+						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

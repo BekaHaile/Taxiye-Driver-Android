@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
@@ -557,10 +558,46 @@ public class DialogPopup {
 	}
 
 
+//	public static void dialogBanner(Activity activity, String message) {
+//		try {
+//			dismissAlertPopup();
+//
+//			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+//			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+//			dialog.setContentView(R.layout.dialog_banner);
+//
+//			LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.rv);
+//			new ASSL(activity, linearLayout, 1134, 720, false);
+//
+//			dialog.setCancelable(true);
+//			dialog.setCanceledOnTouchOutside(true);
+//
+//			TextView textViewBanner = (TextView) dialog.findViewById(R.id.textViewBanner); textViewBanner.setTypeface(Data.latoRegular(activity));
+//			textViewBanner.setText(message);
+//
+//			linearLayout.setOnClickListener(new View.OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					dialog.dismiss();
+//				}
+//			});
+//
+//			dialog.show();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 	public static void dialogBanner(Activity activity, String message) {
+		dialogBannerWithCancelListener(activity, message, null, 5000);
+	}
+
+	public static void dialogBannerWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
 		try {
 			dismissAlertPopup();
-
+//
 			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
 			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
 			dialog.setContentView(R.layout.dialog_banner);
@@ -579,11 +616,20 @@ public class DialogPopup {
 				@Override
 				public void onClick(View v) {
 					dialog.dismiss();
+					if (onClickListener != null) {
+						onClickListener.onClick(v);
+					}
 				}
 			});
 
 			dialog.show();
+			new Handler().postDelayed(new Runnable() {
 
+				@Override
+				public void run() {
+					DialogPopup.dismissAlertPopup();
+				}
+			}, timeToDismiss);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
