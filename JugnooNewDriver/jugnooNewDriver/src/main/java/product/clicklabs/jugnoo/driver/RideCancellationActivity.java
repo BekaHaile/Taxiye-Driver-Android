@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -207,6 +208,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+						Utils.getCallDetails(RideCancellationActivity.this);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

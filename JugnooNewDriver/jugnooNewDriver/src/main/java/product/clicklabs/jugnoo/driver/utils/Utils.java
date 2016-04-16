@@ -9,10 +9,12 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -28,6 +30,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -483,6 +486,56 @@ public class Utils {
 			e.printStackTrace();
 			return 70;
 		}
+	}
+
+	public static void getCallDetails(Context context) {
+		StringBuffer sb = new StringBuffer();
+		Uri contacts = CallLog.Calls.CONTENT_URI;
+		Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
+		int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+		int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+		int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+		int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+		sb.append("Call Details :");
+		while (managedCursor.moveToNext()) {
+
+			if((managedCursor.getString(number).equalsIgnoreCase("+919896976999")) || (("+91"+managedCursor.getString(number)).equalsIgnoreCase("+919896976999"))) {
+				if ((Long.valueOf(managedCursor.getString(date))) > (System.currentTimeMillis() - 180000)) {
+					HashMap rowDataCall = new HashMap<String, String>();
+
+					String phNumber = managedCursor.getString(number);
+					String callType = managedCursor.getString(type);
+					String callDate = managedCursor.getString(date);
+					String callDayTime = new Date(Long.valueOf(callDate)).toString();
+					Log.i("CallLogTime", callDate);
+					// long timestamp = convertDateToTimestamp(callDayTime);
+					String callDuration = managedCursor.getString(duration);
+					String dir = null;
+					int dircode = Integer.parseInt(callType);
+					switch (dircode) {
+						case CallLog.Calls.OUTGOING_TYPE:
+							dir = "OUTGOING";
+							break;
+
+						case CallLog.Calls.INCOMING_TYPE:
+							dir = "INCOMING";
+							break;
+
+						case CallLog.Calls.MISSED_TYPE:
+							dir = "MISSED";
+							break;
+					}
+					sb.append("\nPhone Number:--- " + phNumber + " \nCall Type:--- " + dir + " \nCall Date:--- " + callDayTime + " \nCall duration in sec :--- " + callDuration);
+					sb.append("\n----------------------------------");
+				}
+			}
+
+
+		}
+		managedCursor.close();
+		System.out.println(sb);
+		Log.i("CallLogs", String.valueOf(sb));
+
 	}
 
 }
