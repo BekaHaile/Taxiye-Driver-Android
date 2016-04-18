@@ -11,6 +11,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -31,7 +32,7 @@ public interface APIServices {
 	@POST("/booking_history")
 	void bookingHistory(@Field("access_token") String accessToken,
 						@Field("current_mode") String currentMode,
-						Callback<BookingHistoryResponse> callback);
+						Callback<NewBookingHistoryRespose> callback);
 
 	@FormUrlEncoded
 	@POST("/share_ride_history")

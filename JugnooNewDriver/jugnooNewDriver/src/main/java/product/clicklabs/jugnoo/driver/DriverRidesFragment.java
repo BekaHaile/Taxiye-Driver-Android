@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -178,7 +179,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.rideTimeValue = (TextView) convertView.findViewById(R.id.rideTimeValue);
 				holder.rideTimeValue.setTypeface(Data.latoRegular(getActivity()));
 				holder.waitTimeValue = (TextView) convertView.findViewById(R.id.waitTimeValue);
-				holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity())); holder.waitTimeValue.setVisibility(View.GONE);
+				holder.waitTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.waitTimeValue.setVisibility(View.GONE);
 				holder.textViewBalanceText = (TextView) convertView.findViewById(R.id.textViewBalanceText);
 				holder.textViewBalanceText.setTypeface(Data.latoRegular(getActivity()));
 
@@ -207,55 +209,82 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.relative.setBackgroundResource(R.drawable.list_white_inv_selector);
 			}
 
+			if (rideInfo.type.equalsIgnoreCase("ride")) {
+				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
+				holder.textViewRideId.setText("Ride ID: " + rideInfo.id);
 
-			holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-			holder.textViewRideId.setText("Ride ID: " + rideInfo.id);
-
-			if ("".equalsIgnoreCase(rideInfo.statusString)) {
-				holder.textViewStatusString.setVisibility(View.GONE);
-			} else {
-				holder.textViewStatusString.setVisibility(View.VISIBLE);
-				if ("Ride Cancelled".equalsIgnoreCase(rideInfo.statusString)) {
-					holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+				if ("".equalsIgnoreCase(rideInfo.statusString)) {
+					holder.textViewStatusString.setVisibility(View.GONE);
 				} else {
-					holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+					holder.textViewStatusString.setVisibility(View.VISIBLE);
+					if ("Ride Cancelled".equalsIgnoreCase(rideInfo.statusString)) {
+						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+					} else {
+						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+					}
+					holder.textViewStatusString.setText(rideInfo.statusString);
 				}
-				holder.textViewStatusString.setText(rideInfo.statusString);
-			}
 
-			holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
+				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
 
-			double balance = Double.parseDouble(rideInfo.accountBalance);
-			if (balance < 0) {
-				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Money to\nJugnoo");
-				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				double balance = Double.parseDouble(rideInfo.accountBalance);
+				if (balance < 0) {
+					holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+					holder.textViewBalanceText.setText("Money to\nJugnoo");
+					holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
-			} else {
+				} else {
+					holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+					holder.textViewBalanceText.setText("Account");
+					holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+
+				}
+				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance))));
+
+
+				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
+
+				holder.distanceValue.setText(rideInfo.distance + " km, ");
+				holder.rideTimeValue.setText(rideInfo.rideTime + " min");
+
+				holder.relative.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						holder = (ViewHolderDriverRides) v.getTag();
+						RideDetailsActivity.openedRideInfo = rides.get(holder.id);
+						getActivity().startActivity(new Intent(getActivity(), RideDetailsActivity.class));
+						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					}
+				});
+
+			} else if (rideInfo.type.equalsIgnoreCase("referral")) {
+				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
+				holder.textViewRideId.setText("Customer ID: " + rideInfo.customerId);
+				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.referralAmount)));
+				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
+				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.referralAmount))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				holder.textViewBalanceText.setText("Account");
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
+			} else if (rideInfo.type.equalsIgnoreCase("phone_deduction")) {
+				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
+				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
+				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
+				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount))));
+				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				holder.textViewBalanceText.setText("Money to\nJugnoo");
+				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+			} else if (rideInfo.type.equalsIgnoreCase("paytm_transaction")) {
+				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
+				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
+				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
+				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.amount))));
+				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				holder.textViewBalanceText.setText("Money to\nJugnoo");
+				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 			}
-			holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.accountBalance))));
-
-
-			holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.actualFare)));
-
-			holder.distanceValue.setText(rideInfo.distance + " km, ");
-			holder.rideTimeValue.setText(rideInfo.rideTime + " min");
-
-
-			holder.relative.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					holder = (ViewHolderDriverRides) v.getTag();
-					RideDetailsActivity.openedRideInfo = rides.get(holder.id);
-					getActivity().startActivity(new Intent(getActivity(), RideDetailsActivity.class));
-					getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				}
-			});
 
 			return convertView;
 		}
@@ -268,9 +297,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	private void getRidesAsync(final Activity activity) {
 		progressBar.setVisibility(View.VISIBLE);
 		RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
-				new Callback<BookingHistoryResponse>() {
+				new Callback<NewBookingHistoryRespose>() {
 					@Override
-					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+					public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
 						try {
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
@@ -285,15 +314,15 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 							} else {
 
-								for (int i = 0; i < bookingHistoryResponse.getBookingData().size(); i++) {
-									BookingHistoryResponse.BookingData data = bookingHistoryResponse.getBookingData().get(i);
+								for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
+									NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
 									RideInfo rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
 											data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
 											data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
-											data.getBusinessId(), data.getPaidToMerchant(), data.getPaidByCustomer(), data.getDriverPaymentStatus(),
-											data.getStatusString(), data.getConvenienceCharges(), data.getLuggageCharges(), data.getFareFactorApplied(),
-											data.getFareFactorValue(), data.getAcceptSubsidy(), data.getCancelSubsidy(), data.getAccountBalance(),
-											data.getActualFare(), data.getDriverRideFair());
+											data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
+											data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
+											data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getCustomerId(),
+											data.getReferralAmount(), data.getAmount(), data.getReferredOn(), data.getType());
 									rides.add(rideInfo);
 								}
 

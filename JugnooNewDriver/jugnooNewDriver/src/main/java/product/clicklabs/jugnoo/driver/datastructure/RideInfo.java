@@ -18,18 +18,19 @@ public class RideInfo {
 	public int businessId;
 	public String paidToMerchant;
 	public String paidByCustomer;
-	public int driverPaymentStatus;
-	public String statusString;
-	public String convenienceCharges, luggageCharges, fareFactorApplied,
+	public int driverPaymentStatus, customerId;
+	public String statusString, referredOn, phone, status, type;
+	public String convenienceCharges, luggageCharges, fareFactorApplied, referralAmount, amount,
 			fareFactorValue, acceptSubsidy, cancelSubsidy, accountBalance, actualFare, driverRideFair;
 
 
 	public RideInfo(String id, String fromLocation, String toLocation,
 					String fare, String customerPaid, String balance, String subsidy,
 					String distance, String rideTime, String waitTime, String dateTime,
-					int couponUsed, int paymentMode, int businessId, String paidToMerchant, String paidByCustomer,
-					int paymentStatus, String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
-					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare, String driverRideFair) {
+					int couponUsed, int paymentMode, int businessId, int paymentStatus,
+					String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
+					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare,
+					int customerId, String referralAmount, String amount, String referredOn, String type) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -51,8 +52,6 @@ public class RideInfo {
 		this.paymentMode = paymentMode;
 
 		this.businessId = businessId;
-		this.paidToMerchant = paidToMerchant;
-		this.paidByCustomer = paidByCustomer;
 
 		this.driverPaymentStatus = paymentStatus;
 		this.statusString = statusString;
@@ -66,6 +65,11 @@ public class RideInfo {
 		this.accountBalance = accountBalance;
 		this.actualFare = actualFare;
 		this.driverRideFair = driverRideFair;
+		this.customerId = customerId;
+		this.referralAmount = referralAmount;
+		this.amount = amount;
+		this.referredOn = referredOn;
+		this.type = type;
 	}
 
 	@Override
@@ -74,3 +78,4 @@ public class RideInfo {
 	}
 
 }
+
