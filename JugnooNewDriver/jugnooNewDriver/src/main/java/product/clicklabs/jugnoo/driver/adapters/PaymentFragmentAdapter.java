@@ -50,7 +50,7 @@ public class PaymentFragmentAdapter extends FragmentPagerAdapter {
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 			case 0:
-				return "Payments";
+				return "Transactions";
 			case 1:
 				return "Invoices";
 			case 2:

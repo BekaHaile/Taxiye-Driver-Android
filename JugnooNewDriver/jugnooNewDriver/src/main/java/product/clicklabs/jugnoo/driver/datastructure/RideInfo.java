@@ -30,7 +30,7 @@ public class RideInfo {
 					int couponUsed, int paymentMode, int businessId, int paymentStatus,
 					String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
 					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare,
-					int customerId, String referralAmount, String amount, String referredOn, String type) {
+					String type, String driverRideFair) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -64,12 +64,30 @@ public class RideInfo {
 		this.cancelSubsidy = cancelSubsidy;
 		this.accountBalance = accountBalance;
 		this.actualFare = actualFare;
+		this.type = type;
 		this.driverRideFair = driverRideFair;
+	}
+
+	public RideInfo(int customerId, String referralAmount, String referredOn, String type, String dateTime){
 		this.customerId = customerId;
 		this.referralAmount = referralAmount;
-		this.amount = amount;
 		this.referredOn = referredOn;
 		this.type = type;
+		this.dateTime = dateTime;
+	}
+
+	public RideInfo( String amount, String type, String dateTime){
+		this.amount = amount;
+		this.type = type;
+		this.dateTime = dateTime;
+	}
+
+	public RideInfo( String amount, String type, String dateTime, String status, String phone){
+		this.amount = amount;
+		this.type = type;
+		this.dateTime = dateTime;
+		this.status = status;
+		this.phone = phone;
 	}
 
 	@Override

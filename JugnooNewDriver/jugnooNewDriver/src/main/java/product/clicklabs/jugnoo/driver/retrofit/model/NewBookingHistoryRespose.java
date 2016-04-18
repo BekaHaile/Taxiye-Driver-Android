@@ -115,7 +115,7 @@ public class NewBookingHistoryRespose {
 		private String actualFare;
 		@SerializedName("driver_ride_fare")
 		@Expose
-		private Integer driverRideFare;
+		private String driverRideFare;
 		@SerializedName("convenience_jugnoo_cut")
 		@Expose
 		private Integer convenienceJugnooCut;
@@ -614,7 +614,7 @@ public class NewBookingHistoryRespose {
 		 * @return
 		 * The driverRideFare
 		 */
-		public Integer getDriverRideFare() {
+		public String getDriverRideFare() {
 			return driverRideFare;
 		}
 
@@ -623,7 +623,7 @@ public class NewBookingHistoryRespose {
 		 * @param driverRideFare
 		 * The driver_ride_fare
 		 */
-		public void setDriverRideFare(Integer driverRideFare) {
+		public void setDriverRideFare(String driverRideFare) {
 			this.driverRideFare = driverRideFare;
 		}
 
