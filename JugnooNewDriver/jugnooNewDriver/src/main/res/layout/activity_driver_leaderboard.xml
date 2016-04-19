@@ -120,7 +120,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_white_white_dark_selector"
                 android:gravity="center"
-                android:text="Daily"
+                android:text="@string/daily"
                 android:textColor="@drawable/text_color_bg_grey_selector"
                 android:textSize="30px"
                 />
@@ -138,7 +138,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_white_white_dark_selector"
                 android:gravity="center"
-                android:text="Weekly"
+                android:text="@string/weekly"
                 android:textColor="@drawable/text_color_bg_grey_selector"
                 android:textSize="30px"
                 />
@@ -156,7 +156,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/background_white_white_dark_selector"
                 android:gravity="center"
-                android:text="Monthly"
+                android:text="@string/monthly"
                 android:textColor="@drawable/text_color_bg_grey_selector"
                 android:textSize="30px"
                 />

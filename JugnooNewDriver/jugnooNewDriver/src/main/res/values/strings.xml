@@ -213,7 +213,7 @@
 	<string name="choose_email_client">Choose an Email client:</string>
 	<string name="select_time_error_text">Cannot select time before current time</string>
 	<string name="call_me">CALL ME</string>
-	<string name="change_phone_no">Change phone number</string>
+	<string name="change_phone_no">CHANGE PHONE NUMBER</string>
 	<string name="creating_game">Creating Game ...</string>
 	<string name="completed">Completed</string>
 	<string name="customer_name">Customer name: </string>
@@ -224,7 +224,6 @@
 	<string name="daily">Daily</string>
 	<string name="distance2">Distance:\n</string>
 	<string name="discount">Discount</string>
-	<string name="retry">Retry</string>
 
 	<string name="enter_new_phone_no">Enter New Phone Number</string>
 	<string name="enter_fare">ENTER FARE</string>
@@ -280,7 +279,6 @@
 	<string name="no_of_rides">No. of rides</string>
 	<string name="name">Name</string>
 	<string name="name_colon">Name:</string>
-
 	<string name="overall_position">Overall position</string>
 	<string name="of_upto_100">of upto Rs. 100/-</string>
 
@@ -298,6 +296,7 @@
 	<string name="Pls_enter_email_or_phn">Please enter email or Phone No.</string>
 	<string name="confirm_email">Please confirm email id</string>
 	<string name="pls_enter_phone_number">Please enter Phone No.</string>
+
 	<string name="enter_valid_phone_number">Please enter valid Phone No.</string>
 	<string name="enter_password">Please enter password</string>
 	<string name="pls_confirm_password">Please confirm password</string>
@@ -353,7 +352,6 @@
 
 	<string name="updating">Updating ...</string>
 	<string name="user_cancel_request">User has canceled the request</string>
-
 	<string name="verification">VERIFICATION</string>
 	<string name="verify_me">VERIFY ME</string>
 
@@ -394,7 +392,6 @@
 
 	<string name="referral_msg">"Use my code %1$s to download Jugnoo customer App and earn jugnoo cash.\n Download it from here\nhttp://smarturl.it/jugnoo</string>
 	<string name="no_of_account">accounts have already been created on this device</string>
-
 	<string name="enter_otp_received">Please enter the One Time Password you just received via SMS at</string>
 	<string name="select_reason">Please select one reason</string>
 	<string name="referral_money">Referral Money</string>
@@ -409,14 +406,8 @@
 
 	<string name="inc_subsidy">(inc. Subsidy)</string>
 	<string name="to_end">To: </string>
-	<!--<string name="send">Send</string>-->
-	<!--<string name="send">Send</string>-->
-	<!--<string name="send">Send</string>-->
-	<!--<string name="send">Send</string>-->
-	<!--<string name="send">Send</string>-->
 	<string name="Edit_profile"><u>Edit Profile</u></string>
 	<string name="info">INFO</string>
-	<string name="arrived">Arrived</string>
 	<string name="local_leaderboard">LOCAL</string>
 	<string name="global_leaderboard">GLOBAL</string>
 	<string name="daily_leaderboard">Daily</string>
@@ -431,9 +422,7 @@
 	<string name="notifications">NOTIFICATION CENTER</string>
 	<string name="click_for_direction">Click here for Directions</string>
 	<string name="time_left">Time left :</string>
-	<string name="enter_phone_no_to_reset_password">Enter your registered phone number for resetting
-		your password.
-	</string>
+	<string name="enter_phone_no_to_reset_password">Enter your registered phone number for resetting your password.</string>
 	<string name="customer_phone_number">Customer Phone Number</string>
 	<string name="recharge_amount">Amount to be Recharged</string>
 	<string name="enter_amount">Enter Amount</string>
@@ -445,6 +434,15 @@
 	<string name="battery_low_message">Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.</string>
 	<string name="destination">DESTINATIONS</string>
 	<string name="destination_selection">Please select destination where you can go right now</string>
+	<string name="Rate_Your_Customer">Rate Your Customer</string>
+	<string name="skip">Skip</string>
+	<string name="destination_menu">Destination</string>
+	<string name="no_current_notification">No Current Notification</string>
+	<string name="phone">Phone :</string>
+	<string name="GENERATE_OTP">GENERATE OTP</string>
+	<string name="otp">OTP</string>
+	<string name="signin_via_otp">Sign in via OTP</string>
+	<string name="Neutral">Neutral</string>
 
 
 	<string-array name="CountryCodes" >

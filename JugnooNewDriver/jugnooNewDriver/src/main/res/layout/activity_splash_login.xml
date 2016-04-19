@@ -19,12 +19,7 @@
             android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
-<<<<<<< HEAD
-            android:background="@drawable/transparent"
-            android:text="@string/back"
-=======
             android:background="@drawable/back_btn_selector"
->>>>>>> develop_new
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -34,15 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-<<<<<<< HEAD
             android:text="@string/login"
-            android:textColor="@color/blue_btn"
-            android:textSize="@dimen/button_text_size"/>
-=======
-            android:text="LOGIN"
             android:textColor="@color/white"
             android:textSize="40px"/>
->>>>>>> develop_new
     </RelativeLayout>
 
 
@@ -142,22 +131,10 @@
             </LinearLayout>
         </LinearLayout>
 
-<<<<<<< HEAD
-        <Button
-            android:id="@+id/signInBtn"
-            android:layout_width="648px"
-            android:layout_height="99px"
-            android:layout_marginTop="40px"
-            android:background="@drawable/blue_btn_selector"
-            android:text="@string/login"
-            android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"/>
-=======
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
->>>>>>> develop_new
 
             <Button
                 android:id="@+id/signInBtn"
@@ -165,7 +142,7 @@
                 android:layout_height="99px"
                 android:layout_marginTop="108px"
                 android:background="@drawable/orange_btn_selector"
-                android:text="LOGIN"
+                android:text="@string/login"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 
@@ -217,7 +194,7 @@
                 android:layout_height="99px"
                 android:layout_marginTop="54px"
                 android:background="@drawable/orange_btn_selector"
-                android:text="Sign in via OTP"
+                android:text="@string/signin_via_otp"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 

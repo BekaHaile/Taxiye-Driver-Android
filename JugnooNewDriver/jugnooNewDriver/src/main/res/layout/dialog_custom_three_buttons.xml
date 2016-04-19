@@ -93,7 +93,7 @@
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/green_btn_selector"
                         android:singleLine="true"
-                        android:text="Neutral"
+                        android:text="@string/Neutral"
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="@dimen/button_text_size" 
                 android:layout_gravity="center_horizontal"

@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="LOGIN"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
@@ -125,7 +125,7 @@
                     android:layout_marginTop="2px"
                     android:inputType="number"
                     android:background="@color/transparent"
-                    android:hint="OTP"
+                    android:hint="@string/otp"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -192,7 +192,7 @@
             android:layout_height="99px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
-            android:text="GENERATE OTP"
+            android:text="@string/GENERATE_OTP"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
 

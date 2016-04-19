@@ -1504,7 +1504,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
-                                        android:text="Rate Your Customer"
+                                        android:text="@string/Rate_Your_Customer"
                                         android:textColor="@color/black"
                                         android:textSize="32px"
                                         />
@@ -1549,7 +1549,7 @@
                                     android:layout_height="99px"
                                     android:layout_marginTop="24px"
                                     android:background="@drawable/white_bg"
-                                    android:text="Skip"
+                                    android:text="@string/skip"
                                     android:textColor="@color/new_orange"
                                     android:textSize="@dimen/button_text_size"
                                     android:visibility="visible"
@@ -1682,7 +1682,7 @@
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
                                             android:singleLine="true"
-                                            android:text="Min Fare"
+                                            android:text="@string/min_fare"
                                             android:textColor="@color/black"
                                             android:textSize="26px"
                                             android:textStyle="bold"/>
@@ -1806,7 +1806,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="JUGNOO"
+                        android:text="@string/jugnoo"
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:textColor="@color/white"
@@ -2421,7 +2421,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Destination"
+                        android:text="@string/destination_menu"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 

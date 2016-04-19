@@ -136,7 +136,7 @@
                             android:textColor="@color/black_text"
                             android:textSize="28px"
                             android:layout_marginLeft="40px"
-                            android:text="Phone:"/>
+                            android:text="@string/phone"/>
 
                         <TextView
                             android:id="@+id/textViewRegisterPhoneValue"
