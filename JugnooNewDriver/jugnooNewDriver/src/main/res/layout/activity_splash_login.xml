@@ -3,7 +3,7 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
-              android:background="@drawable/common_bg"
+              android:background="@drawable/background_white"
               android:orientation="vertical"
               android:splitMotionEvents="false">
 
@@ -11,15 +11,20 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
+        android:background="@color/new_orange"
         android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/backBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="82px"
             android:layout_height="82px"
             android:layout_centerVertical="true"
+<<<<<<< HEAD
             android:background="@drawable/transparent"
             android:text="@string/back"
+=======
+            android:background="@drawable/back_btn_selector"
+>>>>>>> develop_new
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -29,9 +34,15 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
+<<<<<<< HEAD
             android:text="@string/login"
             android:textColor="@color/blue_btn"
             android:textSize="@dimen/button_text_size"/>
+=======
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+>>>>>>> develop_new
     </RelativeLayout>
 
 
@@ -46,43 +57,92 @@
         <LinearLayout
             android:id="@+id/etLayout"
             android:layout_width="648px"
-            android:layout_height="198px"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/jugnooLogoBig"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20px"
-            android:background="@drawable/white_bg_rounded"
+            android:layout_marginTop="72px"
+            android:background="@drawable/transparent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:splitMotionEvents="false">
 
-            <AutoCompleteTextView
-                android:id="@+id/emailEt"
-                android:layout_width="620px"
-                android:layout_height="98px"
-                android:background="#0000"
-                android:hint="@string/email_id"
-                android:inputType="textEmailAddress"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+            <LinearLayout
+                android:layout_width="640px"
+                android:layout_height="82px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="2px">
 
-            <ImageView
-                android:layout_width="648px"
-                android:layout_height="2px"
-                android:background="#E7E7E7"/>
+                <ImageView
+                    android:layout_width="58px"
+                    android:layout_height="64px"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6px"
+                    android:background="@drawable/ic_email"/>
 
-            <EditText
-                android:id="@+id/passwordEt"
-                android:layout_width="620px"
-                android:layout_height="98px"
-                android:background="#0000"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6px"
+                    android:background="@color/new_orange"/>
+
+                <AutoCompleteTextView
+                    android:id="@+id/emailEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2px"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginRight="2px"
+                    android:layout_marginTop="2px"
+                    android:background="@drawable/background_white"
+                    android:hint="@string/phone_number_or_email"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="640px"
+                android:layout_height="82px"
+                android:layout_marginTop="72px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="horizontal"
+                android:padding="2px">
+
+                <ImageView
+                    android:layout_width="58px"
+                    android:layout_height="64px"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="6px"
+                    android:background="@drawable/ic_password"/>
+
+                <ImageView
+                    android:layout_width="2px"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6px"
+                    android:background="@color/new_orange"/>
+
+                <EditText
+                    android:id="@+id/passwordEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="2px"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginRight="2px"
+                    android:layout_marginTop="2px"
+                    android:background="@drawable/background_white"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+            </LinearLayout>
         </LinearLayout>
 
+<<<<<<< HEAD
         <Button
             android:id="@+id/signInBtn"
             android:layout_width="648px"
@@ -92,22 +152,76 @@
             android:text="@string/login"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
+=======
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+>>>>>>> develop_new
 
-        <RelativeLayout
-            android:id="@+id/forgotSignupRl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/signInBtn"
+                android:layout_width="648px"
+                android:layout_height="99px"
+                android:layout_marginTop="108px"
+                android:background="@drawable/orange_btn_selector"
+                android:text="LOGIN"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
 
             <Button
                 android:id="@+id/forgotPasswordBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="90px"
+                android:layout_gravity="center_horizontal"
                 android:layout_centerInParent="true"
                 android:background="@drawable/transparent"
                 android:text="@string/forgot_password"
-                android:textColor="@drawable/blue_alpha_color_selector"
+                android:textColor="@color/new_orange"
                 android:textSize="36px"/>
-        </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="290px"
+                    android:layout_height="3px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/new_orange"
+                    />
+
+                <TextView
+                    android:id="@+id/or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15px"
+                    android:layout_marginRight="15px"
+                    android:text="or"
+                    android:textColor="@color/new_orange"
+                    android:textSize="40px"/>
+
+                <ImageView
+                    android:layout_width="290px"
+                    android:layout_height="3px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/new_orange"
+                    />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/signInUsingOtp"
+                android:layout_width="648px"
+                android:layout_height="99px"
+                android:layout_marginTop="54px"
+                android:background="@drawable/orange_btn_selector"
+                android:text="Sign in via OTP"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -110,7 +110,7 @@ public class Data {
 	
 	//TODO
 	public static final String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-	public static final String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
+	public static final String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
 	public static final String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
     public static final String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
@@ -178,7 +178,7 @@ public class Data {
 	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
 
 	public static ArrayList<CancelOption> cancelOptionsList;
-	
+
 	public static String dEngagementId = "", dCustomerId = "";
 	public static LatLng dCustLatLng;
 	public static DriverRideRequest openedDriverRideRequest;
@@ -194,7 +194,7 @@ public class Data {
 	public static String waitTime = "", rideTime = "";
 	
 	
-	public static LatLng pickupLatLng;
+	public static LatLng pickupLatLng, nextPickupLatLng;
 
 	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
 	
@@ -252,7 +252,7 @@ public class Data {
 	
 	
 	
-	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy;																// fonts declaration
+	private static Typeface latoRegular, museoSlab, latoLight, latoHeavy, digitalRegular;																// fonts declaration
 	
 
 	public static Typeface latoRegular(Context appContext) {											// accessing fonts functions
@@ -282,6 +282,13 @@ public class Data {
 			latoHeavy = Typeface.createFromAsset(appContext.getAssets(), "fonts/lato-heavy.ttf");
 		}
 		return latoHeavy;
+	}
+
+	public static Typeface digitalRegular(Context appContext) {											// accessing fonts functions
+		if (digitalRegular == null) {
+			digitalRegular = Typeface.createFromAsset(appContext.getAssets(), "fonts/digital_regular.ttf");
+		}
+		return digitalRegular;
 	}
 
 

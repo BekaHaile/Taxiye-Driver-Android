@@ -3,8 +3,12 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
@@ -161,7 +165,7 @@ public interface APIServices {
 													Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/add_money_to_wallet")
+	@POST("/initiate_user_paytm_recharge")
 	void addCustomerCashRetro(@FieldMap Map<String, String> params,
 							  Callback<RegisterScreenResponse> callback);
 
@@ -231,6 +235,18 @@ public interface APIServices {
 									Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/driver/show/leader_board")
+	void leaderboardServerCall(@Field("access_token") String accessToken,
+							   @Field("client_id") String clientId,
+							   Callback<NewLeaderBoard> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/referrals/get_activity")
+	void leaderboardActivityServerCall(@Field("access_token") String accessToken,
+									   @Field("login_type") String loginType,
+									   Callback<LeaderboardActivityResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/update_driver_location")
 	Response updateDriverLocation(@FieldMap Map<String, String> params);
 
@@ -251,6 +267,11 @@ public interface APIServices {
 						Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/make_driver_eligible_for_pr")
+	void perfectRideRegionRequest(@FieldMap Map<String, String> params,
+						 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/acknowledge_manual_engagement")
 	void acknowledgeManualEngagement(@FieldMap Map<String, String> params,
 						 Callback<RegisterScreenResponse> callback);
@@ -264,9 +285,24 @@ public interface APIServices {
 	void sendReferralMessage(@FieldMap Map<String, String> params,
 						 Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/generate_login_otp")
+	void generateOtp(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
 	@POST("/fetch_media_data")
 	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
 													 @Field("file_category") String fileType);
+
+	@FormUrlEncoded
+	@POST("/fetch_driver_regions")
+	void getDestinationData(@Field("access_token") String accessToken,
+						 Callback<DestinationDataResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_driver_regions")
+	void updateDriverRegion(@FieldMap Map<String, String> params,
+							   Callback<RegisterScreenResponse> callback);
 
 
 }

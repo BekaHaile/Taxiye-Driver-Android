@@ -319,6 +319,16 @@ public class DateOperations {
 			return millis;
 		} catch (ParseException e) {
 			e.printStackTrace();
+			try {
+				time1 = time1.replace("T", " ");
+				time1 = time1.split("\\.")[0];
+				SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date date1 = format.parse(time1);
+				long millis = date1.getTime();
+				return millis;
+			} catch (ParseException e1) {
+				e1.printStackTrace();
+			}
 		}
 		return 60000;
 	}
@@ -332,9 +342,17 @@ public class DateOperations {
 	    DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	    return formatter.format(date);
 	}
-	
-	
-	
-	
-	
+
+
+	public static String convertDateViaFormat(String dateTime) {
+		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("dd MMM, yyyy hh:mm a");
+		try {
+			Date myDate = sdfFrom.parse(dateTime);
+			return sdfTo.format(myDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return convertDate(dateTime);
+		}
+	}
 }

@@ -14,7 +14,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -52,7 +51,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 20000;
+	    			serverUpdateTimePeriod = 120000;
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{
@@ -82,7 +81,7 @@ public class DriverLocationUpdateService extends Service {
     	
     	//TODO Toggle live to trial
 		String DEV_SERVER_URL = "https://test.jugnoo.in:8012";
-		String LIVE_SERVER_URL = "https://dev.jugnoo.in:4012";
+		String LIVE_SERVER_URL = "https://prod-autos-api.jugnoo.in";
 		String TRIAL_SERVER_URL = "https://test.jugnoo.in:8200";
 
         String DEV_1_SERVER_URL = "https://test.jugnoo.in:8013";
@@ -132,10 +131,14 @@ public class DriverLocationUpdateService extends Service {
 
 		final String finalAccessToken = accessToken;
 		final String finalSERVER_URL = SERVER_URL;
-		new DeviceTokenGenerator().generateDeviceToken(context, new IDeviceTokenReceiver() {
+		new DeviceTokenGenerator(context).generateDeviceToken(context, new IDeviceTokenReceiver() {
 			@Override
 			public void deviceTokenReceived(String deviceToken) {
-				Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				try {
+					Database2.getInstance(context).insertDriverLocData(finalAccessToken, deviceToken, finalSERVER_URL);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 

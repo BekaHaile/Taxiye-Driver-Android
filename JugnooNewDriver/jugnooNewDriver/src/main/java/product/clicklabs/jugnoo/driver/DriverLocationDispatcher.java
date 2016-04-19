@@ -17,6 +17,8 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -34,7 +36,7 @@ public class DriverLocationDispatcher {
 		
 		try {
 			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
-			
+			long responseTime = System.currentTimeMillis();
 			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
 				
 				PowerManager powerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
@@ -46,7 +48,7 @@ public class DriverLocationDispatcher {
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 				String pushyToken = Database2.getInstance(context).getPushyToken();
 
-				Location location = Database2.getInstance(context).getDriverCurrentLocation();
+				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
@@ -77,12 +79,13 @@ public class DriverLocationDispatcher {
 								String log = jObj.getString("log");
 								if("Updated".equalsIgnoreCase(log)){
 									Database2.getInstance(context).updateDriverLastLocationTime();
+									FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 								}
 							}
 
 							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
 							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
-								String deviceTokenNew = new DeviceTokenGenerator().forceGenerateDeviceToken(context);
+								String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
 								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 								sendLocationToServer(context);
 							}
@@ -95,7 +98,8 @@ public class DriverLocationDispatcher {
 				}
 
 
-				if(Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE, -1) == DriverScreenMode.D_ARRIVED.getOrdinal()){
+				if(Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
+						DriverScreenMode.D_INITIAL.getOrdinal()) == DriverScreenMode.D_ARRIVED.getOrdinal()){
 					String pickupLatitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
 					String pickupLongitude = Prefs.with(context).getString(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
 					String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
@@ -107,8 +111,6 @@ public class DriverLocationDispatcher {
 						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
 						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
 						< Double.parseDouble(driverArrivedDistance)){
-
-						Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, -1);
 
 						if(HomeActivity.appInterruptHandler != null){
 							HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
@@ -130,6 +132,7 @@ public class DriverLocationDispatcher {
 							Response response = RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
 
 						}
+						Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_START_RIDE.getOrdinal());
 					}
 				}
 

@@ -19,47 +19,48 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 	
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
-		if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
-	    	GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
-			String action = intent.getAction();
-			if (SEND_LOCATION.equals(action)) {
-				try {
-					long lastTime = Database2.getInstance(context).getDriverLastLocationTime();
-					String accessToken = Database2.getInstance(context).getDLDAccessToken();
-					if("".equalsIgnoreCase(accessToken)){
-						DriverLocationUpdateService.updateServerData(context);
-					}
-					long currentTime = System.currentTimeMillis();
-
-			    	Log.writeLogToFile("AlarmReceiver", "Receiver "+DateOperations.getCurrentTime()+" = "+(currentTime - lastTime) 
-			    			+ " hasNet = "+AppStatus.getInstance(context).isOnline(context));
-					
-					if(currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)){
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
-								new DriverLocationDispatcher().sendLocationToServer(context);
-							}
-						}).start();
-					}
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				finally{
-				}
-			}
+		try {
+			String driverServiceRun = Database2.getInstance(context).getDriverServiceRun();
 			if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-				if(!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
-					Log.i(TAG, "onReceive startDriverService called");
-					context.startService(new Intent(context, DriverLocationUpdateService.class));
-				}
-			}
+				GCMHeartbeatRefresher.refreshGCMHeartbeat(context);
+				String action = intent.getAction();
+				if (SEND_LOCATION.equals(action)) {
+					try {
+						long lastTime = Database2.getInstance(context).getDriverLastLocationTime();
+						String accessToken = Database2.getInstance(context).getDLDAccessToken();
+						if ("".equalsIgnoreCase(accessToken)) {
+							DriverLocationUpdateService.updateServerData(context);
+						}
+						long currentTime = System.currentTimeMillis();
 
-		}
-		else{
-			context.stopService(new Intent(context, DriverLocationUpdateService.class));
+						Log.writeLogToFile("AlarmReceiver", "Receiver " + DateOperations.getCurrentTime() + " = " + (currentTime - lastTime)
+								+ " hasNet = " + AppStatus.getInstance(context).isOnline(context));
+
+						if (currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)) {
+							new Thread(new Runnable() {
+								@Override
+								public void run() {
+									new DriverLocationDispatcher().sendLocationToServer(context);
+								}
+							}).start();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+					}
+				}
+				if (Database2.YES.equalsIgnoreCase(driverServiceRun)) {
+					if (!Utils.isServiceRunning(context, DriverLocationUpdateService.class)) {
+						Log.i(TAG, "onReceive startDriverService called");
+						context.startService(new Intent(context, DriverLocationUpdateService.class));
+					}
+				}
+
+			} else {
+				context.stopService(new Intent(context, DriverLocationUpdateService.class));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 	

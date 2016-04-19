@@ -32,7 +32,7 @@ import retrofit.mime.TypedByteArray;
 public class DriverProfileActivity extends Activity {
 
 	LinearLayout relative;
-	RelativeLayout driverDetailsRLL, layoutEditProfile;
+	RelativeLayout driverDetailsRLL,driverDetailsRL;
 	Button backBtn;
 	TextView title;
 
@@ -90,7 +90,7 @@ public class DriverProfileActivity extends Activity {
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);
 		driverDetailsRLL = (RelativeLayout) findViewById(R.id.driverDetailsRLL);
-		layoutEditProfile = (RelativeLayout) findViewById(R.id.layoutEditProfile);
+		driverDetailsRL = (RelativeLayout) findViewById(R.id.driverDetailsRL);
 
 		new ASSL(DriverProfileActivity.this, relative, 1134, 720, false);
 
@@ -117,8 +117,8 @@ public class DriverProfileActivity extends Activity {
 		textViewRidesMissedValue.setTypeface(Data.latoRegular(this));
 		textViewOnlineHoursValue = (TextView) findViewById(R.id.textViewOnlineHoursValue);
 		textViewOnlineHoursValue.setTypeface(Data.latoRegular(this));
-		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
-		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
+//		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
+//		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
 
 
 
@@ -138,7 +138,7 @@ public class DriverProfileActivity extends Activity {
 
 		getProfileInfoAsync(DriverProfileActivity.this);
 
-		layoutEditProfile.setOnClickListener(new View.OnClickListener() {
+		driverDetailsRL.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -173,86 +173,90 @@ public class DriverProfileActivity extends Activity {
 	}
 
 	private void getProfileInfoAsync(final Activity activity) {
-		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-		driverDetailsRLL.setVisibility(View.GONE);
-		RestClient.getApiServices().driverProfileInfo(Data.userData.accessToken,
-				new Callback<BookingHistoryResponse>() {
-					@Override
-					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							Log.i("driverprof", jsonString);
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.getInt("flag");
-							String message = JSONParser.getServerMessage(jObj);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-								if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-									DialogPopup.alertPopup(activity, "", message);
-								} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+		DialogPopup.showLoadingDialog(activity, "Loading...");
+		try {
+			driverDetailsRLL.setVisibility(View.GONE);
+			RestClient.getApiServices().driverProfileInfo(Data.userData.accessToken,
+					new Callback<BookingHistoryResponse>() {
+						@Override
+						public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
+							try {
+								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+								Log.i("driverprof", jsonString);
+								JSONObject jObj;
+								jObj = new JSONObject(jsonString);
+								int flag = jObj.getInt("flag");
+								String message = JSONParser.getServerMessage(jObj);
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+									if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+									} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
-									try {
-										String textViewDriverName = "", textViewTitleBarDEI = "";
-										int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0,
-												textViewMonthlyValue = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
-												textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
-										if (jObj.has("driver_name")) {
-											textViewDriverName = jObj.getString("driver_name");
-										}
-										if (jObj.has("driver_id")) {
-											textViewDriverId = jObj.getInt("driver_id");
-										}
-										if (jObj.has("driver_city_rank")) {
-											textViewRankCity = jObj.getInt("driver_city_rank");
-										}
-										if (jObj.has("driver_overall_rank")) {
-											textViewRankOverall = jObj.getInt("driver_overall_rank");
-										}
-										if (jObj.has("driver_earning")) {
-											textViewMonthlyValue = jObj.getInt("driver_earning");
-										}
-										if (jObj.has("rides_taken")) {
-											textViewRidesTakenValue = jObj.getInt("rides_taken");
-										}
-										if (jObj.has("rides_missed")) {
-											textViewRidesMissedValue = jObj.getInt("rides_missed");
-										}
-										if (jObj.has("rides_cancelled")) {
-											textViewRidesCancelledValue = jObj.getInt("rides_cancelled");
-										}
-										if (jObj.has("online_hours")) {
-											textViewOnlineHoursValue = jObj.getInt("online_hours");
-										}
-										openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
-												textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,
-												textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI);
+										try {
+											String textViewDriverName = "", textViewTitleBarDEI = "";
+											int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0,
+													textViewMonthlyValue = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
+													textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
+											if (jObj.has("driver_name")) {
+												textViewDriverName = jObj.getString("driver_name");
+											}
+											if (jObj.has("driver_id")) {
+												textViewDriverId = jObj.getInt("driver_id");
+											}
+											if (jObj.has("driver_city_rank")) {
+												textViewRankCity = jObj.getInt("driver_city_rank");
+											}
+											if (jObj.has("driver_overall_rank")) {
+												textViewRankOverall = jObj.getInt("driver_overall_rank");
+											}
+											if (jObj.has("driver_earning")) {
+												textViewMonthlyValue = jObj.getInt("driver_earning");
+											}
+											if (jObj.has("rides_taken")) {
+												textViewRidesTakenValue = jObj.getInt("rides_taken");
+											}
+											if (jObj.has("rides_missed")) {
+												textViewRidesMissedValue = jObj.getInt("rides_missed");
+											}
+											if (jObj.has("rides_cancelled")) {
+												textViewRidesCancelledValue = jObj.getInt("rides_cancelled");
+											}
+											if (jObj.has("online_hours")) {
+												textViewOnlineHoursValue = jObj.getInt("online_hours");
+											}
+											openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
+													textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,
+													textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI);
 
-										setUserData();
+											setUserData();
 
-									} catch (JSONException e) {
-										e.printStackTrace();
-										DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+										} catch (JSONException e) {
+											e.printStackTrace();
+											DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 
+										}
 									}
 								}
+							} catch (Exception exception) {
+								exception.printStackTrace();
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.dismissLoadingDialog();
+							driverDetailsRLL.setVisibility(View.VISIBLE);
+
 						}
-						DialogPopup.dismissLoadingDialog();
-						driverDetailsRLL.setVisibility(View.VISIBLE);
-
-					}
 
 
-					@Override
-					public void failure(RetrofitError error) {
-						DialogPopup.dismissLoadingDialog();
-						driverDetailsRLL.setVisibility(View.VISIBLE);
-						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-					}
-				});
+						@Override
+						public void failure(RetrofitError error) {
+							DialogPopup.dismissLoadingDialog();
+							driverDetailsRLL.setVisibility(View.VISIBLE);
+							DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setUserData() {
@@ -262,17 +266,9 @@ public class DriverProfileActivity extends Activity {
 						.transform(new CircleTransform())
 						.into(profileImg);
 			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
-			if ("-1".equalsIgnoreCase(Data.userData.deiValue)) {
-
-				imageViewTitleBarDEI.setVisibility(View.GONE);
-				textViewTitleBarDEI.setText("Jugnoo");
-			} else {
-
-				imageViewTitleBarDEI.setVisibility(View.VISIBLE);
-				textViewTitleBarDEI.setText(Data.userData.deiValue);
-			}
 			if (openedProfileInfo != null) {
 				textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
 				textViewDriverId.setText(getResources().getString(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);

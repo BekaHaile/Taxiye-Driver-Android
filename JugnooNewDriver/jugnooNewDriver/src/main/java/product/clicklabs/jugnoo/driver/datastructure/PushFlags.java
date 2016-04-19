@@ -24,7 +24,8 @@ public enum PushFlags {
 	UPDATE_DROP_LOCATION(73),
 	JUGNOO_AUDIO(25),
 	GET_JUGNOO_AUDIO(26),
-	SHARING_RIDE_ENDED(74);
+	SHARING_RIDE_ENDED(74),
+	UPDATE_HEAT_MAP(87);
 
 	private int ordinal;
 

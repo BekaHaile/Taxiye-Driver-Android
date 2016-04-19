@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/linearRoot"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:animateLayoutChanges="true"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:padding="20px"
+    >
+
+
+    <TextView
+        android:id="@+id/textViewTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginRight="24px"
+        android:text="Today"
+        android:textColor="@color/black"
+        android:textSize="24px"/>
+
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_marginLeft="10px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="36px"
+            android:background="@drawable/notifiaction_icon2"
+            android:tag="mwar"
+            />
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5px"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="24px"
+            android:text="Hello\nHello\nhello"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutNotificationImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="5px"
+        android:background="@drawable/background_grey_border_dropshadow"
+        android:orientation="vertical"
+        android:tag="mwar"
+        >
+
+        <ImageView
+            android:id="@+id/imageViewNotification"
+            android:layout_width="680px"
+            android:layout_height="340px"
+            android:scaleType="centerCrop"
+            android:tag="mwar"
+            android:visibility="visible"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginLeft="10px"
+        android:layout_marginRight="20px"
+        android:layout_marginTop="24px"
+        android:background="@color/menu_black"
+        android:tag="mwar"/>
+
+
+</LinearLayout>

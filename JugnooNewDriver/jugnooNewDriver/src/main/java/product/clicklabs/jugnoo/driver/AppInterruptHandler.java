@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -11,7 +12,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 
 public interface AppInterruptHandler {
 	
-	public void onNewRideRequest();
+	public void onNewRideRequest(int perfectRide);
 	
 	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver);
 	
@@ -42,5 +43,9 @@ public interface AppInterruptHandler {
 	void handleCancelRideFailure();
 
 	void markArrivedInterrupt(LatLng latLng);
+
+	void driverTimeoutDialogPopup(long timeoutInterwal);
+
+	void fetchHeatMapDataCall(Context context);
 
 }

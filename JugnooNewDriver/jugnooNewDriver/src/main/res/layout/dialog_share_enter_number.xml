@@ -13,7 +13,7 @@
         android:layout_marginTop="200px"
         android:layout_marginLeft="50px"
         android:layout_marginRight="50px"
-        android:background="@drawable/dialog_background_color"
+        android:background="@drawable/background_white_rounded_orange_bordered"
         android:splitMotionEvents="false" >
 
         <LinearLayout
@@ -82,7 +82,7 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="309px"
                     android:layout_height="match_parent"
-                    android:background="@drawable/grey_btn_br_selector"
+                    android:background="@drawable/new_menu_black_btn_selector"
                     android:singleLine="true"
                     android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
@@ -93,7 +93,7 @@
                     android:layout_width="309px"
                     android:layout_height="match_parent"
                     android:layout_alignParentRight="true"
-                    android:background="@drawable/blue_btn_bl_selector"
+                    android:background="@drawable/new_orange_btn_selector"
                     android:singleLine="true"
                     android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"

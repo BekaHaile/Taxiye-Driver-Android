@@ -170,6 +170,7 @@ public class Utils {
 
 
 	public static boolean mockLocationEnabled(Location location) {
+
 //		return false;
 		try {
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
@@ -290,20 +291,6 @@ public class Utils {
 	}
 
 
-	public static float getBatteryPercentage(Context context) {
-		try {
-			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-			Intent batteryStatus = context.registerReceiver(null, ifilter);
-			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			float batteryPct = (level / (float) scale) * 100;
-			return batteryPct;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
 
 	public static boolean checkIfOnlyDigits(String strTocheck) {
 		String regex = "[0-9+]+";
@@ -363,6 +350,8 @@ public class Utils {
 				if (olaDriver) {
 					break;
 				}
+			}else if(appInfo.packageName.contains("com.olacabs.kpdriver")){
+				olaDriver = true;
 			}
 
 		}
@@ -475,5 +464,28 @@ public class Utils {
 		}
 	}
 
+
+	public static float getBatteryPercentage(Context context) {
+		try {
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = context.registerReceiver(null, ifilter);
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			float batteryPct = (level / (float) scale) * 100;
+
+			// Are we charging / charged?
+			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+					status == BatteryManager.BATTERY_STATUS_FULL;
+			if (isCharging) {
+				return 70;
+			} else {
+				return batteryPct;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 70;
+		}
+	}
 
 }

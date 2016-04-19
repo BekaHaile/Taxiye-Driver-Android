@@ -14,9 +14,13 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.PenalityData;
+import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -99,6 +103,12 @@ public class Database2 {																	// class for handling database related 
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
+
+
+	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
+	private static final String PENALITY_ID = "penality_id";
+	private static final String PENALITY_TIME = "penality_time";
+	private static final String PENALITY_FACTOR= "penality_factor";
 	
 
 	public static final String ON = "on", OFF = "off";
@@ -124,6 +134,16 @@ public class Database2 {																	// class for handling database related 
     private static final String SECTION_INCOMPLETE = "section_incomplete";
     private static final String GOOGLE_PATH = "google_path";
     private static final String ACKNOWLEDGED = "acknowledged";
+
+
+	// Notification center table name and row names...
+	private static final String TABLE_NOTIFICATION_CENTER = "table_notification_center";
+	private static final String NOTIFICATION_ID = "notification_id";
+	private static final String TIME_PUSH_ARRIVED = "time_push_arrived";
+	private static final String MESSAGE = "message";
+	private static final String TIME_TO_DISPLAY = "time_to_display";
+	private static final String TIME_TILL_DISPLAY = "time_till_display";
+	private static final String NOTIFICATION_IMAGE = "notification_image";
 
 
 
@@ -224,6 +244,12 @@ public class Database2 {																	// class for handling database related 
 				+ RIDE_DATA_LNG + " TEXT, " 
 				+ RIDE_DATA_T + " TEXT" 
 				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
+				+ PENALITY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+				+ PENALITY_TIME + " TEXT, "
+				+ PENALITY_FACTOR + " REAL "
+				+ ");");
 		
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_METERING_STATE + " ("
 				+ METERING_STATE + " TEXT" + ");");
@@ -244,6 +270,15 @@ public class Database2 {																	// class for handling database related 
             + GOOGLE_PATH + " INTEGER, "
             + ACKNOWLEDGED + " INTEGER"
             + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_NOTIFICATION_CENTER + " ("
+				+ NOTIFICATION_ID + " INTEGER, "
+				+ TIME_PUSH_ARRIVED + " TEXT, "
+				+ MESSAGE + " TEXT, "
+				+ TIME_TO_DISPLAY + " TEXT, "
+				+ TIME_TILL_DISPLAY + " TEXT, "
+				+ NOTIFICATION_IMAGE + " TEXT"
+				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
 				+ GPS_STATE + " INTEGER" + ");");
@@ -278,7 +313,30 @@ public class Database2 {																	// class for handling database related 
 	}
 
 
+	private void dropAndCreateNotificationTable(SQLiteDatabase database, Context context){
+		if(Prefs.with(context).getInt(Constants.FIRST_TIME_DB, 1) == 1) {
+			ArrayList<NotificationData> notifications = getAllNotification();
+			database.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICATION_CENTER);
+			database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_NOTIFICATION_CENTER + " ("
+					+ NOTIFICATION_ID + " INTEGER, "
+					+ TIME_PUSH_ARRIVED + " TEXT, "
+					+ MESSAGE + " TEXT, "
+					+ TIME_TO_DISPLAY + " TEXT, "
+					+ TIME_TILL_DISPLAY + " TEXT, "
+					+ NOTIFICATION_IMAGE + " TEXT"
+					+ ");");
 
+			for(NotificationData data : notifications){
+				insertNotification(context, data.getNotificationId(),
+						data.getTimePushArrived(),
+						data.getMessage(),
+						data.getTimeToDisplay(),
+						data.getTimeTillDisplay(),
+						data.getNotificationImage());
+			}
+			Prefs.with(context).save(Constants.FIRST_TIME_DB, 0);
+		}
+	}
 
 
 
@@ -493,7 +551,7 @@ public class Database2 {																	// class for handling database related 
 	
 
 	
-	public Location getDriverCurrentLocation() {
+	public Location getDriverCurrentLocation(Context context) {
 		Location location = new Location(LocationManager.GPS_PROVIDER);
 		try {
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
@@ -517,6 +575,12 @@ public class Database2 {																	// class for handling database related 
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			try {
+				dbInstance = null;
+				Database2.getInstance(context);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 			alterTableDriverCurrentLocation();
 
 			String[] columns = new String[] { Database2.DRIVER_CURRENT_LATITUDE, Database2.DRIVER_CURRENT_LONGITUDE,
@@ -540,8 +604,8 @@ public class Database2 {																	// class for handling database related 
 		}
 		return location;
 	}
-	
-	
+
+
 	public void updateDriverCurrentLocation(Context context, Location location){
 		try{
 			deleteDriverCurrentLocation();
@@ -594,8 +658,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public int deleteDriverCurrentLocation(){
 		try{
 			return database.delete(Database2.TABLE_DRIVER_CURRENT_LOCATION, null, null);
@@ -604,31 +668,31 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public long getDriverLastLocationTime() {
 		long lastTimeInMillis = 0;
 		try {
 			String[] columns = new String[] { Database2.LAST_LOCATION_TIME };
 			Cursor cursor = database.query(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, columns, null, null, null, null, null);
-			
+
 			int in0 = cursor.getColumnIndex(Database2.LAST_LOCATION_TIME);
-			
+
 			if(cursor.getCount() > 0){
 				cursor.moveToFirst();
 				lastTimeInMillis = Long.parseLong(cursor.getString(in0));
@@ -638,22 +702,22 @@ public class Database2 {																	// class for handling database related 
 		}
 		return lastTimeInMillis;
 	}
-	
-	
+
+
 	public void updateDriverLastLocationTime(){
 		try{
 			long timeInMillis = System.currentTimeMillis();
 			deleteDriverLastLocationTime();
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.LAST_LOCATION_TIME, ""+timeInMillis);
+			contentValues.put(Database2.LAST_LOCATION_TIME, "" + timeInMillis);
 			database.insert(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, contentValues);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+
 	public int deleteDriverLastLocationTime(){
 		try{
 			return database.delete(Database2.TABLE_DRIVER_LAST_LOCATION_TIME, null, null);
@@ -662,14 +726,6 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 
 
@@ -723,9 +779,7 @@ public class Database2 {																	// class for handling database related 
 
 
 
-	
-	
-	
+
 	public long getDriverServiceTimeToRestart() {
 		long timeToRestart = System.currentTimeMillis() - 1000;
 		try {
@@ -740,9 +794,9 @@ public class Database2 {																	// class for handling database related 
 		}
 		return timeToRestart;
 	}
-	
-	
-	
+
+
+
 	public void updateDriverServiceTimeToRestart(long timeToRestart) {
 		try {
 			deleteDriverServiceTimeToRestart();
@@ -753,8 +807,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverServiceTimeToRestart(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_SERVICE_TIME_TO_RESTART, null, null);
@@ -762,18 +816,18 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
 	public String getDriverManualPatchPushReceived() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED };
@@ -790,7 +844,7 @@ public class Database2 {																	// class for handling database related 
 			return NO;
 		}
 	}
-	
+
 	public void updateDriverManualPatchPushReceived(String choice) {
 		try{
 			deleteDriverManualPatchPushReceived();
@@ -801,8 +855,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverManualPatchPushReceived(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_MANUAL_PATCH, null, null);
@@ -810,22 +864,22 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public int getDriverGcmIntent() {
 		try {
 			String[] columns = new String[] { Database2.DRIVER_GCM_INTENT };
@@ -842,7 +896,7 @@ public class Database2 {																	// class for handling database related 
 			return 1;
 		}
 	}
-	
+
 	public void updateDriverGcmIntent(int choice) {
 		try{
 			deleteDriverGcmIntent();
@@ -853,8 +907,8 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteDriverGcmIntent(){
 		try{
 			database.delete(Database2.TABLE_DRIVER_GCM_INTENT, null, null);
@@ -862,21 +916,21 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public ArrayList<PendingAPICall> getAllPendingAPICalls() {
 		ArrayList<PendingAPICall> pendingAPICalls = new ArrayList<PendingAPICall>();
 		try {
@@ -886,7 +940,7 @@ public class Database2 {																	// class for handling database related 
 				int in0 = cursor.getColumnIndex(Database2.API_ID);
 				int in1 = cursor.getColumnIndex(Database2.API_URL);
 				int in2 = cursor.getColumnIndex(Database2.API_REQUEST_PARAMS);
-				
+
 				for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 					try {
 						pendingAPICalls.add(new PendingAPICall(cursor.getInt(in0), cursor.getString(in1), Utils.convertQueryToNameValuePairArr(cursor.getString(in2))));
@@ -900,7 +954,7 @@ public class Database2 {																	// class for handling database related 
 		}
 		return pendingAPICalls;
 	}
-	
+
 	public int getAllPendingAPICallsCount() {
 		try {
 			String[] columns = new String[] { Database2.API_ID };
@@ -911,6 +965,7 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
+
 	
 	public void insertPendingAPICall(Context context, String url, HashMap<String, String> requestParams) {
 		try{
@@ -923,7 +978,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public int deletePendingAPICall(int apiId){
 		try{
 			return database.delete(Database2.TABLE_PENDING_API_CALLS, Database2.API_ID + "=" + apiId, null);
@@ -932,36 +987,36 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
+
+
 	public void checkStartPendingApisService(Context context){
 		if(!HomeActivity.isServiceRunning(context, PushPendingCallsService.class.getName())){
 			context.startService(new Intent(context, PushPendingCallsService.class));
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public int insertDefaultPorts(){
 		deletePortNumbers();
 		try{
@@ -976,9 +1031,9 @@ public class Database2 {																	// class for handling database related 
 		}
 		return 0;
 	}
-	
-	
-	
+
+
+
 	public String getLivePortNumber() {
 		try {
 			String[] columns = new String[] { Database2.LIVE_PORT_NUMBER };
@@ -997,7 +1052,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_LIVE_PORT;
 		}
 	}
-	
+
 	public void updateLivePortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1007,7 +1062,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getDevPortNumber() {
 		try {
 			String[] columns = new String[] { Database2.DEV_PORT_NUMBER };
@@ -1026,7 +1081,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_DEV_PORT;
 		}
 	}
-	
+
 	public void updateDevPortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1036,7 +1091,7 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getSalesPortNumber() {
 		try {
 			String[] columns = new String[] { Database2.SALES_PORT_NUMBER };
@@ -1055,7 +1110,7 @@ public class Database2 {																	// class for handling database related 
 			return DEFAULT_SALES_PORT;
 		}
 	}
-	
+
 	public void updateSalesPortNumber(String port) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1065,9 +1120,9 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
+
+
 	public void deletePortNumbers(){
 		try{
 			database.delete(Database2.TABLE_PORT_NUMBER, null, null);
@@ -1075,29 +1130,29 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public String getRideData() {
 		String rideDataStr = "";
 		String template = "i,lat,long,t";
@@ -1106,19 +1161,19 @@ public class Database2 {																	// class for handling database related 
 		try {
 			String[] columns = new String[] { Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T };
 			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns, null, null, null, null, null);
-			
+
 			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
 			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
 			int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 			int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
-			
+
 			for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
 				try {
-					RideData rideData = new RideData(cursor.getInt(i0), 
-							Double.parseDouble(cursor.getString(i1)), 
-							Double.parseDouble(cursor.getString(i2)), 
+					RideData rideData = new RideData(cursor.getInt(i0),
+							Double.parseDouble(cursor.getString(i1)),
+							Double.parseDouble(cursor.getString(i2)),
 							Long.parseLong(cursor.getString(i3)));
-					
+
 					rideDataStr = rideDataStr + rideData.toString() + newLine;
 					hasValues = true;
 				} catch (Exception e) {
@@ -1131,10 +1186,10 @@ public class Database2 {																	// class for handling database related 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return rideDataStr;
 	}
-	
+
 	public void insertRideData(String lat, String lng, String t) {
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1146,13 +1201,63 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	public void deleteRideData(){
 		try{
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
 			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
 			createAllTables(database);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+	public int getPenalityData(String timediff) {
+		try {
+			int count;
+			String[] columns = new String[] { Database2.PENALITY_ID, Database2.PENALITY_TIME, Database2.PENALITY_FACTOR };
+			String selection = Database2.PENALITY_TIME + ">";
+			Cursor cursor = database.rawQuery("select sum("+Database2.PENALITY_FACTOR+") as sum_penalty from "+Database2.TABLE_PENALITY_COUNT+" where "+Database2.PENALITY_TIME+" >"+ timediff, null);
+//			Cursor cursor = database.query(Database2.TABLE_PENALITY_COUNT, columns, selection, new String[]{timediff}, null, null, null);
+			if(cursor.moveToFirst()) {
+				count = cursor.getInt(cursor.getColumnIndex("sum_penalty"));
+				Log.i("DBcount", String.valueOf(count));
+			}else {
+				count = 0;
+			}
+			cursor.close();
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void insertPenalityData(String penalityTime, double penalityFactor) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.PENALITY_TIME, penalityTime);
+			contentValues.put(Database2.PENALITY_FACTOR, penalityFactor);
+			database.insert(Database2.TABLE_PENALITY_COUNT, null, contentValues);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deletePenalityData(){
+		try{
+			database.delete(Database2.TABLE_PENALITY_COUNT, null, null);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
@@ -1175,7 +1280,7 @@ public class Database2 {																	// class for handling database related 
 	
 	
 	
-	
+
 	public String getMetringState() {
 		String[] columns = new String[] { Database2.METERING_STATE };
 		Cursor cursor = database.query(Database2.TABLE_METERING_STATE, columns, null, null, null, null, null);
@@ -1187,8 +1292,8 @@ public class Database2 {																	// class for handling database related 
 			return OFF;
 		}
 	}
-	
-	
+
+
 	public int updateMetringState(String choice){
 		try{
 			ContentValues contentValues = new ContentValues();
@@ -1203,7 +1308,7 @@ public class Database2 {																	// class for handling database related 
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-			return 0;
+			return 1;
 		}
 	}
 
@@ -1539,6 +1644,115 @@ public class Database2 {																	// class for handling database related 
 			e.printStackTrace();
 			return 0;
 		}
+	}
+
+
+	public ArrayList<NotificationData> getAllNotification() {
+		ArrayList<NotificationData> allNotification = new ArrayList<NotificationData>();
+		try {
+			String[] columns = new String[] { NOTIFICATION_ID, TIME_PUSH_ARRIVED, MESSAGE, TIME_TO_DISPLAY, TIME_TILL_DISPLAY, NOTIFICATION_IMAGE };
+			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			if (cursor.getCount() > 0) {
+				int in0 = cursor.getColumnIndex(NOTIFICATION_ID);
+				int in1 = cursor.getColumnIndex(TIME_PUSH_ARRIVED);
+				int in2 = cursor.getColumnIndex(MESSAGE);
+				int in4 = cursor.getColumnIndex(TIME_TO_DISPLAY);
+				int in5 = cursor.getColumnIndex(TIME_TILL_DISPLAY);
+				int in6 = cursor.getColumnIndex(NOTIFICATION_IMAGE);
+
+				long currentTimeLong = DateOperations.getMilliseconds(DateOperations.getCurrentTimeInUTC());
+				Log.i("current time is ","---->"+currentTimeLong);
+
+				for(cursor.moveToLast(); !cursor.isBeforeFirst(); cursor.moveToPrevious()){
+					try {
+						long savedIn4 = 600000;
+						try{
+							savedIn4 = Long.parseLong(cursor.getString(in4));
+						} catch(Exception e){
+							e.printStackTrace();
+						}
+						long pushArrAndTimeToDisVal = (savedIn4 + DateOperations.getMilliseconds(cursor.getString(in1)));
+
+						boolean added = false;
+						if((!"0".equalsIgnoreCase(cursor.getString(in4))) && (!"".equalsIgnoreCase(cursor.getString(in5)))) { //if both values
+							if ((currentTimeLong < pushArrAndTimeToDisVal) &&
+									(currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2), cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}else if((!"0".equalsIgnoreCase(cursor.getString(in4))) && ("".equalsIgnoreCase(cursor.getString(in5)))){ // only timeToDisplay
+							if ((currentTimeLong < pushArrAndTimeToDisVal)) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
+										 cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}else if((!"".equalsIgnoreCase(cursor.getString(in5))) && ("0".equalsIgnoreCase(cursor.getString(in4)))){ //only timeTillDisplay
+							if ((currentTimeLong < DateOperations.getMilliseconds(cursor.getString(in5)))) {
+								allNotification.add(new NotificationData(cursor.getInt(in0), cursor.getString(in1), cursor.getString(in2),
+										 cursor.getString(in4), cursor.getString(in5), cursor.getString(in6)));
+								added = true;
+							}
+						}
+						/*if(!added){
+							deleteNotification(cursor.getInt(in0));
+						}*/
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return allNotification;
+	}
+
+	public int getAllNotificationCount() {
+		try {
+			String[] columns = new String[] { NOTIFICATION_ID };
+			Cursor cursor = database.query(TABLE_NOTIFICATION_CENTER, columns, null, null, null, null, null);
+			return cursor.getCount();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void insertNotification(Context context, int id, String timePushArrived, String message, String timeToDisplay,
+								   String timeTillDisplay, String notificationImage) {
+		try{
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(NOTIFICATION_ID, id);
+			contentValues.put(TIME_PUSH_ARRIVED, timePushArrived);
+			contentValues.put(MESSAGE, message);
+			contentValues.put(TIME_TO_DISPLAY, timeToDisplay);
+			contentValues.put(TIME_TILL_DISPLAY, timeTillDisplay);
+			contentValues.put(NOTIFICATION_IMAGE, notificationImage);
+			database.insert(TABLE_NOTIFICATION_CENTER, null, contentValues);
+			int rowCount = getAllNotificationCount();
+		} catch(Exception e){
+			e.printStackTrace();
+			dropAndCreateNotificationTable(database, context);
+			insertNotification(context, id, timePushArrived, message, timeToDisplay, timeTillDisplay, notificationImage);
+		}
+	}
+
+	public int deleteNotification(int notificationId){
+		try{
+			return database.delete(TABLE_NOTIFICATION_CENTER, NOTIFICATION_ID + "=" + notificationId, null);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	public void deleteNotificationTable(){
+		try{
+			database.execSQL("delete from "+ TABLE_NOTIFICATION_CENTER);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
 	}
 
 

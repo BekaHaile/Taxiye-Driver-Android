@@ -236,7 +236,7 @@
             android:layout_centerInParent="true"
             android:background="@drawable/button_blue"
             android:text="@string/ok"
-            android:textColor="@drawable/white_color_selector"
+            android:textColor="@drawable/new_orange_btn_selector_rounded"
             android:textSize="@dimen/button_text_size"/>
 
         <TextView

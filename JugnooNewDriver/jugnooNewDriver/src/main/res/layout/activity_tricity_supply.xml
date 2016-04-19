@@ -1,0 +1,101 @@
+<LinearLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:background="@color/menu_black">
+
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="25px"
+            android:text="@string/destination"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="2px"
+            android:layout_marginTop="25px"
+            android:src="@drawable/back_btn_selector"/>
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="6px"
+        android:background="@drawable/shadow_down"
+        />
+
+    <TextView
+        android:id="@+id/definationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20px"
+        android:gravity="center"
+        android:padding="30px"
+        android:text="@string/destination_selection"
+        android:textColor="@color/black"
+        android:textSize="40px"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white_light_grey">
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutMain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false"
+            android:animateLayoutChanges="true"
+            android:padding="20px"
+            >
+
+
+            <product.clicklabs.jugnoo.driver.utils.NonScrollListView
+                android:id="@+id/listViewDestinationOptions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40px"
+                android:padding="5px"
+                android:divider="@color/transparent"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:dividerHeight="10px"
+                android:splitMotionEvents="false">
+            </product.clicklabs.jugnoo.driver.utils.NonScrollListView>
+
+
+            <Button
+                android:id="@+id/buttonOk"
+                android:layout_width="648px"
+                android:layout_height="100px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30px"
+                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:text="@string/ok"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
