@@ -103,7 +103,7 @@ public class InvoiceDetailsActivity extends Activity {
 
 
 		textViewCurrentInvoiceGeneratedOn = (TextView) findViewById(R.id.textViewCurrentInvoiceGeneratedOn);
-		textViewCurrentInvoiceGeneratedOn.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCurrentInvoiceGeneratedOn.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		textViewPaidByCstmrValue = (TextView) findViewById(R.id.textViewPaidByCstmrValue);
 		textViewPaidByCstmrValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewPaidUsingCstmrValue = (TextView) findViewById(R.id.textViewPaidUsingCstmrValue);
@@ -171,8 +171,8 @@ public class InvoiceDetailsActivity extends Activity {
 
 		if (invoiceDetailResponse != null) {
 
-			textViewCurrentInvoiceGeneratedOn.setText(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate());
-			textViewCurrentInvoiceId.setText(String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
+			textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: "+invoiceDetailResponse.getInvoiceDetails().getInvoiceDate());
+			textViewCurrentInvoiceId.setText("Invoice Id: "+String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
 			textViewCurrentInvoiceStatus.setText(invoiceDetailResponse.getInvoiceDetails().getStatus());
 			dateTimeValueTo.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingToDate());
 			dateTimeValueFrom.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingFromDate());

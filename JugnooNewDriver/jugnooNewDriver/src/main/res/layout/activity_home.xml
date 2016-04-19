@@ -2276,7 +2276,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
-                    android:splitMotionEvents="false">
+                    android:splitMotionEvents="false"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/bookingsText"
