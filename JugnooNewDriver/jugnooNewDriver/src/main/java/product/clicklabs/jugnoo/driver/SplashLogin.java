@@ -153,7 +153,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				String password = passwordEt.getText().toString().trim();
 				if ("".equalsIgnoreCase(emailOrPhone)) {
 					emailEt.requestFocus();
-					emailEt.setError(getResources().getString(R.string.Pls_enter_email_or_phn);
+					emailEt.setError(getResources().getString(R.string.Pls_enter_email_or_phn));
 				} else {
 					if ("".equalsIgnoreCase(password)) {
 						passwordEt.requestFocus();

@@ -3110,7 +3110,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						driverPassengerName.setText(Data.assignedCustomerInfo.name);
 						textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).address);
-						textViewAfterAcceptAmount.setText((getResources().getString(R.string.money_to_pay) + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount));
+						textViewAfterAcceptAmount.setText((getResources().getString(R.string.money_to_pay) + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount)));
 					} else if (DriverScreenMode.D_IN_RIDE == mode) {
 						if (((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo != null && ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
 							driverPassengerName.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo.name);
