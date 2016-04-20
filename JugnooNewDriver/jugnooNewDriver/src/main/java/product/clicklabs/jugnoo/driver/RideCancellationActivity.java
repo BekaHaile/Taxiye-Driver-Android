@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -208,7 +209,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-						Utils.getCallDetails(RideCancellationActivity.this);
+						Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -226,6 +227,39 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			});
 		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+	}
+
+	public static void sendCallLogs(String callLogs) {
+		try {
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("access_token", Data.userData.accessToken);
+				params.put("call_logs", callLogs);
+
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+					}
+				});
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

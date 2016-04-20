@@ -87,6 +87,7 @@ public class ApiAcceptRide {
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
 									double pickupLongitude = jObj.getDouble("pickup_longitude");
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
+									Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, System.currentTimeMillis());
 									callback.onSuccess(pickupLatLng);
 								}
 

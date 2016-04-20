@@ -304,5 +304,10 @@ public interface APIServices {
 	void updateDriverRegion(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/driver/upload_call_logs")
+	void sendCallLogs(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
+
 
 }
