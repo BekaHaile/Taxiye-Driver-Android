@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -137,10 +138,10 @@ public class EarningsFragment extends Fragment {
 				textViewWeekValueReferral.setText("Referral : "+earningsDetailResponse.getWeekly().getReferrals());
 				textViewMonthRides.setText("Rides : "+earningsDetailResponse.getMonthly().getRides());
 				textViewMonthValueReferral.setText("Referral : "+earningsDetailResponse.getMonthly().getReferrals());
-				dateTimeValueFromWeek.setText(earningsDetailResponse.getWeekly().getStartDate());
-				dateTimeValueToWeek.setText(earningsDetailResponse.getWeekly().getEndDate());
-				dateTimeValueFromMonth.setText(earningsDetailResponse.getMonthly().getStartDate());
-				dateTimeValueToMonth.setText(earningsDetailResponse.getMonthly().getEndDate());
+				dateTimeValueFromWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getStartDate()));
+				dateTimeValueToWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getEndDate()));
+				dateTimeValueFromMonth.setText(DateOperations.reverseDate(earningsDetailResponse.getMonthly().getStartDate()));
+				dateTimeValueToMonth.setText(DateOperations.reverseDate(earningsDetailResponse.getMonthly().getEndDate()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

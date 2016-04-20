@@ -6809,7 +6809,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		cancelStationPathUpdateTimer();
 		if (myLocation != null) {
 			if (checkDriverFree()) {
-				fetchStationDataAPI(HomeActivity.this);
+//				fetchStationDataAPI(HomeActivity.this);
 			}
 		}
 	}

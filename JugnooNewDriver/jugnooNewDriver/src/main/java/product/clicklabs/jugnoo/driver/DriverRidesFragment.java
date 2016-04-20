@@ -289,7 +289,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setText("Account");
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
-			} else if (rideInfo.type.equalsIgnoreCase("phone_deduction")) {
+			} else if (rideInfo.type.equalsIgnoreCase("phone_deductions")) {
 				holder.textViewTransTypeText.setVisibility(View.VISIBLE);
 				holder.dateTimeValue.setVisibility(View.VISIBLE);
 				holder.textViewActualFareFare.setVisibility(View.VISIBLE);
@@ -322,6 +322,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 				holder.textViewBalanceText.setText("Money to\nJugnoo");
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				if ("Failed".equalsIgnoreCase(rideInfo.status)) {
+					holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+				} else {
+					holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+				}
 				holder.textViewStatusString.setText(rideInfo.status);
 			}
 
@@ -377,7 +382,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 												data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
 									} else if(data.getType().equalsIgnoreCase("referral")) {
 										rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
-									} else if(data.getType().equalsIgnoreCase("phone_deduction")) {
+									} else if(data.getType().equalsIgnoreCase("phone_deductions")) {
 										rideInfo =new RideInfo(data.getAmount(), data.getType(), data.getTime());
 									} else if(data.getType().equalsIgnoreCase("paytm_transaction")){
 										rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());

@@ -171,19 +171,42 @@ public class InvoiceDetailsActivity extends Activity {
 
 		if (invoiceDetailResponse != null) {
 
-			textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: "+invoiceDetailResponse.getInvoiceDetails().getInvoiceDate());
-			textViewCurrentInvoiceId.setText("Invoice Id: "+String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
+			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate().equalsIgnoreCase("0")){
+				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: NA" );
+			}else {
+				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: " + DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate()));
+			}
+			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()==0){
+				textViewCurrentInvoiceId.setText("Invoice Id: NA" );
+			}else {
+				textViewCurrentInvoiceId.setText("Invoice Id: " + String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
+			}
 			textViewCurrentInvoiceStatus.setText(invoiceDetailResponse.getInvoiceDetails().getStatus());
-			dateTimeValueTo.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingToDate());
-			dateTimeValueFrom.setText(invoiceDetailResponse.getInvoiceDetails().getInvoicingFromDate());
-			textViewJugnooCmsnValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getJugnooCommision());
+			dateTimeValueTo.setText(DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoicingToDate()));
+			dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoicingFromDate()));
+
+			if(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision() ==null){
+				textViewJugnooCmsnValue.setText("NA");
+			}else {
+				textViewJugnooCmsnValue.setText(getResources().getString(R.string.rupee)
+						+ invoiceDetailResponse.getInvoiceDetails().getJugnooCommision());
+			}
+
+			if(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount() ==null){
+				textViewOutstandingAmntValue.setText("NA");
+			}else {
+				textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
+						+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
+			}
+
 			textViewReferralValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getReferralAmount());
 			textViewTotalAmntValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
-			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
+
+//			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
+//					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
+
 			textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getManualCharges());
 			textViewPhoneDeductionValue.setText(getResources().getString(R.string.rupee)

@@ -201,14 +201,22 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 			holder.id = position;
 
 
+			if(invoiceInfo.generatedTime.equalsIgnoreCase("0")){
+				holder.dateTimeValueGenerated.setText(" NA" );
+			}else {
+				holder.dateTimeValueGenerated.setText(DateOperations.reverseDate(invoiceInfo.generatedTime));
+			}
+			if(invoiceInfo.id==0){
+				holder.textViewInvoiceId.setText("Invoice ID: NA" );
+			}else {
+				holder.textViewInvoiceId.setText("Invoice ID: " + invoiceInfo.id);
+			}
 
-
-			holder.dateTimeValueTo.setText(DateOperations.convertDate(DateOperations.utcToLocal(invoiceInfo.toTime)));
-			holder.dateTimeValueFrom.setText(DateOperations.convertDate(DateOperations.utcToLocal(invoiceInfo.fromTime)));
-			holder.textViewInvoiceId.setText("Invoice ID: " + invoiceInfo.id);
+			holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
+			holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
 			holder.textViewStatusString.setText(invoiceInfo.statusString);
 			holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
-			holder.dateTimeValueGenerated.setText(DateOperations.convertDate(DateOperations.utcToLocal(invoiceInfo.generatedTime)));
+
 
 
 

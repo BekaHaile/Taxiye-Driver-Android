@@ -246,7 +246,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
-                android:text="@string/paid_using_customer"
+                android:text="@string/paid_using_wallet"
                 android:textColor="@color/black"
                 android:textSize="30px"/>
 
