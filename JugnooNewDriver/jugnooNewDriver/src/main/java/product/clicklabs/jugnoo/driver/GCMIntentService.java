@@ -652,7 +652,12 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
 								startService(intent1);
 
-							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
+							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
+								if (HomeActivity.appInterruptHandler != null) {
+									HomeActivity.appInterruptHandler.fetchTextMessagesCall(this, Database2.getInstance(this).getDLDAccessToken());
+								}
+
+							}else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
 //												"flag": 74,
