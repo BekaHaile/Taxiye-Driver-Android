@@ -219,9 +219,9 @@ public class InvoiceDetailsActivity extends Activity {
 			textViewPaidByJugnooValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo());
 			textViewPaidUsingCstmrValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer());
-			textViewPaidByCstmrValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
+			textViewPaidByCstmrValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer());
 			textViewPaytmCashValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getPaytmCash());
 
