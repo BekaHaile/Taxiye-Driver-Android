@@ -113,6 +113,9 @@ public class InvoiceDetailResponse {
 		@SerializedName("invoicing_date")
 		@Expose
 		private String invoiceDate;
+		@SerializedName("paytm_driver_transfer")
+		@Expose
+		private Integer paytmCash;
 
 		/**
 		 *
@@ -454,6 +457,24 @@ public class InvoiceDetailResponse {
 		 */
 		public void setMoneyTransactedToDriver(Integer moneyTransactedToDriver) {
 			this.moneyTransactedToDriver = moneyTransactedToDriver;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The paytmCash
+		 */
+		public Integer getPaytmCash() {
+			return paytmCash;
+		}
+
+		/**
+		 *
+		 * @param paytmCash
+		 * The paytm_cash
+		 */
+		public void setPaytmCash(Integer paytmCash) {
+			this.paytmCash = paytmCash;
 		}
 
 		/**

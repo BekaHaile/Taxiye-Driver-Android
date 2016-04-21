@@ -43,7 +43,7 @@
         android:layout_marginLeft="-4px"
         android:layout_marginRight="-4px"
         android:layout_marginTop="40px"
-        android:layout_marginBottom="40px">
+        android:layout_marginBottom="24px">
 
 
         <TextView
@@ -476,10 +476,52 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutOutstandingAmnt"
+            android:id="@+id/relativeLayoutPaytmCash"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/relativeLayoutJugnooCmsn"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPaytmCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/cash_via_paytm"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPaytmCashValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive6"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewPaytmCash"
+                android:background="@drawable/subtract_icon"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutOutstandingAmnt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPaytmCash"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
             android:layout_marginBottom="24px"

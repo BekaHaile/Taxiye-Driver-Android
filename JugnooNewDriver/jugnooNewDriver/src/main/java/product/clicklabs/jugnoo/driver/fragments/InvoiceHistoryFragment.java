@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -196,27 +197,28 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 			}
 
 
-			final InvoiceInfo invoiceInfo = invoices.get(position);
+			final InvoiceInfo invoiceInfo;
+			try {
+				invoiceInfo = invoices.get(position);
 
-			holder.id = position;
+				holder.id = position;
 
 
-			if(invoiceInfo.generatedTime.equalsIgnoreCase("0")){
-				holder.dateTimeValueGenerated.setText(" NA" );
-			}else {
-				holder.dateTimeValueGenerated.setText(DateOperations.reverseDate(invoiceInfo.generatedTime));
-			}
-			if(invoiceInfo.id==0){
-				holder.textViewInvoiceId.setText("Invoice ID: NA" );
-			}else {
-				holder.textViewInvoiceId.setText("Invoice ID: " + invoiceInfo.id);
-			}
+				if(invoiceInfo.generatedTime.equalsIgnoreCase("0")){
+					holder.dateTimeValueGenerated.setText(" NA" );
+				}else {
+					holder.dateTimeValueGenerated.setText(DateOperations.reverseDate(invoiceInfo.generatedTime));
+				}
+				if(invoiceInfo.id==0){
+					holder.textViewInvoiceId.setText("Invoice ID: NA" );
+				}else {
+					holder.textViewInvoiceId.setText("Invoice ID: " + invoiceInfo.id);
+				}
 
-			holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
-			holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
-			holder.textViewStatusString.setText(invoiceInfo.statusString);
-			holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
-
+				holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
+				holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
+				holder.textViewStatusString.setText(invoiceInfo.statusString);
+				holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
 
 
 
@@ -231,6 +233,9 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
+			} catch (Resources.NotFoundException e) {
+				e.printStackTrace();
+			}
 
 			return convertView;
 		}

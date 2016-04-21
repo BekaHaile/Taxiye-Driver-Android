@@ -252,6 +252,7 @@
 	<string name="last_invoice_details">Last Payment On :</string>
 	<string name="last_payments">Last Payments</string>
 	<string name="upcoming_payment_due_date">Upcoming Payment On :</string>
+	<string name="cash_via_paytm">Cash Via Paytm</string>
 
 
 	<string-array name="CountryCodes" >

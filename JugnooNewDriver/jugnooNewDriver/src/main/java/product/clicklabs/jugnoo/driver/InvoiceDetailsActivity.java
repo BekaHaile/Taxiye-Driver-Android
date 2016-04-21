@@ -37,7 +37,7 @@ public class InvoiceDetailsActivity extends Activity {
 	Button backBtn;
 	TextView title;
 
-	TextView textViewCurrentInvoiceId, textViewJugnooCmsnValue, textViewReferralValue,
+	TextView textViewCurrentInvoiceId, textViewJugnooCmsnValue, textViewReferralValue, textViewPaytmCashValue,
 			textViewTotalAmntValue, textViewOutstandingAmntValue, textViewManualAdjValue, textViewPhoneDeductionValue,
 			textViewCancelSubsidyValue, textViewPaidByJugnooValue, textViewPaidUsingCstmrValue, textViewPaidByCstmrValue,
 			textViewCurrentInvoiceGeneratedOn,textViewCurrentInvoiceStatus, dateTimeValueFrom, dateTimeValueTo;
@@ -98,6 +98,7 @@ public class InvoiceDetailsActivity extends Activity {
 		((TextView) findViewById(R.id.textViewManualAdj)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewJugnooCmsn)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewOutstandingAmnt)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		((TextView) findViewById(R.id.textViewPaytmCash)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewTotalAmnt)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 
@@ -132,6 +133,8 @@ public class InvoiceDetailsActivity extends Activity {
 		dateTimeValueFrom.setTypeface(Data.latoRegular(this));
 		dateTimeValueTo = (TextView) findViewById(R.id.dateTimeValueTo);
 		dateTimeValueTo.setTypeface(Data.latoRegular(this));
+		textViewPaytmCashValue = (TextView) findViewById(R.id.textViewPaytmCashValue);
+		textViewPaytmCashValue.setTypeface(Data.latoRegular(this));
 
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
@@ -219,6 +222,8 @@ public class InvoiceDetailsActivity extends Activity {
 					+ invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer());
 			textViewPaidByCstmrValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
+			textViewPaytmCashValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getPaytmCash());
 
 		} else {
 			performBackPressed();
