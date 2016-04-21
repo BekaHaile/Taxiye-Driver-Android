@@ -1695,68 +1695,76 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	public void acceptRequestFunc(DriverRideRequest driverRideRequest) {
-		if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-			new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
-				@Override
-				public void onSuccess(LatLng pickupLatLng) {
-					Data.nextPickupLatLng = pickupLatLng;
-					createPerfectRideMarker();
-					Data.driverRideRequests.clear();
-					GCMIntentService.clearNotifications(getApplicationContext());
-					driverRequestListAdapter.setResults(Data.driverRideRequests);
-				}
-			}).acceptRide(Data.userData.accessToken,
-					driverRideRequest.customerId,
-					driverRideRequest.engagementId,
-					String.valueOf(driverRideRequest.referenceId),
-					myLocation.getLatitude(),
-					myLocation.getLongitude());
-		} else {
-			Data.dEngagementId = driverRideRequest.engagementId;
-			Data.dCustomerId = driverRideRequest.customerId;
-			Data.dCustLatLng = driverRideRequest.latLng;
-			Data.openedDriverRideRequest = driverRideRequest;
-
-			if (Utils.getBatteryPercentage(this) >= 20) {
-				GCMIntentService.clearNotifications(HomeActivity.this);
-				GCMIntentService.stopRing(true);
-				driverAcceptRideAsync(HomeActivity.this);
+		try {
+			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
+					@Override
+					public void onSuccess(LatLng pickupLatLng) {
+						Data.nextPickupLatLng = pickupLatLng;
+						createPerfectRideMarker();
+						Data.driverRideRequests.clear();
+						GCMIntentService.clearNotifications(getApplicationContext());
+						driverRequestListAdapter.setResults(Data.driverRideRequests);
+					}
+				}).acceptRide(Data.userData.accessToken,
+						driverRideRequest.customerId,
+						driverRideRequest.engagementId,
+						String.valueOf(driverRideRequest.referenceId),
+						myLocation.getLatitude(),
+						myLocation.getLongitude());
 			} else {
-				DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
+
+				if (Utils.getBatteryPercentage(this) >= 20) {
+					GCMIntentService.clearNotifications(HomeActivity.this);
+					GCMIntentService.stopRing(true);
+					driverAcceptRideAsync(HomeActivity.this);
+				} else {
+					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	public void rejectRequestFuncCall(DriverRideRequest driverRideRequest) {
-		if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-			new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
-				@Override
-				public void onSuccess(String engagementId) {
-					Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
-					GCMIntentService.clearNotifications(getApplicationContext());
-					GCMIntentService.stopRing(true);
-					try {
-						if (perfectRidestationMarker != null) {
-							perfectRidestationMarker.remove();
+		try {
+			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+				new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
+					@Override
+					public void onSuccess(String engagementId) {
+						Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+						GCMIntentService.clearNotifications(getApplicationContext());
+						GCMIntentService.stopRing(true);
+						try {
+							if (perfectRidestationMarker != null) {
+								perfectRidestationMarker.remove();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
+						driverRequestListAdapter.setResults(Data.driverRideRequests);
 					}
-					driverRequestListAdapter.setResults(Data.driverRideRequests);
-				}
-			}).rejectRequestAsync(Data.userData.accessToken,
-					driverRideRequest.customerId,
-					driverRideRequest.engagementId,
-					String.valueOf(driverRideRequest.referenceId));
-		} else {
-			Data.dEngagementId = driverRideRequest.engagementId;
-			Data.dCustomerId = driverRideRequest.customerId;
-			Data.dCustLatLng = driverRideRequest.latLng;
-			Data.openedDriverRideRequest = driverRideRequest;
+				}).rejectRequestAsync(Data.userData.accessToken,
+						driverRideRequest.customerId,
+						driverRideRequest.engagementId,
+						String.valueOf(driverRideRequest.referenceId));
+			} else {
+				Data.dEngagementId = driverRideRequest.engagementId;
+				Data.dCustomerId = driverRideRequest.customerId;
+				Data.dCustLatLng = driverRideRequest.latLng;
+				Data.openedDriverRideRequest = driverRideRequest;
 
-			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing(true);
-			driverRejectRequestAsync(HomeActivity.this);
+				GCMIntentService.clearNotifications(HomeActivity.this);
+				GCMIntentService.stopRing(true);
+				driverRejectRequestAsync(HomeActivity.this);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -4239,68 +4247,72 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			try {
+				DialogPopup.showLoadingDialog(activity, "Loading...");
 
 //			RequestParams params = new RequestParams();
 
-			HashMap<String, String> params = new HashMap<String, String>();
+				HashMap<String, String> params = new HashMap<String, String>();
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("engagement_id", Data.dEngagementId);
-			params.put("customer_id", Data.dCustomerId);
-			params.put("pickup_latitude", "" + driverAtPickupLatLng.latitude);
-			params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
-			params.put("dryrun_distance", "" + totalDistance);
-			Log.i("dryrun_distance", String.valueOf(totalDistance));
+				params.put("access_token", Data.userData.accessToken);
+				params.put("engagement_id", Data.dEngagementId);
+				params.put("customer_id", Data.dCustomerId);
+				params.put("pickup_latitude", "" + driverAtPickupLatLng.latitude);
+				params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
+				params.put("dryrun_distance", "" + totalDistance);
+				Log.i("dryrun_distance", String.valueOf(totalDistance));
 
-			if (Data.assignedCustomerInfo != null) {
-				params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
-			}
-			RestClient.getApiServices().driverMarkArriveRideRetro(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
-						if (jObj.has("flag")) {
-							flag = jObj.getInt("flag");
-						}
-
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								String error = jObj.getString("error");
-								DialogPopup.alertPopup(activity, "", error);
-							} else if (ApiResponseFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-								String message = jObj.getString("message");
-								callAndHandleStateRestoreAPI();
-								DialogPopup.alertPopup(activity, "", message);
-							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-								Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis());
-								Log.writePathLogToFile(GpsDistanceCalculator.getEngagementIdFromSP(activity) + "m", "arrived sucessful");
-
-								driverScreenMode = DriverScreenMode.D_START_RIDE;
-								switchDriverScreen(driverScreenMode);
-							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+				if (Data.assignedCustomerInfo != null) {
+					params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
+				}
+				RestClient.getApiServices().driverMarkArriveRideRetro(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
+							if (jObj.has("flag")) {
+								flag = jObj.getInt("flag");
 							}
+
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+									String error = jObj.getString("error");
+									DialogPopup.alertPopup(activity, "", error);
+								} else if (ApiResponseFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+									String message = jObj.getString("message");
+									callAndHandleStateRestoreAPI();
+									DialogPopup.alertPopup(activity, "", message);
+								} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis());
+									Log.writePathLogToFile(GpsDistanceCalculator.getEngagementIdFromSP(activity) + "m", "arrived sucessful");
+
+									driverScreenMode = DriverScreenMode.D_START_RIDE;
+									switchDriverScreen(driverScreenMode);
+								} else {
+									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+
+						DialogPopup.dismissLoadingDialog();
 					}
 
-					DialogPopup.dismissLoadingDialog();
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
-					callAndHandleStateRestoreAPI();
-				}
-			});
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						callAndHandleStateRestoreAPI();
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 
 		} else {

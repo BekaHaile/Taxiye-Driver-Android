@@ -154,12 +154,16 @@ public class DriverLeaderboardActivity extends FragmentActivity implements Flurr
 
 //		getLeaderboardData(this);
 
-		ShareLeaderboardFragment shareLeaderboardFragment = new ShareLeaderboardFragment();
+		try {
+			ShareLeaderboardFragment shareLeaderboardFragment = new ShareLeaderboardFragment();
 
-		getSupportFragmentManager()
-				.beginTransaction()
-				.replace(linearLayoutContainer.getId(), shareLeaderboardFragment, ShareLeaderboardFragment.class.getSimpleName())
-				.commit();
+			getSupportFragmentManager()
+					.beginTransaction()
+					.replace(linearLayoutContainer.getId(), shareLeaderboardFragment, ShareLeaderboardFragment.class.getSimpleName())
+					.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
