@@ -175,8 +175,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl;
-	TextView callUsText;
+	RelativeLayout callUsRl,termsConditionRl;
+	TextView callUsText, termsConditionText;
 
 	RelativeLayout paytmRechargeRl;
 	TextView paytmRechargeText;
@@ -510,6 +510,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
+			termsConditionText = (TextView) findViewById(R.id.termsConditionText);
+			termsConditionText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
@@ -968,6 +972,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
 					FlurryEventLogger.event(CALL_US);
+				}
+			});
+
+			termsConditionRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, HelpActivity.class));
+					FlurryEventLogger.event(TERMS_OF_USE);
 				}
 			});
 
