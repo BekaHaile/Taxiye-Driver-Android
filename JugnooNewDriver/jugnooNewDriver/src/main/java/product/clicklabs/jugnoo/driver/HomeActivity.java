@@ -124,6 +124,7 @@ import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
+import product.clicklabs.jugnoo.driver.utils.CustomInfoWindowPerfect;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -1629,6 +1630,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						} else if (arg0.getTitle().equalsIgnoreCase("station_marker")) {
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
 							map.setInfoWindowAdapter(customIW);
+
+							return false;
+						} else if (arg0.getTitle().equalsIgnoreCase("next_pickup_marker")) {
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Call", "customer 2");
+							map.setInfoWindowAdapter(customIW);
+
 							return false;
 						} else {
 							return true;
@@ -4168,7 +4175,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			markerOptionsStationLocation.position(Data.nextPickupLatLng);
 			markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPerfectRidePinMarkerBitmap(HomeActivity.this, assl)));
 			perfectRidestationMarker = map.addMarker(markerOptionsStationLocation);
+			CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, perfectRidestationMarker.getSnippet(), "");
+			map.setInfoWindowAdapter(customIW);
 //			perfectRidestationMarker.showInfoWindow();
+
+			map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+				@Override
+				public void onInfoWindowClick(Marker marker) {
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+				}
+			});
+
 		}
 	}
 

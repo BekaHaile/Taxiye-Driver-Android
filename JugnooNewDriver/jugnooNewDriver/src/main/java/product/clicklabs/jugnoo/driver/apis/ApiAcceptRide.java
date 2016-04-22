@@ -83,7 +83,8 @@ public class ApiAcceptRide {
 								}
 								if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
 									Prefs.with(activity).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, jsonString);
-									perfectRideVariables(activity,customerId, engagementId, referenceId, latitude, longitude);
+									perfectRideVariables(activity, customerId, engagementId, referenceId, latitude, longitude);
+//									Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, jObj.getString("phone_no"));
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
 									double pickupLongitude = jObj.getDouble("pickup_longitude");
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);

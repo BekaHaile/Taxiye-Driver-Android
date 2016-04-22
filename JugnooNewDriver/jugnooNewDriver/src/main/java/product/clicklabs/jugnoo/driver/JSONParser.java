@@ -840,7 +840,8 @@ public class JSONParser implements Constants {
 
 								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
 									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-									new ApiAcceptRide().perfectRideVariables(context, "","","",0,0);
+									new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
+//									Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, " ");
 								}
 							}
 			} catch(Exception e){

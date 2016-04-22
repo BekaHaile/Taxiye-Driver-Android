@@ -71,6 +71,7 @@ public class SPLabels {
 	public static final String ETA_EXPIRE = "etaExpire";
 	public static final String ON_FINISH_CALLED = "onFinishCalled";
     public static final String PERFECT_ENGAGEMENT_ID = "perfectEngagementId";
+    public static final String PERFECT_CUSTOMER_CONT = "perfectCustomerCont";
     public static final String PERFECT_CUSTOMER_ID = "perfectCustomerId";
     public static final String PERFECT_REFERENCE_ID = "perfectReferenceId";
     public static final String PERFECT_LATITUDE = "perfectLatitude";
