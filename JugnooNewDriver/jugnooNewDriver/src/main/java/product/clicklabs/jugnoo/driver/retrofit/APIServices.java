@@ -48,6 +48,7 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	void gethelp(@Field("section") int section,
+				 @Field("login_type") String loginType,
 				 Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded

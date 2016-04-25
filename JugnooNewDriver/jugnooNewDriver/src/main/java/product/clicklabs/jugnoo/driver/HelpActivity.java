@@ -291,7 +291,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 
 
 
-				RestClient.getApiServices().gethelp(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().gethelp(helpSection.getOrdinal(),"1", new Callback<BookingHistoryResponse>() {
 
 
 					@Override
