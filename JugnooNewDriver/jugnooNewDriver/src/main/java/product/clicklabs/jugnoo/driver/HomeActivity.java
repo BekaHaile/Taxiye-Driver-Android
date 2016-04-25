@@ -3878,6 +3878,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
 					acceptRideSucess(jsonString);
 				}
 

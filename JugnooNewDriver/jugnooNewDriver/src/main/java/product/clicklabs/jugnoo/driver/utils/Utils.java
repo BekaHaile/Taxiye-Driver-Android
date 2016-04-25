@@ -9,10 +9,12 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.provider.CallLog;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -21,6 +23,10 @@ import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -28,11 +34,14 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.RideCancellationActivity;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 
 public class Utils {
@@ -483,6 +492,68 @@ public class Utils {
 			e.printStackTrace();
 			return 70;
 		}
+	}
+
+	public static void getCallDetails(Context context, String phone, String engId) {
+		try {
+//			StringBuffer sb = new StringBuffer();
+			Uri contacts = CallLog.Calls.CONTENT_URI;
+			Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
+			int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+			int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+			int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+			int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+//		sb.append("Call Details :");
+			JSONArray callLogs = new JSONArray();
+			while (managedCursor.moveToNext()) {
+
+				if((managedCursor.getString(number).equalsIgnoreCase(phone))
+						|| (("+91"+managedCursor.getString(number)).equalsIgnoreCase(phone))) {
+
+					if ((Long.valueOf(managedCursor.getString(date))) > ( Long.valueOf(Prefs.with(context).getString(SPLabels.ACCEPT_RIDE_TIME, "18000"))))
+					{
+						String phNumber = managedCursor.getString(number);
+						String callType = managedCursor.getString(type);
+						String callDate = managedCursor.getString(date);
+						String callDayTime = (Long.valueOf(callDate)).toString();
+						Log.i("CallLogTime", callDate);
+						String callDuration = managedCursor.getString(duration);
+						String dir = null;
+						int dircode = Integer.parseInt(callType);
+						switch (dircode) {
+							case CallLog.Calls.OUTGOING_TYPE:
+								dir = "OUTGOING";
+								break;
+
+							case CallLog.Calls.INCOMING_TYPE:
+								dir = "INCOMING";
+								break;
+
+							case CallLog.Calls.MISSED_TYPE:
+								dir = "MISSED";
+								break;
+						}
+//						sb.append("{"+"Phone Number: " + "'"+phNumber+"'," + " Call Type: " + "'"+dir+"'," + " Call Date: " + "'"+callDayTime+"'," + " Call duration in sec : " + "'"+callDuration+"'"+"}"+",");
+
+						JSONObject callObj = new JSONObject();
+						callObj.put("phone_number", phNumber);
+						callObj.put("call_type", dir);
+						callObj.put("call_date",callDayTime);
+						callObj.put("call_duration",callDuration);
+						callLogs.put(callObj);
+
+					}
+				}
+
+			}
+			managedCursor.close();
+//			System.out.println(sb);
+			RideCancellationActivity.sendCallLogs(String.valueOf(callLogs), engId);
+			Log.i("CallLogs", String.valueOf(callLogs));
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

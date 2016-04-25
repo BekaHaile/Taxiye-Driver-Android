@@ -313,6 +313,9 @@ public interface APIServices {
 	void uploadAnalyticsMessages(@FieldMap Map<String, String> params,
 								 Callback<RegisterScreenResponse> callback);
 
+	@POST("/driver/upload_call_logs")
+	void sendCallLogs(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
 
 
 }
