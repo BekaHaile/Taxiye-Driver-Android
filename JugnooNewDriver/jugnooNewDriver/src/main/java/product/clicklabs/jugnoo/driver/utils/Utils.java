@@ -494,7 +494,7 @@ public class Utils {
 		}
 	}
 
-	public static void getCallDetails(Context context, String phone) {
+	public static void getCallDetails(Context context, String phone, String engId) {
 		try {
 //			StringBuffer sb = new StringBuffer();
 			Uri contacts = CallLog.Calls.CONTENT_URI;
@@ -515,7 +515,7 @@ public class Utils {
 						String phNumber = managedCursor.getString(number);
 						String callType = managedCursor.getString(type);
 						String callDate = managedCursor.getString(date);
-						String callDayTime = new Date(Long.valueOf(callDate)).toString();
+						String callDayTime = (Long.valueOf(callDate)).toString();
 						Log.i("CallLogTime", callDate);
 						String callDuration = managedCursor.getString(duration);
 						String dir = null;
@@ -548,7 +548,7 @@ public class Utils {
 			}
 			managedCursor.close();
 //			System.out.println(sb);
-			RideCancellationActivity.sendCallLogs(String.valueOf(callLogs));
+			RideCancellationActivity.sendCallLogs(String.valueOf(callLogs), engId);
 			Log.i("CallLogs", String.valueOf(callLogs));
 		} catch (JSONException e) {
 			e.printStackTrace();

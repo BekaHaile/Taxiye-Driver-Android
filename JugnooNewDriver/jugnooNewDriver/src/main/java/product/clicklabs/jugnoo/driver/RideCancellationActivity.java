@@ -209,7 +209,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-						Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber);
+						Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber,  Data.dEngagementId);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -230,10 +230,11 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		}
 	}
 
-	public static void sendCallLogs(String callLogs) {
+	public static void sendCallLogs(String callLogs, String engId) {
 		try {
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("access_token", Data.userData.accessToken);
+				params.put("eng_id", engId);
 				params.put("call_logs", callLogs);
 
 				Log.i("params", "=" + params);
