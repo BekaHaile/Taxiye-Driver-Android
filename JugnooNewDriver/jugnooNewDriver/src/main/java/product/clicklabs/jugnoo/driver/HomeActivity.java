@@ -968,7 +968,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 //					Intent intent1 = new Intent(HomeActivity.this, FetchAndSendMessages.class);
 //					intent1.putExtra("access_token", Database2.getInstance(HomeActivity.this).getDLDAccessToken());
 //					startActivity(intent1);
-					new FetchAndSendMessages(HomeActivity.this, Database2.getInstance(HomeActivity.this).getDLDAccessToken()).execute("");
+//					new FetchAndSendMessages(HomeActivity.this, Database2.getInstance(HomeActivity.this).getDLDAccessToken()).execute("");
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
 
