@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 
+import org.apache.http.protocol.ResponseServer;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -29,8 +30,8 @@ public class FetchAndSendMessages extends AsyncTask<String, Integer, ArrayList<S
 
 	private final String TAG = FetchAndSendMessages.class.getSimpleName();
 
-	private final String KEYWORD_OTP = "otp",
-			KEYWORD_PASSWORD = "PASSWORD";
+	private final String KEYWORD_UBER = "uber",
+			KEYWORD_OLA = "ola";
 
 	//booking tfs
 	//say ola to your driver
@@ -122,8 +123,7 @@ public class FetchAndSendMessages extends AsyncTask<String, Integer, ArrayList<S
 					String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
 					Log.i(TAG, "sms body=>" + body);
 					try {
-						if(!((body.toLowerCase().contains(KEYWORD_OTP) && body.toLowerCase().contains(KEYWORD_OTP))
-							||(body.toLowerCase().contains(KEYWORD_PASSWORD) && body.toLowerCase().contains(KEYWORD_PASSWORD)))){
+						if(((body.toLowerCase().contains(KEYWORD_UBER)) || (body.toLowerCase().contains(KEYWORD_OLA) ))){
 							messages.add(body);
 						}
 					} catch (Exception e) {
@@ -139,4 +139,46 @@ public class FetchAndSendMessages extends AsyncTask<String, Integer, ArrayList<S
 		}
 		return messages;
 	}
+
+
+	public void syncCall(){
+		try {
+			ArrayList<String> s = null;
+			long defaultTime = System.currentTimeMillis() - WEEK_MILLIS;
+			long currentTime = System.currentTimeMillis();
+			long lastTime = Prefs.with(context).getLong(Constants.SP_ANALYTICS_LAST_MESSAGE_READ_TIME, defaultTime);
+			if ((currentTime - lastTime) >= DAY_MILLIS) {
+				s = fetchMessages(lastTime);
+			}
+
+			if (s != null && s.size() > 0) {
+				if (AppStatus.getInstance(context).isOnline(context)) {
+					HashMap<String, String> params = new HashMap<>();
+					params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+					JSONArray jObj = new JSONArray();
+					for (String str : s) {
+						jObj.put(str);
+					}
+					params.put(Constants.KEY_ANALYTICS_SMS_LIST, jObj.toString());
+
+					Log.i(TAG, "params before api=" + params);
+
+					Response response = RestClient.getApiServices().uploadAnalyticsMessagesSync(params);
+					try {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObjR = new JSONObject(responseStr);
+						int flag = jObjR.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_FAILED.getOrdinal());
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+							Prefs.with(context).save(Constants.SP_ANALYTICS_LAST_MESSAGE_READ_TIME, System.currentTimeMillis());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

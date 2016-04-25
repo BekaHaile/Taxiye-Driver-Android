@@ -6284,11 +6284,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 	@Override
-	public void fetchTextMessagesCall(Context context, String accessToken) {
-		new FetchAndSendMessages(context, accessToken).execute("");
-	}
-
-	@Override
 	public void onCancelRideRequest(final String engagementId, final boolean acceptedByOtherDriver) {
 		try {
 			if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {

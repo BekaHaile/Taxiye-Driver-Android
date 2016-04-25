@@ -48,6 +48,4 @@ public interface AppInterruptHandler {
 
 	void fetchHeatMapDataCall(Context context);
 
-	void fetchTextMessagesCall(Context context, String accessToken);
-
 }
