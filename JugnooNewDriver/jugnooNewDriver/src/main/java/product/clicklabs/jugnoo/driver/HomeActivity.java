@@ -4934,7 +4934,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			Log.i("finalDiscount == endride offline ", "=" + finalDiscount);
 			Log.i("finalToPay == endride offline ", "=" + finalToPay);
-
+			Log.i("wallet Balance ", "=" + assignedCustomerInfo.jugnooBalance);
 
 			// wallet application (with split fare)
 			if (assignedCustomerInfo.jugnooBalance > 0 && finalToPay > 0) {    // wallet
@@ -7588,6 +7588,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						stopWalletUpdateTimeout();
 						if (Data.assignedCustomerInfo != null) {
 							if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
+								if(jObj.getString("wallet_balance")!=null){
+									double newBalance = Double.parseDouble(jObj.getString("wallet_balance"));
+									if(newBalance > 0){
+										((AutoCustomerInfo) Data.assignedCustomerInfo).jugnooBalance = newBalance;
+									}
+								}
 								endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
 							} else {
 								//Meals case of end ride
@@ -7600,7 +7606,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} catch (Exception exception) {
 				exception.printStackTrace();
 			}
-			perfectRideStateRestore();
 		}
 
 		@Override

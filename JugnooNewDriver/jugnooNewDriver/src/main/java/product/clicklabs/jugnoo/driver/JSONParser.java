@@ -327,7 +327,7 @@ public class JSONParser implements Constants {
 		Log.i("timeOut",timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
-		long walletUpdateTimeout = userData.optLong("wallet_update_timeout", 3000);
+		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 

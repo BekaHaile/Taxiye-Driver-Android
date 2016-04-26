@@ -306,7 +306,7 @@ public interface APIServices {
 							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/update_wallet-balance")
+	@POST("/get_wallet_balance_end_ride")
 	void updateWalletBalance(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
 
