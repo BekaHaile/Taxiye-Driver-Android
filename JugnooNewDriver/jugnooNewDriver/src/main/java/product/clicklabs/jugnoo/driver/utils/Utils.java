@@ -494,23 +494,22 @@ public class Utils {
 		}
 	}
 
-	public static void getCallDetails(Context context, String phone, String engId) {
+	public static String getCallDetails(Context context, String phone) {
+		JSONArray callLogs = new JSONArray();
 		try {
-//			StringBuffer sb = new StringBuffer();
 			Uri contacts = CallLog.Calls.CONTENT_URI;
 			Cursor managedCursor = context.getContentResolver().query(contacts, null, null, null, null);
 			int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
 			int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
 			int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
 			int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-//		sb.append("Call Details :");
-			JSONArray callLogs = new JSONArray();
 			while (managedCursor.moveToNext()) {
 
 				if((managedCursor.getString(number).equalsIgnoreCase(phone))
 						|| (("+91"+managedCursor.getString(number)).equalsIgnoreCase(phone))) {
 
-					if ((Long.valueOf(managedCursor.getString(date))) > ( Long.valueOf(Prefs.with(context).getString(SPLabels.ACCEPT_RIDE_TIME, "18000"))))
+					if ((Long.valueOf(managedCursor.getString(date))) > ( Long.valueOf(Prefs.with(context).getString(SPLabels.ACCEPT_RIDE_TIME,
+							String.valueOf(System.currentTimeMillis() - 18000l)))))
 					{
 						String phNumber = managedCursor.getString(number);
 						String callType = managedCursor.getString(type);
@@ -533,7 +532,6 @@ public class Utils {
 								dir = "MISSED";
 								break;
 						}
-//						sb.append("{"+"Phone Number: " + "'"+phNumber+"'," + " Call Type: " + "'"+dir+"'," + " Call Date: " + "'"+callDayTime+"'," + " Call duration in sec : " + "'"+callDuration+"'"+"}"+",");
 
 						JSONObject callObj = new JSONObject();
 						callObj.put("phone_number", phNumber);
@@ -547,12 +545,12 @@ public class Utils {
 
 			}
 			managedCursor.close();
-//			System.out.println(sb);
-			RideCancellationActivity.sendCallLogs(String.valueOf(callLogs), engId);
 			Log.i("CallLogs", String.valueOf(callLogs));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+
+		return String.valueOf(callLogs);
 
 	}
 
