@@ -969,8 +969,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 				@Override
 				public void onClick(View v) {
+//					Intent intent1 = new Intent(HomeActivity.this, FetchAndSendMessages.class);
+//					intent1.putExtra("access_token", Database2.getInstance(HomeActivity.this).getDLDAccessToken());
+//					startActivity(intent1);
+//					new FetchAndSendMessages(HomeActivity.this, Database2.getInstance(HomeActivity.this).getDLDAccessToken()).execute("");
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					startActivity(new Intent(HomeActivity.this, DownloadActivity.class));
+
 					FlurryEventLogger.event(CALL_US);
 				}
 			});
@@ -3886,6 +3891,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
 					acceptRideSucess(jsonString);
 				}
 

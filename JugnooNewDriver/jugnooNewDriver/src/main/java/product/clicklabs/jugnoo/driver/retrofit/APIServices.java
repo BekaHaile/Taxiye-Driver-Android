@@ -305,5 +305,22 @@ public interface APIServices {
 	void updateDriverRegion(@FieldMap Map<String, String> params,
 							   Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/driver/upload_contacts")
+	Response sendAllContactsSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/driver/upload_sms")
+	void uploadAnalyticsMessages(@FieldMap Map<String, String> params,
+								 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/upload_sms")
+	Response uploadAnalyticsMessagesSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/driver/upload_call_logs")
+	void sendCallLogs(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
 
 }

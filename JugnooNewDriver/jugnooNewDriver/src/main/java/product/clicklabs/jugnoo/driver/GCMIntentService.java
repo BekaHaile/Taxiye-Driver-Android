@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
+import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -647,8 +648,17 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("downloadOnly", downloadList);
 								startService(intent1);
 
+							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
+								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								startService(intent1);
 
-							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
+							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
+								Intent synIntent = new Intent(this, SyncMessageService.class);
+								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
+								startService(synIntent);
+
+							}else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
 //												"flag": 74,
