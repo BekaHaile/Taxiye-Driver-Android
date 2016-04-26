@@ -334,6 +334,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	static Location myLocation;
 	public Location lastGPSLocation, lastFusedLocation;
 	public boolean distanceUpdateFromService = false;
+	public boolean walletBalanceUpdatePopup = false;
 
 
 	static UserMode userMode;
@@ -5867,6 +5868,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 				TextView textMessage = (TextView) dialogEndRidePopup.findViewById(R.id.textMessage);
 				textMessage.setTypeface(Data.latoRegular(activity));
+				walletBalanceUpdatePopup = false;
 
 
 				if (BusinessType.AUTOS == businessType) {
@@ -7586,11 +7588,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					int flag = jObj.getInt("flag");
 					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 						stopWalletUpdateTimeout();
-						if (Data.assignedCustomerInfo != null) {
+						if (Data.assignedCustomerInfo != null && walletBalanceUpdatePopup) {
 							if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
 								if(jObj.getString("wallet_balance")!=null){
 									double newBalance = Double.parseDouble(jObj.getString("wallet_balance"));
-									if(newBalance > 0){
+									if(newBalance > -1){
 										((AutoCustomerInfo) Data.assignedCustomerInfo).jugnooBalance = newBalance;
 									}
 								}
@@ -7601,6 +7603,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							}
 							FlurryEventLogger.event(RIDE_ENDED);
 						}
+						DialogPopup.dismissLoadingDialog();
 					}
 				}
 			} catch (Exception exception) {
@@ -7610,13 +7613,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		@Override
 		public void failure(RetrofitError error) {
-			if (Data.assignedCustomerInfo != null) {
+			if (Data.assignedCustomerInfo != null && walletBalanceUpdatePopup) {
+				stopWalletUpdateTimeout();
 				if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType || BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
 					endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
 				} else {
 					//Meals case of end ride
 					endRidePopup(HomeActivity.this, Data.assignedCustomerInfo.businessType);
 				}
+				DialogPopup.dismissLoadingDialog();
 				FlurryEventLogger.event(RIDE_ENDED);
 			}
 		}
@@ -7632,7 +7637,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				Log.i("params", "=" + params);
 
 				walletUpdateCallTime = System.currentTimeMillis();
+				DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
 				RestClient.getApiServices().updateWalletBalance(params, callback);
+				walletBalanceUpdatePopup = true;
 				startWalletUpdateTimeout();
 
 			}
