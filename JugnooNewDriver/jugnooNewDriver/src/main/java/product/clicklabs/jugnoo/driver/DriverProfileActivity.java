@@ -42,7 +42,7 @@ public class DriverProfileActivity extends Activity {
 	ImageView profileImg, imageViewTitleBarDEI;
 
 
-	public  ProfileInfo openedProfileInfo;
+	public static ProfileInfo openedProfileInfo;
 
 	@Override
 	protected void onStart() {
@@ -142,6 +142,7 @@ public class DriverProfileActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+//				EditDriverProfile.openProfileInfo = openedProfileInfo;
 				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
@@ -225,16 +226,16 @@ public class DriverProfileActivity extends Activity {
 												textViewOnlineHoursValue = jObj.getInt("online_hours");
 											}
 											if (jObj.has("bank_account_no")) {
-												accNo = jObj.getString("online_hours");
+												accNo = jObj.getString("bank_account_no");
 											}
 											if (jObj.has("ifsc_code")) {
-												ifscCode = jObj.getString("online_hours");
+												ifscCode = jObj.getString("ifsc_code");
 											}
 											if (jObj.has("bank_name")) {
-												bankName = jObj.getString("online_hours");
+												bankName = jObj.getString("bank_name");
 											}
 											if (jObj.has("bank_location")) {
-												bankLoc = jObj.getString("online_hours");
+												bankLoc = jObj.getString("bank_location");
 											}
 											openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
 													textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,

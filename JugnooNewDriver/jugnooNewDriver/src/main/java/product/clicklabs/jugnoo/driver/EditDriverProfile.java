@@ -48,7 +48,7 @@ public class EditDriverProfile extends Activity {
 
 	EditText editTextUserName, editTextPhone;
 	ImageView profileImg, imageViewTitleBarDEI;
-	public static ProfileInfo openProfileInfo;
+//	public static ProfileInfo openProfileInfo;
 
 
 	@Override
@@ -112,11 +112,11 @@ public class EditDriverProfile extends Activity {
 		});
 
 
-		if(openProfileInfo != null){
-			TextViewAccNo.setText("Acc No.: "+openProfileInfo.accNo);
-			textViewIFSC.setText("IFSC Code: "+openProfileInfo.ifscCode);
-			textViewBankName.setText("Bank Name"+openProfileInfo.bankName);
-			textViewBankLoc.setText("Branch Location: "+openProfileInfo.bankLoc);
+		if(DriverProfileActivity.openedProfileInfo != null){
+			TextViewAccNo.setText("Account No.: "+DriverProfileActivity.openedProfileInfo.accNo);
+			textViewIFSC.setText("IFSC Code: "+DriverProfileActivity.openedProfileInfo.ifscCode);
+			textViewBankName.setText("Bank Name: "+DriverProfileActivity.openedProfileInfo.bankName);
+			textViewBankLoc.setText("Branch Location: "+DriverProfileActivity.openedProfileInfo.bankLoc);
 		}
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {

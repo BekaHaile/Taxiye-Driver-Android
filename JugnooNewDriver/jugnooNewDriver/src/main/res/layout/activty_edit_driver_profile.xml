@@ -103,7 +103,7 @@
                 android:layout_marginLeft="42px"
                 android:text="@string/info"
                 android:textColor="@color/new_orange"
-                android:textSize="48px"/>
+                android:textSize="42px"/>
 
 
             <ImageView
@@ -130,7 +130,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
 
             </RelativeLayout>
@@ -162,7 +162,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
                 <ImageView
                     android:id="@+id/imageViewEditPhone"
@@ -202,7 +202,7 @@
                 android:layout_marginLeft="42px"
                 android:text="@string/bank_details"
                 android:textColor="@color/new_orange"
-                android:textSize="48px"/>
+                android:textSize="42px"/>
 
 
             <ImageView
@@ -218,7 +218,7 @@
 
                 <TextView
                     android:id="@+id/TextViewAccNo"
-                    android:layout_width="590px"
+                    android:layout_width="match_parent"
                     android:layout_height="70px"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
@@ -229,7 +229,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
 
             </RelativeLayout>
@@ -255,12 +255,11 @@
                     android:background="#0000"
                     android:hint="@string/ifsc_code"
                     android:inputType="number"
-                    android:maxLength="14"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
 
             </RelativeLayout>
@@ -285,12 +284,11 @@
                     android:background="#0000"
                     android:hint="Bank name"
                     android:inputType="number"
-                    android:maxLength="14"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
 
             </RelativeLayout>
@@ -318,7 +316,7 @@
                     android:textColor="@color/black"
                     android:textColorHint="@color/black_text_alpha"
                     android:textCursorDrawable="@null"
-                    android:textSize="42px"/>
+                    android:textSize="36px"/>
 
 
             </RelativeLayout>
