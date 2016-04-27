@@ -202,7 +202,7 @@
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
-	<string name="info">INFO</string>
+	<string name="info">Personal Info</string>
 	<string name="arrived">Arrived</string>
 	<string name="local_leaderboard">LOCAL</string>
 	<string name="global_leaderboard">GLOBAL</string>
@@ -254,7 +254,11 @@
 	<string name="last_payments">Last Payments</string>
 	<string name="upcoming_payment_due_date">Upcoming Payment On :</string>
 	<string name="cash_via_paytm">Cash Via Paytm</string>
->>>>>>> feature_driver_payments
+	<string name="bank_details">Bank Details</string>
+	<string name="acc_no">Acc No. :</string>
+	<string name="ifsc_code">IFSC :</string>
+	<string name="bank_name">Bank Name :</string>
+	<string name="bank_loc">Bank Location :</string>
 
 
 	<string-array name="CountryCodes" >
