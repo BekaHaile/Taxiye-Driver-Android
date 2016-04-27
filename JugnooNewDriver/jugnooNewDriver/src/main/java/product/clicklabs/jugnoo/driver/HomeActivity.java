@@ -178,8 +178,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout callUsRl,termsConditionRl;
 	TextView callUsText, termsConditionText;
 
-	RelativeLayout paytmRechargeRl;
-	TextView paytmRechargeText;
+	RelativeLayout paytmRechargeRl, paymentsRl;
+	TextView paytmRechargeText, paymentsText;
 
 	RelativeLayout languagePrefrencesRl;
 	TextView languagePrefrencesText;
@@ -518,6 +518,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
 			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
+
+			paymentsRl = (RelativeLayout) findViewById(R.id.paymentRL);
+			paymentsText = (TextView) findViewById(R.id.paymentText);
+			paymentsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
@@ -1006,6 +1010,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+
+			paymentsRl.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, PaymentActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(RIDES_OPENED);
+				}
+			});
 
 			bookingsRl.setOnClickListener(new OnClickListener() {
 
@@ -6818,7 +6832,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		cancelStationPathUpdateTimer();
 		if (myLocation != null) {
 			if (checkDriverFree()) {
-				fetchStationDataAPI(HomeActivity.this);
+//				fetchStationDataAPI(HomeActivity.this);
 			}
 		}
 	}

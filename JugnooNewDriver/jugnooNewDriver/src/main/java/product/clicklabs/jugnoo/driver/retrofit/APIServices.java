@@ -5,9 +5,13 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
+import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -28,7 +32,7 @@ public interface APIServices {
 	@POST("/booking_history")
 	void bookingHistory(@Field("access_token") String accessToken,
 						@Field("current_mode") String currentMode,
-						Callback<BookingHistoryResponse> callback);
+						Callback<NewBookingHistoryRespose> callback);
 
 	@FormUrlEncoded
 	@POST("/share_ride_history")
@@ -323,4 +327,21 @@ public interface APIServices {
 	void sendCallLogs(@FieldMap Map<String, String> params,
 								  Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/get_all_invoices_for_driver")
+	void invoiceHistory(@Field("access_token") String accessToken,
+						@Field("current_mode") String currentMode,
+						Callback<InvoiceHistoryResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_invoice_details")
+	void invoiceDetail(@Field("access_token") String accessToken,
+						@Field("invoice_id") String invoiceId,
+						Callback<InvoiceDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_driver_earnings")
+	void earningDetails(@Field("access_token") String accessToken,
+									   @Field("login_type") String loginType,
+									   Callback<EarningsDetailResponse> callback);
 }

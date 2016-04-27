@@ -12,7 +12,7 @@
         android:layout_width="fill_parent"
         android:id="@+id/rideHistoryItem"
         android:layout_height="300px"
-        android:background="@drawable/text_box_icon"
+        android:background="@drawable/white_bg"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -20,15 +20,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:id="@+id/RideDetails"
-            android:layout_marginLeft="40px"
+            android:layout_marginLeft="20px"
             android:layout_gravity="center_vertical"
             >
+
+            <TextView
+                android:id="@+id/textViewTransTypeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15px"
+                android:layout_marginTop="12px"
+                android:singleLine="true"
+                android:text="Ride"
+                android:textColor="@color/new_orange"
+                android:textSize="36px"/>
 
             <RelativeLayout
                 android:id="@+id/dateTimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginTop="12px"
                 android:splitMotionEvents="false">
 
                 <ImageView
@@ -49,7 +61,7 @@
                     android:layout_toRightOf="@+id/imageViewTime"
                     android:singleLine="true"
                     android:text="23 June, 2014 18:88 AM"
-                    android:textColor="@color/bg_grey_opaque"
+                    android:textColor="@color/new_orange"
                     android:textSize="28px"
                     />
 
@@ -60,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:layout_marginTop="8px"
+                android:layout_marginTop="12px"
                 android:singleLine="true"
                 android:text="Ride ID: 1111"
                 android:textColor="@color/bg_grey_opaque"
@@ -72,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:layout_marginTop="8px"
+                android:layout_marginTop="12px"
                 android:singleLine="true"
                 android:text="Status"
                 android:textColor="@color/bg_grey_opaque"
@@ -82,10 +94,10 @@
                 android:id="@+id/distTimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8px"
+                android:layout_marginTop="12px"
                 android:layout_marginLeft="15px"
                 android:gravity="center_vertical"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:splitMotionEvents="false">
 
 
@@ -95,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:text="Distance: 5.6 Km"
+                    android:text="5.6 Km,"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="30px"/>
 
@@ -106,8 +118,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:layout_marginTop="8px"
-                    android:text="Toatal Time: 10 min"
+                    android:text=" 10 min,"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="30px"/>
 
@@ -116,9 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
-                    android:layout_marginTop="8px"
                     android:singleLine="true"
-                    android:text="Wait Time: 10 min"
+                    android:text=" 10 min"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="30px"/>
 
@@ -130,7 +140,7 @@
             android:layout_width="290px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="10px"
+            android:layout_marginLeft="20px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_orange_bordered">
 
@@ -228,14 +238,12 @@
 
     </LinearLayout>
 
-
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="10px"-->
-        <!--android:layout_marginTop="0px"-->
-        <!--android:layout_below="@+id/rideHistoryItem"-->
-        <!--android:background="@drawable/shadow_up"/>-->
-
+    <ImageView
+        android:layout_below="@+id/rideHistoryItem"
+        android:layout_centerHorizontal="true"
+        android:layout_width="700px"
+        android:layout_height="5px"
+        android:background="@color/menu_black"/>
 
 
 </RelativeLayout>

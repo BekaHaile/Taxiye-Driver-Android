@@ -233,6 +233,28 @@
 	<string name="destination">DESTINATIONS</string>
 	<string name="destination_selection">Please select destination where you can go right now</string>
 	<string name="terms">Terms</string>
+	<string name="Payments">Payments</string>
+	<string name="Today">Today</string>
+	<string name="Last_week">Last Week</string>
+	<string name="Last_month">Last Month</string>
+	<string name="upcoming_invoice">Upcoming Invoice</string>
+	<string name="current_invoice">Current Invoice</string>
+	<string name="Outstanding_amnt">Outstanding Amount</string>
+	<string name="jugnoo_cmsn">Jugnoo Commission</string>
+	<string name="Manual_adjustment">Manual Adjustment</string>
+	<string name="referral_amount">Referral Amount</string>
+	<string name="cancel_subsidy">Cancel Subsidy</string>
+	<string name="phone_deduction">Phone Deduction</string>
+	<string name="paid_by_jugnoo">Paid By Jugnoo</string>
+	<string name="paid_by_customer">Paid In Cash</string>
+	<string name="paid_using_wallet">Paid Using Wallet</string>
+	<string name="acc_credited">Amount Credited</string>
+	<string name="last_invoice">Last Invoice</string>
+	<string name="last_invoice_details">Last Payment On :</string>
+	<string name="last_payments">Last Payments</string>
+	<string name="upcoming_payment_due_date">Upcoming Payment On :</string>
+	<string name="cash_via_paytm">Cash Via Paytm</string>
+>>>>>>> feature_driver_payments
 
 
 	<string-array name="CountryCodes" >
