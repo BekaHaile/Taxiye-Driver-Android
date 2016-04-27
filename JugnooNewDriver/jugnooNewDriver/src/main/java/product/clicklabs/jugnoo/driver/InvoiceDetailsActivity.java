@@ -40,9 +40,9 @@ public class InvoiceDetailsActivity extends Activity {
 	TextView textViewCurrentInvoiceId, textViewJugnooCmsnValue, textViewReferralValue, textViewPaytmCashValue,
 			textViewTotalAmntValue, textViewOutstandingAmntValue, textViewManualAdjValue, textViewPhoneDeductionValue,
 			textViewCancelSubsidyValue, textViewPaidByJugnooValue, textViewPaidUsingCstmrValue, textViewPaidByCstmrValue,
-			textViewCurrentInvoiceGeneratedOn,textViewCurrentInvoiceStatus, dateTimeValueFrom, dateTimeValueTo;
+			textViewCurrentInvoiceGeneratedOn,textViewCurrentInvoiceStatus, dateTimeValueFrom, dateTimeValueTo, textViewTotalAmnt;
 
-	ImageView imageViewRequestType;
+	ImageView imageViewRequestType, imageViewNegetive5;
 
 
 	public static RideInfo openedRideInfo;
@@ -99,10 +99,10 @@ public class InvoiceDetailsActivity extends Activity {
 		((TextView) findViewById(R.id.textViewJugnooCmsn)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewOutstandingAmnt)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPaytmCash)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
-		((TextView) findViewById(R.id.textViewTotalAmnt)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 
-
+		textViewTotalAmnt = (TextView) findViewById(R.id.textViewTotalAmnt);
+		textViewTotalAmnt.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewCurrentInvoiceGeneratedOn = (TextView) findViewById(R.id.textViewCurrentInvoiceGeneratedOn);
 		textViewCurrentInvoiceGeneratedOn.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		textViewPaidByCstmrValue = (TextView) findViewById(R.id.textViewPaidByCstmrValue);
@@ -138,7 +138,7 @@ public class InvoiceDetailsActivity extends Activity {
 
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
-
+		imageViewNegetive5 = (ImageView) findViewById(R.id.imageViewNegetive5);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -175,6 +175,12 @@ public class InvoiceDetailsActivity extends Activity {
 		if (invoiceDetailResponse != null) {
 
 			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate().equalsIgnoreCase("0")){
+				textViewTotalAmnt.setText("Total Amount Till Now" );
+			}else {
+				textViewTotalAmnt.setText("Amount Credited");
+			}
+
+			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate().equalsIgnoreCase("0")){
 				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: NA" );
 			}else {
 				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: " + DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate()));
@@ -192,7 +198,7 @@ public class InvoiceDetailsActivity extends Activity {
 				textViewJugnooCmsnValue.setText("NA");
 			}else {
 				textViewJugnooCmsnValue.setText(getResources().getString(R.string.rupee)
-						+ invoiceDetailResponse.getInvoiceDetails().getJugnooCommision());
+						+ Utils.getDecimalFormatForMoney().format(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision()));
 			}
 
 			if(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount() ==null){
@@ -204,14 +210,28 @@ public class InvoiceDetailsActivity extends Activity {
 
 			textViewReferralValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getReferralAmount());
+
+
 			textViewTotalAmntValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
 
 //			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
 //					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
 
-			textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getManualCharges());
+
+			if(invoiceDetailResponse.getInvoiceDetails().getManualCharges() < 0){
+				imageViewNegetive5.setVisibility(View.VISIBLE);
+				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.red_status));
+				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
+						+ Math.abs(invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
+			}else {
+				imageViewNegetive5.setVisibility(View.GONE);
+				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.black));
+				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
+						+ invoiceDetailResponse.getInvoiceDetails().getManualCharges());
+			}
+
+
 			textViewPhoneDeductionValue.setText(getResources().getString(R.string.rupee)
 					+ invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions());
 			textViewCancelSubsidyValue.setText(getResources().getString(R.string.rupee)

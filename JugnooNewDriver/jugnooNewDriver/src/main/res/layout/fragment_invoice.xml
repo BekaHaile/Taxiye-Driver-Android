@@ -420,6 +420,17 @@
                 android:textColor="@color/black"
                 android:textSize="30px"/>
 
+            <ImageView
+                android:id="@+id/imageViewNegetive5"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewManualAdj"
+                android:visibility="gone"
+                android:background="@drawable/subtract_icon"/>
+
             <TextView
                 android:id="@+id/textViewManualAdjValue"
                 android:layout_width="wrap_content"

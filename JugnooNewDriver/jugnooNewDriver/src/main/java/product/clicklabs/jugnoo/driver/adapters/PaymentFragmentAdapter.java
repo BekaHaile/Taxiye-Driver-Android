@@ -6,10 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import product.clicklabs.jugnoo.driver.DriverRidesFragment;
 import product.clicklabs.jugnoo.driver.fragments.EarningsFragment;
-import product.clicklabs.jugnoo.driver.fragments.InvoiceFragment;
 import product.clicklabs.jugnoo.driver.fragments.InvoiceHistoryFragment;
-import product.clicklabs.jugnoo.driver.fragments.ShareActivityFragment;
-import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 
 
 /**
