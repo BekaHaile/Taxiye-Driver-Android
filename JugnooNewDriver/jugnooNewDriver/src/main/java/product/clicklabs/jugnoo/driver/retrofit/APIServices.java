@@ -339,6 +339,10 @@ public interface APIServices {
 						@Field("invoice_id") String invoiceId,
 						Callback<InvoiceDetailResponse> callback);
 
+	@POST("/get_wallet_balance_end_ride")
+	void updateWalletBalance(@FieldMap Map<String, String> params,
+							Callback<RegisterScreenResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/get_driver_earnings")
 	void earningDetails(@Field("access_token") String accessToken,

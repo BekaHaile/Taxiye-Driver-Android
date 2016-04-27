@@ -327,6 +327,7 @@ public class JSONParser implements Constants {
 		Log.i("timeOut",timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
+		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -349,7 +350,7 @@ public class JSONParser implements Constants {
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
-				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable);
+				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
