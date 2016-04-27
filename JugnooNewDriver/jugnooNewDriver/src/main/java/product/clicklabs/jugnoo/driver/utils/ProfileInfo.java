@@ -14,11 +14,12 @@ public class ProfileInfo {
 	public int textViewRidesCancelledValue;
 	public int textViewRidesMissedValue;
 	public int textViewOnlineHoursValue;
-	public String textViewTitleBarDEI;
+	public String textViewTitleBarDEI, accNo, ifscCode, bankName, bankLoc;
 
 	public ProfileInfo(String textViewDriverName, int textViewDriverId, int textViewRankCity, int textViewRankOverall,
 					   int textViewMonthlyValue, int textViewRidesTakenValue, int textViewRidesCancelledValue,
-					   int textViewRidesMissedValue, int textViewOnlineHoursValue, String textViewTitleBarDEI) {
+					   int textViewRidesMissedValue, int textViewOnlineHoursValue, String textViewTitleBarDEI,
+					   String accNo, String ifscCode, String bankName, String bankLoc) {
 
 
 		this.textViewDriverName = textViewDriverName;
@@ -31,5 +32,9 @@ public class ProfileInfo {
 		this.textViewRidesMissedValue = textViewRidesMissedValue;
 		this.textViewOnlineHoursValue = textViewOnlineHoursValue;
 		this.textViewTitleBarDEI = textViewTitleBarDEI;
+		this.accNo= accNo;
+		this.ifscCode = ifscCode;
+		this.bankName = bankName;
+		this.bankLoc =bankLoc;
 	}
 }

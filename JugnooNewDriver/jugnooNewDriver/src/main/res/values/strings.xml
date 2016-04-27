@@ -233,6 +233,9 @@
 	<string name="destination">DESTINATIONS</string>
 	<string name="destination_selection">Please select destination where you can go right now</string>
 	<string name="terms">Terms</string>
+	<string name="bank_details">Bank Details</string>
+	<string name="acc_no">Acc No.</string>
+	<string name="ifsc_code">IFSC Code</string>
 
 
 	<string-array name="CountryCodes" >

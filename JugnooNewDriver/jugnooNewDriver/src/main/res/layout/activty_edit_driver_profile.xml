@@ -46,7 +46,7 @@
         <RelativeLayout
             android:id="@+id/driverDetailsRL"
             android:layout_width="match_parent"
-            android:layout_height="350px"
+            android:layout_height="340px"
             android:background="@drawable/profile_pic_bg_image">
 
             <RelativeLayout
@@ -91,7 +91,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/driverDetailsRL"
-            android:layout_marginTop="55px"
+            android:layout_marginTop="24px"
             android:orientation="vertical">
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginBottom="32px"
+                android:layout_marginBottom="24px"
                 android:layout_marginLeft="42px"
                 android:text="@string/info"
                 android:textColor="@color/new_orange"
@@ -115,7 +115,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="98px">
+                android:layout_height="80px">
 
                 <EditText
                     android:id="@+id/editTextUserName"
@@ -133,16 +133,6 @@
                     android:textSize="42px"/>
 
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/imageViewEditName"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentRight="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_marginRight="42px"-->
-                    <!--android:background="@drawable/edit_pencil_icon"-->
-                    <!--android:tag="mwar"/>-->
-
             </RelativeLayout>
 
             <ImageView
@@ -155,7 +145,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="98px">
+                android:layout_height="80px">
 
                 <EditText
                     android:id="@+id/editTextPhone"
@@ -194,6 +184,154 @@
                 android:background="@color/grey_light_more"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bankDetailsLLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/infoLLayout"
+            android:layout_marginTop="24px"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/bankDetailsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="24px"
+                android:layout_marginLeft="42px"
+                android:text="@string/bank_details"
+                android:textColor="@color/new_orange"
+                android:textSize="48px"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal3"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:background="@color/grey_light_more"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px">
+
+                <TextView
+                    android:id="@+id/TextViewAccNo"
+                    android:layout_width="590px"
+                    android:layout_height="70px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:background="#0000"
+                    android:capitalize="words"
+                    android:hint="@string/acc_no"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="42px"/>
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal4"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:background="@color/grey_light_more"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px">
+
+                <TextView
+                    android:id="@+id/textViewIFSC"
+                    android:layout_width="match_parent"
+                    android:layout_height="70px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:background="#0000"
+                    android:hint="@string/ifsc_code"
+                    android:inputType="number"
+                    android:maxLength="14"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="42px"/>
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal5"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:background="@color/grey_light_more"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px">
+
+                <TextView
+                    android:id="@+id/textViewBankName"
+                    android:layout_width="match_parent"
+                    android:layout_height="70px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:background="#0000"
+                    android:hint="Bank name"
+                    android:inputType="number"
+                    android:maxLength="14"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="42px"/>
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal6"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:background="@color/grey_light_more"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px">
+
+                <TextView
+                    android:id="@+id/textViewBankLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="70px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:background="#0000"
+                    android:hint="bank loc"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="42px"/>
+
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal7"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerHorizontal="true"
+                android:background="@color/grey_light_more"/>
+
+        </LinearLayout>
+
 
     </RelativeLayout>
 
