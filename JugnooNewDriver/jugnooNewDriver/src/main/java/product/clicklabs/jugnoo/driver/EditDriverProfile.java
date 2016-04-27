@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -110,13 +111,14 @@ public class EditDriverProfile extends Activity {
 				performBackPressed();
 			}
 		});
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
 		if(DriverProfileActivity.openedProfileInfo != null){
-			TextViewAccNo.setText("Account No.: "+DriverProfileActivity.openedProfileInfo.accNo);
-			textViewIFSC.setText("IFSC Code: "+DriverProfileActivity.openedProfileInfo.ifscCode);
-			textViewBankName.setText("Bank Name: "+DriverProfileActivity.openedProfileInfo.bankName);
-			textViewBankLoc.setText("Branch Location: "+DriverProfileActivity.openedProfileInfo.bankLoc);
+			TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
+			textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
+			textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
+			textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
 		}
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {

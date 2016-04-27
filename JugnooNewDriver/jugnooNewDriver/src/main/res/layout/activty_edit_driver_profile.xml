@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/activity_profile_screen"
               xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="720px"
-              android:layout_height="1134px"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:animateLayoutChanges="true"
               android:background="@color/white"
               android:orientation="vertical"
@@ -38,299 +38,374 @@
     </RelativeLayout>
 
 
-    <RelativeLayout
-        android:id="@+id/driverDetailsRLL"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <RelativeLayout
-            android:id="@+id/driverDetailsRL"
+            android:id="@+id/driverDetailsRLL"
             android:layout_width="match_parent"
-            android:layout_height="340px"
-            android:background="@drawable/profile_pic_bg_image">
+            android:layout_height="match_parent">
 
             <RelativeLayout
-                android:id="@+id/profileRl"
-                android:layout_width="220px"
-                android:layout_height="220px"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="40px"
-                android:splitMotionEvents="false"
-                android:tag="mwar">
+                android:id="@+id/driverDetailsRL"
+                android:layout_width="match_parent"
+                android:layout_height="340px"
+                android:background="@drawable/profile_pic_bg_image">
 
-                <ImageView
-                    android:id="@+id/profileBack"
-                    android:layout_width="200px"
-                    android:layout_height="200px"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ring"
-                    android:tag="mwar"/>
+                <RelativeLayout
+                    android:id="@+id/profileRl"
+                    android:layout_width="220px"
+                    android:layout_height="220px"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40px"
+                    android:splitMotionEvents="false"
+                    android:tag="mwar">
 
-                <ImageView
-                    android:id="@+id/profileBack2"
-                    android:layout_width="225px"
-                    android:layout_height="225px"
-                    android:background="@drawable/profile_oval"
-                    android:tag="mwar"/>
+                    <ImageView
+                        android:id="@+id/profileBack"
+                        android:layout_width="200px"
+                        android:layout_height="200px"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/ring"
+                        android:tag="mwar"/>
 
-                <ImageView
-                    android:id="@+id/profileImg"
-                    android:layout_width="200px"
-                    android:layout_height="200px"
-                    android:layout_centerInParent="true"
-                    android:tag="mwar"/>
+                    <ImageView
+                        android:id="@+id/profileBack2"
+                        android:layout_width="225px"
+                        android:layout_height="225px"
+                        android:background="@drawable/profile_oval"
+                        android:tag="mwar"/>
+
+                    <ImageView
+                        android:id="@+id/profileImg"
+                        android:layout_width="200px"
+                        android:layout_height="200px"
+                        android:layout_centerInParent="true"
+                        android:tag="mwar"/>
+                </RelativeLayout>
+
+
             </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/infoLLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/driverDetailsRL"
+                android:layout_marginTop="24px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewmonthlyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="24px"
+                    android:layout_marginLeft="42px"
+                    android:text="@string/info"
+                    android:textColor="@color/new_orange"
+                    android:textSize="42px"/>
+
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal0"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px">
+
+                    <EditText
+                        android:id="@+id/editTextUserName"
+                        android:layout_width="590px"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:background="#0000"
+                        android:capitalize="words"
+                        android:hint="Name"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal2"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px">
+
+                    <EditText
+                        android:id="@+id/editTextPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:layout_toLeftOf="@+id/imageViewEditPhone"
+                        android:background="#0000"
+                        android:hint="Phone Number"
+                        android:inputType="number"
+                        android:maxLength="14"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewEditPhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="42px"
+                        android:background="@drawable/edit_pencil_icon"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal1"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/bankDetailsLLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/infoLLayout"
+                android:layout_marginTop="24px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bankDetailsText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="24px"
+                    android:layout_marginLeft="42px"
+                    android:text="@string/bank_details"
+                    android:textColor="@color/new_orange"
+                    android:textSize="42px"/>
+
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal3"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px">
+
+                    <TextView
+                        android:id="@+id/TextViewAccNoText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:background="#0000"
+                        android:capitalize="words"
+                        android:text="@string/acc_no"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/TextViewAccNo"
+                        android:layout_width="380px"
+                        android:gravity="right"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="42px"
+                        android:background="#0000"
+                        android:capitalize="words"
+                        android:hint="@string/acc_no"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal4"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px">
+
+                    <TextView
+                        android:id="@+id/textViewIFSCText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:background="#0000"
+                        android:text="@string/ifsc_code"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewIFSC"
+                        android:layout_width="380px"
+                        android:gravity="right"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="42px"
+                        android:background="#0000"
+                        android:capitalize="words"
+                        android:hint="@string/acc_no"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal5"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80px">
+
+                    <TextView
+                        android:id="@+id/textViewBankNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="70px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:background="#0000"
+                        android:text="@string/bank_name"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewBankName"
+                        android:layout_width="380px"
+                        android:gravity="right"
+                        android:layout_height="70px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="42px"
+                        android:background="#0000"
+                        android:hint="Bank name"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal6"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/textViewBankLocText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginBottom="15px"
+                        android:layout_marginLeft="42px"
+                        android:layout_marginTop="15px"
+                        android:background="#0000"
+                        android:text="@string/bank_loc"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewBankLoc"
+                        android:layout_width="380px"
+                        android:gravity="right"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="15px"
+                        android:layout_marginRight="42px"
+                        android:layout_marginTop="15px"
+                        android:background="#0000"
+                        android:hint="@string/bank_loc"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/black_text_alpha"
+                        android:textCursorDrawable="@null"
+                        android:textSize="36px"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal7"
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light_more"/>
+
+            </LinearLayout>
 
 
         </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/infoLLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/driverDetailsRL"
-            android:layout_marginTop="24px"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textViewmonthlyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="24px"
-                android:layout_marginLeft="42px"
-                android:text="@string/info"
-                android:textColor="@color/new_orange"
-                android:textSize="42px"/>
-
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal0"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <EditText
-                    android:id="@+id/editTextUserName"
-                    android:layout_width="590px"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:background="#0000"
-                    android:capitalize="words"
-                    android:hint="Name"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal2"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <EditText
-                    android:id="@+id/editTextPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:layout_toLeftOf="@+id/imageViewEditPhone"
-                    android:background="#0000"
-                    android:hint="Phone Number"
-                    android:inputType="number"
-                    android:maxLength="14"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-                <ImageView
-                    android:id="@+id/imageViewEditPhone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="42px"
-                    android:background="@drawable/edit_pencil_icon"
-                    android:tag="mwar"/>
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal1"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/bankDetailsLLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/infoLLayout"
-            android:layout_marginTop="24px"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/bankDetailsText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="24px"
-                android:layout_marginLeft="42px"
-                android:text="@string/bank_details"
-                android:textColor="@color/new_orange"
-                android:textSize="42px"/>
-
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal3"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <TextView
-                    android:id="@+id/TextViewAccNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:background="#0000"
-                    android:capitalize="words"
-                    android:hint="@string/acc_no"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal4"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <TextView
-                    android:id="@+id/textViewIFSC"
-                    android:layout_width="match_parent"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:background="#0000"
-                    android:hint="@string/ifsc_code"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal5"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <TextView
-                    android:id="@+id/textViewBankName"
-                    android:layout_width="match_parent"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:background="#0000"
-                    android:hint="Bank name"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal6"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80px">
-
-                <TextView
-                    android:id="@+id/textViewBankLoc"
-                    android:layout_width="match_parent"
-                    android:layout_height="70px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:background="#0000"
-                    android:hint="bank loc"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black_text_alpha"
-                    android:textCursorDrawable="@null"
-                    android:textSize="36px"/>
-
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/imageViewHorizontal7"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerHorizontal="true"
-                android:background="@color/grey_light_more"/>
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
+    </ScrollView>
 
 </LinearLayout>
