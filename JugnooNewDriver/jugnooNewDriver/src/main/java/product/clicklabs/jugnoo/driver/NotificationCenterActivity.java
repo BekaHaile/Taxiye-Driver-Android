@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
+
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.adapters.NotificationAdapter;
@@ -34,6 +36,21 @@ public class NotificationCenterActivity extends BaseActivity implements DisplayP
     private NotificationAdapter myNotificationAdapter;
     private ArrayList<NotificationData> notificationList;
 	private LinearLayout linearLayoutNoNotifications;
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		FlurryAgent.init(this, Data.FLURRY_KEY);
+		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+		FlurryAgent.onEvent("Notification opened");
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FlurryAgent.onEndSession(this);
+	}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -295,6 +295,7 @@ public interface APIServices {
 	void generateOtp(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
 	@POST("/fetch_media_data")
 	NotificationAlarmResponse updateNotificationData(@Field("access_token") String accessToken,
 													 @Field("file_category") String fileType);
@@ -339,6 +340,7 @@ public interface APIServices {
 						@Field("invoice_id") String invoiceId,
 						Callback<InvoiceDetailResponse> callback);
 
+	@FormUrlEncoded
 	@POST("/get_wallet_balance_end_ride")
 	void updateWalletBalance(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
