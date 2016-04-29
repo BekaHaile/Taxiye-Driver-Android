@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -84,12 +85,14 @@ public class ApiAcceptRide {
 								if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
 									Prefs.with(activity).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, jsonString);
 									perfectRideVariables(activity, customerId, engagementId, referenceId, latitude, longitude);
-//									Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, jObj.getString("phone_no"));
 									double pickupLatitude = jObj.getDouble("pickup_latitude");
 									double pickupLongitude = jObj.getDouble("pickup_longitude");
+									jObj =  jObj.getJSONObject("user_data");
+									String customerName = jObj.getString("user_name");
+									Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, jObj.getString("phone_no"));
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
 									Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, System.currentTimeMillis());
-									callback.onSuccess(pickupLatLng);
+									callback.onSuccess(pickupLatLng, customerName);
 								}
 
 								DialogPopup.dismissLoadingDialog();
@@ -116,7 +119,8 @@ public class ApiAcceptRide {
 
 
 	public interface Callback{
-		void onSuccess(LatLng pickupLatLng);
+		void onSuccess(LatLng pickupLatLng, String customerName);
+		void onFailure();
 	}
 
 	public void perfectRideVariables(Context activity, String customerId, String engagementId, String referenceId, double latitude, double longitude){

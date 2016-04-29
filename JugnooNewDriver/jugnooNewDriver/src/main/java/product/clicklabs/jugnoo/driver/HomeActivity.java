@@ -230,8 +230,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount, textViewInRideFareFactor;
 	TextView driverPassengerRatingValue;
-	RelativeLayout driverPassengerCallRl;
-	TextView driverPassengerCallText;
+	RelativeLayout driverPassengerCallRl, perfectRidePassengerCallRl;
+	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
+	TextView driverPassengerCallText, driverPerfectRidePassengerName;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
 	Button driverEngagedMyLocationBtn;
@@ -598,10 +599,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			// Driver engaged layout
 			driverEngagedLayout = (RelativeLayout) findViewById(R.id.driverEngagedLayout);
+			perfectRidePassengerInfoRl = (LinearLayout) findViewById(R.id.perfectRidePassengerInfoRl);
+			driverPassengerInfoRl = (LinearLayout) findViewById(R.id.driverPassengerInfoRl);
 
 
 			driverPassengerName = (TextView) findViewById(R.id.driverPassengerName);
 			driverPassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverPerfectRidePassengerName = (TextView) findViewById(R.id.driverPerfectRidePassengerName);
+			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress);
 			textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo);
@@ -615,6 +620,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue);
 			driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
+			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
@@ -1156,6 +1162,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 							FlurryEventLogger.event(CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
 						}
+					} else {
+						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+
+			perfectRidePassengerCallRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String callPhoneNumber = Prefs.with(activity).getString(SPLabels.PERFECT_CUSTOMER_CONT, "");
+
+					if (!"".equalsIgnoreCase(callPhoneNumber)) {
+						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
 					} else {
 						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
 					}
@@ -1722,12 +1741,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 					@Override
-					public void onSuccess(LatLng pickupLatLng) {
+					public void onSuccess(LatLng pickupLatLng, String customerName) {
 						Data.nextPickupLatLng = pickupLatLng;
+						Data.nextCustomerName = customerName;
 						createPerfectRideMarker();
 						Data.driverRideRequests.clear();
+						driverPerfectRidePassengerName.setText(customerName);
+						perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
+						driverPassengerInfoRl.setVisibility(View.GONE);
 						GCMIntentService.clearNotifications(getApplicationContext());
 						driverRequestListAdapter.setResults(Data.driverRideRequests);
+					}
+
+					@Override
+					public void onFailure() {
+						callAndHandleStateRestoreAPI();
 					}
 				}).acceptRide(Data.userData.accessToken,
 						driverRideRequest.customerId,
@@ -1746,7 +1774,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					GCMIntentService.stopRing(true);
 					driverAcceptRideAsync(HomeActivity.this);
 				} else {
-					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+					Data.dEngagementId = driverRideRequest.engagementId;
+					Data.dCustomerId = driverRideRequest.customerId;
+					Data.dCustLatLng = driverRideRequest.latLng;
+					Data.openedDriverRideRequest = driverRideRequest;
+
+					if (Utils.getBatteryPercentage(this) >= 20) {
+						GCMIntentService.clearNotifications(HomeActivity.this);
+						GCMIntentService.stopRing(true);
+						driverAcceptRideAsync(HomeActivity.this);
+					} else {
+						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -2511,6 +2550,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					initializeStationDataProcedure();
 					Data.nextPickupLatLng = null;
+					Data.nextCustomerName = null;
 
 
 					break;
@@ -2550,6 +2590,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.VISIBLE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
+
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2602,6 +2644,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					driverStartRideBtn.setVisibility(View.GONE);
 					buttonMarkArrived.setVisibility(View.VISIBLE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
 					startCustomerPathUpdateTimer();
@@ -2648,6 +2691,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					driverStartRideBtn.setVisibility(View.VISIBLE);
 					buttonMarkArrived.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
 					startCustomerPathUpdateTimer();
@@ -2785,6 +2829,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 					etaTimerRLayout.setVisibility(View.GONE);
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3938,7 +3983,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			JSONObject jObj;
 			jObj = new JSONObject(jsonString);
-
 			Log.e("accept_a_request jsonString", "=" + jsonString);
 			if (!jObj.isNull("error")) {
 
@@ -4165,11 +4209,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 		new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
+		Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
 		DialogPopup.dismissLoadingDialog();
 	}
 
 	public void createPerfectRideMarker() {
 		if (Data.nextPickupLatLng != null) {
+			driverPerfectRidePassengerName.setText(Data.nextCustomerName);
+			perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
+			driverPassengerInfoRl.setVisibility(View.GONE);
 			MarkerOptions markerOptionsStationLocation = new MarkerOptions();
 			markerOptionsStationLocation.title("next_pickup_marker");
 			markerOptionsStationLocation.position(Data.nextPickupLatLng);
@@ -6478,6 +6526,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
 				Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 				new ApiAcceptRide().perfectRideVariables(this, "", "", "", 0, 0);
+				Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
