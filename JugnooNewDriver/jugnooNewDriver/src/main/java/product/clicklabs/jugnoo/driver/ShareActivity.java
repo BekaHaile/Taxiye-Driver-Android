@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
@@ -116,6 +117,9 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 
 			@Override
 			public void onPageSelected(int position) {
+				if(position == 1){
+					NudgeClient.trackEvent(ShareActivity.this, NUDGE_ACTIVITY_CLICK, null);
+				}
 			}
 
 			@Override

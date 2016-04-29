@@ -72,4 +72,33 @@ public interface FlurryEventNames {
 			CUSTOM_VOICE_NOTIFICATION = "Custom Voice Nottification",
 			START_RING_INITIATED = "Start Ring Initiated";
 
+
+	String NUDGE_APP_OPEN = "app_open",
+			NUDGE_RIDE_START = "ride_start",
+			NUDGE_RIDE_END = "ride_end",
+			NUDGE_RATING = "rating",
+			NUDGE_JUGNOO_ON = "jugnoo_on",
+			NUDGE_JUGNOO_OFF = "jugnoo_off",
+			NUDGE_PAYMENT_CLICK = "payment_click",
+			NUDGE_INVOICES = "invoices",
+			NUDGE_EARNING_CLICK = "earning_click",
+			NUDGE_TAP_ON_INVOICE = "tap_on_invoice",
+			NUDGE_ACTIVITY_CLICK = "activity_click",
+			NUDGE_INVITE_EARN_CLICK = "invite_earn_click",
+			NUDGE_SHARE_OK = "share_ok",
+			NUDGE_SHARE_CANCEL = "share_cancel",
+			NUDGE_CALL_USER = "call_user",
+			NUDGE_CANCEL_RIDE = "cancel_ride",
+			NUDGE_REQUEST_CANCEL = "request_cancel",
+			NUDGE_SUPER_DRIVER_CLICK = "super_driver_click",
+			NUDGE_SUPER_DRIVER_LOCAL = "super_driver_local",
+			NUDGE_SUPER_DRIVER_GLOBAL = "super_driver_global",
+			NUDGE_SUPER_DRIVER_DAILY = "super_driver_daily",
+			NUDGE_SUPER_DRIVER_WEEKLY = "super_driver_weekly",
+			NUDGE_MENU_CLICK = "menu_click",
+			NUDGE_NOTIFICATION_CLICK = "notification_click"
+					;
+
+
+
 }

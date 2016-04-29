@@ -10,6 +10,7 @@ public class UserData {
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
 	public long remainigPenaltyPeriod, walletUpdateTimeout;
+	private String userId, userEmail;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -17,7 +18,8 @@ public class UserData {
 					int sharingEnabled, int sharingAvailable, String driverSupportNumber, String referralSMSToCustomer,
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
-					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout) {
+					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
+					String userId, String userEmail) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -53,6 +55,23 @@ public class UserData {
 		this.paytmRechargeEnabled = paytmRechargeEnabled;
 		this.destinationOptionEnable = destinationOptionEnable;
 		this.walletUpdateTimeout = walletUpdateTimeout;
+		this.userId = userId;
+		this.userEmail = userEmail;
 	}
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 }
