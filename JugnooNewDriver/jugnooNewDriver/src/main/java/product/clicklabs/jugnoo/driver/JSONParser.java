@@ -1,8 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -38,6 +41,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -354,6 +358,10 @@ public class JSONParser implements Constants {
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			enableComponent(context, NotificationService.class, true);
+		}
 		
 		Log.e("response ==", "="+response);
 		
@@ -377,9 +385,25 @@ public class JSONParser implements Constants {
 				
 		return resp;
 	}
-	
-	
-	
+
+
+	public static void enableComponent(Context context, Class classT, boolean enable){
+		try {
+			ComponentName receiver = new ComponentName(context, classT);
+			PackageManager pm = context.getPackageManager();
+			if(enable) {
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+						PackageManager.DONT_KILL_APP);
+			} else{
+				pm.setComponentEnabledSetting(receiver,
+						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+						PackageManager.DONT_KILL_APP);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	public void parsePortNumber(Context context, JSONObject jLoginObject){
