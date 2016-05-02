@@ -359,9 +359,6 @@ public class JSONParser implements Constants {
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-			enableComponent(context, NotificationService.class, true);
-		}
 		
 		Log.e("response ==", "="+response);
 		
@@ -386,24 +383,6 @@ public class JSONParser implements Constants {
 		return resp;
 	}
 
-
-	public static void enableComponent(Context context, Class classT, boolean enable){
-		try {
-			ComponentName receiver = new ComponentName(context, classT);
-			PackageManager pm = context.getPackageManager();
-			if(enable) {
-				pm.setComponentEnabledSetting(receiver,
-						PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
-						PackageManager.DONT_KILL_APP);
-			} else{
-				pm.setComponentEnabledSetting(receiver,
-						PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-						PackageManager.DONT_KILL_APP);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 	
 	
 	public void parsePortNumber(Context context, JSONObject jLoginObject){

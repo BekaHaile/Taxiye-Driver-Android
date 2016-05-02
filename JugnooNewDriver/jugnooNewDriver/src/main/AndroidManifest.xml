@@ -250,7 +250,7 @@
 
         <service android:name="product.clicklabs.jugnoo.driver.services.NotificationService"
                  android:label="@string/app_name"
-                 android:enabled="false"
+                 android:enabled="true"
                  android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
 
             <intent-filter>
