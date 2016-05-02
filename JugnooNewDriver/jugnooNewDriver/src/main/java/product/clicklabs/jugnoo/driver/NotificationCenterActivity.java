@@ -135,8 +135,6 @@ public class NotificationCenterActivity extends BaseActivity implements DisplayP
 
 
     public void performBackPressed(){
-        Intent intent=new Intent();
-        setResult(RESULT_CANCELED, intent);
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.left_out);
     }
