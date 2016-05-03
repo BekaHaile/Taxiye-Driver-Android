@@ -550,7 +550,7 @@ public class GCMIntentService extends IntentService {
 
 								String logMessage = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
 									notificationManagerResume(this, logMessage, true);
 								} else {
 									notificationManager(this, logMessage, true);
@@ -561,7 +561,7 @@ public class GCMIntentService extends IntentService {
 
 								String logMessage = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);

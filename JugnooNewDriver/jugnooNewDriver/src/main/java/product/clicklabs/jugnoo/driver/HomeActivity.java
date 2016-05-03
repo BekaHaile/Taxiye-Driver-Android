@@ -113,6 +113,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
+import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
@@ -124,6 +125,7 @@ import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
+import product.clicklabs.jugnoo.driver.utils.CustomInfoWindowPerfect;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -229,8 +231,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	TextView driverPassengerName, textViewCustomerPickupAddress, textViewAfterAcceptRequestInfo, textViewAfterAcceptAmount, textViewInRideFareFactor;
 	TextView driverPassengerRatingValue;
-	RelativeLayout driverPassengerCallRl;
-	TextView driverPassengerCallText;
+	RelativeLayout driverPassengerCallRl, perfectRidePassengerCallRl;
+	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
+	TextView driverPassengerCallText, driverPerfectRidePassengerName;
 	TextView driverScheduledRideText;
 	ImageView driverFreeRideIcon;
 	Button driverEngagedMyLocationBtn;
@@ -597,10 +600,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			// Driver engaged layout
 			driverEngagedLayout = (RelativeLayout) findViewById(R.id.driverEngagedLayout);
+			perfectRidePassengerInfoRl = (LinearLayout) findViewById(R.id.perfectRidePassengerInfoRl);
+			driverPassengerInfoRl = (LinearLayout) findViewById(R.id.driverPassengerInfoRl);
 
 
 			driverPassengerName = (TextView) findViewById(R.id.driverPassengerName);
 			driverPassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverPerfectRidePassengerName = (TextView) findViewById(R.id.driverPerfectRidePassengerName);
+			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress);
 			textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewAfterAcceptRequestInfo = (TextView) findViewById(R.id.textViewAfterAcceptRequestInfo);
@@ -614,6 +621,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue);
 			driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
+			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
@@ -1161,6 +1169,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			});
 
+			perfectRidePassengerCallRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					String callPhoneNumber = Prefs.with(activity).getString(SPLabels.PERFECT_CUSTOMER_CONT, "");
+
+					if (!"".equalsIgnoreCase(callPhoneNumber)) {
+						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
+					} else {
+						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
+					}
+				}
+			});
+
 
 			driverStartRideBtn.setOnClickListener(new OnClickListener() {
 
@@ -1629,6 +1650,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						} else if (arg0.getTitle().equalsIgnoreCase("station_marker")) {
 							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, arg0.getSnippet(), "");
 							map.setInfoWindowAdapter(customIW);
+
+							return false;
+						} else if (arg0.getTitle().equalsIgnoreCase("next_pickup_marker")) {
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Call", "customer 2");
+							map.setInfoWindowAdapter(customIW);
+
 							return false;
 						} else {
 							return true;
@@ -1715,12 +1742,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 					@Override
-					public void onSuccess(LatLng pickupLatLng) {
+					public void onSuccess(LatLng pickupLatLng, String customerName) {
 						Data.nextPickupLatLng = pickupLatLng;
+						Data.nextCustomerName = customerName;
 						createPerfectRideMarker();
 						Data.driverRideRequests.clear();
+						driverPerfectRidePassengerName.setText(customerName);
+						perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
+						driverPassengerInfoRl.setVisibility(View.GONE);
 						GCMIntentService.clearNotifications(getApplicationContext());
 						driverRequestListAdapter.setResults(Data.driverRideRequests);
+					}
+
+					@Override
+					public void onFailure() {
+						callAndHandleStateRestoreAPI();
 					}
 				}).acceptRide(Data.userData.accessToken,
 						driverRideRequest.customerId,
@@ -2504,6 +2540,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					initializeStationDataProcedure();
 					Data.nextPickupLatLng = null;
+					Data.nextCustomerName = null;
 
 
 					break;
@@ -2543,6 +2580,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.VISIBLE);
 					driverEngagedLayout.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
+
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2595,6 +2634,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					driverStartRideBtn.setVisibility(View.GONE);
 					buttonMarkArrived.setVisibility(View.VISIBLE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
 					startCustomerPathUpdateTimer();
@@ -2641,6 +2681,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					driverStartRideBtn.setVisibility(View.VISIBLE);
 					buttonMarkArrived.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
 					startCustomerPathUpdateTimer();
@@ -2778,6 +2819,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 					etaTimerRLayout.setVisibility(View.GONE);
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3931,7 +3973,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			JSONObject jObj;
 			jObj = new JSONObject(jsonString);
-
 			Log.e("accept_a_request jsonString", "=" + jsonString);
 			if (!jObj.isNull("error")) {
 
@@ -4158,17 +4199,24 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 		new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
+		Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
 		DialogPopup.dismissLoadingDialog();
 	}
 
 	public void createPerfectRideMarker() {
 		if (Data.nextPickupLatLng != null) {
+			driverPerfectRidePassengerName.setText(Data.nextCustomerName);
+			perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
+			driverPassengerInfoRl.setVisibility(View.GONE);
 			MarkerOptions markerOptionsStationLocation = new MarkerOptions();
 			markerOptionsStationLocation.title("next_pickup_marker");
 			markerOptionsStationLocation.position(Data.nextPickupLatLng);
 			markerOptionsStationLocation.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPerfectRidePinMarkerBitmap(HomeActivity.this, assl)));
 			perfectRidestationMarker = map.addMarker(markerOptionsStationLocation);
-//			perfectRidestationMarker.showInfoWindow();
+			CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, perfectRidestationMarker.getSnippet(), "");
+			map.setInfoWindowAdapter(customIW);
+
+
 		}
 	}
 
@@ -6453,7 +6501,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 	@Override
-	public void onChangeStatePushReceived() {
+	public void onChangeStatePushReceived(int flag) {
 		try {
 			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 				callAndHandleStateRestoreAPI();
@@ -6461,6 +6509,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
 				Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 				new ApiAcceptRide().perfectRideVariables(this, "", "", "", 0, 0);
+				Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+				if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() ==flag) {
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

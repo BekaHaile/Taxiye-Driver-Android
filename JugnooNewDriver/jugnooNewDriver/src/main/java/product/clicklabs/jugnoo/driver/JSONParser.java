@@ -319,7 +319,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("customer_cancel_timeout_factor", 1));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, userData.optInt("driver_cancel_timeout_factor", 2));
-		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl",86400000));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl", 86400000));
 
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
@@ -700,6 +700,8 @@ public class JSONParser implements Constants {
 											double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
 											double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
 											Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
+											Data.nextCustomerName = jObject.optString("perfect_user_name","abc");
+											Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("perfect_phone_no"));
 										} catch(Exception e){
 											e.printStackTrace();
 										}
@@ -840,7 +842,9 @@ public class JSONParser implements Constants {
 
 								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
 									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-									new ApiAcceptRide().perfectRideVariables(context, "","","",0,0);
+									Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+									new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
+
 								}
 							}
 			} catch(Exception e){
