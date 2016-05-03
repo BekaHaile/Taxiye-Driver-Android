@@ -9,6 +9,8 @@ import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.support.v4.content.LocalBroadcastManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -18,10 +20,12 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -30,21 +34,22 @@ import retrofit.mime.TypedByteArray;
 
 public class NotificationService extends NotificationListenerService {
 
-    Context context;
+	Context context;
 	ArrayList<AllNotificationData> notificationList;
 
 
 	@Override
 
-    public void onCreate() {
+	public void onCreate() {
 
-        super.onCreate();
-        context = getApplicationContext();
+		super.onCreate();
+		context = getApplicationContext();
 
-    }
-    @Override
+	}
 
-    public void onNotificationPosted(StatusBarNotification sbn) {
+	@Override
+
+	public void onNotificationPosted(StatusBarNotification sbn) {
 
 
 		try {
@@ -55,25 +60,36 @@ public class NotificationService extends NotificationListenerService {
 			String title = extras.getString("android.title");
 			String text = extras.getCharSequence("android.text").toString();
 
-			Log.i("Package",pack);
-			Log.i("Ticker",ticker);
-			Log.i("Title",title);
+			Log.i("Package", pack);
+			Log.i("Ticker", ticker);
+			Log.i("Title", title);
 			Log.i("Text", text);
 
-			Intent msgrcv = new Intent("Msg");
-			msgrcv.putExtra("package", pack);
-			msgrcv.putExtra("ticker", ticker);
-			msgrcv.putExtra("title", title);
-			msgrcv.putExtra("text", text);
 
 //        LocalBroadcastManager.getInstance(context).sendBroadcast(msgrcv);
-			if(sbn !=null && (pack.toLowerCase().contains("ola") || pack.toLowerCase().contains("uber"))) {
+			if (sbn != null && (pack.toLowerCase().contains("ola") || pack.toLowerCase().contains("uber"))
+					&& (Prefs.with(context).getInt(SPLabels.NOTIFICATION_SAVE_COUNT, 0) > 0)) {
 				Database2.getInstance(context).insertNotificationdb(context, id, pack, text, title);
 			}
 
-			if(Database2.getInstance(context).getAllDbNotificationCount() > 0){
+			if (Database2.getInstance(context).getAllDbNotificationCount() >
+					Prefs.with(context).getInt(SPLabels.NOTIFICATION_SAVE_COUNT, 0)) {
 				notificationList = Database2.getInstance(context).getAllDBNotification();
-				sendDriverNotifications(notificationList);
+
+				JSONArray notifications = new JSONArray();
+				for (int i = 0; i < notificationList.size(); i++) {
+					JSONObject obj = new JSONObject();
+					try {
+						obj.put("id", notificationList.get(i).getNotificationId());
+						obj.put("package_name", notificationList.get(i).getNotificationPackage());
+						obj.put("title", notificationList.get(i).getTitle());
+						obj.put("text", notificationList.get(i).getMessage());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					notifications.put(obj);
+				}
+				sendDriverNotifications(notifications);
 			}
 
 		} catch (Exception e) {
@@ -83,41 +99,42 @@ public class NotificationService extends NotificationListenerService {
 
 	}
 
-    @Override
+	@Override
 
-    public void onNotificationRemoved(StatusBarNotification sbn) {
-        Log.i("Msg","Notification Removed");
+	public void onNotificationRemoved(StatusBarNotification sbn) {
+		Log.i("Msg", "Notification Removed");
 
-    }
+	}
 
 
-	public void sendDriverNotifications(ArrayList<AllNotificationData> notificationList ) {
+	public void sendDriverNotifications(JSONArray notificationList) {
 		try {
-				HashMap<String, String> params = new HashMap<String, String>();
+			HashMap<String, String> params = new HashMap<String, String>();
 
-				params.put("access_token", Data.userData.accessToken);
-				params.put("notification_list", String.valueOf(notificationList));
-				Log.i("params", "=" + params);
+			params.put("access_token", Data.userData.accessToken);
+			params.put("notifications", String.valueOf(notificationList));
+			Log.i("params", "=" + params);
 
-				RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						try {
-							JSONObject jObj = new JSONObject(responseStr);
-							int flag = jObj.getInt("flag");
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
+			RestClient.getApiServices().sendDriverPushes(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+					try {
+						JSONObject jObj = new JSONObject(responseStr);
+						int flag = jObj.getInt("flag");
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+							Database2.getInstance(context).deleteNotificationTabledb();
 						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
 					}
+				}
 
-					@Override
-					public void failure(RetrofitError error) {
-						Log.e("request fail", error.toString());
-					}
-				});
+				@Override
+				public void failure(RetrofitError error) {
+					Log.e("request fail", error.toString());
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

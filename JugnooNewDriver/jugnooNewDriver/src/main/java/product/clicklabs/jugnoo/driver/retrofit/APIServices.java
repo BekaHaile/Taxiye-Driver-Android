@@ -344,6 +344,11 @@ public interface APIServices {
 	@POST("/get_wallet_balance_end_ride")
 	void updateWalletBalance(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/driver/upload_notification_logs")
+	void sendDriverPushes(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
 
 	@FormUrlEncoded
 	@POST("/get_driver_earnings")
