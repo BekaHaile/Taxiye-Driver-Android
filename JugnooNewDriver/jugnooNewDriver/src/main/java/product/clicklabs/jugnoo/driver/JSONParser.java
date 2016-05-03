@@ -1,8 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -38,6 +41,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -320,6 +324,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("customer_cancel_timeout_factor", 1));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, userData.optInt("driver_cancel_timeout_factor", 2));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl", 86400000));
+		Prefs.with(context).save(SPLabels.NOTIFICATION_SAVE_COUNT, userData.optInt("push_upload_count", 0));
 
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
@@ -354,6 +359,7 @@ public class JSONParser implements Constants {
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
+
 		
 		Log.e("response ==", "="+response);
 		
@@ -377,9 +383,7 @@ public class JSONParser implements Constants {
 				
 		return resp;
 	}
-	
-	
-	
+
 	
 	
 	public void parsePortNumber(Context context, JSONObject jLoginObject){

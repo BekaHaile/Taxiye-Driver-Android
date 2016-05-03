@@ -82,5 +82,6 @@ public class SPLabels {
 
     public static final String REQUEST_LOGIN_OTP_FLAG = "requestLoginOtpFlag";
     public static final String ACCEPT_RIDE_TIME = "acceptRideTime";
+    public static final String NOTIFICATION_SAVE_COUNT = "notification_save_count";
 
 }
