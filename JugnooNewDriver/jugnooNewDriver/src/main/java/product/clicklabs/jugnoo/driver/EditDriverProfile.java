@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -41,12 +43,13 @@ public class EditDriverProfile extends Activity {
 	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;
-	ImageView  imageViewEditPhone;
-	TextView title;
+	ImageView imageViewEditPhone;
+	TextView title, TextViewAccNo, textViewIFSC, textViewBankName, textViewBankLoc;
 	ScrollView scrollView;
 
 	EditText editTextUserName, editTextPhone;
 	ImageView profileImg, imageViewTitleBarDEI;
+//	public static ProfileInfo openProfileInfo;
 
 
 	@Override
@@ -89,6 +92,14 @@ public class EditDriverProfile extends Activity {
 		editTextUserName.setTypeface(Data.latoRegular(this));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		editTextPhone.setTypeface(Data.latoRegular(this));
+		TextViewAccNo = (TextView) findViewById(R.id.TextViewAccNo);
+		title.setTypeface(Data.latoRegular(this));
+		textViewIFSC = (TextView) findViewById(R.id.textViewIFSC);
+		title.setTypeface(Data.latoRegular(this));
+		textViewBankName = (TextView) findViewById(R.id.textViewBankName);
+		title.setTypeface(Data.latoRegular(this));
+		textViewBankLoc = (TextView) findViewById(R.id.textViewBankLoc);
+		title.setTypeface(Data.latoRegular(this));
 
 		profileImg = (ImageView) findViewById(R.id.profileImg);
 		imageViewTitleBarDEI = (ImageView) findViewById(R.id.imageViewTitleBarDEI);
@@ -100,35 +111,15 @@ public class EditDriverProfile extends Activity {
 				performBackPressed();
 			}
 		});
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 
-//		imageViewEditName.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				editTextUserName.setError(null);
-//				if (editTextUserName.isEnabled()) {
-//					String nameChanged = editTextUserName.getText().toString().trim();
-//					if ("".equalsIgnoreCase(nameChanged)) {
-//						editTextUserName.requestFocus();
-//						editTextUserName.setError("Username can't be empty");
-//					} else {
-//						if (Data.userData.userName.equalsIgnoreCase(nameChanged)) {
-//							editTextUserName.requestFocus();
-//							editTextUserName.getOnFocusChangeListener();
-//							editTextUserName.setError("Changed Username is same as the previous one.");
-//						} else {
-//							updateUserProfileAPIRetroo(EditDriverProfile.this, nameChanged, ProfileUpdateMode.NAME);
-//						}
-//					}
-//				} else {
-//					editTextUserName.requestFocus();
-//					editTextUserName.setEnabled(true);
-//					editTextUserName.setSelection(editTextUserName.getText().length());
-//					Utils.showSoftKeyboard(EditDriverProfile.this, editTextUserName);
-//				}
-//			}
-//		});
+		if(DriverProfileActivity.openedProfileInfo != null){
+			TextViewAccNo.setText(DriverProfileActivity.openedProfileInfo.accNo);
+			textViewIFSC.setText(DriverProfileActivity.openedProfileInfo.ifscCode);
+			textViewBankName.setText(DriverProfileActivity.openedProfileInfo.bankName);
+			textViewBankLoc.setText(DriverProfileActivity.openedProfileInfo.bankLoc);
+		}
 
 		imageViewEditPhone.setOnClickListener(new View.OnClickListener() {
 			@Override

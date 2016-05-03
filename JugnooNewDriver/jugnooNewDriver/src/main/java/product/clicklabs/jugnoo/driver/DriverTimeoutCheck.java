@@ -12,11 +12,15 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
  */
 public class DriverTimeoutCheck {
 
-	public void timeoutBuffer(Context context, boolean highPenalty) {
+	public void timeoutBuffer(Context context, int highPenalty) {
 		int penaltyFactor = 1;
 		try {
-			if (highPenalty) {
-				penaltyFactor = Prefs.with(context).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR, 1);
+			if (highPenalty>0) {
+				if(highPenalty ==1) {
+					penaltyFactor = Prefs.with(context).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR, 1);
+				}else if(highPenalty ==2){
+					penaltyFactor = Prefs.with(context).getInt(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, 1);
+				}
 				Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_VALUE, System.currentTimeMillis() - 5000);
 			}
 

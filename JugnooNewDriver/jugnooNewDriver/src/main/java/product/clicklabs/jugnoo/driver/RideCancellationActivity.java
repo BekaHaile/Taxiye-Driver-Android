@@ -24,8 +24,10 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -206,7 +208,9 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							}
 						}
 
-						new DriverTimeoutCheck().timeoutBuffer(activity, true);
+						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+
+						sendCallLogs(Data.dEngagementId);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -224,6 +228,40 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			});
 		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+	}
+
+	public void sendCallLogs(String engId) {
+		try {
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("access_token", Data.userData.accessToken);
+				params.put("eng_id", engId);
+				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber));
+
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+					}
+				});
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/linearLayoutRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_light_grey"
+    android:orientation="vertical"
+    android:splitMotionEvents="false">
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="INVOICE DETAILS"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-4px"
+        android:layout_marginRight="-4px"
+        android:layout_marginTop="40px"
+        android:layout_marginBottom="24px">
+
+
+        <TextView
+            android:id="@+id/textViewCurrentInvoiceId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25px"
+            android:text="Invoice Id:"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+        <TextView
+            android:id="@+id/textViewCurrentInvoiceStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25px"
+            android:layout_marginTop="20px"
+            android:layout_below="@+id/textViewCurrentInvoiceId"
+            android:text="Status:"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+
+        <TextView
+            android:id="@+id/textViewCurrentInvoiceGeneratedOn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25px"
+            android:layout_marginTop="20px"
+            android:layout_below="@+id/textViewCurrentInvoiceStatus"
+            android:text="Generated On:"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+
+        <RelativeLayout
+            android:id="@+id/textViewLastInvDate"
+            android:layout_width="320px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="25px">
+
+            <RelativeLayout
+                android:id="@+id/dateTimeRlFrom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:splitMotionEvents="false">
+
+                <TextView
+                    android:id="@+id/dateTimeTextFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15px"
+                    android:layout_toLeftOf="@+id/dateTimeValueFrom"
+                    android:singleLine="true"
+                    android:text="From:"
+                    android:textColor="@color/black"
+                    android:textSize="32px"
+                    />
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewTimeFrom"-->
+                    <!--android:layout_width="30px"-->
+                    <!--android:layout_height="30px"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_marginLeft="15px"-->
+                    <!--android:layout_toLeftOf="@+id/dateTimeValueFrom"-->
+                    <!--android:src="@drawable/date_orange_icon"-->
+                    <!--android:tag="mwar"/>-->
+
+                <TextView
+                    android:id="@+id/dateTimeValueFrom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5px"
+                    android:layout_alignParentRight="true"
+                    android:singleLine="true"
+                    android:text="23 June, 2014"
+                    android:textColor="@color/new_orange"
+                    android:textSize="32px"
+                    />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/dateTimeRlTo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="20px"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/dateTimeRlFrom"
+                android:splitMotionEvents="false">
+
+                <TextView
+                    android:id="@+id/dateTimeTextTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15px"
+                    android:singleLine="true"
+                    android:layout_toLeftOf="@+id/dateTimeValueTo"
+                    android:text="To:"
+                    android:textColor="@color/black"
+                    android:textSize="32px"
+                    />
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewTimeTo"-->
+                    <!--android:layout_width="30px"-->
+                    <!--android:layout_height="30px"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:layout_toLeftOf="@+id/dateTimeValueTo"-->
+                    <!--android:layout_marginLeft="15px"-->
+                    <!--android:src="@drawable/date_orange_icon"-->
+                    <!--android:tag="mwar"/>-->
+
+                <TextView
+                    android:id="@+id/dateTimeValueTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="5px"
+                    android:singleLine="true"
+                    android:text="26 June, 2014"
+                    android:textColor="@color/new_orange"
+                    android:textSize="32px"
+                    />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+        <!--<ImageView-->
+        <!--android:id="@+id/imageViewCurrentInv"-->
+        <!--android:layout_width="680px"-->
+        <!--android:layout_height="2px"-->
+        <!--android:layout_below="@+id/textViewLastInvDate"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="30px"-->
+        <!--android:background="@color/grey_dark_less"/>-->
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="680px"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/background_white_rounded_orange_bordered">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPaidByCstmr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewCurrentInv"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPaidByCstmr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/paid_by_customer"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPaidByCstmrValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutUsingCstmr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPaidByCstmr"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPaidUsingCstmr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/paid_using_wallet"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPaidUsingCstmrValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPaidByJugnoo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutUsingCstmr"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPaidByJugnoo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/paid_by_jugnoo"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPaidByJugnooValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCancelSubsidy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPaidByJugnoo"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewCancelSubsidy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/cancel_subsidy"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewCancelSubsidyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPhoneDeduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutCancelSubsidy"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPhoneDeduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/phone_deduction"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPhoneDeductionValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive3"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewPhoneDeduction"
+                android:background="@drawable/subtract_icon"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutReferral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPhoneDeduction"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewReferral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/referral_amount"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewReferralValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutManualAdj"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutReferral"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewManualAdj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/Manual_adjustment"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive5"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewManualAdj"
+                android:visibility="gone"
+                android:background="@drawable/subtract_icon"/>
+
+            <TextView
+                android:id="@+id/textViewManualAdjValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutJugnooCmsn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutManualAdj"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewJugnooCmsn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/jugnoo_cmsn"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewJugnooCmsnValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive2"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewJugnooCmsn"
+                android:background="@drawable/subtract_icon"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutPaytmCash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutJugnooCmsn"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewPaytmCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/cash_via_paytm"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewPaytmCashValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive6"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewPaytmCash"
+                android:background="@drawable/subtract_icon"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutOutstandingAmnt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutPaytmCash"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginBottom="24px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewOutstandingAmnt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/Outstanding_amnt"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewOutstandingAmntValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNegetive1"
+                android:layout_width="28px"
+                android:layout_height="28px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10px"
+                android:layout_marginTop="2px"
+                android:layout_toRightOf="@+id/textViewOutstandingAmnt"
+                android:background="@drawable/subtract_icon"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTotalAmnt"
+        android:layout_width="680px"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageViewCurrentInv1"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="-4px"
+        android:layout_marginRight="-4px"
+        android:layout_marginTop="32px"
+        android:background="@drawable/background_white_rounded_orange_bordered">
+
+        <TextView
+            android:id="@+id/textViewTotalAmntValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="@string/rupee_zero"
+            android:textColor="@color/new_orange"
+            android:layout_marginTop="24px"
+            android:textSize="42px"/>
+
+        <TextView
+            android:id="@+id/textViewTotalAmnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/textViewTotalAmntValue"
+            android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+            android:text="@string/acc_credited"
+            android:textColor="@color/new_orange"
+            android:layout_marginTop="12px"
+            android:layout_marginBottom="24px"
+            android:textSize="36px"/>
+
+
+
+    </RelativeLayout>
+
+
+
+
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/relativeLayoutEarnings"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="98px"-->
+        <!--android:layout_marginLeft="-4px"-->
+        <!--android:layout_marginRight="-4px"-->
+        <!--android:layout_marginTop="12px">-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewUpcomingInvoice"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="20px"-->
+            <!--android:layout_marginTop="20px"-->
+            <!--android:text="@string/upcoming_payment_due_date"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="32px"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewUpcomingInvoiceDate"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginRight="20px"-->
+            <!--android:text="27 Jan 2106"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="32px"/>-->
+
+
+    <!--</RelativeLayout>-->
+
+
+</LinearLayout>

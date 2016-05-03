@@ -82,20 +82,20 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
-		
+
 		listViewHelp = (ListView) findViewById(R.id.listViewHelp);
 		helpListAdapter = new HelpListAdapter();
-		listViewHelp.setAdapter(helpListAdapter);
+		//listViewHelp.setAdapter(helpListAdapter);
 		
 		helpExpandedRl = (RelativeLayout) findViewById(R.id.helpExpandedRl);
-		helpExpandedRl.setVisibility(View.GONE);
+		helpExpandedRl.setVisibility(View.VISIBLE);
 		
 		
 		progressBarHelp = (ProgressBar) findViewById(R.id.progressBarHelp);
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay); textViewInfoDisplay.setTypeface(Data.latoRegular(getApplicationContext()));
 		helpWebview = (WebView) findViewById(R.id.helpWebview);
-		
-		
+
+
 		
 		backBtn.setOnClickListener(new View.OnClickListener() {
 		
@@ -104,13 +104,13 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 				performBackPressed();
 			}
 		});
-		
-		
+
+
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
-				if(selectedHelpSection != null){
+				if (selectedHelpSection != null) {
 					getHelpAsync(HelpActivity.this, selectedHelpSection);
 				}
 			}
@@ -126,9 +126,11 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		helpSections.add(HelpSection.PRIVACY);
 		
 		
-		helpListAdapter.notifyDataSetChanged();
-		
-		
+		//helpListAdapter.notifyDataSetChanged();
+
+		getHelpAsync(HelpActivity.this, helpSections.get(4));
+		title.setText("" + helpSections.get(4).getName());
+
 	}
 	
 	
@@ -289,7 +291,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 
 
 
-				RestClient.getApiServices().gethelp(helpSection.getOrdinal(), new Callback<BookingHistoryResponse>() {
+				RestClient.getApiServices().gethelp(helpSection.getOrdinal(),"1", new Callback<BookingHistoryResponse>() {
 
 
 					@Override
@@ -333,14 +335,14 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	
 	
 	public void performBackPressed(){
-		if(helpExpandedRl.getVisibility() == View.VISIBLE){
+		/*if(helpExpandedRl.getVisibility() == View.VISIBLE){
 			helpExpandedRl.setVisibility(View.GONE);
 			title.setText("Help");
 		}
-		else{
+		else{*/
 			finish();
 			overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		}
+		//}
 	}
 	
 	@Override

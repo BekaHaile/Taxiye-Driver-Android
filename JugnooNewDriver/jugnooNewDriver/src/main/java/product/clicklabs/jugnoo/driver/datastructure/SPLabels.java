@@ -63,6 +63,7 @@ public class SPLabels {
 	public static final String BUFFER_TIMEOUT_VALUE ="bufferTimeoutValue";
 	public static final String DRIVER_TIMEOUT_FLAG = "driverTimeoutFlag";
     public static final String DRIVER_TIMEOUT_FACTOR = "driverTimeoutFactor";
+    public static final String DRIVER_TIMEOUT_FACTOR_HIGH = "driverTimeoutFactorHigh";
     public static final String PERFECT_ACCEPT_RIDE_DATA = "perfectAcceptRideData";
     public static final String DRIVER_TIMEOUT_TTL = "driverTimeoutTtl";
     public static final String CUSTOMER_PHONE_NUMBER = "customerPhoneNumer";
@@ -77,5 +78,6 @@ public class SPLabels {
 	public static final String PERFECT_DISTANCE = "perfectDistance";
 	public static final String PERFECT_RIDE_REGION_REQUEST_STATUS = "perfectRideRegionRequestStatus";
     public static final String REQUEST_LOGIN_OTP_FLAG = "requestLoginOtpFlag";
+    public static final String ACCEPT_RIDE_TIME = "acceptRideTime";
 
 }
