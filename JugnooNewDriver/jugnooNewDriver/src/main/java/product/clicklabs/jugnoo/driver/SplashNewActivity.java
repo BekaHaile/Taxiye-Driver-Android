@@ -995,7 +995,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		}
 		else if(hasFocus && loginFailed){
 			loginFailed = false;
-			startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
+			startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
