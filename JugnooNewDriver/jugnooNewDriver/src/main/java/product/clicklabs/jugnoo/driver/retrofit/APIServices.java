@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -355,4 +356,9 @@ public interface APIServices {
 	void earningDetails(@Field("access_token") String accessToken,
 									   @Field("login_type") String loginType,
 									   Callback<EarningsDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_pushes_for_user")
+	void notificationInbox(@FieldMap Map<String, String> params,
+						   Callback<NotificationInboxResponse> callback);
 }

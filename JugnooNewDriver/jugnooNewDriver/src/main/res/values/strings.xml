@@ -260,6 +260,7 @@
 	<string name="bank_name">Bank Name :</string>
 	<string name="bank_loc">Bank Location :</string>
 	<string name="customer_waiting">Your next customer is waiting</string>
+	<string name="show_more">Show more</string>
 
 
 	<string-array name="CountryCodes" >

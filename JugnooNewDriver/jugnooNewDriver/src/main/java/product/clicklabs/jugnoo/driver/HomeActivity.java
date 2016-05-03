@@ -98,6 +98,7 @@ import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CouponType;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
@@ -130,6 +131,7 @@ import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
@@ -146,7 +148,8 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 @SuppressLint("DefaultLocale")
-public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate, FlurryEventNames, OnMapReadyCallback, Constants {
+public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
+		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler {
 
 
 	private final String TAG = HomeActivity.class.getSimpleName();
@@ -3400,6 +3403,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 		stopService(new Intent(HomeActivity.this, GeanieView.class));
 
+		EventsHolder.displayPushHandler = this;
 
 	}
 
@@ -7756,4 +7760,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 	}
 
+
+	@Override
+	public void onDisplayMessagePushReceived() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				setUserData();
+			}
+		});
+	}
 }
