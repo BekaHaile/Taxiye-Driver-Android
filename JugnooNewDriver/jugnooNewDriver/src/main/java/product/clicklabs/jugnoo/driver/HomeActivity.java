@@ -1775,18 +1775,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					GCMIntentService.stopRing(true);
 					driverAcceptRideAsync(HomeActivity.this);
 				} else {
-					Data.dEngagementId = driverRideRequest.engagementId;
-					Data.dCustomerId = driverRideRequest.customerId;
-					Data.dCustLatLng = driverRideRequest.latLng;
-					Data.openedDriverRideRequest = driverRideRequest;
-
-					if (Utils.getBatteryPercentage(this) >= 20) {
-						GCMIntentService.clearNotifications(HomeActivity.this);
-						GCMIntentService.stopRing(true);
-						driverAcceptRideAsync(HomeActivity.this);
-					} else {
-						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
-					}
+					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
 				}
 			}
 		} catch (Exception e) {
@@ -4226,14 +4215,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			perfectRidestationMarker = map.addMarker(markerOptionsStationLocation);
 			CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, perfectRidestationMarker.getSnippet(), "");
 			map.setInfoWindowAdapter(customIW);
-//			perfectRidestationMarker.showInfoWindow();
 
-			map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-				@Override
-				public void onInfoWindowClick(Marker marker) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-				}
-			});
 
 		}
 	}
