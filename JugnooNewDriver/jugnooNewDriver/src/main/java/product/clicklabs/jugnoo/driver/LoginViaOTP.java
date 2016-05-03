@@ -416,7 +416,7 @@ public class LoginViaOTP extends Activity {
 
 	public void performbackPressed() {
 		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
-		Intent intent = new Intent(LoginViaOTP.this, SplashLogin.class);
+		Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();
