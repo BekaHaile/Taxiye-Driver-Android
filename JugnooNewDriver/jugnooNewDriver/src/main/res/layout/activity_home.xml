@@ -353,6 +353,14 @@
                                 android:textColor="@color/bg_grey_opaque"
                                 android:textSize="40px"
                                 android:visibility="gone"/>
+
+                            <ImageView
+                                android:id="@+id/customerInfoLine"
+                                android:layout_width="match_parent"
+                                android:layout_height="6px"
+                                android:layout_below="@+id/inRideCustomerInfoRl"
+                                android:background="@drawable/shadow_down"/>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -430,26 +438,27 @@
 
                                         <!--/>-->
 
+
                                 </LinearLayout>
 
                             </RelativeLayout>
+                            <ImageView
+                                android:id="@+id/customerInfoLine2"
+                                android:layout_width="match_parent"
+                                android:layout_height="6px"
+                                android:layout_below="@+id/inRideCustomerInfoRl"
+                                android:background="@drawable/shadow_down"/>
 
                         </LinearLayout>
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/customerInfoLine"
-                        android:layout_width="match_parent"
-                        android:layout_height="6px"
-                        android:layout_below="@+id/inRideCustomerInfoRl"
-                        android:background="@drawable/shadow_down"/>
 
                     <RelativeLayout
                         android:id="@+id/etaTimerRLayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/customerInfoLine"
+                        android:layout_below="@+id/inRideCustomerInfoRl"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/menu_black_btn_normal_rounded">
 

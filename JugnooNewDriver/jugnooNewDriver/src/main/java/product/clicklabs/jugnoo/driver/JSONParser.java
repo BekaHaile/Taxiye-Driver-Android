@@ -700,8 +700,8 @@ public class JSONParser implements Constants {
 											double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
 											double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
 											Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
-											Data.nextCustomerName = jObject.optString("perfect_customer_name","abc");
-											Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("next_phone_no"));
+											Data.nextCustomerName = jObject.optString("perfect_user_name","abc");
+											Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("perfect_phone_no"));
 										} catch(Exception e){
 											e.printStackTrace();
 										}
