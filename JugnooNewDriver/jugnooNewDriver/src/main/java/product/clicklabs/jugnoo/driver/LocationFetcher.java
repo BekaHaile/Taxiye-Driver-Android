@@ -236,7 +236,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		try {
 			startLocationUpdates(requestInterval, priority);
 		} catch (Exception e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 

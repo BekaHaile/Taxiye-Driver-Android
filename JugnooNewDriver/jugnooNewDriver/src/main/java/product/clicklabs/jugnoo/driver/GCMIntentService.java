@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
+import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -548,7 +549,7 @@ public class GCMIntentService extends IntentService {
 
 								String logMessage = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
 									notificationManagerResume(this, logMessage, true);
 								} else {
 									notificationManager(this, logMessage, true);
@@ -559,7 +560,7 @@ public class GCMIntentService extends IntentService {
 
 								String logMessage = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived();
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);
@@ -646,8 +647,17 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("downloadOnly", downloadList);
 								startService(intent1);
 
+							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
+								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								startService(intent1);
 
-							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
+							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
+								Intent synIntent = new Intent(this, SyncMessageService.class);
+								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
+								startService(synIntent);
+
+							}else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 //										{
 //											"driver_id": 1148,
 //												"flag": 74,
@@ -957,23 +967,20 @@ public class GCMIntentService extends IntentService {
 
 				int notificationId = jObj.optInt(Constants.KEY_NOTIFICATION_ID, flag);
 
+				Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT,
+						(Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
+
 				// store push in database for notificaion center screen...
 				String pushArrived = DateOperations.getCurrentTimeInUTC();
 
-				if (jObj.has("timeToDisplay") && jObj.has("timeTillDisplay")) {
-					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
-							jObj.getString("timeToDisplay"), jObj.getString("timeTillDisplay"), picture);
+				/*if (jObj.has("timeToDisplay") && jObj.has("timeTillDisplay")) {
 					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
 				} else if (jObj.has("timeToDisplay")) {
-					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
-							jObj.getString("timeToDisplay"), "", picture);
 					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT, (Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
 				} else if (jObj.has("timeTillDisplay")) {
-					Database2.getInstance(this).insertNotification(this, notificationId, pushArrived, message1,
-							"0", jObj.getString("timeTillDisplay"), picture);
 					Prefs.with(this).save(SPLabels.NOTIFICATION_UNREAD_COUNT,
 							(Prefs.with(this).getInt(SPLabels.NOTIFICATION_UNREAD_COUNT, 0) + 1));
-				}
+				}*/
 				if (EventsHolder.displayPushHandler != null) {
 					EventsHolder.displayPushHandler.onDisplayMessagePushReceived();
 				}

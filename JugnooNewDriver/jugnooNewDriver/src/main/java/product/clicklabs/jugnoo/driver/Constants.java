@@ -5,7 +5,6 @@ package product.clicklabs.jugnoo.driver;
  */
 public interface Constants {
 
-    long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3; //in seconds
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
@@ -17,8 +16,12 @@ public interface Constants {
 
     String KEY_CACHED_API_ENABLED = "cached_api_enabled";
     String KEY_FLAG = "flag";
+    String ACTION_LOADING_COMPLETE = "product.clicklabs.jugnoo.driver.ACTION_LOADING_COMPLETE";
+    String SP_ANALYTICS_LAST_MESSAGE_READ_TIME = "sp_analytics_last_message_read_time";
+	String KEY_ANALYTICS_SMS_LIST= "analytics_sms_list";
+	String KEY_ACCESS_TOKEN = "access_token";
 
-    String JUGNOO_AUDIO = "jugnoo_audio";
+	String JUGNOO_AUDIO = "jugnoo_audio";
 
     long HEAT_MAP_FETCH_DELAY = 120000;
 

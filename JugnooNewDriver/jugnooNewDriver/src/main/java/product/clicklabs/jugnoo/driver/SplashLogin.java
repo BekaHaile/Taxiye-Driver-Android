@@ -1,9 +1,13 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -29,6 +33,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
@@ -406,7 +411,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", "");
 
 			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 				params.put("auto_n_cab_installed", "1");

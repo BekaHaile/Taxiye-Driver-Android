@@ -143,7 +143,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
 		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
-		RestClient.setupRestClient();
+		RestClient.setupRestClient(Data.SERVER_URL);
 		DriverLocationUpdateService.updateServerData(context);
 	}
 
@@ -214,8 +214,11 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		progressBar1.setVisibility(View.GONE);
 		
-		buttonLogin = (Button) findViewById(R.id.buttonLogin); buttonLogin.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		buttonRegister = (Button) findViewById(R.id.buttonRegister); buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+		buttonLogin = (Button) findViewById(R.id.buttonLogin);
+		buttonLogin.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		buttonRegister = (Button) findViewById(R.id.buttonRegister);
+		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		
 		buttonLogin.setVisibility(View.GONE);
 		buttonRegister.setVisibility(View.GONE);
@@ -225,7 +228,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
+				startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				FlurryEventLogger.event(LOGIN);
@@ -639,7 +642,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", "");
 
 
 				params.put("latitude", ""+Data.latitude);
@@ -700,7 +702,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
-							Log.i("pushyyy", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
@@ -992,7 +993,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		}
 		else if(hasFocus && loginFailed){
 			loginFailed = false;
-			startActivity(new Intent(SplashNewActivity.this, SplashLogin.class));
+			startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}

@@ -20,7 +20,7 @@ public interface AppInterruptHandler {
 	
 	public void onManualDispatchPushReceived();
 
-	public void onChangeStatePushReceived();
+	public void onChangeStatePushReceived(int flag);
 	
 	public void onStationChangedPushReceived();
 	

@@ -46,7 +46,6 @@ public class DriverLocationDispatcher {
 				String accessToken = Database2.getInstance(context).getDLDAccessToken();
 				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-				String pushyToken = Database2.getInstance(context).getPushyToken();
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
@@ -60,7 +59,6 @@ public class DriverLocationDispatcher {
 						nameValuePairs.put("bearing", "" + location.getBearing());
 						nameValuePairs.put("device_token", deviceToken);
 						nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
-						nameValuePairs.put("pushy_token", pushyToken);
 						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
 						Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());

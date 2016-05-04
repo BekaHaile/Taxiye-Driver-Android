@@ -320,7 +320,6 @@ public class LoginViaOTP extends Activity {
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", "");
 
 			if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
 				params.put("auto_n_cab_installed", "1");
@@ -416,7 +415,7 @@ public class LoginViaOTP extends Activity {
 
 	public void performbackPressed() {
 		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
-		Intent intent = new Intent(LoginViaOTP.this, SplashLogin.class);
+		Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();

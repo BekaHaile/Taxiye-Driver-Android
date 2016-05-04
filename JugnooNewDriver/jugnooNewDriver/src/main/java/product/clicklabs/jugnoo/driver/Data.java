@@ -195,6 +195,7 @@ public class Data {
 	
 	
 	public static LatLng pickupLatLng, nextPickupLatLng;
+	public static String nextCustomerName;
 
 	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
 	
