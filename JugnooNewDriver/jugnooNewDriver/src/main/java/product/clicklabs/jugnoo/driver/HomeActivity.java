@@ -138,6 +138,7 @@ import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -841,6 +842,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void onClick(View v) {
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(MENU);
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
 				}
 			});
 
@@ -940,6 +942,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 				}
 			});
 
@@ -972,6 +975,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_SUPER_DRIVER_CLICK, null);
 				}
 			});
 
@@ -1159,6 +1163,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					if (!"".equalsIgnoreCase(callPhoneNumber)) {
 						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
+						try{
+							JSONObject map = new JSONObject();
+							map.put(KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
+							map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+							map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+							NudgeClient.trackEvent(HomeActivity.this, NUDGE_CALL_USER, map);
+						} catch(Exception e){
+							e.printStackTrace();
+						}
 						if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 							FlurryEventLogger.event(CALLED_CUSTOMER);
 						} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
@@ -1389,7 +1402,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if (0 == rating) {
 								DialogPopup.alertPopup(HomeActivity.this, "", "We take your feedback seriously. Please give us a rating");
 							} else {
-								submitFeedbackToDriverAsync(HomeActivity.this, Data.dEngagementId, rating);
+								submitFeedbackToCustomerAsync(HomeActivity.this, Data.dEngagementId, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
 								driverScreenMode = DriverScreenMode.D_INITIAL;
 								switchDriverScreen(driverScreenMode);
@@ -1540,6 +1553,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					startActivity(new Intent(this, SplashNewActivity.class));
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			try{
+				JSONObject map = new JSONObject();
+				map.put(KEY_LATITUDE, Data.latitude);
+				map.put(KEY_LONGITUDE, Data.longitude);
+				NudgeClient.trackEvent(this, NUDGE_APP_OPEN, map);
+			} catch(Exception e){
 				e.printStackTrace();
 			}
 
@@ -1936,6 +1958,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							if (jugnooOnFlag == 1) {
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
 							}
+							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
@@ -1952,6 +1975,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 			}
 		}).start();
+	}
+
+	private void nudgeJugnooOnOff(double latitude, double longitude){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(KEY_LATITUDE, latitude);
+			map.put(KEY_LONGITUDE, longitude);
+			if(Data.userData.autosAvailable == 1){
+				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_ON, map);
+			} else{
+				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_OFF, map);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -4283,6 +4321,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 							reduceRideRequest(Data.dEngagementId);
+							nudgeRequestCancel();
+
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 0);
@@ -4307,6 +4347,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 
+	}
+
+	private void nudgeRequestCancel(){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(Constants.KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			map.put(Constants.KEY_CUSTOMER_ID, Data.dCustomerId);
+			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_REQUEST_CANCEL, map);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -4529,6 +4580,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							driverScreenMode = DriverScreenMode.D_IN_RIDE;
 							switchDriverScreen(driverScreenMode);
+
+							try{
+								JSONObject map = new JSONObject();
+								map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
+								map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
+								map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+								map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+								NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
+							} catch(Exception e){
+								e.printStackTrace();
+							}
 
 						}
 						new DriverTimeoutCheck().clearCount(activity);
@@ -4818,6 +4880,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 							initializeStartRideVariables();
+							nudgeRideEnd(dropLatitude, dropLongitude, params);
 
 						}
 					} catch (Exception exception) {
@@ -4840,6 +4903,20 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 			});
+		}
+	}
+
+	private void nudgeRideEnd(double dropLatitude, double dropLongitude, HashMap<String, String> params){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(KEY_LATITUDE, dropLatitude);
+			map.put(KEY_LONGITUDE, dropLongitude);
+			map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+			map.put("params", params.toString());
+			NudgeClient.trackEvent(activity, NUDGE_RIDE_END, map);
+		} catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
@@ -5083,6 +5160,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
 			initializeStartRideVariables();
+			nudgeRideEnd(dropLatitude, dropLongitude, params);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5356,7 +5434,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	}
 
 
-	public void submitFeedbackToDriverAsync(final Activity activity, String engagementId, final int givenRating) {
+	public void submitFeedbackToCustomerAsync(final Activity activity, final String engagementId, final int givenRating) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
@@ -5381,6 +5459,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								Toast.makeText(activity, "Thank you for your valuable feedback", Toast.LENGTH_SHORT).show();
+
+								try{
+									JSONObject map = new JSONObject();
+									map.put(KEY_GIVEN_RATING, givenRating);
+									map.put(KEY_ENGAGEMENT_ID, engagementId);
+									map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+									NudgeClient.trackEvent(activity, NUDGE_RATING, map);
+								} catch(Exception e){
+									e.printStackTrace();
+								}
 
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
