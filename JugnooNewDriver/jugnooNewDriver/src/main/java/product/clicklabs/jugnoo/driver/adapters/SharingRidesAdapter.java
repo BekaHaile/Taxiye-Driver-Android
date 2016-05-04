@@ -102,7 +102,7 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 			}
 			else{
 				sharingRideViewHolder.textViewAccountBalance.setText(context.getResources().getString(R.string.rupee)+" "+ Utils.getDecimalFormatForMoney().format(srd.accountBalance));
-				sharingRideViewHolder.textViewAccountBalanceText.setText("(-)Account");
+				sharingRideViewHolder.textViewAccountBalanceText.setText("(-)"+context.getResources().getString(R.string.account));
 				sharingRideViewHolder.textViewAccountBalanceText.setTextColor(context.getResources().getColor(R.color.red_status));
 				sharingRideViewHolder.textViewAccountBalance.setTextColor(context.getResources().getColor(R.color.red_status));
 			}

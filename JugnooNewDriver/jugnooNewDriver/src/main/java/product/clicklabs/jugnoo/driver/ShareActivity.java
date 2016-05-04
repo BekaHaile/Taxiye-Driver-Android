@@ -86,7 +86,7 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 		new ASSL(ShareActivity.this, linearLayoutRoot, 1134, 720, false);
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		shareFragmentAdapter = new ShareFragmentAdapter(getSupportFragmentManager());
+		shareFragmentAdapter = new ShareFragmentAdapter(this, getSupportFragmentManager());
 		viewPager.setAdapter(shareFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);

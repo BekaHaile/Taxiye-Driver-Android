@@ -90,7 +90,7 @@
 	<string name="from">From: </string>
 	<string name="to">To: </string>
 	<string name="rides">Rides</string>
-	<string name="no_rides_currently">No rides currently.</string>
+	<string name="no_rides_currently">No rides currently</string>
 
 	<string name="history">History</string>
 	<string name="missed">Missed</string>
@@ -407,9 +407,7 @@
 	<string name="inc_subsidy">(inc. Subsidy)</string>
 	<string name="to_end">To: </string>
 	<string name="Edit_profile"><u>Edit Profile</u></string>
-	<string name="info">INFO</string>
 	<string name="info">Personal Info</string>
-	<string name="arrived">Arrived</string>
 	<string name="local_leaderboard">LOCAL</string>
 	<string name="global_leaderboard">GLOBAL</string>
 	<string name="daily_leaderboard">Daily</string>
@@ -456,7 +454,6 @@
 	<string name="jugnoo_cmsn">Jugnoo Commission</string>
 	<string name="Manual_adjustment">Manual Adjustment</string>
 	<string name="referral_amount">Referral Amount</string>
-	<string name="cancel_subsidy">Cancel Subsidy</string>
 	<string name="phone_deduction">Phone Deduction</string>
 	<string name="paid_by_jugnoo">Paid By Jugnoo</string>
 	<string name="paid_by_customer">Paid In Cash</string>
@@ -474,6 +471,17 @@
 	<string name="bank_loc">Bank Location :</string>
 	<string name="customer_waiting">Your next customer is waiting</string>
 	<string name="show_more">Show more</string>
+
+
+	<string name="Transactions">Transactions</string>
+	<string name="Invoices">Invoices</string>
+	<string name="Earnings">Earnings</string>
+	<string name="Earn">Earn</string>
+	<string name="Activity">Activity</string>
+	<string name="referral">Referral</string>
+	<string name="NA">NA</string>
+	<string name="Invoice">Invoice</string>
+	<string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
 
 
 	<string-array name="CountryCodes" >

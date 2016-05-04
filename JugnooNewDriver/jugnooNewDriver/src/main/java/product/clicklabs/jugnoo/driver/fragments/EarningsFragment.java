@@ -132,12 +132,12 @@ public class EarningsFragment extends Fragment {
 				textViewTodayValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getDaily().getEarnings());
 				textViewWeekValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getWeekly().getEarnings());
 				textViewMonthValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getMonthly().getEarnings());
-				textViewTodayRides.setText("Rides : "+earningsDetailResponse.getDaily().getRides());
-				textViewTodayValueReferral.setText("Referral : "+earningsDetailResponse.getDaily().getReferrals());
-				textViewWeekRides.setText("Rides : "+earningsDetailResponse.getWeekly().getRides());
-				textViewWeekValueReferral.setText("Referral : "+earningsDetailResponse.getWeekly().getReferrals());
-				textViewMonthRides.setText("Rides : "+earningsDetailResponse.getMonthly().getRides());
-				textViewMonthValueReferral.setText("Referral : "+earningsDetailResponse.getMonthly().getReferrals());
+				textViewTodayRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getDaily().getRides());
+				textViewTodayValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getDaily().getReferrals());
+				textViewWeekRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getWeekly().getRides());
+				textViewWeekValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getWeekly().getReferrals());
+				textViewMonthRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getMonthly().getRides());
+				textViewMonthValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getMonthly().getReferrals());
 				dateTimeValueFromWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getStartDate()));
 				dateTimeValueToWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getEndDate()));
 				dateTimeValueFromMonth.setText(DateOperations.reverseDate(earningsDetailResponse.getMonthly().getStartDate()));
@@ -157,7 +157,7 @@ public class EarningsFragment extends Fragment {
 
 	public void getLeaderboardActivityCall() {
 		if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
 					new Callback<EarningsDetailResponse>() {
 						@Override

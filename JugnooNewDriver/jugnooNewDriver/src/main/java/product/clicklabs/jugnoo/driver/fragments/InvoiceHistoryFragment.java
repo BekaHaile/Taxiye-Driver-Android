@@ -205,14 +205,14 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 
 
 				if(invoiceInfo.generatedTime.equalsIgnoreCase("0")){
-					holder.dateTimeValueGenerated.setText(" NA" );
+					holder.dateTimeValueGenerated.setText(" "+getResources().getString(R.string.NA) );
 				}else {
 					holder.dateTimeValueGenerated.setText(DateOperations.reverseDate(invoiceInfo.generatedTime));
 				}
 				if(invoiceInfo.id==0){
-					holder.textViewInvoiceId.setText("Invoice ID: NA" );
+					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + getResources().getString(R.string.NA));
 				}else {
-					holder.textViewInvoiceId.setText("Invoice ID: " + invoiceInfo.id);
+					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + invoiceInfo.id);
 				}
 
 				holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
@@ -259,7 +259,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 									HomeActivity.logoutUser(activity);
 								} else {
-									updateListData("Some error occurred. Tap to retry", true);
+									updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 								}
 
 							} else {
@@ -271,11 +271,11 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 									invoices.add(invoiceInfo);
 								}
 
-								updateListData("No rides currently", false);
+								updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							updateListData("Some error occurred. Tap to retry", true);
+							updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 						}
 						progressBar.setVisibility(View.GONE);
 					}
@@ -284,7 +284,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					@Override
 					public void failure(RetrofitError error) {
 						progressBar.setVisibility(View.GONE);
-						updateListData("Some error occurred. Tap to retry", true);
+						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
 				});
 	}

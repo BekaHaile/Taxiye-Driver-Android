@@ -54,7 +54,6 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public static boolean intentFromRegister = true;
 	public static EmailRegisterData emailRegisterData;
 
-	String otpHelpStr = "Please enter the One Time Password you just received via SMS at";
 
 	@Override
 	protected void onStart() {
@@ -180,7 +179,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		try {
-			otpHelpText.setText(otpHelpStr + " " + emailRegisterData.phoneNo);
+			otpHelpText.setText(getResources().getString(R.string.enter_otp_received) + " " + emailRegisterData.phoneNo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -254,8 +253,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 
 
 			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
-					Data.deviceToken, "",
-					Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
+					Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 
 

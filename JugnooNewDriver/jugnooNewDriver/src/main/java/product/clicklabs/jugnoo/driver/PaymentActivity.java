@@ -74,7 +74,7 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		paymentFragmentAdapter = new PaymentFragmentAdapter(getSupportFragmentManager());
+		paymentFragmentAdapter = new PaymentFragmentAdapter(PaymentActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(paymentFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
