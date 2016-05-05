@@ -239,7 +239,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName;
 	TextView driverScheduledRideText;
-	ImageView driverFreeRideIcon;
 	Button driverEngagedMyLocationBtn;
 
 	//Start ride layout
@@ -630,7 +629,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
 			driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
-			driverFreeRideIcon = (ImageView) findViewById(R.id.driverFreeRideIcon);
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
 			driverPassengerRatingValue.setVisibility(View.GONE);
@@ -3177,15 +3175,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						}
 					}
 
-					if (1 == Data.userData.freeRideIconDisable) {
-						driverFreeRideIcon.setVisibility(View.GONE);
-					} else {
-						if (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).freeRide) {
-							driverFreeRideIcon.setVisibility(View.VISIBLE);
-						} else {
-							driverFreeRideIcon.setVisibility(View.GONE);
-						}
-					}
 
 					if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
@@ -3208,7 +3197,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} else if (BusinessType.FATAFAT == Data.assignedCustomerInfo.businessType) {
 				try {
 					driverScheduledRideText.setVisibility(View.GONE);
-					driverFreeRideIcon.setVisibility(View.GONE);
 					textViewAfterAcceptRequestInfo.setVisibility(View.VISIBLE);
 					textViewAfterAcceptAmount.setVisibility(View.VISIBLE);
 

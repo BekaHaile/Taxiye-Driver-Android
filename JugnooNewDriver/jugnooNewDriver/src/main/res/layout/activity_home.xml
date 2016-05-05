@@ -494,18 +494,6 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/driverFreeRideIcon"
-                        android:layout_width="72px"
-                        android:layout_height="47px"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/driverPassengerInfoRl"
-                        android:layout_marginRight="20px"
-                        android:layout_marginTop="26px"
-                        android:src="@drawable/free_ride_icon"
-                        android:tag="mwar"
-                        android:visibility="gone"/>
-
 
                     <LinearLayout
                         android:id="@+id/linearLayoutStartEnd"
@@ -907,6 +895,7 @@
                         android:background="@drawable/new_orange_direction_btn_selector"
                         android:tag="mwar"
                         android:text="@string/click_for_direction"
+                        android:visibility="gone"
                         android:textColor="@color/white"/>
 
                 </RelativeLayout>
