@@ -129,20 +129,20 @@ public class EditDriverProfile extends Activity {
 					String phoneChanged = editTextPhone.getText().toString().trim();
 					if ("".equalsIgnoreCase(phoneChanged)) {
 						editTextPhone.requestFocus();
-						editTextPhone.setError("Phone number can't be empty");
+						editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 					} else {
 						phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
 						if (Utils.validPhoneNumber(phoneChanged)) {
 							phoneChanged = "+91" + phoneChanged;
 							if (Data.userData.phoneNo.equalsIgnoreCase(phoneChanged)) {
 								editTextPhone.requestFocus();
-								editTextPhone.setError("Changed phone number is same as the previous one.");
+								editTextPhone.setError(getResources().getString(R.string.changed_no_same_as_previous));
 							} else {
 								updateUserProfileAPIRetroo(EditDriverProfile.this, phoneChanged, ProfileUpdateMode.PHONE);
 							}
 						} else {
 							editTextPhone.requestFocus();
-							editTextPhone.setError("Phone number is invalid");
+							editTextPhone.setError(getResources().getString(R.string.enter_valid_phone_number));
 						}
 					}
 				} else {
@@ -253,7 +253,7 @@ public class EditDriverProfile extends Activity {
 	private void updateUserProfileAPIRetroo(final Activity activity, final String updatedField, final ProfileUpdateMode profileUpdateMode) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-			DialogPopup.showLoadingDialog(activity, "Updating...");
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.updating));
 
 			HashMap<String, String> params = new HashMap<String, String>();
 

@@ -155,13 +155,20 @@ public class RideDetailsActivity extends Activity {
 		if (openedRideInfo != null) {
 			idValue.setText(getResources().getString(R.string.ride_id)+" "+openedRideInfo.id);
 			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-			distanceValue.setText(getResources().getString(R.string.distance)+": "+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance)) + " km");
-			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));
+
+			distanceValue.setText(getResources().getString(R.string.distance)+": "
+					+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance))
+					+ " "+getResources().getString(R.string.km));
+
+			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "
+					+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));
+
 			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
 				waitTimeValue.setVisibility(View.GONE);
 			} else {
 				waitTimeValue.setVisibility(View.VISIBLE);
-				waitTimeValue.setText(getResources().getString(R.string.wait)+": " + openedRideInfo.waitTime + " "+getResources().getString(R.string.min));
+				waitTimeValue.setText(getResources().getString(R.string.wait)+": "
+						+ openedRideInfo.waitTime + " "+getResources().getString(R.string.min));
 			}
 
 			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
@@ -181,7 +188,8 @@ public class RideDetailsActivity extends Activity {
 			}
 
 			textViewRateAppliedValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorValue)));
-			textViewRateApplied.setText(getResources().getString(R.string.rate_applied)+" " + Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
+			textViewRateApplied.setText(getResources().getString(R.string.rate_applied)+" "
+					+ Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
 
 			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
 

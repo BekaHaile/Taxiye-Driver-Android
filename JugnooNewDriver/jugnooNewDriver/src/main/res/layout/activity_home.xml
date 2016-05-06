@@ -494,19 +494,6 @@
 
                     </RelativeLayout>
 
-                    <ImageView
-                        android:id="@+id/driverFreeRideIcon"
-                        android:layout_width="72px"
-                        android:layout_height="47px"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/driverPassengerInfoRl"
-                        android:layout_marginRight="20px"
-                        android:layout_marginTop="26px"
-                        android:src="@drawable/free_ride_icon"
-                        android:tag="mwar"
-                        android:visibility="gone"/>
-
-
                     <LinearLayout
                         android:id="@+id/linearLayoutStartEnd"
                         android:layout_width="match_parent"
@@ -514,7 +501,6 @@
                         android:layout_alignParentBottom="true"
                         android:gravity="bottom"
                         android:orientation="vertical"
-
                         >
 
 
@@ -799,7 +785,7 @@
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
                                         android:singleLine="true"
-                                        android:text="Min Fare"
+                                        android:text="@string/min_fare"
                                         android:textColor="@color/black"
                                         android:textSize="26px"
                                         android:textStyle="bold"/>
@@ -1081,7 +1067,7 @@
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
                                             android:singleLine="true"
-                                            android:text="Ride Time"
+                                            android:text="@string/ride_time"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
@@ -1905,7 +1891,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:text="JUGNOO"
+                        android:text="@string/JUGNOO"
                         android:textColor="@color/white"
                         android:textSize="48px"/>
 
@@ -2269,7 +2255,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Fatafat ON"
+                        android:text="@string/fatafat_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2493,7 +2479,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Notifications"
+                        android:text="@string/Notifications"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 

@@ -108,7 +108,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 					}
 
 					if (destiantionData.size() == 0) {
-						DialogPopup.alertPopup(TriCitySupplyActivity.this, "", "Please select one Destination");
+						DialogPopup.alertPopup(TriCitySupplyActivity.this, "", getResources().getString(R.string.select_destination));
 					} else {
 						driverDestinationAsync(TriCitySupplyActivity.this, destiantionData);
 					}
@@ -167,7 +167,7 @@ public class TriCitySupplyActivity extends BaseActivity implements ActivityClose
 
 	public void driverDestinationAsync(final Activity activity, ArrayList<Integer> destination) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);

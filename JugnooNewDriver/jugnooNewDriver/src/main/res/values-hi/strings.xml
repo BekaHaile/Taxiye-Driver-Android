@@ -5,25 +5,18 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-
-
 	<string name="language_english_text">English</string>
 	<string name="language_hindi_text">हिंदी</string>
-
 
 	<string name="rupee">\u20B9</string>
 	<string name="rupee_zero">\u20B9 0.0</string>
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
-
-
-
 
 	    <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
 	<string name="about_1_text">Jugnoo आपको चंडीगढ़ षेत्र के भीतर एक अनुकूल और सस्ती  राइड  प्रदान में मदद करता है.\nदरों में सस्ती है, आप निश्चित रूप से एक अच्छा सौदा कर रहे हैं </string>
 	<string name="about_2_text">दर कार्ड</string>
 	<string name="about_3_text">सबसे पहले 2 किलोमीटर:रुपये 30 \n 2 किलोमीटर के बाद:रुपये 10 / किमी \n प्रतीक्षा काल: 15 मिनट के बाद रुपये 1.5 / मिनट</string>
-
 
 	<string name="email_id">ईमेल आईडी</string>
 	<string name="confirm_email_id">ईमेल आईडी की पुष्टि</string>
@@ -107,21 +100,13 @@
 
 	<string name="cancel_request_in">अनुरोध रद्द करें</string>
 	<string name="your_ride_is">आपकी  राइड  </string>
-
-
-
 	<string name="away_and_will_arrive"> की दूरी पर है और उसे पहुंचें में लगभग लगेंगे। </string>
 
 
-
-
-
 	<string name="will_arrive_in">में पहुंचने वाली है  </string>
-
 	<string name="call_driver">कॉल ड्राइवर</string>
 	<string name="you_have">आपके पास</string>
 	<string name="ride_request">  राइड  क लिए अनुरोध </string>
-
 	<string name="accept_ride"> राइड  स्वीकारें</string>
 	<string name="cancel_request">अनुरोध रद्द</string>
 	<string name="cancel_ride"> राइड  रद्द</string>
@@ -130,7 +115,6 @@
 	<string name="rating">रेटिंग</string>
 	<string name="call">कॉल</string>
 	<string name="ride_time"> राइड  काल</string>
-
 	<string name="start_wait">प्रतीक्षअ काल शुरू </string>
 	<string name="stop_wait">प्रतीक्षअ काल समाप्त </string>
 	<string name="submit">सबमिट करें </string>
@@ -141,12 +125,9 @@
 	<string name="alert">Alert</string>
 	<string name="start_ride_error"> राइड  शुरू करने क लिए आपको ग्राहक के पिक्कूप स्थान पर मौजूद होना अनिवार्य है।</string>
 
-
 	<string name="server_error">सर्वर त्रुटि। कृपया थोड़ी देर बाद बाद पुन: प्रयास करें।</string>
 	<string name="server_not_responding">Oops!! सर्वर प्रतिक्रिया नहीं दे रहा है।कृपया बाद में पुन: प्रयास करें।</string>
 	<string name="check_internet_message">अपना इंटरनेट कनेक्शन की जाँच करें।</string>
-
-
 
 	<string name="driver_id">ड्राइवर आईडी:</string>
 	<string name="rank_city">शहर रैंक:</string>
@@ -167,8 +148,6 @@
 	<string name="profile">प्रोफाइल</string>
 	<string name="Duty_Hours">ड्यूटी के घंटे:</string>
 	<string name="call_us">हमें कॉल करें </string>
-
-
 
 	<string name="check_all">सभी की जांच करो</string>
 	<string name="uncheck_all">सभी अचयनित करें</string>
@@ -229,7 +208,6 @@
 	<string name="google_pay_service_error">गूगल प्ले सर्विसेज़  त्रुटि</string>
 	<string name="google_pay_service_error_message">गूगल प्ले सर्विसेज़ नहीं मिली याकालग्रस्त हो गई हैं। कृपया गूगल प्ले सर्विसेज़ इनस्टॉल करें ?</string>
 	<string name="go_to_playstore">प्ले स्टोर पर जाएं :</string>
-
 	<string name="help">मदद</string>
 	<string name="have_arrived">क्या आप पहुंच गए हैं?</string>
 
@@ -340,7 +318,6 @@
 
 	<string name="updating">अद्यतीकरण ...</string>
 	<string name="user_cancel_request">उपयोगकर्ता ने अनुरोध को रद्द कर दिया है</string>
-
 	<string name="verification">पुष्टि</string>
 	<string name="verify_me">पुष्टि करें </string>
 
@@ -357,8 +334,7 @@
 	<string name="present_near_customer_location">चिह्नित करने के लिए ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
 	<string name="present_near_customer_location_to_start">राइड शुरू करने क लिए आपका  ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
 	<string name="You_have_already_created">आप पहले से ही इस डिवाइसपर %1$d कहते बना चुके हैं . एक नया खाता बनाने के लिए कारण की व्याख्या करें ।</string>
-	<string name="your_referral_code"> आपका रेफरल कोड है
-	</string>
+	<string name="your_referral_code"> आपका रेफरल कोड है</string>
 
 	<string name="tap_to_retry">फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
 	<string name="error_occured_tap_to_retry">कुछ त्रुटि हुई । फिर से कोशिश करने के लिये स्क्रीन को छुइए</string>
@@ -378,8 +354,6 @@
 	<string name="wallet">बटुआ</string>
 	<string name="Scheduled_Ride_Pickup">अनुसूचित राइड  पिकअप: </string>
 
-
-
 	<string name="referral_msg">"Use my code %1$s to download Jugnoo customer App and earn jugnoo cash.\n Download it from here\nhttp://smarturl.it/jugnoo</string>
 	<string name="no_of_account">खाते पहले से ही इस डिवाइस पर बनाए जा चुके हैं।  </string>
 
@@ -394,11 +368,70 @@
 	<string name="hint_created_multiple_account">आपने पहले से ही इस डिवाइस से 2 खातों बनाए है। एक नया खाता बनाने के लिए कारण की व्याख्या करें ।</string>
 	<string name="convenience_charge">सुविधा प्रभार</string>
 	<string name="cancel_subsidy">सब्सिडी रद्द</string>
-
 	<string name="inc_subsidy">(इंक. सब्सिडी)</string>
 
 
-<string-array name="CountryCodes" >
+
+    <string name="Edit_profile">प्रोफाइल एडिट करें</string>
+    <string name="info">जानकारी</string>
+    <string name="local_leaderboard">स्थानीय</string>
+    <string name="global_leaderboard">ग्लोबल</string>
+    <string name="daily_leaderboard">दैनिक</string>
+    <string name="weekly_leaderboard">साप्ताहिक</string>
+    <string name="lb_rank">श्रेणी</string>
+    <string name="lb_name">नाम</string>
+    <string name="lb_no_downloads">डाउनलोड की संख्या</string>
+    <string name="number_of_downloads">डाउनलोड की संख्या</string>
+    <string name="number_of_first_rides">ली गयी प्रथम सवारियों की संख्या</string>
+    <string name="money_earned">रेफरल के द्वारा अर्जित राशि</string>
+    <string name="data_effective_format">से प्रभावी डाटा</string>
+    <string name="notifications">सूचना केन्द्र</string>
+    <string name="click_for_direction">यहां दिशाओं के लिए क्लिक करें</string>
+    <string name="time_left">समय शेष</string>
+    <string name="enter_phone_no_to_reset_password">अपना पासवर्ड बदलने के लिए अपना पंजीकृत फोन नंबर दर्ज करें।</string>
+    <string name="customer_phone_number">ग्राहक का फोन नंबर</string>
+    <string name="recharge_amount">रीचार्ज होने के लिए राशि</string>
+    <string name="enter_amount">राशि दर्ज करें</string>
+    <string name="paytm_recharge">पेटीएम रिचार्ज</string>
+    <string name="Confirm">पुष्टि</string>
+    <string name="phone_number_or_email">फोन नंबर या ईमेल</string>
+    <string name="nl_otp_waiting_to_detect_otp">स्वतः से ओटीपी पता लगाने के लिए प्रतीक्षा कर रहा है</string>
+    <string name="battery_low_message">सवारी को स्वीकार करने के लिए 20% से ज़्यादा मोबाइल बैटरी चार्ज होना अनिवार्य है, कृपया मोबाइल को चार्जिंग मे लगा कर रखें</string>
+    <string name="destination">गंतव्य</string>
+    <string name="destination_selection">कृपया गंतव्य का चयन करें जहां आप अभी जा सकते हैं</string>
+    <string name="Rate_Your_Customer">अपने ग्राहक का मूल्यांकन करें</string>
+    <string name="skip">छोड़ें</string>
+    <string name="destination_menu">गंतव्य</string>
+    <string name="no_current_notification">अभी कोई सूचना नही है</string>
+    <string name="phone">फोन</string>
+    <string name="GENERATE_OTP">ओ टी पी बनाना</string>
+    <string name="otp">ओटीपी</string>
+    <string name="signin_via_otp">ओटीपी के माध्यम से साइन इन करें</string>
+    <string name="Neutral">न्यूट्रल</string>
+    <string name="Payments">भुगतान</string>
+    <string name="Last_week">पिछले सप्ताह</string>
+    <string name="Last_month">पिछले महीने</string>
+    <string name="upcoming_invoice">आने वाला बिल</string>
+    <string name="current_invoice">वर्तमान बिल</string>
+    <string name="Outstanding_amnt">बकाया राशि</string>
+    <string name="jugnoo_cmsn">जुगनू कमीशन</string>
+    <string name="Manual_adjustment">मनुअल अड्जस्टमेंट</string>
+    <string name="referral_amount">रेफरल राशि</string>
+    <string name="phone_deduction">फ़ोन कटौती</string>
+    <string name="paid_by_jugnoo">जुगनू द्वारा अदा</string>
+    <string name="paid_by_customer">नकद में भुगतान</string>
+    <string name="paid_using_wallet">वॉलेट का उपयोग करके भुगतान किया</string>
+    <string name="acc_credited">राशि जमा</string>
+    <string name="last_invoice">पिछला बिल</string>
+    <string name="last_invoice_details">अंतिम भुगतान पर:</string>
+    <string name="last_payments">अंतिम भुगतान</string>
+    <string name="upcoming_payment_due_date">आने वाले भुगतान पर</string>
+    <string name="cash_via_paytm">पेटीएम के माध्यम से कैश</string>
+    <string name="Pls_enter_email_or_phn">ईमेल या फोन नं दर्ज करें</string>
+
+
+
+    <string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>

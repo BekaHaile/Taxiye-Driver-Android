@@ -263,7 +263,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 									}
 								}
 							}
-							updateListData("No missed rides currently", false);
+							updateListData(getResources().getString(R.string.no_missed_rides_currently), false);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();

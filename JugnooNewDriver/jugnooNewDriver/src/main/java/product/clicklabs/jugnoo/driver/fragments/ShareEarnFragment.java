@@ -40,7 +40,6 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
-import product.clicklabs.jugnoo.driver.ShareActivity1;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;

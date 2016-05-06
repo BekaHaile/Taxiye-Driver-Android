@@ -36,12 +36,6 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 	public LeaderboardResponse leaderboardResponse;
 	public LeaderboardActivityResponse leaderboardActivityResponse;
 
-
-	String str3 = "Your Referral Code is ";
-	SpannableString sstr;
-
-
-
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -59,8 +53,6 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 	protected void onResume() {
 		super.onResume();
 	}
-
-
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +62,6 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
 		new ASSL(PaymentActivity.this, linearLayoutRoot, 1134, 720, false);
-
-
 
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		paymentFragmentAdapter = new PaymentFragmentAdapter(PaymentActivity.this, getSupportFragmentManager());

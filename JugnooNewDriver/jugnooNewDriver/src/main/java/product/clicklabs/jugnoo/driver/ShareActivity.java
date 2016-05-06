@@ -37,11 +37,6 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 	public LeaderboardActivityResponse leaderboardActivityResponse;
 
 
-	String str3 = "Your Referral Code is ";
-	SpannableString sstr;
-
-
-
 	@Override
 	protected void onStart() {
 		super.onStart();

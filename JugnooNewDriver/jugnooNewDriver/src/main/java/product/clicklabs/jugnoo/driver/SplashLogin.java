@@ -178,7 +178,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 							FlurryEventLogger.event(LOGIN_IN_APP);
 						} else {
 							emailEt.requestFocus();
-							emailEt.setError("Please enter valid email or phone no.");
+							emailEt.setError(getResources().getString(R.string.valid_email_phone_no));
 						}
 					}
 				}

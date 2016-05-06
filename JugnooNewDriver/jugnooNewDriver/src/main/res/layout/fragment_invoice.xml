@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="INVOICE DETAILS"
+            android:text="@string/invoice_detail"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25px"
-            android:text="Invoice Id:"
+            android:text="@string/invoice_id"
             android:textColor="@color/black"
             android:textSize="32px"/>
         <TextView
@@ -61,7 +61,7 @@
             android:layout_marginLeft="25px"
             android:layout_marginTop="20px"
             android:layout_below="@+id/textViewCurrentInvoiceId"
-            android:text="Status:"
+            android:text="@string/status"
             android:textColor="@color/black"
             android:textSize="32px"/>
 
@@ -72,7 +72,7 @@
             android:layout_marginLeft="25px"
             android:layout_marginTop="20px"
             android:layout_below="@+id/textViewCurrentInvoiceStatus"
-            android:text="Generated On:"
+            android:text="@string/generated_on"
             android:textColor="@color/black"
             android:textSize="32px"/>
 
@@ -99,7 +99,7 @@
                     android:layout_marginLeft="15px"
                     android:layout_toLeftOf="@+id/dateTimeValueFrom"
                     android:singleLine="true"
-                    android:text="From:"
+                    android:text="@string/from"
                     android:textColor="@color/black"
                     android:textSize="32px"
                     />

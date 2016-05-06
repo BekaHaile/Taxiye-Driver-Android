@@ -175,34 +175,34 @@ public class InvoiceDetailsActivity extends Activity {
 		if (invoiceDetailResponse != null) {
 
 			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate().equalsIgnoreCase("0")){
-				textViewTotalAmnt.setText("Total Amount Till Now" );
+				textViewTotalAmnt.setText(getResources().getString(R.string.total_amnt_till_now) );
 			}else {
-				textViewTotalAmnt.setText("Amount Credited");
+				textViewTotalAmnt.setText(getResources().getString(R.string.amnt_credited));
 			}
 
 			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate().equalsIgnoreCase("0")){
-				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: NA" );
+				textViewCurrentInvoiceGeneratedOn.setText(getResources().getString(R.string.invoice_date)+": "+getResources().getString(R.string.NA) );
 			}else {
-				textViewCurrentInvoiceGeneratedOn.setText("Invoice Date: " + DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate()));
+				textViewCurrentInvoiceGeneratedOn.setText(getResources().getString(R.string.invoice_date)+": " + DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoiceDate()));
 			}
 			if(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()==0){
-				textViewCurrentInvoiceId.setText("Invoice Id: NA" );
+				textViewCurrentInvoiceId.setText(getResources().getString(R.string.invoice_id)+": "+getResources().getString(R.string.NA)  );
 			}else {
-				textViewCurrentInvoiceId.setText("Invoice Id: " + String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
+				textViewCurrentInvoiceId.setText(getResources().getString(R.string.invoice_id)+": " + String.valueOf(invoiceDetailResponse.getInvoiceDetails().getInvoiceId()));
 			}
 			textViewCurrentInvoiceStatus.setText(invoiceDetailResponse.getInvoiceDetails().getStatus());
 			dateTimeValueTo.setText(DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoicingToDate()));
 			dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceDetailResponse.getInvoiceDetails().getInvoicingFromDate()));
 
 			if(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision() ==null){
-				textViewJugnooCmsnValue.setText("NA");
+				textViewJugnooCmsnValue.setText(getResources().getString(R.string.NA));
 			}else {
 				textViewJugnooCmsnValue.setText(getResources().getString(R.string.rupee)
 						+ Utils.getDecimalFormatForMoney().format(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision()));
 			}
 
 			if(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount() ==null){
-				textViewOutstandingAmntValue.setText("NA");
+				textViewOutstandingAmntValue.setText(getResources().getString(R.string.NA));
 			}else {
 				textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
 						+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());

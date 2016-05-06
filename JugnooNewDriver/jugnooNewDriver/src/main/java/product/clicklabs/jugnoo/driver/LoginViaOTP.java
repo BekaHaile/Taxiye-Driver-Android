@@ -125,7 +125,7 @@ public class LoginViaOTP extends Activity {
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				if ("".equalsIgnoreCase(phoneNo)) {
 					phoneNoEt.requestFocus();
-					phoneNoEt.setError("Please enter Phone No.");
+					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
 					try {
@@ -137,7 +137,7 @@ public class LoginViaOTP extends Activity {
 					}
 				} else {
 					phoneNoEt.requestFocus();
-					phoneNoEt.setError("Please enter valid phone no.");
+					phoneNoEt.setError(getResources().getString(R.string.valid_phone_number));
 				}
 			}
 		});
@@ -152,7 +152,7 @@ public class LoginViaOTP extends Activity {
 					;
 				} else {
 					otpEt.requestFocus();
-					otpEt.setError("Code can't be empty");
+					otpEt.setError(getResources().getString(R.string.code_empty));
 				}
 			}
 		});
@@ -186,7 +186,7 @@ public class LoginViaOTP extends Activity {
 	public void generateOTP(final String phoneNo) {
 		try {
 			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
-				DialogPopup.showLoadingDialog(LoginViaOTP.this, "Loading...");
+				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", "+91"+phoneNo);
 
@@ -294,7 +294,7 @@ public class LoginViaOTP extends Activity {
 	public void sendLoginValues(final Activity activity, final String emailId, final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

@@ -295,16 +295,16 @@ public class DriverPatymRecharge extends Activity {
 			String amountStr = editTextCashAmount.getText().toString().trim();
 			if ("".equalsIgnoreCase(amountStr)) {
 				editTextCashAmount.requestFocus();
-				editTextCashAmount.setError("Please enter some amount");
+				editTextCashAmount.setError(getResources().getString(R.string.enter_some_amount));
 			} else {
 				amount = Double.parseDouble(editTextCashAmount.getText().toString().trim());
 				if (AppStatus.getInstance(DriverPatymRecharge.this).isOnline(DriverPatymRecharge.this)) {
 					if (amount > 1000) {
 						editTextCashAmount.requestFocus();
-						editTextCashAmount.setError("Please enter less amount");
+						editTextCashAmount.setError(getResources().getString(R.string.enter_less_amount));
 					} else if (amount <= 0) {
 						editTextCashAmount.requestFocus();
-						editTextCashAmount.setError("Please enter some amount");
+						editTextCashAmount.setError(getResources().getString(R.string.enter_some_amount));
 					} else {
 						return true;
 
@@ -317,7 +317,7 @@ public class DriverPatymRecharge extends Activity {
 			e.printStackTrace();
 
 			editTextCashAmount.requestFocus();
-			editTextCashAmount.setError("Please enter valid amount");
+			editTextCashAmount.setError(getResources().getString(R.string.enter_valid_amount));
 			Utils.showSoftKeyboard(DriverPatymRecharge.this, editTextCashAmount);
 		}
 		return false;
@@ -328,14 +328,14 @@ public class DriverPatymRecharge extends Activity {
 			String phoneChanged = editTextPhone.getText().toString().trim();
 			if ("".equalsIgnoreCase(phoneChanged)) {
 				editTextPhone.requestFocus();
-				editTextPhone.setError("Phone number can't be empty");
+				editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 			} else {
 				phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
 				if (Utils.validPhoneNumber(phoneChanged)) {
 					return true;
 				} else {
 					editTextPhone.requestFocus();
-					editTextPhone.setError("Phone number is invalid");
+					editTextPhone.setError(getResources().getString(R.string.valid_phone_number));
 				}
 			}
 		} else {
@@ -370,7 +370,7 @@ public class DriverPatymRecharge extends Activity {
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText("You are recharging " + getResources().getString(R.string.rupee) + " " + editTextCashAmount.getText() + " for customer with paytm account on " + editTextPhone.getText());
+			textMessage.setText(getResources().getString(R.string.recharge_amount_for_customer, editTextCashAmount.getText() , editTextPhone.getText()));
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
@@ -410,7 +410,7 @@ public class DriverPatymRecharge extends Activity {
 
 	public void addCustomerCashAPI(final Activity activity, final String amount) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 

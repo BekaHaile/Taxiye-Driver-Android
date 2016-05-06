@@ -49,7 +49,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 
 	LinearLayout relative;
 
-	String otpHelpStr = "Please enter the One Time Password you just received via SMS at ";
+	String otpHelpStr = getResources().getString(R.string.enter_otp_received);
 	String phoneNumberToVerify = "";
 
 	@Override
@@ -126,7 +126,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
-					editTextOTP.setError("Code can't be empty");
+					editTextOTP.setError(getResources().getString(R.string.code_empty));
 				}
 
 			}
@@ -179,7 +179,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 
 	public void sendSignupValues(final Activity activity, final String phoneNo, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 			HashMap<String, String> params = new HashMap<>();
 
 			params.put("client_id", Data.CLIENT_ID);

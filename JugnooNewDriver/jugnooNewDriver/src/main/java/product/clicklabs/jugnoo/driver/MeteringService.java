@@ -191,9 +191,15 @@ public class MeteringService extends Service {
 								}
 							}
 						}
-						String message = "Total distance = "+getDecimalFormat().format(Math.abs(distance) / 1000) + " km"+"\nRide time = "+Utils.getChronoTimeFromMillis(elapsedTime);
+						String message = context.getResources().getString(R.string.total_distance)
+								+" = "+getDecimalFormat().format(Math.abs(distance) / 1000)
+								+ context.getResources().getString(R.string.km)+" "
+								+"\n"+context.getResources().getString(R.string.ride_time)
+								+" = " +Utils.getChronoTimeFromMillis(elapsedTime);
+
 						if(showWait){
-							message = message + "\nWait time = "+Utils.getChronoTimeFromMillis(waitTime);
+							message = message + "\n"+context.getResources().getString(R.string.wait_time)
+									+" = "+Utils.getChronoTimeFromMillis(waitTime);
 						}
 						generateNotification(context, message);
 					}
