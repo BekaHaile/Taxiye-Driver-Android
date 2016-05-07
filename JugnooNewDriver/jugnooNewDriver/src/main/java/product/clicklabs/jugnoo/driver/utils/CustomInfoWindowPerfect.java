@@ -1,7 +1,5 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.R;
 import android.app.Activity;
 import android.view.View;
 import android.widget.TextView;
@@ -9,17 +7,19 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
 
+import product.clicklabs.jugnoo.driver.R;
+
 /**
  * Class for displaying custom info window for marker
  * @author shankar
  *
  */
-public class CustomInfoWindow implements InfoWindowAdapter {
+public class CustomInfoWindowPerfect implements InfoWindowAdapter {
 	View mymarkerview;
 	String titleStr;
 	String snippetStr;
 
-	public CustomInfoWindow(Activity activity, String title, String snippet) {
+	public CustomInfoWindowPerfect(Activity activity, String title, String snippet) {
 		mymarkerview = activity.getLayoutInflater().inflate(
 				R.layout.info_window_custom, null);
 		this.titleStr = title;

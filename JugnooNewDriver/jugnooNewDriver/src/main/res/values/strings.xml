@@ -18,6 +18,9 @@
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
 
+	<string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
+	<string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
+
 
 
 
@@ -259,6 +262,8 @@
 	<string name="ifsc_code">IFSC :</string>
 	<string name="bank_name">Bank Name :</string>
 	<string name="bank_loc">Bank Location :</string>
+	<string name="customer_waiting">Your next customer is waiting</string>
+	<string name="show_more">Show more</string>
 
 
 	<string-array name="CountryCodes" >

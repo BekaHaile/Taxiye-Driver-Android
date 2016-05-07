@@ -2,17 +2,10 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.telephony.SmsManager;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -37,18 +30,16 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
-import product.clicklabs.jugnoo.driver.ShareActivity1;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -161,6 +152,7 @@ public class ShareEarnFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				confirmCustomerNumberPopup(activity);
+				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_INVITE_EARN_CLICK, null);
 			}
 		});
 
@@ -226,6 +218,7 @@ public class ShareEarnFragment extends Fragment {
 							} else {
 								sendReferralMessage(activity, "+91" + code);
 								dialog.dismiss();
+								NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SHARE_OK, null);
 							}
 						}
 					} catch (Exception e) {
@@ -239,7 +232,7 @@ public class ShareEarnFragment extends Fragment {
 			btnCancel.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-
+					NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SHARE_CANCEL, null);
 					dialog.dismiss();
 				}
 			});

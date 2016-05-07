@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="product.clicklabs.jugnoo.driver"
 
-    android:versionCode="231"
-    android:versionName="2.3.1" >
+    android:versionCode="232"
+    android:versionName="2.3.2" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -248,6 +248,19 @@
             </intent-filter>
         </receiver>
 
+        <service android:name="product.clicklabs.jugnoo.driver.services.NotificationService"
+                 android:label="@string/app_name"
+                 android:enabled="true"
+                 android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+
+            <intent-filter>
+
+                <action android:name="android.service.notification.NotificationListenerService" />
+
+            </intent-filter>
+
+        </service>
+
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
@@ -382,6 +395,22 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f96b4d9d9886e413041e7b14fa52434b87709356"/>
+
+
+
+        <!-- nudgesopt integration-->
+        <receiver android:name="com.nudgespot.notification.GcmBroadcastReceiver"
+                  android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="product.clicklabs.jugnoo.driver" />
+            </intent-filter>
+        </receiver>
+        <service android:name="com.nudgespot.notification.GcmIntentService" />
+        <activity
+            android:name="com.nudgespot.notification.ReceiverActivity"
+            android:theme="@android:style/Theme.NoDisplay" >
+        </activity>
 
 
     </application>

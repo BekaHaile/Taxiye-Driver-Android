@@ -43,7 +43,7 @@ public class LoginViaOTP extends Activity {
 
 	LinearLayout linearLayoutWaiting, relative, otpETextLLayout;
 	EditText phoneNoEt, otpEt;
-	Button backBtn, btnGenerateOtp, loginViaOtp;
+	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
 	public static String OTP_SCREEN_OPEN = null;
@@ -97,6 +97,8 @@ public class LoginViaOTP extends Activity {
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
 		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
+		btnReGenerateOtp = (Button) findViewById(R.id.btnReGenerateOtp);
+		btnReGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
 		loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -125,7 +127,31 @@ public class LoginViaOTP extends Activity {
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				if ("".equalsIgnoreCase(phoneNo)) {
 					phoneNoEt.requestFocus();
-					phoneNoEt.setError("Please enter Phone No.");
+					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
+				} else if ((Utils.validPhoneNumber(phoneNo))) {
+					generateOTP(phoneNo);
+					try {
+						textViewCounter.setText("0:30");
+						customCountDownTimer.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+						linearLayoutWaiting.setVisibility(View.GONE);
+					}
+				} else {
+					phoneNoEt.requestFocus();
+					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
+				}
+			}
+		});
+
+
+		btnReGenerateOtp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String phoneNo = phoneNoEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(phoneNo)) {
+					phoneNoEt.requestFocus();
+					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
 					try {
@@ -202,6 +228,7 @@ public class LoginViaOTP extends Activity {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
 								btnGenerateOtp.setVisibility(View.GONE);
+								btnReGenerateOtp.setVisibility(View.GONE);
 								loginViaOtp.setVisibility(View.VISIBLE);
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
@@ -223,6 +250,8 @@ public class LoginViaOTP extends Activity {
 						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
 					}
 				});
+			} else {
+				DialogPopup.alertPopup(LoginViaOTP.this, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -259,6 +288,7 @@ public class LoginViaOTP extends Activity {
 		@Override
 		public void onFinish() {
 			linearLayoutWaiting.setVisibility(View.GONE);
+			btnReGenerateOtp.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -416,7 +446,7 @@ public class LoginViaOTP extends Activity {
 
 	public void performbackPressed() {
 		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
-		Intent intent = new Intent(LoginViaOTP.this, SplashLogin.class);
+		Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();

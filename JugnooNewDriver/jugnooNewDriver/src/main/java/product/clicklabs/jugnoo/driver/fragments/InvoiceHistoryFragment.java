@@ -21,22 +21,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.RideDetailsActivity;
 import product.clicklabs.jugnoo.driver.datastructure.InvoiceInfo;
-import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
-import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -231,6 +229,13 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					intent.putExtra("invoice_id", invoiceInfo.id);
 					getActivity().startActivity(intent);
 					getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					try{
+						JSONObject map = new JSONObject();
+						map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
+						NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
+					} catch(Exception e){
+						e.printStackTrace();
+					}
 				}
 			});
 			} catch (Resources.NotFoundException e) {
