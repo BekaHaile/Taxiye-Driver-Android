@@ -2,24 +2,29 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.flurry.android.FlurryAgent;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -28,7 +33,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -177,9 +181,89 @@ public class LoginViaOTP extends Activity {
 		});
 
 
-		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
 
 		OTP_SCREEN_OPEN = "yes";
+
+
+		Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
+
+		// Spinner Drop down elements
+		List<String> categories = new ArrayList<>();
+		categories.add("Select Language");
+		categories.add("Hindi");
+		categories.add("Gujrati");
+		categories.add("Oriya");
+		categories.add("Malayalam");
+		categories.add("Telgu");
+		categories.add("Tamil");
+		categories.add("Kannada");
+		categories.add("English");
+
+		// Creating adapter for spinner
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		// Drop down layout style - list view with radio button
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// attaching data adapter to spinner
+		spinner.setAdapter(dataAdapter);
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+
+				String languageToLoad;
+
+				if (item.equalsIgnoreCase("English")) {
+					languageToLoad = "en";
+				} else if (item.equalsIgnoreCase("Hindi")) {
+					languageToLoad = "hi";
+				} else if (item.equalsIgnoreCase("Gujrati")) {
+					languageToLoad = "gu";
+				} else if (item.equalsIgnoreCase("Oriya")) {
+					languageToLoad = "or";
+				} else if (item.equalsIgnoreCase("Malayalam")) {
+					languageToLoad = "ml";
+				} else if (item.equalsIgnoreCase("Tamil")) {
+					languageToLoad = "ta";
+				} else if (item.equalsIgnoreCase("Telgu")) {
+					languageToLoad = "te";
+				} else if (item.equalsIgnoreCase("Kannada")) {
+					languageToLoad = "kn";
+				} else if (item.equalsIgnoreCase("Assammee")) {
+					languageToLoad = "as";
+				} else {
+					languageToLoad = "en";
+					return;
+				}
+
+
+				Locale locale = new Locale(languageToLoad);
+				Locale.setDefault(locale);
+
+				Configuration config = new Configuration();
+				config.locale = locale;
+				getBaseContext().getResources().updateConfiguration(config,
+						getBaseContext().getResources().getDisplayMetrics());
+
+				// Showing selected spinner item
+				Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+				finish();
+				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+				startActivity(getIntent());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
 	}
 
 
@@ -188,7 +272,7 @@ public class LoginViaOTP extends Activity {
 			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
 				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
-				params.put("phone_no", "+91"+phoneNo);
+				params.put("phone_no", "+91" + phoneNo);
 
 				RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -279,7 +363,7 @@ public class LoginViaOTP extends Activity {
 			}
 			if (Utils.checkIfOnlyDigits(otp)) {
 				if (!"".equalsIgnoreCase(otp)) {
-					if(Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+					if (Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
 						otpEt.setText(otp);
 						otpEt.setSelection(otpEt.getText().length());
 						loginViaOtp.performClick();
@@ -414,7 +498,7 @@ public class LoginViaOTP extends Activity {
 	}
 
 	public void performbackPressed() {
-		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
 		Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
@@ -425,7 +509,7 @@ public class LoginViaOTP extends Activity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		if(hasFocus && loginDataFetched){
+		if (hasFocus && loginDataFetched) {
 			startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
 			loginDataFetched = false;
 			finish();

@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -25,6 +26,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -32,8 +35,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -44,6 +49,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
@@ -142,7 +148,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.SERVER_URL = CUSTOM_URL;
 			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
-		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
+		Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
 		RestClient.setupRestClient(Data.SERVER_URL);
 		DriverLocationUpdateService.updateServerData(context);
 	}
@@ -163,6 +169,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		    config.locale = locale;
 //		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 //		}
+
+//		String languageToLoad = "ta";
+//		Locale locale = new Locale(languageToLoad);
+//		Locale.setDefault(locale);
+//
+//		Configuration config = new Configuration();
+//		config.locale = locale;
+//		getBaseContext().getResources().updateConfiguration(config,
+//				getBaseContext().getResources().getDisplayMetrics());
 
 		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
@@ -188,7 +203,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
 //
 //        Log.e("Locale info", "="+localeInfo);
-
 
 
 		setContentView(R.layout.activity_splash_new);
@@ -325,6 +339,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 
 
+
 //		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
 //		if(installed){
 //			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
@@ -344,6 +359,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		}
 
 	}
+
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);

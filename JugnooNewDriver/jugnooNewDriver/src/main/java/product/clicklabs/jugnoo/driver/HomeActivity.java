@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -394,9 +395,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			setContentView(R.layout.activity_home);
 
-//        String languageToLoad = "hi";
+//        String languageToLoad = "kn";
 //        Locale locale = new Locale(languageToLoad);
 //        Locale.setDefault(locale);
+//
 //        Configuration config = new Configuration();
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,
@@ -3219,7 +3221,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			@Override
 			public void run() {
 				try {
-					address = MapUtils.getGAPIAddress(latLng, language);
+					address = MapUtils.getGAPIAddress(latLng, "hi");
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
