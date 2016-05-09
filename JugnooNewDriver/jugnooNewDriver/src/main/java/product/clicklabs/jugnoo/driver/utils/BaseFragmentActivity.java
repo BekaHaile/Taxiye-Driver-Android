@@ -1,26 +1,30 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.Fragment;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.support.v4.app.FragmentActivity;
 
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 /**
- * Created by clicklabs on 7/3/15.
+ * Created by aneeshbansal on 09/05/16.
  */
-public class BaseActivity extends Activity {
+public class BaseFragmentActivity extends FragmentActivity {
 
-    private Resources resourcesEng, resources;
+	private Resources resourcesEng, resources;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	public BaseFragmentActivity(){
+
+	}
+
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
@@ -54,12 +58,12 @@ public class BaseActivity extends Activity {
 
 		Configuration config = new Configuration();
 		config.locale = locale;
-		getBaseContext().getResources().updateConfiguration(config,
-				getBaseContext().getResources().getDisplayMetrics());
+		getResources().updateConfiguration(config,
+				getResources().getDisplayMetrics());
 
-    }
+	}
 
-    public String getStringText(int resourceId){
+	public String getStringText(int resourceId){
 
 		Resources res = getResources();
 		Configuration conf = res.getConfiguration();
@@ -76,10 +80,11 @@ public class BaseActivity extends Activity {
 
 
 
-        String str = getResources().getString(resourceId);
-        if(str.length() > strEng.length() + 5){
-            return strEng;
-        }
-        return str;
-    }
+		String str = getResources().getString(resourceId);
+		if(str.length() > strEng.length() + 5){
+			return strEng;
+		}
+		return str;
+	}
+
 }

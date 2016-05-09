@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
@@ -127,7 +126,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	class ViewHolderDriverRides {
 		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewActualFareFare,
 				textViewCustomerPaid, textViewAccountBalance, textViewBalanceText, distanceValue, rideTimeValue,
-				waitTimeValue, textViewTransTypeText;
+				waitTimeValue, textViewTransTypeText, textViewCustomerPaidtext;
 		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
@@ -164,6 +163,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue);
 				holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewCustomerPaidtext = (TextView) convertView.findViewById(R.id.textViewCustomerPaidtext);
+				holder.textViewCustomerPaidtext.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId);
 				holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString);
@@ -217,6 +218,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			holder.id = position;
 
 
+
 			if (rideInfo.type.equalsIgnoreCase("ride")) {
 
 				if (0 == rideInfo.driverPaymentStatus) {
@@ -224,7 +226,10 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				} else {
 					holder.relative.setBackgroundResource(R.drawable.list_white_inv_selector);
 				}
-				holder.textViewTransTypeText.setText(getResources().getString(R.string.Ride));
+				PaymentActivity activity;
+				activity = (PaymentActivity) getActivity();
+				holder.textViewCustomerPaidtext.setText(activity.getStringText(R.string.paid_cash));
+				holder.textViewTransTypeText.setText(activity.getStringText(R.string.Ride));
 				holder.textViewTransTypeText.setVisibility(View.VISIBLE);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.dateTimeValue.setVisibility(View.VISIBLE);
@@ -254,7 +259,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				} else {
 					holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-					holder.textViewBalanceText.setText(getResources().getString(R.string.account));
+					holder.textViewBalanceText.setText(activity.getStringText(R.string.account));
 					holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 				}
@@ -266,8 +271,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
-				holder.distanceValue.setText(rideInfo.distance + getResources().getString(R.string.km) + ", ");
-				holder.rideTimeValue.setText(rideInfo.rideTime + " "+getResources().getString(R.string.min));
+				holder.distanceValue.setText(rideInfo.distance + activity.getStringText(R.string.km) + ", ");
+				holder.rideTimeValue.setText(rideInfo.rideTime + " " + activity.getStringText(R.string.min));
 
 
 

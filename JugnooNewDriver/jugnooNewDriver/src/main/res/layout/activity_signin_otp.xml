@@ -11,7 +11,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/new_orange"
+        android:background="@color/menu_black"
         android:splitMotionEvents="false">
 
         <Button
@@ -33,12 +33,44 @@
             <!--android:textColor="@color/white"-->
             <!--android:textSize="40px"/>-->
 
-        <Spinner
-            android:id="@+id/language_spinner"
-            android:layout_width="280px"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_height="82px" />
+       <LinearLayout
+           android:layout_width="380px"
+           android:layout_height="80px"
+           android:layout_alignParentRight="true"
+           android:layout_marginTop="3px"
+           android:layout_marginRight="5px"
+           android:background="@drawable/background_white_rounded_orange_bordered">
+
+
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:layout_marginLeft="6px"
+               android:background="@drawable/language_icon"/>
+
+           <ImageView
+               android:layout_width="2px"
+               android:layout_height="match_parent"
+               android:layout_marginLeft="6px"
+               android:background="@color/new_orange"/>
+
+
+           <Spinner
+               android:id="@+id/language_spinner"
+               android:layout_width="match_parent"
+               android:layout_centerVertical="true"
+               android:layout_height="match_parent"
+               android:textAlignment="center"
+               android:popupBackground="@drawable/background_white_rounded_orange_bordered"
+               />
+
+
+
+
+       </LinearLayout>
+
+
 
     </RelativeLayout>
 

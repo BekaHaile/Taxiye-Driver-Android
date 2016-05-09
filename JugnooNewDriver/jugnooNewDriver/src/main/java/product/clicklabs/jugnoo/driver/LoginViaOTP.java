@@ -3,10 +3,12 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +34,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -43,13 +46,14 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 29/03/16.
  */
-public class LoginViaOTP extends Activity {
+public class LoginViaOTP extends BaseActivity {
 
 	LinearLayout linearLayoutWaiting, relative, otpETextLLayout;
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
+	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,"");
 	public static String OTP_SCREEN_OPEN = null;
 
 
@@ -91,6 +95,7 @@ public class LoginViaOTP extends Activity {
 		new ASSL(LoginViaOTP.this, relative, 1134, 720, false);
 
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt.setHint(getStringText(R.string.phone_number));
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt = (EditText) findViewById(R.id.otpEt);
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -186,7 +191,7 @@ public class LoginViaOTP extends Activity {
 		OTP_SCREEN_OPEN = "yes";
 
 
-		Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
+		final Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
 
 		// Spinner Drop down elements
 		List<String> categories = new ArrayList<>();
@@ -209,52 +214,27 @@ public class LoginViaOTP extends Activity {
 		// attaching data adapter to spinner
 		spinner.setAdapter(dataAdapter);
 
+		if(!selectedLanguage.equalsIgnoreCase("")){
+			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
+			spinner.setSelection(spinnerPosition);
+		}
+
 		// Spinner click listener
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
 
-				String languageToLoad;
-
-				if (item.equalsIgnoreCase("English")) {
-					languageToLoad = "en";
-				} else if (item.equalsIgnoreCase("Hindi")) {
-					languageToLoad = "hi";
-				} else if (item.equalsIgnoreCase("Gujrati")) {
-					languageToLoad = "gu";
-				} else if (item.equalsIgnoreCase("Oriya")) {
-					languageToLoad = "or";
-				} else if (item.equalsIgnoreCase("Malayalam")) {
-					languageToLoad = "ml";
-				} else if (item.equalsIgnoreCase("Tamil")) {
-					languageToLoad = "ta";
-				} else if (item.equalsIgnoreCase("Telgu")) {
-					languageToLoad = "te";
-				} else if (item.equalsIgnoreCase("Kannada")) {
-					languageToLoad = "kn";
-				} else if (item.equalsIgnoreCase("Assammee")) {
-					languageToLoad = "as";
-				} else {
-					languageToLoad = "en";
-					return;
-				}
-
-
-				Locale locale = new Locale(languageToLoad);
-				Locale.setDefault(locale);
-
-				Configuration config = new Configuration();
-				config.locale = locale;
-				getBaseContext().getResources().updateConfiguration(config,
-						getBaseContext().getResources().getDisplayMetrics());
 
 				// Showing selected spinner item
 				Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
 
-				finish();
-				overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-				startActivity(getIntent());
+				if(!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,""))) {
+					finish();
+					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+					startActivity(getIntent());
+				}
 			}
 
 			@Override
@@ -312,6 +292,7 @@ public class LoginViaOTP extends Activity {
 			e.printStackTrace();
 		}
 	}
+
 
 	CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(30000, 5);
 

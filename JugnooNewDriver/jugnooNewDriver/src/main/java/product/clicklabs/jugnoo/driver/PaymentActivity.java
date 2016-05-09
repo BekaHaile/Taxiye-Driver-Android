@@ -18,11 +18,12 @@ import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
-public class PaymentActivity extends FragmentActivity implements FlurryEventNames {
+public class PaymentActivity extends BaseFragmentActivity implements FlurryEventNames {
 	
 	LinearLayout linearLayoutRoot;
 
@@ -55,7 +56,7 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 	}
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_payments);
