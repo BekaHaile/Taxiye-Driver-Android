@@ -10,6 +10,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
@@ -41,7 +42,7 @@ import com.flurry.android.FlurryAgent;
 
 import java.util.HashMap;
 
-public class DriverPatymRecharge extends Activity {
+public class DriverPatymRecharge extends BaseActivity {
 
 	LinearLayout relative;
 
@@ -91,8 +92,10 @@ public class DriverPatymRecharge extends Activity {
 
 		editTextCashAmount = (EditText) findViewById(R.id.editTextCashAmount);
 		editTextCashAmount.setTypeface(Data.latoRegular(this));
+		editTextCashAmount.setHint(getStringText(R.string.enter_amount));
 		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
 		editTextPhone.setTypeface(Data.latoRegular(this));
+		editTextPhone.setHint(getStringText(R.string.enter_phone_number));
 
 		btnConfirm = (Button) findViewById(R.id.btnConfirm);
 		btnConfirm.setTypeface(Data.latoRegular(this));

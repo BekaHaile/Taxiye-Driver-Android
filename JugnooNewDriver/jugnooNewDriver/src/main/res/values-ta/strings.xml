@@ -34,7 +34,7 @@
     <string name="done">முடிந்தது</string>
     <string name="amount">ரூபாய்</string>
     <string name="no_driver_available">மனிக்கவும். ஓட்டுனர்கள் கிடைக்கவில்லை</string>
-    <string name="logout">விடுபதிகை/ லாக் அவுட்</string>
+    <string name="logout">விடுபதிகை</string>
     <string name="are_you_sure_you_want_to_logout">நீங்கள் வெளியேற வேண்டும் என்பதை உறுதி செய்யுங்கள்
         ?
     </string>

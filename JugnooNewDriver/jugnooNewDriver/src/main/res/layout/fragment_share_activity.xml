@@ -21,7 +21,7 @@
 
             <TextView
                 android:id="@+id/textViewNumberOfDownloads"
-                android:layout_width="wrap_content"
+                android:layout_width="560px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -55,7 +55,7 @@
 
             <TextView
                 android:id="@+id/textViewNumberOfFirstRides"
-                android:layout_width="wrap_content"
+                android:layout_width="560px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -88,7 +88,7 @@
 
             <TextView
                 android:id="@+id/textViewMoneyEarned"
-                android:layout_width="wrap_content"
+                android:layout_width="560px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"

@@ -126,6 +126,7 @@ import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindowPerfect;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
@@ -149,7 +150,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 @SuppressLint("DefaultLocale")
-public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
+public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
 		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler {
 
 
@@ -269,8 +270,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	LinearLayout reviewReachedDistanceRl;
 	LinearLayout linearLayoutMeterFare;
-	TextView reviewReachedDestinationText,
-			reviewDistanceText, reviewDistanceValue,
+	TextView reviewReachedDestinationText, textViewRateYourCustomer,
+			reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
@@ -311,7 +312,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ScrollView scrollViewEndRide;
 	LinearLayout linearLayoutEndRideMain;
-	TextView textViewScroll, textViewNotificationValue;
+	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
 
 
 	// data variables declaration
@@ -487,6 +488,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
+			inviteFriendText.setText(getStringText(R.string.invite_earn));
 
 			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
 			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
@@ -512,7 +514,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
-			((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
+			textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
+			textViewSuperDrivers.setTypeface(Data.latoRegular(this));
+			textViewSuperDrivers.setText(getStringText(R.string.super_driver));
 
 			relativeLayoutDestination = (RelativeLayout) findViewById(R.id.relativeLayoutDestination);
 			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
@@ -528,6 +532,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
 			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			paytmRechargeText.setText(getStringText(R.string.paytm_recharge));
 
 			paymentsRl = (RelativeLayout) findViewById(R.id.paymentRL);
 			paymentsText = (TextView) findViewById(R.id.paymentText);
@@ -596,10 +601,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRequestAcceptBackBtn = (Button) findViewById(R.id.driverRequestAcceptBackBtn);
 			driverAcceptRideBtn = (Button) findViewById(R.id.driverAcceptRideBtn);
 			driverAcceptRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverAcceptRideBtn.setText(getStringText(R.string.accept_ride));
 			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
 			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
 			buttonDriverNavigation = (Button) findViewById(R.id.buttonDriverNavigation);
+			buttonDriverNavigation.setText(getStringText(R.string.click_for_direction));
 
 
 			// Driver engaged layout
@@ -638,10 +645,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
 			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
 			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverStartRideBtn.setText(getStringText(R.string.start_ride));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
 			buttonMarkArrived.setTypeface(Data.latoRegular(this));
+			buttonMarkArrived.setText(getStringText(R.string.arrived));
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
 			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverCancelRideBtn.setText(getStringText(R.string.cancel));
 
 
 			//In ride layout
@@ -649,6 +659,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
 			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRDistanceText.setText(R.string.distance);
 			driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue);
 			driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
@@ -659,12 +670,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText);
 			driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverRideTimeText.setText(getStringText(R.string.ride_time));
 			rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer);
 			rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 			driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
 			driverWaitText = (TextView) findViewById(R.id.driverWaitText);
 			driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverWaitText.setText(getStringText(R.string.wait_time));
+
 			driverWaitValue = (TextView) findViewById(R.id.driverWaitValue);
 			driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
@@ -688,6 +702,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
 			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverEndRideBtn.setText(R.string.end_ride);
 			waitStart = 2;
 
 
@@ -700,16 +715,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			reviewReachedDestinationText = (TextView) findViewById(R.id.reviewReachedDestinationText);
 			reviewReachedDestinationText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewReachedDestinationText.setText(R.string.reached_destination);
+
 			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
 			reviewDistanceText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewDistanceText.setText(getStringText(R.string.distance));
 			reviewDistanceValue = (TextView) findViewById(R.id.reviewDistanceValue);
 			reviewDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewWaitText = (TextView) findViewById(R.id.reviewWaitText);
 			reviewWaitText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewWaitText.setText(getStringText(R.string.wait_time));
 			reviewWaitValue = (TextView) findViewById(R.id.reviewWaitValue);
 			reviewWaitValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewRideTimeText = (TextView) findViewById(R.id.reviewRideTimeText);
 			reviewRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewRideTimeText.setText(getStringText(R.string.ride_time));
 			reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
 			reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewFareText = (TextView) findViewById(R.id.reviewFareText);
@@ -752,6 +772,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			textViewCalculatedFare = (TextView) findViewById(R.id.textViewCalculatedFare);
 			textViewCalculatedFare.setTypeface(Data.latoRegular(this));
 
+			textViewPerfectRideWating = (TextView) findViewById(R.id.textViewPerfectRideWating);
+			textViewPerfectRideWating.setTypeface(Data.latoRegular(this));
+			textViewPerfectRideWating.setText(getStringText(R.string.customer_waiting));
+
 
 			relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
 
@@ -766,7 +790,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			relativeLayoutRateCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutRateCustomer);
-			((TextView) findViewById(R.id.textViewRateYourCustomer)).setTypeface(Data.latoRegular(this));
+			textViewRateYourCustomer = (TextView) findViewById(R.id.textViewRateYourCustomer);
+			textViewRateYourCustomer.setTypeface(Data.latoRegular(this));
+			textViewRateYourCustomer.setText(getStringText(R.string.Rate_Your_Customer));
 			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
 			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);

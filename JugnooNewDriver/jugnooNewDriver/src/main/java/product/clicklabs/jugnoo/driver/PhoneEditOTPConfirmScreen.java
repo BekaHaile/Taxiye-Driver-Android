@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -36,12 +37,12 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdate {
+public class PhoneEditOTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	ImageView imageViewBack;
 	TextView textViewTitle;
 
-	TextView otpHelpText;
+	TextView otpHelpText, textViewOTPNotReceived, textViewChangePhone;
 	EditText editTextOTP;
 	Button buttonVerify;
 
@@ -81,6 +82,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 		otpHelpText.setTypeface(Data.latoRegular(this));
 		editTextOTP = (EditText) findViewById(R.id.editTextOTP);
 		editTextOTP.setTypeface(Data.latoRegular(this));
+		editTextOTP.setHint(getStringText(R.string.enter_otp));
 
 		buttonVerify = (Button) findViewById(R.id.buttonVerify);
 		buttonVerify.setTypeface(Data.latoRegular(this));
@@ -90,12 +92,17 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 		relativeLayoutOTPThroughCall.setVisibility(View.GONE);
 		relativeLayoutChangePhone.setVisibility(View.GONE);
 
-		((TextView) findViewById(R.id.textViewOTPNotReceived)).setTypeface(Data.latoRegular(this));
+		textViewOTPNotReceived = (TextView) findViewById(R.id.textViewOTPNotReceived);
+		textViewOTPNotReceived.setTypeface(Data.latoRegular(this));
+		textViewOTPNotReceived.setText(getStringText(R.string.not_recived_otp));
+
 		((TextView) findViewById(R.id.textViewCallMe)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-		((TextView) findViewById(R.id.textViewChangePhone)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewChange)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewChangePhone = (TextView) findViewById(R.id.textViewChangePhone);
+		textViewChangePhone.setTypeface(Data.latoRegular(this));
+		textViewChangePhone.setText(getStringText(R.string.change_phone_no));
 
+		((TextView) findViewById(R.id.textViewChange)).setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
 
@@ -157,7 +164,7 @@ public class PhoneEditOTPConfirmScreen extends Activity implements LocationUpdat
 		try {
 			phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
 			if(phoneNumberToVerify != null) {
-				otpHelpText.setText(otpHelpStr+" "+phoneNumberToVerify);
+				otpHelpText.setText(getStringText(R.string.enter_otp_received)+" "+phoneNumberToVerify);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
