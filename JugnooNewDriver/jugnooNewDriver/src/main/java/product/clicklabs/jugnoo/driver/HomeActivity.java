@@ -3435,29 +3435,33 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		EventsHolder.displayPushHandler = this;
 
-		for (int i = 0; i < Data.blockAppPackageNameList.length(); i++) {
-			try {
-				final String packageName = Data.blockAppPackageNameList.getString(i);
-				if (Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)
-						&& Utils.isAppInstalled(HomeActivity.this, packageName)) {
-					DialogPopup.alertPopupWithListener(HomeActivity.this, "",
-							Data.userData.blockedAppPackageMessage,
-							new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									Uri packageUri = null;
-									packageUri = Uri.parse("package:"+packageName);
-									Intent uninstallIntent =
-											new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-									startActivity(uninstallIntent);
-								}
-							});
-					break;
+		try {
+			for (int i = 0; i < Data.blockAppPackageNameList.length(); i++) {
+				try {
+					final String packageName = Data.blockAppPackageNameList.getString(i);
+					if (Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)
+							&& Utils.isAppInstalled(HomeActivity.this, packageName)) {
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "",
+								Data.userData.blockedAppPackageMessage,
+								new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Uri packageUri = null;
+										packageUri = Uri.parse("package:"+packageName);
+										Intent uninstallIntent =
+												new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+										startActivity(uninstallIntent);
+									}
+								});
+						break;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
