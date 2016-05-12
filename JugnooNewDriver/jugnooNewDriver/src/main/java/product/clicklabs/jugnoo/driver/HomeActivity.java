@@ -3446,7 +3446,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								@Override
 								public void onClick(View v) {
 									Uri packageUri = null;
-									packageUri = Uri.parse(packageName);
+									packageUri = Uri.parse("package:"+packageName);
 									Intent uninstallIntent =
 											new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
 									startActivity(uninstallIntent);
