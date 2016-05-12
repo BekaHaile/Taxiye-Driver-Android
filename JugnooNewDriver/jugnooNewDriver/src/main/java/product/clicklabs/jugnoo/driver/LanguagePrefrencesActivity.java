@@ -83,7 +83,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getInvoiceHistory(LanguagePrefrencesActivity.this);
+				fetchLangList(LanguagePrefrencesActivity.this);
 			}
 		});
 
@@ -95,7 +95,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 			}
 		});
 
-		getInvoiceHistory(this);
+		fetchLangList(this);
 
 	}
 
@@ -237,7 +237,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 //	Retrofit
 
-	private void getInvoiceHistory(final Activity activity) {
+	private void fetchLangList(final Activity activity) {
 		progressBar.setVisibility(View.VISIBLE);
 
 		HashMap<String, String> params = new HashMap<>();
@@ -248,40 +248,40 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
 			@Override
 			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
-								} else {
-									updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-								}
-							} else {
-
-								JSONArray jArray = jObj.getJSONArray("locales");
-								if (jArray != null) {
-									for (int i = 0; i < jArray.length(); i++) {
-										languages.add(jArray.get(i).toString());
-									}
-								}
-								updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					if (!jObj.isNull("error")) {
+						String errorMessage = jObj.getString("error");
+						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+							HomeActivity.logoutUser(activity);
+						} else {
 							updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 						}
-						progressBar.setVisibility(View.GONE);
-					}
+					} else {
 
-					@Override
-					public void failure(RetrofitError error) {
-						progressBar.setVisibility(View.GONE);
-						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+						JSONArray jArray = jObj.getJSONArray("locales");
+						if (jArray != null) {
+							for (int i = 0; i < jArray.length(); i++) {
+								languages.add(jArray.get(i).toString());
+							}
+						}
+						updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
 					}
-				});
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+				}
+				progressBar.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				progressBar.setVisibility(View.GONE);
+				updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+			}
+		});
 	}
 
 

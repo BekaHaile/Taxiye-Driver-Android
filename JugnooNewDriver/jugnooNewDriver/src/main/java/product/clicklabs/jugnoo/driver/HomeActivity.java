@@ -1047,6 +1047,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
+					Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					finish();
 				}
@@ -1111,6 +1112,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				logoutRl.setVisibility(View.GONE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
+			}
+
+			if(!Data.currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+				Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+				callAndHandleStateRestoreAPI();
 			}
 
 
