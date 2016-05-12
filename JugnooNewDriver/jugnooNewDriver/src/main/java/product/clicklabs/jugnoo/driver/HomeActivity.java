@@ -819,6 +819,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+
+
+
+
 			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
 					new KeyboardLayoutListener.KeyBoardStateHandler() {
 						@Override
@@ -3430,6 +3434,35 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		stopService(new Intent(HomeActivity.this, GeanieView.class));
 
 		EventsHolder.displayPushHandler = this;
+
+		try {
+			for (int i = 0; i < Data.blockAppPackageNameList.length(); i++) {
+				try {
+					final String packageName = Data.blockAppPackageNameList.getString(i);
+					if (Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)
+							&& Utils.isAppInstalled(HomeActivity.this, packageName)) {
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "",
+								Data.userData.blockedAppPackageMessage,
+								new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Uri packageUri = null;
+										packageUri = Uri.parse("package:"+packageName);
+										Intent uninstallIntent =
+												new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+										startActivity(uninstallIntent);
+									}
+								});
+						break;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
