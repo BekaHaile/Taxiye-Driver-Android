@@ -3604,7 +3604,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
-			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getResources().getString(R.string.km));
+			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getStringText(R.string.km));
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {
