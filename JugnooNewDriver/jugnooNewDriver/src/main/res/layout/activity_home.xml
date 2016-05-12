@@ -2589,7 +2589,7 @@
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/languagePrefrencesText"

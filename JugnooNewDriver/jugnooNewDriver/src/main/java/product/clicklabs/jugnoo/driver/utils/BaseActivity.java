@@ -23,6 +23,11 @@ public class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 
+		updateLanguage();
+
+    }
+
+	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
 		String languageToLoad;
 
@@ -56,8 +61,8 @@ public class BaseActivity extends Activity {
 		config.locale = locale;
 		getBaseContext().getResources().updateConfiguration(config,
 				getBaseContext().getResources().getDisplayMetrics());
+	}
 
-    }
 
     public String getStringText(int resourceId){
 

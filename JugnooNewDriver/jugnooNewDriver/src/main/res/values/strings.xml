@@ -518,6 +518,7 @@
 	<string name="invoice_detail">INVOICE DETAILS</string>
 	<string name="generated_on">Generated On:</string>
 	<string name="share">Share</string>
+	<string name="no_language_to_select">Language Option Not Available</string>
 
 
 	<string-array name="CountryCodes" >

@@ -21,6 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -48,14 +49,17 @@ import retrofit.mime.TypedByteArray;
  */
 public class LoginViaOTP extends BaseActivity {
 
-	LinearLayout linearLayoutWaiting, relative, otpETextLLayout;
+	LinearLayout linearLayoutWaiting, relative, otpETextLLayout,selectLanguageLl;
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
 	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,"");
+	int languagePrefStatus;
+	Configuration conf;
+	Spinner spinner;
 	public static String OTP_SCREEN_OPEN = null;
-
+	List<String> categories = new ArrayList<>();
 
 	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
@@ -88,6 +92,8 @@ public class LoginViaOTP extends BaseActivity {
 
 
 	public void onCreate(Bundle savedInstanceState) {
+
+		fetchLanguageList();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_signin_otp);
 
@@ -101,6 +107,7 @@ public class LoginViaOTP extends BaseActivity {
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt.setEnabled(false);
 		linearLayoutWaiting = (LinearLayout) findViewById(R.id.linearLayoutWaiting);
+		selectLanguageLl = (LinearLayout) findViewById(R.id.selectLanguageLl);
 		otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -108,10 +115,11 @@ public class LoginViaOTP extends BaseActivity {
 		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
 		loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
-
+		spinner = (Spinner) findViewById(R.id.language_spinner);
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -158,7 +166,6 @@ public class LoginViaOTP extends BaseActivity {
 				String otpCode = otpEt.getText().toString().trim();
 				if (otpCode.length() > 0) {
 					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNoEt.getText()), "", otpCode);
-					;
 				} else {
 					otpEt.requestFocus();
 					otpEt.setError(getResources().getString(R.string.code_empty));
@@ -191,59 +198,74 @@ public class LoginViaOTP extends BaseActivity {
 		OTP_SCREEN_OPEN = "yes";
 
 
-		final Spinner spinner = (Spinner) findViewById(R.id.language_spinner);
 
-		// Spinner Drop down elements
-		List<String> categories = new ArrayList<>();
-		categories.add("Select Language");
-		categories.add("Hindi");
-		categories.add("Gujrati");
-		categories.add("Oriya");
-		categories.add("Malayalam");
-		categories.add("Telgu");
-		categories.add("Tamil");
-		categories.add("Kannada");
-		categories.add("English");
+
+//		// Spinner Drop down elements
+//
+//		categories.add("Select Language");
+//		categories.add("Hindi");
+//		categories.add("Gujrati");
+//		categories.add("Oriya");
+//		categories.add("Malayalam");
+//		categories.add("Telgu");
+//		categories.add("Tamil");
+//		categories.add("Kannada");
+//		categories.add("English");
 
 		// Creating adapter for spinner
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
 
-		// Drop down layout style - list view with radio button
-		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		// attaching data adapter to spinner
-		spinner.setAdapter(dataAdapter);
 
-		if(!selectedLanguage.equalsIgnoreCase("")){
-			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
-			spinner.setSelection(spinnerPosition);
+	}
+
+
+	public void fetchLanguageList() {
+		try {
+			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
+				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<>();
+				params.put("device_model_name", android.os.Build.MODEL);
+				params.put("android_version", android.os.Build.VERSION.RELEASE);
+
+				RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						DialogPopup.dismissLoadingDialog();
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							String message = JSONParser.getServerMessage(jObj);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								languagePrefStatus = jObj.getInt("locale_preference_enabled");
+								JSONArray jArray = jObj.getJSONArray("locales");
+								if (jArray != null) {
+									for (int i = 0; i < jArray.length(); i++) {
+										categories.add(jArray.get(i).toString());
+									}
+								}
+								showLanguagePreference();
+
+							} else {
+								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+						}
+
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		// Spinner click listener
-		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String item = parent.getItemAtPosition(position).toString();
-
-
-				// Showing selected spinner item
-				Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
-
-				if(!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,""))) {
-					finish();
-					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-					startActivity(getIntent());
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parent) {
-
-			}
-		});
-
-
 	}
 
 
@@ -360,7 +382,7 @@ public class LoginViaOTP extends BaseActivity {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-
+			conf = getResources().getConfiguration();
 //			RequestParams params = new RequestParams();
 
 			if (Data.locationFetcher != null) {
@@ -385,6 +407,7 @@ public class LoginViaOTP extends BaseActivity {
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("locale", conf.locale.toString());
 
 			if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
 				params.put("auto_n_cab_installed", "1");
@@ -496,6 +519,53 @@ public class LoginViaOTP extends BaseActivity {
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
+	}
+
+	public void showLanguagePreference(){
+
+		if(languagePrefStatus ==1){
+			selectLanguageLl.setVisibility(View.VISIBLE);
+		} else{
+			selectLanguageLl.setVisibility(View.GONE);
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		// Drop down layout style - list view with radio button
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// attaching data adapter to spinner
+		spinner.setAdapter(dataAdapter);
+
+		if(!selectedLanguage.equalsIgnoreCase("")){
+			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
+			spinner.setSelection(spinnerPosition);
+		}
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+
+
+				// Showing selected spinner item
+				Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
+
+				if(!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,""))) {
+					finish();
+					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+					startActivity(getIntent());
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
 	}
 
 	@Override

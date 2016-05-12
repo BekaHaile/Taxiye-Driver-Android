@@ -1048,6 +1048,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					finish();
 				}
 			});
 
@@ -1579,7 +1580,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Crashlytics.logException(e);
+//			Crashlytics.logException(e);
 		}
 
 	}
