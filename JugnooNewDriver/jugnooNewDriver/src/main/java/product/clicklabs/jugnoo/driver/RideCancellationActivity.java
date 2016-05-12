@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -17,15 +16,17 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -160,7 +161,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	}
 
 
-	public void driverCancelRideAsync(final Activity activity, String reason) {
+	public void driverCancelRideAsync(final Activity activity, final String reason) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			DialogPopup.showLoadingDialog(activity, "Loading...");
 
@@ -207,6 +208,11 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+
+						sendCallLogs(Data.dEngagementId);
+
+						nudgeCancelRide(reason);
+
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -224,6 +230,52 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			});
 		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+	}
+
+	private void nudgeCancelRide(String reasons){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
+			map.put(Constants.KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			map.put(Constants.KEY_CUSTOMER_ID, Data.dCustomerId);
+			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
+	public void sendCallLogs(String engId) {
+		try {
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("access_token", Data.userData.accessToken);
+				params.put("eng_id", engId);
+				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber));
+
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+					}
+				});
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -434,34 +434,39 @@ public class GpsDistanceCalculator {
 
 	private synchronized boolean updateTotalDistance(LatLng lastLatLng, LatLng currentLatLng, double deltaDistance, Location currentLocation) {
 		boolean validDistance = false;
-		if (deltaDistance > 0.0 && deltaDistance < 20001) {
-			LatLngPair latLngPair = new LatLngPair(lastLatLng, currentLatLng, deltaDistance);
-			if (deltaLatLngPairs == null) {
-				deltaLatLngPairs = new ArrayList<LatLngPair>();
+		try {
+			if (deltaDistance > 0.0 && deltaDistance < 20001) {
+				LatLngPair latLngPair = new LatLngPair(lastLatLng, currentLatLng, deltaDistance);
+				if (deltaLatLngPairs == null) {
+					deltaLatLngPairs = new ArrayList<LatLngPair>();
+				}
+
+				if (!deltaLatLngPairs.contains(latLngPair) && totalDistance < 200001) {
+					totalDistance = totalDistance + deltaDistance;
+					deltaLatLngPairs.add(latLngPair);
+					validDistance = true;
+
+					lastLocationTime = System.currentTimeMillis();
+
+					Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+
+					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+							DateOperations.getTimeStampFromMillis(currentLocation.getTime()) + ","
+									+ currentLatLng.latitude + ","
+									+ currentLatLng.longitude + ","
+									+ currentLocation.getAccuracy() + ","
+									+ GpsDistanceCalculator.this.totalDistance + ","
+									+ deltaDistance + ","
+									+ lastLatLng.latitude + ","
+									+ lastLatLng.longitude + ","
+									+ DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime) + ","
+									+ totalHaversineDistance);
+					saveData(context, lastGPSLocation, lastLocationTime);
+				}
 			}
 
-			if (!deltaLatLngPairs.contains(latLngPair) && totalDistance < 200001) {
-				totalDistance = totalDistance + deltaDistance;
-				deltaLatLngPairs.add(latLngPair);
-				validDistance = true;
-
-				lastLocationTime = System.currentTimeMillis();
-
-				Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
-
-				Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
-						DateOperations.getTimeStampFromMillis(currentLocation.getTime()) + ","
-								+ currentLatLng.latitude + ","
-								+ currentLatLng.longitude + ","
-								+ currentLocation.getAccuracy() + ","
-								+ GpsDistanceCalculator.this.totalDistance + ","
-								+ deltaDistance + ","
-								+ lastLatLng.latitude + ","
-								+ lastLatLng.longitude + ","
-								+ DateOperations.getTimeStampFromMillis(GpsDistanceCalculator.this.lastLocationTime) + ","
-								+ totalHaversineDistance);
-				saveData(context, lastGPSLocation, lastLocationTime);
-			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return validDistance;
 	}

@@ -25,18 +25,17 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.ShareActivity;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.LeaderboardItemsAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.Item;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
-import product.clicklabs.jugnoo.driver.retrofit.model.Ranklist;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -116,6 +115,7 @@ public class ShareLeaderboardFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				updateList(LBLocationType.LOCAL, lbTimeType);
+				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SUPER_DRIVER_LOCAL, null);
 			}
 		});
 
@@ -123,6 +123,7 @@ public class ShareLeaderboardFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				updateList(LBLocationType.GLOBAL, lbTimeType);
+				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SUPER_DRIVER_GLOBAL, null);
 			}
 		});
 
@@ -130,6 +131,7 @@ public class ShareLeaderboardFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				updateList(lbLocationType, LBTimeType.DAILY);
+				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SUPER_DRIVER_DAILY, null);
 			}
 		});
 
@@ -137,6 +139,7 @@ public class ShareLeaderboardFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				updateList(lbLocationType, LBTimeType.WEEKLY);
+				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SUPER_DRIVER_WEEKLY, null);
 			}
 		});
 

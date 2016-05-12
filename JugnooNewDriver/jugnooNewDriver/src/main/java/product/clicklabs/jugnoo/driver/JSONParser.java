@@ -1,8 +1,11 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -38,8 +41,10 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -319,7 +324,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FLAG, userData.optInt("penalise_driver_timeout", 0));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR, userData.optInt("customer_cancel_timeout_factor", 1));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, userData.optInt("driver_cancel_timeout_factor", 2));
-		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl",86400000));
+		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl", 86400000));
+		Prefs.with(context).save(SPLabels.NOTIFICATION_SAVE_COUNT, userData.optInt("push_upload_count", 0));
 
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
@@ -327,6 +333,7 @@ public class JSONParser implements Constants {
 		Log.i("timeOut",timeoutMessage);
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
+		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 
@@ -342,17 +349,23 @@ public class JSONParser implements Constants {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
 		}
 
+		String userEmail = userData.optString("user_email", "");
+		String phoneNo = userData.getString("phone_no");
+		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		Prefs.with(context).save(SP_USER_ID, userId);
 
 		return new UserData(accessToken, userData.getString("user_name"),
-				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
+				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
-				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable);
+				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
+				userId, userEmail);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
+
 		
 		Log.e("response ==", "="+response);
 		
@@ -373,12 +386,18 @@ public class JSONParser implements Constants {
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
 
 		parseCancellationReasons(jObj,context);
-				
+
+
+		try {
+			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
+					Data.userData.getUserEmail(), Data.userData.phoneNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		return resp;
 	}
-	
-	
-	
+
 	
 	
 	public void parsePortNumber(Context context, JSONObject jLoginObject){
@@ -699,6 +718,8 @@ public class JSONParser implements Constants {
 											double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
 											double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
 											Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
+											Data.nextCustomerName = jObject.optString("perfect_user_name","abc");
+											Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("perfect_phone_no"));
 										} catch(Exception e){
 											e.printStackTrace();
 										}
@@ -839,7 +860,9 @@ public class JSONParser implements Constants {
 
 								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
 									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-									new ApiAcceptRide().perfectRideVariables(context, "","","",0,0);
+									Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+									new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
+
 								}
 							}
 			} catch(Exception e){

@@ -42,7 +42,7 @@ public class DriverProfileActivity extends Activity {
 	ImageView profileImg, imageViewTitleBarDEI;
 
 
-	public  ProfileInfo openedProfileInfo;
+	public static ProfileInfo openedProfileInfo;
 
 	@Override
 	protected void onStart() {
@@ -142,6 +142,7 @@ public class DriverProfileActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+//				EditDriverProfile.openProfileInfo = openedProfileInfo;
 				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
@@ -193,7 +194,7 @@ public class DriverProfileActivity extends Activity {
 									} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 										try {
-											String textViewDriverName = "", textViewTitleBarDEI = "";
+											String textViewDriverName = "", textViewTitleBarDEI = "", accNo="", ifscCode = "", bankName="", bankLoc="";
 											int textViewDriverId = 0, textViewRankCity = 0, textViewRankOverall = 0,
 													textViewMonthlyValue = 0, textViewRidesTakenValue = 0, textViewRidesMissedValue = 0,
 													textViewRidesCancelledValue = 0, textViewOnlineHoursValue = 0;
@@ -224,9 +225,22 @@ public class DriverProfileActivity extends Activity {
 											if (jObj.has("online_hours")) {
 												textViewOnlineHoursValue = jObj.getInt("online_hours");
 											}
+											if (jObj.has("bank_account_no")) {
+												accNo = jObj.getString("bank_account_no");
+											}
+											if (jObj.has("ifsc_code")) {
+												ifscCode = jObj.getString("ifsc_code");
+											}
+											if (jObj.has("bank_name")) {
+												bankName = jObj.getString("bank_name");
+											}
+											if (jObj.has("bank_location")) {
+												bankLoc = jObj.getString("bank_location");
+											}
 											openedProfileInfo = new ProfileInfo(textViewDriverName, textViewDriverId, textViewRankCity,
 													textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue, textViewRidesMissedValue,
-													textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI);
+													textViewRidesCancelledValue, textViewOnlineHoursValue, textViewTitleBarDEI, accNo, ifscCode,
+													bankName, bankLoc);
 
 											setUserData();
 

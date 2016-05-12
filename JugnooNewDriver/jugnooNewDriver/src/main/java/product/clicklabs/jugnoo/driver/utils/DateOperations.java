@@ -343,6 +343,18 @@ public class DateOperations {
 	    return formatter.format(date);
 	}
 
+	public static String reverseDate(String date){
+		DateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat outputFormat = new SimpleDateFormat("dd-MM-yyyy");
+		Date newDate = null;
+		try {
+			newDate = inputFormat.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return  outputFormat.format(newDate);
+	}
+
 
 	public static String convertDateViaFormat(String dateTime) {
 		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

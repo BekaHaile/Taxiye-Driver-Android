@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import android.app.Activity;
 import android.view.View;
@@ -43,6 +44,13 @@ public class CustomInfoWindow implements InfoWindowAdapter {
 
 		TextView snippet = (TextView) view.findViewById(R.id.snippet);
 		snippet.setText("" + snippetStr);
+
+//		title.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Utils.openCallIntent(, Data.userData.driverSupportNumber);
+//			}
+//		});
 
 	}
 }
