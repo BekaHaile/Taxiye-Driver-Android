@@ -2,125 +2,175 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.HashMap;
+import java.util.List;
 
-import product.clicklabs.jugnoo.driver.datastructure.LanguageInfo;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
-public class LanguagePrefrencesActivity extends Activity{
-	
-	
-	LinearLayout relative;
-	
+public class LanguagePrefrencesActivity extends BaseActivity {
+
+	ProgressBar progressBar;
+	TextView textViewInfoDisplay;
+	ListView listView;
 	Button backBtn;
-	TextView title;
-	ListView languageList;
-	
+
 	LanguageListAdapter languageListAdapter;
-	
-	ArrayList<LanguageInfo> languageInfos = new ArrayList<LanguageInfo>();
-	
+	Configuration conf;
+
+	LinearLayout relative;
+
+	List<String> languages = new ArrayList<>();
+
+	UpdateDriverEarnings updateDriverEarnings;
+
+
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		languages.clear();
+
 		setContentView(R.layout.activity_language);
-		
+
 		relative = (LinearLayout) findViewById(R.id.relative);
+//		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//		ASSL.DoMagic(main);
+
 		new ASSL(LanguagePrefrencesActivity.this, relative, 1134, 720, false);
-		
-		
-		backBtn = (Button) findViewById(R.id.backBtn); 
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
-		
-		languageList = (ListView) findViewById(R.id.languageList);
+
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+		backBtn = (Button) findViewById(R.id.backBtn);
+		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
+		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
+		listView = (ListView) findViewById(R.id.listView);
+
 		languageListAdapter = new LanguageListAdapter();
-		
-		languageList.setAdapter(languageListAdapter);
-		
-		backBtn.setOnClickListener(new View.OnClickListener() {
-			
+		listView.setAdapter(languageListAdapter);
+
+		progressBar.setVisibility(View.GONE);
+		textViewInfoDisplay.setVisibility(View.GONE);
+
+		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				finish();
-				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+				fetchLangList(LanguagePrefrencesActivity.this);
 			}
 		});
-		
-		
-		languageInfos.clear();
-		
-		
-		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String languageSelected = preferences.getString(Data.LANGUAGE_SELECTED, "default");
-		
-		if("default".equalsIgnoreCase(languageSelected)){
-			Locale locale = Locale.getDefault();
-			if("hi".equalsIgnoreCase(locale.getLanguage())){
-				languageInfos.add(new LanguageInfo("en", getResources().getString(R.string.language_english_text), false));
-				languageInfos.add(new LanguageInfo("hi", getResources().getString(R.string.language_hindi_text), true));
+
+		backBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				performBackPressed();
 			}
-			else{
-				languageInfos.add(new LanguageInfo("en", getResources().getString(R.string.language_english_text), true));
-				languageInfos.add(new LanguageInfo("hi", getResources().getString(R.string.language_hindi_text), false));
-			}
-		}
-		else{
-			if("hi".equalsIgnoreCase(languageSelected)){
-				languageInfos.add(new LanguageInfo("en", getResources().getString(R.string.language_english_text), false));
-				languageInfos.add(new LanguageInfo("hi", getResources().getString(R.string.language_hindi_text), true));
-			}
-			else{
-				languageInfos.add(new LanguageInfo("en", getResources().getString(R.string.language_english_text), true));
-				languageInfos.add(new LanguageInfo("hi", getResources().getString(R.string.language_hindi_text), false));
-			}
-		}
-		
-		
-		
-		
-		languageListAdapter.notifyDataSetChanged();
-		
+		});
+
+		fetchLangList(this);
+
 	}
-	
-	void refreshPage(){
-		title.setText(getResources().getString(R.string.select_language));
+
+
+	public void updateListData(String message, boolean errorOccurred) {
+		if (errorOccurred) {
+			textViewInfoDisplay.setText(message);
+			textViewInfoDisplay.setVisibility(View.VISIBLE);
+
+			languages.clear();
+			languageListAdapter.notifyDataSetChanged();
+		} else {
+			if (languages.size() == 0) {
+				textViewInfoDisplay.setText(message);
+				textViewInfoDisplay.setVisibility(View.VISIBLE);
+			} else {
+				textViewInfoDisplay.setVisibility(View.GONE);
+			}
+			languageListAdapter.notifyDataSetChanged();
+		}
 	}
-	
-	
-	
-	class ViewHolderLanguage {
+
+
+	public void performBackPressed() {
+		finish();
+		Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
+		LanguagePrefrencesActivity.this.startActivity(intent);
+		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+	}
+
+	@Override
+	public void onBackPressed() {
+		finish();
+		Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
+		LanguagePrefrencesActivity.this.startActivity(intent);
+		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		super.onBackPressed();
+	}
+
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+	}
+
+
+	class ViewHolderLanguages {
 		TextView languageName;
-		ImageView tick;
+		ImageView imageViewRequestType;
 		LinearLayout relative;
 		int id;
 	}
 
 	class LanguageListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
-		ViewHolderLanguage holder;
+		ViewHolderLanguages holder;
 
 		public LanguageListAdapter() {
-			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			mInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
 
 		@Override
 		public int getCount() {
-			return languageInfos.size();
+			return languages.size();
 		}
 
 		@Override
@@ -134,92 +184,130 @@ public class LanguagePrefrencesActivity extends Activity{
 		}
 
 		@Override
-		public View getView(final int position, View convertView, ViewGroup parent) {
-
-			
+		public View getView(int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
-				
-				holder = new ViewHolderLanguage();
+				holder = new ViewHolderLanguages();
 				convertView = mInflater.inflate(R.layout.list_item_language, null);
-				
-				holder.languageName = (TextView) convertView.findViewById(R.id.languageName); holder.languageName.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.tick = (ImageView) convertView.findViewById(R.id.tick);
-				
-				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
-				
+
+				holder.languageName = (TextView) convertView.findViewById(R.id.languageName);
+				holder.languageName.setTypeface(Data.latoRegular(getApplicationContext()));
+
+				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
 				holder.relative.setTag(holder);
-				
-				holder.relative.setLayoutParams(new ListView.LayoutParams(720, 127));
+
+				holder.relative.setLayoutParams(new ListView.LayoutParams(720, 120));
 				ASSL.DoMagic(holder.relative);
-				
-				
+
+				holder.relative.setTag(holder);
 				convertView.setTag(holder);
 			} else {
-				holder = (ViewHolderLanguage) convertView.getTag();
+				holder = (ViewHolderLanguages) convertView.getTag();
 			}
-			
-			
-			holder.id = position;
-			
-			holder.languageName.setText(languageInfos.get(position).displayName);
-			
-			if(languageInfos.get(position).selected){
-				holder.tick.setImageResource(R.drawable.check_on);
-			}
-			else{
-				holder.tick.setImageResource(R.drawable.check_off);
-			}
-			
-			holder.relative.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					holder = (ViewHolderLanguage) v.getTag();
-					
-					for(int i=0; i<languageInfos.size(); i++){
-						languageInfos.get(i).selected = false;
+
+			try {
+				languages.get(position);
+				holder.id = position;
+				holder.languageName.setText(languages.get(position));
+
+
+				holder.relative.setOnClickListener(new View.OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						holder = (ViewHolderLanguages) v.getTag();
+						Prefs.with(LanguagePrefrencesActivity.this).save(SPLabels.SELECTED_LANGUAGE, languages.get(holder.id).toString());
+						updateLanguage();
+						conf = getResources().getConfiguration();
+						setPreferredLanguage();
+						Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
+						LanguagePrefrencesActivity.this.startActivity(intent);
+						LanguagePrefrencesActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					}
-					
-					languageInfos.get(holder.id).selected = true;
-					
-					Locale locale = new Locale(languageInfos.get(holder.id).name); 
-				    Locale.setDefault(locale);
-				    Configuration config = new Configuration();
-				    config.locale = locale;
-				    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-				    
-					
-				    SharedPreferences.Editor editor = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0).edit();
-				    editor.putString(Data.LANGUAGE_SELECTED, languageInfos.get(holder.id).name);
-				    editor.commit();
-				    
-					
-					notifyDataSetChanged();
-					
-					refreshPage();
-				}
-			});
-			
-			
-			
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			return convertView;
 		}
 
 	}
-	
-	@Override
-	public void onBackPressed() {
-		finish();
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		super.onBackPressed();
+
+
+//	Retrofit
+
+	private void fetchLangList(final Activity activity) {
+		progressBar.setVisibility(View.VISIBLE);
+
+		HashMap<String, String> params = new HashMap<>();
+		params.put("device_model_name", android.os.Build.MODEL);
+		params.put("android_version", android.os.Build.VERSION.RELEASE);
+		params.put("access_token", Data.userData.accessToken);
+
+		RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+			@Override
+			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					if (!jObj.isNull("error")) {
+						String errorMessage = jObj.getString("error");
+						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+							HomeActivity.logoutUser(activity);
+						} else {
+							updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+						}
+					} else {
+
+						JSONArray jArray = jObj.getJSONArray("locales");
+						if (jArray != null) {
+							for (int i = 0; i < jArray.length(); i++) {
+								languages.add(jArray.get(i).toString());
+							}
+						}
+						updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+				}
+				progressBar.setVisibility(View.GONE);
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				progressBar.setVisibility(View.GONE);
+				updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+			}
+		});
 	}
-	
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+
+
+
+
+	private void setPreferredLanguage() {
+		HashMap<String, String> params = new HashMap<>();
+		params.put("locale", conf.locale.toString());
+		params.put("access_token", Data.userData.accessToken);
+
+		RestClient.getApiServices().setPreferredLang(params, new Callback<RegisterScreenResponse>() {
+			@Override
+			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+			}
+		});
 	}
-	
 }

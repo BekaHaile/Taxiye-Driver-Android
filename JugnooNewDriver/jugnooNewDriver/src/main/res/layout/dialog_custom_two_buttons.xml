@@ -89,14 +89,14 @@
                     android:textSize="@dimen/button_text_size"
                     />
 
-                <Button
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
                     android:layout_width="220px"
                     android:layout_height="83px"
                     android:layout_marginLeft="28px"
+                    android:padding="2px"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/new_menu_black_btn_selector_rounded"
-                    android:singleLine="true"
                     android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"

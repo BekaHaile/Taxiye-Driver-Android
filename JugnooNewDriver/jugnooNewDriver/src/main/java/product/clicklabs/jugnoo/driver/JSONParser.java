@@ -51,48 +51,45 @@ import retrofit.mime.TypedByteArray;
 
 public class JSONParser implements Constants {
 
-	public JSONParser(){
-		
+	public JSONParser() {
+
 	}
 
-	public static String getServerMessage(JSONObject jObj){
+	public static String getServerMessage(JSONObject jObj) {
 		String message = Data.SERVER_ERROR_MSG;
-		try{
-            if(jObj.has("message")){
-                message = jObj.getString("message");
-            }
-            else if(jObj.has("log")){
+		try {
+			if (jObj.has("message")) {
+				message = jObj.getString("message");
+			} else if (jObj.has("log")) {
 				message = jObj.getString("log");
-			}
-			else if(jObj.has("error")){
+			} else if (jObj.has("error")) {
 				message = jObj.getString("error");
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return message;
 	}
 
 
-
-	public static void saveAccessToken(Context context, String accessToken){
+	public static void saveAccessToken(Context context, String accessToken) {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();
 		editor.putString(Data.SP_ACCESS_TOKEN_KEY, accessToken);
 		editor.putString(Data.SP_IS_ACCESS_TOKEN_NEW, "1");
 		editor.commit();
 	}
-	
-	public static Pair<String, String> getAccessTokenPair(Context context){
+
+	public static Pair<String, String> getAccessTokenPair(Context context) {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		String accessToken = pref.getString(Data.SP_ACCESS_TOKEN_KEY, "");
 		String isAccessTokenNew = pref.getString(Data.SP_IS_ACCESS_TOKEN_NEW, "not_found");
 		return new Pair<String, String>(accessToken, isAccessTokenNew);
 	}
-	
-	
-	public static FareStructure parseFareObject(JSONObject fareDetails){
-		try{
+
+
+	public static FareStructure parseFareObject(JSONObject fareDetails) {
+		try {
 //			{
 //		        "id": 1,
 //		        "fare_fixed": 25,
@@ -103,27 +100,27 @@ public class JSONParser implements Constants {
 //		        "type": 0,
 //		        "per_ride_driver_subsidy": 20
 //		    }
-			
+
 //			For testing
 //			return new FareStructure(40, 1, 20, 2, 1, 0, 0);
-			
-			return new FareStructure(fareDetails.getDouble("fare_fixed"), 
-					fareDetails.getDouble("fare_threshold_distance"), 
-					fareDetails.getDouble("fare_per_km"), 
-					fareDetails.getDouble("fare_per_min"), 
-					fareDetails.getDouble("fare_threshold_time"), 
-					fareDetails.getDouble("fare_per_waiting_min"), 
+
+			return new FareStructure(fareDetails.getDouble("fare_fixed"),
+					fareDetails.getDouble("fare_threshold_distance"),
+					fareDetails.getDouble("fare_per_km"),
+					fareDetails.getDouble("fare_per_min"),
+					fareDetails.getDouble("fare_threshold_time"),
+					fareDetails.getDouble("fare_per_waiting_min"),
 					fareDetails.getDouble("fare_threshold_waiting_time"));
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new FareStructure(25, 2, 6, 1, 6, 0, 0);
 		}
 	}
-	
-	
-	public static CouponInfo parseCouponInfo(JSONObject couponObject){
-		try{
-			
+
+
+	public static CouponInfo parseCouponInfo(JSONObject couponObject) {
+		try {
+
 //			"coupon": {
 //	        "account_id": 367,
 //	        "coupon_id": 1,
@@ -143,30 +140,30 @@ public class JSONParser implements Constants {
 //					"discount", 
 //					50, 
 //					100);
-			
+
 			CouponInfo couponInfo = new CouponInfo(couponObject.getString("title"),
-					couponObject.getString("subtitle"), 
-					couponObject.getString("description"), 
+					couponObject.getString("subtitle"),
+					couponObject.getString("description"),
 					couponObject.getDouble("discount_percentage"),
 					couponObject.getDouble("discount_maximum"),
-					couponObject.getDouble("capped_fare"), 
+					couponObject.getDouble("capped_fare"),
 					couponObject.getDouble("capped_fare_maximum"),
-                    couponObject.getInt("coupon_type"),
-                    couponObject.getInt("benefit_type"),
-                    couponObject.getDouble("drop_latitude"),
-                    couponObject.getDouble("drop_longitude"),
-                    couponObject.getDouble("drop_radius")
-                    );
+					couponObject.getInt("coupon_type"),
+					couponObject.getInt("benefit_type"),
+					couponObject.getDouble("drop_latitude"),
+					couponObject.getDouble("drop_longitude"),
+					couponObject.getDouble("drop_radius")
+			);
 			return couponInfo;
-		} catch(Exception e){
+		} catch (Exception e) {
 			Log.w("couponInfo", "e=" + e.toString());
 			return null;
 		}
 	}
-	
-	public static PromoInfo parsePromoInfo(JSONObject jPromoObject){
-		try{
-			
+
+	public static PromoInfo parsePromoInfo(JSONObject jPromoObject) {
+		try {
+
 //            "promotion": {
 //                    "title": "CDCL pickup 10% cashback",
 //                    "promo_type": 2,
@@ -182,27 +179,26 @@ public class JSONParser implements Constants {
 //            }
 
 			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"),
-                    jPromoObject.getInt("promo_type"),
-                    jPromoObject.getInt("benefit_type"),
-                    jPromoObject.getDouble("discount_percentage"),
-					jPromoObject.getDouble("discount_maximum"), 
-					jPromoObject.getDouble("capped_fare"), 
+					jPromoObject.getInt("promo_type"),
+					jPromoObject.getInt("benefit_type"),
+					jPromoObject.getDouble("discount_percentage"),
+					jPromoObject.getDouble("discount_maximum"),
+					jPromoObject.getDouble("capped_fare"),
 					jPromoObject.getDouble("capped_fare_maximum"),
-                    jPromoObject.getDouble("cashback_percentage"),
-                    jPromoObject.getDouble("drop_latitude"),
-                    jPromoObject.getDouble("drop_longitude"),
-                    jPromoObject.getDouble("drop_radius"));
-			
+					jPromoObject.getDouble("cashback_percentage"),
+					jPromoObject.getDouble("drop_latitude"),
+					jPromoObject.getDouble("drop_longitude"),
+					jPromoObject.getDouble("drop_radius"));
+
 			return promoInfo;
-		} catch(Exception e){
-			Log.w("promoInfo", "e="+e.toString());
+		} catch (Exception e) {
+			Log.w("promoInfo", "e=" + e.toString());
 			return null;
 		}
 	}
-	
-	
-	
-	public UserData parseUserData(Context context, JSONObject userData) throws Exception{
+
+
+	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
 
 //        {
 //            "flag": 150,
@@ -243,67 +239,68 @@ public class JSONParser implements Constants {
 
 
 		int freeRideIconDisable = 1;
-		
+
 		int autosEnabled = 1, mealsEnabled = 0, fatafatEnabled = 0;
 		int autosAvailable = 1, mealsAvailable = 0, fatafatAvailable = 0;
-		
-		if(userData.has("free_ride_icon_disable")){
+
+		if (userData.has("free_ride_icon_disable")) {
 			freeRideIconDisable = userData.getInt("free_ride_icon_disable");
 		}
-		
-		if(userData.has("autos_enabled")){
+
+		if (userData.has("autos_enabled")) {
 			autosEnabled = userData.getInt("autos_enabled");
 		}
-		if(userData.has("meals_enabled")){
+		if (userData.has("meals_enabled")) {
 			mealsEnabled = userData.getInt("meals_enabled");
 		}
-		if(userData.has("fatafat_enabled")){
+		if (userData.has("fatafat_enabled")) {
 			fatafatEnabled = userData.getInt("fatafat_enabled");
 		}
-		
-		if(userData.has("autos_available")){
+
+		if (userData.has("autos_available")) {
 			autosAvailable = userData.getInt("autos_available");
 		}
-		if(userData.has("meals_available")){
+		if (userData.has("meals_available")) {
 			mealsAvailable = userData.getInt("meals_available");
 		}
-		if(userData.has("fatafat_available")){
+		if (userData.has("fatafat_available")) {
 			fatafatAvailable = userData.getInt("fatafat_available");
 		}
 
-        if(1 != autosEnabled){
-            autosAvailable = 0;
-        }
-        if(1 != mealsEnabled){
-            mealsAvailable = 0;
-        }
-        if(1 != fatafatEnabled) {
-            fatafatAvailable = 0;
-        }
+		if (1 != autosEnabled) {
+			autosAvailable = 0;
+		}
+		if (1 != mealsEnabled) {
+			mealsAvailable = 0;
+		}
+		if (1 != fatafatEnabled) {
+			fatafatAvailable = 0;
+		}
 
 		int sharingEnabled = 0, sharingAvailable = 0;
-		if(userData.has("sharing_enabled")){
+		if (userData.has("sharing_enabled")) {
 			sharingEnabled = userData.getInt("sharing_enabled");
 		}
-		if(userData.has("sharing_available")){
+		if (userData.has("sharing_available")) {
 			sharingAvailable = userData.getInt("sharing_available");
 		}
-		if(1 != sharingEnabled){
+		if (1 != sharingEnabled) {
 			sharingAvailable = 0;
 		}
 
-		
-		try{
-			if(userData.has("gcm_intent")){
+
+		try {
+			if (userData.has("gcm_intent")) {
 				Database2.getInstance(context).updateDriverGcmIntent(userData.getInt("gcm_intent"));
 			}
-		} catch(Exception e){}
+		} catch (Exception e) {
+		}
 
 		String customerReferralBonus = userData.optString("customer_referral_bonus", "30");
 
-        String deiValue = userData.optString("driver_dei", "-1");
+		String deiValue = userData.optString("driver_dei", "-1");
 
-        String accessToken = userData.getString("access_token");
+		String accessToken = userData.getString("access_token");
 		double showDriverRating = userData.optDouble("showDriverRating");
 
 		String driverSupportNumber = userData.optString("driver_support_number", "+919023121121");
@@ -330,9 +327,9 @@ public class JSONParser implements Constants {
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
-		Log.i("timeOut",timeoutMessage);
-		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled",0);
-		int destinationOptionEnable = userData.optInt("set_destination_option_enabled",0);
+		Log.i("timeOut", timeoutMessage);
+		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled", 0);
+		int destinationOptionEnable = userData.optInt("set_destination_option_enabled", 0);
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
@@ -340,12 +337,12 @@ public class JSONParser implements Constants {
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
 
-		if(autosAvailable == 1
+		if (autosAvailable == 1
 				|| mealsAvailable == 1
 				|| fatafatAvailable == 1
-				|| sharingAvailable == 1){
+				|| sharingAvailable == 1) {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.YES);
-		} else{
+		} else {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
 		}
 
@@ -355,17 +352,17 @@ public class JSONParser implements Constants {
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
+				referralButtonText, referralDialogText, referralDialogHintText, remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout);
 	}
-	
-	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
 
-		
-		Log.e("response ==", "="+response);
-		
+	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
+
+
+		Log.e("response ==", "=" + response);
+
 		JSONObject jObj = new JSONObject(response);
-		
+
 		//Fetching login data
 		JSONObject jLoginObject = jObj.getJSONObject("login");
 
@@ -380,16 +377,15 @@ public class JSONParser implements Constants {
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
 
-		parseCancellationReasons(jObj,context);
-				
+		parseCancellationReasons(jObj, context);
+
 		return resp;
 	}
 
-	
-	
-	public void parsePortNumber(Context context, JSONObject jLoginObject){
+
+	public void parsePortNumber(Context context, JSONObject jLoginObject) {
 		try {
-			if(jLoginObject.has("port_number")){
+			if (jLoginObject.has("port_number")) {
 				String port = jLoginObject.getString("port_number");
 				updatePortNumber(context, port);
 				SplashNewActivity.initializeServerURL(context);
@@ -398,32 +394,26 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 	}
-	
-	public void updatePortNumber(Context context, String port){
+
+	public void updatePortNumber(Context context, String port) {
 		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
 		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
-		
-		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
+
+		if (link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)) {
 			Database2.getInstance(context).updateSalesPortNumber(port);
-		}
-		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
+		} else if (link.equalsIgnoreCase(Data.DEV_SERVER_URL)) {
 			Database2.getInstance(context).updateDevPortNumber(port);
-		}
-		else{
+		} else {
 			Database2.getInstance(context).updateLivePortNumber(port);
 		}
 	}
-	
-	
-	
-	
 
-	
+
 //	Retrofit
 
-	public String getUserStatus(Context context, String accessToken, int currentUserStatus){
+	public String getUserStatus(Context context, String accessToken, int currentUserStatus) {
 		String returnResponse = "";
-		try{
+		try {
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
 //			HttpRequester simpleJSONParser = new HttpRequester();
@@ -432,27 +422,26 @@ public class JSONParser implements Constants {
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 //			String result = simpleJSONParser.getJSONFromUrlParams(Data.SERVER_URL + "/get_current_user_status", nameValuePairs);
-			Log.e("result of = user_status", "="+result);
-			if(response == null || result == null){
+			Log.e("result of = user_status", "=" + result);
+			if (response == null || result == null) {
 				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
-			}
-			else{
+			} else {
 				JSONObject jObject1 = new JSONObject(result);
 				returnResponse = parseCurrentUserStatus(context, currentUserStatus, jObject1);
 				return returnResponse;
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			returnResponse = Constants.SERVER_TIMEOUT;
 			return returnResponse;
 		}
 	}
-	
-	
+
+
 	//TODO
-	public void parseLastRideData(JSONObject jObj){
-		
+	public void parseLastRideData(JSONObject jObj) {
+
 //	    "status": {
 //	        "flag": 135,
 //	        "last_engagement_info": [
@@ -486,13 +475,13 @@ public class JSONParser implements Constants {
 //	            }
 //	        ]
 //	    }
-		
+
 		try {
 			JSONArray lastEngInfoArr = jObj.getJSONArray("last_engagement_info");
 			JSONObject jLastRideData = lastEngInfoArr.getJSONObject(0);
-			
-			Log.e("jLastRideData", "="+jLastRideData);
-			
+
+			Log.e("jLastRideData", "=" + jLastRideData);
+
 			Data.dEngagementId = jLastRideData.getString("engagement_id");
 			Data.dCustomerId = jLastRideData.getString("user_id");
 
@@ -501,105 +490,104 @@ public class JSONParser implements Constants {
 			HomeActivity.rideTime = jLastRideData.getString("ride_time");
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
-			
+
 			Data.dCustLatLng = new LatLng(0, 0);
 			Data.startRidePreviousLatLng = new LatLng(0, 0);
 			Data.startRidePreviousLocationTime = System.currentTimeMillis();
-			
+
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
-			
-			if(jLastRideData.has("coupon")){
-				try{
+
+			if (jLastRideData.has("coupon")) {
+				try {
 					couponInfo = JSONParser.parseCouponInfo(jLastRideData.getJSONObject("coupon"));
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 
 
-			
-			if(jLastRideData.has("promotion")){
-				try{
+			if (jLastRideData.has("promotion")) {
+				try {
 					promoInfo = JSONParser.parsePromoInfo(jLastRideData.getJSONObject("promotion"));
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 			int referenceId = 0;
 			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
 			Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(Data.dCustomerId),
-					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
+					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"),
 					new LatLng(0, 0), cachedApiEnabled,
 					jLastRideData.getString("user_image"), couponInfo, promoInfo);
-			
-			
-			if(jLastRideData.has("fare_details")){
-				try{
+
+
+			if (jLastRideData.has("fare_details")) {
+				try {
 					Data.fareStructure = JSONParser.parseFareObject(jLastRideData.getJSONObject("fare_details"));
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
-			if(jLastRideData.has("fare_factor")){
-				try{
+
+			if (jLastRideData.has("fare_factor")) {
+				try {
 					Data.fareStructure.fareFactor = jLastRideData.getDouble("fare_factor");
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			if(jLastRideData.has("luggage_charges")){
-				try{
+			if (jLastRideData.has("luggage_charges")) {
+				try {
 					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_charges");
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			if(jLastRideData.has("convenience_charge")){
-				try{
+			if (jLastRideData.has("convenience_charge")) {
+				try {
 					Data.fareStructure.convenienceCharge = jLastRideData.getDouble("convenience_charge");
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			if(jLastRideData.has("convenience_charge_waiver")){
-				try{
+			if (jLastRideData.has("convenience_charge_waiver")) {
+				try {
 					Data.fareStructure.convenienceChargeWaiver = jLastRideData.getDouble("convenience_charge_waiver");
-				} catch(Exception e){
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 //									"convenience_charge": 10,
 //									"convenience_charge_waiver": 0,
-			
+
 			parseEndRideData(jLastRideData, Data.dEngagementId, HomeActivity.totalFare);
-			
-			
+
+
 			HomeActivity.driverScreenMode = DriverScreenMode.D_RIDE_END;
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	
-	
-	public String parseCurrentUserStatus(Context context, int currentUserStatus, JSONObject jObject1){
-		
+
+
+	public String parseCurrentUserStatus(Context context, int currentUserStatus, JSONObject jObject1) {
+
 		String returnResponse = "";
-		
-		if(currentUserStatus == 1){ // TODO for driver
-			
+
+		if (currentUserStatus == 1) { // TODO for driver
+
 			String screenMode = "";
-			
+
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
 			double pickupLatitude = 0, pickupLongitude = 0;
-			int freeRide = 0; int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitingChargesApplicable = 0;
+			int freeRide = 0;
+			int meterFareApplicable = 0, getJugnooFareEnabled = 1, luggageChargesApplicable = 0, waitingChargesApplicable = 0;
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
 			double jugnooBalance = 0, dropLatitude = 0, dropLongitude = 0;
@@ -611,15 +599,14 @@ public class JSONParser implements Constants {
 			FatafatCustomerInfo customerInfo = null;
 
 			HomeActivity.userMode = UserMode.DRIVER;
-			
-			try{
-							
-							if(jObject1.has("error")){
-								returnResponse = Constants.SERVER_TIMEOUT;
-								return returnResponse;
-							}
-							else{
-							
+
+			try {
+
+				if (jObject1.has("error")) {
+					returnResponse = Constants.SERVER_TIMEOUT;
+					return returnResponse;
+				} else {
+
 //							{
 //								"flag": constants.responseFlags.ACTIVE_REQUESTS,
 //								"active_requests":[
@@ -632,9 +619,8 @@ public class JSONParser implements Constants {
 //								�current_time�
 //								}
 //								]};
-							
-							
-							
+
+
 //							{
 //							"flag": constants.responseFlags.ENGAGEMENT_DATA,
 //							"last_engagement_info":[
@@ -650,145 +636,142 @@ public class JSONParser implements Constants {
 //							�rating�
 //							}
 //							]
-							
-								int flag = jObject1.getInt("flag");
 
-								fillDriverRideRequests(jObject1);
-								
-								if(ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag){
-									JSONArray lastEngInfoArr = jObject1.getJSONArray("last_engagement_info");
-									JSONObject jObject = lastEngInfoArr.getJSONObject(0);
-									
-									dReferenceId = jObject.getInt("reference_id");
-									dBusinessId = jObject.getInt("business_id");
-									
-									if(jObject.has("fare_details")){
-										try{
-											Data.fareStructure = JSONParser.parseFareObject(jObject.getJSONObject("fare_details"));
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
-									
-									if(jObject.has("fare_factor")){
-										try{
-											Data.fareStructure.fareFactor = jObject.getDouble("fare_factor");
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
-									if(jObject.has("luggage_charges")){
-										try{
-											Data.fareStructure.luggageFare = jObject.getDouble("luggage_charges");
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
+					int flag = jObject1.getInt("flag");
 
-									if(jObject.has("convenience_charge")){
-										try{
-											Data.fareStructure.convenienceCharge = jObject.getDouble("convenience_charge");
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
-									if(jObject.has("convenience_charge_waiver")){
-										try{
-											Data.fareStructure.convenienceChargeWaiver = jObject.getDouble("convenience_charge_waiver");
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
+					fillDriverRideRequests(jObject1);
+					setPreferredLangString(jObject1, context);
 
-									if(jObject.has("perfect_pickup_latitude") && jObject.has("perfect_pickup_longitude")  ){
-										try{
-											double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
-											double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
-											Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
-											Data.nextCustomerName = jObject.optString("perfect_user_name","abc");
-											Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("perfect_phone_no"));
-										} catch(Exception e){
-											e.printStackTrace();
-										}
-									}
-									Log.i("nextPickupLatLng", String.valueOf(Data.nextPickupLatLng));
+					if (ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag) {
+						JSONArray lastEngInfoArr = jObject1.getJSONArray("last_engagement_info");
+						JSONObject jObject = lastEngInfoArr.getJSONObject(0);
+
+						dReferenceId = jObject.getInt("reference_id");
+						dBusinessId = jObject.getInt("business_id");
+
+						if (jObject.has("fare_details")) {
+							try {
+								Data.fareStructure = JSONParser.parseFareObject(jObject.getJSONObject("fare_details"));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
+						if (jObject.has("fare_factor")) {
+							try {
+								Data.fareStructure.fareFactor = jObject.getDouble("fare_factor");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+						if (jObject.has("luggage_charges")) {
+							try {
+								Data.fareStructure.luggageFare = jObject.getDouble("luggage_charges");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
+						if (jObject.has("convenience_charge")) {
+							try {
+								Data.fareStructure.convenienceCharge = jObject.getDouble("convenience_charge");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+						if (jObject.has("convenience_charge_waiver")) {
+							try {
+								Data.fareStructure.convenienceChargeWaiver = jObject.getDouble("convenience_charge_waiver");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
+						if (jObject.has("perfect_pickup_latitude") && jObject.has("perfect_pickup_longitude")) {
+							try {
+								double perfectPickupLatitude = jObject.getDouble("perfect_pickup_latitude");
+								double perfectPickupLongitude = jObject.getDouble("perfect_pickup_longitude");
+								Data.nextPickupLatLng = new LatLng(perfectPickupLatitude, perfectPickupLongitude);
+								Data.nextCustomerName = jObject.optString("perfect_user_name", "abc");
+								Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObject.getString("perfect_phone_no"));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+						Log.i("nextPickupLatLng", String.valueOf(Data.nextPickupLatLng));
 
 
 //									"convenience_charge": 10,
 //									"convenience_charge_waiver": 0,
 
 
-									
-									
-									if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
-										engagementStatus = jObject.getInt("status");
-										
-										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
-                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
-											engagementId = jObject.getString("engagement_id");
-											userId = jObject.getString("user_id");
-											pickupLatitude = jObject.getDouble("pickup_latitude");
-											pickupLongitude = jObject.getDouble("pickup_longitude");
-											customerName = jObject.getString("user_name");
-											customerImage = jObject.getString("user_image");
-											customerPhone = jObject.getString("phone_no");
+						if (BusinessType.AUTOS.getOrdinal() == dBusinessId) {
+							engagementStatus = jObject.getInt("status");
 
-											if(Prefs.with(context).getLong(SPLabels.CURRENT_ETA,0)==0){
-												Prefs.with(context).save(SPLabels.CURRENT_ETA,System.currentTimeMillis()+jObject.optLong("eta", 0));
-											}
+							if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
+								engagementId = jObject.getString("engagement_id");
+								userId = jObject.getString("user_id");
+								pickupLatitude = jObject.getDouble("pickup_latitude");
+								pickupLongitude = jObject.getDouble("pickup_longitude");
+								customerName = jObject.getString("user_name");
+								customerImage = jObject.getString("user_image");
+								customerPhone = jObject.getString("phone_no");
 
-											if(jObject.has("rating")){
-												customerRating = jObject.getString("rating");
-											}
-											int isScheduled = 0;
-											if(jObject.has("is_scheduled")){
-												isScheduled = jObject.getInt("is_scheduled");
-												if(isScheduled == 1 && jObject.has("pickup_time")){
-													schedulePickupTime = jObject.getString("pickup_time");
-												}
-											}
-											if(jObject.has("jugnoo_balance")){
-                                                jugnooBalance = jObject.getDouble("jugnoo_balance");
-											}
-											if(jObject.has("free_ride")){
-                                                freeRide = jObject.getInt("free_ride");
-											}
-											if(jObject.has("coupon")){
-												try{
-													couponInfo = JSONParser.parseCouponInfo(jObject.getJSONObject("coupon"));
-												} catch(Exception e){
-													e.printStackTrace();
-												}
-											}
-											if(jObject.has("promotion")){
-												try{
-                                                    promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
-												} catch(Exception e){
-													e.printStackTrace();
-												}
-											}
+								if (Prefs.with(context).getLong(SPLabels.CURRENT_ETA, 0) == 0) {
+									Prefs.with(context).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObject.optLong("eta", 0));
+								}
 
-                                            try {
-                                                if(jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
-                                                    dropLatitude = jObject.getDouble("op_drop_latitude");
-                                                    dropLongitude = jObject.getDouble("op_drop_longitude");
-                                                }
-                                            } catch (JSONException e) {
-                                                e.printStackTrace();
-                                            }
-
-                                            meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
-                                            getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
-											luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
-											waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
-											cachedApiEnabled = jObject.optInt(KEY_CACHED_API_ENABLED, 0);
-                                        }
+								if (jObject.has("rating")) {
+									customerRating = jObject.getString("rating");
+								}
+								int isScheduled = 0;
+								if (jObject.has("is_scheduled")) {
+									isScheduled = jObject.getInt("is_scheduled");
+									if (isScheduled == 1 && jObject.has("pickup_time")) {
+										schedulePickupTime = jObject.getString("pickup_time");
 									}
-									else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
-										
+								}
+								if (jObject.has("jugnoo_balance")) {
+									jugnooBalance = jObject.getDouble("jugnoo_balance");
+								}
+								if (jObject.has("free_ride")) {
+									freeRide = jObject.getInt("free_ride");
+								}
+								if (jObject.has("coupon")) {
+									try {
+										couponInfo = JSONParser.parseCouponInfo(jObject.getJSONObject("coupon"));
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
-									else if(BusinessType.FATAFAT.getOrdinal() == dBusinessId){
+								}
+								if (jObject.has("promotion")) {
+									try {
+										promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+
+								try {
+									if (jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
+										dropLatitude = jObject.getDouble("op_drop_latitude");
+										dropLongitude = jObject.getDouble("op_drop_longitude");
+									}
+								} catch (JSONException e) {
+									e.printStackTrace();
+								}
+
+								meterFareApplicable = jObject.optInt("meter_fare_applicable", 0);
+								getJugnooFareEnabled = jObject.optInt("get_jugnoo_fare_enabled", 1);
+								luggageChargesApplicable = jObject.optInt("luggage_charges_applicable", 0);
+								waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
+								cachedApiEnabled = jObject.optInt(KEY_CACHED_API_ENABLED, 0);
+							}
+						} else if (BusinessType.MEALS.getOrdinal() == dBusinessId) {
+
+						} else if (BusinessType.FATAFAT.getOrdinal() == dBusinessId) {
 //										"store_data": {
 //					                    "store_id": 6,
 //					                    "name": "Subway",
@@ -797,190 +780,174 @@ public class JSONParser implements Constants {
 //					                    "address": "Plot No. 178, Industrial Area, Phase 1 Industrial Area, Chandigarh, 160017",
 //					                    "phone_no": "+911725049297"
 //					                }
-										
-										engagementStatus = jObject.getInt("status");
-										
-										if((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) || 
-												(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
-                                                (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)){
-											
-											engagementId = jObject.getString("engagement_id");
-											storeOrderAmount = jObject.getInt("order_amount");
-											
-											JSONObject storeData = jObject.getJSONObject("store_data");
-											userId = storeData.getString("store_id");
-											customerName = storeData.getString("name");
-											pickupLatitude = storeData.getDouble("latitude");
-											pickupLongitude = storeData.getDouble("longitude");
-											customerPhone = storeData.getString("phone_no");
-											storeAddress = storeData.getString("address");
-											
-											if(EngagementStatus.STARTED.getOrdinal() == engagementStatus){
-												JSONObject jDeliveryInfo = jObject.getJSONObject("delivery_info");
-												deliveryInfo = new FatafatDeliveryInfo(jDeliveryInfo.getInt("order_id"), 
-														jDeliveryInfo.getString("delivery_address"), 
-														new LatLng(jDeliveryInfo.getDouble("delivery_latitude"), jDeliveryInfo.getDouble("delivery_longitude")), 
-														jDeliveryInfo.getDouble("final_price"), 
-														jDeliveryInfo.getDouble("discount"),
-														jDeliveryInfo.getDouble("paid_from_wallet"), 
-														jDeliveryInfo.getDouble("customer_to_pay"));
-												
-												JSONObject jCustomerInfo = jObject.getJSONObject("customer_info");
-												customerInfo = new FatafatCustomerInfo(jCustomerInfo.getInt("user_id"), 
-														jCustomerInfo.getString("name"), 
-														jCustomerInfo.getString("phone_no"));
-											}
-										}
-									}
-									
-									try{
-										Log.writePathLogToFile(engagementId + "accept", "JSONPARSER  = "+jObject1);
-									} catch(Exception e){
-										e.printStackTrace();
-									}
-									
-								}
-								else if(ApiResponseFlags.LAST_ENGAGEMENT_DATA.getOrdinal() == flag){
-									parseLastRideData(jObject1);
-									return returnResponse;
-								}
 
-								if(EngagementStatus.STARTED.getOrdinal() != engagementStatus){
-									Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-									Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-									new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
+							engagementStatus = jObject.getInt("status");
 
+							if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
+									(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
+
+								engagementId = jObject.getString("engagement_id");
+								storeOrderAmount = jObject.getInt("order_amount");
+
+								JSONObject storeData = jObject.getJSONObject("store_data");
+								userId = storeData.getString("store_id");
+								customerName = storeData.getString("name");
+								pickupLatitude = storeData.getDouble("latitude");
+								pickupLongitude = storeData.getDouble("longitude");
+								customerPhone = storeData.getString("phone_no");
+								storeAddress = storeData.getString("address");
+
+								if (EngagementStatus.STARTED.getOrdinal() == engagementStatus) {
+									JSONObject jDeliveryInfo = jObject.getJSONObject("delivery_info");
+									deliveryInfo = new FatafatDeliveryInfo(jDeliveryInfo.getInt("order_id"),
+											jDeliveryInfo.getString("delivery_address"),
+											new LatLng(jDeliveryInfo.getDouble("delivery_latitude"), jDeliveryInfo.getDouble("delivery_longitude")),
+											jDeliveryInfo.getDouble("final_price"),
+											jDeliveryInfo.getDouble("discount"),
+											jDeliveryInfo.getDouble("paid_from_wallet"),
+											jDeliveryInfo.getDouble("customer_to_pay"));
+
+									JSONObject jCustomerInfo = jObject.getJSONObject("customer_info");
+									customerInfo = new FatafatCustomerInfo(jCustomerInfo.getInt("user_id"),
+											jCustomerInfo.getString("name"),
+											jCustomerInfo.getString("phone_no"));
 								}
 							}
-			} catch(Exception e){
+						}
+
+						try {
+							Log.writePathLogToFile(engagementId + "accept", "JSONPARSER  = " + jObject1);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
+					} else if (ApiResponseFlags.LAST_ENGAGEMENT_DATA.getOrdinal() == flag) {
+						parseLastRideData(jObject1);
+						return returnResponse;
+					}
+
+					if (EngagementStatus.STARTED.getOrdinal() != engagementStatus) {
+						Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+						Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+						new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);
+
+					}
+				}
+			} catch (Exception e) {
 				e.printStackTrace();
 				engagementStatus = -1;
 				returnResponse = Constants.SERVER_TIMEOUT;
 				return returnResponse;
 			}
-			
-			
-			
+
+
 			// 0 for request, 1 for accepted,2 for started,3 for ended, 4 for rejected by driver, 5 for rejected by user,6 for timeout, 7 for nullified by chrone
-			if(EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus){
+			if (EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) {
 				screenMode = Data.D_ARRIVED;
-			}
-            else if(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus){
-                screenMode = Data.D_START_RIDE;
-            }
-			else if(EngagementStatus.STARTED.getOrdinal() == engagementStatus){
+			} else if (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus) {
+				screenMode = Data.D_START_RIDE;
+			} else if (EngagementStatus.STARTED.getOrdinal() == engagementStatus) {
 				screenMode = Data.D_IN_RIDE;
-			}
-			else{
+			} else {
 				screenMode = "";
 			}
 
-			
-			if("".equalsIgnoreCase(screenMode)){
+
+			if ("".equalsIgnoreCase(screenMode)) {
 				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
 				clearSPData(context);
-			}
-			else{
-				
+			} else {
+
 				Data.dEngagementId = engagementId;
 				Data.dCustomerId = userId;
-				
+
 				Data.dCustLatLng = new LatLng(pickupLatitude, pickupLongitude);
-				
-				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
+
+				if (BusinessType.AUTOS.getOrdinal() == dBusinessId) {
 					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, cachedApiEnabled,
-							customerImage, customerRating, schedulePickupTime, freeRide, 
+							customerImage, customerRating, schedulePickupTime, freeRide,
 							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
-                    if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
-                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng =null;
-                    }
-                    else{
-                        ((AutoCustomerInfo)Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
-                    }
-				}
-				else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
-					
-				}
-				else if(BusinessType.FATAFAT.getOrdinal() == dBusinessId){
-					Data.assignedCustomerInfo = new FatafatOrderInfo(Integer.parseInt(engagementId), Integer.parseInt(userId), 
+					if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
+						((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = null;
+					} else {
+						((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+					}
+				} else if (BusinessType.MEALS.getOrdinal() == dBusinessId) {
+
+				} else if (BusinessType.FATAFAT.getOrdinal() == dBusinessId) {
+					Data.assignedCustomerInfo = new FatafatOrderInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, Data.dCustLatLng, storeAddress, storeOrderAmount);
-					
-					if((EngagementStatus.STARTED.getOrdinal() == engagementStatus) && (deliveryInfo != null) && (customerInfo != null)){
-						((FatafatOrderInfo)Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
+
+					if ((EngagementStatus.STARTED.getOrdinal() == engagementStatus) && (deliveryInfo != null) && (customerInfo != null)) {
+						((FatafatOrderInfo) Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
 					}
 				}
-				
-				
-				if(Data.D_ARRIVED.equalsIgnoreCase(screenMode)){
-                    HomeActivity.driverScreenMode = DriverScreenMode.D_ARRIVED;
-                }
-				else if(Data.D_START_RIDE.equalsIgnoreCase(screenMode)){
+
+
+				if (Data.D_ARRIVED.equalsIgnoreCase(screenMode)) {
+					HomeActivity.driverScreenMode = DriverScreenMode.D_ARRIVED;
+				} else if (Data.D_START_RIDE.equalsIgnoreCase(screenMode)) {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_START_RIDE;
-				}
-				else if(Data.D_IN_RIDE.equalsIgnoreCase(screenMode)){
+				} else if (Data.D_IN_RIDE.equalsIgnoreCase(screenMode)) {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_IN_RIDE;
-					
+
 					SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
-					
+
 					HomeActivity.totalDistance = Double.parseDouble(pref.getString(Data.SP_TOTAL_DISTANCE, "-1"));
 					HomeActivity.previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
-					
-					long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis()));
+
+					long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, "" + System.currentTimeMillis()));
 					long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-					if(timeDiffToAdd > 0){
+					if (timeDiffToAdd > 0) {
 						HomeActivity.previousRideTime = timeDiffToAdd;
-					}
-					else{
+					} else {
 						HomeActivity.previousRideTime = 0;
 					}
-					
-					
+
+
 					HomeActivity.waitStart = 2;
-					
+
 					String lat1 = pref.getString(Data.SP_LAST_LATITUDE, "0");
 					String lng1 = pref.getString(Data.SP_LAST_LONGITUDE, "0");
-					
-					String previousLocationTime = pref.getString(Data.SP_LAST_LOCATION_TIME, ""+System.currentTimeMillis());
-					
+
+					String previousLocationTime = pref.getString(Data.SP_LAST_LOCATION_TIME, "" + System.currentTimeMillis());
+
 					Data.startRidePreviousLatLng = new LatLng(Double.parseDouble(lat1), Double.parseDouble(lng1));
-					
+
 					Data.startRidePreviousLocationTime = Long.parseLong(previousLocationTime);
-					
+
 					Log.e("Data on app restart", "-----");
-					Log.i("HomeActivity.totalDistance", "="+HomeActivity.totalDistance);
-					Log.i("Data.startRidePreviousLatLng", "="+Data.startRidePreviousLatLng);
-					Log.i("Data.previousLocationTime", "="+Data.startRidePreviousLocationTime);
+					Log.i("HomeActivity.totalDistance", "=" + HomeActivity.totalDistance);
+					Log.i("Data.startRidePreviousLatLng", "=" + Data.startRidePreviousLatLng);
+					Log.i("Data.previousLocationTime", "=" + Data.startRidePreviousLocationTime);
 					Log.e("----------", "-----");
-					
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP totalDistance = "+HomeActivity.totalDistance);
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLatLng = "+Data.startRidePreviousLatLng);
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLocationTime = "+Data.startRidePreviousLocationTime);
-					
-				}
-				else{
+
+					Log.writePathLogToFile(Data.dEngagementId, "Got from SP totalDistance = " + HomeActivity.totalDistance);
+					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLatLng = " + Data.startRidePreviousLatLng);
+					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLocationTime = " + Data.startRidePreviousLocationTime);
+
+				} else {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
 				}
-				
+
 			}
-			
+
 		}
-		
+
 		return returnResponse;
 	}
 
 
-
-
-
-	public void fillDriverRideRequests(JSONObject jObject1){
+	public void fillDriverRideRequests(JSONObject jObject1) {
 
 		try {
 			Data.driverRideRequests.clear();
 
 			JSONArray jActiveRequests = jObject1.getJSONArray("active_requests");
 
-			for(int i=0; i<jActiveRequests.length(); i++){
+			for (int i = 0; i < jActiveRequests.length(); i++) {
 				JSONObject jActiveRequest = jActiveRequests.getJSONObject(i);
 				String requestEngagementId = jActiveRequest.getString("engagement_id");
 				String requestUserId = jActiveRequest.getString("user_id");
@@ -990,26 +957,24 @@ public class JSONParser implements Constants {
 
 				String startTime = jActiveRequest.getString("start_time");
 				String endTime = "";
-				if(jActiveRequest.has("end_time")){
+				if (jActiveRequest.has("end_time")) {
 					endTime = jActiveRequest.getString("end_time");
 				}
 
 				String startTimeLocal = DateOperations.utcToLocal(startTime);
 
 				long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-				if("".equalsIgnoreCase(endTime)){
+				if ("".equalsIgnoreCase(endTime)) {
 					long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
 					long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
 					requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
-				}
-				else{
+				} else {
 					long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
 							startTimeLocal);
-					Log.i("startEndDiffMillis = ", "="+startEndDiffMillis);
-					if(startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT){
+					Log.i("startEndDiffMillis = ", "=" + startEndDiffMillis);
+					if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
 						requestTimeOutMillis = startEndDiffMillis;
-					}
-					else{
+					} else {
 						requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 					}
 				}
@@ -1017,93 +982,102 @@ public class JSONParser implements Constants {
 				startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
 				int businessId = BusinessType.AUTOS.getOrdinal();
-				if(jActiveRequest.has("business_id")){
+				if (jActiveRequest.has("business_id")) {
 					businessId = jActiveRequest.getInt("business_id");
 				}
 
 				int referenceId = jActiveRequest.getInt("reference_id");
 
 				double fareFactor = 1;
-				if(jActiveRequest.has("fare_factor")) {
+				if (jActiveRequest.has("fare_factor")) {
 					fareFactor = jActiveRequest.getDouble("fare_factor");
 				}
 
-				if(BusinessType.AUTOS.getOrdinal() == businessId){
+				if (BusinessType.AUTOS.getOrdinal() == businessId) {
 					Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId,
 							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
 							businessId, referenceId, fareFactor));
-				}
-				else if(BusinessType.MEALS.getOrdinal() == businessId){
+				} else if (BusinessType.MEALS.getOrdinal() == businessId) {
 					String rideTime = jActiveRequest.getString("ride_time");
 
 					Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId,
 							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
 							businessId, referenceId, rideTime, fareFactor));
-				}
-				else if(BusinessType.FATAFAT.getOrdinal() == businessId){
+				} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
 					int orderAmount = jActiveRequest.getInt("order_amount");
 					Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId,
 							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
 							businessId, referenceId, orderAmount, fareFactor));
 				}
 
-				Log.i("inserter in db", "insertDriverRequest = "+requestEngagementId);
+				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
 			}
 
 
-			if(jActiveRequests.length() == 0){
+			if (jActiveRequests.length() == 0) {
 				GCMIntentService.stopRing(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	public void setPreferredLangString(JSONObject jsonObject1, Context context){
+
+		try {
+			JSONObject preferredLangStrings = jsonObject1.getJSONObject("locale_texts");
+			parseCancellationReasons(preferredLangStrings, context);
+			Data.userData.referralButtonText = preferredLangStrings.optString("referral_button_text", "Share");
+			Data.userData.referralDialogText = preferredLangStrings.optString("referral_dialog_text", "Please enter Customer Phone No.");
+			Data.userData.referralDialogHintText = preferredLangStrings.optString("referral_dialog_hint_text", "Phone No.");
+			Data.userData.timeoutMessage = preferredLangStrings.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	public void clearSPData(final Context context) {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();
 
 		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
-		editor.putString(Data.SP_RIDE_START_TIME, ""+System.currentTimeMillis());
+		editor.putString(Data.SP_RIDE_START_TIME, "" + System.currentTimeMillis());
 		editor.putString(Data.SP_LAST_LATITUDE, "0");
 		editor.putString(Data.SP_LAST_LONGITUDE, "0");
-		editor.putString(Data.SP_LAST_LOCATION_TIME, ""+System.currentTimeMillis());
+		editor.putString(Data.SP_LAST_LOCATION_TIME, "" + System.currentTimeMillis());
 
 		editor.commit();
 
 		Database.getInstance(context).deleteSavedPath();
 
 	}
-	
-	
-	
-	public static void parseEndRideData(JSONObject jObj, String engagementId, double totalFare){
+
+
+	public static void parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
 		try {
-			Data.endRideData = new EndRideData(engagementId, 
-					jObj.getDouble("fare"), 
-					jObj.getDouble("discount"), 
-					jObj.getDouble("paid_using_wallet"), 
+			Data.endRideData = new EndRideData(engagementId,
+					jObj.getDouble("fare"),
+					jObj.getDouble("discount"),
+					jObj.getDouble("paid_using_wallet"),
 					jObj.getDouble("to_pay"),
 					jObj.getInt("payment_mode"));
-			
+
 		} catch (JSONException e) {
 			e.printStackTrace();
-			Data.endRideData = new EndRideData(Data.dEngagementId, 
-					totalFare, 
-					0, 
-					0, 
+			Data.endRideData = new EndRideData(Data.dEngagementId,
+					totalFare,
+					0,
+					0,
 					totalFare,
 					PaymentMode.CASH.getOrdinal());
 		}
 	}
 
 
-
-
-
-    public static ArrayList<PreviousAccountInfo> parsePreviousAccounts(JSONObject jsonObject){
-        ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+	public static ArrayList<PreviousAccountInfo> parsePreviousAccounts(JSONObject jsonObject) {
+		ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
 
 //        {
 //            "flag": 400,
@@ -1132,30 +1106,26 @@ public class JSONParser implements Constants {
 //            ]
 //        }
 
-        try{
+		try {
 
-            JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
-            for(int i=0; i<jPreviousAccountsArr.length(); i++){
-                JSONObject jPreviousAccount = jPreviousAccountsArr.getJSONObject(i);
-                previousAccountInfoList.add(new PreviousAccountInfo(jPreviousAccount.getInt("user_id"),
-                    jPreviousAccount.getString("user_name"),
-                    jPreviousAccount.getString("user_email"),
-                    jPreviousAccount.getString("phone_no"),
-                    jPreviousAccount.getString("date_registered")));
-            }
-
-
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+			JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
+			for (int i = 0; i < jPreviousAccountsArr.length(); i++) {
+				JSONObject jPreviousAccount = jPreviousAccountsArr.getJSONObject(i);
+				previousAccountInfoList.add(new PreviousAccountInfo(jPreviousAccount.getInt("user_id"),
+						jPreviousAccount.getString("user_name"),
+						jPreviousAccount.getString("user_email"),
+						jPreviousAccount.getString("phone_no"),
+						jPreviousAccount.getString("date_registered")));
+			}
 
 
-        return previousAccountInfoList;
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
-
-
+		return previousAccountInfoList;
+	}
 
 
 	public static void parseCancellationReasons(JSONObject jObj, Context context) {

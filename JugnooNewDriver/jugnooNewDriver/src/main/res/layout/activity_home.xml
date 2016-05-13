@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="15px">
-                        <Button
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverAcceptRideBtn"
                             android:layout_width="410px"
                             android:layout_height="99px"
@@ -161,7 +161,7 @@
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size"/>
 
-                        <Button
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverCancelRequestBtn"
                             android:layout_width="240px"
                             android:layout_height="99px"
@@ -171,7 +171,7 @@
                             android:background="@drawable/new_menu_black_btn_selector_rounded"
                             android:text="@string/cancel"
                             android:textColor="@drawable/white_color_selector"
-                            android:textSize="@dimen/button_text_size"/>
+                            android:textSize="32px"/>
                     </RelativeLayout>
 
                     <!--<Button-->
@@ -284,9 +284,9 @@
                                             android:layout_marginLeft="35px"
                                             android:src="@drawable/call_icon_selector"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverPassengerCallText"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="150px"
                                             android:layout_height="wrap_content"
                                             android:layout_centerVertical="true"
                                             android:layout_marginLeft="115px"
@@ -528,7 +528,7 @@
                                     android:textColor="@drawable/white_color_selector"
                                     android:textSize="@dimen/button_text_size"/>
 
-                                <Button
+                                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                     android:id="@+id/buttonMarkArrived"
                                     android:layout_width="410px"
                                     android:layout_height="99px"
@@ -539,7 +539,7 @@
 
                             </RelativeLayout>
 
-                            <Button
+                            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                 android:id="@+id/driverCancelRideBtn"
                                 android:layout_width="240px"
                                 android:layout_height="99px"
@@ -549,7 +549,7 @@
                                 android:background="@drawable/new_menu_black_btn_selector_rounded"
                                 android:text="@string/cancel"
                                 android:textColor="@drawable/white_color_selector"
-                                android:textSize="@dimen/button_text_size"/>
+                                android:textSize="32px"/>
 
 
                         </RelativeLayout>
@@ -608,7 +608,7 @@
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverIRDistanceValue"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -616,7 +616,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4.7 Kms"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -636,13 +635,12 @@
                                         android:gravity="center"
                                         android:splitMotionEvents="false">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverRideTimeText"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="Ride Time"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -655,7 +653,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text=""
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -676,12 +673,11 @@
                                         android:splitMotionEvents="false"
                                         android:visibility="visible">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverWaitText"
                                             android:layout_width="178px"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/wait_time"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"
@@ -695,7 +691,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -989,12 +984,11 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/distance"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewDistanceValue"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -1002,7 +996,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4.7 Kms"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1022,12 +1015,11 @@
                                         android:splitMotionEvents="false"
                                         android:visibility="visible">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewWaitText"
                                             android:layout_width="178px"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/wait_time"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1039,7 +1031,6 @@
                                             android:layout_below="@+id/reviewWaitText"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1060,13 +1051,12 @@
                                         android:gravity="center"
                                         android:splitMotionEvents="false">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewRideTimeText"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/ride_time"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1079,7 +1069,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1104,7 +1093,6 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/fare"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -2601,7 +2589,7 @@
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/languagePrefrencesText"

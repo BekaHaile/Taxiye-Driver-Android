@@ -31,7 +31,7 @@
                 android:orientation="vertical"
                 >
             
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +41,6 @@
                 android:text="@string/creating_game"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="#ffffff"
-                android:singleLine="true"
                 android:textSize="26px"
                 android:textStyle="bold" 
                 android:layout_gravity="center_horizontal"

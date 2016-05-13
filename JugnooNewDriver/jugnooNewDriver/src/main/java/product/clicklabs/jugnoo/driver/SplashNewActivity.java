@@ -89,6 +89,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	ImageView jugnooTextImg, jugnooTextImg2;
 	
 	ProgressBar progressBar1;
+	Configuration conf;
 
 	Button buttonLogin, buttonRegister;
 	
@@ -642,6 +643,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
 		final long responseTime = System.currentTimeMillis();
+		conf = getResources().getConfiguration();
 		if(!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
@@ -663,6 +665,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
 
+				params.put("locale", conf.locale.toString());
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
 				params.put("unique_device_id", Data.uniqueDeviceId);

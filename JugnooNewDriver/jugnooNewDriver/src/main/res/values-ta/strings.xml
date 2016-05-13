@@ -34,7 +34,7 @@
     <string name="done">முடிந்தது</string>
     <string name="amount">ரூபாய்</string>
     <string name="no_driver_available">மனிக்கவும். ஓட்டுனர்கள் கிடைக்கவில்லை</string>
-    <string name="logout">விடுபதிகை/ லாக் அவுட்</string>
+    <string name="logout">விடுபதிகை</string>
     <string name="are_you_sure_you_want_to_logout">நீங்கள் வெளியேற வேண்டும் என்பதை உறுதி செய்யுங்கள்
         ?
     </string>
@@ -176,7 +176,7 @@
     <string name="completed">நிறைவு செய்யப்பட்டது</string>
     <string name="customer_name">வாடிக்கையாளர் பெயர்:</string>
     <string name="change">மாற்றம்</string>
-    <string name="km">கிலோமீட்டர்</string>
+    <string name="km">கி.மீ.</string>
     <string name="disable_mock_location">முதலில் போலி இடத்தை முடக்கவும்</string>
     <string name="daily">தினசரி</string>
     <string name="distance2">தூரம்</string>
@@ -296,7 +296,7 @@
     <string name="submit_request">கோரிக்கையை சமர்ப்பிக்க</string>
     <string name="status">நிலை</string>
     <string name="total_time">மொத்த நேரம்</string>
-    <string name="min">நிமிடங்கள்</string>
+    <string name="min">நிமிடம்</string>
     <string name="app_need_active_gps">அப்பை பயன்படுத்த செயலில் இருக்கும் ஜி பீ எஸ் இணைப்பு வேண்டும்
         . செட்டிங்க்ஸில் இருந்து செயல்படுத்தவும்
     </string>

@@ -23,6 +23,11 @@ public class BaseActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 
+		updateLanguage();
+
+    }
+
+	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
 		String languageToLoad;
 
@@ -38,11 +43,11 @@ public class BaseActivity extends Activity {
 			languageToLoad = "ml";
 		} else if (item.equalsIgnoreCase("Tamil")) {
 			languageToLoad = "ta";
-		} else if (item.equalsIgnoreCase("Telgu")) {
+		} else if (item.equalsIgnoreCase("Telugu")) {
 			languageToLoad = "te";
 		} else if (item.equalsIgnoreCase("Kannada")) {
 			languageToLoad = "kn";
-		} else if (item.equalsIgnoreCase("Assammee")) {
+		} else if (item.equalsIgnoreCase("Assamese")) {
 			languageToLoad = "as";
 		} else {
 			languageToLoad = "en";
@@ -56,8 +61,8 @@ public class BaseActivity extends Activity {
 		config.locale = locale;
 		getBaseContext().getResources().updateConfiguration(config,
 				getBaseContext().getResources().getDisplayMetrics());
+	}
 
-    }
 
     public String getStringText(int resourceId){
 

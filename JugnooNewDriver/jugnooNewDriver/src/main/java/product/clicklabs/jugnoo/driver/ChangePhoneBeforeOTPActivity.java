@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -33,7 +34,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class ChangePhoneBeforeOTPActivity extends Activity{
+public class ChangePhoneBeforeOTPActivity extends BaseActivity{
 	
 	ImageView imageViewBack;
 	TextView textViewTitle;
@@ -66,11 +67,17 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
 		new ASSL(ChangePhoneBeforeOTPActivity.this, relative, 1134, 720, false);
 		
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-        textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp); textViewChangePhoneNoHelp.setTypeface(Data.latoRegular(this));
-        editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber); editTextNewPhoneNumber.setTypeface(Data.latoRegular(this));
-        buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber); buttonChangePhoneNumber.setTypeface(Data.latoRegular(this));
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
+		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle.setText(getStringText(R.string.change_phone_no));
+        textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp);
+		textViewChangePhoneNoHelp.setTypeface(Data.latoRegular(this));
+		textViewChangePhoneNoHelp.setText(getStringText(R.string.enter_new_phone_number));
+        editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber);
+		editTextNewPhoneNumber.setTypeface(Data.latoRegular(this));
+		editTextNewPhoneNumber.setHint(getStringText(R.string.enter_new_phone_no));
+        buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber);
+		buttonChangePhoneNumber.setTypeface(Data.latoRegular(this));
 		
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +108,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                 String phoneNoChanged = editTextNewPhoneNumber.getText().toString().trim();
                 if("".equalsIgnoreCase(phoneNoChanged)){
                     editTextNewPhoneNumber.requestFocus();
-                    editTextNewPhoneNumber.setError(getResources().getString(R.string.Phone_number_not_empty));
+                    editTextNewPhoneNumber.setError(getStringText(R.string.Phone_number_not_empty));
                 }
                 else{
                     phoneNoChanged = Utils.retrievePhoneNumberTenChars(phoneNoChanged);
@@ -109,7 +116,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                         phoneNoChanged = "+91" + phoneNoChanged;
                         if(previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)){
                             editTextNewPhoneNumber.requestFocus();
-                            editTextNewPhoneNumber.setError(getResources().getString(R.string.change_phone_no_text));
+                            editTextNewPhoneNumber.setError(getStringText(R.string.change_phone_no_text));
                         }
                         else{
                             updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
@@ -118,7 +125,7 @@ public class ChangePhoneBeforeOTPActivity extends Activity{
                     }
                     else{
                         editTextNewPhoneNumber.requestFocus();
-                        editTextNewPhoneNumber.setError(getResources().getString(R.string.valid_phone_number));
+                        editTextNewPhoneNumber.setError(getStringText(R.string.valid_phone_number));
                     }
                 }
 			}
