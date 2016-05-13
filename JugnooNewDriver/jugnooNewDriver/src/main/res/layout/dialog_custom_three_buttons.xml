@@ -100,7 +100,7 @@
                 />
                     
                     
-                    <Button
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                         android:id="@+id/btnCancel"
                         android:layout_width="180px"
                         android:layout_height="83px"

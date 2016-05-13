@@ -1047,7 +1047,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
+					Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					finish();
 				}
 			});
 
@@ -1110,6 +1112,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				logoutRl.setVisibility(View.GONE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
+			}
+
+			if(!Data.currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+				Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+				callAndHandleStateRestoreAPI();
 			}
 
 
@@ -1579,7 +1586,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Crashlytics.logException(e);
+//			Crashlytics.logException(e);
 		}
 
 	}
@@ -3604,7 +3611,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
-			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getResources().getString(R.string.km));
+			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getStringText(R.string.km));
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {

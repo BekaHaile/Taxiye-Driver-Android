@@ -360,4 +360,16 @@ public interface APIServices {
 	@POST("/fetch_pushes_for_user")
 	void notificationInbox(@FieldMap Map<String, String> params,
 						   Callback<NotificationInboxResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_active_locales")
+	void fetchLanguageList(@FieldMap Map<String, String> params,
+					 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/set_locale_preference")
+	void setPreferredLang(@FieldMap Map<String, String> params,
+						   Callback<RegisterScreenResponse> callback);
+
+
 }

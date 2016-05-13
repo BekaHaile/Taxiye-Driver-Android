@@ -176,7 +176,7 @@
     <string name="completed">நிறைவு செய்யப்பட்டது</string>
     <string name="customer_name">வாடிக்கையாளர் பெயர்:</string>
     <string name="change">மாற்றம்</string>
-    <string name="km">கிலோமீட்டர்</string>
+    <string name="km">கி.மீ.</string>
     <string name="disable_mock_location">முதலில் போலி இடத்தை முடக்கவும்</string>
     <string name="daily">தினசரி</string>
     <string name="distance2">தூரம்</string>
@@ -296,7 +296,7 @@
     <string name="submit_request">கோரிக்கையை சமர்ப்பிக்க</string>
     <string name="status">நிலை</string>
     <string name="total_time">மொத்த நேரம்</string>
-    <string name="min">நிமிடங்கள்</string>
+    <string name="min">நிமிடம்</string>
     <string name="app_need_active_gps">அப்பை பயன்படுத்த செயலில் இருக்கும் ஜி பீ எஸ் இணைப்பு வேண்டும்
         . செட்டிங்க்ஸில் இருந்து செயல்படுத்தவும்
     </string>
