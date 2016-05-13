@@ -163,6 +163,7 @@
 	<string name="rank_overall">Overall Rank:</string>
 	<string name="monthly">मासिक स्कोर</string>
 	<string name="earnings">कमाई</string>
+	<string name="Earnings">कमाई</string>
 	<string name="rides_taken">राइड्स टेकन </string>
 	<string name="rides_missed">राइड्स मिस्ड </string>
 	<string name="rides_cancelled">राइड्स कांसल्लेड </string>
@@ -240,7 +241,7 @@
 	<string name="help">मदद</string>
 	<string name="have_arrived">क्या आप पहुंच गए हैं?</string>
 
-	<string name="invite_earn">Invite &amp; Earn</string>
+	<string name="invite_earn">आमंत्रित करें</string>
 	<string name="create_new_account_msg">अगर आप अब भी एक नया खता बनाना चाहते </string>
 	<string name="not_recived_otp">मुझे ओ टी प प्राप्त नहीं हुआ </string>
 
@@ -340,6 +341,7 @@
 	<string name="time_new">अवधि /n</string>
 	<string name="jugnoo_ride_over"> Jugnoo राइड खत्म हो गई है </string>
 	<string name="today">आज</string>
+	<string name="Today">आज</string>
 	<string name="this_month">इस महीने</string>
 	<string name="title"> शीर्षक </string>
 	<string name="two_account_on_device">दो खातों पहले से ही इस डिवाइस पर बनाए जा चुके हैं </string>
@@ -438,7 +440,8 @@
     <string name="signin_via_otp">ओटीपी के माध्यम से साइन इन करें</string>
     <string name="Neutral">न्यूट्रल</string>
     <string name="Payments">भुगतान</string>
-    <string name="Last_week">पिछले सप्ताह</string>
+	<string name="PAYMENTS">भुगतान</string>
+	<string name="Last_week">पिछले सप्ताह</string>
     <string name="Last_month">पिछले महीने</string>
     <string name="upcoming_invoice">आने वाला बिल</string>
     <string name="current_invoice">वर्तमान बिल</string>
@@ -457,6 +460,51 @@
     <string name="upcoming_payment_due_date">आने वाले भुगतान पर</string>
     <string name="cash_via_paytm">पेटीएम के माध्यम से कैश</string>
     <string name="Pls_enter_email_or_phn">ईमेल या फोन नं दर्ज करें</string>
+
+
+
+	<string name="terms">नियम</string>
+	<string name="bank_details">बैंक विवरण</string>
+	<string name="acc_no">खाता संख्या</string>
+	<string name="ifsc_code">आइएफएससी</string>
+	<string name="bank_name">बैंक का नाम :</string>
+	<string name="bank_loc">बैंक का स्थान:</string>
+	<string name="customer_waiting">आपका अगला ग्राहक इंतज़ार कर रहा है</string>
+	<string name="show_more">और दिखाओ</string>
+	<string name="Transactions">लेनदेन</string>
+	<string name="Invoices">चालान </string>
+	<string name="Earn">आय</string>
+	<string name="Activity">गतिविधि</string>
+	<string name="referral">रेफरल</string>
+	<string name="NA">लागू नहीं</string>
+	<string name="Invoice">चालान </string>
+	<string name="recharge_amount_for_customer"></string>
+	<string name="Ride">सवारी</string>
+	<string name="customer_id">ग्राहक आईडी</string>
+	<string name="paytm_transaction">पेटीएम लेनदेन</string>
+	<string name="phone_no">फोन नंबर।</string>
+	<string name="changed_no_same_as_previous">बदला हुआ फोन नंबर पिछले न. के रूप में ही है।</string>
+	<string name="sharing_payment_recieved">फ़ोन के लिए साझा भुगतान प्राप्त</string>
+	<string name="please_give_customer">हम आपकी राय को गंभीरता से ले रहे है  कृपया हमें मुल्यान्कित करें  </string>
+	<string name="start_loc">प्रारंभिक स्थान</string>
+	<string name="driver_loc">चालक स्थान</string>
+	<string name="customer_2">ग्राहक 2</string>
+	<string name="kms">किलोमीटर्स </string>
+	<string name="mark_delivered">दिया गया चिन्हित करें </string>
+	<string name="order_id">आदेश आईडी</string>
+	<string name="thanks_for_feedback">आपके बहुमूल्य प्रतिक्रिया के लिए शुक्रिया</string>
+	<string name="total_amnt_till_now">अब तक कुल राशि</string>
+	<string name="invoice_date">चालान की तारीख</string>
+	<string name="invoice_id">चालान आईडी</string>
+	<string name="total_distance">कुल दूरी</string>
+	<string name="valid_email_phone_no">वैध ईमेल या फोन नंबर दर्ज करें </string>
+	<string name="select_destination">कृपया कम से कम एक गंतव्य का चयन करें</string>
+	<string name="fatafat_on">फटाफट शुरू </string>
+	<string name="Notifications">सूचनाएं</string>
+	<string name="enter_customer_phone_no">ग्राहक का फोन नंबर दर्ज करें</string>
+	<string name="invoice_detail">चालान विवरण</string>
+	<string name="generated_on">जेनरेटेड ऑन </string>
+	<string name="share">साझा </string>
 
 
 
