@@ -336,6 +336,7 @@ public class JSONParser implements Constants {
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
+		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
 
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
@@ -361,7 +362,7 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail);
+				userId, userEmail, blockedAppPackageMessage);
 	}
 	
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception{
@@ -376,6 +377,7 @@ public class JSONParser implements Constants {
 
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
+		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
 		//current_user_status = 1 driver or 2 user
 		int currentUserStatus = jLoginObject.getInt("current_user_status");

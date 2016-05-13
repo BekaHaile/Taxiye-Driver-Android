@@ -10,7 +10,7 @@ public class UserData {
 	public String driverOnlineHours, referralDialogHintText, timeoutMessage;
 	public double driverArrivalDistance;
 	public long remainigPenaltyPeriod, walletUpdateTimeout;
-	private String userId, userEmail;
+	public String userId, userEmail, blockedAppPackageMessage;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -19,7 +19,7 @@ public class UserData {
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
-					String userId, String userEmail) {
+					String userId, String userEmail, String blockedAppPackageMessage) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -57,6 +57,7 @@ public class UserData {
 		this.walletUpdateTimeout = walletUpdateTimeout;
 		this.userId = userId;
 		this.userEmail = userEmail;
+		this.blockedAppPackageMessage = blockedAppPackageMessage;
 	}
 
 	public String getUserId() {
