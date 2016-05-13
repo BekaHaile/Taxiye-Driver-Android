@@ -48,8 +48,8 @@
     <string name="no_favorite_locations_added">பிடித்தவை\'அடிக்கடி பயன்படுத்தப்படும்\' பட்டியலின்
         சேர்க்க படவில்லை
     </string>
-    <string name="from">இருந்து:</string>
-    <string name="to">வரை:</string>
+    <string name="from:">இருந்து:</string>
+    <string name="to:">வரை:</string>
     <string name="rides">சவாரிகள்</string>
     <string name="no_rides_currently">தற்போது எந்த சவாரிகளும் இல்லை</string>
     <string name="history">வரலாறு</string>
@@ -388,7 +388,6 @@
     <string name="number_of_downloads">டவுன்லோட் எண்ணிக்கை</string>
     <string name="number_of_first_rides">முதல் சவாரி எண்ணிக்கை</string>
     <string name="money_earned">பரிந்துரைகல் மூலம் சம்பாதித்த பணம்</string>
-    <string name="data_effective_format">டேட்டா முதல் அமலுக்கு</string>
     <string name="notifications">அறிவிப்புகள்</string>
     <string name="click_for_direction">வழிகாட்டி பார்க்க இதை அழுத்தவும்</string>
     <string name="time_left">மீதம் உள்ள நேரம்</string>
@@ -437,5 +436,57 @@
     <string name="last_payments">முந்தைய கட்டணங்கள்</string>
     <string name="upcoming_payment_due_date">வரவிருக்கும் கட்டணம்</string>
     <string name="cash_via_paytm">பேடியம் மூலம் வந்த பணம்</string>
+
+    <string name="from">இருந்து</string>
+    <string name="to">வரை</string>
+    <string name="data_effective_format">தேதி பயனுள்ள வடிவம்</string>
+    <string name="terms">விதிமுறை</string>
+    <string name="bank_details">வங்கி விவரங்கள்</string>
+    <string name="acc_no">அக்கௌன்ட் எண்</string>
+    <string name="ifsc_code">ஐ எப் எஸ் சி குறியீடு</string>
+    <string name="bank_name">வங்கி பெயர்</string>
+    <string name="bank_loc">வங்கி இடம்/ப்ராஞ்ச்</string>
+    <string name="customer_waiting">வாடிக்கையாளர் காத்திருக்கும்</string>
+    <string name="show_more">மேலும் காட்ட</string>
+    <string name="Transactions">பரிவர்த்தனைகள்</string>
+    <string name="Invoices">விலைப்பட்டியல்</string>
+    <string name="Earn">சம்பாதிக்க</string>
+    <string name="Activity">செயல்பாடு</string>
+    <string name="referral">ரெபரல்</string>
+    <string name="NA">பொருந்தாது</string>
+    <string name="Invoice">விலைப்பட்டி</string>
+    <string name="recharge_amount_for_customer">வாடிக்கையாளரின் ரீசார்ஜ் தொகை</string>
+    <string name="Ride">சவாரி</string>
+    <string name="customer_id">வாடிக்கையாளர் ஐ டி</string>
+    <string name="paytm_transaction">பெ டிஎம் பரிவர்த்தனை</string>
+    <string name="phone_no">தொலைபேசி என்</string>
+    <string name="changed_no_same_as_previous">மாற்றப்பட்டது தொலைபேசி என் மற்றும் முந்தைய தொலைபேசி
+        எண் , இரண்டும் ஒன்றே
+    </string>
+    <string name="sharing_payment_recieved">மொபைலுக்கான பகிர்ந்து கட்டணம் பெற்றுக்கொள்ளப்பட்டது
+    </string>
+    <string name="please_give_customer">நாங்கள் தங்களுடைய கருத்துக்களை மிக முக்கியமாக கருதுகிறோம் .
+        தேய்வு செய்து மதிப்பீடு கொடுங்கள்
+    </string>
+    <string name="start_loc">தொடங்கும் இடம்</string>
+    <string name="driver_loc">ஓட்டுனரின் இடம்</string>
+    <string name="customer_2">வாடிக்கையாளர் 2</string>
+    <string name="kms">கி மீ</string>
+    <string name="mark_delivered">ஒப்படைப்புக்கான அடையாள குறி</string>
+    <string name="order_id">பொருட்டு ஐ டி</string>
+    <string name="thanks_for_feedback">உங்கள் மதிப்புமிக்க கருத்துக்கு நன்றி</string>
+    <string name="total_amnt_till_now">இப்போது வரை மொத்த கட்டணம்</string>
+    <string name="invoice_date">விலைப்பட்டியல் தேதி</string>
+    <string name="invoice_id">விலைப்பட்டியல் ஐ டி</string>
+    <string name="total_distance">மொத்த தூரம்</string>
+    <string name="valid_email_phone_no">செல்லுபடியாகும் ஈ மெயில் அல்லது தொலைபேசி என்னை உள்ளிடவும்
+    </string>
+    <string name="select_destination">குறைந்தது ஒரு இலக்கு தேர்ந்தெடுக்கவும்</string>
+    <string name="fatafat_on">பாட்டாபட் ஆன்</string>
+    <string name="Notifications">அறிவிப்புகள்</string>
+    <string name="enter_customer_phone_no">வாடிக்கையாளர் தொலைபேசி என்னை உள்ளிடவும்</string>
+    <string name="invoice_detail">விலைப்பட்டியல் விவரம்</string>
+    <string name="generated_on">உருவாக்கப்பட்டது</string>
+    <string name="share">பங்கு</string>
 
 </resources>

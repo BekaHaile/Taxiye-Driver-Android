@@ -17,16 +17,16 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	private Resources resourcesEng, resources;
 
-	public BaseFragmentActivity(){
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		updateLanguage();
 
 	}
 
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-
+	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");
 		String languageToLoad;
 
@@ -42,11 +42,11 @@ public class BaseFragmentActivity extends FragmentActivity {
 			languageToLoad = "ml";
 		} else if (item.equalsIgnoreCase("Tamil")) {
 			languageToLoad = "ta";
-		} else if (item.equalsIgnoreCase("Telgu")) {
+		} else if (item.equalsIgnoreCase("Telugu")) {
 			languageToLoad = "te";
 		} else if (item.equalsIgnoreCase("Kannada")) {
 			languageToLoad = "kn";
-		} else if (item.equalsIgnoreCase("Assammee")) {
+		} else if (item.equalsIgnoreCase("Assamese")) {
 			languageToLoad = "as";
 		} else {
 			languageToLoad = "en";
@@ -58,10 +58,10 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 		Configuration config = new Configuration();
 		config.locale = locale;
-		getResources().updateConfiguration(config,
-				getResources().getDisplayMetrics());
-
+		getBaseContext().getResources().updateConfiguration(config,
+				getBaseContext().getResources().getDisplayMetrics());
 	}
+
 
 	public String getStringText(int resourceId){
 
@@ -81,10 +81,9 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 
 		String str = getResources().getString(resourceId);
-		if(str.length() > strEng.length() + 5){
+		if(str.length() > strEng.length() + 10){
 			return strEng;
 		}
 		return str;
 	}
-
 }

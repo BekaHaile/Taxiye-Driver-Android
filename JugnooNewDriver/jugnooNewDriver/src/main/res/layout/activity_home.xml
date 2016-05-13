@@ -519,7 +519,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="25px">
 
-                                <Button
+                                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                     android:id="@+id/driverStartRideBtn"
                                     android:layout_width="410px"
                                     android:layout_height="99px"
@@ -2324,7 +2324,7 @@
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/paymentText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2422,7 +2422,7 @@
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/textViewSuperDrivers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2461,7 +2461,7 @@
                     android:splitMotionEvents="false"
                     android:visibility="gone">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/notificationCenterText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

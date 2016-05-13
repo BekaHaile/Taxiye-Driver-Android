@@ -82,7 +82,7 @@ public class BaseActivity extends Activity {
 
 
         String str = getResources().getString(resourceId);
-        if(str.length() > strEng.length() + 5){
+        if(str.length() > strEng.length() + 10){
             return strEng;
         }
         return str;

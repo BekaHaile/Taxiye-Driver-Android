@@ -493,6 +493,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
 			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
 			notificationCenterText.setTypeface(Data.latoRegular(getApplicationContext()));
+			notificationCenterText.setText(getResources().getString(R.string.Notifications));
 
 			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
 			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
@@ -524,6 +525,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			callUsText.setText(getResources().getText(R.string.call_us));
 
 			termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
 			termsConditionText = (TextView) findViewById(R.id.termsConditionText);
@@ -537,6 +539,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			paymentsRl = (RelativeLayout) findViewById(R.id.paymentRL);
 			paymentsText = (TextView) findViewById(R.id.paymentText);
 			paymentsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			paymentsText.setText(getResources().getString(R.string.Payments));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);

@@ -76,14 +76,13 @@
                 >
 
 
-                <Button
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"
                     android:layout_width="220px"
                     android:layout_height="83px"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="280px"
                     android:background="@drawable/new_orange_btn_selector_rounded"
-                    android:singleLine="true"
                     android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"

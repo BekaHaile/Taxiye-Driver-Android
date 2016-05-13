@@ -129,7 +129,7 @@ public class DriverProfileActivity extends BaseActivity {
 		textViewRidesTakenText.setText(getStringText(R.string.rides_taken));
 		textViewRidesMissedText = (TextView) findViewById(R.id.textViewRidesMissedText);
 		textViewRidesMissedText.setTypeface(Data.latoRegular(this));
-		textViewRidesMissedText.setText(getStringText(R.string.rides_missed));
+		textViewRidesMissedText.setText(getResources().getString(R.string.rides_missed));
 		textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
 		textViewRidesCancelledText.setTypeface(Data.latoRegular(this));
 		textViewRidesCancelledText.setText(getStringText(R.string.rides_cancelled));

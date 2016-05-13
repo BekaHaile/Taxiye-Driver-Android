@@ -365,4 +365,48 @@
     <string name="upcoming_payment_due_date">পাব লগীয়া পেমেন্ত: তাৰিখ</string>
     <string name="cash_via_paytm">পে টি এমৰ জড়িয়তে নগদ</string>
 
+
+    <string name="terms">চৰ্ত</string>
+    <string name="bank_details">বেঙ্কৰ বিৱৰন</string>
+    <string name="acc_no">একাওণ্ট নম্বৰ</string>
+    <string name="ifsc_code">বেঙ্কৰ IFSC কোড</string>
+    <string name="bank_name">বেঙ্কৰ নাম</string>
+    <string name="bank_loc">বেঙ্কৰ ঠাই</string>
+    <string name="customer_waiting">আপোনাৰ নেস্কত গ্ৰাহক ৰখি আছে</string>
+    <string name="show_more">আৰু দেখাওঁক</string>
+    <string name="Transactions">ভাড়াৰ বিৱৰন</string>
+    <string name="Invoices">বিল</string>
+    <string name="Earn">লাভ কৰক</string>
+    <string name="Activity">কাৰ্য্যসুচি</string>
+    <string name="referral">ৰেফাৰেল</string>
+    <string name="NA">আৰু নাই</string>
+    <string name="Invoice">বিল</string>
+    <string name="recharge_amount_for_customer">গ্ৰাহকৰ ৰিচাৰ্জ ৰ মূল্য</string>
+    <string name="Ride">যাট্ৰা</string>
+    <string name="customer_id">গ্ৰাহকৰ আইদি</string>
+    <string name="paytm_transaction">পে টি এম ৰ বিৱৰন</string>
+    <string name="phone_no">ফোন নন্বৰ</string>
+    <string name="changed_no_same_as_previous">সলনি কৰা ফোন নন্বৰ টো আগৰ নিচিনা</string>
+    <string name="sharing_payment_recieved">ভগোৱাৰ বাবে পেমেণ্ট পালে</string>
+    <string name="please_give_customer">আমি আপোনাৰ ফিডবেক অতি গম্ভিৰ ভাৱে লওঁ গতিকে আমাক ৰেটিং দিব</string>
+    <string name="start_loc">চাৰ্ট কৰা ষ্ঠান</string>
+    <string name="driver_loc">দ্ৰাইভাৰ ষ্ঠান</string>
+    <string name="customer_2">2 ন: গ্ৰাহক</string>
+    <string name="kms">কিলমিটাৰ</string>
+    <string name="mark_delivered">মাৰ্ক দেলিভাৰ্দ</string>
+    <string name="order_id">অৰডাৰ আইদি</string>
+    <string name="thanks_for_feedback">আপোনাৰ ফিডবেকৰ বাবে ধন্যবাদ</string>
+    <string name="total_amnt_till_now">টতেল এেমাওন্ত এতিয়ালৈকে</string>
+    <string name="invoice_date">বিলৰ তাৰিখ</string>
+    <string name="invoice_id">বিলৰ আইদি</string>
+    <string name="total_distance">টতেল দিছস্তেচ</string>
+    <string name="valid_email_phone_no">এটা ভেলিদ মেইল আইদি বা ফোন নন্বৰ দিয়ক</string>
+    <string name="select_destination">আপোনাৰ যাব লগিয়া ঠাই দোখৰ নাম দিব</string>
+    <string name="fatafat_on">ফটাফত অন</string>
+    <string name="Notifications">নতিফিকচন</string>
+    <string name="enter_customer_phone_no">গ্ৰাহকৰ ফোন নন্বৰ দিয়ক</string>
+    <string name="invoice_detail">বিলৰ বিৱৰন</string>
+    <string name="generated_on">জেনেৰড কৰা হল</string>
+    <string name="share">ভগাওক</string>
+
 </resources>
