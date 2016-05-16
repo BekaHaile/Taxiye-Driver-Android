@@ -93,8 +93,8 @@
     <string name="start_wait">వెయిటింగ్ ప్రారంభం</string>
     <string name="stop_wait">వెయిటింగ్ ఆపు</string>
     <string name="submit">సబ్మిట్</string>
-    <string name="search_results"></string>
-    <string name="search"></string>
+    <string name="search_results">శోధన ఫలితాలు</string>
+    <string name="search">శోధన</string>
     <string name="your_login_session_expired">మీ లాగిన్ సెషన్ ముగిసింది. మళ్ళీ లాగిన్ చేయండి .
     </string>
     <string name="alert">హెచ్చరిక</string>
@@ -111,6 +111,8 @@
     <string name="rank_overall">మొత్తంమీద రాంక్:</string>
     <string name="monthly">మంత్లీ స్కోరు</string>
     <string name="earnings">సంపాదన</string>
+    <string name="Earnings">సంపాదన</string>
+
     <string name="rides_taken">రైడ్స్ తీసుకోబడినది</string>
     <string name="rides_missed">రైడ్స్ మిస్డ్</string>
     <string name="rides_cancelled">రైడ్స్ కెన్సెల్ చేసినవి</string>
@@ -129,10 +131,10 @@
     <string name="add_cash">క్యాష్ జోడించండి</string>
     <string name="add_customer_cash">కస్టమర్ నగదు జోడించండి</string>
     <string name="arrived">వచ్చారు</string>
-    <string name="accept_subsidy"></string>
+    <string name="accept_subsidy">సబ్సిడీ అందుకున్నారు</string>
     <string name="account">ఖాతా</string>
     <string name="accept">అంగికరించండి</string>
-    <string name="away_from_you"></string>
+    <string name="away_from_you">వారి స్థానంలో నుండి దూరంలో :</string>
     <string name="cancel_ride_text">మీరు రైడ్ రద్దు చేయాలనుకుంటున్నారా?</string>
     <string name="end_ride_text">మీరు ఖచ్చితంగా రైడ్ అంతం చేయాలనుకుంటున్నారా?</string>
     <string name="logout_text">మీరు ఖచ్చితంగా లాగ్ అవుట్ చేయాలనుకుంటున్నారా?</string>
@@ -213,9 +215,9 @@
     <string name="message">సందేశం</string>
     <string name="no">కాదు</string>
     <string name="yes">అవును</string>
-    <string name="no_luggage"></string>
+    <string name="no_luggage">లగేజీ లేదు </string>
     <string name="luggage_added">సామాను అంశాలు జోడించబడ్డాయి</string>
-    <string name="no_lugage"></string>
+    <string name="no_lugage">లగేజీ లేదు </string>
     <string name="network_problem">నెట్వర్క్ సమస్య. మీ ఫోన్ స్విచ్ ఆఫ్ చేసి స్విచ్ఆన్ చేయండి, 5
         నిమిషాలు వేచి ఉండి Jugnoo ఉపయోగించడం కొనసాగించండి.
     </string>
@@ -233,7 +235,7 @@
     <string name="valid_phone_number">చెల్లుబాటు అయ్యే ఫోన్ నంబర్ నమోదు చేయండి</string>
     <string name="please_wait">దయచేసి వేచి ఉండండి ...</string>
     <string name="enter_some_fare">కొన్ని ఛార్జీల నమోదు చేయండి</string>
-    <string name="please_reach"></string>
+    <string name="please_reach">దయచేసి చేరుకోండి</string>
     <string name="by">ద్వారా</string>
     <string name="take_fare_from_customer">కస్టమర్ నుండి పైన చూపిన విధంగా ఛార్జీల తీసుకోండి.
     </string>
@@ -259,6 +261,8 @@
     <string name="please_contact_customer_care">దయచేసి మా కస్టమర్ కేర్ ని సంప్రదించండి</string>
     <string name="paid_cash">నగదు చెల్లింపు</string>
     <string name="ride_id">రైడ్ ఐడి</string>
+    <string name="Ride_id">రైడ్ ఐడి</string>
+
     <string name="rupees">రూ.</string>
     <string name="ride_time2">రైడ్ సమయం:</string>
     <string name="rate">రేటు:</string>
@@ -400,6 +404,7 @@
     <string name="destination">గమ్యస్థానం</string>
     <string name="destination_selection">దయచేసి మీరు ప్రస్తుతం వెళ్ళే గమ్యం పేరు ఎంచుకోండి</string>
     <string name="Payments">చెల్లింపులు</string>
+    <string name="PAYMENTS">చెల్లింపులు</string>
     <string name="Today">నేడు</string>
     <string name="Last_week">గత వారం</string>
     <string name="Last_month">పోయిన నెల</string>
@@ -419,5 +424,48 @@
     <string name="last_payments">చివరి చెల్లింపులు</string>
     <string name="upcoming_payment_due_date">రాబోయే చెల్లింపు తేదీ :</string>
     <string name="cash_via_paytm">క్యాష్ వయా Paytm</string>
+
+    <string name="terms">నిబంధనలు</string>
+    <string name="bank_details">బ్యాంక్ వివరములు</string>
+    <string name="acc_no">ఖాతా నెంబర్</string>
+    <string name="ifsc_code">IFSC :</string>
+    <string name="bank_name">బ్యాంకు పేరు</string>
+    <string name="bank_loc">బ్రాంచ్ పేరు</string>
+    <string name="customer_waiting">మీ తదుపరి కస్టమర్ వేచి ఉన్నారు</string>
+    <string name="show_more">ఇంకా చూపించు</string>
+    <string name="Transactions">ట్రాన్సాక్షన్స్</string>
+    <string name="Invoices">రసీదులు</string>
+    <string name="Earn">సంపాదించండి</string>
+    <string name="Activity">కార్యాచరణ</string>
+    <string name="referral">రెఫరల్</string>
+    <string name="NA">వర్తించదు</string>
+    <string name="Invoice">రసీదు</string>
+    <string name="recharge_amount_for_customer">క్లయింట్ యొక్క మొత్తం రీఛార్జ్</string>
+    <string name="Ride">రైడ్</string>
+    <string name="customer_id">కస్టమర్ ఐడి</string>
+    <string name="paytm_transaction">పేటిఎం  లావాదేవీ</string>
+    <string name="phone_no">ఫోన్ నంబర్</string>
+    <string name="changed_no_same_as_previous">ఫోన్ నంబర్ మార్చబడింది గతంలో మాదిరిగానే ఉంది</string>
+    <string name="sharing_payment_recieved">మొబైల్ చెల్లింపు వాటా అందుకున్నాం </string>
+    <string name="please_give_customer">మేము మీ అభిప్రాయాలు ముఖ్యమని భావిస్తాము,దయచేసి రేటింగ్ ఇవ్వండి </string>"
+    <string name="start_loc">ప్రారంభ స్థానం</string>
+    <string name="driver_loc">డ్రైవర్ స్థానం</string>
+    <string name="customer_2">కస్టమర్ 2</string>
+    <string name="kms">కి.మీ.</string>
+    <string name="mark_delivered">డెలివర్ చేసినవి టిక్ చేయండి </string>
+    <string name="order_id">ఆర్డర్ ఐడి</string>
+    <string name="thanks_for_feedback">మీ విలువైన అభిప్రాయాన్ని తెలియజేసినందుకు ధన్యవాదాలు</string>
+    <string name="total_amnt_till_now">ఇప్పుడు వరకు మొత్తం పరిమాణం</string>
+    <string name="invoice_date">చలానా తారీకు</string>
+    <string name="invoice_id">చలానా ఐడి</string>
+    <string name="total_distance">మొత్తం దూరం</string>
+    <string name="valid_email_phone_no">చెల్లుబాటు అయ్యే ఇమెయిల్ లేదా ఫోన్ నం ఎంటర్</string>
+    <string name="select_destination">దయచేసి కనీసం ఒక గమ్యం ఎంచుకోండి</string>
+    <string name="fatafat_on">ఫటాఫట్ ఆన్ </string>
+    <string name="Notifications">ప్రకటనలు</string>
+    <string name="enter_customer_phone_no">కస్టమర్ ఫోన్ నంబర్ ఎంటర్ చేయండి </string>
+    <string name="invoice_detail">ఇన్వాయిస్ వివరాలు</string>
+    <string name="generated_on">రూపొందించినది:</string>
+    <string name="share">వాటా</string>
 
 </resources>

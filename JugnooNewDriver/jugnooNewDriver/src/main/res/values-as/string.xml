@@ -226,6 +226,8 @@
     <string name="please_contact_customer_care">অনু্গ্ৰহ কৰি আমাৰ কাচতমাৰ কেৰ লগত যোগাযোগ কৰক</string>
     <string name="paid_cash">নগদ দিয়ক</string>
     <string name="ride_id">ৰাইড আইডি</string>
+    <string name="Ride_id">ৰাইড আইডি</string>
+
     <string name="rupees">Rs</string>
     <string name="ride_time2">ৰাইডৰ সময়</string>
     <string name="rate">ৰেত</string>
@@ -319,7 +321,7 @@
     <string name="number_of_downloads">দাউনলডৰ সংখ্যা</string>
     <string name="number_of_first_rides">প্ৰথম বাৰৰ বাবে ভাড়া লোৱাৰ সংখ্যা</string>
     <string name="money_earned">ৰেফাৰেলৰ পৰা উপাৰ্জন কৰা টকা</string>
-    <string name="data_effective_format">আপোনাৰ দাতা ___পৰা কাম কৰা আৰম্ভ কৰিব</string>
+    <!--<string name="data_effective_format">আপোনাৰ দাতা ___পৰা কাম কৰা আৰম্ভ কৰিব</string>-->
     <string name="notifications">নিদেৰ্শৱালী চেন্তাৰ</string>
     <string name="click_for_direction">নিদেৰ্শৰ কাৰণে ক্লিক কৰক</string>
     <string name="time_left">সময় বাকী আছে</string>

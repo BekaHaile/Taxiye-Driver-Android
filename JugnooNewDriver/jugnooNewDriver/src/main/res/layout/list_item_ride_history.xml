@@ -24,13 +24,12 @@
             android:layout_gravity="center_vertical"
             >
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewTransTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="12px"
-                android:singleLine="true"
                 android:text="Ride"
                 android:textColor="@color/new_orange"
                 android:textSize="36px"/>
@@ -67,13 +66,12 @@
 
             </RelativeLayout>
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewRideId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="12px"
-                android:singleLine="true"
                 android:text="Ride ID: 1111"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="30px"/>

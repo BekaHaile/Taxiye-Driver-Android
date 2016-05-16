@@ -73,8 +73,6 @@
     <string name="send_email">ಇಮೇಲ್ ಕಳುಹಿಸಿ</string>
     <string name="favorites">ಅಚ್ಚುಮೆಚ್ಚಿನ</string>
     <string name="no_favorite_locations_added">ಯಾವುದೇ ನೆಚ್ಚಿನ ಸ್ಥಾನಗಳನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ</string>
-    <string name="from">ಇಂದ:</string>
-    <string name="to">ಗೆ:</string>
     <string name="rides">ಸವಾರಿಗಳು</string>
     <string name="no_rides_currently">ಪ್ರಸ್ತುತ ಯಾವುದೇ ಸವಾರಿ ಇಲ್ಲ.</string>
     <string name="history">ಇತಿಹಾಸ</string>
@@ -135,6 +133,8 @@
     <string name="rank_overall">ಒಟ್ಟಾರೆ ಶ್ರೇಣಿ :</string>
     <string name="monthly">ಮಾಸಿಕ ಸ್ಕೋರ್</string>
     <string name="earnings">ಸಂಪಾದನೆ</string>
+    <string name="Earnings">ಸಂಪಾದನೆ</string>
+
     <string name="rides_taken">ತೆಗೆದುಕೊಂಡ ಸವಾರಿಗಳು</string>
     <string name="rides_missed">ತಪ್ಪಿದ ಸವಾರಿಗಳು </string>
     <string name="rides_cancelled">ರದ್ದಾದ ಸವಾರಿಗಳು </string>
@@ -204,7 +204,6 @@
     <string name="go_to_playstore">ಗೂಗಲ್ ಪ್ಲೇ ಸ್ಟೋರಿಗೆ ಹೋಗಿ:</string>
     <string name="help">ಸಹಾಯ</string>
     <string name="have_arrived">ನೀವು ಬಂದಿದ್ದೀರಿ?</string>
-    <string name="invite_earn">ಆಹ್ವಾನಿಸಿ ಮತ್ತು ಗಳಿಸಿ</string>
     <string name="create_new_account_msg">ನೀವು ಇನ್ನೂ ಒಂದು ಹೊಸ ಖಾತೆಯನ್ನು ರಚಿಸಲು ಬಯಸಿದರೆ</string>
     <string name="not_recived_otp">ನಾನು OTP ಸ್ವೀಕರಿಸಿಲ್ಲ</string>
     <string name="jugnoo_cash">ಜುಗ್ನೂ ನಗದು</string>
@@ -400,6 +399,8 @@
     <string name="Neutral">ತಟಸ್ಥ</string>
     <string name="destination">ಗಮ್ಯಸ್ಥಾನ</string>
     <string name="Payments">ಪಾವತಿ</string>
+    <string name="PAYMENTS">ಪಾವತಿ</string>
+
     <string name="Today">ಇಂದು</string>
     <string name="Last_week">ಕಳೆದ ವಾರ</string>
     <string name="Last_month">ಕಳೆದ ತಿಂಗಳು</string>
@@ -419,5 +420,56 @@
     <string name="last_payments">ಕೊನೆಯ ಪಾವತಿ</string>
     <string name="upcoming_payment_due_date">ಮುಂಬರುವ ಪಾವತಿ</string>
     <string name="cash_via_paytm">ಪೆ.ಟೀ.ಎಂ ಹಣ</string>
+
+
+    <string name="from">ಇಂದ</string>
+    <string name="to">ಗೆ</string>
+    <string name="invite_earn">ಆಹ್ವಾನಿಸಿ &amp; ಗಳಿಸಿ</string>
+    <string name="terms">ನಿಯಮಗಳು</string>
+    <string name="bank_details">ಬ್ಯಾಂಕ್ ವಿವರಗಳು</string>
+    <string name="acc_no">ಖಾತೆ ಸಂಖ್ಯೆ:</string>
+    <string name="ifsc_code">ಐಎಫ್ಎಸ್ಸೀ ಸಂಖ್ಯೆ :</string>
+    <string name="bank_name">ಬ್ಯಾಂಕ್ ಹೆಸರು :</string>
+    <string name="bank_loc">ಬ್ಯಾಂಕ್  ವಿಳಾಸ :</string>
+    <string name="customer_waiting">ನಿಮ್ಮ ಮುಂದಿನ ಗ್ರಾಹಕರು ಕಾಯುತಿದ್ದಾರೆ</string>
+    <string name="show_more">ಇನ್ನು ಹೆಚ್ಚು ತೋರಿಸು</string>
+    <string name="Transactions">ಟ್ರಾನ್ಸಾಕ್ಷನ್ಸ್</string>
+    <string name="Invoices">ಇನ್ವಾಯ್ಸ್ಗಳು</string>
+    <string name="Earn">ಗಳಿಸಿ</string>
+    <string name="Activity">ಚಟುವಟಿಕೆ</string>
+    <string name="referral">ರೆಫರಲ್</string>
+
+
+    <string name="NA">ಅನ್ವಯಿಸುವುದಿಲ್ಲ</string>
+    <string name="Invoice">ರಶೀದಿ</string>
+    <!--<string name="recharge_amount_for_customer">ನೀವು \ ಉ20ಬೀ9% ಗ್ರಾಹಕನಿಗೆ 1 $ 2 $% ಮೇಲೆ ಪಾಯ್ಟ್ಮ್ ಖಾತೆಯೊಂದಿಗೆ ಮರುಪೂರ್ಣ ಮಾಡಲಾಗುತ್ತದೆ</string>-->
+    <string name="Ride">ಸವಾರಿ</string>
+    <string name="customer_id">ಗ್ರಾಹಕ ಐಡಿ</string>
+
+    <string name="paytm_transaction">ಪೇ ಟಿ ಎಂ  ವ್ಯವಹಾರ</string>
+    <string name="phone_no">ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
+    <string name="changed_no_same_as_previous">ಬದಲಾವಣೆ ಫೋನ್ ಸಂಖ್ಯೆ ಹಿಂದಿನ ಸಂಖ್ಯೆಯೇ ಆಗಿದೆ</string>
+    <string name="sharing_payment_recieved">ಫೋನ್ ಗೆ ಸ್ವೀಕರಿಸಿದ ಪಾವತಿಯನ್ನು </string>
+    <string name="please_give_customer">ನಿಮ್ಮ ಪ್ರತಿಕ್ರಿಯೆಯನ್ನು ನಾವು ಗಂಭೀರವಾಗಿ ಸ್ವೀಕರಿಸುತ್ತೇವೆ, ದಯವಿಟ್ಟು ರೇಟಿಂಗ್ ನೀಡಿ.</string>
+    <string name="start_loc">ಪ್ರಾರಂಭಿಸಿ ಸ್ಥಳ</string>
+    <string name="driver_loc">ಚಾಲಕನ ಸ್ಥಳ</string>
+    <string name="customer_2">ಗ್ರಾಹಕ 2</string>
+
+    <string name="kms">ಕಿಮೀ</string>
+    <string name="mark_delivered">ಮಾರ್ಕ್ ತಲುಪಿಸಲಾಗಿದೆ</string>
+    <string name="order_id">ಆರ್ಡರ್ ಐಡಿ</string>
+    <string name="thanks_for_feedback">ನಿಮ್ಮ ಅಮೂಲ್ಯವಾದ ಪ್ರತಿಕ್ರಿಯೆಗೆ ಧನ್ಯವಾದಗಳು</string>
+    <string name="total_amnt_till_now">ಇಲ್ಲಿಯವರೆಗಿನ ಒಟ್ಟು ಹಣ</string>
+    <string name="invoice_date">ರಶೀದಿ ದಿನಾಂಕ</string>
+    <string name="invoice_id">ರಶೀದಿ ಸಂಖ್ಯೆ</string>
+    <string name="total_distance">ಒಟ್ಟು ದೂರ</string>
+    <string name="valid_email_phone_no">ಮಾನ್ಯ ಇಮೇಲ್ ಅಥವಾ ಫೋನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿರಿ</string>
+    <string name="select_destination">ದಯವಿಟ್ಟು ಒಂದು ಗಮ್ಯಸ್ಥಾನವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
+    <string name="fatafat_on">ಫಟಾಫಟ್ ಆನ್ </string>
+    <string name="Notifications">ಸೂಚನೆಗಳು</string>
+    <string name="enter_customer_phone_no">ಗ್ರಾಹಕ ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="invoice_detail">ರಶೀದಿ ವಿವರಗಳು</string>
+    <string name="generated_on">ದಿನದಂದು ರಚಿಸಲಾಗಿದೆ:</string>
+    <string name="share">ಹಂಚಿಕೊಳ್ಳಿ</string>
 
 </resources>

@@ -116,6 +116,7 @@
     <string name="rank_overall">ஒட்டுமொத்த மதிப்பீடு:</string>
     <string name="monthly">மாதாந்திர மதிப்பெண்</string>
     <string name="earnings">வருமானம்</string>
+    <string name="Earnings">வருமானம்</string>
     <string name="rides_taken">எடுத்து சவாரிகள்</string>
     <string name="rides_missed">தவறவிட்ட சவாரிகள்</string>
     <string name="rides_cancelled">ரத்து செய்த சவாரிகள்</string>
@@ -272,6 +273,7 @@
     </string>
     <string name="paid_cash">ரொக்கமாக வழங்கப்படும்</string>
     <string name="ride_id">சவாரி ஐ டி</string>
+    <string name="Ride_id">சவாரி ஐ டி</string>
     <string name="rupees">ரூ.</string>
     <string name="ride_time2">சவாரி நேரம்</string>
     <string name="rate">மதிப்பீடு</string>
@@ -417,6 +419,7 @@
     <string name="signin_via_otp">OTP மூலம் உள்செல்</string>
     <string name="Neutral">நடுநிலை</string>
     <string name="Payments">பண வழக்கீடு</string>
+    <string name="PAYMENTS">பண வழக்கீடு</string>
     <string name="Today">இன்று</string>
     <string name="Last_week">கடந்த வாரம்</string>
     <string name="Last_month">கடந்த மாதம்</string>
@@ -439,7 +442,7 @@
 
     <string name="from">இருந்து</string>
     <string name="to">வரை</string>
-    <string name="data_effective_format">தேதி பயனுள்ள வடிவம்</string>
+    <string name="data_effective_format">தேதி பயனுள்ள வடிவம:்</string>
     <string name="terms">விதிமுறை</string>
     <string name="bank_details">வங்கி விவரங்கள்</string>
     <string name="acc_no">அக்கௌன்ட் எண்</string>

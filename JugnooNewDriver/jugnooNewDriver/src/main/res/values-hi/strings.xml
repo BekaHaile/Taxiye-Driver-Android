@@ -87,7 +87,7 @@
 	<string name="no_favorite_locations_added">कोई पसंदीदा स्थान जोड़ा नहीं गया है। </string>
 
 	<string name="from">आरंभ: </string>
-	<string name="to">To: </string>
+	<string name="to">अंत: </string>
 	<string name="to_end">अंत: </string>
 	<string name="rides"> राइड </string>
 	<string name="no_rides_currently">इस वक़्त कोई  राइड  उपलब्ध नहीं </string>
@@ -112,9 +112,9 @@
 	<string name="start_ride"> राइड  शुरू करें </string>
 	<string name="end_ride"> राइड  समाप्त करें </string>
 
-	<string name="reached_destination">Reached Destination</string>
+	<string name="reached_destination">गंतव्य पर पहुंच गए</string>
 	<string name="distance">फासला</string>
-	<string name="wait_time">प्रतीक्षा काल</string>
+	<string name="wait_time">प्रतीक्षा समय</string>
 	<string name="fare">किराया</string>
 
 	<string name="driver_rating">ड्राइवर रेटिंग</string>
@@ -160,13 +160,13 @@
 
 	<string name="driver_id">ड्राइवर आईडी:</string>
 	<string name="rank_city">शहर रैंक:</string>
-	<string name="rank_overall">Overall Rank:</string>
+	<string name="rank_overall">कुल श्रेणी:</string>
 	<string name="monthly">मासिक स्कोर</string>
 	<string name="earnings">कमाई</string>
 	<string name="Earnings">कमाई</string>
 	<string name="rides_taken">राइड्स टेकन </string>
 	<string name="rides_missed">राइड्स मिस्ड </string>
-	<string name="rides_cancelled">राइड्स कांसल्लेड </string>
+	<string name="rides_cancelled">राइड्स रद्द </string>
 	<string name="online_hours">ऑनलाइन घंटे</string>
 
 	<string name="Auto_not_working">ऑटो काम नहीं कर रहा है</string>
@@ -250,7 +250,7 @@
 	<string name="jugnoo_off">Jugnoo अब बंद है।</string>
 	<string name="jugnoo_cut">Jugnoo कटौती</string>
 
-	<string name="loading">Loading ...</string>
+	<string name="loading">लोड हो रहा है ...</string>
 	<string name="local_position">स्थानीय स्थिति</string>
 	<string name="location_setting">Location सेटिंग्स</string>
 	<string name="location_setting_enable_message">Location is not enabled. Do you want to enable it from settings menu?</string>
@@ -309,8 +309,9 @@
 	<string name="paid_cash">नकद में भुगतान</string>
 
 	<string name="ride_id">राइड आईडी</string>
-	<string name="rupees">₹.</string>
-	<string name="ride_time2"> राइड काल: </string>
+	<string name="Ride_id">राइड आईडी</string>
+	<string name="rupees">₹ </string>
+	<string name="ride_time2"> राइड समय: </string>
 	<string name="rate">रेट: </string>
 	<string name="ride_in_progress_cant_logout">राइड प्रगति में। आप राइड समाप्त होने क बाद लॉगआउट कर सकते हैं।  </string>
 	<string name="rate_applied">दर लागू</string>
@@ -377,7 +378,7 @@
 	<string name="money_to">पैसे Jugnoo को</string>
 	<string name="start_ride_loc">start ride location</string>
 
-	<string name="sec_left">sec left</string>
+	<string name="sec_left">सेकंड शेष</string>
 	<string name="km_away">km दूर </string>
 	<string name="m_away">m दूर </string>
 	<string name="some_error_occured">कुछ त्रुटि हुई है</string>
@@ -415,7 +416,7 @@
     <string name="number_of_downloads">डाउनलोड की संख्या</string>
     <string name="number_of_first_rides">ली गयी प्रथम सवारियों की संख्या</string>
     <string name="money_earned">रेफरल के द्वारा अर्जित राशि</string>
-    <string name="data_effective_format">से प्रभावी डाटा</string>
+    <string name="data_effective_format">प्रभावी डाट ा :</string>
     <string name="notifications">सूचना केन्द्र</string>
     <string name="click_for_direction">यहां दिशाओं के लिए क्लिक करें</string>
     <string name="time_left">समय शेष</string>
@@ -473,7 +474,7 @@
 	<string name="show_more">और दिखाओ</string>
 	<string name="Transactions">लेनदेन</string>
 	<string name="Invoices">चालान </string>
-	<string name="Earn">आय</string>
+	<string name="Earn">कमाएँ</string>
 	<string name="Activity">गतिविधि</string>
 	<string name="referral">रेफरल</string>
 	<string name="NA">लागू नहीं</string>
