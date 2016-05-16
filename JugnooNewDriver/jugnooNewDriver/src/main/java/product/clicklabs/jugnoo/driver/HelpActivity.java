@@ -129,7 +129,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		//helpListAdapter.notifyDataSetChanged();
 
 		getHelpAsync(HelpActivity.this, helpSections.get(4));
-		title.setText("" + helpSections.get(4).getName());
+		title.setText(getResources().getString(R.string.terms));
 
 	}
 	
@@ -145,7 +145,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 			loadHTMLContent(data);
 		}
 		selectedHelpSection = helpSection;
-		title.setText("" + helpSection.getName());
+		title.setText(getResources().getString(R.string.terms));
 
 	}
 	

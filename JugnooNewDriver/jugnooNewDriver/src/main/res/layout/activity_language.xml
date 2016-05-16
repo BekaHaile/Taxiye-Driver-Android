@@ -16,7 +16,7 @@
             android:id="@+id/topRl"
             android:layout_width="match_parent"
             android:layout_height="90px"
-            android:background="@color/bg_grey_opaque"
+            android:background="@color/menu_black"
             android:splitMotionEvents="false" >
 
             <Button
@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:text="@string/select_language"
                 android:textColor="@color/white"
-                android:textSize="48px" />
+                android:textSize="44px" />
         </RelativeLayout>
 
         <ProgressBar

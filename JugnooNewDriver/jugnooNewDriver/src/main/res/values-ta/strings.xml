@@ -399,9 +399,9 @@
     <string name="customer_phone_number">வடிக்கையளர் போன் நம்பர்</string>
     <string name="recharge_amount">ரீசார்ஜ் செய்யவேண்டிய தொகை</string>
     <string name="enter_amount">தொகையை பதிவு செய்யுங்கள்</string>
-    <string name="paytm_recharge">பேடியம் ரீசார்ஜ்</string>
+    <string name="paytm_recharge">PAYTM ரீசார்ஜ்</string>
     <string name="Confirm">உறுதி செய்யுங்கள்</string>
-    <string name="Paytm_recharge">பேடியம் ரீசார்ஜ்</string>
+    <string name="Paytm_recharge">PAYTM ரீசார்ஜ்</string>
     <string name="phone_number_or_email">போன் நம்பர் அல்லது ஈமெயில்</string>
     <string name="nl_otp_waiting_to_detect_otp">தானாக OTP கண்டறிய காத்திருகிறது</string>
     <string name="battery_low_message">சவாரி அக்செப்ட் செய்ய பேட்டரி நிலை 20% மேல் இருக்க

@@ -272,6 +272,8 @@
     <string name="paid_cash">
         ನಗದು ಪಾವತಿ</string>
     <string name="ride_id">ಸವಾರಿ ಐಡಿ</string>
+    <string name="Ride_id">ಸವಾರಿ ಐಡಿ</string>
+
     <string name="rupees">
         ರೂ.</string>
     <string name="ride_time2">ಸವಾರಿ ಸಮಯ:</string>
@@ -381,9 +383,9 @@
     <string name="customer_phone_number">ಗ್ರಾಹಕ ದೂರವಾಣಿ ಸಂಖ್ಯೆ</string>
     <string name="recharge_amount">ಪುನರ್ಭರ್ತಿಕಾರ್ಯದ ಮೊಬಲಗು</string>
     <string name="enter_amount">ಮೊಬಲಗನ್ನು ನಮೂದಿಸಿ</string>
-    <string name="paytm_recharge">ಪೆ.ಟೀ.ಎಂ ಪುನರ್ಭರ್ತಿಕಾರ್ಯ</string>
+    <string name="paytm_recharge">PAYTM ಪುನರ್ಭರ್ತಿಕಾರ್ಯ</string>
     <string name="Confirm">ದೃಢೀಕರಿಸಿ</string>
-    <string name="Paytm_recharge">ಪೆ.ಟೀ.ಎಂ ಪುನರ್ಭರ್ತಿಕಾರ್ಯ</string>
+    <string name="Paytm_recharge">PAYTM ಪುನರ್ಭರ್ತಿಕಾರ್ಯ</string>
     <string name="phone_number_or_email">ದೂರವಾಣಿ ಸಂಖ್ಯೆ ಅಥವಾ ಇಮೇಲ್</string>
     <string name="nl_otp_waiting_to_detect_otp">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಓ.ಟಿ.ಪೀ. ಪತ್ತೆ ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ</string>
     <string name="battery_low_message">ಸವಾರಿ ಸ್ವೀಕರಿಸಲು ಬ್ಯಾಟರಿ ಮಟ್ಟ 20% ಕ್ಕೂ ಹೆಚ್ಚು ಇರಬೇಕು. ಮುಂದುವರಿಸಲು ವಿದ್ಯುತ್ ಪ್ಲಗಿನ್ ಮಾಡಿ.</string>

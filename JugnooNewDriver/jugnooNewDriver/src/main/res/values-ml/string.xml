@@ -93,7 +93,7 @@
     <string name="server_error">സെർവർ തകരാർ. പിന്നീട് വീണ്ടും ശ്രമിക്കുക </string>
     <string name="server_not_responding">ശ്ശോ !! സെർവർ പ്രതികരിക്കുന്നില്ല . പിന്നീട് വീണ്ടും ശ്രമിക്കുക</string>
     <string name="check_internet_message">നിങ്ങളുടെ ഇന്റർനെറ്റ് കണക്ഷൻ പരിശോധിക്കുക.</string>
-    <string name="driver_id">ഡ്രൈവർ ഐഡി :. </string>
+    <string name="driver_id">ഡ്രൈവർ ഐഡി: </string>
     <string name="rank_city">സിറ്റി റാങ്ക്:</string>
     <string name="rank_overall">മൊത്തത്തിലുള്ള റാങ്ക്:</string>
     <string name="monthly">പ്രതിമാസ സ്കോർ</string>

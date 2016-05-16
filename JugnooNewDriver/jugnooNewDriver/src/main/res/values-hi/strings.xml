@@ -424,7 +424,7 @@
     <string name="customer_phone_number">ग्राहक का फोन नंबर</string>
     <string name="recharge_amount">रीचार्ज होने के लिए राशि</string>
     <string name="enter_amount">राशि दर्ज करें</string>
-    <string name="paytm_recharge">पेटीएम रिचार्ज</string>
+    <string name="paytm_recharge">PAYTM रिचार्ज</string>
     <string name="Confirm">पुष्टि</string>
     <string name="phone_number_or_email">फोन नंबर या ईमेल</string>
     <string name="nl_otp_waiting_to_detect_otp">स्वतः से ओटीपी पता लगाने के लिए प्रतीक्षा कर रहा है</string>

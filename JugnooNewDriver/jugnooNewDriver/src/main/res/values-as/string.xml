@@ -98,6 +98,8 @@
     <string name="rank_overall">মোঠ স্থান</string>
     <string name="monthly">মাহেকীয়া নম্বৰ</string>
     <string name="earnings">উপাৰ্জন</string>
+    <string name="EARNINGS">উপাৰ্জন</string>
+
     <string name="rides_taken">ভাড়া গ্ৰহন</string>
     <string name="rides_missed">ভাড়া গ্ৰহন কৰা নাই</string>
     <string name="rides_cancelled">ভাড়া কেনচল</string>
@@ -329,9 +331,9 @@
     <string name="customer_phone_number">গ্ৰাহকৰ ফোন নাম্বাৰ</string>
     <string name="recharge_amount">ৰিছাজৰ্ড কৰিবলগীয়া টকা</string>
     <string name="enter_amount">দিবলগীয়া টকা</string>
-    <string name="paytm_recharge">পে টি এম ৰিছাজৰ্ড</string>
+    <string name="paytm_recharge">PAYTM ৰিছাজৰ্ড</string>
     <string name="Confirm">নিশ্বিত কৰক</string>
-    <string name="Paytm_recharge">পে টি এম ৰিছাজৰ্ড</string>
+    <string name="Paytm_recharge">PAYTM ৰিছাজৰ্ড</string>
     <string name="phone_number_or_email">ফোন নম্বৰ নাইবা ইমেইল</string>
     <string name="nl_otp_waiting_to_detect_otp">অ টি পী টো নিজে হবলৈ অপেক্ষা কৰক</string>
     <string name="battery_low_message">বেটেৰীৰ পৰিমান সদায় ভাড় আৰম্ভ্ৰ কৰিবলৈ 20% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
@@ -347,6 +349,9 @@
     <string name="signin_via_otp">ছাইন ইন কৰক অ টি পী জৰিয়তে</string>
     <string name="Neutral">নিউটে্‌ল</string>
     <string name="Payments">উপাৰ্জন</string>
+    <string name="PAYMENTS">উপাৰ্জন</string>
+
+
     <string name="Today">আজি</string>
     <string name="Last_week">আগৰ সপ্তাহ</string>
     <string name="Last_month">আগৰ মাহ</string>
