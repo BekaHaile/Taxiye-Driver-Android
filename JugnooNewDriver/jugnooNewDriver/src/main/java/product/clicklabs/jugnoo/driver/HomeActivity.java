@@ -2533,6 +2533,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			}
 
+			try {
+				heatMapHandler.removeCallbacks(heatMapRunnalble);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			switch (mode) {
 
@@ -2580,7 +2585,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
-
+					try {
+						heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					initializeStationDataProcedure();
 					Data.nextPickupLatLng = null;
 					Data.nextCustomerName = null;
@@ -7658,6 +7667,27 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
+
+
+	Handler heatMapHandler = new Handler();
+
+	Runnable heatMapRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				fetchHeatMapData(HomeActivity.this);
+			} catch (Exception e) {
+
+			}
+			heatMapHandler.postDelayed(heatMapRunnalble, 300000);
+		}
+	};
+
+//	public void stopHeatMapRefresh() {
+//		heatMapHandler.removeCallbacks(heatMapRunnalble);
+//		heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+//	}
+
 
 	public void perfectRideStateRestore() {
 
