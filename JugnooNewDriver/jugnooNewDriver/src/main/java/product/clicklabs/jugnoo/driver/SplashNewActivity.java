@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -343,6 +344,10 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //			DialogPopup.alertPopup(this, "", Data.UBER_APP + " olaaaaaa: " + installed);
 //
 //		}
+
+
+		Intent intent = new Intent(this, PubnubService.class);
+		startService(intent);
 
 	}
 	
