@@ -294,6 +294,7 @@
 	<string name="take_fare_from_customer">Please take the fare as shown above from the customer.</string>
 	<string name="enter_name">Please enter name</string>
 	<string name="Pls_enter_email_or_phn">Please enter email or Phone No.</string>
+	<string name="Pls_enter_email">Please ेंenter  Email</string>
 	<string name="confirm_email">Please confirm email id</string>
 	<string name="pls_enter_phone_number">Please enter Phone No.</string>
 

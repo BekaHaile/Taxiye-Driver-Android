@@ -506,6 +506,15 @@
 	<string name="invoice_detail">चालान विवरण</string>
 	<string name="generated_on">जेनरेटेड ऑन </string>
 	<string name="share">साझा </string>
+	<string name="Paytm_recharge">PAYTM रिचार्ज</string>
+	<string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+
+	<string name="no_language_to_select">Language Option Not Available</string>
+	<string name="enter_some_amount">Please enter some amount</string>
+	<string name="enter_less_amount">Please enter less amount</string>
+	<string name="enter_valid_amount">Please enter valid amount</string>
+	<string name="amnt_credited">Amount Credited</string>
+	<string name="JUGNOO">JUGNOO</string>
 
 
 
