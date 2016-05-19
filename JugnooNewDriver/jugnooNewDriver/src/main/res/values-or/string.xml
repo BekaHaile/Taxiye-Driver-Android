@@ -131,10 +131,11 @@
     <string name="earnings">ରୋଜଗାର</string>
     <string name="Earnings">ରୋଜଗାର</string>
 
-
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="rides_taken">ରାଇଡ୍ ନେଇଛନ୍ତି</string>
     <string name="rides_missed">ରାଇଡ୍ ନେଇନାହାନ୍ତି</string>
     <string name="rides_cancelled">ରାଇଡ୍ କ୍ୟାନ୍ସଲ୍</string>
+    <string name="ride_cancelled">ରାଇଡ୍ କ୍ୟାନ୍ସଲ୍</string>
     <string name="online_hours">ଅନ୍-ଲାଇନ୍ ସମୟ</string>
     <string name="Auto_not_working">ଅଟୋ କାମ କରୁନାହି</string>
     <string name="Traffic">ଟ୍ରାଫିକ୍</string>
@@ -453,15 +454,18 @@
     <string name="invoice_detail">ଚାଲାଣ୍ ବିବରଣି</string>
     <string name="generated_on">ଜେନେରେଟେଡ୍ ଅନ୍</string>
     <string name="share">ସେୟାର୍</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ଫୋନ ନମ୍ବର ସ୍ତାନ ଟି ଖାଲି ରଖନ୍ତୁ ନାହିଁ  </string>
 
     <string name="no_language_to_select">Language Option Not Available</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">ଦୟାକରି କିଛି ପଇସା ଲେଖନ୍ତୁ</string>
+    <string name="enter_less_amount">ଦୟାକରି କମ ପଇସା ଲେଖନ୍ତୁ </string>
+    <string name="enter_valid_amount">ଦୟାକରି କିଛି ବୈଧ ରାସୀ ଜମା କରନ୍ତୁ </string>
     <string name="amnt_credited">Amount Credited</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
+    <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
+
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

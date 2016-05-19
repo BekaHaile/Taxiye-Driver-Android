@@ -152,9 +152,11 @@
     <string name="earnings">సంపాదన</string>
     <string name="Earnings">సంపాదన</string>
 
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="rides_taken">రైడ్స్ తీసుకోబడినది</string>
     <string name="rides_missed">రైడ్స్ మిస్డ్</string>
     <string name="rides_cancelled">రైడ్స్ కెన్సెల్ చేసినవి</string>
+    <string name="ride_cancelled">రైడ్స్ కెన్సెల్ చేసినవి</string>
     <string name="online_hours">ఆన్లైన్ గంటలు</string>
     <string name="Auto_not_working">ఆటో పని చేయటం లేదు</string>
     <string name="Traffic">ట్రాఫిక్</string>
@@ -506,15 +508,16 @@
     <string name="invoice_detail">ఇన్వాయిస్ వివరాలు</string>
     <string name="generated_on">రూపొందించినది:</string>
     <string name="share">వాటా</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ఫోన్ నంబర్ ఖాళీగా ఉండకూడదు</string>
 
     <string name="amnt_credited">Amount Credited</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">డబ్బు మొత్తం ఎంటర్ చేయండి</string>
+    <string name="enter_less_amount">తక్కువ మొత్తంలో నమోదు చేయండి</string>
+    <string name="enter_valid_amount">చెల్లుబాటు అయ్యే మొత్తాన్ని నమోదు చేయండి</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="no_language_to_select">Language Option Not Available</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
+    <string name="ride_complete">రైడ్ పూర్తయింది</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

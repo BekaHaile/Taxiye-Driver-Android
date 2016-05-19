@@ -167,6 +167,7 @@
 	<string name="rides_taken">राइड्स टेकन </string>
 	<string name="rides_missed">राइड्स मिस्ड </string>
 	<string name="rides_cancelled">राइड्स रद्द </string>
+	<string name="ride_cancelled">राइड् रद्द </string>
 	<string name="online_hours">ऑनलाइन घंटे</string>
 
 	<string name="Auto_not_working">ऑटो काम नहीं कर रहा है</string>
@@ -507,15 +508,15 @@
 	<string name="generated_on">जेनरेटेड ऑन </string>
 	<string name="share">साझा </string>
 	<string name="Paytm_recharge">PAYTM रिचार्ज</string>
-	<string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+	<string name="phone_no_cnt_be_empty">फोन नंबर खाली नहीं हो सकता</string>
 
 	<string name="no_language_to_select">Language Option Not Available</string>
-	<string name="enter_some_amount">Please enter some amount</string>
-	<string name="enter_less_amount">Please enter less amount</string>
-	<string name="enter_valid_amount">Please enter valid amount</string>
+	<string name="enter_some_amount">कृपया कुछ राशि दर्ज करें</string>
+	<string name="enter_less_amount">कृपया कम राशि प्रवेश करें</string>
+	<string name="enter_valid_amount">कृपया वैध राशि दर्ज करें</string>
 	<string name="amnt_credited">Amount Credited</string>
 	<string name="JUGNOO">JUGNOO</string>
-
+	<string name="ride_complete">सवारी पूरा</string>
 
 
     <string-array name="CountryCodes" >

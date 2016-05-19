@@ -139,10 +139,11 @@
     <string name="monthly">പ്രതിമാസ സ്കോർ</string>
     <string name="earnings">വരുമാനം</string>
     <string name="Earnings">വരുമാനം</string>
-
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="rides_taken">എടുത്ത റൈഡുകൾ</string>
     <string name="rides_missed">മിസ്ഡ് റൈഡുകൾ</string>
     <string name="rides_cancelled">റദ്ദാക്കിയ  റൈഡുകൾ</string>
+    <string name="ride_cancelled">റദ്ദാക്കിയ  റൈഡുകൾ</string>
     <string name="online_hours">ഓൺലൈൻ ആയിരിന്നിട്ടുള്ള സമയം </string>
     <string name="Auto_not_working">ഓട്ടോ പ്രവർത്തിക്കുന്നില്ല</string>
     <string name="Traffic">ട്രാഫിക്</string>
@@ -454,14 +455,14 @@
     <string name="invoice_detail">ഇൻവോയ്സ് വിശദാംശങ്ങൾ</string>
     <string name="generated_on">തീയതി </string>
     <string name="share">പങ്കിടുക</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ഫോൺ നമ്പർ  ശൂന്യമായിടാൻ  കഴിയില്ല</string>
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="amnt_credited">Amount Credited</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">ദയവായി ചില തുക നൽകുക</string>
+    <string name="enter_less_amount">ദയവായി കുറവ് തുക എന്റർ ചെയ്യുക</string>
+    <string name="enter_valid_amount">ദയവായി സാധുവായ തുക നൽകുക</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
+    <string name="ride_complete">റൈഡ് പൂർത്തിയായി</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

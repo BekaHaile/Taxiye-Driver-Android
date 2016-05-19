@@ -134,10 +134,11 @@
     <string name="monthly">ಮಾಸಿಕ ಸ್ಕೋರ್</string>
     <string name="earnings">ಸಂಪಾದನೆ</string>
     <string name="Earnings">ಸಂಪಾದನೆ</string>
-
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="rides_taken">ತೆಗೆದುಕೊಂಡ ಸವಾರಿಗಳು</string>
     <string name="rides_missed">ತಪ್ಪಿದ ಸವಾರಿಗಳು </string>
     <string name="rides_cancelled">ರದ್ದಾದ ಸವಾರಿಗಳು </string>
+    <string name="ride_cancelled">ರದ್ದಾದ ಸವಾರಿಗಳು </string>
     <string name="online_hours">ಆನ್‌ಲೈನ್ ಸಮಯ</string>
     <string name="Auto_not_working">ಆಟೋ ಕಾರ್ಯನಿರ್ವಹಿಸುತ್ತಿಲ್ಲ</string>
     <string name="Traffic">ಸಂಚಾರ</string>
@@ -473,15 +474,17 @@
     <string name="invoice_detail">ರಶೀದಿ ವಿವರಗಳು</string>
     <string name="generated_on">ದಿನದಂದು ರಚಿಸಲಾಗಿದೆ:</string>
     <string name="share">ಹಂಚಿಕೊಳ್ಳಿ</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ದೂರವಾಣಿ ಸಂಖ್ಯೆಯನ್ನು ಖಾಲಿ ಬಿಡುವಂತಿಲ್ಲ</string>
     <string name="no_language_to_select">Language Option Not Available</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">ದಯವಿಟ್ಟು ಹಣದ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_less_amount">ದಯವಿಟ್ಟು ಕಡಿಮೆಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
+    <string name="enter_valid_amount">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಪ್ರಮಾಣವನ್ನು ನಮೂದಿಸಿ</string>
     <string name="amnt_credited">Amount Credited</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
+    <string name="ride_complete">ಸವಾರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
+
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

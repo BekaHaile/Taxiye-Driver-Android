@@ -294,7 +294,7 @@
 	<string name="take_fare_from_customer">Please take the fare as shown above from the customer.</string>
 	<string name="enter_name">Please enter name</string>
 	<string name="Pls_enter_email_or_phn">Please enter email or Phone No.</string>
-	<string name="Pls_enter_email">Please ेंenter  Email</string>
+	<string name="Pls_enter_email">Please enter Email</string>
 	<string name="confirm_email">Please confirm email id</string>
 	<string name="pls_enter_phone_number">Please enter Phone No.</string>
 
@@ -520,7 +520,7 @@
 	<string name="generated_on">Generated On:</string>
 	<string name="share">Share</string>
 	<string name="no_language_to_select">Language Option Not Available</string>
-
+	<string name="ride_complete">Ride Completed</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
@@ -532,7 +532,7 @@
 <item>54,AR</item>
 <item>374,AM</item>
 <item>297,AW</item>
-<item>61,AU</item>
+<item>61,AU</item>rideInfo.statusString)
 <item>43,AT</item>
 <item>994,AZ</item>
 <item>973,BH</item>

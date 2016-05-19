@@ -50,7 +50,7 @@ public class PhoneEditOTPConfirmScreen extends BaseActivity implements LocationU
 
 	LinearLayout relative;
 
-	String otpHelpStr = getResources().getString(R.string.enter_otp_received);
+//	String otpHelpStr = getResources().getString(R.string.enter_otp_received);
 	String phoneNumberToVerify = "";
 
 	@Override

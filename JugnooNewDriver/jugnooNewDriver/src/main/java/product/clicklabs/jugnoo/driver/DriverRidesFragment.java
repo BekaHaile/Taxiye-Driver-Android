@@ -242,10 +242,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					holder.textViewStatusString.setVisibility(View.VISIBLE);
 					if ("Ride Cancelled".equalsIgnoreCase(rideInfo.statusString)) {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+						holder.textViewStatusString.setText(activity.getStringText(R.string.rides_cancelled));
 					} else {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+						holder.textViewStatusString.setText(rideInfo.statusString);
 					}
-					holder.textViewStatusString.setText(rideInfo.statusString);
 				}
 
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));

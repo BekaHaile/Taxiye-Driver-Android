@@ -160,6 +160,7 @@
     <string name="rides_taken">எடுத்து சவாரிகள்</string>
     <string name="rides_missed">தவறவிட்ட சவாரிகள்</string>
     <string name="rides_cancelled">ரத்து செய்த சவாரிகள்</string>
+    <string name="ride_cancelled">ரத்து செய்த சவாரிகள்</string>
     <string name="online_hours">ஆன்லைன்-இல் இருக்கும் நேரம்</string>
     <string name="Auto_not_working">ஆட்டோ பழுது அடைந்து விட்டது</string>
     <string name="Traffic">போக்குவரத்து நெரிசல்</string>
@@ -244,6 +245,7 @@
     <string name="create_new_account_msg">நீங்கள் இன்னும் ஒரு புதிய கணக்கை உருவாக்க விரும்பினால்
     </string>
     <string name="not_recived_otp">எனக்கு ஒ.டி.பீ வரவில்லை</string>
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="jugnoo_cash">Jugnoo பணம்</string>
     <string name="jugnoo">Jugnoo</string>
     <string name="jugnoo_off">Jugnoo இப்பொது அணைக்க பட்டது</string>
@@ -530,15 +532,15 @@
     <string name="generated_on">உருவாக்கப்பட்டது</string>
     <string name="share">பங்கு</string>
     <string name="no_driver_available_message">Currently there are no drivers available nearby within 3km. We will look into it</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">தொலைபேசி எண் காலியாக இருக்க முடியாது</string>
 
     <string name="no_language_to_select">Language Option Not Available</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">தயவு செய்து கட்டணத்தை உள்ளிடவும்</string>
+    <string name="enter_less_amount">தயவு செய்து குறைந்த  கட்டணத்தை உள்ளிடவும்</string>
+    <string name="enter_valid_amount">செல்லுபடியாகும் கட்டணத்தை உள்ளிடவும்</string>
     <string name="amnt_credited">Amount Credited</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
+    <string name="ride_complete">சவாரி வெற்றிகரமாக முடிந்தது </string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

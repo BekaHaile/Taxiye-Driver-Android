@@ -136,16 +136,17 @@
     <string name="monthly">মাহেকীয়া নম্বৰ</string>
     <string name="earnings">উপাৰ্জন</string>
     <string name="Earnings">উপাৰ্জন</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ফোন নম্বৰ কেতিয়াও খালী থাকিব নোৱাৰিব</string>
     <string name="rides_taken">ভাড়া গ্ৰহন</string>
     <string name="rides_missed">ভাড়া গ্ৰহন কৰা নাই</string>
     <string name="rides_cancelled">ভাড়া কেনচল</string>
+    <string name="ride_cancelled">ভাড়া কেনচল</string>
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="no_language_to_select">Language Option Not Available</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">অনু্গ্ৰহ কৰি যিকোনো সংখ্যা লিখক</string>
+    <string name="enter_less_amount">কম পৰিমাণ সংখ্যা লিখক</string>
+    <string name="enter_valid_amount">অনু্গ্ৰহ কৰি নিশ্চিত সংখ্যা লিখক</string>
     <string name="amnt_credited">Amount Credited</string>
     <string name="online_hours">অনলাইন সময়</string>
     <string name="Auto_not_working">অটোখন কাম কৰা নাই</string>
@@ -460,6 +461,7 @@
     <string name="generated_on">জেনেৰড কৰা হল</string>
     <string name="share">ভগাওক</string>
     <string name="data_effective_format">*Data effective from </string>
+    <string name="ride_complete">যাএা সমাপ্ত হল ।</string>
 
 
     <string-array name="CountryCodes" >

@@ -92,7 +92,7 @@
             <Button
                 android:id="@+id/buttonRegister"
                 android:text="@string/register"
-                android:textColor="@drawable/white_color_selector"
+                android:textColor="@color/new_orange"
                 android:layout_width="636px"
                 android:layout_height="112px"
                 android:layout_marginTop="24px"

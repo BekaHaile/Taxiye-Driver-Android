@@ -38,15 +38,14 @@
     <string name="rupee_500">\u20B9 500</string>
     <string name="generated_on">Generated On:</string>
     <string name="share">Share</string>
-    <string name="Pls_enter_email">Please ेंenter  Email</string>
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="amnt_credited">Amount Credited</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
-    <string name="enter_some_amount">Please enter some amount</string>
-    <string name="enter_less_amount">Please enter less amount</string>
-    <string name="enter_valid_amount">Please enter valid amount</string>
+    <string name="enter_some_amount">અમુક રકમ દાખલ કરો</string>
+    <string name="enter_less_amount">ઓછી રકમ દાખલ કરો</string>
+    <string name="enter_valid_amount">માન્ય રકમ દાખલ કરો</string>
     <string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
     <string name="about_2_text">ભાવ પત્રક </string>
     <string name="about_3_text">પેહલા 2 કિમી:30રૂ.અને 2કિમી પછી 10/કિમી અને વેટીંગ સમય 1.50રૂ/મિનીટ 15 મિનીટ પછી </string>
@@ -57,7 +56,7 @@
     <string name="uncheck_all">Uncheck All</string>
     <string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
     <string name="min">min</string>
-    <string name="phone_no_cnt_be_empty">Phone Number can\'t be empty</string>
+    <string name="phone_no_cnt_be_empty">ફોન નંબર ખાલી ન હોઈ શકે</string>
 
     <string name="email_id">ઈમૈલ આઇડી </string>
     <string name="confirm_email_id">ઈમૈલ આઈડી ની  ખાતરી કરો </string>
@@ -152,10 +151,11 @@
     <string name="earnings">કમાણી</string>
     <string name="Earnings">કમાણી</string>
 
-
+    <string name="Pls_enter_email">Please enter Email</string>
     <string name="rides_taken">સવારી લેવામાં </string>
     <string name="rides_missed">સવારી ચુક્યા </string>
     <string name="rides_cancelled">રદ્દ કરેલ સવારી </string>
+    <string name="ride_cancelled">રદ્દ કરેલ સવારી </string>
     <string name="online_hours">ઓનલાઇન કલાક</string>
     <string name="Auto_not_working">ઓટો કામ નથી કરતી </string>
     <string name="Traffic">ટ્રાફિક </string>
@@ -458,6 +458,7 @@
     <string name="Notifications">સૂચનાઓ </string>
     <string name="enter_customer_phone_no">ગ્રાહકનો ફોન નંબર દાખલ કરો</string>
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
+    <string name="ride_complete">સવારી પૂર્ણ </string>
 
 
 
