@@ -44,6 +44,15 @@ public class PubnubService extends Service {
     }
 
     @Override
+
+    public void onCreate() {
+
+        super.onCreate();
+        context = getApplicationContext();
+
+    }
+
+    @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
         try {
@@ -80,10 +89,11 @@ public class PubnubService extends Service {
                             System.out.println("MESSAGE : " + channel + " : "
                                     + message.getClass() + " : " + message.toString());
 
-                            ComponentName comp = new ComponentName(String.valueOf(message), GCMIntentService.class.getName());
-                            // Start the service, keeping the device awake while it is launching.
+                            Intent service = new Intent(context, GCMIntentService.class);
+                            service.putExtra("message", String.valueOf(message));
 
-                            startWakefulService(context, (intent.setComponent(comp)));
+                            // Start the service, keeping the device awake while it is launching.
+                            startWakefulService(context, service);
 
                         }
 
