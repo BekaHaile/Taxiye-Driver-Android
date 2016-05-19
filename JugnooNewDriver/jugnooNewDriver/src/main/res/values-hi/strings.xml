@@ -254,7 +254,7 @@
 	<string name="loading">लोड हो रहा है ...</string>
 	<string name="local_position">स्थानीय स्थिति</string>
 	<string name="location_setting">Location सेटिंग्स</string>
-	<string name="location_setting_enable_message">Location is not enabled. Do you want to enable it from settings menu?</string>
+	<string name="location_setting_enable_message">स्थान सक्षम नहीं है। क्या आप सेटिंग्स मेनू से इसे सक्षम करना चाहते हैं?</string>
 	<string name="luggage_charge">सामान लागत</string>
 	<string name="login">लॉग इन करें</string>
 

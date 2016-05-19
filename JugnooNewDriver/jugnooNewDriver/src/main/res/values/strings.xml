@@ -170,6 +170,7 @@
 	<string name="rides_taken">Rides Taken</string>
 	<string name="rides_missed">Rides Missed</string>
 	<string name="rides_cancelled">Rides Cancelled</string>
+	<string name="ride_cancelled">Ride Cancelled</string>
 	<string name="online_hours">Online Hours</string>
 
 	<string name="Auto_not_working">Auto is not working</string>
