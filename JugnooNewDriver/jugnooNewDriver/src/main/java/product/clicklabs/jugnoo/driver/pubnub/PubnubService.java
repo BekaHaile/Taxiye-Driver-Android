@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.pubnub;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,6 +15,10 @@ import com.pubnub.api.Pubnub;
 import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
+import product.clicklabs.jugnoo.driver.GCMIntentService;
+
+import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulService;
+
 public class PubnubService extends Service {
     public PubnubService() {
     }
@@ -21,10 +26,12 @@ public class PubnubService extends Service {
     private final String PUBLISH_KEY = "pub-c-8fbeae12-1ce0-4f6a-8811-59296b4ab980";
     private final String SUBSCRIBE_KEY = "sub-c-f05204b0-1cea-11e6-be83-0619f8945a4f";
     private final String CHANNEL = "jugnoo_my_channel";
+    Context context;
 
     private Pubnub pubnub;
-    private Pubnub getPubnub(){
-        if(pubnub == null){
+
+    private Pubnub getPubnub() {
+        if (pubnub == null) {
             pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
         }
         return pubnub;
@@ -37,7 +44,7 @@ public class PubnubService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
 
         try {
             getPubnub().subscribe(CHANNEL, new Callback() {
@@ -70,8 +77,14 @@ public class PubnubService extends Service {
 
                         @Override
                         public void successCallback(String channel, Object message) {
-                            System.out.println("SUBSCRIBE : " + channel + " : "
+                            System.out.println("MESSAGE : " + channel + " : "
                                     + message.getClass() + " : " + message.toString());
+
+                            ComponentName comp = new ComponentName(String.valueOf(message), GCMIntentService.class.getName());
+                            // Start the service, keeping the device awake while it is launching.
+
+                            startWakefulService(context, (intent.setComponent(comp)));
+
                         }
 
                         @Override
