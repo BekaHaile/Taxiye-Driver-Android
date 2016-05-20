@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <!-- customer info layout -->
                     <RelativeLayout
@@ -925,7 +925,7 @@
                 android:layout_marginTop="90px"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
-                android:visibility="gone"
+                android:visibility="visible"
                 >
 
 
@@ -967,14 +967,15 @@
                                     android:singleLine="true"
                                     android:text="@string/reached_destination"
                                     android:textColor="@color/grey_black"
+                                    android:visibility="gone"
                                     android:textSize="36px"/>
 
                                 <!-- reached distance km, time, fare layout -->
                                 <LinearLayout
                                     android:id="@+id/reviewReachedDistanceRl"
                                     android:layout_width="match_parent"
-                                    android:layout_height="126px"
-                                    android:layout_marginTop="15px"
+                                    android:layout_height="140px"
+                                    android:layout_marginTop="25px"
                                     android:background="@color/white"
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal"
@@ -1029,7 +1030,7 @@
 
                                         <TextView
                                             android:id="@+id/reviewWaitText"
-                                            android:layout_width="178px"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
                                             android:singleLine="true"
@@ -1101,6 +1102,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:gravity="center"
+                                        android:visibility="gone"
                                         android:splitMotionEvents="false">
 
                                         <TextView
@@ -1208,7 +1210,7 @@
                             <RelativeLayout
                                 android:id="@+id/relativeLayoutEndRideCustomerAmount"
                                 android:layout_width="match_parent"
-                                android:layout_height="310px"
+                                android:layout_height="320px"
                                 android:layout_below="@+id/upLayout"
                                 android:visibility="visible"
                                 >
@@ -1220,6 +1222,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
+                                    android:layout_marginTop="25px"
                                     android:orientation="vertical"
                                     android:splitMotionEvents="false"
                                     android:visibility="visible">
@@ -1231,23 +1234,38 @@
                                         android:layout_gravity="center_horizontal"
                                         android:gravity="center"
                                         android:singleLine="true"
-                                        android:text="The Jugnoo ride is over."
+                                        android:text="Jugnoo ride over"
                                         android:textColor="@color/black"
-                                        android:textSize="40px"/>
+                                        android:textSize="48px" />
 
-                                    <TextView
-                                        android:id="@+id/takeFareText"
+
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
-                                        android:layout_marginBottom="40px"
-                                        android:layout_marginTop="10px"
+                                        android:layout_marginTop="40px"
                                         android:gravity="center"
                                         android:paddingLeft="40px"
-                                        android:paddingRight="40px"
-                                        android:text="Please take the fare as shown above from the customer."
-                                        android:textColor="@color/black"
-                                        android:textSize="40px"/>
+                                        android:paddingRight="40px">
+
+                                        <TextView
+                                            android:id="@+id/takeFareText"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Take Cash: "
+                                            android:textColor="@color/black"
+                                            android:textSize="72px" />
+
+
+                                        <TextView
+                                            android:id="@+id/takeFareValue"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="Rs100"
+                                            android:textColor="@color/black"
+                                            android:textSize="72px" />
+
+                                    </LinearLayout>
                                 </LinearLayout>
 
                                 <!-- coupon layout-->
@@ -1259,7 +1277,7 @@
                                     android:layout_centerVertical="true"
                                     android:background="@drawable/coupon_text_box"
                                     android:tag="mwar"
-                                    android:visibility="visible">
+                                    android:visibility="gone">
 
                                     <LinearLayout
                                         android:id="@+id/linearLayoutCouponTitle"
@@ -1564,7 +1582,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="128px"
+                                android:layout_marginBottom="148px"
                                 android:gravity="center_horizontal"
                                 android:orientation="vertical"
                                 >
@@ -1614,7 +1632,7 @@
                                     style="@style/RatingBarBlue"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="48px"
+                                    android:layout_marginTop="72px"
                                     android:numStars="5"
                                     android:rating="1"
                                     android:stepSize="1.0"
@@ -1625,7 +1643,7 @@
                                     android:id="@+id/reviewSubmitBtn"
                                     android:layout_width="648px"
                                     android:layout_height="99px"
-                                    android:layout_marginTop="48px"
+                                    android:layout_marginTop="52px"
                                     android:background="@drawable/new_orange_btn_round_corner_normal"
                                     android:text="@string/submit"
                                     android:textColor="@drawable/white_color_selector"
@@ -1635,7 +1653,7 @@
                                     android:id="@+id/reviewSkipBtn"
                                     android:layout_width="648px"
                                     android:layout_height="99px"
-                                    android:layout_marginTop="24px"
+                                    android:layout_marginTop="32px"
                                     android:background="@drawable/white_bg"
                                     android:text="Skip"
                                     android:textColor="@color/new_orange"

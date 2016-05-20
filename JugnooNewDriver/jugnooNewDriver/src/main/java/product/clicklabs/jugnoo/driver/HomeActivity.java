@@ -290,7 +290,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	RelativeLayout relativeLayoutEndRideCustomerAmount;
 
 	LinearLayout endRideInfoRl;
-	TextView jugnooRideOverText, takeFareText;
+	TextView jugnooRideOverText, takeFareText, takeFareValue;
 
 	RelativeLayout relativeLayoutCoupon;
 	TextView textViewCouponTitle, textViewCouponSubTitle, textViewCouponPayTakeText, textViewCouponDiscountedFare;
@@ -758,7 +758,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
-			takeFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+			takeFareText.setTypeface(Data.latoHeavy(getApplicationContext()));
+
+			takeFareValue = (TextView) findViewById(R.id.takeFareValue);
+			takeFareValue.setTypeface(Data.latoHeavy(getApplicationContext()));
+
 
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -2412,9 +2416,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
-					jugnooRideOverText.setText("The Jugnoo ride is over.");
-					takeFareText.setText("Please take the fare as shown above from the customer.");
-
+					jugnooRideOverText.setText("Jugnoo ride over");
+					takeFareText.setText("Take Cash : " );
+					takeFareValue.setText(getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					displayCouponApplied();
 
 
