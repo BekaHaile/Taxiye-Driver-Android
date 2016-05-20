@@ -5649,7 +5649,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void fetchHeatMapData(final Activity activity) {
 		try {
-			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				final long responseTime = System.currentTimeMillis();
 				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
 					@Override
