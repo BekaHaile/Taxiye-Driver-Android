@@ -126,7 +126,6 @@ import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
-import product.clicklabs.jugnoo.driver.utils.CustomInfoWindowPerfect;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -3036,17 +3035,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (autoCustomerInfo.couponInfo != null) {
 						if (autoCustomerInfo.couponInfo.couponApplied) {
 							if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.couponInfo.benefitType) {
-								endRideInfoRl.setVisibility(View.GONE);
-								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//								endRideInfoRl.setVisibility(View.GONE);
+//								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+								endRideInfoRl.setVisibility(View.VISIBLE);
+								relativeLayoutCoupon.setVisibility(View.GONE);
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
@@ -3063,17 +3066,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					} else if (autoCustomerInfo.promoInfo != null) {
 						if (autoCustomerInfo.promoInfo.promoApplied) {
 							if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
-								endRideInfoRl.setVisibility(View.GONE);
-								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//								endRideInfoRl.setVisibility(View.GONE);
+//								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+								endRideInfoRl.setVisibility(View.VISIBLE);
+								relativeLayoutCoupon.setVisibility(View.GONE);
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Wallet");
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
 									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
@@ -3116,13 +3123,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
 				if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                                // wallet
 					textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+					reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					textViewCouponTitle.setText("Wallet");
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
 					textViewCouponPayTakeText.setText("Take");
 
-					endRideInfoRl.setVisibility(View.GONE);
-					relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//					endRideInfoRl.setVisibility(View.GONE);
+//					relativeLayoutCoupon.setVisibility(View.VISIBLE);
+					endRideInfoRl.setVisibility(View.VISIBLE);
+					relativeLayoutCoupon.setVisibility(View.GONE);
 					relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 				} else {                                                                            // no wallet
 					endRideInfoRl.setVisibility(View.VISIBLE);

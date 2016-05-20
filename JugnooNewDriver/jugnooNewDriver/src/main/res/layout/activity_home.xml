@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/textViewBeforeAcceptRequestInfo"
@@ -896,7 +896,9 @@
                         android:tag="mwar"
                         android:text="@string/click_for_direction"
                         android:visibility="gone"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="28px"
+                        />
 
                 </RelativeLayout>
 
