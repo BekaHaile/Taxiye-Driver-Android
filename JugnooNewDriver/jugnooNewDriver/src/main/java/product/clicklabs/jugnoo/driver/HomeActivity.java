@@ -3801,7 +3801,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			holder.id = position;
 
-			holder.textViewRequestAddress.setText(driverRideRequest.address);
+			try {
+				holder.textViewRequestAddress.setText(driverRideRequest.address);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), driverRideRequest.startTime);

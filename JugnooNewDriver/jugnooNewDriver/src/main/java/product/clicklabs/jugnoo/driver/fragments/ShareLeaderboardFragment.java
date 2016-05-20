@@ -338,7 +338,7 @@ public class ShareLeaderboardFragment extends Fragment {
 						public void onClick(View v) {
 						}
 					}, true, false);
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
