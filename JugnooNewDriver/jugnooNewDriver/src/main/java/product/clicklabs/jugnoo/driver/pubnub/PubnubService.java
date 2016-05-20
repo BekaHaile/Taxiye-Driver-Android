@@ -16,6 +16,8 @@ import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 import static android.support.v4.content.WakefulBroadcastReceiver.startWakefulService;
 
@@ -23,16 +25,20 @@ public class PubnubService extends Service {
     public PubnubService() {
     }
 
-    private final String PUBLISH_KEY = "pub-c-8fbeae12-1ce0-4f6a-8811-59296b4ab980";
-    private final String SUBSCRIBE_KEY = "sub-c-f05204b0-1cea-11e6-be83-0619f8945a4f";
-    private final String CHANNEL = "jugnoo_my_channel";
+//    private final String PUBLISH_KEY = "pub-c-8fbeae12-1ce0-4f6a-8811-59296b4ab980";
+//    private final String SUBSCRIBE_KEY = "sub-c-f05204b0-1cea-11e6-be83-0619f8945a4f";
+//    private final String CHANNEL = "jugnoo_my_channel";
+
+
+
     Context context;
 
     private Pubnub pubnub;
 
     private Pubnub getPubnub() {
         if (pubnub == null) {
-            pubnub = new Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY);
+            pubnub = new Pubnub(Prefs.with(this).getString(SPLabels.PUBNUB_PUBLISHER_KEY, ""),
+                    Prefs.with(this).getString(SPLabels.PUBNUB_SUSCRIBER_KEY, ""));
         }
         return pubnub;
     }
@@ -56,11 +62,10 @@ public class PubnubService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
 
         try {
+            String CHANNEL =  Prefs.with(this).getString(SPLabels.PUBNUB_CHANNEL, "");
             getPubnub().subscribe(CHANNEL, new Callback() {
                         @Override
                         public void connectCallback(String channel, Object message) {
-                            getPubnub().publish(CHANNEL, "Hello from the PubNub Java SDK", new Callback() {
-                            });
 
                             registerReceiver(new BroadcastReceiver() {
                                 @Override

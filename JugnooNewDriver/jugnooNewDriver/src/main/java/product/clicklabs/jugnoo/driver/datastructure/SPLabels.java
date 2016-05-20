@@ -83,5 +83,7 @@ public class SPLabels {
     public static final String REQUEST_LOGIN_OTP_FLAG = "requestLoginOtpFlag";
     public static final String ACCEPT_RIDE_TIME = "acceptRideTime";
     public static final String NOTIFICATION_SAVE_COUNT = "notification_save_count";
-
+    public static final String PUBNUB_PUBLISHER_KEY = "pubnub_publisher_key";
+    public static final String PUBNUB_SUSCRIBER_KEY = "pubnub_suscriber_key";
+    public static final String PUBNUB_CHANNEL = "pubnub_channel";
 }
