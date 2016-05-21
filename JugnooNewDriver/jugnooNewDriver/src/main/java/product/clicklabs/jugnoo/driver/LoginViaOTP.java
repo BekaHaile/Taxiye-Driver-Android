@@ -550,7 +550,7 @@ public class LoginViaOTP extends BaseActivity {
 
 
 				// Showing selected spinner item
-				Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
 				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
 
 				if(!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,""))) {

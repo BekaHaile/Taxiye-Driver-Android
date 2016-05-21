@@ -211,7 +211,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		Data.locationFetcher = null;
 
-
+		Log.i("all locale", String.valueOf(getResources().getSystem().getAssets().getLocales()));
+		Log.i("all locale2", String.valueOf(Locale.getAvailableLocales()));
 		loginDataFetched = false;
 		loginFailed = false;
 		
@@ -280,7 +281,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				return false;
 			}
 		});
-		
+
 		
 		Data.generateKeyHash(SplashNewActivity.this);
 		

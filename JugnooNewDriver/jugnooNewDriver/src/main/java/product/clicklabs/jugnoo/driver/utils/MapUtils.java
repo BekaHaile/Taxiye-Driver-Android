@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -147,14 +148,18 @@ public class MapUtils {
 	
 	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
 	//Locale.getDefault().getLanguage(
-	public static String getGAPIAddress(LatLng latLng, String language) {
+	public static String getGAPIAddress(Context context, LatLng latLng, boolean toLocality) {
 		String fullAddress = "Unnamed";
 		try {
-            if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
-				language = "hi";
-            } else{
-				language = "en";
-			}
+			String language = "";
+//            if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
+//				language = "hi";
+//            } else{
+//				language = "en";
+//			}
+
+			language = context.getResources().getConfiguration().locale.toString();
+
 //            Log.e("getGAPIAddress url", "="+url);
 
 			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
@@ -229,16 +234,18 @@ public class MapUtils {
 									selectedAddressComponentsArr.add(administrativeArea1);
 								}
 							}
-							if ("".equalsIgnoreCase(country) && addressTypes.contains("country")) {
-								country = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(country) && !selectedAddressComponentsArr.toString().contains(country)) {
-									selectedAddressComponentsArr.add(country);
+							if(!toLocality) {
+								if ("".equalsIgnoreCase(country) && addressTypes.contains("country")) {
+									country = iObj.getString("long_name");
+									if (!"".equalsIgnoreCase(country) && !selectedAddressComponentsArr.toString().contains(country)) {
+										selectedAddressComponentsArr.add(country);
+									}
 								}
-							}
-							if ("".equalsIgnoreCase(postalCode) && addressTypes.contains("postal_code")) {
-								postalCode = iObj.getString("long_name");
-								if (!"".equalsIgnoreCase(postalCode) && !selectedAddressComponentsArr.toString().contains(postalCode)) {
-									selectedAddressComponentsArr.add(postalCode);
+								if ("".equalsIgnoreCase(postalCode) && addressTypes.contains("postal_code")) {
+									postalCode = iObj.getString("long_name");
+									if (!"".equalsIgnoreCase(postalCode) && !selectedAddressComponentsArr.toString().contains(postalCode)) {
+										selectedAddressComponentsArr.add(postalCode);
+									}
 								}
 							}
 						}

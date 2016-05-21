@@ -3257,7 +3257,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				try {
-					address = MapUtils.getGAPIAddress(latLng, "hi");
+					address = MapUtils.getGAPIAddress(HomeActivity.this, latLng, true);
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -4002,6 +4002,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
 					acceptRideSucess(jsonString);
+					GCMIntentService.stopRing(true);
 				}
 
 				@Override
