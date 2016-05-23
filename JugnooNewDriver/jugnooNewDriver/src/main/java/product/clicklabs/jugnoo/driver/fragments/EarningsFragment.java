@@ -151,7 +151,11 @@ public class EarningsFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(linearLayoutRoot);
+		try {
+			ASSL.closeActivity(linearLayoutRoot);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 

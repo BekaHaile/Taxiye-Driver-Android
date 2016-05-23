@@ -140,16 +140,21 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 
 	@Override
 	public void onBackPressed() {
-		performbackPressed();
 		super.onBackPressed();
+		performbackPressed();
 	}
 	
 	
 	@Override
 	public void onDestroy() {
-        ASSL.closeActivity(linearLayoutRoot);
-        System.gc();
 		super.onDestroy();
+		try {
+			ASSL.closeActivity(linearLayoutRoot);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.gc();
+
 
 	}
 }
