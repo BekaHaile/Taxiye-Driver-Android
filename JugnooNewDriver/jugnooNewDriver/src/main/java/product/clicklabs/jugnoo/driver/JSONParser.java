@@ -1,11 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -41,7 +38,6 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -458,42 +454,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	//TODO
-	public void parseLastRideData(JSONObject jObj) {
-
-//	    "status": {
-//	        "flag": 135,
-//	        "last_engagement_info": [
-//	            {
-//	                "engagement_id": 7939,
-//	                "user_id": 207,
-//	                "session_id": 4404,
-//	                "distance_travelled": 0,
-//	                "ride_time": 1,
-//	                "money_transacted": 26,
-//	                "discount": 0,
-//	                "paid_using_wallet": 0,
-//	                "paid_by_customer": 26,
-//	                "fare_factor": 1.2,
-//	                "fare_details": {
-//	                    "id": 2,
-//	                    "fare_fixed": 20,
-//	                    "fare_per_km": 5,
-//	                    "fare_threshold_distance": 0,
-//	                    "fare_per_min": 1,
-//	                    "fare_threshold_time": 0,
-//	                    "fare_per_waiting_min": 0,
-//	                    "fare_threshold_waiting_time": 0,
-//	                    "type": 1,
-//	                    "per_ride_driver_subsidy": 0,
-//	                    "accept_subsidy_per_km": 3
-//	                },
-//	                "user_name": "Shankar Bhagwati",
-//	                "phone_no": "+919000111001",
-//	                "user_image": "http://graph.facebook.com/717496164959213/picture?width=160&height=160",
-//	            }
-//	        ]
-//	    }
+	public void parseLastRideData(JSONObject jObj){
 
 		try {
 			JSONArray lastEngInfoArr = jObj.getJSONArray("last_engagement_info");
@@ -502,15 +463,12 @@ public class JSONParser implements Constants {
 			Log.e("jLastRideData", "=" + jLastRideData);
 
 			Data.dEngagementId = jLastRideData.getString("engagement_id");
-			Data.dCustomerId = jLastRideData.getString("user_id");
 
 			HomeActivity.totalDistance = jLastRideData.getDouble("distance_travelled");
 			HomeActivity.waitTime = jLastRideData.optString("wait_time", "0");
 			HomeActivity.rideTime = jLastRideData.getString("ride_time");
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
-
-			Data.dCustLatLng = new LatLng(0, 0);
 			Data.startRidePreviousLatLng = new LatLng(0, 0);
 			Data.startRidePreviousLocationTime = System.currentTimeMillis();
 
@@ -537,14 +495,14 @@ public class JSONParser implements Constants {
 			int referenceId = 0;
 			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
-			Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(Data.dCustomerId),
-					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"),
+			Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(jLastRideData.getString("user_id")),
+					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
 					new LatLng(0, 0), cachedApiEnabled,
-					jLastRideData.getString("user_image"), couponInfo, promoInfo);
-
-
-			if (jLastRideData.has("fare_details")) {
-				try {
+					jLastRideData.getString("user_image"), couponInfo, promoInfo));
+			
+			
+			if(jLastRideData.has("fare_details")){
+				try{
 					Data.fareStructure = JSONParser.parseFareObject(jLastRideData.getJSONObject("fare_details"));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -625,37 +583,6 @@ public class JSONParser implements Constants {
 					returnResponse = Constants.SERVER_TIMEOUT;
 					return returnResponse;
 				} else {
-
-//							{
-//								"flag": constants.responseFlags.ACTIVE_REQUESTS,
-//								"active_requests":[
-//									{
-//								�engagement_id�, 
-//								�user_id�, 
-//								�pickup_latitude�, 
-//								�pickup_longitude�, 
-//								�pickup_location_address�, 
-//								�current_time�
-//								}
-//								]};
-
-
-//							{
-//							"flag": constants.responseFlags.ENGAGEMENT_DATA,
-//							"last_engagement_info":[
-//							{
-//							�user_id�,
-//							�pickup_latitude�,
-//							�pickup_longitude�,
-//							�engagement_id�,
-//							�status�,
-//							�user_name�,
-//							�phone_no�,
-//							�user_image�,
-//							�rating�
-//							}
-//							]
-
 					int flag = jObject1.getInt("flag");
 
 					fillDriverRideRequests(jObject1);
@@ -879,28 +806,29 @@ public class JSONParser implements Constants {
 			} else {
 
 				Data.dEngagementId = engagementId;
-				Data.dCustomerId = userId;
 
-				Data.dCustLatLng = new LatLng(pickupLatitude, pickupLongitude);
-
-				if (BusinessType.AUTOS.getOrdinal() == dBusinessId) {
-					Data.assignedCustomerInfo = new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-							dReferenceId, customerName, customerPhone, Data.dCustLatLng, cachedApiEnabled,
-							customerImage, customerRating, schedulePickupTime, freeRide,
-							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable, waitingChargesApplicable);
-					if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-						((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = null;
-					} else {
-						((AutoCustomerInfo) Data.assignedCustomerInfo).dropLatLng = new LatLng(dropLatitude, dropLongitude);
-					}
-				} else if (BusinessType.MEALS.getOrdinal() == dBusinessId) {
-
-				} else if (BusinessType.FATAFAT.getOrdinal() == dBusinessId) {
-					Data.assignedCustomerInfo = new FatafatOrderInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-							dReferenceId, customerName, customerPhone, Data.dCustLatLng, storeAddress, storeOrderAmount);
-
-					if ((EngagementStatus.STARTED.getOrdinal() == engagementStatus) && (deliveryInfo != null) && (customerInfo != null)) {
-						((FatafatOrderInfo) Data.assignedCustomerInfo).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
+				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
+					Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
+							dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
+							customerImage, customerRating, schedulePickupTime, freeRide, 
+							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
+							luggageChargesApplicable, waitingChargesApplicable, engagementStatus));
+                    if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
+                        ((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).dropLatLng =null;
+                    }
+                    else{
+                        ((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                    }
+				}
+				else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
+					
+				}
+				else if(BusinessType.FATAFAT.getOrdinal() == dBusinessId){
+					Data.addCustomerInfo(new FatafatOrderInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
+							dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), storeAddress, storeOrderAmount));
+					
+					if((EngagementStatus.STARTED.getOrdinal() == engagementStatus) && (deliveryInfo != null) && (customerInfo != null)){
+						((FatafatOrderInfo)Data.getCustomerInfo(Data.dEngagementId)).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
 					}
 				}
 

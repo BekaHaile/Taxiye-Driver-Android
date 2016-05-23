@@ -15,6 +15,7 @@ public class CustomerInfo {
 	public String name, phoneNumber;
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
+	private int status;
 
 	/**
 	 * Customer Info super constructor
@@ -34,7 +35,11 @@ public class CustomerInfo {
 		this.requestlLatLng = requestlLatLng;
 		this.cachedApiEnabled = cachedApiEnabled;
 	}
-	
+
+
+	public CustomerInfo(int engagementId){
+		this.engagementId = engagementId;
+	}
 	
 	@Override
 	public String toString() {
@@ -43,11 +48,33 @@ public class CustomerInfo {
 				", cachedApiEnabled="+cachedApiEnabled;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		try{
+			if(((CustomerInfo)o).engagementId == engagementId){
+				return true;
+			} else{
+				return false;
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return super.equals(o);
+	}
+
 	public int getCachedApiEnabled() {
 		return cachedApiEnabled;
 	}
 
 	public void setCachedApiEnabled(int cachedApiEnabled) {
 		this.cachedApiEnabled = cachedApiEnabled;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 }

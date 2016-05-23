@@ -40,6 +40,8 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 public class DriverPatymRecharge extends BaseActivity {
@@ -166,9 +168,10 @@ public class DriverPatymRecharge extends BaseActivity {
 			}
 		});
 
-		if (DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-				DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
-			editTextPhone.setText(Data.assignedCustomerInfo.phoneNumber);
+		if ((DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
+				DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode)
+				&& Data.getCustomerInfo(Data.dEngagementId) != null) {
+			editTextPhone.setText(Data.getCustomerInfo(Data.dEngagementId).phoneNumber);
 		} else {
 			editTextPhone.setText(Prefs.with(DriverPatymRecharge.this).getString(SPLabels.CUSTOMER_PHONE_NUMBER, ""));
 		}

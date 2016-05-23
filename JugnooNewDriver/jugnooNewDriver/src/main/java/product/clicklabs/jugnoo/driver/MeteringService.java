@@ -183,9 +183,9 @@ public class MeteringService extends Service {
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					if(fromGPS){
 						boolean showWait = false;
-						if(Data.assignedCustomerInfo != null){
-							if(Data.assignedCustomerInfo.businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
-								if(((AutoCustomerInfo)Data.assignedCustomerInfo).waitingChargesApplicable == 1
+						if(Data.getCustomerInfo(Data.dEngagementId) != null){
+							if(Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
+								if(((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1
 										&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
 									showWait = true;
 								}

@@ -68,9 +68,7 @@ public class Data {
 	
 	
 	public static String D_ARRIVED = "D_ARRIVED", D_START_RIDE = "D_START_RIDE", D_IN_RIDE = "D_IN_RIDE";
-	public static String P_RIDE_END = "P_RIDE_END", P_IN_RIDE = "P_IN_RIDE", P_REQUEST_FINAL = "P_REQUEST_FINAL", 
-			P_ASSIGNING = "P_ASSIGNING";
-	
+
 	
 	public static LatLng startRidePreviousLatLng;
 	public static long startRidePreviousLocationTime = System.currentTimeMillis();
@@ -119,7 +117,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
 
 	
 
@@ -150,11 +148,7 @@ public class Data {
 	
 	public static final String GOOGLE_PROJECT_ID = "506849624961";
 
-	public static final String MAPS_BROWSER_KEY = "AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY";
-	
-	public static final String FACEBOOK_APP_ID = "782131025144439";
-	
-	
+
 	
 	public static double latitude, longitude;
 	
@@ -177,31 +171,22 @@ public class Data {
 	
 	
 	
-	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
-
 	public static ArrayList<CancelOption> cancelOptionsList;
 
-	public static String dEngagementId = "", dCustomerId = "", currentPreferredLang="";
-	public static LatLng dCustLatLng;
+	public static String dEngagementId = "";
 	public static DriverRideRequest openedDriverRideRequest;
 	
-	public static ArrayList<DriverRideRequest> driverRideRequests = new ArrayList<DriverRideRequest>();
+	public static ArrayList<DriverRideRequest> driverRideRequests = new ArrayList<>();
+
+	private static ArrayList<CustomerInfo> assignedCustomerInfos = new ArrayList<>();
 	
-	public static CustomerInfo assignedCustomerInfo;
+
+
 	
-	public static boolean driversRefreshedFirstTime = false;
-	
-	
-	public static double totalDistance = 0, totalFare = 0;
-	public static String waitTime = "", rideTime = "";
-	
-	
-	public static LatLng pickupLatLng, nextPickupLatLng;
+	public static LatLng nextPickupLatLng;
 	public static String nextCustomerName;
 
-	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
-	
-	
+
 	
 	public static FareStructure fareStructure;
 
@@ -217,10 +202,7 @@ public class Data {
 		try{
 			userData = null;
 			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
-			cEngagementId = ""; cDriverId = "";
-			pickupLatLng = null;
-			fbAccessToken = ""; fbId = ""; fbFirstName = ""; fbLastName = ""; fbUserName = ""; fbUserEmail = "";
-			
+
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 			Editor editor = pref.edit();
 			editor.clear();
@@ -298,5 +280,32 @@ public class Data {
 
 
 
+	public static CustomerInfo getCustomerInfo(String engagementId){
+		try {
+			int index = assignedCustomerInfos.indexOf(new CustomerInfo(Integer.parseInt(engagementId)));
+			if(index > -1){
+				return assignedCustomerInfos.get(index);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void addCustomerInfo(CustomerInfo customerInfo){
+		if(assignedCustomerInfos.contains(customerInfo)) {
+			assignedCustomerInfos.remove(assignedCustomerInfos.indexOf(customerInfo));
+			assignedCustomerInfos.add(assignedCustomerInfos.indexOf(customerInfo), customerInfo);
+		} else{
+			assignedCustomerInfos.add(customerInfo);
+		}
+	}
+
+	public static void removeCustomerInfo(int engagementId){
+		int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
+		if(index > -1){
+			assignedCustomerInfos.remove(index);
+		}
+	}
 
 }

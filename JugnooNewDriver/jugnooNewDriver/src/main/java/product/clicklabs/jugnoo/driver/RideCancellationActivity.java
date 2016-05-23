@@ -167,12 +167,12 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", Data.dCustomerId);
+			params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
 			params.put("engagement_id", Data.dEngagementId);
 			params.put("cancellation_reason", reason);
 
-			if (Data.assignedCustomerInfo != null) {
-				params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
+			if (Data.getCustomerInfo(Data.dEngagementId) != null) {
+				params.put("reference_id", "" + Data.getCustomerInfo(Data.dEngagementId).referenceId);
 			}
 			RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -238,7 +238,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			JSONObject map = new JSONObject();
 			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
 			map.put(Constants.KEY_ENGAGEMENT_ID, Data.dEngagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, Data.dCustomerId);
+			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
 			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -250,7 +250,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("access_token", Data.userData.accessToken);
 				params.put("eng_id", engId);
-				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.assignedCustomerInfo.phoneNumber));
+				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.getCustomerInfo(Data.dEngagementId).phoneNumber));
 
 				Log.i("params", "=" + params);
 
