@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="CHANGE PHONE NUMBER"
+            android:text="@string/change_phone_no"
             android:textColor="@color/white"
             android:textSize="36px" />
 
@@ -57,7 +57,7 @@
                 android:layout_marginTop="40px"
                 android:layout_marginLeft="50px"
                 android:layout_marginRight="40px"
-                android:text="Please enter your new phone number"/>
+                android:text="@string/enter_new_phone_number"/>
 
 
             <EditText
@@ -68,7 +68,7 @@
                     android:layout_marginTop="50px"
                     android:background="#0000"
                     android:gravity="center_vertical"
-                    android:hint="Enter New Phone Number"
+                    android:hint="@string/enter_new_phone_no"
                     android:inputType="phone"
                     android:paddingLeft="20px"
                     android:paddingRight="20px"
@@ -92,8 +92,8 @@
                     android:layout_height="100px"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="70px"
+                    android:text="@string/SUBMIT"
                     android:background="@drawable/new_orange_btn_selector_rounded"
-                    android:text="SUBMIT"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size" />
 

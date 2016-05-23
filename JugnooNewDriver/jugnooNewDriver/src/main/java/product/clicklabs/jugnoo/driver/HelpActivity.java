@@ -129,7 +129,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 		//helpListAdapter.notifyDataSetChanged();
 
 		getHelpAsync(HelpActivity.this, helpSections.get(4));
-		title.setText("" + helpSections.get(4).getName());
+		title.setText(getResources().getString(R.string.terms));
 
 	}
 	
@@ -145,7 +145,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 			loadHTMLContent(data);
 		}
 		selectedHelpSection = helpSection;
-		title.setText("" + helpSection.getName());
+		title.setText(getResources().getString(R.string.terms));
 
 	}
 	
@@ -305,7 +305,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 									HomeActivity.logoutUser(activity);
 								} else {
-									openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+									openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
 								}
 							} else {
 								String data = jObj.getString("data");
@@ -314,7 +314,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+							openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
 						}
 						progressBarHelp.setVisibility(View.GONE);
 					}
@@ -322,13 +322,13 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 					@Override
 					public void failure(RetrofitError error) {
 						progressBarHelp.setVisibility(View.GONE);
-						openHelpData(helpSection, "Some error occured. Tap to retry.", true);
+						openHelpData(helpSection, getResources().getString(R.string.error_occured_tap_to_retry), true);
 
 					}
 				});
 			}
 			else {
-				openHelpData(helpSection, "No internet connection. Tap to retry.", true);
+				openHelpData(helpSection, getResources().getString(R.string.no_internet_tap_to_retry), true);
 			}
 	}
 
@@ -337,7 +337,7 @@ public class HelpActivity extends FragmentActivity implements FlurryEventNames {
 	public void performBackPressed(){
 		/*if(helpExpandedRl.getVisibility() == View.VISIBLE){
 			helpExpandedRl.setVisibility(View.GONE);
-			title.setText("Help");
+			title.setText(getResources().getString(R.string.help));
 		}
 		else{*/
 			finish();

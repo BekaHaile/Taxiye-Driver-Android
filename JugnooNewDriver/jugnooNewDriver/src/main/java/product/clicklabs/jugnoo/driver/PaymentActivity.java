@@ -17,12 +17,13 @@ import product.clicklabs.jugnoo.driver.adapters.PaymentFragmentAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
-public class PaymentActivity extends FragmentActivity implements FlurryEventNames {
+public class PaymentActivity extends BaseFragmentActivity implements FlurryEventNames {
 	
 	LinearLayout linearLayoutRoot;
 
@@ -35,12 +36,6 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 
 	public LeaderboardResponse leaderboardResponse;
 	public LeaderboardActivityResponse leaderboardActivityResponse;
-
-
-	String str3 = "Your Referral Code is ";
-	SpannableString sstr;
-
-
 
 	@Override
 	protected void onStart() {
@@ -59,11 +54,9 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 	protected void onResume() {
 		super.onResume();
 	}
-
-
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_payments);
@@ -71,10 +64,8 @@ public class PaymentActivity extends FragmentActivity implements FlurryEventName
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
 		new ASSL(PaymentActivity.this, linearLayoutRoot, 1134, 720, false);
 
-
-
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		paymentFragmentAdapter = new PaymentFragmentAdapter(getSupportFragmentManager());
+		paymentFragmentAdapter = new PaymentFragmentAdapter(PaymentActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(paymentFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);

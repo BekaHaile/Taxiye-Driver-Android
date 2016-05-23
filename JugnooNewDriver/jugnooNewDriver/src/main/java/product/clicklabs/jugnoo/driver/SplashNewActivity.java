@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -25,6 +26,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -32,8 +35,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -44,6 +49,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
@@ -57,6 +63,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -73,7 +80,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class SplashNewActivity extends Activity implements LocationUpdate, FlurryEventNames{
+public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 
@@ -85,6 +92,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 	ImageView jugnooTextImg, jugnooTextImg2;
 	
 	ProgressBar progressBar1;
+	Configuration conf;
 
 	Button buttonLogin, buttonRegister;
 	
@@ -144,7 +152,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			Data.SERVER_URL = CUSTOM_URL;
 			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
 		}
-		Log.e("Data.SERVER_URL", "="+Data.SERVER_URL);
+		Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
 		RestClient.setupRestClient(Data.SERVER_URL);
 		DriverLocationUpdateService.updateServerData(context);
 	}
@@ -165,6 +173,15 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //		    config.locale = locale;
 //		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
 //		}
+
+//		String languageToLoad = "ta";
+//		Locale locale = new Locale(languageToLoad);
+//		Locale.setDefault(locale);
+//
+//		Configuration config = new Configuration();
+//		config.locale = locale;
+//		getBaseContext().getResources().updateConfiguration(config,
+//				getBaseContext().getResources().getDisplayMetrics());
 
 		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
@@ -192,12 +209,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //        Log.e("Locale info", "="+localeInfo);
 
 
-
 		setContentView(R.layout.activity_splash_new);
 
 		Data.locationFetcher = null;
 
-
+		Log.i("all locale", String.valueOf(getResources().getSystem().getAssets().getLocales()));
+		Log.i("all locale2", String.valueOf(Locale.getAvailableLocales()));
 		loginDataFetched = false;
 		loginFailed = false;
 		
@@ -266,7 +283,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				return false;
 			}
 		});
-		
+
 		
 		Data.generateKeyHash(SplashNewActivity.this);
 		
@@ -327,6 +344,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		});
 
 
+
 //		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
 //		if(installed){
 //			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
@@ -350,6 +368,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 		startService(intent);
 
 	}
+
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
@@ -481,7 +500,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 				@Override
 				public void run() {
-					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", "Disable mock location first", new View.OnClickListener() {
+					DialogPopup.alertPopupWithListener(SplashNewActivity.this, "", getResources().getString(R.string.disable_mock_location), new View.OnClickListener() {
 
 						@Override
 						public void onClick(View v) {
@@ -634,12 +653,13 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
 		final long responseTime = System.currentTimeMillis();
+		conf = getResources().getConfiguration();
 		if(!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				if(Data.locationFetcher != null){
 					Data.latitude = Data.locationFetcher.getLatitude();
@@ -650,12 +670,12 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-				params.put("pushy_token", "");
 
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
 
+				params.put("locale", conf.locale.toString());
 				params.put("app_version", ""+Data.appVersion);
 				params.put("device_type", Data.DEVICE_TYPE);
 				params.put("unique_device_id", Data.uniqueDeviceId);
@@ -711,7 +731,6 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
-							Log.i("pushyyy", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String message = JSONParser.getServerMessage(jObj);
 
@@ -885,7 +904,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 			textMessage.setText(message);
 			
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
-			btnOk.setText("Update");
+			btnOk.setText(activity.getResources().getString(R.string.update));
 			
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
 			btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -1053,7 +1072,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 					textHead.setText("Confirm Register Password");
 				}
 				
-				textMessage.setText("Please enter password to continue.");
+				textMessage.setText(getResources().getString(R.string.password_to_continue));
 				
 				textMessage.setVisibility(View.GONE);
 				
@@ -1469,7 +1488,7 @@ public class SplashNewActivity extends Activity implements LocationUpdate, Flurr
 				textMessage.setMovementMethod(new ScrollingMovementMethod());
 				textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 				
-				textMessage.setText("Network Problem. Please Switch OFF and Switch ON your phone and wait for 5 minutes to continue using Jugnoo.");
+				textMessage.setText(activity.getResources().getString(R.string.network_problem));
 				
 	
 				Button btnOk = (Button) restartPhoneDialog.findViewById(R.id.btnOk);

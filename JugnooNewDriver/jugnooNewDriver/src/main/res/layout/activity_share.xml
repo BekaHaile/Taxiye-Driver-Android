@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="FREE RIDES"
+            android:text="@string/invite_earn"
             android:textColor="@color/white"
             android:textSize="40px"/>
 

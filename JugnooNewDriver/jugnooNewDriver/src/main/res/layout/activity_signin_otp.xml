@@ -11,7 +11,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/new_orange"
+        android:background="@color/menu_black"
         android:splitMotionEvents="false">
 
         <Button
@@ -23,15 +23,57 @@
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:text="LOGIN"
-            android:textColor="@color/white"
-            android:textSize="40px"/>
+        <!--<TextView-->
+            <!--android:id="@+id/title"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerInParent="true"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/login"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="40px"/>-->
+
+       <LinearLayout
+           android:id="@+id/selectLanguageLl"
+           android:layout_width="380px"
+           android:layout_height="80px"
+           android:layout_alignParentRight="true"
+           android:layout_marginTop="3px"
+           android:layout_marginRight="5px"
+           android:visibility="gone"
+           android:background="@drawable/background_white_rounded_orange_bordered">
+
+
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:layout_marginLeft="6px"
+               android:background="@drawable/language_icon"/>
+
+           <ImageView
+               android:layout_width="2px"
+               android:layout_height="match_parent"
+               android:layout_marginLeft="6px"
+               android:background="@color/new_orange"/>
+
+
+           <Spinner
+               android:id="@+id/language_spinner"
+               android:layout_width="match_parent"
+               android:layout_centerVertical="true"
+               android:layout_height="match_parent"
+               android:textAlignment="center"
+               android:popupBackground="@drawable/background_white_rounded_orange_bordered"
+               />
+
+
+
+
+       </LinearLayout>
+
+
+
     </RelativeLayout>
 
 
@@ -125,7 +167,7 @@
                     android:layout_marginTop="2px"
                     android:inputType="number"
                     android:background="@color/transparent"
-                    android:hint="OTP"
+                    android:hint="@string/otp"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -192,7 +234,7 @@
             android:layout_height="99px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
-            android:text="GENERATE OTP"
+            android:text="@string/GENERATE_OTP"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
@@ -203,7 +245,7 @@
             android:layout_height="99px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
-            android:text="VERIFY"
+            android:text="@string/verify_me"
             android:visibility="gone"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
@@ -214,7 +256,7 @@
             android:layout_height="99px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
-            android:text="RESEND OTP"
+            android:text="@string/resend_OTP"
             android:visibility="gone"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>

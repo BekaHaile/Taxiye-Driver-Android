@@ -1,10 +1,12 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import product.clicklabs.jugnoo.driver.DriverRidesFragment;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.EarningsFragment;
 import product.clicklabs.jugnoo.driver.fragments.InvoiceHistoryFragment;
 
@@ -14,8 +16,11 @@ import product.clicklabs.jugnoo.driver.fragments.InvoiceHistoryFragment;
  */
 public class PaymentFragmentAdapter extends FragmentPagerAdapter {
 
-	public PaymentFragmentAdapter(FragmentManager fm) {
+	Context context;
+
+	public PaymentFragmentAdapter(Context context, FragmentManager fm) {
 		super(fm);
+		this.context = context;
 	}
 
 	@Override
@@ -47,11 +52,11 @@ public class PaymentFragmentAdapter extends FragmentPagerAdapter {
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 			case 0:
-				return "Transactions";
+				return context.getResources().getString(R.string.Transactions);
 			case 1:
-				return "Invoices";
+				return context.getResources().getString(R.string.Invoices);
 			case 2:
-				return "Earnings";
+				return context.getResources().getString(R.string.Earnings);
 		}
 
 		return null;

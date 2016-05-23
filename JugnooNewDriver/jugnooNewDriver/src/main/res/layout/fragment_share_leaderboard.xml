@@ -94,11 +94,10 @@
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text="@string/lb_name"
             android:textColor="@color/grey_dark_less"
             android:textSize="@dimen/share_lb_text_size_medium"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="240px"
             android:layout_centerVertical="true"
             />
 

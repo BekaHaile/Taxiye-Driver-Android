@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -125,6 +126,7 @@ import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
@@ -148,7 +150,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 @SuppressLint("DefaultLocale")
-public class HomeActivity extends FragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
+public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
 		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler {
 
 
@@ -268,8 +270,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	LinearLayout reviewReachedDistanceRl;
 	LinearLayout linearLayoutMeterFare;
-	TextView reviewReachedDestinationText,
-			reviewDistanceText, reviewDistanceValue,
+	TextView reviewReachedDestinationText, textViewRateYourCustomer,
+			reviewDistanceText, reviewDistanceValue, textViewSuperDrivers,
 			reviewWaitText, reviewWaitValue, reviewRideTimeText, reviewRideTimeValue,
 			reviewFareText, reviewFareValue;
 	RelativeLayout reviewWaitTimeRl;
@@ -310,7 +312,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	ScrollView scrollViewEndRide;
 	LinearLayout linearLayoutEndRideMain;
-	TextView textViewScroll, textViewNotificationValue;
+	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
 
 
 	// data variables declaration
@@ -394,9 +396,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			setContentView(R.layout.activity_home);
 
-//        String languageToLoad = "hi";
+//        String languageToLoad = "kn";
 //        Locale locale = new Locale(languageToLoad);
 //        Locale.setDefault(locale);
+//
 //        Configuration config = new Configuration();
 //        config.locale = locale;
 //        getBaseContext().getResources().updateConfiguration(config,
@@ -485,10 +488,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
 			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
+			inviteFriendText.setText(getStringText(R.string.invite_earn));
 
 			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
 			notificationCenterText = (TextView) findViewById(R.id.notificationCenterText);
 			notificationCenterText.setTypeface(Data.latoRegular(getApplicationContext()));
+			notificationCenterText.setText(getResources().getString(R.string.Notifications));
 
 			bookingsRl = (RelativeLayout) findViewById(R.id.bookingsRl);
 			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
@@ -510,7 +515,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
-			((TextView) findViewById(R.id.textViewSuperDrivers)).setTypeface(Data.latoRegular(this));
+			textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
+			textViewSuperDrivers.setTypeface(Data.latoRegular(this));
+			textViewSuperDrivers.setText(getStringText(R.string.super_driver));
 
 			relativeLayoutDestination = (RelativeLayout) findViewById(R.id.relativeLayoutDestination);
 			textViewDestination = (TextView) findViewById(R.id.textViewDestination);
@@ -518,6 +525,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			callUsText.setText(getResources().getText(R.string.call_us));
 
 			termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
 			termsConditionText = (TextView) findViewById(R.id.termsConditionText);
@@ -526,10 +534,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
 			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			paytmRechargeText.setText(getStringText(R.string.paytm_recharge));
 
 			paymentsRl = (RelativeLayout) findViewById(R.id.paymentRL);
 			paymentsText = (TextView) findViewById(R.id.paymentText);
 			paymentsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			paymentsText.setText(getResources().getString(R.string.Payments));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
@@ -594,10 +604,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverRequestAcceptBackBtn = (Button) findViewById(R.id.driverRequestAcceptBackBtn);
 			driverAcceptRideBtn = (Button) findViewById(R.id.driverAcceptRideBtn);
 			driverAcceptRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverAcceptRideBtn.setText(getStringText(R.string.accept_ride));
 			driverCancelRequestBtn = (Button) findViewById(R.id.driverCancelRequestBtn);
 			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
 			buttonDriverNavigation = (Button) findViewById(R.id.buttonDriverNavigation);
+			buttonDriverNavigation.setText(getStringText(R.string.click_for_direction));
 
 
 			// Driver engaged layout
@@ -636,10 +648,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
 			driverStartRideBtn = (Button) findViewById(R.id.driverStartRideBtn);
 			driverStartRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverStartRideBtn.setText(getStringText(R.string.start_ride));
 			buttonMarkArrived = (Button) findViewById(R.id.buttonMarkArrived);
 			buttonMarkArrived.setTypeface(Data.latoRegular(this));
+			buttonMarkArrived.setText(getStringText(R.string.arrived));
 			driverCancelRideBtn = (Button) findViewById(R.id.driverCancelRideBtn);
 			driverCancelRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverCancelRideBtn.setText(getStringText(R.string.cancel));
 
 
 			//In ride layout
@@ -647,6 +662,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverIRDistanceText = (TextView) findViewById(R.id.driverIRDistanceText);
 			driverIRDistanceText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverIRDistanceText.setText(R.string.distance);
 			driverIRDistanceValue = (TextView) findViewById(R.id.driverIRDistanceValue);
 			driverIRDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
@@ -657,12 +673,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverRideTimeText = (TextView) findViewById(R.id.driverRideTimeText);
 			driverRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverRideTimeText.setText(getStringText(R.string.ride_time));
 			rideTimeChronometer = (PausableChronometer) findViewById(R.id.rideTimeChronometer);
 			rideTimeChronometer.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 			driverWaitRl = (RelativeLayout) findViewById(R.id.driverWaitRl);
 			driverWaitText = (TextView) findViewById(R.id.driverWaitText);
 			driverWaitText.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverWaitText.setText(getStringText(R.string.wait_time));
+
 			driverWaitValue = (TextView) findViewById(R.id.driverWaitValue);
 			driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
@@ -686,6 +705,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
 			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+			driverEndRideBtn.setText(R.string.end_ride);
 			waitStart = 2;
 
 
@@ -698,16 +718,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			reviewReachedDestinationText = (TextView) findViewById(R.id.reviewReachedDestinationText);
 			reviewReachedDestinationText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewReachedDestinationText.setText(R.string.reached_destination);
+
 			reviewDistanceText = (TextView) findViewById(R.id.reviewDistanceText);
 			reviewDistanceText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewDistanceText.setText(getStringText(R.string.distance));
 			reviewDistanceValue = (TextView) findViewById(R.id.reviewDistanceValue);
 			reviewDistanceValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewWaitText = (TextView) findViewById(R.id.reviewWaitText);
 			reviewWaitText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewWaitText.setText(getStringText(R.string.wait_time));
 			reviewWaitValue = (TextView) findViewById(R.id.reviewWaitValue);
 			reviewWaitValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewRideTimeText = (TextView) findViewById(R.id.reviewRideTimeText);
 			reviewRideTimeText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			reviewRideTimeText.setText(getStringText(R.string.ride_time));
 			reviewRideTimeValue = (TextView) findViewById(R.id.reviewRideTimeValue);
 			reviewRideTimeValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			reviewFareText = (TextView) findViewById(R.id.reviewFareText);
@@ -750,6 +775,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			textViewCalculatedFare = (TextView) findViewById(R.id.textViewCalculatedFare);
 			textViewCalculatedFare.setTypeface(Data.latoRegular(this));
 
+			textViewPerfectRideWating = (TextView) findViewById(R.id.textViewPerfectRideWating);
+			textViewPerfectRideWating.setTypeface(Data.latoRegular(this));
+			textViewPerfectRideWating.setText(getStringText(R.string.customer_waiting));
+
 
 			relativeLayoutEndRideCustomerAmount = (RelativeLayout) findViewById(R.id.relativeLayoutEndRideCustomerAmount);
 
@@ -768,7 +797,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			relativeLayoutRateCustomer = (RelativeLayout) findViewById(R.id.relativeLayoutRateCustomer);
-			((TextView) findViewById(R.id.textViewRateYourCustomer)).setTypeface(Data.latoRegular(this));
+			textViewRateYourCustomer = (TextView) findViewById(R.id.textViewRateYourCustomer);
+			textViewRateYourCustomer.setTypeface(Data.latoRegular(this));
+			textViewRateYourCustomer.setText(getStringText(R.string.Rate_Your_Customer));
 			ratingBarFeedback = (RatingBar) findViewById(R.id.ratingBarFeedback);
 			ratingBarFeedbackSide = (RatingBar) findViewById(R.id.ratingBarFeedbackSide);
 			reviewSkipBtn = (Button) findViewById(R.id.reviewSkipBtn);
@@ -933,6 +964,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					startActivity(new Intent(HomeActivity.this, ShareActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(INVITE_OPENED);
+
 				}
 			});
 
@@ -1029,7 +1061,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
+					Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//					finish();
 				}
 			});
 
@@ -1078,8 +1112,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				public void onClick(View v) {
 					if (((userMode == UserMode.DRIVER) && (driverScreenMode == DriverScreenMode.D_INITIAL))) {
 						logoutPopup(HomeActivity.this);
-					} else {
-						DialogPopup.alertPopup(activity, "", "Ride in progress. You can logout only after the ride ends.");
+					}
+					else{
+						DialogPopup.alertPopup(activity, "", getResources().getString(R.string.ride_in_progress_cant_logout));
 					}
 				}
 			});
@@ -1091,6 +1126,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				logoutRl.setVisibility(View.GONE);
 			} else {
 				logoutRl.setVisibility(View.VISIBLE);
+			}
+
+			if(!Data.currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+				Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+				callAndHandleStateRestoreAPI();
 			}
 
 
@@ -1184,8 +1224,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 							FlurryEventLogger.event(CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
 						}
-					} else {
-						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
+					}
+					else{
+						Toast.makeText(HomeActivity.this, getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
@@ -1198,10 +1239,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (!"".equalsIgnoreCase(callPhoneNumber)) {
 						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
 					} else {
-						Toast.makeText(HomeActivity.this, "Some error occured", Toast.LENGTH_SHORT).show();
+						Toast.makeText(HomeActivity.this, getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
 					}
 				}
 			});
+
 
 
 			driverStartRideBtn.setOnClickListener(new OnClickListener() {
@@ -1211,9 +1253,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
 						startRidePopup(HomeActivity.this);
 						FlurryEventLogger.event(RIDE_STARTED);
-					} else {
-						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to start the ride. Plugin to a power source to continue.");
 					}
+					else{
+						DialogPopup.alertPopup(HomeActivity.this, "",  getResources().getString(R.string.battery_level_start_text));
+					}
+
 				}
 			});
 
@@ -1222,7 +1266,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				@Override
 				public void onClick(View v) {
 					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
-						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", "Have you arrived?", "Yes", "No",
+						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
 								new OnClickListener() {
 									@Override
 									public void onClick(View v) {
@@ -1236,10 +1280,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 												driverMarkArriveRideAsync(activity, driverAtPickupLatLng);
 												FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
 											} else {
-												DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to mark ride arrived.");
+												DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
 											}
 										} else {
-											Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+											Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 										}
 									}
 								},
@@ -1250,9 +1294,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									}
 								}, false, false);
 						FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
-					} else {
-						DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 10% to to mark the ride arrived. Plugin to a power source to continue.");
 					}
+					else{
+						DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
+					}
+
 				}
 			});
 
@@ -1332,7 +1378,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 								String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
 								if ("".equalsIgnoreCase(enteredMeterFare)) {
-									DialogPopup.alertPopupWithListener(HomeActivity.this, "", "Please enter some fare", new OnClickListener() {
+									DialogPopup.alertPopupWithListener(HomeActivity.this, "", getResources().getString(R.string.enter_some_fare), new OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											new Handler().postDelayed(new Runnable() {
@@ -1345,16 +1391,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 									});
 								} else {
 									if (AppStatus.getInstance(activity).isOnline(activity)) {
-										String message = "The amount entered is " + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
+										String message = getResources().getString(R.string.amount_entered) + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
 										if (1 == ((AutoCustomerInfo) Data.assignedCustomerInfo).luggageChargesApplicable) {
 											if (luggageCountAdded > 0) {
-												message = message + "\n" + luggageCountAdded + " luggage items added";
+												message = message + "\n" + luggageCountAdded + getResources().getString(R.string.luggage_added);
 											} else {
-												message = message + "\n" + "No luggage added";
+												message = message + "\n" + getResources().getString(R.string.no_luggage);
 											}
 										}
 
-										DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
+										DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, getResources().getString(R.string.ok), getResources().getString(R.string.cancel),
 												new OnClickListener() {
 													@Override
 													public void onClick(View v) {
@@ -1378,12 +1424,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								if (AppStatus.getInstance(activity).isOnline(activity)) {
 									String message = "";
 									if (luggageCountAdded > 0) {
-										message = luggageCountAdded + " luggage items added";
+										message = luggageCountAdded + getResources().getString(R.string.luggage_added);
 									} else {
-										message = "No luggage added";
+										message = getResources().getString(R.string.no_luggage);
 									}
 
-									DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, "OK", "Cancel",
+									DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", message, getResources().getString(R.string.ok), getResources().getString(R.string.cancel),
 											new OnClickListener() {
 												@Override
 												public void onClick(View v) {
@@ -1405,7 +1451,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							int rating = (int) ratingBarFeedback.getRating();
 							rating = Math.abs(rating);
 							if (0 == rating) {
-								DialogPopup.alertPopup(HomeActivity.this, "", "We take your feedback seriously. Please give us a rating");
+								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.please_give_customer));
 							} else {
 								submitFeedbackToCustomerAsync(HomeActivity.this, Data.dEngagementId, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
@@ -1514,7 +1560,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (luggageCountAdded > 0) {
 						luggageCountAdded = luggageCountAdded - 1;
 						if (luggageCountAdded == 0) {
-							textViewEndRideLuggageCount.setText("NO LUGGAGE");
+							textViewEndRideLuggageCount.setText(getResources().getString(R.string.no_lugage));
 						} else {
 							textViewEndRideLuggageCount.setText("" + luggageCountAdded);
 						}
@@ -1572,7 +1618,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			Crashlytics.logException(e);
+//			Crashlytics.logException(e);
 		}
 
 	}
@@ -1652,9 +1698,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					@Override
 					public boolean onMarkerClick(Marker arg0) {
 
-						if (arg0.getTitle().equalsIgnoreCase("pickup location")) {
 
-							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Your Pickup Location", "");
+						if (arg0.getTitle().equalsIgnoreCase((getResources().getString(R.string.pickup_location)))) {
+
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.pickup_location), "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
@@ -1666,14 +1713,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							return true;
 						} else if (arg0.getTitle().equalsIgnoreCase("start ride location")) {
 
-							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Start Location", "");
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.start_loc), "");
 							map.setInfoWindowAdapter(customIW);
 
 
 							return false;
 						} else if (arg0.getTitle().equalsIgnoreCase("driver position")) {
 
-							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Driver Location", "");
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.driver_loc), "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
@@ -1683,7 +1730,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							return false;
 						} else if (arg0.getTitle().equalsIgnoreCase("next_pickup_marker")) {
-							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, "Call", "customer 2");
+							CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, getResources().getString(R.string.customer_2), "");
 							map.setInfoWindowAdapter(customIW);
 
 							return false;
@@ -1728,7 +1775,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 				Database2.getInstance(HomeActivity.this).insertDriverLocData(Data.userData.accessToken, Data.deviceToken, Data.SERVER_URL);
-				Database2.getInstance(HomeActivity.this).updatePushyToken("");
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1805,7 +1851,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					GCMIntentService.stopRing(true);
 					driverAcceptRideAsync(HomeActivity.this);
 				} else {
-					DialogPopup.alertPopup(HomeActivity.this, "", "Battery Level must be greater than 20% to accept the ride. Plugin to a power source to continue.");
+					DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_text));
 				}
 			}
 		} catch (Exception e) {
@@ -1895,8 +1941,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if (mode == 1) {
 			if (myLocation != null) {
 				switchJugnooOnThroughServer(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing);
-			} else {
-				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 			}
 		} else {
 			if (Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1) {
@@ -1916,8 +1963,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				} else {
 					toggleSharingModeAPI(businessType, 1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), false);
 				}
-			} else {
-				Toast.makeText(HomeActivity.this, "Waiting for location...", Toast.LENGTH_SHORT).show();
+			}
+			else{
+				Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 			}
 		} else {
 			toggleSharingModeAPI(businessType, 0, new LatLng(0, 0), disableAutos);
@@ -1929,7 +1977,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
+				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 			}
 		});
 		new Thread(new Runnable() {
@@ -2002,7 +2050,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
+				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 			}
 		});
 		new Thread(new Runnable() {
@@ -2254,8 +2302,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				} else {
 					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
 				}
-			} else {
-				Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
+			}
+			else{
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
 				reconnectLocationFetchers();
 			}
 		}
@@ -2275,7 +2324,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					Intent intent = new Intent(HomeActivity.this, GeanieView.class);
 					startService(intent);
 				} else {
-					Toast.makeText(getApplicationContext(), "Waiting for your location...", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -2328,7 +2377,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				linearLayoutDEI.setVisibility(View.GONE);
 
 				imageViewTitleBarDEI.setVisibility(View.GONE);
-				textViewTitleBarDEI.setText("Jugnoo");
+				textViewTitleBarDEI.setText(getResources().getString(R.string.jugnoo));
 			} else {
 				linearLayoutDEI.setVisibility(View.VISIBLE);
 //				textViewDEI.setText(Data.userData.deiValue);
@@ -2404,20 +2453,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
 					String kmsStr = "";
 					if (totalDistanceInKm > 1) {
-						kmsStr = "kms";
+						kmsStr = getResources().getString(R.string.kms);
 					} else {
-						kmsStr = "km";
+						kmsStr = getResources().getString(R.string.km);
 					}
 
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
-					reviewWaitValue.setText(waitTime + " min");
-					reviewRideTimeValue.setText(rideTime + " min");
-					reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(totalFare));
+					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
+					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
+					reviewFareValue.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(totalFare));
 
 					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
-					jugnooRideOverText.setText("Jugnoo ride over");
-					takeFareText.setText("Take Cash : " );
+
+					jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
+					takeFareText.setText(getResources().getString(R.string.take_cash)+" "+getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay ));
 					takeFareValue.setText(getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					displayCouponApplied();
 
@@ -2492,7 +2542,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) reviewSubmitBtn.getLayoutParams();
 				layoutParams.setMargins(0, 0, 0, (int) (270 * ASSL.Yscale()));
 				reviewSubmitBtn.setLayoutParams(layoutParams);
-				reviewSubmitBtn.setText("OK");
+				reviewSubmitBtn.setText(getResources().getString(R.string.ok));
 
 				try {
 					if (Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
@@ -2523,7 +2573,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				}
 
 				luggageCountAdded = 0;
-				textViewEndRideLuggageCount.setText("NO LUGGAGE");
+				textViewEndRideLuggageCount.setText(getResources().getString(R.string.no_lugage));
 
 
 				setCalculatedFareValuesAtEndRide();
@@ -2622,11 +2672,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					if (Data.openedDriverRideRequest != null) {
 						if (BusinessType.MEALS == Data.openedDriverRideRequest.businessType) {
 							textViewBeforeAcceptRequestInfo.setVisibility(View.VISIBLE);
-							textViewBeforeAcceptRequestInfo.setText("Ride Time: "
+							textViewBeforeAcceptRequestInfo.setText(getResources().getString(R.string.ride_time)+": "
 									+ ((MealRideRequest) Data.openedDriverRideRequest).rideTime);
 						} else if (BusinessType.FATAFAT == Data.openedDriverRideRequest.businessType) {
 							textViewBeforeAcceptRequestInfo.setVisibility(View.VISIBLE);
-							textViewBeforeAcceptRequestInfo.setText("Cash Needed: Rs. "
+							textViewBeforeAcceptRequestInfo.setText(getResources().getString(R.string.cash_needed_text)
 									+ ((FatafatRideRequest) Data.openedDriverRideRequest).orderAmount);
 						} else {
 							textViewBeforeAcceptRequestInfo.setVisibility(View.GONE);
@@ -2794,19 +2844,19 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					if (BusinessType.FATAFAT.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						startCustomerPathUpdateTimer();
-						driverEndRideBtn.setText("Mark Delivered");
+						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
 						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
 						imageViewIRWaitSep.setVisibility(View.GONE);
 					} else if (BusinessType.MEALS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						cancelCustomerPathUpdateTimer();
-						driverEndRideBtn.setText("Mark Delivered");
+						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
 						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
 						imageViewIRWaitSep.setVisibility(View.GONE);
 					} else if (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						startCustomerPathUpdateTimer();
-						driverEndRideBtn.setText("End Ride");
+						driverEndRideBtn.setText(getResources().getString(R.string.end_ride));
 
 						try {
 							if (Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
@@ -2954,7 +3004,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void setCalculatedFareValuesAtEndRide() {
 		try {
 			double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
-			String kmsStr = (totalDistanceInKm > 1) ? "kms" : "km";
+			String kmsStr = (totalDistanceInKm > 1) ? getResources().getString(R.string.kms) : getResources().getString(R.string.km);
 
 			long rideTimeMillis = getElapsedRideTimeFromSPInMillis(HomeActivity.this, rideTimeChronometer.eclipsedTime);
 			double rideTimeMinutes = Math.ceil(rideTimeMillis / 60000);
@@ -2966,25 +3016,25 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			final StyleSpan distBSS = new StyleSpan(Typeface.BOLD);
 			distSS.setSpan(distBSS, 0, distSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			textViewCalculatedDistance.setText("");
-			textViewCalculatedDistance.append("Distance: \n");
+			textViewCalculatedDistance.append(getResources().getString(R.string.distance)+": \n");
 			textViewCalculatedDistance.append(distSS);
 
-			SpannableString timeSS = new SpannableString(rideTime + " min");
+			SpannableString timeSS = new SpannableString(rideTime + " "+getResources().getString(R.string.min));
 			final StyleSpan timeBSS = new StyleSpan(Typeface.BOLD);
 			timeSS.setSpan(timeBSS, 0, timeSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			textViewCalculatedTime.setText("");
-			textViewCalculatedTime.append("Time: \n");
+			textViewCalculatedTime.append(getResources().getString(R.string.time)+": \n");
 			textViewCalculatedTime.append(timeSS);
 
-			SpannableString fareSS = new SpannableString("Rs. " + Utils.getDecimalFormatForMoney().format(totalFare));
+			SpannableString fareSS = new SpannableString(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(totalFare));
 			final StyleSpan fareBSS = new StyleSpan(Typeface.BOLD);
 			fareSS.setSpan(fareBSS, 0, fareSS.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			textViewCalculatedFare.setText("");
-			textViewCalculatedFare.append("Fare: \n");
+			textViewCalculatedFare.append(getResources().getString(R.string.fare1)+": \n");
 			textViewCalculatedFare.append(fareSS);
 		} catch (Exception e) {
 			e.printStackTrace();
-			textViewCalculatedDistance.setText("Sorry, we could not calculate your distance right now");
+			textViewCalculatedDistance.setText(getResources().getString(R.string.can_not_calculated_distance));
 			textViewCalculatedTime.setText("");
 			textViewCalculatedFare.setText("");
 		}
@@ -3059,21 +3109,21 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
 									textViewCouponSubTitle.setVisibility(View.VISIBLE);
 								}
 
-								textViewCouponPayTakeText.setText("Take");
+								textViewCouponPayTakeText.setText(getResources().getString(R.string.take));
 							} else {
 								throw new Exception();
 							}
@@ -3091,17 +3141,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& Wallet");
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& "+getResources().getString(R.string.wallet));
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
-								textViewCouponPayTakeText.setText("Take");
+
+								textViewCouponPayTakeText.setText(getResources().getString(R.string.take));
 							} else {
 								throw new Exception();
 							}
@@ -3124,11 +3175,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						finalDiscountedPrice = 0;
 					}
 
-					textViewFatafatBillAmountValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.finalPrice));
-					textViewFatafatBillDiscountValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.discount));
-					textViewFatafatBillFinalAmountValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(finalDiscountedPrice));
-					textViewFatafatBillJugnooCashValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.paidFromWallet));
-					textViewFatafatBillToPay.setText("Rs. " + Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.customerToPay));
+					textViewFatafatBillAmountValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.finalPrice));
+					textViewFatafatBillDiscountValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.discount));
+					textViewFatafatBillFinalAmountValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(finalDiscountedPrice));
+					textViewFatafatBillJugnooCashValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.paidFromWallet));
+					textViewFatafatBillToPay.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.customerToPay));
 				} else {
 					throw new Exception();
 				}
@@ -3139,12 +3195,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			e.printStackTrace();
 			if (BusinessType.AUTOS == Data.assignedCustomerInfo.businessType) {
 				if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                                // wallet
-					textViewCouponDiscountedFare.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-					reviewFareValue.setText("Rs. " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-					textViewCouponTitle.setText("Wallet");
+					textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+					reviewFareValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+					textViewCouponTitle.setText(getResources().getString(R.string.wallet));
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
-					textViewCouponPayTakeText.setText("Take");
+					textViewCouponPayTakeText.setText(getResources().getString(R.string.take));
 
 //					endRideInfoRl.setVisibility(View.GONE);
 //					relativeLayoutCoupon.setVisibility(View.VISIBLE);
@@ -3202,7 +3260,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							driverScheduledRideText.setVisibility(View.GONE);
 						} else {
 							driverScheduledRideText.setVisibility(View.VISIBLE);
-							driverScheduledRideText.setText("Scheduled Ride Pickup: " + time);
+							driverScheduledRideText.setText(getResources().getString(R.string.Scheduled_Ride_Pickup) + time);
 						}
 					}
 
@@ -3235,14 +3293,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						driverPassengerName.setText(Data.assignedCustomerInfo.name);
 						textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).address);
-						textViewAfterAcceptAmount.setText("Money to pay: Rs. " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount));
+						textViewAfterAcceptAmount.setText((getResources().getString(R.string.money_to_pay) + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).orderAmount)));
 					} else if (DriverScreenMode.D_IN_RIDE == mode) {
 						if (((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo != null && ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo != null) {
 							driverPassengerName.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).customerInfo.name);
 							textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.deliveryAddress);
-							textViewAfterAcceptAmount.setText("Money to take: Rs. " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay));
+							textViewAfterAcceptAmount.setText(getResources().getString(R.string.money_to_take)+" " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay));
 							textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-							textViewCustomerPickupAddress.setText("Order ID: " + ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.orderId);
+							textViewCustomerPickupAddress.setText(getResources().getString(R.string.order_id)+": " + ((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.orderId);
 						} else {
 							textViewCustomerPickupAddress.setVisibility(View.GONE);
 						}
@@ -3263,13 +3321,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	private void updateCustomerPickupAddress(final LatLng latLng) {
 		if (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-			textViewCustomerPickupAddress.setText("Loading...");
+			textViewCustomerPickupAddress.setText(getResources().getString(R.string.loading));
 		}
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
-					address = MapUtils.getGAPIAddress(latLng, language);
+					address = MapUtils.getGAPIAddress(HomeActivity.this, latLng, true);
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
@@ -3299,10 +3357,10 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void setTextToFareInfoTextViews(TextView minFareValue, TextView fareAfterValue, TextView fareAfterText, TextView textViewConvenienceCharges) {
 
-		minFareValue.setText("Rs " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.fixedFare) + " for "
-				+ decimalFormat.format(Data.fareStructure.thresholdDistance) + " km");
+		minFareValue.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.fixedFare) + " for "
+				+ decimalFormat.format(Data.fareStructure.thresholdDistance) + getResources().getString(R.string.km));
 
-		fareAfterValue.setText("Rs " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.farePerKm) + " per km + Rs "
+		fareAfterValue.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(Data.fareStructure.farePerKm) + " per km + Rs "
 				+ decimalFormat.format(Data.fareStructure.farePerMin) + " per min");
 
 		SpannableString sstr = new SpannableString("Fare");
@@ -3311,11 +3369,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		fareAfterText.setText("");
 		fareAfterText.append(sstr);
-		fareAfterText.append(" (after " + decimalFormat.format(Data.fareStructure.thresholdDistance) + " km)");
+		fareAfterText.append(" (after " + decimalFormat.format(Data.fareStructure.thresholdDistance) + getResources().getString(R.string.km)+")");
 
 		if (Data.fareStructure.getEffectiveConvenienceCharge() > 0) {
 			textViewConvenienceCharges.setVisibility(View.VISIBLE);
-			textViewConvenienceCharges.setText("Convenience charges for customer: "
+			textViewConvenienceCharges.setText(getResources().getString(R.string.convenience_charges_text)
 					+ getResources().getString(R.string.rupee) + " " + decimalFormat.format(Data.fareStructure.getEffectiveConvenienceCharge()));
 		} else {
 			textViewConvenienceCharges.setVisibility(View.GONE);
@@ -3343,9 +3401,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (gpsDialogAlert != null && gpsDialogAlert.isShowing()) {
 			} else {
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-				builder.setMessage("The app needs active GPS connection. Enable it from Settings.")
+				builder.setMessage(getResources().getString(R.string.app_need_active_gps))
 						.setCancelable(false)
-						.setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+						.setPositiveButton(getResources().getString(R.string.go_to_setting), new DialogInterface.OnClickListener() {
 							public void onClick(final DialogInterface dialog, final int id) {
 								startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 							}
@@ -3372,9 +3430,9 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				if (timeDialogAlert != null && timeDialogAlert.isShowing()) {
 				} else {
 					AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-					builder.setMessage("The app needs Network Provided Time to be enabled. Enable it from Settings.")
+					builder.setMessage(getResources().getString(R.string.app_needs_network_time))
 							.setCancelable(false)
-							.setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+							.setPositiveButton(getResources().getString(R.string.go_to_setting), new DialogInterface.OnClickListener() {
 								public void onClick(final DialogInterface dialog, final int id) {
 									activity.startActivity(new Intent(android.provider.Settings.ACTION_DATE_SETTINGS));
 								}
@@ -3439,6 +3497,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	protected void onResume() {
 		super.onResume();
 
+		HomeActivity.appInterruptHandler = HomeActivity.this;
+
 		if (!checkIfUserDataNull(HomeActivity.this)) {
 			setUserData();
 
@@ -3451,6 +3511,12 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			}
 
 		}
+
+		if(!Data.currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+			Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+			onCreate(new Bundle());
+		}
+
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
 		long timediff = System.currentTimeMillis() - fetchHeatMapTime;
@@ -3655,7 +3721,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			double totalDistanceInKm = Math.abs(distance / 1000.0);
 
-			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " km");
+			driverIRDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " "+getStringText(R.string.km));
 			driverWaitValue.setText(Utils.getChronoTimeFromMillis(waitTime));
 
 			if (Data.fareStructure != null) {
@@ -3702,7 +3768,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			if (firstLatLng != null) {
 				MarkerOptions markerOptions = new MarkerOptions();
 				markerOptions.snippet("");
-				markerOptions.title("start ride location");
+				markerOptions.title(getResources().getString(R.string.start_ride_loc));
 				markerOptions.position(firstLatLng);
 				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
 				rideStartPositionMarker = map.addMarker(markerOptions);
@@ -3837,16 +3903,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), driverRideRequest.startTime);
 			long timeDiffInSec = timeDiff / 1000;
-			holder.textViewRequestTime.setText("" + timeDiffInSec + " sec left");
+			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
 
 			if (myLocation != null) {
 				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
 				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), driverRideRequest.latLng);
 				distance = distance * 1.5;
 				if (distance >= 1000) {
-					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + " km away");
+					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
 				} else {
-					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " m away");
+					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) +" "+getResources().getString(R.string.m_away));
 				}
 			} else {
 				holder.textViewRequestDistance.setVisibility(View.GONE);
@@ -3859,17 +3925,17 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} else if (BusinessType.MEALS == driverRideRequest.businessType) {
 //				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
-				holder.textViewOtherRequestDetails.setText("Ride Time: " + ((MealRideRequest) driverRideRequest).rideTime);
+				holder.textViewOtherRequestDetails.setText(getResources().getString(R.string.ride_time2)+" " + ((MealRideRequest) driverRideRequest).rideTime);
 			} else if (BusinessType.FATAFAT == driverRideRequest.businessType) {
 //				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
 				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
-				holder.textViewOtherRequestDetails.setText("Cash Needed: Rs. " + ((FatafatRideRequest) driverRideRequest).orderAmount);
+				holder.textViewOtherRequestDetails.setText(getResources().getString(R.string.cash_needed_text) + ((FatafatRideRequest) driverRideRequest).orderAmount);
 			}
 
 
 			if (driverRideRequest.fareFactor > 1 || driverRideRequest.fareFactor < 1) {
 				holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
-				holder.textViewRequestFareFactor.setText("Rate: " + decimalFormat.format(driverRideRequest.fareFactor) + "x");
+				holder.textViewRequestFareFactor.setText(getResources().getString(R.string.rate)+" " + decimalFormat.format(driverRideRequest.fareFactor) + "x");
 			} else {
 				holder.textViewRequestFareFactor.setVisibility(View.GONE);
 			}
@@ -4013,9 +4079,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void driverAcceptRideAsync(final Activity activity) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
 			initializeStartRideVariables();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			final RequestParams params = new RequestParams();
 
@@ -4048,6 +4113,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
 					acceptRideSucess(jsonString);
+					GCMIntentService.stopRing(true);
 				}
 
 				@Override
@@ -4326,7 +4392,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-//			DialogPopup.showLoadingDialog(activity, "Loading...");
+
 
 //			RequestParams params = new RequestParams();
 
@@ -4420,7 +4486,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			try {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
@@ -4534,7 +4600,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
@@ -4675,7 +4741,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
@@ -4802,8 +4868,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 							   long rideTimeInMillis, long waitTimeInMillis,
 							   int flagDistanceTravelled, final BusinessType businessType) {
-		DialogPopup.showLoadingDialog(activity, "Loading...");
-
+		DialogPopup.showLoadingDialog(activity,  getResources().getString(R.string.loading));
 
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
 
@@ -5052,8 +5117,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	 * @param activity
 	 * @param url
 	 * @param params
-	 * @param rideTime
-	 * @param waitTime
 	 * @param assignedCustomerInfo
 	 */
 	//TODO end ride offline
@@ -5265,8 +5328,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	 * @param lastAccurateLatLng
 	 * @param dropLatitude
 	 * @param dropLongitude
-	 * @param waitMinutes
-	 * @param rideMinutes
 	 * @param flagDistanceTravelled
 	 * @param businessType
 	 */
@@ -5319,7 +5380,6 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			params.put("business_id", "" + businessType.getOrdinal());
 			params.put("reference_id", "" + Data.assignedCustomerInfo.referenceId);
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
 
 
 			RestClient.getApiServices().fatafatEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
@@ -5490,7 +5550,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				HashMap<String, String> params = new HashMap<String, String>();
 
@@ -5510,7 +5570,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								Toast.makeText(activity, "Thank you for your valuable feedback", Toast.LENGTH_SHORT).show();
+								Toast.makeText(activity, getResources().getString(R.string.thanks_for_feedback), Toast.LENGTH_SHORT).show();
 
 								try{
 									JSONObject map = new JSONObject();
@@ -5556,7 +5616,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void logoutAsync(final Activity activity) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-			DialogPopup.showLoadingDialog(activity, "Please Wait ...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.please_wait));
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("is_access_token_new", "1");
@@ -5769,8 +5829,8 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textHead.setText("Alert");
-			textMessage.setText("Are you sure you want to logout?");
+			textHead.setText(getResources().getString(R.string.alert));
+			textMessage.setText(getResources().getString(R.string.logout_text));
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
 			btnOk.setTypeface(Data.latoRegular(activity));
@@ -6019,7 +6079,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText("Are you sure you want to start ride?");
+			textMessage.setText(getResources().getString(R.string.start_ride_text));
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
@@ -6042,11 +6102,13 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 							driverStartRideAsync(activity, driverAtPickupLatLng);
 							FlurryEventLogger.event(START_RIDE_CONFIRMED);
-						} else {
-							DialogPopup.alertPopup(activity, "", "You must be present near the customer pickup location to start ride.");
 						}
-					} else {
-						Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+						else{
+							DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location_to_start));
+						}
+					}
+					else{
+						Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 					}
 
 				}
@@ -6095,13 +6157,14 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				walletBalanceUpdatePopup = false;
 
 
-				if (BusinessType.AUTOS == businessType) {
-					textMessage.setText("Are you sure you want to end ride?");
-				} else if (BusinessType.FATAFAT == businessType) {
-					textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
-							+ Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
-							+ " from customer.");
-				}
+			if(BusinessType.AUTOS == businessType){
+				textMessage.setText(getResources().getString(R.string.end_ride_text));
+			}
+			else if(BusinessType.FATAFAT == businessType){
+				textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
+						+Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.assignedCustomerInfo).deliveryInfo.customerToPay)
+						+" from customer.");
+			}
 
 
 				Button btnOk = (Button) dialogEndRidePopup.findViewById(R.id.btnOk);
@@ -6246,16 +6309,16 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					}
 					return true;
 				} else {
-					Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+					Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 					return false;
 				}
 			} else {
-				Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			Toast.makeText(activity, "Waiting for location...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 			return false;
 		}
 	}
@@ -6266,7 +6329,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void calculateFusedLocationDistance(final Activity activity, final LatLng source, final LatLng destination,
 											   final long rideTimeInMillis, final long waitTimeInMillis,
 											   final BusinessType businessType, final long lastloctime) {
-		DialogPopup.showLoadingDialog(activity, "Loading...");
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		new Thread(new Runnable() {
 
 			@Override
@@ -6362,7 +6425,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText("Are you sure you want to cancel ride?");
+			textMessage.setText(getResources().getString(R.string.cancel_ride_text));
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
@@ -6533,16 +6596,18 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							cancelStationPathUpdateTimer();
 							driverScreenMode = DriverScreenMode.D_INITIAL;
 							switchDriverScreen(driverScreenMode);
-							if (acceptedByOtherDriver) {
-								DialogPopup.alertPopup(HomeActivity.this, "", "This request has been accepted by other driver");
+							if(acceptedByOtherDriver){
+
+								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.req_accepted_by_other_driver));
 								new Handler().postDelayed(new Runnable() {
 									@Override
 									public void run() {
 										DialogPopup.dismissAlertPopup();
 									}
 								}, 3000);
-							} else {
-								DialogPopup.alertPopup(HomeActivity.this, "", "User has canceled the request");
+							}
+							else{
+								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
 								new Handler().postDelayed(new Runnable() {
 									@Override
 									public void run() {
@@ -6562,7 +6627,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 							cancelStationPathUpdateTimer();
 							driverScreenMode = DriverScreenMode.D_INITIAL;
 							switchDriverScreen(driverScreenMode);
-							DialogPopup.alertPopup(HomeActivity.this, "", "User has canceled the request");
+							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
 						}
 					}
 				});
@@ -6853,7 +6918,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
+							DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 						}
 					});
 					int currentUserStatus = 0;
@@ -6909,7 +6974,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
+								DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
 							}
 						});
 						int currentUserStatus = 0;
@@ -6959,7 +7024,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 				if (Data.assignedCustomerInfo != null) {
 					String manualPatchPushReceived = Database2.getInstance(HomeActivity.this).getDriverManualPatchPushReceived();
 					if (Database2.YES.equalsIgnoreCase(manualPatchPushReceived)) {
-						DialogPopup.alertPopupWithListener(HomeActivity.this, "", "A pickup has been assigned to you. Please pick the customer.", new View.OnClickListener() {
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "", getResources().getString(R.string.customer_pickup_text), new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
 								GCMIntentService.stopRing(true);
@@ -7190,7 +7255,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	public void acknowledgeStationDataReadAPI(final Activity activity, final String stationId) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 			HashMap<String, String> params = new HashMap<String, String>();
@@ -7294,7 +7359,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 												public void run() {
 													if (checkDriverFree()) {
 														textViewDriverInfo.setVisibility(View.VISIBLE);
-														textViewDriverInfo.setText("Please reach " + assignedStationData.address + " by " + DateOperations.getTimeAMPM(assignedStationData.time));
+														textViewDriverInfo.setText(getResources().getString(R.string.please_reach) + assignedStationData.address + getResources().getString(R.string.by) + DateOperations.getTimeAMPM(assignedStationData.time));
 													}
 												}
 											});

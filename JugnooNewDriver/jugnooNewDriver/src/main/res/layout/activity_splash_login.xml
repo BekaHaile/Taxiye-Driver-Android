@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="LOGIN"
+            android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
@@ -142,7 +142,7 @@
                 android:layout_height="99px"
                 android:layout_marginTop="108px"
                 android:background="@drawable/orange_btn_selector"
-                android:text="LOGIN"
+                android:text="@string/login"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 
@@ -194,7 +194,7 @@
                 android:layout_height="99px"
                 android:layout_marginTop="54px"
                 android:background="@drawable/orange_btn_selector"
-                android:text="Sign in via OTP"
+                android:text="@string/signin_via_otp"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
 

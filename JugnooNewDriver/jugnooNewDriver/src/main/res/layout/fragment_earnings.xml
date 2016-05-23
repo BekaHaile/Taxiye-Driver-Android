@@ -146,7 +146,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:singleLine="true"
-                            android:text="From:"
+                            android:text="@string/from"
                             android:textColor="@color/black"
                             android:textSize="28px"
                             />
@@ -181,7 +181,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:singleLine="true"
-                            android:text="To:"
+                            android:text="@string/to"
                             android:textColor="@color/black"
                             android:textSize="28px"
                             />
@@ -299,7 +299,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:singleLine="true"
-                            android:text="From:"
+                            android:text="@string/from"
                             android:textColor="@color/black"
                             android:textSize="28px"
                             />
@@ -334,7 +334,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:singleLine="true"
-                            android:text="To:"
+                            android:text="@string/to"
                             android:textColor="@color/black"
                             android:textSize="28px"
                             />

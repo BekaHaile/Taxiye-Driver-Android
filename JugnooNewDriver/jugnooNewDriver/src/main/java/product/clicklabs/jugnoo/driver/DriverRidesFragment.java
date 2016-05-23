@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
@@ -127,7 +126,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	class ViewHolderDriverRides {
 		TextView dateTimeValue, textViewRideId, textViewStatusString, textViewActualFareFare,
 				textViewCustomerPaid, textViewAccountBalance, textViewBalanceText, distanceValue, rideTimeValue,
-				waitTimeValue, textViewTransTypeText;
+				waitTimeValue, textViewTransTypeText, textViewCustomerPaidtext;
 		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
@@ -164,6 +163,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.dateTimeValue = (TextView) convertView.findViewById(R.id.dateTimeValue);
 				holder.dateTimeValue.setTypeface(Data.latoRegular(getActivity()));
+				holder.textViewCustomerPaidtext = (TextView) convertView.findViewById(R.id.textViewCustomerPaidtext);
+				holder.textViewCustomerPaidtext.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewRideId = (TextView) convertView.findViewById(R.id.textViewRideId);
 				holder.textViewRideId.setTypeface(Data.latoRegular(getActivity()));
 				holder.textViewStatusString = (TextView) convertView.findViewById(R.id.textViewStatusString);
@@ -216,6 +217,9 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 			holder.id = position;
 
+			PaymentActivity activity;
+			activity = (PaymentActivity) getActivity();
+
 
 			if (rideInfo.type.equalsIgnoreCase("ride")) {
 
@@ -224,11 +228,12 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				} else {
 					holder.relative.setBackgroundResource(R.drawable.list_white_inv_selector);
 				}
-				holder.textViewTransTypeText.setText("Ride");
+				holder.textViewCustomerPaidtext.setText(activity.getStringText(R.string.paid_cash));
+				holder.textViewTransTypeText.setText(activity.getStringText(R.string.Ride));
 				holder.textViewTransTypeText.setVisibility(View.VISIBLE);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.dateTimeValue.setVisibility(View.VISIBLE);
-				holder.textViewRideId.setText("Ride ID: " + rideInfo.id);
+				holder.textViewRideId.setText(activity.getStringText(R.string.Ride_id)+": " + rideInfo.id);
 				holder.textViewRideId.setVisibility(View.VISIBLE);
 
 				if ("".equalsIgnoreCase(rideInfo.statusString)) {
@@ -237,10 +242,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					holder.textViewStatusString.setVisibility(View.VISIBLE);
 					if ("Ride Cancelled".equalsIgnoreCase(rideInfo.statusString)) {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
+						holder.textViewStatusString.setText(activity.getStringText(R.string.rides_cancelled));
 					} else {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
+						holder.textViewStatusString.setText(activity.getStringText(R.string.ride_complete));
 					}
-					holder.textViewStatusString.setText(rideInfo.statusString);
 				}
 
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.customerPaid)));
@@ -254,7 +260,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				} else {
 					holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-					holder.textViewBalanceText.setText("Account");
+					holder.textViewBalanceText.setText(activity.getStringText(R.string.account));
 					holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 				}
@@ -266,8 +272,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
-				holder.distanceValue.setText(rideInfo.distance + " km, ");
-				holder.rideTimeValue.setText(rideInfo.rideTime + " min");
+				holder.distanceValue.setText(rideInfo.distance+" " + activity.getStringText(R.string.km) + ", ");
+				holder.rideTimeValue.setText(rideInfo.rideTime + " " + activity.getStringText(R.string.min));
 
 
 
@@ -279,14 +285,14 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
 				holder.textViewAccountBalance.setVisibility(View.VISIBLE);
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
-				holder.textViewTransTypeText.setText("Referral");
+				holder.textViewTransTypeText.setText(activity.getStringText(R.string.referral));
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-				holder.textViewRideId.setText("Customer ID: " + rideInfo.customerId);
+				holder.textViewRideId.setText(getResources().getString(R.string.customer_id)+": " + rideInfo.customerId);
 				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.referralAmount)));
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
 				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.referralAmount))));
 				holder.textViewAccountBalance.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-				holder.textViewBalanceText.setText("Account");
+				holder.textViewBalanceText.setText(activity.getStringText(R.string.account));
 				holder.textViewBalanceText.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
 
 			} else if (rideInfo.type.equalsIgnoreCase("phone_deductions")) {
@@ -296,7 +302,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewCustomerPaid.setVisibility(View.VISIBLE);
 				holder.textViewAccountBalance.setVisibility(View.VISIBLE);
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
-				holder.textViewTransTypeText.setText("Phone Deduction");
+				holder.textViewTransTypeText.setText(activity.getStringText(R.string.phone_deduction));
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
@@ -313,8 +319,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewAccountBalance.setVisibility(View.VISIBLE);
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
 				holder.textViewStatusString.setVisibility(View.VISIBLE);
-				holder.textViewTransTypeText.setText("Paytm Transaction");
-				holder.textViewRideId.setText("Phn.No. "+rideInfo.phone);
+				holder.textViewTransTypeText.setText(activity.getStringText(R.string.paytm_transaction));
+				holder.textViewRideId.setText(activity.getStringText(R.string.phone_no)+rideInfo.phone);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
@@ -366,7 +372,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
                                     if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
                                         HomeActivity.logoutUser(activity);
                                     } else {
-                                        updateListData("Some error occurred. Tap to retry", true);
+                                        updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
                                     }
 
                                 } else {
@@ -395,11 +401,11 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
                                     }
 
 
-                                    updateListData("No rides currently", false);
+                                    updateListData(getResources().getString(R.string.no_rides), false);
                                 }
                             } catch (Exception exception) {
                                 exception.printStackTrace();
-                                updateListData("Some error occurred. Tap to retry", true);
+                                updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
                             }
                             progressBar.setVisibility(View.GONE);
                         }
@@ -408,7 +414,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
                         @Override
                         public void failure(RetrofitError error) {
                             progressBar.setVisibility(View.GONE);
-                            updateListData("Some error occurred. Tap to retry", true);
+                            updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
                         }
                     });
 		} catch (Exception e) {

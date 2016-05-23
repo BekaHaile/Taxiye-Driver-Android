@@ -2,24 +2,32 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.flurry.android.FlurryAgent;
-
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -27,8 +35,8 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -39,15 +47,19 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 29/03/16.
  */
-public class LoginViaOTP extends Activity {
+public class LoginViaOTP extends BaseActivity {
 
-	LinearLayout linearLayoutWaiting, relative, otpETextLLayout;
+	LinearLayout linearLayoutWaiting, relative, otpETextLLayout,selectLanguageLl;
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
+	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,"");
+	int languagePrefStatus;
+	Configuration conf;
+	Spinner spinner;
 	public static String OTP_SCREEN_OPEN = null;
-
+	List<String> categories = new ArrayList<>();
 
 	boolean loginDataFetched = false, sendToOtpScreen = false, fromPreviousAccounts = false;
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
@@ -80,6 +92,8 @@ public class LoginViaOTP extends Activity {
 
 
 	public void onCreate(Bundle savedInstanceState) {
+
+		fetchLanguageList();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_signin_otp);
 
@@ -87,11 +101,13 @@ public class LoginViaOTP extends Activity {
 		new ASSL(LoginViaOTP.this, relative, 1134, 720, false);
 
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt.setHint(getStringText(R.string.phone_number));
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt = (EditText) findViewById(R.id.otpEt);
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt.setEnabled(false);
 		linearLayoutWaiting = (LinearLayout) findViewById(R.id.linearLayoutWaiting);
+		selectLanguageLl = (LinearLayout) findViewById(R.id.selectLanguageLl);
 		otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -101,10 +117,11 @@ public class LoginViaOTP extends Activity {
 		btnReGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
 		loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
-
+		spinner = (Spinner) findViewById(R.id.language_spinner);
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -128,6 +145,7 @@ public class LoginViaOTP extends Activity {
 				if ("".equalsIgnoreCase(phoneNo)) {
 					phoneNoEt.requestFocus();
 					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
+
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
 					try {
@@ -163,7 +181,7 @@ public class LoginViaOTP extends Activity {
 					}
 				} else {
 					phoneNoEt.requestFocus();
-					phoneNoEt.setError("Please enter valid phone no.");
+					phoneNoEt.setError(getResources().getString(R.string.valid_phone_number));
 				}
 			}
 		});
@@ -175,10 +193,9 @@ public class LoginViaOTP extends Activity {
 				String otpCode = otpEt.getText().toString().trim();
 				if (otpCode.length() > 0) {
 					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNoEt.getText()), "", otpCode);
-					;
 				} else {
 					otpEt.requestFocus();
-					otpEt.setError("Code can't be empty");
+					otpEt.setError(getResources().getString(R.string.code_empty));
 				}
 			}
 		});
@@ -203,18 +220,88 @@ public class LoginViaOTP extends Activity {
 		});
 
 
-		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
 
 		OTP_SCREEN_OPEN = "yes";
+
+
+
+
+//		// Spinner Drop down elements
+//
+//		categories.add("Select Language");
+//		categories.add("Hindi");
+//		categories.add("Gujrati");
+//		categories.add("Oriya");
+//		categories.add("Malayalam");
+//		categories.add("Telgu");
+//		categories.add("Tamil");
+//		categories.add("Kannada");
+//		categories.add("English");
+
+		// Creating adapter for spinner
+
+
+
+	}
+
+
+	public void fetchLanguageList() {
+		try {
+			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
+				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<>();
+				params.put("device_model_name", android.os.Build.MODEL);
+				params.put("android_version", android.os.Build.VERSION.RELEASE);
+
+				RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						DialogPopup.dismissLoadingDialog();
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							String message = JSONParser.getServerMessage(jObj);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								languagePrefStatus = jObj.getInt("locale_preference_enabled");
+								JSONArray jArray = jObj.getJSONArray("locales");
+								if (jArray != null) {
+									for (int i = 0; i < jArray.length(); i++) {
+										categories.add(jArray.get(i).toString());
+									}
+								}
+								showLanguagePreference();
+
+							} else {
+								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+						}
+
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
 	public void generateOTP(final String phoneNo) {
 		try {
 			if (AppStatus.getInstance(LoginViaOTP.this).isOnline(LoginViaOTP.this)) {
-				DialogPopup.showLoadingDialog(LoginViaOTP.this, "Loading...");
+				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
-				params.put("phone_no", "+91"+phoneNo);
+				params.put("phone_no", "+91" + phoneNo);
 
 				RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -257,6 +344,7 @@ public class LoginViaOTP extends Activity {
 			e.printStackTrace();
 		}
 	}
+
 
 	CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(30000, 5);
 
@@ -309,7 +397,7 @@ public class LoginViaOTP extends Activity {
 			}
 			if (Utils.checkIfOnlyDigits(otp)) {
 				if (!"".equalsIgnoreCase(otp)) {
-					if(Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+					if (Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
 						otpEt.setText(otp);
 						otpEt.setSelection(otpEt.getText().length());
 						loginViaOtp.performClick();
@@ -324,8 +412,8 @@ public class LoginViaOTP extends Activity {
 	public void sendLoginValues(final Activity activity, final String emailId, final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+			conf = getResources().getConfiguration();
 //			RequestParams params = new RequestParams();
 
 			if (Data.locationFetcher != null) {
@@ -350,7 +438,7 @@ public class LoginViaOTP extends Activity {
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", "");
+			params.put("locale", conf.locale.toString());
 
 			if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
 				params.put("auto_n_cab_installed", "1");
@@ -405,11 +493,7 @@ public class LoginViaOTP extends Activity {
 							} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
-								enteredEmail = emailId;
-								phoneNoOfLoginAccount = jObj.getString("phone_no");
-								accessToken = jObj.getString("access_token");
-								otpErrorMsg = jObj.getString("error");
-								sendToOtpScreen = true;
+								DialogPopup.alertPopup(activity, "", getResources().getString(R.string.no_not_verified));
 							} else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
 								if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
@@ -445,7 +529,7 @@ public class LoginViaOTP extends Activity {
 	}
 
 	public void performbackPressed() {
-		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG,"false");
+		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
 		Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
@@ -456,7 +540,7 @@ public class LoginViaOTP extends Activity {
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		if(hasFocus && loginDataFetched){
+		if (hasFocus && loginDataFetched) {
 			startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
 			loginDataFetched = false;
 			finish();
@@ -464,6 +548,52 @@ public class LoginViaOTP extends Activity {
 		} else if(hasFocus && sendToOtpScreen){
 			sendIntentToOtpScreen();
 		}
+	}
+
+	public void showLanguagePreference() {
+
+		if (languagePrefStatus == 1) {
+			selectLanguageLl.setVisibility(View.VISIBLE);
+		} else {
+			selectLanguageLl.setVisibility(View.GONE);
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		// Drop down layout style - list view with radio button
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// attaching data adapter to spinner
+		spinner.setAdapter(dataAdapter);
+
+		if (!selectedLanguage.equalsIgnoreCase("")) {
+			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
+			spinner.setSelection(spinnerPosition);
+		}
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+
+
+				// Showing selected spinner item
+
+				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
+
+				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
+					finish();
+					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+					startActivity(getIntent());
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
 	}
 
 

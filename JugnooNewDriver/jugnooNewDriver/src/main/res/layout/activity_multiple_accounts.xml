@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="SIGN UP"
+                android:text="@string/SIGN_UP"
                 android:textColor="@color/white"
                 android:textSize="36px" />
 
@@ -60,7 +60,7 @@
                     android:layout_marginRight="20px"
                     android:layout_marginTop="40px"
                     android:gravity="center"
-                    android:text="Two accounts have already been created on this device"
+                    android:text="@string/two_account_on_device"
                     android:textColor="@color/black_text"
                     android:textSize="27px" />
 
@@ -73,7 +73,7 @@
                     android:layout_marginRight="20px"
                     android:layout_marginTop="10px"
                     android:gravity="center"
-                    android:text="Please login through one of these accounts"
+                    android:text="@string/please_login_from_these_accounts"
                     android:textColor="@color/black_text"
                     android:textSize="27px" />
 
@@ -102,7 +102,7 @@
                     android:layout_marginRight="20px"
                     android:layout_marginTop="30px"
                     android:gravity="center"
-                    android:text="If you would still like to create a new account"
+                    android:text="@string/create_new_account_msg"
                     android:textColor="@color/black_text"
                     android:textSize="27px" />
 
@@ -122,7 +122,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="20px"
                         android:gravity="center"
-                        android:text="Please contact our customer care"
+                        android:text="@string/please_contact_customer_care"
                         android:textColor="@color/black_text"
                         android:textSize="27px" />
 
@@ -134,7 +134,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="80px"
                         android:gravity="center"
-                        android:text="MAIL US"
+                        android:text="@string/mail_us"
                         android:textColor="@drawable/black_color_selector"
                         android:textSize="26px" />
 

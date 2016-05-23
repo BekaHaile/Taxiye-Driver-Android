@@ -82,21 +82,21 @@
 
             <Button
                 android:id="@+id/buttonLogin"
+                android:text="@string/login"
                 android:layout_width="636px"
                 android:layout_height="112px"
                 android:background="@drawable/background_white_rounded_bordered"
-                android:text="LOGIN"
                 android:textColor="@color/new_orange"
                 android:textSize="@dimen/button_text_size"/>
 
             <Button
                 android:id="@+id/buttonRegister"
+                android:text="@string/register"
+                android:textColor="@color/new_orange"
                 android:layout_width="636px"
                 android:layout_height="112px"
                 android:layout_marginTop="24px"
                 android:background="@drawable/background_white_rounded_bordered"
-                android:text="REGISTER"
-                android:textColor="@color/new_orange"
                 android:textSize="@dimen/button_text_size"
                 android:visibility="gone"
                 />

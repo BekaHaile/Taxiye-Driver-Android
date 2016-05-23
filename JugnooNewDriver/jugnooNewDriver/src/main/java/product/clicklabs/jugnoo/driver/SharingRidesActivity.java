@@ -127,7 +127,7 @@ public class SharingRidesActivity extends Activity {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				DialogPopup.showLoadingDialog(SharingRidesActivity.this, "Loading...");
+				DialogPopup.showLoadingDialog(SharingRidesActivity.this, getResources().getString(R.string.loading));
 				getSharedRidesAsync(SharingRidesActivity.this);
 			}
 		});
@@ -173,7 +173,7 @@ public class SharingRidesActivity extends Activity {
 						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 							HomeActivity.logoutUser(activity);
 						} else {
-							updateListData("Some error occurred. Tap to retry", true);
+							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 						}
 					} else {
 						sharedRides.clear();
@@ -188,11 +188,11 @@ public class SharingRidesActivity extends Activity {
 							}
 							sharedRides.add(rideInfo);
 						}
-						updateListData("No rides currently", false);
+						updateListData(getResources().getString(R.string.no_rides_currently), false);
 					}
 				} catch (Exception exception) {
 					exception.printStackTrace();
-					updateListData("Some error occurred. Tap to retry", true);
+					updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 				}
 				swipeRefreshLayoutShareRides.setRefreshing(false);
 				DialogPopup.dismissLoadingDialog();
@@ -202,7 +202,7 @@ public class SharingRidesActivity extends Activity {
 			public void failure(RetrofitError error) {
 				swipeRefreshLayoutShareRides.setRefreshing(false);
 				DialogPopup.dismissLoadingDialog();
-				updateListData("Some error occurred. Tap to retry", true);
+				updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 			}
 		});
 

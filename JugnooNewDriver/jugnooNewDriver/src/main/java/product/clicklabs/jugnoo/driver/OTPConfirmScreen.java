@@ -54,7 +54,6 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public static boolean intentFromRegister = true;
 	public static EmailRegisterData emailRegisterData;
 
-	String otpHelpStr = "Please enter the One Time Password you just received via SMS at ";
 
 	@Override
 	protected void onStart() {
@@ -130,7 +129,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
-					editTextOTP.setError("Code can't be empty");
+					editTextOTP.setError(getResources().getString(R.string.code_empty));
 				}
 
 			}
@@ -180,7 +179,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		try {
-			otpHelpText.setText(otpHelpStr + " " + emailRegisterData.phoneNo);
+			otpHelpText.setText(getResources().getString(R.string.enter_otp_received) + " " + emailRegisterData.phoneNo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -243,7 +242,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public void sendSignupValues(final Activity activity, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //		RequestParams params = new RequestParams();
 
@@ -254,8 +253,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 
 
 			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
-					Data.deviceToken, "",
-					Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
+					Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 
 
@@ -311,7 +309,7 @@ public class OTPConfirmScreen extends Activity implements LocationUpdate {
 	public void initiateOTPCallAsync(final Activity activity, String phoneNo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 			RestClient.getApiServices().initiateOTPCall(phoneNo, new Callback<BookingHistoryResponse>() {
 

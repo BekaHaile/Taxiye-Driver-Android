@@ -1,9 +1,11 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.ShareActivityFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareEarnFragment;
 import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
@@ -14,8 +16,11 @@ import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
  */
 public class ShareFragmentAdapter extends FragmentPagerAdapter {
 
-	public ShareFragmentAdapter(FragmentManager fm) {
+	Context context;
+	public ShareFragmentAdapter(Context context, FragmentManager fm) {
 		super(fm);
+		this.context = context;
+
 	}
 
 	@Override
@@ -43,9 +48,9 @@ public class ShareFragmentAdapter extends FragmentPagerAdapter {
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 			case 0:
-				return "Earn";
+				return context.getResources().getString(R.string.Earn);
 			case 1:
-				return "Activity";
+				return context.getResources().getString(R.string.Activity);
 		}
 
 		return null;

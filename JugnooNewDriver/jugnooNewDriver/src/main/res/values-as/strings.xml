@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Jugnoo Drivers</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+
+
+
+    <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live
+    <!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
+    <!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General &ndash;&gt;-->
+
+    <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
+    <string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
+
+    <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
+
+    <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
+
+
+
+
+    <!-- <string name="fb_app_id">782131025144439</string> -->
+    <string name="fb_app_id">782131025144439</string>
+
+
+    <string name="language_english_text">English</string>
+    <string name="language_hindi_text">हिंदी</string>
+
+
+    <string name="rupee">\u20B9</string>
+    <string name="rupee_zero">\u20B9 0.0</string>
+    <string name="rupee_100">\u20B9 100</string>
+    <string name="rupee_200">\u20B9 200</string>
+    <string name="rupee_500">\u20B9 500</string>
+
+    <string name="rupee_zero_zero">\u20B9 0000.00</string>
+
+
+    <string name="about_1_text">জুগনোয়ে আপুনাক সহায় কৰে এটা বন্ধুত্বপূৰ্ণ আৰো কম খৰছৰ ভাড়া গুৱাহাটী মহানগৰীৰ ভিতৰত ।আৰো ইয়াৰ মূল্য বহুত কম,আৰো নিশ্বয়কে এটা ভাল আৰো বন্ধুত্ব সুলভ যাত্ৰা।</string>
+    <string name="about_2_text">ৰেত কাৰ্দ</string>
+    <string name="about_3_text">প্ৰথম ২ কিঃমিঃ : Rs ৩০ টকা আৰো পিছৰ ২ কিঃমিঃ : Rs ১০টকা/ কিঃমিঃ, ৰখাৰ সময় : ১.৫/মিন ১৫ মিনিতৰ পিছত।</string>
+    <string name="email_id">ইমেইল আইডি</string>
+    <string name="confirm_email_id">ইমেইল আইডি নিশ্চিত কৰক</string>
+    <string name="password">গোপন অংক</string>
+    <string name="sign_in">ছাইন ইন</string>
+    <string name="forgot_password">গোপন অংক পাহৰিলে নেকি ?</string>
+    <string name="sign_up">ছাইন আপ</string>
+    <string name="or">নাইবা</string>
+    <string name="sign_in_with_facebook">ছাইন ইন কৰক ফেচবোকৰ জৰিয়তে</string>
+    <string name="save_to_favorite">ফেভৰাইতত চেভ কৰক</string>
+    <string name="enter_name_for_favorite">ফেভৰাইতত নাম ভৰ্ত্তি কৰক</string>
+    <string name="ok">অকেইত কিল্ক কৰক</string>
+    <string name="first_name">আপুনাৰ প্ৰথম নাম</string>
+    <string name="last_name">আপুনাৰ উপাধি</string>
+    <string name="phone_number">ফোন নং</string>
+    <string name="confirm_password">গোপন অংক নিশ্চিত কৰক</string>
+    <string name="confirmation_code">নিশ্চিত কদতো ভৰাঅক</string>
+    <string name="check_your_registered_email_phone_number_for_otp">আপুনাৰ পঞ্জিয়ন কৰা ইমেইল নাইবা ফোন নং অ তি পীৰ কাৰনে</string>
+    <string name="enter_code">কদতো ভৰাঅক</string>
+    <string name="done">সৰ্ম্পন</string>
+    <string name="amount">টকা</string>
+    <string name="no_driver_available">এতিয়া কোনো দ্ৰাইভৰ নাই</string>
+    <string name="no_driver_available_message">এতিয়া কোনো দ্ৰাইভৰ নাই ৩কিঃ মিঃৰ ভিতৰত।আমি বিছাৰী আছো</string>
+    <string name="logout">লগ আওত</string>
+    <string name="are_you_sure_you_want_to_logout">আপুনি নিশ্চয় লগ আওত কৰিব বিছাৰিছে নে?</string>
+    <string name="cancel">কেনছেল</string>
+    <string name="retry">পুনৰ চেষ্টা</string>
+    <string name="select_language">ভাষা পচন্দ কৰক</string>
+    <string name="enter_phone_number">ফোন নং</string>
+    <string name="enter_email">ইমেইল আইডি</string>
+    <string name="send_email">ইমেইল পঠাওক</string>
+    <string name="favorites">ফেভৰাইতচ</string>
+    <string name="no_favorite_locations_added">ফেভৰাইতত আপুনি সদাই গৈ থকা জগাৰ নাম দিয়া হোৱা নাই</string>
+    <string name="from">কৰ পৰা</string>
+    <string name="to">কৰ লৈকে</string>
+    <string name="rides">ভাড়া</string>
+    <string name="no_rides_currently">কোনো ভ্ৰমন লোৱা হোৱা নাই</string>
+    <string name="history">বুৰঞ্জী</string>
+    <string name="missed">ভাৰা গ্ৰহন কৰা হোৱা নাই</string>
+    <string name="no_missed_rides_currently">কোনো ভাড়া হেৰোৱা নাই</string>
+    <string name="update">আপডেইত</string>
+    <string name="driver_mode">দ্ৰাইভৰ মড</string>
+    <string name="jugnoo_on">জুগনো অন</string>
+    <string name="driver_type">দ্ৰাইভৰ টাইপ</string>
+    <string name="ride_type">ভাড়াৰ টাইপ</string>
+    <string name="invite_friends">বন্ধুক আমৰ্ন্তন</string>
+    <string name="about">বিষয়</string>
+    <string name="support">সহযোগ</string>
+    <string name="sos">এচ অ এচ</string>
+    <string name="language_preferences">পছন্দিতা ভাষা</string>
+    <string name="ride_in_progress">ভাড়াটো চলি আছে</string>
+    <string name="click_to_view">চাবলৈ কিল্ক কৰক</string>
+    <string name="start_ride">ভাড়া আৰম্ভ কৰক</string>
+    <string name="end_ride">ভাড়া সমাপ্ত কৰক</string>
+    <string name="reached_destination">পাবলিগয়া ন্থান</string>
+    <string name="distance">দূৰত্ব</string>
+    <string name="wait_time">ৰখি থকা সযয়</string>
+    <string name="fare">ভাড়া</string>
+    <string name="driver_rating">দ্ৰাইভৰ ৰেটিং</string>
+    <string name="customer_rating">গ্ৰাহক ৰেটিং</string>
+    <string name="request_ride">ৰিকুৱেষ্ট্ৰ ৰাইড</string>
+    <string name="assigning_driver">দ্ৰাইভৰ নিদিষ্ট হৈ আছে</string>
+    <string name="no_drivers_nearby">কোনো দ্ৰাইভৰ ওচৰত নাই</string>
+    <string name="could_not_find_nearest_driver_distance">আটাতকৈ ওচৰৰ দ্ৰাইভৰ জনৰ দূৰত্ব নিদিষ্ট কৰি পৰা নাই</string>
+    <string name="nearest_driver_is">আটাতকৈ ওচৰৰ দ্ৰাইভৰ জন আছে</string>
+    <string name="away">ইমান দূৰত্ব আছে</string>
+    <string name="cancel_request_in">ভাড়া কেনচল</string>
+    <string name="your_ride_is">আপুনাৰ ভাড়াতো __কিঃ মিঃ</string>
+    <string name="away_and_will_arrive">ইমান দূৰত্ব আছে আৰো __টাইমত আহি পাব</string>
+    <string name="will_arrive_in">আহি পাব</string>
+    <string name="call_driver">দ্ৰাইভৰক কল কৰক</string>
+    <string name="you_have">আাপুনাৰ</string>
+    <string name="ride_request">এটা ভাড়া আহিছে</string>
+    <string name="accept_ride">ভাড়াটো একচেপ্ত কৰক</string>
+    <string name="cancel_request">ভাড়া কেনচল</string>
+    <string name="cancel_ride">ভাড়া কেনচল</string>
+    <string name="rating">ৰেটিং</string>
+    <string name="call">কল</string>
+    <string name="ride_time">ভাড়াৰ সময়</string>
+    <string name="start_wait">আাৰম্ভ কৰা আগত গ্ৰাহকৰ কাৰনে অপেক্ষা কৰক</string>
+    <string name="stop_wait">ভাড়াটো সমাপ্ত কৰক</string>
+    <string name="submit">ছাবমিত</string>
+    <string name="search_results">বিছাৰৰ ফলাফল</string>
+    <string name="search">বিছাৰ</string>
+    <string name="your_login_session_expired">আাপুনাৰ লগ ইন চেছন ওকলি গৈছে। অনু্গ্ৰহ কৰি আকৌ লগ ইন কৰক</string>
+    <string name="alert">এলাৰ্ট</string>
+    <string name="start_ride_error">আাপুনি গ্ৰাহকৰ ওছৰত উপস্থিত হবই লাগিব ৰাইড আৰম্ভ কৰিবলে</string>
+    <string name="server_error">চাৰভাৰ এৰৰ।পুনৰ চেস্ষ্টা কৰক</string>
+    <string name="server_not_responding">ওফ।চাৰভাৰ কাম কৰা নাই</string>
+    <string name="check_internet_message">আাপুনাৰ ইণ্টাৰনেত সংযোগ টো পৰীক্ষা কৰক</string>
+    <string name="driver_id">দ্ৰাইভৰ আই ডি</string>
+    <string name="rank_city">মহানগৰৰ ৰেংক</string>
+    <string name="rank_overall">মোঠ স্থান</string>
+    <string name="monthly">মাহেকীয়া নম্বৰ</string>
+    <string name="earnings">উপাৰ্জন</string>
+    <string name="Earnings">উপাৰ্জন</string>
+    <string name="JUGNOO">JUGNOO</string>
+    <string name="phone_no_cnt_be_empty">ফোন নম্বৰ কেতিয়াও খালী থাকিব নোৱাৰিব</string>
+    <string name="rides_taken">ভাড়া গ্ৰহন</string>
+    <string name="rides_missed">ভাড়া গ্ৰহন কৰা নাই</string>
+    <string name="rides_cancelled">ভাড়া কেনচল</string>
+    <string name="ride_cancelled">ভাড়া কেনচল</string>
+    <string name="Pls_enter_email">Please enter Email</string>
+    <string name="no_language_to_select">Language Option Not Available</string>
+    <string name="enter_some_amount">অনু্গ্ৰহ কৰি যিকোনো সংখ্যা লিখক</string>
+    <string name="enter_less_amount">কম পৰিমাণ সংখ্যা লিখক</string>
+    <string name="enter_valid_amount">অনু্গ্ৰহ কৰি নিশ্চিত সংখ্যা লিখক</string>
+    <string name="amnt_credited">Amount Credited</string>
+    <string name="online_hours">অনলাইন সময়</string>
+    <string name="Auto_not_working">অটোখন কাম কৰা নাই</string>
+    <string name="Traffic">ট্ৰেফিক</string>
+    <string name="accepted_by_mistake">ভাড়া ভোলতে একচেপ্ত হল</string>
+    <string name="Customer_asked_to_cancel">গ্ৰাহক জনে ভাড়া কেনচল কৰিবল কলে</string>
+    <string name="Not_able_to_contact_customer">গ্ৰাহক জনৰ সম্পৰ্ক কৰি পৰা নাই</string>
+    <string name="Customer_behavior">গ্ৰাহক জনৰ ব্যৱহাৰ বেয়া</string>
+    <string name="profile">প্ৰফাইল</string>
+    <string name="Duty_Hours">কমৰ সময়</string>
+    <string name="call_us">আমাক কল কৰক</string>
+    <string name="check_all">ছেক কৰক</string>
+    <string name="uncheck_all">আনছেক কৰক</string>
+    <string name="add_cash">এড কেছ</string>
+    <string name="add_customer_cash">এড কাচতমাৰ কেছ</string>
+    <string name="arrived">আহি পালে</string>
+    <string name="accept_subsidy">একচেপ্ত ছাবচিডী</string>
+    <string name="account">একাউণ্ট</string>
+    <string name="accept">গ্ৰহন</string>
+    <string name="away_from_you">আপুনা পৰা দুৰত আছে</string>
+    <string name="cancel_ride_text">আপুনি নিশ্চয়কৈ ভাড়াটো কেনচেল কৰিব বিছাৰিছে নে?</string>
+    <string name="end_ride_text">আপুনি নিশ্চয়কৈ ভাড়াটো সমাপ্ত কৰিব বিছাৰিছে নে?</string>
+    <string name="logout_text">আপুনি নিশ্চয়কৈ লগআউট কৰিব বিছাৰিছে নে?</string>
+    <string name="customer_pickup_text">আপনাক এজন গ্ৰাহক নিশ্বিত কৰা হৈছে।অনুগ্ৰহ কৰি ওঠাওক</string>
+    <string name="start_ride_text">আপুনি নিশ্চয়কৈ ভাড়াটো আৰম্ভ্ৰ কৰিব বিছাৰিছে নে?</string>
+    <string name="battery_level_text">বেটেৰীৰ পৰিমান সদায় 20% ত কৈ বেছি থাকিব লগিব ৰাইড একচেপ্ত কৰিবলে।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
+    <string name="battery_level_start_text">বেটেৰীৰ পৰিমান সদায় আৰম্ভ্ৰ কৰিবলৈ 10% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
+    <string name="battery_level_arrived_text">বেটেৰীৰ পৰিমান সদায় 10% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
+    <string name="back">বেক</string>
+    <string name="change_phone_no_text">সলনি কৰা ফোন নম্বৰতো আগৰ সতে একেই।</string>
+    <string name="local_positon_text">লকেল স্থান নিদিষ্ট কৰিব পৰা নাই</string>
+    <string name="overall_position_text">স্থান নিদিষ্ট কৰিব পৰা নাই</string>
+    <string name="cash_needed_text">নগদ প্ৰয়োজন: Rs.</string>
+    <string name="convenience_charges_text">গ্ৰাহকৰ কনভেনিয়েঞ্ছ ছাৰ্জ :</string>
+    <string name="code_empty">কদ খালি থাকিব নোৱৰি</string>
+    <string name="confirm_email_text">নিশ্চিত কৰা ইমেইল আইডি মিলা নাই</string>
+    <string name="choose_email_client">ইমেইল ক্লাইন্ত পচন্দ কৰক</string>
+    <string name="select_time_error_text">বৰ্ত্তমান সময়তকে আগৰ সময় চিল্কেত কৰিব নোৱাৰি</string>
+    <string name="call_me">মোলে কল কৰক</string>
+    <string name="change_phone_no">ফোন নং সলনি কৰিবলে</string>
+    <string name="creating_game">ক্ৰিয়েটিং গেম</string>
+    <string name="completed">সম্পূৰ্ন</string>
+    <string name="customer_name">গ্ৰাহকৰ নাম</string>
+    <string name="change">সলনি</string>
+    <string name="km">কিঃ মিঃ</string>
+    <string name="disable_mock_location">মক লকেইছন দিচেবেল কৰক</string>
+    <string name="daily">সদায়</string>
+    <string name="distance2">দূৰত্ব</string>
+    <string name="discount">দিচকাওন্ত</string>
+    <string name="enter_new_phone_no">নতুন ফোন নম্বৰ দিয়ক</string>
+    <string name="enter_fare">ভাড়া লিখক</string>
+    <string name="enter_otp">ৱান তাইম পাচৱাৰ্দ লিখক</string>
+    <string name="email">ইমেইল</string>
+    <string name="fare1">ভাড়া</string>
+    <string name="forgot_password_cap">পাচৱাৰ্দ পাহিৰলে</string>
+    <string name="free_ride">বিনামূলীয়া ভাড়া</string>
+    <string name="final_amount">মুঠ ভাড়া</string>
+    <string name="fare2">ভাড়া</string>
+    <string name="fare_details">ভাড়াৰ সবিশেষ</string>
+    <string name="go_to_setting">ছেটিংছ লৈ যাওক</string>
+    <string name="google_pay_service_error">গ্ৰুগল প্লে-ছাভিৰ্চ এৰৰ</string>
+    <string name="google_pay_service_error_message">গ্ৰুগল প্লে-ছাভিৰ্চ বিছাৰি নাপালে নাইবা পুৰণি হৈ গলে।গ্ৰুগল প্লে-ছাভিৰ্চ ইনষ্টল কৰক</string>
+    <string name="go_to_playstore">প্লে-স্থৰলৈ যাওক</string>
+    <string name="help">সহায়</string>
+    <string name="have_arrived">আপুনি আহি পালেনে?</string>
+    <string name="invite_earn">আমন্তন কৰক আৰো উপাজৰ্ন কৰক</string>
+    <string name="create_new_account_msg">যদি আপুনি এতিয়াও নতুন একাউন্ত খোলিব বিছাৰে</string>
+    <string name="not_recived_otp">যদি আপোনী OTP পোৱা নাই</string>
+    <string name="jugnoo_cash">জোগনু পইচা</string>
+    <string name="jugnoo">জোগনু</string>
+    <string name="jugnoo_off">জোগনু এতিয়া অফ আচে</string>
+    <string name="jugnoo_cut">জোগনুয়ে কাতিলে</string>
+    <string name="loading">লোডিং...</string>
+    <string name="local_position">লোকেল ষ্টান</string>
+    <string name="location_setting">ষ্টানিয় চেতিঙ্চ</string>
+    <string name="location_setting_enable_message">লকেছন অন কৰা নাই।আপুনি ছেটিঙচত গৈ অন কৰিব বিচাৰিচে নেকি?</string>
+    <string name="luggage_charge">বস্তুৰ চাৰ্জ</string>
+    <string name="login">লগইন</string>
+    <string name="restart_phone">ফোন অ কৰি অন কৰক</string>
+    <string name="money_to_take">লবলগিয়া পইছা</string>
+    <string name="min_fare">মিনিমাম ভাড়া</string>
+    <string name="meals_on">মীলচ অন</string>
+    <string name="mail_us">আমাক মেইল কৰক</string>
+    <string name="message">মেচেজ</string>
+    <string name="no">নহয়</string>
+    <string name="yes">হয়</string>
+    <string name="no_luggage">কোনু বস্তু যোগ কৰা হোৱা নাই</string>
+    <string name="luggage_added">বস্তু বিলাক যোগ কৰা হল</string>
+    <string name="no_lugage">কোনু বস্তু নাই</string>
+    <string name="network_problem">নেটৱক ৰ অসুবিধা।অনুগ্ৰহ কৰি ছুইচটো অফ কৰক আৰো ৫ মিনীত ৰখী জোগনু আকৌ অন কৰক</string>
+    <string name="no_data_to_show">একো ডাটা দেখুওৱা নাই</string>
+    <string name="no_cash">নগদ নাই</string>
+    <string name="no_of_rides">ভাড়া ৰ পৰিমান</string>
+    <string name="name">নাম</string>
+    <string name="name_colon">নাম:</string>
+    <string name="overall_position">মুঠ স্থান</string>
+    <string name="of_upto_100">১০০ টকাৰ লৈকে</string>
+    <string name="some_amount">অনু্গ্ৰহ কৰি যিকোনো সংখ্যা লিখক</string>
+    <string name="less_amount">কম পৰিমাণ সংখ্যা লিখক</string>
+    <string name="valid_amount">অনু্গ্ৰহ কৰি নিশ্চিত সংখ্যা লিখক</string>
+    <string name="Phone_number_not_empty">ফোন নম্বৰ কেতিয়াও খালী থাকিব নোৱাৰিব</string>
+    <string name="valid_phone_number">অনু্গ্ৰহ কৰি নিশ্চিত ফোন নম্বৰ লিখক</string>
+    <string name="please_wait">অনু্গ্ৰহ কৰি অপেক্ষা কৰক</string>
+    <string name="enter_some_fare">অনু্গ্ৰহ কৰি ভাড়া লিখক</string>
+    <string name="please_reach">অনু্গ্ৰহ কৰি আহক</string>
+    <string name="by">ইমান সময়ৰ ভিতৰত</string>
+    <string name="take_fare_from_customer">অনু্গ্ৰহ কৰি ওপৰত লিখা ভাড়া লওক</string>
+    <string name="enter_name">অনু্গ্ৰহ কৰি নাম লিখক</string>
+    <string name="Pls_enter_email_or_phn">অনু্গ্ৰহ কৰি ইমেইল বা ফোন নম্বৰ লিখক</string>
+    <string name="confirm_email">অনু্গ্ৰহ কৰি ইমেইল আইডি নিশ্চিত কৰক</string>
+    <string name="pls_enter_phone_number">অনু্গ্ৰহ কৰি ফোন নম্বৰ লিখক</string>
+    <string name="enter_valid_phone_number">অনু্গ্ৰহ কৰি নিশ্চিত ফোন নম্বৰ লিখক</string>
+    <string name="enter_password">অনু্গ্ৰহ কৰি গোপন অংক লিখক</string>
+    <string name="pls_confirm_password">অনু্গ্ৰহ কৰি গোপন অংক নিশ্চিত কৰক</string>
+    <string name="password_atleast_6">গোপন অংক ৬ টা অংকৰ হব লাগিব</string>
+    <string name="valid_email">অনু্গ্ৰহ কৰি নিশ্চিত ইমেইল আইডি লিখক</string>
+    <string name="password_not_match">গোপন অংক মিল হোৱা নাই</string>
+    <string name="password_to_continue">অনু্গ্ৰহ কৰি চলিখক আগলৈ জাবলে</string>
+    <string name="enter_new_phone_number">অনু্গ্ৰহ কৰি আপোনাৰ নতুন ফোন নম্বৰ লিখক</string>
+    <string name="position">স্থান</string>
+    <string name="enter_phone_to_have_instruction">অনু্গ্ৰহ কৰি গোপন অংক আকৌ ঠিক কৰাৰ নিদেৰ্শ পাবলে আপোনাৰ ফোন নম্বৰ লিখক</string>
+    <string name="pay">মূল্য</string>
+    <string name="please_login_from_these_accounts">অনু্গ্ৰহ কৰি তলত দিয়া যিকোনো একাউন্তৰ পৰা লগ ইন কৰক</string>
+    <string name="please_contact_customer_care">অনু্গ্ৰহ কৰি আমাৰ কাচতমাৰ কেৰ লগত যোগাযোগ কৰক</string>
+    <string name="paid_cash">নগদ দিয়ক</string>
+    <string name="ride_id">ৰাইড আইডি</string>
+    <string name="Ride_id">ৰাইড আইডি</string>
+
+    <string name="rupees">Rs</string>
+    <string name="ride_time2">ৰাইডৰ সময়</string>
+    <string name="rate">ৰেত</string>
+    <string name="ride_in_progress_cant_logout">ৰাইড চলি আছে। ৰাইডৰটো শেষ হোৱাৰ পিছত হে লগ আউত কৰিব পাৰিব</string>
+    <string name="rate_applied">চলি থকা ৰেত</string>
+    <string name="register">পঞ্জীয়ন</string>
+    <string name="request_registration">পঞ্জীয়নৰ কাৰনে অনুৰোধ</string>
+    <string name="reg_info">পঞ্জীয়নৰ সবিশেষ</string>
+    <string name="ride_details">ৰাইডৰ সবিশেষ</string>
+    <string name="ride_fare">ৰাইডৰ ভাড়া</string>
+    <string name="can_not_calculated_distance">ক্ষমা কৰক, আমি আপোনাৰ দূৰত্ব নিশ্চিত কৰিব পৰা নাই</string>
+    <string name="set">ঠিক কৰক</string>
+    <string name="SUBMIT">জমা</string>
+    <string name="super_driver">শ্ৰেষ্ঠ চালক</string>
+    <string name="sharing_rides">ভাড়া বিতৰন জাড়ি আছে</string>
+    <string name="sharing_on">বিতৰন জাড়ি আছে</string>
+    <string name="SIGN_UP">ছাইন আপ</string>
+    <string name="submit_request">জমা কৰিবৰ বাবে অনুৰোধ</string>
+    <string name="status">ইছতেতাচ</string>
+    <string name="total_time">মূঠ সময়</string>
+    <string name="min">সময়</string>
+    <string name="app_need_active_gps">এই এপটোৰ কাৰনে জি পি এচৰ সংযোগ প্ৰয়োযন। জি পি এচটো অন কৰক</string>
+    <string name="app_needs_network_time">এই এপটোৰ কাৰনে নেটৰ্ৱকে দিয়া সময়ৰ প্ৰয়োজন।ছেটীঙচত গৈ ঠিক কৰক।</string>
+    <string name="take">লওক</string>
+    <string name="req_accepted_by_other_driver">আপোনাৰ অনুৰোধ বেলেগ চালক এজনে একচেপ্ত কৰিছে</string>
+    <string name="amount_entered">আপুনি লিখা মূল্যটো হল</string>
+    <string name="time">সময়</string>
+    <string name="time_new">সময়</string>
+    <string name="jugnoo_ride_over">আপুনাৰ জুগনো ভাড়াটো সমাপ্ত হৈছে ।</string>
+    <string name="today">আজি</string>
+    <string name="this_month">এই মাহত</string>
+    <string name="title">উপাধি</string>
+    <string name="two_account_on_device">দুটা একাউন্ট ইতিমধ্য বনোৱা হল</string>
+    <string name="total_fare">মুঠ ভাড়া</string>
+    <string name="updating">আপডেটিং</string>
+    <string name="user_cancel_request">গ্ৰাহক জনে অনুৰোধ টো কেনচেল কৰিছে</string>
+    <string name="verification">ভেৰিফিকেচ্‌ন</string>
+    <string name="verify_me">ভেৰিফাই কৰক</string>
+    <string name="waiting_for_location">স্থানৰ কাৰনে ৰখি থকা হৈছে.....</string>
+    <string name="wait">ৰখা</string>
+    <string name="whatsapp_not_installed">ওৱাতৰ্চআাপ ইনছট্ল কৰা হোৱা নাই</string>
+    <string name="weekly">সাপ্তাহিক</string>
+    <string name="will_revert_you">আমি অতি সোনকালে আমাৰ ফালৰ পৰা আপোনাক জনাম</string>
+    <string name="cannot_add_less_than">আপুনি ইমান এমাউন্তৰ তলত যোগ কৰিব নোৱাৰে/Rs</string>
+    <string name="your_position">আপুনাৰ স্থান হল</string>
+    <string name="your_overall_position">আপুনাৰ মুঠ স্থান হল</string>
+    <string name="got_new_request">আপুনি এটা নতুন অনুৰোধ লাভ কৰিছে</string>
+    <string name="present_near_customer_location">আাপুনি গ্ৰাহকৰ ওছৰত উপস্থিত থাকিব লাগিব</string>
+    <string name="present_near_customer_location_to_start">আাপুনি গ্ৰাহকৰ ওছৰত উপস্থিত থাকিব লাগিব</string>
+    <string name="You_have_already_created">ইতিমধ্য %1$d একাউন্ট আপুনাৰ ফোনত বনোৱা হৈছে। অনুগ্ৰহ কৰি নতুন একাউন্ট বনোৱাৰ কাৰণ লিখক</string>
+    <string name="your_referral_code">আপোনাৰ ৰেফাৰেল কড্‌টো হৈছে</string>
+    <string name="tap_to_retry">পুনৰ চেষ্টা কৰক</string>
+    <string name="error_occured_tap_to_retry">ভূল উলাইছে।পুনৰ চেষ্টা কৰক</string>
+    <string name="no_missed_rides">এতিয়ালৈকে কোনো মিচ্দ্‌ ৰাইড নাই</string>
+    <string name="no_internet_tap_to_retry">ইন্তাৰনেটৰ সংযোগ নাই।পুনৰ চেষ্টা কৰক</string>
+    <string name="no_rides">এতিয়া কোনো ভাড়া নাই</string>
+    <string name="pickup_location">আপুনাৰ ওঠাব লগা স্থান</string>
+    <string name="money_to_pay">দিবলগীয়া পইছা :Rs</string>
+    <string name="money_to">জুগনোক দিবলগীয়া পইছা :Rs</string>
+    <string name="start_ride_loc">আপোনি আৰম্ভ কৰা স্থান</string>
+    <string name="sec_left">বা কি থকা চেকেন্দচ</string>
+    <string name="km_away">ইমান কিঃ মিঃ দুৰত</string>
+    <string name="m_away">মিঃ দুৰত</string>
+    <string name="some_error_occured">কিছুমান ভূল দেখা গৈছে</string>
+    <string name="take_cash">নগদ লওক</string>
+    <string name="wallet">ৱালেত</string>
+    <string name="Scheduled_Ride_Pickup">নিশ্বিত ভাড়াৰ উঠাব লগীয়া স্থান</string>
+    <string name="referral_msg">মোৰ কোডটো ব্যৱহাৰ কৰি জোগনু কাস্তোমাৰ এপ দাউনলড কৰক আৰো জোগনু কেছ উপাৰ্জন কৰক নাইবা ইয়াৰ পৰা দাউনলড কৰক http://smarturl.it/jugnoo</string>
+    <string name="no_of_account">ইতিমধ্য আপুনাৰ ফোনত একাউন্ট বনোৱা হৈছে।</string>
+    <string name="enter_otp_received">ৱান তাইম পাচৱাৰ্দ লিখক জোনতো আপোনী এচ এম এচৰ জড়িয়তে পাইচে</string>
+    <string name="select_reason">অনুগ্ৰহ কৰি এটা কাৰণ দিয়ক</string>
+    <string name="referral_money">ৰেফাৰেল পৈছা</string>
+    <string name="send">পঠাওক</string>
+    <string name="wait_here">ইয়াত ৰখক</string>
+    <string name="use_jugnoo_fare">জোগনু ভাড়া ব্যৱহাৰ কৰক</string>
+    <string name="view_account">একাউন্ট চাওক</string>
+    <string name="hint_created_multiple_account">দুটা একাউন্ট আপুনাৰ ফোনত বনোৱা হৈছে। অনুগ্ৰহ কৰি নতুন একাউন্ট বনোৱাৰ কাৰণ লিখক</string>
+    <string name="convenience_charge">কনভেনিয়েঞ্ছ ছাৰ্জ :</string>
+    <string name="cancel_subsidy">কেনচেল ছাবচিডী</string>
+    <string name="inc_subsidy">(inc. ছাবচিডী)</string>
+    <string name="to_end">লৈ</string>
+    <string name="Edit_profile">এডিত প্ৰফাইল</string>
+    <string name="info">নিদেৰ্শ</string>
+    <string name="local_leaderboard">লোকেল</string>
+    <string name="global_leaderboard">আন্তৰাস্তীয়</string>
+    <string name="daily_leaderboard">সদায়</string>
+    <string name="weekly_leaderboard">সপ্তাহিক</string>
+    <string name="lb_rank">স্থান</string>
+    <string name="lb_name">নাম</string>
+    <string name="lb_no_downloads">দাউনলডৰ সংখ্যা</string>
+    <string name="number_of_downloads">দাউনলডৰ সংখ্যা</string>
+    <string name="number_of_first_rides">প্ৰথম বাৰৰ বাবে ভাড়া লোৱাৰ সংখ্যা</string>
+    <string name="money_earned">ৰেফাৰেলৰ পৰা উপাৰ্জন কৰা টকা</string>
+    <!--<string name="data_effective_format">আপোনাৰ দাতা ___পৰা কাম কৰা আৰম্ভ কৰিব</string>-->
+    <string name="notifications">নিদেৰ্শৱালী চেন্তাৰ</string>
+    <string name="click_for_direction">নিদেৰ্শৰ কাৰণে ক্লিক কৰক</string>
+    <string name="time_left">সময় বাকী আছে</string>
+    <string name="enter_phone_no_to_reset_password">আপোনাৰ পঞ্জীয়ন কৰা ফোন নাম্বাৰটো লিখক গোপন অংকটো পুনৰ আৰম্ভ কৰিবলৈ।</string>
+    <string name="customer_phone_number">গ্ৰাহকৰ ফোন নাম্বাৰ</string>
+    <string name="recharge_amount">ৰিছাজৰ্ড কৰিবলগীয়া টকা</string>
+    <string name="enter_amount">দিবলগীয়া টকা</string>
+    <string name="paytm_recharge">PAYTM ৰিছাজৰ্ড</string>
+    <string name="Confirm">নিশ্বিত কৰক</string>
+    <string name="Paytm_recharge">PAYTM ৰিছাজৰ্ড</string>
+    <string name="phone_number_or_email">ফোন নম্বৰ নাইবা ইমেইল</string>
+    <string name="nl_otp_waiting_to_detect_otp">অ টি পী টো নিজে হবলৈ অপেক্ষা কৰক</string>
+    <string name="battery_low_message">বেটেৰীৰ পৰিমান সদায় ভাড় আৰম্ভ্ৰ কৰিবলৈ 20% ত কৈ বেছি থাকিব লগিব।ফোনতো চাৰ্জঅত লগাই দিয়ক।</string>
+    <string name="destination">যাবলগীয়া স্থান</string>
+    <string name="destination_selection">অনুগ্ৰহ কৰি আপুনি এতিয়া যাবলগীয়া স্থান নিশ্বিত কৰক</string>
+    <string name="Rate_Your_Customer">আপুনাৰ গ্ৰাহক জনক ৰেটিং দিয়ক</string>
+    <string name="skip">বাদ দিয়ক</string>
+    <string name="destination_menu">যাবলগীয়া স্থান</string>
+    <string name="no_current_notification">এতিয়া ওলাই থকা নিদেৰ্শৱালী</string>
+    <string name="phone">ফোন নম্বৰ :</string>
+    <string name="GENERATE_OTP">অ টি পী</string>
+    <string name="otp">অ টি পী</string>
+    <string name="signin_via_otp">ছাইন ইন কৰক অ টি পী জৰিয়তে</string>
+    <string name="Neutral">নিউটে্‌ল</string>
+    <string name="Payments">উপাৰ্জন</string>
+    <string name="PAYMENTS">উপাৰ্জন</string>
+
+
+    <string name="Today">আজি</string>
+    <string name="Last_week">আগৰ সপ্তাহ</string>
+    <string name="Last_month">আগৰ মাহ</string>
+    <string name="upcoming_invoice">আহিব লগীয়া বীল</string>
+    <string name="current_invoice">এতিয়াৰ বীল</string>
+    <string name="Outstanding_amnt">থাকি যোৱা টকা</string>
+    <string name="jugnoo_cmsn">জোগনু কমিশ্যন</string>
+    <string name="Manual_adjustment">কম্পেনিয়ে কৰিব লগীয়া এডজাষ্টমেন্ত</string>
+    <string name="referral_amount">ৰেফাৰেলৰ টকা</string>
+    <string name="phone_deduction">ফোনৰ কাৰণে কাতিব লগীয়া পইছা</string>
+    <string name="paid_by_jugnoo">জোগনুৰ পৰা দিছে</string>
+    <string name="paid_by_customer">নগদ দিছে</string>
+    <string name="paid_using_wallet">ৱালেতৰ জড়িয়তে</string>
+    <string name="acc_credited">টকা পাইচে</string>
+    <string name="last_invoice">আগৰ বীল</string>
+    <string name="last_invoice_details">আগৰ পেমেন্ত হৈছিল: তাৰিখ</string>
+    <string name="last_payments">আগৰ পেমেন্তবোৰ</string>
+    <string name="upcoming_payment_due_date">পাব লগীয়া পেমেন্ত: তাৰিখ</string>
+    <string name="cash_via_paytm">পে টি এমৰ জড়িয়তে নগদ</string>
+
+
+    <string name="terms">চৰ্ত</string>
+    <string name="bank_details">বেঙ্কৰ বিৱৰন</string>
+    <string name="acc_no">একাওণ্ট নম্বৰ</string>
+    <string name="ifsc_code">বেঙ্কৰ IFSC কোড</string>
+    <string name="bank_name">বেঙ্কৰ নাম</string>
+    <string name="bank_loc">বেঙ্কৰ ঠাই</string>
+    <string name="customer_waiting">আপোনাৰ নেস্কত গ্ৰাহক ৰখি আছে</string>
+    <string name="show_more">আৰু দেখাওঁক</string>
+    <string name="Transactions">ভাড়াৰ বিৱৰন</string>
+    <string name="Invoices">বিল</string>
+    <string name="Earn">লাভ কৰক</string>
+    <string name="Activity">কাৰ্য্যসুচি</string>
+    <string name="referral">ৰেফাৰেল</string>
+    <string name="NA">আৰু নাই</string>
+    <string name="Invoice">বিল</string>
+    <string name="recharge_amount_for_customer">গ্ৰাহকৰ ৰিচাৰ্জ ৰ মূল্য</string>
+    <string name="Ride">যাট্ৰা</string>
+    <string name="customer_id">গ্ৰাহকৰ আইদি</string>
+    <string name="paytm_transaction">পে টি এম ৰ বিৱৰন</string>
+    <string name="phone_no">ফোন নন্বৰ</string>
+    <string name="changed_no_same_as_previous">সলনি কৰা ফোন নন্বৰ টো আগৰ নিচিনা</string>
+    <string name="sharing_payment_recieved">ভগোৱাৰ বাবে পেমেণ্ট পালে</string>
+    <string name="please_give_customer">আমি আপোনাৰ ফিডবেক অতি গম্ভিৰ ভাৱে লওঁ গতিকে আমাক ৰেটিং দিব</string>
+    <string name="start_loc">চাৰ্ট কৰা ষ্ঠান</string>
+    <string name="driver_loc">দ্ৰাইভাৰ ষ্ঠান</string>
+    <string name="customer_2">2 ন: গ্ৰাহক</string>
+    <string name="kms">কিলমিটাৰ</string>
+    <string name="mark_delivered">মাৰ্ক দেলিভাৰ্দ</string>
+    <string name="order_id">অৰডাৰ আইদি</string>
+    <string name="thanks_for_feedback">আপোনাৰ ফিডবেকৰ বাবে ধন্যবাদ</string>
+    <string name="total_amnt_till_now">টতেল এেমাওন্ত এতিয়ালৈকে</string>
+    <string name="invoice_date">বিলৰ তাৰিখ</string>
+    <string name="invoice_id">বিলৰ আইদি</string>
+    <string name="total_distance">টতেল দিছস্তেচ</string>
+    <string name="valid_email_phone_no">এটা ভেলিদ মেইল আইদি বা ফোন নন্বৰ দিয়ক</string>
+    <string name="select_destination">আপোনাৰ যাব লগিয়া ঠাই দোখৰ নাম দিব</string>
+    <string name="fatafat_on">ফটাফত অন</string>
+    <string name="Notifications">নতিফিকচন</string>
+    <string name="enter_customer_phone_no">গ্ৰাহকৰ ফোন নন্বৰ দিয়ক</string>
+    <string name="invoice_detail">বিলৰ বিৱৰন</string>
+    <string name="generated_on">জেনেৰড কৰা হল</string>
+    <string name="share">ভগাওক</string>
+    <string name="data_effective_format">*Data effective from </string>
+    <string name="ride_complete">যাএা সমাপ্ত হল ।</string>
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
+
+
+    <string-array name="CountryCodes" >
+        <item>93,AF</item>
+        <item>355,AL</item>
+        <item>213,DZ</item>
+        <item>376,AD</item>
+        <item>244,AO</item>
+        <item>672,AQ</item>
+        <item>54,AR</item>
+        <item>374,AM</item>
+        <item>297,AW</item>
+        <item>61,AU</item>
+        <item>43,AT</item>
+        <item>994,AZ</item>
+        <item>973,BH</item>
+        <item>880,BD</item>
+        <item>375,BY</item>
+        <item>32,BE</item>
+        <item>501,BZ</item>
+        <item>229,BJ</item>
+        <item>975,BT</item>
+        <item>591,BO</item>
+        <item>387,BA</item>
+        <item>267,BW</item>
+        <item>55,BR</item>
+        <item>673,BN</item>
+        <item>359,BG</item>
+        <item>226,BF</item>
+        <item>95,MM</item>
+        <item>257,BI</item>
+        <item>855,KH</item>
+        <item>237,CM</item>
+        <item>1,CA</item>
+        <item>238,CV</item>
+        <item>236,CF</item>
+        <item>235,TD</item>
+        <item>56,CL</item>
+        <item>86,CN</item>
+        <item>61,CX</item>
+        <item>61,CC</item>
+        <item>57,CO</item>
+        <item>269,KM</item>
+        <item>242,CG</item>
+        <item>243,CD</item>
+        <item>682,CK</item>
+        <item>506,CR</item>
+        <item>385,HR</item>
+        <item>53,CU</item>
+        <item>357,CY</item>
+        <item>420,CZ</item>
+        <item>45,DK</item>
+        <item>253,DJ</item>
+        <item>670,TL</item>
+        <item>593,EC</item>
+        <item>20,EG</item>
+        <item>503,SV</item>
+        <item>240,GQ</item>
+        <item>291,ER</item>
+        <item>372,EE</item>
+        <item>251,ET</item>
+        <item>500,FK</item>
+        <item>298,FO</item>
+        <item>679,FJ</item>
+        <item>358,FI</item>
+        <item>33,FR</item>
+        <item>689,PF</item>
+        <item>241,GA</item>
+        <item>220,GM</item>
+        <item>995,GE</item>
+        <item>49,DE</item>
+        <item>233,GH</item>
+        <item>350,GI</item>
+        <item>30,GR</item>
+        <item>299,GL</item>
+        <item>502,GT</item>
+        <item>224,GN</item>
+        <item>245,GW</item>
+        <item>592,GY</item>
+        <item>509,HT</item>
+        <item>504,HN</item>
+        <item>852,HK</item>
+        <item>36,HU</item>
+        <item>91,IN</item>
+        <item>62,ID</item>
+        <item>98,IR</item>
+        <item>964,IQ</item>
+        <item>353,IE</item>
+        <item>44,IM</item>
+        <item>972,IL</item>
+        <item>39,IT</item>
+        <item>225,CI</item>
+        <item>81,JP</item>
+        <item>962,JO</item>
+        <item>7,KZ</item>
+        <item>254,KE</item>
+        <item>686,KI</item>
+        <item>965,KW</item>
+        <item>996,KG</item>
+        <item>856,LA</item>
+        <item>371,LV</item>
+        <item>961,LB</item>
+        <item>266,LS</item>
+        <item>231,LR</item>
+        <item>218,LY</item>
+        <item>423,LI</item>
+        <item>370,LT</item>
+        <item>352,LU</item>
+        <item>853,MO</item>
+        <item>389,MK</item>
+        <item>261,MG</item>
+        <item>265,MW</item>
+        <item>60,MY</item>
+        <item>960,MV</item>
+        <item>223,ML</item>
+        <item>356,MT</item>
+        <item>692,MH</item>
+        <item>222,MR</item>
+        <item>230,MU</item>
+        <item>262,YT</item>
+        <item>52,MX</item>
+        <item>691,FM</item>
+        <item>373,MD</item>
+        <item>377,MC</item>
+        <item>976,MN</item>
+        <item>382,ME</item>
+        <item>212,MA</item>
+        <item>258,MZ</item>
+        <item>264,NA</item>
+        <item>674,NR</item>
+        <item>977,NP</item>
+        <item>31,NL</item>
+        <item>599,AN</item>
+        <item>687,NC</item>
+        <item>64,NZ</item>
+        <item>505,NI</item>
+        <item>227,NE</item>
+        <item>234,NG</item>
+        <item>683,NU</item>
+        <item>850,KP</item>
+        <item>47,NO</item>
+        <item>968,OM</item>
+        <item>92,PK</item>
+        <item>680,PW</item>
+        <item>507,PA</item>
+        <item>675,PG</item>
+        <item>595,PY</item>
+        <item>51,PE</item>
+        <item>63,PH</item>
+        <item>870,PN</item>
+        <item>48,PL</item>
+        <item>351,PT</item>
+        <item>1,PR</item>
+        <item>974,QA</item>
+        <item>40,RO</item>
+        <item>7,RU</item>
+        <item>250,RW</item>
+        <item>590,BL</item>
+        <item>685,WS</item>
+        <item>378,SM</item>
+        <item>239,ST</item>
+        <item>966,SA</item>
+        <item>221,SN</item>
+        <item>381,RS</item>
+        <item>248,SC</item>
+        <item>232,SL</item>
+        <item>65,SG</item>
+        <item>421,SK</item>
+        <item>386,SI</item>
+        <item>677,SB</item>
+        <item>252,SO</item>
+        <item>27,ZA</item>
+        <item>82,KR</item>
+        <item>34,ES</item>
+        <item>94,LK</item>
+        <item>290,SH</item>
+        <item>508,PM</item>
+        <item>249,SD</item>
+        <item>597,SR</item>
+        <item>268,SZ</item>
+        <item>46,SE</item>
+        <item>41,CH</item>
+        <item>963,SY</item>
+        <item>886,TW</item>
+        <item>992,TJ</item>
+        <item>255,TZ</item>
+        <item>66,TH</item>
+        <item>228,TG</item>
+        <item>690,TK</item>
+        <item>676,TO</item>
+        <item>216,TN</item>
+        <item>90,TR</item>
+        <item>993,TM</item>
+        <item>688,TV</item>
+        <item>971,AE</item>
+        <item>256,UG</item>
+        <item>44,GB</item>
+        <item>380,UA</item>
+        <item>598,UY</item>
+        <item>1,US</item>
+        <item>998,UZ</item>
+        <item>678,VU</item>
+        <item>39,VA</item>
+        <item>58,VE</item>
+        <item>84,VN</item>
+        <item>681,WF</item>
+        <item>967,YE</item>
+        <item>260,ZM</item>
+        <item>263,ZW</item>
+    </string-array>
+
+
+</resources>

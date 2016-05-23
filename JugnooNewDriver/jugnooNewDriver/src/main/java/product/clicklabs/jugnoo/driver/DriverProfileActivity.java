@@ -22,6 +22,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import retrofit.Callback;
@@ -29,7 +30,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverProfileActivity extends Activity {
+public class DriverProfileActivity extends BaseActivity {
 
 	LinearLayout relative;
 	RelativeLayout driverDetailsRLL,driverDetailsRL;
@@ -37,7 +38,8 @@ public class DriverProfileActivity extends Activity {
 	TextView title;
 
 	TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
-			textViewRidesCancelledValue, textViewRidesMissedValue, textViewOnlineHoursValue, textViewTitleBarDEI;
+			textViewRidesCancelledValue, textViewRidesMissedValue, textViewOnlineHoursValue, textViewTitleBarDEI, textViewMonthlyText,
+			textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText;
 
 	ImageView profileImg, imageViewTitleBarDEI;
 
@@ -119,7 +121,18 @@ public class DriverProfileActivity extends Activity {
 		textViewOnlineHoursValue.setTypeface(Data.latoRegular(this));
 //		textViewTitleBarDEI = (TextView) findViewById(R.id.textViewTitleBarDEI);
 //		textViewTitleBarDEI.setTypeface(Data.latoRegular(this));
-
+		textViewMonthlyText = (TextView) findViewById(R.id.textViewMonthlyText);
+		textViewMonthlyText.setTypeface(Data.latoRegular(this));
+		textViewMonthlyText.setText(getStringText(R.string.earnings));
+		textViewRidesTakenText = (TextView) findViewById(R.id.textViewRidesTakenText);
+		textViewRidesTakenText.setTypeface(Data.latoRegular(this));
+		textViewRidesTakenText.setText(getStringText(R.string.rides_taken));
+		textViewRidesMissedText = (TextView) findViewById(R.id.textViewRidesMissedText);
+		textViewRidesMissedText.setTypeface(Data.latoRegular(this));
+		textViewRidesMissedText.setText(getResources().getString(R.string.rides_missed));
+		textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
+		textViewRidesCancelledText.setTypeface(Data.latoRegular(this));
+		textViewRidesCancelledText.setText(getStringText(R.string.rides_cancelled));
 
 
 
@@ -174,7 +187,7 @@ public class DriverProfileActivity extends Activity {
 	}
 
 	private void getProfileInfoAsync(final Activity activity) {
-		DialogPopup.showLoadingDialog(activity, "Loading...");
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		try {
 			driverDetailsRLL.setVisibility(View.GONE);
 			RestClient.getApiServices().driverProfileInfo(Data.userData.accessToken,
@@ -285,19 +298,19 @@ public class DriverProfileActivity extends Activity {
 
 			if (openedProfileInfo != null) {
 				textViewDriverName.setText("" + openedProfileInfo.textViewDriverName);
-				textViewDriverId.setText(getResources().getString(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);
+				textViewDriverId.setText(getStringText(R.string.driver_id) + " " + openedProfileInfo.textViewDriverId);
 				if (openedProfileInfo.textViewRankCity == 0) {
 					textViewRankCity.setVisibility(View.GONE);
 				} else {
 					textViewRankCity.setVisibility(View.VISIBLE);
-					textViewRankCity.setText(getResources().getString(R.string.rank_city) + " " + openedProfileInfo.textViewRankCity);
+					textViewRankCity.setText(getStringText(R.string.rank_city) + " " + openedProfileInfo.textViewRankCity);
 				}
 
 				if (openedProfileInfo.textViewRankCity == 0) {
 					textViewRankOverall.setVisibility(View.GONE);
 				} else {
 					textViewRankOverall.setVisibility(View.VISIBLE);
-					textViewRankOverall.setText(getResources().getString(R.string.rank_overall) + " " + openedProfileInfo.textViewRankOverall);
+					textViewRankOverall.setText(getStringText(R.string.rank_overall) + " " + openedProfileInfo.textViewRankOverall);
 				}
 
 				textViewMonthlyValue.setText(getResources().getText(R.string.rupee)+" " + openedProfileInfo.textViewMonthlyValue);

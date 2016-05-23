@@ -3,7 +3,7 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
-              android:background="@drawable/common_bg"
+              android:background="@drawable/spalsh_new_background"
               android:orientation="vertical"
               android:splitMotionEvents="false">
 
@@ -19,8 +19,8 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/transparent"
-            android:text="Back"
-            android:textColor="@color/new_orange"
+            android:text="@string/back"
+            android:textColor="@color/white"
             android:textSize="@dimen/button_text_size"/>
 
         <TextView
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="REGISTER"
-            android:textColor="@color/new_orange"
+            android:text="@string/register"
+            android:textColor="@color/white"
             android:textSize="@dimen/button_text_size"/>
     </RelativeLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_height="100px"
                 android:background="@drawable/white_bg_rounded"
                 android:capitalize="words"
-                android:hint="Name"
+                android:hint="@string/name"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:singleLine="true"
@@ -143,8 +143,8 @@
             android:layout_width="648px"
             android:layout_height="99px"
             android:layout_marginTop="45px"
+            android:text="@string/register"
             android:background="@drawable/new_orange_btn_selector_rounded"
-            android:text="REGISTER"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
 

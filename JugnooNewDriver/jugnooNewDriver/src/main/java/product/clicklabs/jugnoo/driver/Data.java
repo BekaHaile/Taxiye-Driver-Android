@@ -181,7 +181,7 @@ public class Data {
 
 	public static ArrayList<CancelOption> cancelOptionsList;
 
-	public static String dEngagementId = "", dCustomerId = "";
+	public static String dEngagementId = "", dCustomerId = "", currentPreferredLang="";
 	public static LatLng dCustLatLng;
 	public static DriverRideRequest openedDriverRideRequest;
 	

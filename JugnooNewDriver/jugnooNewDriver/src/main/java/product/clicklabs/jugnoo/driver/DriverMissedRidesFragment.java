@@ -39,14 +39,14 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverMissedRidesFragment extends Fragment implements FlurryEventNames{
+public class DriverMissedRidesFragment extends Fragment implements FlurryEventNames {
 
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
-	
+
 	DriverMissedRidesListAdapter driverMissedRidesListAdapter;
-	
+
 	RelativeLayout main;
 
 	ArrayList<MissedRideInfo> missedRideInfos = new ArrayList<MissedRideInfo>();
@@ -56,7 +56,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+							 Bundle savedInstanceState) {
 		missedRideInfos.clear();
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
@@ -65,53 +65,52 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 		ASSL.DoMagic(main);
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay); textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
+		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
+		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
-		
+
 		driverMissedRidesListAdapter = new DriverMissedRidesListAdapter();
 		listView.setAdapter(driverMissedRidesListAdapter);
-		
+
 		progressBar.setVisibility(View.GONE);
 		textViewInfoDisplay.setVisibility(View.GONE);
-		
+
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				getMissedRidesAsync(getActivity());
 			}
 		});
-		
+
 		getMissedRidesAsync(getActivity());
 		FlurryEventLogger.event(MISSED_RIDES_CHECKED);
 
 		return rootView;
 	}
 
-	public void updateListData(String message, boolean errorOccurred){
-		if(errorOccurred){
+	public void updateListData(String message, boolean errorOccurred) {
+		if (errorOccurred) {
 			textViewInfoDisplay.setText(message);
 			textViewInfoDisplay.setVisibility(View.VISIBLE);
-			
+
 			missedRideInfos.clear();
 			driverMissedRidesListAdapter.notifyDataSetChanged();
-		}
-		else{
-			if(missedRideInfos.size() == 0){
+		} else {
+			if (missedRideInfos.size() == 0) {
 				textViewInfoDisplay.setText(message);
 				textViewInfoDisplay.setVisibility(View.VISIBLE);
-			}
-			else{
+			} else {
 				textViewInfoDisplay.setVisibility(View.GONE);
 			}
 			driverMissedRidesListAdapter.notifyDataSetChanged();
 		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -132,6 +131,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 	class DriverMissedRidesListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverMissedRides holder;
+
 		public DriverMissedRidesListAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		}
@@ -156,47 +156,52 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 			if (convertView == null) {
 				holder = new ViewHolderDriverMissedRides();
 				convertView = mInflater.inflate(R.layout.list_item_missed_rides, null);
-				
-				holder.textViewMissedRideFrom = (TextView) convertView.findViewById(R.id.textViewMissedRideFrom); holder.textViewMissedRideFrom.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
-				holder.textViewMissedRideFromValue = (TextView) convertView.findViewById(R.id.textViewMissedRideFromValue); holder.textViewMissedRideFromValue.setTypeface(Data.latoRegular(getActivity()));
-				
-				holder.textViewMissedRideTime = (TextView) convertView.findViewById(R.id.textViewMissedRideTime); holder.textViewMissedRideTime.setTypeface(Data.latoRegular(getActivity()));
-				
-				holder.textViewMissedRideCustomerName = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerName); holder.textViewMissedRideCustomerName.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
-				holder.textViewMissedRideCustomerNameValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerNameValue); holder.textViewMissedRideCustomerNameValue.setTypeface(Data.latoRegular(getActivity()));
-				
-				holder.textViewMissedRideCustomerDistance = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistance); holder.textViewMissedRideCustomerDistance.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
-				holder.textViewMissedRideCustomerDistanceValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistanceValue); holder.textViewMissedRideCustomerDistanceValue.setTypeface(Data.latoRegular(getActivity()));
-				
-				
-				
-				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative); 
-				
+
+				holder.textViewMissedRideFrom = (TextView) convertView.findViewById(R.id.textViewMissedRideFrom);
+				holder.textViewMissedRideFrom.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideFromValue = (TextView) convertView.findViewById(R.id.textViewMissedRideFromValue);
+				holder.textViewMissedRideFromValue.setTypeface(Data.latoRegular(getActivity()));
+
+				holder.textViewMissedRideTime = (TextView) convertView.findViewById(R.id.textViewMissedRideTime);
+				holder.textViewMissedRideTime.setTypeface(Data.latoRegular(getActivity()));
+
+				holder.textViewMissedRideCustomerName = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerName);
+				holder.textViewMissedRideCustomerName.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideCustomerNameValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerNameValue);
+				holder.textViewMissedRideCustomerNameValue.setTypeface(Data.latoRegular(getActivity()));
+
+				holder.textViewMissedRideCustomerDistance = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistance);
+				holder.textViewMissedRideCustomerDistance.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+				holder.textViewMissedRideCustomerDistanceValue = (TextView) convertView.findViewById(R.id.textViewMissedRideCustomerDistanceValue);
+				holder.textViewMissedRideCustomerDistanceValue.setTypeface(Data.latoRegular(getActivity()));
+
+
+				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
+
 				holder.relative.setTag(holder);
-				
+
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
-				
+
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolderDriverMissedRides) convertView.getTag();
 			}
-			
-			
+
+
 			MissedRideInfo missedRideInfo = missedRideInfos.get(position);
-			
+
 			holder.id = position;
-			
+
 			holder.textViewMissedRideFromValue.setText(missedRideInfo.pickupLocationAddress);
 			holder.textViewMissedRideTime.setText(DateOperations.convertDate(DateOperations.utcToLocal(missedRideInfo.timestamp)));
-			
+
 			holder.textViewMissedRideCustomerNameValue.setText(missedRideInfo.customerName);
-			holder.textViewMissedRideCustomerDistanceValue.setText(missedRideInfo.customerDistance+" km");
-			
+			holder.textViewMissedRideCustomerDistanceValue.setText(missedRideInfo.customerDistance + " km");
+
 			return convertView;
 		}
 	}
-	
 
 
 	/**
@@ -220,7 +225,7 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 								HomeActivity.logoutUser(activity);
 							} else {
-								updateListData("Some error occurred. Tap to retry", true);
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
 						} else {
 
@@ -258,11 +263,11 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 									}
 								}
 							}
-							updateListData("No missed rides currently", false);
+							updateListData(getResources().getString(R.string.no_missed_rides_currently), false);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						updateListData("Some error occurred. Tap to retry", true);
+						updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
 					progressBar.setVisibility(View.GONE);
 				}
@@ -271,15 +276,12 @@ public class DriverMissedRidesFragment extends Fragment implements FlurryEventNa
 				public void failure(RetrofitError error) {
 					Log.e("request fail", error.toString());
 					progressBar.setVisibility(View.GONE);
-					updateListData("Some error occurred. Tap to retry", true);
+					updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 				}
 			});
 
 		} else {
-			updateListData("No Internet connection. Tap to retry", true);
+			updateListData(getResources().getString(R.string.no_internet_tap_to_retry), true);
 		}
-
 	}
-
-
 }

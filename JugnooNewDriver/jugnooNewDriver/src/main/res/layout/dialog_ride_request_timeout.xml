@@ -50,7 +50,7 @@
                 android:maxHeight="800px"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
-                android:text="Message"
+                android:text="@string/message"
                 android:layout_marginTop="32px"
                 android:textColor="@color/black"
                 android:lineSpacingExtra="10px"
@@ -67,12 +67,11 @@
             android:layout_marginTop="32px"
             android:background="@drawable/new_orange_btn_top_normal_bottom_rounded">
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/timeOutText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32px"
-                android:singleLine="true"
                 android:text="@string/time_left"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"

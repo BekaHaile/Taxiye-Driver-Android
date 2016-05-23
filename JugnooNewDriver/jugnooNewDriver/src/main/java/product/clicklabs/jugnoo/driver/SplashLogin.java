@@ -158,11 +158,11 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 				String password = passwordEt.getText().toString().trim();
 				if ("".equalsIgnoreCase(emailOrPhone)) {
 					emailEt.requestFocus();
-					emailEt.setError("Please enter Phone No. or Email");
+					emailEt.setError(getResources().getString(R.string.Pls_enter_email_or_phn));
 				} else {
 					if ("".equalsIgnoreCase(password)) {
 						passwordEt.requestFocus();
-						passwordEt.setError("Please enter password");
+						passwordEt.setError(getResources().getString(R.string.enter_password));
 					} else {
 						if (isEmailValid(emailOrPhone)) {
 							enteredEmail = emailOrPhone;
@@ -178,14 +178,12 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 							FlurryEventLogger.event(LOGIN_IN_APP);
 						} else {
 							emailEt.requestFocus();
-							emailEt.setError("Please enter valid email or phone no.");
+							emailEt.setError(getResources().getString(R.string.valid_email_phone_no));
 						}
 					}
 				}
 			}
 		});
-
-
 
 
 		forgotPasswordBtn.setOnClickListener(new View.OnClickListener() {
@@ -387,7 +385,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 	public void sendLoginValues(final Activity activity, final String emailId,final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
@@ -413,7 +411,6 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("longitude", "" + Data.longitude);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("pushy_token", "");
 
 			if(Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)){
 				params.put("auto_n_cab_installed", "1");

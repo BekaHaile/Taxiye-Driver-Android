@@ -71,7 +71,6 @@ public interface APIServices {
 	void verifyOtpUsingSignupFields(@Field("email") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
-									@Field("pushy_token") String pushyToken,
 									@Field("device_type") String deviceType,
 									@Field("device_name") String deviceName,
 									@Field("app_version") int appVersion,
@@ -361,4 +360,16 @@ public interface APIServices {
 	@POST("/fetch_pushes_for_user")
 	void notificationInbox(@FieldMap Map<String, String> params,
 						   Callback<NotificationInboxResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_active_locales")
+	void fetchLanguageList(@FieldMap Map<String, String> params,
+					 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/set_locale_preference")
+	void setPreferredLang(@FieldMap Map<String, String> params,
+						   Callback<RegisterScreenResponse> callback);
+
+
 }
