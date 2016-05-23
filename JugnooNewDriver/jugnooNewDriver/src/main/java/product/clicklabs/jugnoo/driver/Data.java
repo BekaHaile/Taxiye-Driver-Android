@@ -12,6 +12,8 @@ import android.util.Base64;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONArray;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -206,6 +208,8 @@ public class Data {
 	public static EndRideData endRideData;
 
     public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+
+	public static JSONArray blockAppPackageNameList;
 	
 	
 	

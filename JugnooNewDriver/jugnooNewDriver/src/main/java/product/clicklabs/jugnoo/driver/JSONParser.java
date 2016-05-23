@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.services.NotificationService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
@@ -323,7 +324,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_FACTOR_HIGH, userData.optInt("driver_cancel_timeout_factor", 2));
 		Prefs.with(context).save(SPLabels.DRIVER_TIMEOUT_TTL, userData.optLong("timeout_ttl", 86400000));
 		Prefs.with(context).save(SPLabels.NOTIFICATION_SAVE_COUNT, userData.optInt("push_upload_count", 0));
-
+		Prefs.with(context).save(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, userData.optLong("heatmap_refresh_frequency", 300000));
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
@@ -333,6 +334,7 @@ public class JSONParser implements Constants {
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
+		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
 
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
@@ -346,14 +348,19 @@ public class JSONParser implements Constants {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
 		}
 
+		String userEmail = userData.optString("user_email", "");
+		String phoneNo = userData.getString("phone_no");
+		String userId = userData.optString(KEY_USER_ID, phoneNo);
+		Prefs.with(context).save(SP_USER_ID, userId);
 
 		return new UserData(accessToken, userData.getString("user_name"),
-				userData.getString("user_image"), referralCode, userData.getString("phone_no"), freeRideIconDisable,
+				userData.getString("user_image"), referralCode, phoneNo, freeRideIconDisable,
 				autosEnabled, mealsEnabled, fatafatEnabled, autosAvailable, mealsAvailable, fatafatAvailable,
 				deiValue, customerReferralBonus, sharingEnabled, sharingAvailable, driverSupportNumber,
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
-				referralButtonText, referralDialogText, referralDialogHintText, remainigPenaltyPeriod,
-				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout);
+				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
+				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
+				userId, userEmail, blockedAppPackageMessage);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {
@@ -368,6 +375,7 @@ public class JSONParser implements Constants {
 
 		Data.userData = parseUserData(context, jLoginObject);
 		saveAccessToken(context, Data.userData.accessToken);
+		Data.blockAppPackageNameList = jLoginObject.getJSONArray("block_app_package_name_list");
 
 		//current_user_status = 1 driver or 2 user
 		int currentUserStatus = jLoginObject.getInt("current_user_status");
@@ -377,7 +385,15 @@ public class JSONParser implements Constants {
 		JSONObject jUserStatusObject = jObj.getJSONObject("status");
 		String resp = parseCurrentUserStatus(context, currentUserStatus, jUserStatusObject);
 
-		parseCancellationReasons(jObj, context);
+		parseCancellationReasons(jObj,context);
+
+
+		try {
+			NudgeClient.initialize(context, Data.userData.getUserId(), Data.userData.userName,
+					Data.userData.getUserEmail(), Data.userData.phoneNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return resp;
 	}

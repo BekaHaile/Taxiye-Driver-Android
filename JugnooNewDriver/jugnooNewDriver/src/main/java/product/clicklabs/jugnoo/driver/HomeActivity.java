@@ -128,7 +128,6 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomInfoWindow;
-import product.clicklabs.jugnoo.driver.utils.CustomInfoWindowPerfect;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
@@ -140,6 +139,7 @@ import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
@@ -292,7 +292,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutEndRideCustomerAmount;
 
 	LinearLayout endRideInfoRl;
-	TextView jugnooRideOverText, takeFareText;
+	TextView jugnooRideOverText, takeFareText, takeFareValue;
 
 	RelativeLayout relativeLayoutCoupon;
 	TextView textViewCouponTitle, textViewCouponSubTitle, textViewCouponPayTakeText, textViewCouponDiscountedFare;
@@ -332,7 +332,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
 	long fetchHeatMapTime = 0;
-
+//	long heatMapRefreshTime = Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0);
 	static long previousWaitTime = 0, previousRideTime = 0;
 
 	static String waitTime = "", rideTime = "";
@@ -787,7 +787,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			jugnooRideOverText = (TextView) findViewById(R.id.jugnooRideOverText);
 			jugnooRideOverText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
-			takeFareText.setTypeface(Data.latoRegular(getApplicationContext()));
+			takeFareText.setTypeface(Data.latoHeavy(getApplicationContext()));
+
+			takeFareValue = (TextView) findViewById(R.id.takeFareValue);
+			takeFareValue.setTypeface(Data.latoHeavy(getApplicationContext()));
+
 
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -849,6 +853,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+
+
+
+
 			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
 					new KeyboardLayoutListener.KeyBoardStateHandler() {
 						@Override
@@ -870,6 +878,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(MENU);
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
 				}
 			});
 
@@ -970,6 +979,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 				}
 			});
 
@@ -1002,6 +1012,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, DriverLeaderboardActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(SUPER_DRIVERS_OPENED);
+					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_SUPER_DRIVER_CLICK, null);
 				}
 			});
 
@@ -1197,6 +1208,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (!"".equalsIgnoreCase(callPhoneNumber)) {
 						Utils.openCallIntent(HomeActivity.this, callPhoneNumber);
+						try{
+							JSONObject map = new JSONObject();
+							map.put(KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
+							map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+							map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+							NudgeClient.trackEvent(HomeActivity.this, NUDGE_CALL_USER, map);
+						} catch(Exception e){
+							e.printStackTrace();
+						}
 						if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 							FlurryEventLogger.event(CALLED_CUSTOMER);
 						} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
@@ -1433,7 +1453,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (0 == rating) {
 								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.please_give_customer));
 							} else {
-								submitFeedbackToDriverAsync(HomeActivity.this, Data.dEngagementId, rating);
+								submitFeedbackToCustomerAsync(HomeActivity.this, Data.dEngagementId, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
 								driverScreenMode = DriverScreenMode.D_INITIAL;
 								switchDriverScreen(driverScreenMode);
@@ -1584,6 +1604,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(this, SplashNewActivity.class));
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			try{
+				JSONObject map = new JSONObject();
+				map.put(KEY_LATITUDE, Data.latitude);
+				map.put(KEY_LONGITUDE, Data.longitude);
+				NudgeClient.trackEvent(this, NUDGE_APP_OPEN, map);
+			} catch(Exception e){
 				e.printStackTrace();
 			}
 
@@ -1982,6 +2011,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (jugnooOnFlag == 1) {
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
 							}
+							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
@@ -1998,6 +2028,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 		}).start();
+	}
+
+	private void nudgeJugnooOnOff(double latitude, double longitude){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(KEY_LATITUDE, latitude);
+			map.put(KEY_LONGITUDE, longitude);
+			if(Data.userData.autosAvailable == 1){
+				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_ON, map);
+			} else{
+				NudgeClient.trackEvent(activity, NUDGE_JUGNOO_OFF, map);
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -2420,9 +2465,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					setTextToFareInfoTextViews(reviewMinFareValue, reviewFareAfterValue, reviewFareAfterText, textViewReviewConvenienceCharges);
 
-					jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
-					takeFareText.setText(getResources().getString(R.string.take_fare_from_customer));
 
+					jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
+					takeFareText.setText(getResources().getString(R.string.take_cash)+" " );
+					takeFareValue.setText(getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					displayCouponApplied();
 
 
@@ -2540,6 +2586,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 
+			try {
+				heatMapHandler.removeCallbacks(heatMapRunnalble);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			switch (mode) {
 
@@ -2587,7 +2638,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
+					try {
 
+
+						if(Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0) >0) {
+							heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					initializeStationDataProcedure();
 					Data.nextPickupLatLng = null;
 					Data.nextCustomerName = null;
@@ -3043,17 +3102,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (autoCustomerInfo.couponInfo != null) {
 						if (autoCustomerInfo.couponInfo.couponApplied) {
 							if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.couponInfo.benefitType) {
-								endRideInfoRl.setVisibility(View.GONE);
-								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//								endRideInfoRl.setVisibility(View.GONE);
+//								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+								endRideInfoRl.setVisibility(View.VISIBLE);
+								relativeLayoutCoupon.setVisibility(View.GONE);
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
-									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n&"+ getResources().getString(R.string.wallet));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title + "\n& Wallet");
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees) + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.couponInfo.title);
 									Log.i("coupontitle", autoCustomerInfo.couponInfo.title);
 									textViewCouponSubTitle.setText(autoCustomerInfo.couponInfo.subtitle);
@@ -3070,18 +3133,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else if (autoCustomerInfo.promoInfo != null) {
 						if (autoCustomerInfo.promoInfo.promoApplied) {
 							if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.promoInfo.benefitType) {
-								endRideInfoRl.setVisibility(View.GONE);
-								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//								endRideInfoRl.setVisibility(View.GONE);
+//								relativeLayoutCoupon.setVisibility(View.VISIBLE);
+								endRideInfoRl.setVisibility(View.VISIBLE);
+								relativeLayoutCoupon.setVisibility(View.GONE);
 								relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 
 
 								if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                    // wallet
-									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title + "\n& "+getResources().getString(R.string.wallet));
-
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								} else {                                                                            // no wallet
-									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees) + Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+									reviewFareValue.setText(getResources().getString(R.string.rupees)+" " +  Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 									textViewCouponTitle.setText(autoCustomerInfo.promoInfo.title);
 									textViewCouponSubTitle.setVisibility(View.GONE);
 								}
@@ -3131,13 +3197,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (PaymentMode.WALLET.getOrdinal() == Data.endRideData.paymentMode) {                                // wallet
 					textViewCouponDiscountedFare.setText(getResources().getString(R.string.rupees)+" "
 							+ Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
+					reviewFareValue.setText(getResources().getString(R.string.rupees)+" "
+							+ Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					textViewCouponTitle.setText(getResources().getString(R.string.wallet));
 					textViewCouponSubTitle.setVisibility(View.GONE);
 
 					textViewCouponPayTakeText.setText(getResources().getString(R.string.take));
 
-					endRideInfoRl.setVisibility(View.GONE);
-					relativeLayoutCoupon.setVisibility(View.VISIBLE);
+//					endRideInfoRl.setVisibility(View.GONE);
+//					relativeLayoutCoupon.setVisibility(View.VISIBLE);
+					endRideInfoRl.setVisibility(View.VISIBLE);
+					relativeLayoutCoupon.setVisibility(View.GONE);
 					relativeLayoutFatafatCustomerAmount.setVisibility(View.GONE);
 				} else {                                                                            // no wallet
 					endRideInfoRl.setVisibility(View.VISIBLE);
@@ -3449,6 +3519,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		stopService(new Intent(HomeActivity.this, GeanieView.class));
 
 		EventsHolder.displayPushHandler = this;
+
+		try {
+			for (int i = 0; i < Data.blockAppPackageNameList.length(); i++) {
+				try {
+					final String packageName = Data.blockAppPackageNameList.getString(i);
+					if (Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)
+							&& Utils.isAppInstalled(HomeActivity.this, packageName)) {
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "",
+								Data.userData.blockedAppPackageMessage,
+								new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Uri packageUri = null;
+										packageUri = Uri.parse("package:"+packageName);
+										Intent uninstallIntent =
+												new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+										startActivity(uninstallIntent);
+									}
+								});
+						break;
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -3787,7 +3886,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			holder.id = position;
 
-			holder.textViewRequestAddress.setText(driverRideRequest.address);
+			try {
+				holder.textViewRequestAddress.setText(driverRideRequest.address);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), driverRideRequest.startTime);
@@ -4328,6 +4431,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 							reduceRideRequest(Data.dEngagementId);
+							nudgeRequestCancel();
+
 						}
 
 						new DriverTimeoutCheck().timeoutBuffer(activity, 0);
@@ -4352,6 +4457,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 
+	}
+
+	private void nudgeRequestCancel(){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(Constants.KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			map.put(Constants.KEY_CUSTOMER_ID, Data.dCustomerId);
+			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_REQUEST_CANCEL, map);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 
@@ -4574,6 +4690,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 							driverScreenMode = DriverScreenMode.D_IN_RIDE;
 							switchDriverScreen(driverScreenMode);
+
+							try{
+								JSONObject map = new JSONObject();
+								map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
+								map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
+								map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+								map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+								NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
+							} catch(Exception e){
+								e.printStackTrace();
+							}
 
 						}
 						new DriverTimeoutCheck().clearCount(activity);
@@ -4862,6 +4989,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 							initializeStartRideVariables();
+							nudgeRideEnd(dropLatitude, dropLongitude, params);
 
 						}
 					} catch (Exception exception) {
@@ -4884,6 +5012,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			});
+		}
+	}
+
+	private void nudgeRideEnd(double dropLatitude, double dropLongitude, HashMap<String, String> params){
+		try{
+			JSONObject map = new JSONObject();
+			map.put(KEY_LATITUDE, dropLatitude);
+			map.put(KEY_LONGITUDE, dropLongitude);
+			map.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+			map.put("params", params.toString());
+			NudgeClient.trackEvent(activity, NUDGE_RIDE_END, map);
+		} catch(Exception e){
+			e.printStackTrace();
 		}
 	}
 
@@ -4967,8 +5109,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	 * @param activity
 	 * @param url
 	 * @param params
-	 * @param rideTime
-	 * @param waitTime
 	 * @param assignedCustomerInfo
 	 */
 	//TODO end ride offline
@@ -5127,6 +5267,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
 
 			initializeStartRideVariables();
+			nudgeRideEnd(dropLatitude, dropLongitude, params);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5179,8 +5320,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	 * @param lastAccurateLatLng
 	 * @param dropLatitude
 	 * @param dropLongitude
-	 * @param waitMinutes
-	 * @param rideMinutes
 	 * @param flagDistanceTravelled
 	 * @param businessType
 	 */
@@ -5399,7 +5538,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void submitFeedbackToDriverAsync(final Activity activity, String engagementId, final int givenRating) {
+	public void submitFeedbackToCustomerAsync(final Activity activity, final String engagementId, final int givenRating) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
@@ -5424,6 +5563,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								Toast.makeText(activity, getResources().getString(R.string.thanks_for_feedback), Toast.LENGTH_SHORT).show();
+
+								try{
+									JSONObject map = new JSONObject();
+									map.put(KEY_GIVEN_RATING, givenRating);
+									map.put(KEY_ENGAGEMENT_ID, engagementId);
+									map.put(KEY_CUSTOMER_ID, Data.dCustomerId);
+									NudgeClient.trackEvent(activity, NUDGE_RATING, map);
+								} catch(Exception e){
+									e.printStackTrace();
+								}
 
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -5570,7 +5719,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void fetchHeatMapData(final Activity activity) {
 		try {
-			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				final long responseTime = System.currentTimeMillis();
 				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
 					@Override
@@ -7597,6 +7746,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 	}
+
+
+	Handler heatMapHandler = new Handler();
+
+	Runnable heatMapRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				fetchHeatMapData(HomeActivity.this);
+			} catch (Exception e) {
+
+			}
+			heatMapHandler.postDelayed(heatMapRunnalble, Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0));
+		}
+	};
+
+//	public void stopHeatMapRefresh() {
+//		heatMapHandler.removeCallbacks(heatMapRunnalble);
+//		heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+//	}
+
 
 	public void perfectRideStateRestore() {
 

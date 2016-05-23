@@ -357,65 +357,69 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 //	Retrofit
 
 	private void getRidesAsync(final Activity activity) {
-		progressBar.setVisibility(View.VISIBLE);
-		RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
-				new Callback<NewBookingHistoryRespose>() {
-					@Override
-					public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
-								} else {
-									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-								}
+		try {
+			progressBar.setVisibility(View.VISIBLE);
+			RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
+                    new Callback<NewBookingHistoryRespose>() {
+                        @Override
+                        public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
+                            try {
+                                String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                                JSONObject jObj;
+                                jObj = new JSONObject(jsonString);
+                                if (!jObj.isNull("error")) {
+                                    String errorMessage = jObj.getString("error");
+                                    if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+                                        HomeActivity.logoutUser(activity);
+                                    } else {
+                                        updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+                                    }
 
-							} else {
+                                } else {
 
-								for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
-									NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
-									RideInfo rideInfo = null;
-									if(data.getType().equalsIgnoreCase("ride")) {
-										 rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
-												data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
-												data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
-												data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
-												data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-												data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
-									} else if(data.getType().equalsIgnoreCase("referral")) {
-										rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
-									} else if(data.getType().equalsIgnoreCase("phone_deductions")) {
-										rideInfo =new RideInfo(data.getAmount(), data.getType(), data.getTime());
-									} else if(data.getType().equalsIgnoreCase("paytm_transaction")){
-										rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());
-									}
+                                    for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
+                                        NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
+                                        RideInfo rideInfo = null;
+                                        if(data.getType().equalsIgnoreCase("ride")) {
+                                             rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
+                                                    data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
+                                                    data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
+                                                    data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
+                                                    data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
+                                                    data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
+                                        } else if(data.getType().equalsIgnoreCase("referral")) {
+                                            rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
+                                        } else if(data.getType().equalsIgnoreCase("phone_deductions")) {
+                                            rideInfo =new RideInfo(data.getAmount(), data.getType(), data.getTime());
+                                        } else if(data.getType().equalsIgnoreCase("paytm_transaction")){
+                                            rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());
+                                        }
 
-									if(rideInfo!=null) {
-										rides.add(rideInfo);
-									}
-								}
-
-
-								updateListData(getResources().getString(R.string.no_rides), false);
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-						}
-						progressBar.setVisibility(View.GONE);
-					}
+                                        if(rideInfo!=null) {
+                                            rides.add(rideInfo);
+                                        }
+                                    }
 
 
-					@Override
-					public void failure(RetrofitError error) {
-						progressBar.setVisibility(View.GONE);
-						updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-					}
-				});
+                                    updateListData(getResources().getString(R.string.no_rides), false);
+                                }
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+                            }
+                            progressBar.setVisibility(View.GONE);
+                        }
+
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            progressBar.setVisibility(View.GONE);
+                            updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+                        }
+                    });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -14,12 +14,12 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.PaymentFragmentAdapter;
-import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
+import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
@@ -95,6 +95,11 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 
 			@Override
 			public void onPageSelected(int position) {
+				if(position == 1){
+					NudgeClient.trackEvent(PaymentActivity.this, NUDGE_INVOICES, null);
+				} else if(position == 2){
+					NudgeClient.trackEvent(PaymentActivity.this, NUDGE_EARNING_CLICK, null);
+				}
 			}
 
 			@Override
@@ -102,6 +107,8 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 
 			}
 		});
+
+		NudgeClient.trackEvent(this, NUDGE_PAYMENT_CLICK, null);
 
 	}
 
@@ -124,16 +131,21 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 
 	@Override
 	public void onBackPressed() {
-		performbackPressed();
 		super.onBackPressed();
+		performbackPressed();
 	}
 	
 	
 	@Override
 	public void onDestroy() {
-        ASSL.closeActivity(linearLayoutRoot);
-        System.gc();
 		super.onDestroy();
+		try {
+			ASSL.closeActivity(linearLayoutRoot);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		System.gc();
+
 
 	}
 }
