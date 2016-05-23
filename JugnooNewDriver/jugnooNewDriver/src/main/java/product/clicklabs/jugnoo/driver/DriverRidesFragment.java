@@ -245,7 +245,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 						holder.textViewStatusString.setText(activity.getStringText(R.string.rides_cancelled));
 					} else {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-						holder.textViewStatusString.setText(rideInfo.statusString);
+						holder.textViewStatusString.setText(activity.getStringText(R.string.ride_complete));
 					}
 				}
 
