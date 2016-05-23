@@ -85,5 +85,7 @@ public class SPLabels {
     public static final String NOTIFICATION_SAVE_COUNT = "notification_save_count";
     public static final String HEAT_MAP_REFRESH_FREQUENCY = "heat_map_refresh_frequency";
 
-
+    public static final String PUBNUB_PUBLISHER_KEY = "pubnub_publisher_key";
+    public static final String PUBNUB_SUSCRIBER_KEY = "pubnub_suscriber_key";
+    public static final String PUBNUB_CHANNEL = "pubnub_channel";
 }
