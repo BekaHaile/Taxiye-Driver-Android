@@ -13,7 +13,8 @@
 	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
 	<!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General &ndash;&gt;-->
 
-
+	<string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
+	<string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
 
 	<!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
@@ -143,10 +144,10 @@
 
 	<string name="rating">रेटिंग</string>
 	<string name="call">कॉल</string>
-	<string name="ride_time"> राइड  काल</string>
+	<string name="ride_time"> राइड  समय</string>
 	<string name="start_wait">प्रतीक्षअ काल शुरू </string>
 	<string name="stop_wait">प्रतीक्षअ काल समाप्त </string>
-	<string name="submit">सबमिट करें </string>
+	<string name="submit">सब्मिट करें </string>
 	<string name="search_results">खोज परिणाम</string>
 	<string name="search">खोज प्रारम्भ करें </string>
 
@@ -333,7 +334,7 @@
 	<string name="status">स्टेटस </string>
 
 	<string name="total_time">कुल समय</string>
-	<string name="min">न्यूनतम</string>
+	<string name="min">मिनट</string>
 	<string name="app_need_active_gps">एप्लिकेशन को सक्रिय जीपीएस कनेक्शन की जरूरत है. Enable it from Settings.</string>
 	<string name="app_needs_network_time">एप्लिकेशन को नेटवर्क द्वारा प्रदान किये गए समय क ज़रूरत है। </string>
 	<string name="take">ग्रहण करें </string>
@@ -365,7 +366,7 @@
 	<string name="your_overall_position">आपकी स्ओवरआल तिथि </string>
 	<string name="got_new_request">आपको  एक नया अनुरोध मिला है।</string>
 	<string name="present_near_customer_location">चिह्नित करने के लिए ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
-	<string name="present_near_customer_location_to_start">राइड शुरू करने क लिए आपका  ग्राहक के पिक स्थान के पास मौजूद होना अनिवार्य है। </string>
+	<string name="present_near_customer_location_to_start">राइड को अराइव्ड मार्क करने के लिए कस्टमर के पिकप लोकेशन के पास पहुँचना अनिवार्य है | </string>
 	<string name="You_have_already_created">आप पहले से ही इस डिवाइसपर %1$d कहते बना चुके हैं . एक नया खाता बनाने के लिए कारण की व्याख्या करें ।</string>
 	<string name="your_referral_code"> आपका रेफरल कोड है</string>
 

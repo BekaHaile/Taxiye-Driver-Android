@@ -14,7 +14,8 @@
     <!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
     <!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General &ndash;&gt;-->
 
-
+    <string name="nudgespot_javascript_api_key">43cbec12b85957e2244f91af04cf238a</string>
+    <string name="nudgespot_rest_api_key">90ea5fdd4d74c3e13b1059fdbebf15a1</string>
 
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
