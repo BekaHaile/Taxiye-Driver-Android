@@ -1214,13 +1214,12 @@
                                     android:splitMotionEvents="false"
                                     android:visibility="visible">
 
-                                    <TextView
+                                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                         android:id="@+id/jugnooRideOverText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:gravity="center"
-                                        android:singleLine="true"
                                         android:text="@string/jugnoo_ride_over"
                                         android:textColor="@color/black"
                                         android:textSize="48px" />
@@ -1235,7 +1234,7 @@
                                         android:paddingLeft="40px"
                                         android:paddingRight="40px">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/takeFareText"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
@@ -1244,12 +1243,14 @@
                                             android:textSize="72px" />
 
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/takeFareValue"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:text=" Rs100"
+                                            android:singleLine="true"
                                             android:textColor="@color/black"
+                                            android:visibility="gone"
                                             android:textSize="72px" />
 
                                     </LinearLayout>
@@ -1592,7 +1593,7 @@
 
                                         />
 
-                                    <TextView
+                                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                         android:id="@+id/textViewRateYourCustomer"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"

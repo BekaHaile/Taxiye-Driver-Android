@@ -493,11 +493,7 @@ public class LoginViaOTP extends BaseActivity {
 							} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
-								enteredEmail = emailId;
-								phoneNoOfLoginAccount = jObj.getString("phone_no");
-								accessToken = jObj.getString("access_token");
-								otpErrorMsg = jObj.getString("error");
-								sendToOtpScreen = true;
+								DialogPopup.alertPopup(activity, "", getResources().getString(R.string.no_not_verified));
 							} else if (ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag) {
 								if (!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)) {
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);

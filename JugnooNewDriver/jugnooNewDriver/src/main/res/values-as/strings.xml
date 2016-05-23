@@ -463,6 +463,8 @@
     <string name="share">ভগাওক</string>
     <string name="data_effective_format">*Data effective from </string>
     <string name="ride_complete">যাএা সমাপ্ত হল ।</string>
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
 
 
     <string-array name="CountryCodes" >

@@ -256,7 +256,7 @@
             android:layout_height="99px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
-            android:text="RESEND OTP"
+            android:text="@string/resend_OTP"
             android:visibility="gone"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>

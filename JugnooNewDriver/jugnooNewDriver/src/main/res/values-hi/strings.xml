@@ -518,9 +518,11 @@
 	<string name="amnt_credited">Amount Credited</string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
+	<string name="no_not_verified">Phone Number not verified</string>
+	<string name="resend_OTP">ओटीपी पुन: भेजें</string>
 
 
-    <string-array name="CountryCodes" >
+	<string-array name="CountryCodes" >
 <item>93,AF</item>
 <item>355,AL</item>
 <item>213,DZ</item>

@@ -1063,7 +1063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(new Intent(HomeActivity.this, LanguagePrefrencesActivity.class));
 					Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					finish();
+//					finish();
 				}
 			});
 
@@ -2467,7 +2467,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
-					takeFareText.setText(getResources().getString(R.string.take_cash)+" " );
+					takeFareText.setText(getResources().getString(R.string.take_cash)+" "+getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay ));
 					takeFareValue.setText(getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(Data.endRideData.toPay));
 					displayCouponApplied();
 
@@ -3497,6 +3497,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onResume() {
 		super.onResume();
 
+		HomeActivity.appInterruptHandler = HomeActivity.this;
+
 		if (!checkIfUserDataNull(HomeActivity.this)) {
 			setUserData();
 
@@ -3509,6 +3511,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 		}
+
+		if(!Data.currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+			Data.currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+			onCreate(new Bundle());
+		}
+
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
 		long timediff = System.currentTimeMillis() - fetchHeatMapTime;
