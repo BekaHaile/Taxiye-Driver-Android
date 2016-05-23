@@ -331,7 +331,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
 	long fetchHeatMapTime = 0;
-	long heatMapRefreshTime = Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0);
+//	long heatMapRefreshTime = Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0);
 	static long previousWaitTime = 0, previousRideTime = 0;
 
 	static String waitTime = "", rideTime = "";
@@ -2588,7 +2588,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 					try {
 
 
-						if(heatMapRefreshTime >0) {
+						if(Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0) >0) {
 							heatMapHandler.postDelayed(heatMapRunnalble, 1000);
 						}
 					} catch (Exception e) {
@@ -7683,7 +7683,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 			} catch (Exception e) {
 
 			}
-			heatMapHandler.postDelayed(heatMapRunnalble, heatMapRefreshTime);
+			heatMapHandler.postDelayed(heatMapRunnalble, Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0));
 		}
 	};
 
