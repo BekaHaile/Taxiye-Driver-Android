@@ -64,17 +64,8 @@ public class Data {
 	
 	
 	
-	public static final String LANGUAGE_SELECTED = "language_selected";
-	
-	
-	public static String D_ARRIVED = "D_ARRIVED", D_START_RIDE = "D_START_RIDE", D_IN_RIDE = "D_IN_RIDE";
 
-	
-	public static LatLng startRidePreviousLatLng;
-	public static long startRidePreviousLocationTime = System.currentTimeMillis();
-	
-	
-	
+
 	
 
 	
@@ -192,7 +183,7 @@ public class Data {
 
 	public static EndRideData endRideData;
 
-    public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+    public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<>();
 
 	public static JSONArray blockAppPackageNameList;
 	

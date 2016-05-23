@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -24,7 +23,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
@@ -390,6 +388,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public ASSL assl;
 	private String currentPreferredLang = "";
+	private LatLng driverAtPickupLatLng;
 
 
 	@Override
@@ -3731,8 +3730,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
-			if (firstLatLng == null) {
-				firstLatLng = Data.startRidePreviousLatLng;
+			if (firstLatLng == null && driverAtPickupLatLng != null) {
+				firstLatLng = driverAtPickupLatLng;
 			}
 
 			if (firstLatLng != null) {
@@ -4654,13 +4653,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 							initializeStartRideVariables();
 
-							Data.startRidePreviousLatLng = driverAtPickupLatLng;
-							Data.startRidePreviousLocationTime = System.currentTimeMillis();
+							HomeActivity.this.driverAtPickupLatLng = driverAtPickupLatLng;
 							SharedPreferences pref = getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 							Editor editor = pref.edit();
 							editor.putString(Data.SP_LAST_LATITUDE, "" + driverAtPickupLatLng.latitude);
 							editor.putString(Data.SP_LAST_LONGITUDE, "" + driverAtPickupLatLng.longitude);
-							editor.putString(Data.SP_LAST_LOCATION_TIME, "" + Data.startRidePreviousLocationTime);
 							editor.commit();
 
 							driverScreenMode = DriverScreenMode.D_IN_RIDE;

@@ -469,8 +469,6 @@ public class JSONParser implements Constants {
 			HomeActivity.rideTime = jLastRideData.getString("ride_time");
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
-			Data.startRidePreviousLatLng = new LatLng(0, 0);
-			Data.startRidePreviousLocationTime = System.currentTimeMillis();
 
 			CouponInfo couponInfo = null;
 			PromoInfo promoInfo = null;
@@ -498,7 +496,7 @@ public class JSONParser implements Constants {
 			Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(jLastRideData.getString("user_id")),
 					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
 					new LatLng(0, 0), cachedApiEnabled,
-					jLastRideData.getString("user_image"), couponInfo, promoInfo));
+					jLastRideData.getString("user_image"), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
 			
 			
 			if(jLastRideData.has("fare_details")){
@@ -556,9 +554,7 @@ public class JSONParser implements Constants {
 
 		String returnResponse = "";
 
-		if (currentUserStatus == 1) { // TODO for driver
-
-			String screenMode = "";
+		if (currentUserStatus == 1) {
 
 			int engagementStatus = -1;
 			String engagementId = "", userId = "", customerName = "", customerImage = "", customerPhone = "", customerRating = "4", schedulePickupTime = "";
@@ -788,19 +784,10 @@ public class JSONParser implements Constants {
 			}
 
 
-			// 0 for request, 1 for accepted,2 for started,3 for ended, 4 for rejected by driver, 5 for rejected by user,6 for timeout, 7 for nullified by chrone
-			if (EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) {
-				screenMode = Data.D_ARRIVED;
-			} else if (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus) {
-				screenMode = Data.D_START_RIDE;
-			} else if (EngagementStatus.STARTED.getOrdinal() == engagementStatus) {
-				screenMode = Data.D_IN_RIDE;
-			} else {
-				screenMode = "";
-			}
 
-
-			if ("".equalsIgnoreCase(screenMode)) {
+			if (EngagementStatus.ACCEPTED.getOrdinal() != engagementStatus
+					&& EngagementStatus.ARRIVED.getOrdinal() != engagementStatus
+					&& EngagementStatus.STARTED.getOrdinal() != engagementStatus) {
 				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
 				clearSPData(context);
 			} else {
@@ -833,11 +820,11 @@ public class JSONParser implements Constants {
 				}
 
 
-				if (Data.D_ARRIVED.equalsIgnoreCase(screenMode)) {
+				if (EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_ARRIVED;
-				} else if (Data.D_START_RIDE.equalsIgnoreCase(screenMode)) {
+				} else if (EngagementStatus.ARRIVED.getOrdinal() == engagementStatus) {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_START_RIDE;
-				} else if (Data.D_IN_RIDE.equalsIgnoreCase(screenMode)) {
+				} else if (EngagementStatus.STARTED.getOrdinal() == engagementStatus) {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_IN_RIDE;
 
 					SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
@@ -856,29 +843,9 @@ public class JSONParser implements Constants {
 
 					HomeActivity.waitStart = 2;
 
-					String lat1 = pref.getString(Data.SP_LAST_LATITUDE, "0");
-					String lng1 = pref.getString(Data.SP_LAST_LONGITUDE, "0");
-
-					String previousLocationTime = pref.getString(Data.SP_LAST_LOCATION_TIME, "" + System.currentTimeMillis());
-
-					Data.startRidePreviousLatLng = new LatLng(Double.parseDouble(lat1), Double.parseDouble(lng1));
-
-					Data.startRidePreviousLocationTime = Long.parseLong(previousLocationTime);
-
-					Log.e("Data on app restart", "-----");
-					Log.i("HomeActivity.totalDistance", "=" + HomeActivity.totalDistance);
-					Log.i("Data.startRidePreviousLatLng", "=" + Data.startRidePreviousLatLng);
-					Log.i("Data.previousLocationTime", "=" + Data.startRidePreviousLocationTime);
-					Log.e("----------", "-----");
-
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP totalDistance = " + HomeActivity.totalDistance);
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLatLng = " + Data.startRidePreviousLatLng);
-					Log.writePathLogToFile(Data.dEngagementId, "Got from SP Data.startRidePreviousLocationTime = " + Data.startRidePreviousLocationTime);
-
 				} else {
 					HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
 				}
-
 			}
 
 		}

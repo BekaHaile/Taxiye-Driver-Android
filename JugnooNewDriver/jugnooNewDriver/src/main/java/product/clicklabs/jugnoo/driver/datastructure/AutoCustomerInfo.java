@@ -48,7 +48,7 @@ public class AutoCustomerInfo extends CustomerInfo{
 	}
 
 	public AutoCustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
-			String image, CouponInfo couponInfo, PromoInfo promoInfo){
+			String image, CouponInfo couponInfo, PromoInfo promoInfo, int status){
 		super(engagementId, userId, referenceId, name, phoneNumber, requestlLatLng, cachedApiEnabled);
 		this.businessType = BusinessType.AUTOS;
 		this.image = image;
@@ -63,6 +63,7 @@ public class AutoCustomerInfo extends CustomerInfo{
         this.meterFareApplicable = 0;
         this.getJugnooFareEnabled = 1;
 		this.waitingChargesApplicable = 0;
+		this.setStatus(status);
 	}
 	
 	@Override

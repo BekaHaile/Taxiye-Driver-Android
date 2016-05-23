@@ -68,24 +68,12 @@ import retrofit.mime.TypedByteArray;
 
 public class GCMIntentService extends IntentService {
 
-	public static int NOTIFICATION_ID = 1, PROMOTION_ID = 100;
+	public static int PROMOTION_ID = 100;
 	public static final long REQUEST_TIMEOUT = 120000;
 	public static final int DRIVER_AVAILABILTY_TIMEOUT_REQUEST_CODE = 117;
-	NotificationCompat.Builder builder;
 
 	public GCMIntentService() {
 		super("GcmIntentService");
-	}
-
-
-	protected void onError(Context arg0, String arg1) {
-		Log.e("Registration", "Got an error1!");
-		Log.e("Registration", arg1.toString());
-	}
-
-	protected boolean onRecoverableError(Context context, String errorId) {
-		Log.d("onRecoverableError", errorId);
-		return false;
 	}
 
 
@@ -320,19 +308,7 @@ public class GCMIntentService extends IntentService {
 
 	public static void clearNotifications(Context context) {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-//		notificationManager.cancel(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0));
 		notificationManager.cancelAll();
-	}
-
-	protected void onRegistered(Context arg0, String arg1) {
-		Log.e("Registration", "!");
-		Log.e("Registration", arg1.toString());
-		Data.deviceToken = arg1.toString();
-	}
-
-	protected void onUnregistered(Context arg0, String arg1) {
-		Log.e("Registration", "Got an error4!");
-		Log.e("Registration", arg1.toString());
 	}
 
 
@@ -658,25 +634,12 @@ public class GCMIntentService extends IntentService {
 								startService(synIntent);
 
 							}else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
-//										{
-//											"driver_id": 1148,
-//												"flag": 74,
-//												"actual_fare": 15,
-//												"account_balance": 5,
-//												"customer_phone_no": "+917696315417",
-//												"engagement_id": 11,
-//												"transaction_time": "2015-10-07T06:18:40.031Z",
-//												"paid_in_cash": 10
-//										}
-
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
 										jObj.getString("transaction_time"),
 										jObj.getString("customer_phone_no"),
 										jObj.getDouble("actual_fare"),
 										jObj.getDouble("paid_in_cash"),
 										jObj.getDouble("account_balance"));
-
-
 								if (HomeActivity.appInterruptHandler != null) {
 									Intent intent1 = new Intent(this, SharingRidesActivity.class);
 									intent1.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
