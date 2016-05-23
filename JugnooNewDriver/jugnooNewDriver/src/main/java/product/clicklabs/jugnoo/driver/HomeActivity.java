@@ -331,7 +331,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
 	long fetchHeatMapTime = 0;
-
+//	long heatMapRefreshTime = Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0);
 	static long previousWaitTime = 0, previousRideTime = 0;
 
 	static String waitTime = "", rideTime = "";
@@ -2533,6 +2533,11 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 			}
 
+			try {
+				heatMapHandler.removeCallbacks(heatMapRunnalble);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			switch (mode) {
 
@@ -2580,7 +2585,15 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
+					try {
 
+
+						if(Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0) >0) {
+							heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 					initializeStationDataProcedure();
 					Data.nextPickupLatLng = null;
 					Data.nextCustomerName = null;
@@ -5640,7 +5653,7 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 
 	public void fetchHeatMapData(final Activity activity) {
 		try {
-			if (DriverScreenMode.D_INITIAL == driverScreenMode && AppStatus.getInstance(activity).isOnline(activity)) {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				final long responseTime = System.currentTimeMillis();
 				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
 					@Override
@@ -7662,6 +7675,27 @@ public class HomeActivity extends FragmentActivity implements AppInterruptHandle
 		}
 
 	}
+
+
+	Handler heatMapHandler = new Handler();
+
+	Runnable heatMapRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				fetchHeatMapData(HomeActivity.this);
+			} catch (Exception e) {
+
+			}
+			heatMapHandler.postDelayed(heatMapRunnalble, Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0));
+		}
+	};
+
+//	public void stopHeatMapRefresh() {
+//		heatMapHandler.removeCallbacks(heatMapRunnalble);
+//		heatMapHandler.postDelayed(heatMapRunnalble, 1000);
+//	}
+
 
 	public void perfectRideStateRestore() {
 
