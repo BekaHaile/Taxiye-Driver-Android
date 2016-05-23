@@ -461,7 +461,24 @@ public class LoginViaOTP extends Activity {
 			loginDataFetched = false;
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
+		} else if(hasFocus && sendToOtpScreen){
+			sendIntentToOtpScreen();
 		}
+	}
+
+
+	public void sendIntentToOtpScreen() {
+		DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", otpErrorMsg, new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				OTPConfirmScreen.intentFromRegister = false;
+				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
+				startActivity(new Intent(LoginViaOTP.this, OTPConfirmScreen.class));
+				finish();
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
 	}
 
 	@Override
