@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
@@ -165,9 +164,6 @@ public class Data {
 	public static ArrayList<CancelOption> cancelOptionsList;
 
 	public static String dEngagementId = "";
-	public static DriverRideRequest openedDriverRideRequest;
-	
-	public static ArrayList<DriverRideRequest> driverRideRequests = new ArrayList<>();
 
 	private static ArrayList<CustomerInfo> assignedCustomerInfos = new ArrayList<>();
 	
@@ -271,6 +267,36 @@ public class Data {
 
 
 
+
+
+
+	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
+		if(assignedCustomerInfos != null) {
+			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+				if (customerInfo.getStatus() == status) {
+					customerInfos.add(customerInfo);
+				}
+			}
+			return customerInfos;
+		} else{
+			return null;
+		}
+	}
+
+	public static void clearAssignedCustomerInfosListForStatus(int status){
+		if(assignedCustomerInfos != null) {
+			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+				if (customerInfo.getStatus() != status) {
+					customerInfos.add(customerInfo);
+				}
+			}
+			assignedCustomerInfos.clear();
+			assignedCustomerInfos.addAll(customerInfos);
+		}
+	}
+
 	public static CustomerInfo getCustomerInfo(String engagementId){
 		try {
 			int index = assignedCustomerInfos.indexOf(new CustomerInfo(Integer.parseInt(engagementId)));
@@ -284,19 +310,25 @@ public class Data {
 	}
 
 	public static void addCustomerInfo(CustomerInfo customerInfo){
-		if(assignedCustomerInfos.contains(customerInfo)) {
-			assignedCustomerInfos.remove(assignedCustomerInfos.indexOf(customerInfo));
-			assignedCustomerInfos.add(assignedCustomerInfos.indexOf(customerInfo), customerInfo);
-		} else{
-			assignedCustomerInfos.add(customerInfo);
+		if(assignedCustomerInfos != null) {
+			if (assignedCustomerInfos.contains(customerInfo)) {
+				assignedCustomerInfos.remove(assignedCustomerInfos.indexOf(customerInfo));
+				assignedCustomerInfos.add(assignedCustomerInfos.indexOf(customerInfo), customerInfo);
+			} else {
+				assignedCustomerInfos.add(customerInfo);
+			}
 		}
 	}
 
-	public static void removeCustomerInfo(int engagementId){
-		int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
-		if(index > -1){
-			assignedCustomerInfos.remove(index);
+	public static boolean removeCustomerInfo(int engagementId){
+		if(assignedCustomerInfos != null) {
+			int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
+			if (index > -1) {
+				assignedCustomerInfos.remove(index);
+				return true;
+			}
 		}
+		return false;
 	}
 
 }

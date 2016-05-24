@@ -39,12 +39,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
-import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
-import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
@@ -419,29 +417,10 @@ public class GCMIntentService extends IntentService {
 
 											int referenceId = jObj.getInt("reference_id");
 
-											if (BusinessType.AUTOS.getOrdinal() == businessId) {
-												AutoRideRequest autoRideRequest = new AutoRideRequest(engagementId, userId,
-														new LatLng(latitude, longitude), startTime, address,
-														businessId, referenceId, fareFactor);
-												if (!Data.driverRideRequests.contains(autoRideRequest)) {
-													Data.driverRideRequests.add(autoRideRequest);
-												}
-											} else if (BusinessType.MEALS.getOrdinal() == businessId) {
-												String rideTime = jObj.getString("ride_time");
-
-												MealRideRequest mealRideRequest = new MealRideRequest(engagementId, userId,
-														new LatLng(latitude, longitude), startTime, address,
-														businessId, referenceId, rideTime, fareFactor);
-												if (!Data.driverRideRequests.contains(mealRideRequest)) {
-													Data.driverRideRequests.add(mealRideRequest);
-												}
-											} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
-												int orderAmount = jObj.getInt("order_amount");
-												Log.e("orderAmount", "=" + orderAmount);
-												Data.driverRideRequests.add(new FatafatRideRequest(engagementId, userId,
-														new LatLng(latitude, longitude), startTime, address,
-														businessId, referenceId, orderAmount, fareFactor));
-											}
+											CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+													Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+													referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal());
+											Data.addCustomerInfo(customerInfo);
 
 											startRing(this);
 											flurryEventForRequestPush(engagementId);
@@ -483,7 +462,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
 								cancelUploadPathAlarm(this);
@@ -495,7 +474,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId));
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
 								cancelUploadPathAlarm(this);
@@ -507,7 +486,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId));
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
 								cancelUploadPathAlarm(this);
@@ -859,7 +838,8 @@ public class GCMIntentService extends IntentService {
 	public static void stopRing(boolean manual) {
 		boolean stopRing;
 		if (HomeActivity.appInterruptHandler != null) {
-			if (Data.driverRideRequests != null && Data.driverRideRequests.size() > 0) {
+			if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
+					&& Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()).size() > 0) {
 				stopRing = false;
 			} else {
 				stopRing = true;
@@ -977,8 +957,8 @@ public class GCMIntentService extends IntentService {
 			timerTask = new TimerTask() {
 				@Override
 				public void run() {
-					if (Data.driverRideRequests != null) {
-						boolean removed = Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+					if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null) {
+						boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId));
 						if (removed) {
 							if (HomeActivity.appInterruptHandler != null) {
 								HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);

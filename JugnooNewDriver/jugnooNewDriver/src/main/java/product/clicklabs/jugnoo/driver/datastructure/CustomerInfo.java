@@ -16,6 +16,8 @@ public class CustomerInfo {
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
 	private int status;
+	private String address, startTime;
+	private double fareFactor;
 
 	/**
 	 * Customer Info super constructor
@@ -39,6 +41,19 @@ public class CustomerInfo {
 
 	public CustomerInfo(int engagementId){
 		this.engagementId = engagementId;
+	}
+
+	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
+						int referenceId, double fareFactor, int status){
+		this.engagementId = engagementId;
+		this.userId = userId;
+		this.requestlLatLng = requestlLatLng;
+		this.startTime = startTime;
+		this.address = address;
+		this.businessType = BusinessType.AUTOS;
+		this.referenceId = referenceId;
+		this.fareFactor = fareFactor;
+		this.status = status;
 	}
 	
 	@Override
@@ -76,6 +91,39 @@ public class CustomerInfo {
 
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public double getFareFactor() {
+		return fareFactor;
+	}
+
+	public void setFareFactor(double fareFactor) {
+		this.fareFactor = fareFactor;
+	}
+
+	public LatLng getRequestlLatLng() {
+		return requestlLatLng;
+	}
+
+	public void setRequestlLatLng(LatLng requestlLatLng) {
+		this.requestlLatLng = requestlLatLng;
 	}
 
 

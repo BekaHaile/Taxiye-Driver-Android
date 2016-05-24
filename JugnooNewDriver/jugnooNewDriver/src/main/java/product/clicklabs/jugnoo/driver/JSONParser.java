@@ -18,10 +18,10 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.AutoRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -29,8 +29,6 @@ import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
-import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
@@ -857,7 +855,7 @@ public class JSONParser implements Constants {
 	public void fillDriverRideRequests(JSONObject jObject1) {
 
 		try {
-			Data.driverRideRequests.clear();
+			Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
 			JSONArray jActiveRequests = jObject1.getJSONArray("active_requests");
 
@@ -907,22 +905,10 @@ public class JSONParser implements Constants {
 					fareFactor = jActiveRequest.getDouble("fare_factor");
 				}
 
-				if (BusinessType.AUTOS.getOrdinal() == businessId) {
-					Data.driverRideRequests.add(new AutoRideRequest(requestEngagementId, requestUserId,
-							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
-							businessId, referenceId, fareFactor));
-				} else if (BusinessType.MEALS.getOrdinal() == businessId) {
-					String rideTime = jActiveRequest.getString("ride_time");
-
-					Data.driverRideRequests.add(new MealRideRequest(requestEngagementId, requestUserId,
-							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
-							businessId, referenceId, rideTime, fareFactor));
-				} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
-					int orderAmount = jActiveRequest.getInt("order_amount");
-					Data.driverRideRequests.add(new FatafatRideRequest(requestEngagementId, requestUserId,
-							new LatLng(requestLatitude, requestLongitude), startTime, requestAddress,
-							businessId, referenceId, orderAmount, fareFactor));
-				}
+				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
+						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
+						startTime, requestAddress, referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal());
+				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
 			}

@@ -9,7 +9,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
@@ -18,7 +17,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -97,18 +95,16 @@ import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CouponType;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
-import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
-import product.clicklabs.jugnoo.driver.datastructure.MealRideRequest;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
@@ -389,6 +385,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public ASSL assl;
 	private String currentPreferredLang = "";
 	private LatLng driverAtPickupLatLng;
+
+	private CustomerInfo openedCustomerInfo;
+	private CustomerInfo getOpenedCustomerInfo(){
+		return openedCustomerInfo;
+	}
+	private void setOpenedCustomerInfo(CustomerInfo customerInfo){
+		openedCustomerInfo = customerInfo;
+	}
 
 
 	@Override
@@ -1168,7 +1172,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					acceptRequestFunc(Data.openedDriverRideRequest);
+					acceptRequestFunc(getOpenedCustomerInfo());
 					GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
 					FlurryEventLogger.event(RIDE_CHECKED_AND_ACCEPTED);
 				}
@@ -1179,7 +1183,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					rejectRequestFuncCall(Data.openedDriverRideRequest);
+					rejectRequestFuncCall(getOpenedCustomerInfo());
 					FlurryEventLogger.event(RIDE_CHECKED_AND_CANCELLED);
 				}
 			});
@@ -1630,18 +1634,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			String type = intent.getStringExtra("type");
 			if (type.equalsIgnoreCase("accept")) {
-				DriverRideRequest driverRideRequest = driverRequestListAdapter
-						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
-								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
-				acceptRequestFunc(driverRideRequest);
+				CustomerInfo customerInfo = driverRequestListAdapter
+						.customerInfos.get(driverRequestListAdapter.customerInfos.indexOf
+								(new CustomerInfo(Integer.parseInt(intent.getExtras().getString("engagement_id")))));
+				acceptRequestFunc(customerInfo);
 				FlurryEventLogger.event(RIDE_ACCEPTED);
 
 			} else if (type.equalsIgnoreCase("cancel")) {
 
-				DriverRideRequest driverRideRequest = driverRequestListAdapter
-						.driverRideRequests.get(driverRequestListAdapter.driverRideRequests.indexOf
-								(new DriverRideRequest(intent.getExtras().getString("engagement_id"))));
-				rejectRequestFuncCall(driverRideRequest);
+				CustomerInfo customerInfo = driverRequestListAdapter
+						.customerInfos.get(driverRequestListAdapter.customerInfos.indexOf
+								(new CustomerInfo(Integer.parseInt(intent.getExtras().getString("engagement_id")))));
+				rejectRequestFuncCall(customerInfo);
 				FlurryEventLogger.event(RIDE_CANCELLED);
 			} else {
 
@@ -1805,7 +1809,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					public void run() {
 						onNewIntent(getIntent());
 					}
-				}, 0);
+				}, 100);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1813,7 +1817,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void acceptRequestFunc(DriverRideRequest driverRideRequest) {
+	public void acceptRequestFunc(CustomerInfo customerInfo) {
 		try {
 			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
@@ -1822,12 +1826,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						Data.nextPickupLatLng = pickupLatLng;
 						Data.nextCustomerName = customerName;
 						createPerfectRideMarker();
-						Data.driverRideRequests.clear();
+						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 						driverPerfectRidePassengerName.setText(customerName);
 						perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
 						driverPassengerInfoRl.setVisibility(View.GONE);
 						GCMIntentService.clearNotifications(getApplicationContext());
-						driverRequestListAdapter.setResults(Data.driverRideRequests);
+						driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()));
 					}
 
 					@Override
@@ -1835,20 +1840,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						callAndHandleStateRestoreAPI();
 					}
 				}).acceptRide(Data.userData.accessToken,
-						driverRideRequest.customerId,
-						driverRideRequest.engagementId,
-						String.valueOf(driverRideRequest.referenceId),
+						String.valueOf(customerInfo.userId),
+						String.valueOf(customerInfo.engagementId),
+						String.valueOf(customerInfo.referenceId),
 						myLocation.getLatitude(),
 						myLocation.getLongitude());
 			} else {
-				Data.dEngagementId = driverRideRequest.engagementId;
-				Data.openedDriverRideRequest = driverRideRequest;
+				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
 
 				if (Utils.getBatteryPercentage(this) >= 20) {
 					GCMIntentService.clearNotifications(HomeActivity.this);
 					GCMIntentService.stopRing(true);
-					driverAcceptRideAsync(HomeActivity.this, driverRideRequest.customerId,
-							driverRideRequest.referenceId);
+					driverAcceptRideAsync(HomeActivity.this, String.valueOf(customerInfo.userId),
+							customerInfo.referenceId);
 				} else {
 					DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_text));
 				}
@@ -1858,13 +1862,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	public void rejectRequestFuncCall(DriverRideRequest driverRideRequest) {
+	public void rejectRequestFuncCall(CustomerInfo customerInfo) {
 		try {
 			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
 					@Override
 					public void onSuccess(String engagementId) {
-						Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+						Data.removeCustomerInfo(Integer.parseInt(engagementId));
 						GCMIntentService.clearNotifications(getApplicationContext());
 						GCMIntentService.stopRing(true);
 						try {
@@ -1874,20 +1878,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						driverRequestListAdapter.setResults(Data.driverRideRequests);
+						driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()));
 					}
 				}).rejectRequestAsync(Data.userData.accessToken,
-						driverRideRequest.customerId,
-						driverRideRequest.engagementId,
-						String.valueOf(driverRideRequest.referenceId));
+						String.valueOf(customerInfo.userId),
+						String.valueOf(customerInfo.engagementId),
+						String.valueOf(customerInfo.referenceId));
 			} else {
-				Data.dEngagementId = driverRideRequest.engagementId;
-				Data.openedDriverRideRequest = driverRideRequest;
+				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
 
 				GCMIntentService.clearNotifications(HomeActivity.this);
 				GCMIntentService.stopRing(true);
-				driverRejectRequestAsync(HomeActivity.this, driverRideRequest.customerId,
-						driverRideRequest.referenceId);
+				driverRejectRequestAsync(HomeActivity.this, String.valueOf(customerInfo.userId),
+						customerInfo.referenceId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2176,7 +2180,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						updateDriverRequestsAccAvailaviblity();
 
-						if (Data.driverRideRequests.size() == 0) {
+						if (Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).size() == 0) {
 							GCMIntentService.clearNotifications(HomeActivity.this);
 							GCMIntentService.stopRing(true);
 						}
@@ -2215,15 +2220,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void updateDriverRequestsAccAvailaviblity() {
 		try {
 			if (Data.userData != null) {
-				ArrayList<DriverRideRequest> tempDriverRideRequests = new ArrayList<DriverRideRequest>();
-				tempDriverRideRequests.addAll(Data.driverRideRequests);
+				ArrayList<CustomerInfo> tempDriverRideRequests = new ArrayList<>();
+				tempDriverRideRequests.addAll(Data.getAssignedCustomerInfosListForStatus(
+						EngagementStatus.REQUESTED.getOrdinal()));
 				for (int i = 0; i < tempDriverRideRequests.size(); i++) {
-					if ((BusinessType.AUTOS == Data.driverRideRequests.get(i).businessType) && (1 != Data.userData.autosAvailable)) {
-						Data.driverRideRequests.remove(i);
-					} else if ((BusinessType.FATAFAT == Data.driverRideRequests.get(i).businessType) && (1 != Data.userData.fatafatAvailable)) {
-						Data.driverRideRequests.remove(i);
-					} else if ((BusinessType.MEALS == Data.driverRideRequests.get(i).businessType) && (1 != Data.userData.mealsAvailable)) {
-						Data.driverRideRequests.remove(i);
+					if ((BusinessType.AUTOS == Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.autosAvailable)) {
+						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
+					} else if ((BusinessType.FATAFAT == Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.fatafatAvailable)) {
+						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
+					} else if ((BusinessType.MEALS == Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.mealsAvailable)) {
+						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
 					}
 				}
 				tempDriverRideRequests.clear();
@@ -2635,24 +2647,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						map.clear();
 					}
 
-					if (Data.openedDriverRideRequest != null) {
+					if (getOpenedCustomerInfo() != null) {
 						if(map != null){
-							customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.openedDriverRideRequest.latLng));
+							customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(getOpenedCustomerInfo().getRequestlLatLng()));
 						}
-						if (BusinessType.MEALS == Data.openedDriverRideRequest.businessType) {
-							textViewBeforeAcceptRequestInfo.setVisibility(View.VISIBLE);
-							textViewBeforeAcceptRequestInfo.setText(getResources().getString(R.string.ride_time)+": "
-									+ ((MealRideRequest) Data.openedDriverRideRequest).rideTime);
-						} else if (BusinessType.FATAFAT == Data.openedDriverRideRequest.businessType) {
-							textViewBeforeAcceptRequestInfo.setVisibility(View.VISIBLE);
-							textViewBeforeAcceptRequestInfo.setText(getResources().getString(R.string.cash_needed_text)
-									+ ((FatafatRideRequest) Data.openedDriverRideRequest).orderAmount);
-						} else {
-							textViewBeforeAcceptRequestInfo.setVisibility(View.GONE);
-						}
-					} else {
-						textViewBeforeAcceptRequestInfo.setVisibility(View.GONE);
 					}
+					textViewBeforeAcceptRequestInfo.setVisibility(View.GONE);
 
 
 					driverInitialLayout.setVisibility(View.GONE);
@@ -2917,7 +2917,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					cancelStationPathUpdateTimer();
 
 			}
-			driverRequestListAdapter.setResults(Data.driverRideRequests);
+			driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+					EngagementStatus.REQUESTED.getOrdinal()));
 
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
@@ -3753,7 +3754,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
 				textViewOtherRequestDetails, textViewRequestFareFactor;
 		Button buttonAcceptRide, buttonCancelRide;
-		//		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
 	}
@@ -3762,14 +3762,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		LayoutInflater mInflater;
 		ViewHolderDriverRequest holder;
 
-		ArrayList<DriverRideRequest> driverRideRequests;
+		ArrayList<CustomerInfo> customerInfos;
 
 		Handler handlerRefresh;
 		Runnable runnableRefresh;
 
 		public DriverRequestListAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			driverRideRequests = new ArrayList<DriverRideRequest>();
+			customerInfos = new ArrayList<>();
 			handlerRefresh = new Handler();
 			runnableRefresh = new Runnable() {
 				@Override
@@ -3785,7 +3785,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		@Override
 		public int getCount() {
-			return driverRideRequests.size();
+			return customerInfos.size();
 		}
 
 		@Override
@@ -3798,12 +3798,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			return position;
 		}
 
-		public synchronized void setResults(ArrayList<DriverRideRequest> driverRideRequests) {
-			if (this.driverRideRequests == null) {
-				this.driverRideRequests = new ArrayList<DriverRideRequest>();
+		public synchronized void setResults(ArrayList<CustomerInfo> customerInfos) {
+			if (this.customerInfos == null) {
+				this.customerInfos = new ArrayList<>();
 			}
-			this.driverRideRequests.clear();
-			this.driverRideRequests.addAll(driverRideRequests);
+			this.customerInfos.clear();
+			this.customerInfos.addAll(customerInfos);
 			this.notifyDataSetChanged();
 		}
 
@@ -3812,7 +3812,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			super.notifyDataSetChanged();
 			if (DriverScreenMode.D_RIDE_END != HomeActivity.driverScreenMode
 					&& DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
-					&& driverRideRequests.size() > 0) {
+					&& customerInfos.size() > 0) {
 				driverRideRequestsList.setVisibility(View.VISIBLE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
@@ -3833,7 +3833,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime);
 				holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
-//				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails);
 				holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor);
@@ -3859,24 +3858,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
-			DriverRideRequest driverRideRequest = driverRideRequests.get(position);
+			CustomerInfo customerInfo = customerInfos.get(position);
 
 			holder.id = position;
 
 			try {
-				holder.textViewRequestAddress.setText(driverRideRequest.address);
+				holder.textViewRequestAddress.setText(customerInfo.getAddress());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
 
-			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), driverRideRequest.startTime);
+			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
 			long timeDiffInSec = timeDiff / 1000;
 			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
 
 			if (myLocation != null) {
 				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
-				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), driverRideRequest.latLng);
+				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
 				distance = distance * 1.5;
 				if (distance >= 1000) {
 					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
@@ -3888,23 +3887,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
-			if (BusinessType.AUTOS == driverRideRequest.businessType) {
-//				holder.imageViewRequestType.setImageResource(R.drawable.request_autos);
-				holder.textViewOtherRequestDetails.setVisibility(View.GONE);
-			} else if (BusinessType.MEALS == driverRideRequest.businessType) {
-//				holder.imageViewRequestType.setImageResource(R.drawable.request_meals);
-				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
-				holder.textViewOtherRequestDetails.setText(getResources().getString(R.string.ride_time2)+" " + ((MealRideRequest) driverRideRequest).rideTime);
-			} else if (BusinessType.FATAFAT == driverRideRequest.businessType) {
-//				holder.imageViewRequestType.setImageResource(R.drawable.request_fatafat);
-				holder.textViewOtherRequestDetails.setVisibility(View.VISIBLE);
-				holder.textViewOtherRequestDetails.setText(getResources().getString(R.string.cash_needed_text) + ((FatafatRideRequest) driverRideRequest).orderAmount);
-			}
+			holder.textViewOtherRequestDetails.setVisibility(View.GONE);
 
 
-			if (driverRideRequest.fareFactor > 1 || driverRideRequest.fareFactor < 1) {
+			if (customerInfo.getFareFactor() > 1 || customerInfo.getFareFactor() < 1) {
 				holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
-				holder.textViewRequestFareFactor.setText(getResources().getString(R.string.rate)+" " + decimalFormat.format(driverRideRequest.fareFactor) + "x");
+				holder.textViewRequestFareFactor.setText(getResources().getString(R.string.rate)+" " + decimalFormat.format(customerInfo.getFareFactor()) + "x");
 			} else {
 				holder.textViewRequestFareFactor.setVisibility(View.GONE);
 			}
@@ -3918,15 +3906,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (DriverScreenMode.D_IN_RIDE != driverScreenMode) {
 							holder = (ViewHolderDriverRequest) v.getTag();
 
-							DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
+							CustomerInfo customerInfo = customerInfos.get(holder.id);
 
-							Data.dEngagementId = driverRideRequest.engagementId;
-							Data.openedDriverRideRequest = driverRideRequest;
+							Data.dEngagementId = String.valueOf(customerInfo.engagementId);
+							setOpenedCustomerInfo(customerInfo);
 
 							driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
 							switchDriverScreen(driverScreenMode);
 
-							map.animateCamera(CameraUpdateFactory.newLatLng(driverRideRequest.latLng), 1000, null);
+							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), 1000, null);
 							FlurryEventLogger.event(RIDE_CHECKED);
 						}
 					} catch (Exception e) {
@@ -3941,8 +3929,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
-						acceptRequestFunc(driverRideRequest);
+						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+						acceptRequestFunc(customerInfo1);
 						FlurryEventLogger.event(RIDE_ACCEPTED);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -3956,8 +3944,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
-						DriverRideRequest driverRideRequest = driverRideRequests.get(holder.id);
-						rejectRequestFuncCall(driverRideRequest);
+						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
+						rejectRequestFuncCall(customerInfo1);
 						FlurryEventLogger.event(RIDE_CANCELLED);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -3970,76 +3958,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	}
-
-
-	public float getBatteryPercentage() {
-		try {
-			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-			Intent batteryStatus = registerReceiver(null, ifilter);
-			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-			float batteryPct = (level / (float) scale) * 100;
-
-			// Are we charging / charged?
-			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-					status == BatteryManager.BATTERY_STATUS_FULL;
-			if (isCharging) {
-				return 70;
-			} else {
-				return batteryPct;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 70;
-		}
-	}
-
-
-//	public void getDriverOnlineHours(final Activity activity) {
-//		try {
-//			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-//				progressBarDriverOnlineHours.setVisibility(View.VISIBLE);
-//				textViewTitleBarOvalText.setVisibility(View.GONE);
-//				RestClient.getApiServices().dailyOnlineHours(Data.userData.accessToken, new Callback<RegisterScreenResponse>() {
-//					@Override
-//					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-//						try {
-//							progressBarDriverOnlineHours.setVisibility(View.GONE);
-//							textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-//							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-//							JSONObject jObj;
-//							jObj = new JSONObject(jsonString);
-//							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-//							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-//								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-//									String onlineHours = jObj.getString("driver_online_hours");
-//									Log.i("Online hours",onlineHours);
-//									if(Data.userData != null) {
-//										Data.userData.driverOnlineHours = onlineHours;
-//										setUserData();
-//									}
-//								}
-//							}
-//						} catch (Exception exception) {
-//							exception.printStackTrace();
-//						}
-//					}
-//
-//					@Override
-//					public void failure(RetrofitError error) {
-//						progressBarDriverOnlineHours.setVisibility(View.GONE);
-//						textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-//					}
-//				});
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			progressBarDriverOnlineHours.setVisibility(View.GONE);
-//			textViewTitleBarOvalText.setVisibility(View.VISIBLE);
-//		}
-//
-//	}
 
 
 //	Retrofit
@@ -4234,15 +4152,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 						int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
+						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+
 						Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
 								Integer.parseInt(customerId), referenceId,
 								userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 								userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
 								meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 								waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal()));
-
-
-						Data.driverRideRequests.clear();
 
 
 						GCMIntentService.clearNotifications(getApplicationContext());
@@ -4280,12 +4197,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String storeAddress = storeData.getString("address");
 						String storePhoneNumber = storeData.getString("phone_no");
 
+						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+
 						Data.addCustomerInfo(new FatafatOrderInfo(Integer.parseInt(Data.dEngagementId),
 								storeId, referenceId,
 								storeName, storePhoneNumber, new LatLng(storeLatitude, storeLongitude),
 								storeAddress, orderAmount));
-
-						Data.driverRideRequests.clear();
 
 						GCMIntentService.clearNotifications(getApplicationContext());
 
@@ -4298,7 +4215,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
 
-					driverRequestListAdapter.setResults(Data.driverRideRequests);
+					driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()));
 
 				} else {
 					try {
@@ -4349,7 +4267,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void reduceRideRequest(String engagementId) {
-		Data.driverRideRequests.remove(new DriverRideRequest(engagementId));
+		Data.removeCustomerInfo(Integer.parseInt(engagementId));
 		driverScreenMode = DriverScreenMode.D_INITIAL;
 		switchDriverScreen(driverScreenMode);
 	}
@@ -6464,22 +6382,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (userMode == UserMode.DRIVER) {
 
-				Log.e("driverRideRequests", "=" + Data.driverRideRequests);
-
 				if (DriverScreenMode.D_IN_RIDE != driverScreenMode) {
 					map.clear();
 				}
 				drawHeatMapData(heatMapResponseGlobal);
 
-				if (Data.driverRideRequests.size() > 0) {
+				if (Data.getAssignedCustomerInfosListForStatus(
+						EngagementStatus.REQUESTED.getOrdinal()).size() > 0) {
 
 					if (DriverScreenMode.D_RIDE_END != driverScreenMode
 							&& DriverScreenMode.D_IN_RIDE != driverScreenMode) {
-						for (int i = 0; i < Data.driverRideRequests.size(); i++) {
+						for (int i = 0; i < Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).size(); i++) {
 							MarkerOptions markerOptions = new MarkerOptions();
-							markerOptions.title(Data.driverRideRequests.get(i).engagementId);
+							markerOptions.title(String.valueOf(Data.getAssignedCustomerInfosListForStatus(
+									EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId));
 							markerOptions.snippet("");
-							markerOptions.position(Data.driverRideRequests.get(i).latLng);
+							markerOptions.position(Data.getAssignedCustomerInfosListForStatus(
+									EngagementStatus.REQUESTED.getOrdinal()).get(i).requestlLatLng);
 							markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPassengerMarkerBitmap(HomeActivity.this, assl)));
 
 							map.addMarker(markerOptions);
@@ -6487,13 +6407,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
-					Collections.sort(Data.driverRideRequests, new Comparator<DriverRideRequest>() {
+					Collections.sort(Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()), new Comparator<CustomerInfo>() {
 
 						@Override
-						public int compare(DriverRideRequest lhs, DriverRideRequest rhs) {
+						public int compare(CustomerInfo lhs, CustomerInfo rhs) {
 							if (myLocation != null) {
-								double distanceLhs = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), lhs.latLng);
-								double distanceRhs = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), rhs.latLng);
+								double distanceLhs = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), lhs.requestlLatLng);
+								double distanceRhs = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), rhs.requestlLatLng);
 								return (int) (distanceLhs - distanceRhs);
 							}
 							return 0;
@@ -6501,7 +6422,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					});
 
 				}
-				driverRequestListAdapter.setResults(Data.driverRideRequests);
+				driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+						EngagementStatus.REQUESTED.getOrdinal()));
 
 			}
 		} catch (Exception e) {
@@ -6630,7 +6552,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				try {
-					driverRequestListAdapter.setResults(Data.driverRideRequests);
+					driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
+							EngagementStatus.REQUESTED.getOrdinal()));
 					if (perfectRidestationMarker != null) {
 						perfectRidestationMarker.remove();
 					}
@@ -7144,7 +7067,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public boolean checkDriverFree() {
 		try {
 			checkIfUserDataNull(this);
-			return (UserMode.DRIVER == userMode && DriverScreenMode.D_INITIAL == driverScreenMode && Data.userData.autosAvailable == 1 && Data.driverRideRequests.size() == 0);
+			return (UserMode.DRIVER == userMode && DriverScreenMode.D_INITIAL == driverScreenMode
+					&& Data.userData.autosAvailable == 1
+					&& Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()).size() == 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
