@@ -64,7 +64,7 @@
     <string name="check_your_registered_email_phone_number_for_otp">OTP ( വൺ ടൈം പാസ്സ്‌വേർഡ്‌ ) കാണുന്നതിനു വേണ്ടി നിങ്ങൾ രജിസ്റ്റർ ചെയ്ത ഇ-മെയിൽ അല്ലെങ്കിൽ ഫോൺ ചെക്ക്‌ ചെയ്യുക </string>
     <string name="enter_code">കോഡ് enter ചെയ്യുക </string>
     <string name="done">അവസാനിച്ചു </string>
-    <string name="amount"></string>
+    <string name="amount">തുക</string>
     <string name="no_driver_available">ഡ്രൈവർമാർ നിലവിൽ ഫ്രീ അല്ല</string>
     <string name="no_driver_available_message">3 km പരിധിക്ക് ഉള്ളിൽ നിലവിൽ ഡ്രൈവർമാർ ആരും ഫ്രീ അല്ല. ഞങ്ങൾ  ആ പ്രശ്നം ഉടനെ തന്നെ പരിഹരിക്കുന്നതയിരിക്കും </string>
     <string name="logout">ലോഗ് ഔട്ട്‌ </string>
@@ -464,7 +464,8 @@
     <string name="enter_valid_amount">ദയവായി സാധുവായ തുക നൽകുക</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">റൈഡ് പൂർത്തിയായി</string>
-
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

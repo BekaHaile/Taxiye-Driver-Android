@@ -481,7 +481,7 @@
 	<string name="referral">रेफरल</string>
 	<string name="NA">लागू नहीं</string>
 	<string name="Invoice">चालान </string>
-	<string name="recharge_amount_for_customer"></string>
+	<string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s</string>
 	<string name="Ride">सवारी</string>
 	<string name="customer_id">ग्राहक आईडी</string>
 	<string name="paytm_transaction">पेटीएम लेनदेन</string>

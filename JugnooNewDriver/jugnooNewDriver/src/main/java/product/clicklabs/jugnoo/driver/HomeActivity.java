@@ -2226,13 +2226,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private boolean checkIfDriverOnline() {
-		if (0 == Data.userData.autosAvailable
-				&& 0 == Data.userData.mealsAvailable
-				&& 0 == Data.userData.fatafatAvailable
-				&& 0 == Data.userData.sharingAvailable) {
+		try {
+			if (0 == Data.userData.autosAvailable
+                    && 0 == Data.userData.mealsAvailable
+                    && 0 == Data.userData.fatafatAvailable
+                    && 0 == Data.userData.sharingAvailable) {
+                return false;
+            } else {
+                return true;
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
-		} else {
-			return true;
 		}
 	}
 

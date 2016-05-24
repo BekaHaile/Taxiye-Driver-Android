@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -160,38 +161,42 @@ public class EarningsFragment extends Fragment {
 	}
 
 	public void getLeaderboardActivityCall() {
-		if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
-					new Callback<EarningsDetailResponse>() {
-						@Override
-						public void success(EarningsDetailResponse earningsDetailResponse, Response response) {
-							DialogPopup.dismissLoadingDialog();
-							try {
-								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								JSONObject jObj;
-								jObj = new JSONObject(jsonString);
-								int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-										EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
-										update();
-										Log.v("success at", "leaderboeard");
-									} else {
-										DialogPopup.alertPopup(activity, "", message);
-									}
-								}
-							} catch (Exception exception) {
-								exception.printStackTrace();
-							}
-						}
+		try {
+			if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+                DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+                RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
+                        new Callback<EarningsDetailResponse>() {
+                            @Override
+                            public void success(EarningsDetailResponse earningsDetailResponse, Response response) {
+                                DialogPopup.dismissLoadingDialog();
+                                try {
+                                    String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                                    JSONObject jObj;
+                                    jObj = new JSONObject(jsonString);
+                                    int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+                                    String message = JSONParser.getServerMessage(jObj);
+                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                                            EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
+                                            update();
+                                            Log.v("success at", "leaderboeard");
+                                        } else {
+                                            DialogPopup.alertPopup(activity, "", message);
+                                        }
+                                    }
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                }
+                            }
 
-						@Override
-						public void failure(RetrofitError error) {
-							DialogPopup.dismissLoadingDialog();
-						}
-					});
+                            @Override
+                            public void failure(RetrofitError error) {
+                                DialogPopup.dismissLoadingDialog();
+                            }
+                        });
+            }
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -80,8 +81,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			}
 		});
 
-		getRidesAsync(getActivity());
-		FlurryEventLogger.event(COMPLETE_RIDES_CHECKED);
+
+
 
 
 		return rootView;
@@ -114,7 +115,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	@Override
 	public void onResume() {
 		super.onResume();
-
+		getRidesAsync(getActivity());
+		FlurryEventLogger.event(COMPLETE_RIDES_CHECKED);
 	}
 
 	@Override
@@ -402,20 +404,30 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 
                                     updateListData(getResources().getString(R.string.no_rides), false);
+									progressBar.setVisibility(View.GONE);
+
                                 }
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
-                                updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-                            }
-                            progressBar.setVisibility(View.GONE);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+								try {
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							}
+
                         }
 
 
                         @Override
                         public void failure(RetrofitError error) {
-                            progressBar.setVisibility(View.GONE);
-                            updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-                        }
+							try {
+								progressBar.setVisibility(View.GONE);
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
                     });
 		} catch (Exception e) {
 			e.printStackTrace();

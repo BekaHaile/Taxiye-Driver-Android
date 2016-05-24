@@ -51,8 +51,8 @@
     <string name="about_2_text">ભાવ પત્રક </string>
     <string name="about_3_text">પેહલા 2 કિમી:30રૂ.અને 2કિમી પછી 10/કિમી અને વેટીંગ સમય 1.50રૂ/મિનીટ 15 મિનીટ પછી </string>
     <string name="save_to_favorite">Save To Favorite</string>
-    <string name="ride_in_progress">Ride in progress...</string>
-    <string name="assigning_driver">Assigning driver...</string>
+    <string name="ride_in_progress">સવારી ચાલુ છે</string>
+    <string name="assigning_driver">ડ્રાઈવર નિયુક્ત હોયે છે</string>
     <string name="check_all">Check All</string>
     <string name="uncheck_all">Uncheck All</string>
     <string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
@@ -460,7 +460,8 @@
     <string name="enter_customer_phone_no">ગ્રાહકનો ફોન નંબર દાખલ કરો</string>
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
-
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
 
 
     <string-array name="CountryCodes" >
