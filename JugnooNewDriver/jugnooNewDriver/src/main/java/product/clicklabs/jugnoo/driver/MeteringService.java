@@ -20,7 +20,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -185,7 +184,7 @@ public class MeteringService extends Service {
 						boolean showWait = false;
 						if(Data.getCustomerInfo(Data.dEngagementId) != null){
 							if(Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
-								if(((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1
+								if(Data.getCustomerInfo(Data.dEngagementId).waitingChargesApplicable == 1
 										&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
 									showWait = true;
 								}

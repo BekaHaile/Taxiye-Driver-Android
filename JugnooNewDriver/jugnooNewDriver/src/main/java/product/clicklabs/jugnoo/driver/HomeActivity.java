@@ -89,7 +89,6 @@ import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
-import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
@@ -100,9 +99,6 @@ import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FlagRideStatus;
 import product.clicklabs.jugnoo.driver.datastructure.HelpSection;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
@@ -923,9 +919,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.fatafatAvailable == 1) {
-							changeJugnooON(BusinessType.FATAFAT, 0, false);
 						} else {
-							changeJugnooON(BusinessType.FATAFAT, 1, false);
 						}
 						FlurryEventLogger.event(FATAFAT_ENABLE);
 					}
@@ -938,9 +932,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.mealsAvailable == 1) {
-							changeJugnooON(BusinessType.MEALS, 0, false);
 						} else {
-							changeJugnooON(BusinessType.MEALS, 1, false);
 						}
 						FlurryEventLogger.event(MEALS_ENABLE);
 					}
@@ -1197,17 +1189,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					String callPhoneNumber = "";
 
 					if (Data.getCustomerInfo(Data.dEngagementId) != null) {
-						if (BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType) {
-							if (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-								callPhoneNumber = Data.getCustomerInfo(Data.dEngagementId).phoneNumber;
-							} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-								if (((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).customerInfo != null) {
-									callPhoneNumber = ((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).customerInfo.phoneNo;
-								}
-							}
-						} else {
-							callPhoneNumber = Data.getCustomerInfo(Data.dEngagementId).phoneNumber;
-						}
+						callPhoneNumber = Data.getCustomerInfo(Data.dEngagementId).phoneNumber;
 					}
 
 					if (!"".equalsIgnoreCase(callPhoneNumber)) {
@@ -1378,7 +1360,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
 							if (Data.getCustomerInfo(Data.dEngagementId) != null
 									&& BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType
-									&& 1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable) {
+									&& 1 == ( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable) {
 
 								String enteredMeterFare = editTextEnterMeterFare.getText().toString().trim();
 								if ("".equalsIgnoreCase(enteredMeterFare)) {
@@ -1396,7 +1378,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								} else {
 									if (AppStatus.getInstance(activity).isOnline(activity)) {
 										String message = getResources().getString(R.string.amount_entered) + getResources().getString(R.string.rupee) + " " + enteredMeterFare;
-										if (1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
+										if (1 == ( Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
 											if (luggageCountAdded > 0) {
 												message = message + "\n" + luggageCountAdded + getResources().getString(R.string.luggage_added);
 											} else {
@@ -1423,7 +1405,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 							} else if (Data.getCustomerInfo(Data.dEngagementId) != null
 									&& BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType
-									&& 1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
+									&& 1 == (Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
 
 								if (AppStatus.getInstance(activity).isOnline(activity)) {
 									String message = "";
@@ -1973,10 +1955,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 							if (BusinessType.AUTOS == businessType) {
 								Data.userData.autosAvailable = jugnooOnFlag;
-							} else if (BusinessType.FATAFAT == businessType) {
-								Data.userData.fatafatAvailable = jugnooOnFlag;
-							} else if (BusinessType.MEALS == businessType) {
-								Data.userData.mealsAvailable = jugnooOnFlag;
 							}
 							changeJugnooONUIAndInitService();
 							if (jugnooOnFlag == 1) {
@@ -2228,14 +2206,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.autosAvailable)) {
 						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
 								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
-					} else if ((BusinessType.FATAFAT == Data.getAssignedCustomerInfosListForStatus(
-							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.fatafatAvailable)) {
-						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
-								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
-					} else if ((BusinessType.MEALS == Data.getAssignedCustomerInfosListForStatus(
-							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.mealsAvailable)) {
-						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
-								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
 					}
 				}
 				tempDriverRideRequests.clear();
@@ -2464,8 +2434,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					relativeLayoutUseJugnooFare.setVisibility(View.GONE);
 					relativeLayoutJugnooCalculatedFare.setVisibility(View.GONE);
 					try {
-						if (Data.getCustomerInfo(Data.dEngagementId) instanceof AutoCustomerInfo) {
-							if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1 && ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).getJugnooFareEnabled != 1) {
+						if (Data.getCustomerInfo(Data.dEngagementId) instanceof CustomerInfo) {
+							if (( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1 && ( Data.getCustomerInfo(Data.dEngagementId)).getJugnooFareEnabled != 1) {
 								reviewFareInfoInnerRl.setVisibility(View.GONE);
 							} else {
 								reviewFareInfoInnerRl.setVisibility(View.GONE);
@@ -2478,7 +2448,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					try {
 						if (Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()) {
-							if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
+							if (( Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
 								reviewWaitTimeRl.setVisibility(View.VISIBLE);
 								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 							} else {
@@ -2524,8 +2494,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				reviewSubmitBtn.setText(getResources().getString(R.string.ok));
 
 				try {
-					if (Data.getCustomerInfo(Data.dEngagementId) instanceof AutoCustomerInfo) {
-						if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1 && ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).getJugnooFareEnabled == 1) {
+					if (Data.getCustomerInfo(Data.dEngagementId) instanceof CustomerInfo) {
+						if (( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1 && ( Data.getCustomerInfo(Data.dEngagementId)).getJugnooFareEnabled == 1) {
 							relativeLayoutUseJugnooFare.setVisibility(View.VISIBLE);
 						} else {
 							relativeLayoutUseJugnooFare.setVisibility(View.GONE);
@@ -2538,8 +2508,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 
 				try {
-					if (Data.getCustomerInfo(Data.dEngagementId) instanceof AutoCustomerInfo) {
-						if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable == 1) {
+					if (Data.getCustomerInfo(Data.dEngagementId) instanceof CustomerInfo) {
+						if (( Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable == 1) {
 							relativeLayoutEndRideLuggageCount.setVisibility(View.VISIBLE);
 						} else {
 							relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
@@ -2786,11 +2756,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						if (((Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType))) {
-							if (((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo != null) {
-								customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.deliveryLatLng));
-							}
-						}
 					}
 
 
@@ -2811,25 +2776,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverStartRideMainRl.setVisibility(View.GONE);
 					driverInRideMainRl.setVisibility(View.VISIBLE);
 
-					if (BusinessType.FATAFAT.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
-						startCustomerPathUpdateTimer();
-						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
-						inrideFareInfoRl.setVisibility(View.GONE);
-						driverWaitRl.setVisibility(View.GONE);
-						imageViewIRWaitSep.setVisibility(View.GONE);
-					} else if (BusinessType.MEALS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
-						cancelCustomerPathUpdateTimer();
-						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
-						inrideFareInfoRl.setVisibility(View.GONE);
-						driverWaitRl.setVisibility(View.GONE);
-						imageViewIRWaitSep.setVisibility(View.GONE);
-					} else if (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
+					if (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
 						startCustomerPathUpdateTimer();
 						driverEndRideBtn.setText(getResources().getString(R.string.end_ride));
 
 						try {
-							if (Data.getCustomerInfo(Data.dEngagementId) instanceof AutoCustomerInfo) {
-								if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1) {
+							if (Data.getCustomerInfo(Data.dEngagementId) instanceof CustomerInfo) {
+								if (( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable == 1) {
 									inrideFareInfoRl.setVisibility(View.GONE);
 								} else {
 									inrideFareInfoRl.setVisibility(View.GONE);
@@ -2842,7 +2795,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 
 						try {
-							if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
+							if (( Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
 								driverWaitRl.setVisibility(View.VISIBLE);
 								imageViewIRWaitSep.setVisibility(View.VISIBLE);
 								driverWaitValue.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousWaitTime));
@@ -3068,7 +3021,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (Data.getCustomerInfo(Data.dEngagementId) != null) {
 				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType) {
 					reviewFareInfoInnerRl.setVisibility(View.GONE);
-					AutoCustomerInfo autoCustomerInfo = (AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId);
+					CustomerInfo autoCustomerInfo =  Data.getCustomerInfo(Data.dEngagementId);
 					if (autoCustomerInfo.couponInfo != null) {
 						if (autoCustomerInfo.couponInfo.couponApplied) {
 							if (BenefitType.CASHBACKS.getOrdinal() != autoCustomerInfo.couponInfo.benefitType) {
@@ -3132,29 +3085,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else {
 						throw new Exception();
 					}
-				} else if (BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType) {
-					reviewFareInfoInnerRl.setVisibility(View.GONE);
-					FatafatOrderInfo fatafatOrderInfo = (FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId);
-
-					endRideInfoRl.setVisibility(View.GONE);
-					relativeLayoutCoupon.setVisibility(View.GONE);
-					relativeLayoutFatafatCustomerAmount.setVisibility(View.VISIBLE);
-
-					double finalDiscountedPrice = fatafatOrderInfo.deliveryInfo.finalPrice - fatafatOrderInfo.deliveryInfo.discount;
-					if (finalDiscountedPrice < 0) {
-						finalDiscountedPrice = 0;
-					}
-
-					textViewFatafatBillAmountValue.setText(getResources().getString(R.string.rupees)+" "
-							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.finalPrice));
-					textViewFatafatBillDiscountValue.setText(getResources().getString(R.string.rupees)+" "
-							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.discount));
-					textViewFatafatBillFinalAmountValue.setText(getResources().getString(R.string.rupees)+" "
-							+ Utils.getDecimalFormatForMoney().format(finalDiscountedPrice));
-					textViewFatafatBillJugnooCashValue.setText(getResources().getString(R.string.rupees)+" "
-							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.paidFromWallet));
-					textViewFatafatBillToPay.setText(getResources().getString(R.string.rupees)+" "
-							+ Utils.getDecimalFormatForMoney().format(fatafatOrderInfo.deliveryInfo.customerToPay));
 				} else {
 					throw new Exception();
 				}
@@ -3194,8 +3124,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (Data.fareStructure != null) {
 				if (Data.fareStructure.fareFactor > 1 || Data.fareStructure.fareFactor < 1) {
 					textViewInRideFareFactor.setVisibility(View.GONE);
-//					textViewInRideFareFactor.setVisibility(View.VISIBLE);
-//					textViewInRideFareFactor.setText("Rate: " + decimalFormat.format(Data.fareStructure.fareFactor) + "x");
 				} else {
 					textViewInRideFareFactor.setVisibility(View.GONE);
 				}
@@ -3216,16 +3144,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				try {
 					double rateingD = 4;
 					try {
-						rateingD = Double.parseDouble(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).rating);
+						rateingD = Double.parseDouble(( Data.getCustomerInfo(Data.dEngagementId)).rating);
 					} catch (Exception e) {
 						Log.w("rateingD", "e" + e.getLocalizedMessage());
 					}
 					driverPassengerRatingValue.setText(decimalFormat.format(rateingD) + " " + getResources().getString(R.string.rating));
 
-					if ("".equalsIgnoreCase(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).schedulePickupTime)) {
+					if ("".equalsIgnoreCase(( Data.getCustomerInfo(Data.dEngagementId)).schedulePickupTime)) {
 						driverScheduledRideText.setVisibility(View.GONE);
 					} else {
-						String time = DateOperations.getTimeAMPM(DateOperations.utcToLocal(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).schedulePickupTime));
+						String time = DateOperations.getTimeAMPM(DateOperations.utcToLocal(( Data.getCustomerInfo(Data.dEngagementId)).schedulePickupTime));
 						if ("".equalsIgnoreCase(time)) {
 							driverScheduledRideText.setVisibility(View.GONE);
 						} else {
@@ -3242,8 +3170,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						buttonDriverNavigation.setVisibility(View.GONE);
-						if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
-							updateCustomerPickupAddress(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
+						if (( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
+							updateCustomerPickupAddress(( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
 						}
 					}
 
@@ -3253,34 +3181,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else if (BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType) {
-				try {
-					driverScheduledRideText.setVisibility(View.GONE);
-					textViewAfterAcceptRequestInfo.setVisibility(View.VISIBLE);
-					textViewAfterAcceptAmount.setVisibility(View.VISIBLE);
-
-					if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
-						textViewCustomerPickupAddress.setVisibility(View.GONE);
-						driverPassengerName.setText(Data.getCustomerInfo(Data.dEngagementId).name);
-						textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).address);
-						textViewAfterAcceptAmount.setText((getResources().getString(R.string.money_to_pay) + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).orderAmount)));
-					} else if (DriverScreenMode.D_IN_RIDE == mode) {
-						if (((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).customerInfo != null && ((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo != null) {
-							driverPassengerName.setText(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).customerInfo.name);
-							textViewAfterAcceptRequestInfo.setText(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.deliveryAddress);
-							textViewAfterAcceptAmount.setText(getResources().getString(R.string.money_to_take)+" " + Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.customerToPay));
-							textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-							textViewCustomerPickupAddress.setText(getResources().getString(R.string.order_id)+": " + ((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.orderId);
-						} else {
-							textViewCustomerPickupAddress.setVisibility(View.GONE);
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
-
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -3674,7 +3575,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double waitTimeInMin = Math.round(((double) waitTimeInMillis) / 60000.0d);
 
 		if (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
-			if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
+			if (( Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable == 1) {
 				rideTimeInMin = rideTimeInMin - waitTimeInMin;
 			} else {
 				waitTimeInMin = 0d;
@@ -4154,55 +4055,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
-						Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId),
+						Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.dEngagementId),
 								Integer.parseInt(customerId), referenceId,
 								userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 								userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
 								meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 								waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal()));
 
-
-						GCMIntentService.clearNotifications(getApplicationContext());
-
-						initializeStartRideVariables();
-
-						driverScreenMode = DriverScreenMode.D_ARRIVED;
-						switchDriverScreen(driverScreenMode);
-
-					} else if (BusinessType.MEALS.getOrdinal() == businessId) {
-
-					} else if (BusinessType.FATAFAT.getOrdinal() == businessId) {
-
-//											{
-//												   flag    : constants.responseFlags.RIDE_ACCEPTED,
-//												   store_data    : {
-//												       store_id  : <store_id>,
-//												       name      : <store_name>,
-//												       latitude  : <store_latitude>,
-//												       longitude : <store_longitude>,
-//												       address   : <store_address>,
-//												       phone_no  : <store_phone_no>
-//												   },
-//												   fare_factor  : <driver_fare_factor>,
-//												   fare_details : <driver_fare_details>
-//											}
-
-						int orderAmount = jObj.getInt("order_amount");
-
-						JSONObject storeData = jObj.getJSONObject("store_data");
-						int storeId = storeData.getInt("store_id");
-						String storeName = storeData.getString("name");
-						double storeLatitude = storeData.getDouble("latitude");
-						double storeLongitude = storeData.getDouble("longitude");
-						String storeAddress = storeData.getString("address");
-						String storePhoneNumber = storeData.getString("phone_no");
-
-						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
-
-						Data.addCustomerInfo(new FatafatOrderInfo(Integer.parseInt(Data.dEngagementId),
-								storeId, referenceId,
-								storeName, storePhoneNumber, new LatLng(storeLatitude, storeLongitude),
-								storeAddress, orderAmount));
 
 						GCMIntentService.clearNotifications(getApplicationContext());
 
@@ -4528,24 +4387,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 							if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
-								if ((Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.FATAFAT.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal())) {
-
-									JSONObject jDeliveryInfo = jObj.getJSONObject("delivery_info");
-									FatafatDeliveryInfo deliveryInfo = new FatafatDeliveryInfo(jDeliveryInfo.getInt("order_id"),
-											jDeliveryInfo.getString("delivery_address"),
-											new LatLng(jDeliveryInfo.getDouble("delivery_latitude"), jDeliveryInfo.getDouble("delivery_longitude")),
-											jDeliveryInfo.getDouble("final_price"),
-											jDeliveryInfo.getDouble("discount"),
-											jDeliveryInfo.getDouble("paid_from_wallet"),
-											jDeliveryInfo.getDouble("customer_to_pay"));
-
-									JSONObject jCustomerInfo = jObj.getJSONObject("customer_info");
-									FatafatCustomerInfo customerInfo = new FatafatCustomerInfo(jCustomerInfo.getInt("user_id"),
-											jCustomerInfo.getString("name"),
-											jCustomerInfo.getString("phone_no"));
-
-									((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
-								} else if ((Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal())) {
+								if ((Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal())) {
 									double dropLatitude = 0, dropLongitude = 0;
 									try {
 										if (jObj.has("op_drop_latitude") && jObj.has("op_drop_longitude")) {
@@ -4557,9 +4399,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										e.printStackTrace();
 									}
 									if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-										((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = null;
+										( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = null;
 									} else {
-										((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+										( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
 									}
 								}
 							}
@@ -4710,16 +4552,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				if (Data.getCustomerInfo(Data.dEngagementId) != null) {
 					if (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal()) {
-						if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable != 1) {
+						if (( Data.getCustomerInfo(Data.dEngagementId)).waitingChargesApplicable != 1) {
 							waitTimeInMillis = 0;
 						}
 					}
 				}
 
 				autoEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
-						rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
-			} else if (BusinessType.FATAFAT == businessType) {
-				fatafatEndRideAPI(activity, lastAccurateLatLng, dropLatitude, dropLongitude,
 						rideTimeInMillis, waitTimeInMillis, flagDistanceTravelled, businessType);
 			}
 		} else {
@@ -4806,7 +4645,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType
-						&& 1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable) {
+						&& 1 == ( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable) {
 					enteredMeterFare = Double.parseDouble(editTextEnterMeterFare.getText().toString().trim());
 					params.put("meter_fare", "" + enteredMeterFare);
 					params.put("fare_fetched_from_jugnoo", "" + fareFetchedFromJugnoo);
@@ -4816,7 +4655,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType
-						&& 1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
+						&& 1 == ( Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable) {
 					params.put("luggage_count", "" + luggageCountAdded);
 				}
 			} catch (Exception e) {
@@ -4830,7 +4669,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		if (Data.getCustomerInfo(Data.dEngagementId).getCachedApiEnabled() == 1) {
 			endRideOffline(activity, PendingCall.END_RIDE.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
-					(AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId), dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+					 Data.getCustomerInfo(Data.dEngagementId), dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 		} else {
 			RestClient.getApiServices().autoEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -4897,7 +4736,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void failure(RetrofitError error) {
 					Log.e("error", "=" + error);
 					endRideOffline(activity, PendingCall.END_RIDE.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
-							(AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId), dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+							 Data.getCustomerInfo(Data.dEngagementId), dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 				}
 
 
@@ -4922,10 +4761,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private void applyCouponAndPromoOnSuccess() {
 		if (Data.getCustomerInfo(Data.dEngagementId) != null) {
 			if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType) {
-				if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).couponInfo != null) {
-					((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).couponInfo.couponApplied = true;
-				} else if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).promoInfo != null) {
-					((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).promoInfo.promoApplied = true;
+				if (( Data.getCustomerInfo(Data.dEngagementId)).couponInfo != null) {
+					( Data.getCustomerInfo(Data.dEngagementId)).couponInfo.couponApplied = true;
+				} else if (( Data.getCustomerInfo(Data.dEngagementId)).promoInfo != null) {
+					( Data.getCustomerInfo(Data.dEngagementId)).promoInfo.promoApplied = true;
 				}
 			}
 		}
@@ -5003,7 +4842,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	 */
 	//TODO end ride offline
 	public void endRideOffline(Activity activity, String url, HashMap<String, String> params, long rideTimeInMillis, long waitTimeInMillis,
-							   AutoCustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded) {
+							   CustomerInfo assignedCustomerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded) {
 		try {
 
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
@@ -5199,231 +5038,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Database2.getInstance(activity).insertPendingAPICall(activity, PendingCall.UPLOAD_RIDE_DATA.getPath(), params);
 				}
 			});
-		}
-	}
-
-
-	/**
-	 * API for Fatafat end ride (Mark Delivered)
-	 *
-	 * @param activity
-	 * @param lastAccurateLatLng
-	 * @param dropLatitude
-	 * @param dropLongitude
-	 * @param flagDistanceTravelled
-	 * @param businessType
-	 */
-
-//	Retrofit
-	public void fatafatEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, double dropLatitude, double dropLongitude,
-								  long rideTimeInMillis, long waitTimeInMillis,
-								  int flagDistanceTravelled, final BusinessType businessType) {
-
-
-		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
-
-		double Limit_endRideMinute = 360;
-		double Average_endRideMinute = totalDistanceInKm * 2;
-
-		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(activity, rideTimeInMillis);
-		double rideMinutes = Math.ceil(rideTimeInMillis / 60000);
-		double waitMinutes = Math.ceil(waitTimeInMillis / 60000);
-		if (rideMinutes < Limit_endRideMinute) {
-			rideTime = decimalFormatNoDecimal.format(rideMinutes);
-			waitTime = decimalFormatNoDecimal.format(waitMinutes);
-		} else {
-			rideMinutes = Average_endRideMinute;
-			rideTimeInMillis = (long) (Average_endRideMinute * 60000.0);
-			rideTime = String.valueOf(decimalFormatNoDecimal.format(Average_endRideMinute));
-			waitTime = decimalFormatNoDecimal.format(waitMinutes);
-		}
-		final long eoRideTimeInMillis = rideTimeInMillis;
-		final long eoWaitTimeInMillis = waitTimeInMillis;
-
-
-		final HashMap<String, String> params = new HashMap<String, String>();
-
-		params.put("access_token", Data.userData.accessToken);
-
-		JSONObject rideDataJSON = new JSONObject();
-		try {
-			rideDataJSON.put("latitude", dropLatitude);
-			rideDataJSON.put("longitude", dropLongitude);
-			rideDataJSON.put("distance_travelled", Double.parseDouble(decimalFormat.format(totalDistanceInKm)));
-			rideDataJSON.put("ride_time", Integer.parseInt(rideTime));
-			rideDataJSON.put("wait_time", Integer.parseInt(waitTime));
-			rideDataJSON.put("flag_distance_travelled", flagDistanceTravelled);
-			rideDataJSON.put("last_accurate_latitude", lastAccurateLatLng.latitude);
-			rideDataJSON.put("last_accurate_longitude", lastAccurateLatLng.longitude);
-			rideDataJSON.put("engagement_id", Integer.parseInt(Data.dEngagementId));
-			rideDataJSON.put("is_cached", 0);
-
-			params.put("ride_data", rideDataJSON.toString());
-			params.put("business_id", "" + businessType.getOrdinal());
-			params.put("reference_id", "" + Data.getCustomerInfo(Data.dEngagementId).referenceId);
-
-
-
-			RestClient.getApiServices().fatafatEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						int flag = jObj.getInt("flag");
-
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.RIDE_ENDED.getOrdinal() == flag) {
-
-								try {
-									totalFare = jObj.getDouble("fare");
-								} catch (Exception e) {
-									e.printStackTrace();
-									totalFare = 0;
-								}
-
-								JSONParser.parseEndRideData(jObj, Data.dEngagementId, totalFare);
-
-								JSONObject jDeliveryInfo = jObj.getJSONObject("delivery_info");
-								double finalPrice = jDeliveryInfo.getDouble("final_price");
-								double discount = jDeliveryInfo.getDouble("discount");
-								double paidFromWallet = jDeliveryInfo.getDouble("paid_from_wallet");
-								double customerToPay = jDeliveryInfo.getDouble("customer_to_pay");
-
-								((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.updatePrices(finalPrice, discount, paidFromWallet, customerToPay);
-
-								if (map != null) {
-									map.clear();
-								}
-
-								waitStart = 2;
-								rideTimeChronometer.stop();
-
-
-								clearSPData();
-
-								driverScreenMode = DriverScreenMode.D_RIDE_END;
-								switchDriverScreen(driverScreenMode);
-
-								driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
-
-								initializeStartRideVariables();
-
-							} else {
-								driverScreenMode = DriverScreenMode.D_IN_RIDE;
-								rideTimeChronometer.start();
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-							}
-						} else {
-							driverScreenMode = DriverScreenMode.D_IN_RIDE;
-							rideTimeChronometer.start();
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						driverScreenMode = DriverScreenMode.D_IN_RIDE;
-						rideTimeChronometer.start();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-					}
-
-					DialogPopup.dismissLoadingDialog();
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-					fatafatEndRideOffline(activity, PendingCall.MARK_DELIVERED.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
-							(FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId));
-				}
-			});
-
-		} catch (Exception e1) {
-			e1.printStackTrace();
-			driverScreenMode = DriverScreenMode.D_IN_RIDE;
-			rideTimeChronometer.start();
-		}
-
-	}
-
-
-	//TODO fatafat offline mark delivered
-	public void fatafatEndRideOffline(Activity activity, String url, HashMap<String, String> params, long rideTimeInMillis, long waitTimeInMillis,
-									  FatafatOrderInfo fatafatOrderInfo) {
-		try {
-
-			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
-			int paymentMode = PaymentMode.CASH.getOrdinal();
-
-			double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
-
-			Log.e("offline fatafatOrderInfo =============", "============");
-			Log.i("rideTime", "=" + rideTime);
-
-			try {
-				totalFare = getTotalFare(totalDistance, rideTimeInMillis, waitTimeInMillis);
-			} catch (Exception e) {
-				e.printStackTrace();
-				totalFare = 0;
-			}
-
-
-			try {
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "Data.fareStructure = " + Data.fareStructure);
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "rideTime = " + rideTime);
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "waitTime = " + waitTime);
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "totalDistanceInKm = " + totalDistanceInKm);
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "totalFare = " + totalFare);
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "fatafatOrderInfo = " + fatafatOrderInfo);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-
-			actualFare = totalFare;
-
-			finalToPay = totalFare;
-
-			Log.i("totalFare == endride offline ", "=" + totalFare);
-			Log.i("endRideOffline assignedCustomerInfo.couponInfo=", "=" + fatafatOrderInfo);
-
-
-			finalDiscount = 0;
-			finalDiscount = totalFare;
-			finalPaidUsingWallet = 0;
-
-
-			Data.endRideData = new EndRideData(Data.dEngagementId, actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, paymentMode);
-
-
-			if (map != null) {
-				map.clear();
-			}
-
-			waitStart = 2;
-			rideTimeChronometer.stop();
-
-
-			clearSPData();
-
-			driverScreenMode = DriverScreenMode.D_RIDE_END;
-			switchDriverScreen(driverScreenMode);
-
-
-			params.put("is_cached", "1");
-
-			DialogPopup.dismissLoadingDialog();
-			Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
-			try {
-				Log.writePathLogToFile(Data.dEngagementId + "endRide", "url = " + url + " params = " + params);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistance);
-
-			initializeStartRideVariables();
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -5767,14 +5381,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						} else if ((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType)) {
 
-							if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
-								getCustomerPathAndDisplay(Data.getCustomerInfo(Data.dEngagementId).requestlLatLng, ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
-							}
-
-						} else if (((Data.getCustomerInfo(Data.dEngagementId) != null) && (driverScreenMode == DriverScreenMode.D_IN_RIDE) && (BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType))) {
-
-							if (((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo != null) {
-								getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), ((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.deliveryLatLng);
+							if (( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
+								getCustomerPathAndDisplay(Data.getCustomerInfo(Data.dEngagementId).requestlLatLng, ( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
 							}
 
 						}
@@ -5809,12 +5417,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if ((DriverScreenMode.D_IN_RIDE == driverScreenMode)
 				&& (Data.getCustomerInfo(Data.dEngagementId) != null)
 				&& (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType)) {
-			if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
+			if (( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null) {
 				inRide = true;
 			}
 		}
 		return ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) || inRide ||
-				(Data.getCustomerInfo(Data.dEngagementId) != null && driverScreenMode == DriverScreenMode.D_IN_RIDE && BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType));
+				(Data.getCustomerInfo(Data.dEngagementId) != null && driverScreenMode == DriverScreenMode.D_IN_RIDE));
 	}
 
 	public void getCustomerPathAndDisplay(final LatLng sourceLatLng, final LatLng customerLatLng) {
@@ -6039,14 +5647,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				walletBalanceUpdatePopup = false;
 
 
-			if(BusinessType.AUTOS == businessType){
-				textMessage.setText(getResources().getString(R.string.end_ride_text));
-			}
-			else if(BusinessType.FATAFAT == businessType){
-				textMessage.setText("Are you sure you want to mark this item delivered?\nPlease take Rs. "
-						+Utils.getDecimalFormatForMoney().format(((FatafatOrderInfo) Data.getCustomerInfo(Data.dEngagementId)).deliveryInfo.customerToPay)
-						+" from customer.");
-			}
+				if(BusinessType.AUTOS == businessType){
+					textMessage.setText(getResources().getString(R.string.end_ride_text));
+				}
 
 
 				Button btnOk = (Button) dialogEndRidePopup.findViewById(R.id.btnOk);
@@ -6062,8 +5665,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 								if (Data.getCustomerInfo(Data.dEngagementId) != null
 										&& BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType
-										&& (1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable
-										|| 1 == ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable)) {
+										&& (1 == ( Data.getCustomerInfo(Data.dEngagementId)).meterFareApplicable
+										|| 1 == ( Data.getCustomerInfo(Data.dEngagementId)).luggageChargesApplicable)) {
 									driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
 									switchDriverScreen(driverScreenMode);
 									dialogEndRidePopup.dismiss();
@@ -6172,7 +5775,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					waitStart = 0;
 
-					if (BusinessType.AUTOS == businessType || BusinessType.FATAFAT == businessType) {
+					if (BusinessType.AUTOS == businessType) {
 
 						rideTimeChronometer.stop();
 
@@ -6766,13 +6369,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		if (location.getExtras() == null
 				|| !location.getExtras().getBoolean("cached", false)) {
-			if ((Data.getCustomerInfo(Data.dEngagementId) instanceof AutoCustomerInfo
-					&& ((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null)
-					&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)
-					&& (driverScreenMode == DriverScreenMode.D_IN_RIDE)) {
+			if (driverScreenMode == DriverScreenMode.D_IN_RIDE
+					&& (Data.getCustomerInfo(Data.dEngagementId) instanceof CustomerInfo
+					&& ( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null)
+					&& !Prefs.with(HomeActivity.this).getBoolean(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false)) {
 
 				double currentDropDist = MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-						(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng));
+						(( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng));
 
 				if (currentDropDist < Double.parseDouble(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_DISTANCE, "1000"))) {
 					perectRideRequestRegion(currentDropDist);
@@ -7415,7 +7018,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if (Data.getCustomerInfo(Data.dEngagementId) != null) {
 			if (Data.getCustomerInfo(Data.dEngagementId).userId == userId) {
 				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType) {
-					((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).jugnooBalance = balance;
+					( Data.getCustomerInfo(Data.dEngagementId)).jugnooBalance = balance;
 				}
 			}
 		}
@@ -7438,10 +7041,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private void updateDropLatLngandPath(LatLng dropLatLng) {
 		if ((Data.getCustomerInfo(Data.dEngagementId) != null) && (BusinessType.AUTOS.getOrdinal() == Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal())) {
-			((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = dropLatLng;
+			( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = dropLatLng;
 			startCustomerPathUpdateTimer();
-			if (((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null && DriverScreenMode.D_IN_RIDE ==driverScreenMode) {
-				updateCustomerPickupAddress(((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
+			if (( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng != null && DriverScreenMode.D_IN_RIDE ==driverScreenMode) {
+				updateCustomerPickupAddress(( Data.getCustomerInfo(Data.dEngagementId)).dropLatLng);
 			}
 		}
 	}
@@ -7788,11 +7391,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 						stopWalletUpdateTimeout();
 						if (Data.getCustomerInfo(Data.dEngagementId) != null && walletBalanceUpdatePopup) {
-							if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType || BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType) {
+							if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType) {
 								if(jObj.getString("wallet_balance")!=null){
 									double newBalance = Double.parseDouble(jObj.getString("wallet_balance"));
 									if(newBalance > -1){
-										((AutoCustomerInfo) Data.getCustomerInfo(Data.dEngagementId)).jugnooBalance = newBalance;
+										( Data.getCustomerInfo(Data.dEngagementId)).jugnooBalance = newBalance;
 									}
 								}
 								endRidePopup(HomeActivity.this, Data.getCustomerInfo(Data.dEngagementId).businessType);
@@ -7814,7 +7417,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		public void failure(RetrofitError error) {
 			if (Data.getCustomerInfo(Data.dEngagementId) != null && walletBalanceUpdatePopup) {
 				stopWalletUpdateTimeout();
-				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType || BusinessType.FATAFAT == Data.getCustomerInfo(Data.dEngagementId).businessType) {
+				if (BusinessType.AUTOS == Data.getCustomerInfo(Data.dEngagementId).businessType) {
 					endRidePopup(HomeActivity.this, Data.getCustomerInfo(Data.dEngagementId).businessType);
 				} else {
 					//Meals case of end ride

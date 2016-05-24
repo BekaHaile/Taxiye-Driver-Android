@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CouponInfo;
@@ -26,9 +25,6 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatCustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatDeliveryInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FatafatOrderInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
@@ -491,7 +487,7 @@ public class JSONParser implements Constants {
 			int referenceId = 0;
 			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
-			Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(jLastRideData.getString("user_id")),
+			Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.dEngagementId), Integer.parseInt(jLastRideData.getString("user_id")),
 					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
 					new LatLng(0, 0), cachedApiEnabled,
 					jLastRideData.getString("user_image"), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
@@ -566,8 +562,6 @@ public class JSONParser implements Constants {
 			int dReferenceId = 0;
 			String storeAddress = "";
 			int storeOrderAmount = 0, cachedApiEnabled = 0;
-			FatafatDeliveryInfo deliveryInfo = null;
-			FatafatCustomerInfo customerInfo = null;
 
 			HomeActivity.userMode = UserMode.DRIVER;
 
@@ -709,53 +703,7 @@ public class JSONParser implements Constants {
 								waitingChargesApplicable = jObject.optInt("waiting_charges_applicable", 0);
 								cachedApiEnabled = jObject.optInt(KEY_CACHED_API_ENABLED, 0);
 							}
-						} else if (BusinessType.MEALS.getOrdinal() == dBusinessId) {
-
-						} else if (BusinessType.FATAFAT.getOrdinal() == dBusinessId) {
-//										"store_data": {
-//					                    "store_id": 6,
-//					                    "name": "Subway",
-//					                    "latitude": 30.705879,
-//					                    "longitude": 76.801118,
-//					                    "address": "Plot No. 178, Industrial Area, Phase 1 Industrial Area, Chandigarh, 160017",
-//					                    "phone_no": "+911725049297"
-//					                }
-
-							engagementStatus = jObject.getInt("status");
-
-							if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
-									(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
-									(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
-
-								engagementId = jObject.getString("engagement_id");
-								storeOrderAmount = jObject.getInt("order_amount");
-
-								JSONObject storeData = jObject.getJSONObject("store_data");
-								userId = storeData.getString("store_id");
-								customerName = storeData.getString("name");
-								pickupLatitude = storeData.getDouble("latitude");
-								pickupLongitude = storeData.getDouble("longitude");
-								customerPhone = storeData.getString("phone_no");
-								storeAddress = storeData.getString("address");
-
-								if (EngagementStatus.STARTED.getOrdinal() == engagementStatus) {
-									JSONObject jDeliveryInfo = jObject.getJSONObject("delivery_info");
-									deliveryInfo = new FatafatDeliveryInfo(jDeliveryInfo.getInt("order_id"),
-											jDeliveryInfo.getString("delivery_address"),
-											new LatLng(jDeliveryInfo.getDouble("delivery_latitude"), jDeliveryInfo.getDouble("delivery_longitude")),
-											jDeliveryInfo.getDouble("final_price"),
-											jDeliveryInfo.getDouble("discount"),
-											jDeliveryInfo.getDouble("paid_from_wallet"),
-											jDeliveryInfo.getDouble("customer_to_pay"));
-
-									JSONObject jCustomerInfo = jObject.getJSONObject("customer_info");
-									customerInfo = new FatafatCustomerInfo(jCustomerInfo.getInt("user_id"),
-											jCustomerInfo.getString("name"),
-											jCustomerInfo.getString("phone_no"));
-								}
-							}
 						}
-
 						try {
 							Log.writePathLogToFile(engagementId + "accept", "JSONPARSER  = " + jObject1);
 						} catch (Exception e) {
@@ -793,28 +741,17 @@ public class JSONParser implements Constants {
 				Data.dEngagementId = engagementId;
 
 				if(BusinessType.AUTOS.getOrdinal() == dBusinessId){
-					Data.addCustomerInfo(new AutoCustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
+					Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 							dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 							customerImage, customerRating, schedulePickupTime, freeRide, 
 							couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 							luggageChargesApplicable, waitingChargesApplicable, engagementStatus));
                     if((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)){
-                        ((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).dropLatLng =null;
+                        (Data.getCustomerInfo(Data.dEngagementId)).dropLatLng =null;
                     }
                     else{
-                        ((AutoCustomerInfo)Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+                        (Data.getCustomerInfo(Data.dEngagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
                     }
-				}
-				else if(BusinessType.MEALS.getOrdinal() == dBusinessId){
-					
-				}
-				else if(BusinessType.FATAFAT.getOrdinal() == dBusinessId){
-					Data.addCustomerInfo(new FatafatOrderInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-							dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), storeAddress, storeOrderAmount));
-					
-					if((EngagementStatus.STARTED.getOrdinal() == engagementStatus) && (deliveryInfo != null) && (customerInfo != null)){
-						((FatafatOrderInfo)Data.getCustomerInfo(Data.dEngagementId)).setCustomerDeliveryInfo(customerInfo, deliveryInfo);
-					}
 				}
 
 

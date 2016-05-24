@@ -1,9 +1,7 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
 public enum BusinessType {
-	AUTOS(1), 
-	MEALS(2),
-	FATAFAT(3)
+	AUTOS(1)
 	;
 
 	private int ordinal;

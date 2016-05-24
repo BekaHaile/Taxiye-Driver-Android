@@ -229,8 +229,6 @@ public class RideDetailsActivity extends Activity {
 
 			if (BusinessType.AUTOS.getOrdinal() == openedRideInfo.businessId) {
 				imageViewRequestType.setImageResource(R.drawable.request_autos);
-			} else if (BusinessType.FATAFAT.getOrdinal() == openedRideInfo.businessId) {
-				imageViewRequestType.setImageResource(R.drawable.request_fatafat);
 			}
 
 		} else {
