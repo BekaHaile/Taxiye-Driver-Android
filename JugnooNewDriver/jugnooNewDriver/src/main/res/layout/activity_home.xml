@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!-- customer info layout -->
                     <RelativeLayout
@@ -919,7 +919,7 @@
                 android:layout_marginTop="90px"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
 

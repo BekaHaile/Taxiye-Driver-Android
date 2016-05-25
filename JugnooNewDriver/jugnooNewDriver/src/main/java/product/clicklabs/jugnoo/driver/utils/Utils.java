@@ -412,6 +412,7 @@ public class Utils {
 		PackageManager pm = context.getPackageManager();
 		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
 		for (ApplicationInfo appInfo : applications) {
+			Log.i("app_List",appInfo.packageName );
 			if (!appInfo.packageName.contains("com.gcs.telerickshaw")) {
 				telerickshawDriver = (appInfo.packageName.contains("com.telerickshaw") || appInfo.packageName.contains("telerickshaw"));
 				if (telerickshawDriver) {
