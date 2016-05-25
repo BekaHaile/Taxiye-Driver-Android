@@ -90,6 +90,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
+import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
@@ -332,6 +333,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
 	static long totalWaitTime = 0;
 	long fetchHeatMapTime = 0;
+	long fetchAllAppTime = 0;
 //	long heatMapRefreshTime = Prefs.with(HomeActivity.this).getLong(SPLabels.HEAT_MAP_REFRESH_FREQUENCY, 0);
 	static long previousWaitTime = 0, previousRideTime = 0;
 
@@ -1365,6 +1367,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			if((System.currentTimeMillis() - fetchAllAppTime)>Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_API_FREQUENCY, 0)&&
+					(Prefs.with(HomeActivity.this).getInt(Constants.FETCH_APP_API_ENABLED, 1)==1)) {
+
+				apifetchAllDriverApps(Utils.fetchAllApps(HomeActivity.this));
+				Log.i("allApps", String.valueOf(Utils.fetchAllApps(HomeActivity.this)));
+
+			}
 
 			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
 
@@ -1891,6 +1900,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				GCMIntentService.stopRing(true);
 				driverRejectRequestAsync(HomeActivity.this);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void apifetchAllDriverApps(List appList){
+		try {
+			new ApiFetchDriverApps(this, new ApiFetchDriverApps.Callback() {
+                @Override
+                public void onSuccess() {
+    				fetchAllAppTime = System.currentTimeMillis();
+                }
+            }).fetchDriverAppAsync(Data.userData.accessToken, appList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -371,5 +371,10 @@ public interface APIServices {
 	void setPreferredLang(@FieldMap Map<String, String> params,
 						   Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/fetch_all_driver_apps")
+	void fetchAlldriverApps(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
+
 
 }

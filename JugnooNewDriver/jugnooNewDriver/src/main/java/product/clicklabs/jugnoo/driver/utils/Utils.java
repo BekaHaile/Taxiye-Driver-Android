@@ -34,6 +34,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -423,6 +424,17 @@ public class Utils {
 		}
 		return telerickshawDriver;
 
+	}
+
+	public static List fetchAllApps(Context context){
+		int flags = PackageManager.GET_META_DATA |
+				PackageManager.GET_SHARED_LIBRARY_FILES |
+				PackageManager.GET_UNINSTALLED_PACKAGES;
+
+		PackageManager pm = context.getPackageManager();
+		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+
+		return applications;
 	}
 
 
