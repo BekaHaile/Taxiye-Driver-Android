@@ -52,4 +52,22 @@ public interface Constants {
     String KEY_CUSTOMER_PHONE_NO = "customer_phone_no";
     String KEY_CANCELLATION_REASON = "cancellation_reason";
 
+    String KEY_IS_POOLED = "is_pooled";
+    String SP_POOL_RIDES_CONNECTED_COUNT = "sp_pool_rides_connected_count";
+    String KEY_FARE_FACTOR = "fare_factor";
+    String KEY_LUGGAGE_CHARGES = "luggage_charges";
+    String KEY_CONVENIENCE_CHARGE = "convenience_charge";
+    String KEY_CONVENIENCE_CHARGE_WAIVER = "convenience_charge_waiver";
+    String KEY_REFERENCE_ID = "reference_id";
+    String KEY_BUSINESS_ID = "business_id";
+    String KEY_USER_DATA = "user_data";
+    String KEY_USER_IMAGE = "user_image";
+    String KEY_USER_RATING = "user_rating";
+    String KEY_JUGNOO_BALANCE = "jugnoo_balance";
+    String KEY_PICKUP_LATITUDE = "pickup_latitude";
+    String KEY_PICKUP_LONGITUDE = "pickup_longitude";
+    String KEY_IS_SCHEDULED = "is_scheduled";
+    String KEY_PICKUP_TIME = "pickup_time";
+    String KEY_FREE_RIDE = "free_ride";
+
 }

@@ -1827,14 +1827,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String.valueOf(customerInfo.referenceId),
 						myLocation.getLatitude(),
 						myLocation.getLongitude());
-			} else {
+			}
+			else if(1 == customerInfo.getIsPooled()){
+
+			}
+			else {
 				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
 
 				if (Utils.getBatteryPercentage(this) >= 20) {
 					GCMIntentService.clearNotifications(HomeActivity.this);
 					GCMIntentService.stopRing(true);
-					driverAcceptRideAsync(HomeActivity.this, String.valueOf(customerInfo.userId),
-							customerInfo.referenceId);
+					driverAcceptRideAsync(HomeActivity.this, customerInfo);
 				} else {
 					DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_text));
 				}
@@ -1872,8 +1875,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				GCMIntentService.clearNotifications(HomeActivity.this);
 				GCMIntentService.stopRing(true);
-				driverRejectRequestAsync(HomeActivity.this, String.valueOf(customerInfo.userId),
-						customerInfo.referenceId);
+				driverRejectRequestAsync(HomeActivity.this, customerInfo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3863,12 +3865,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 //	Retrofit
 
-	public void driverAcceptRideAsync(final Activity activity, final String customerId, final int referenceId) {
+	public void driverAcceptRideAsync(final Activity activity, final CustomerInfo customerInfo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			initializeStartRideVariables();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-
-//			final RequestParams params = new RequestParams();
 
 			if (myLocation != null) {
 				Data.latitude = myLocation.getLatitude();
@@ -3878,7 +3878,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HashMap<String, String> params = new HashMap<String, String>();
 
 			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", customerId);
+			params.put("customer_id", String.valueOf(customerInfo.getUserId()));
 			params.put("engagement_id", Data.dEngagementId);
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
@@ -3887,7 +3887,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put("imei", DeviceUniqueID.getUniqueId(this));
 			params.put("app_version", "" + Utils.getAppVersion(this));
 
-			params.put("reference_id", String.valueOf(referenceId));
+			params.put("reference_id", String.valueOf(customerInfo.getReferenceId()));
+			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
+
 			Log.i("request", String.valueOf(params));
 
 			GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
@@ -3897,7 +3899,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
-					acceptRideSucess(jsonString, customerId);
+					acceptRideSucess(jsonString, String.valueOf(customerInfo.getUserId()));
 					GCMIntentService.stopRing(true);
 				}
 
@@ -3916,135 +3918,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void acceptRideSucess(String jsonString, String customerId) {
 		try {
-			JSONObject jObj;
-			jObj = new JSONObject(jsonString);
-			Log.e("accept_a_request jsonString", "=" + jsonString);
-			if (!jObj.isNull("error")) {
-
-				int flag = jObj.getInt("flag");
-				Log.e("accept_a_request flag", "=" + flag);
-				String errorMessage = jObj.getString("error");
-
-				if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-					HomeActivity.logoutUser(activity);
-				} else {
-					DialogPopup.alertPopup(activity, "", errorMessage);
-				}
-
-				DialogPopup.dismissLoadingDialog();
-
-				reduceRideRequest(Data.dEngagementId);
-
-			} else {
-
-				int flag = ApiResponseFlags.RIDE_ACCEPTED.getOrdinal();
-
-				if (jObj.has("flag")) {
-					flag = jObj.getInt("flag");
-				}
-
+			JSONObject jObj = new JSONObject(jsonString);
+			int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
+			if(!SplashNewActivity.checkIfTrivialAPIErrors(this, jObj, flag)){
 				if (ApiResponseFlags.RIDE_ACCEPTED.getOrdinal() == flag) {
-					if (jObj.has("fare_details")) {
-						try {
-							Data.fareStructure = JSONParser.parseFareObject(jObj.getJSONObject("fare_details"));
-						} catch (Exception e) {
-							Log.w("fareStructure", "e=" + e.toString());
-						}
-					}
-					if (jObj.has("fare_factor")) {
-						try {
-							Data.fareStructure.fareFactor = jObj.getDouble("fare_factor");
-						} catch (Exception e) {
-							Log.w("fareFactor", "e=" + e.toString());
-						}
-					}
-					if (jObj.has("luggage_charges")) {
-						try {
-							Data.fareStructure.luggageFare = jObj.getDouble("luggage_charges");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					if (jObj.has("convenience_charge")) {
-						try {
-							Data.fareStructure.convenienceCharge = jObj.getDouble("convenience_charge");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					if (jObj.has("convenience_charge_waiver")) {
-						try {
-							Data.fareStructure.convenienceChargeWaiver = jObj.getDouble("convenience_charge_waiver");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-//									"convenience_charge": 10,
-//									"convenience_charge_waiver": 0,
-
-
-					//"http://jugnoo-images.s3.amazonaws.com/user_profile/user.png";
-
-					int referenceId = jObj.getInt("reference_id");
-					int businessId = jObj.getInt("business_id");
+					Data.fareStructure = JSONParser.parseFareObject(jObj);
+					Data.fareStructure.fareFactor = jObj.optDouble(KEY_FARE_FACTOR, 1);
+					Data.fareStructure.luggageFare = jObj.optDouble(KEY_LUGGAGE_CHARGES, 0d);
+					Data.fareStructure.convenienceCharge = jObj.optDouble(KEY_CONVENIENCE_CHARGE, 0);
+					Data.fareStructure.convenienceChargeWaiver = jObj.optDouble(KEY_CONVENIENCE_CHARGE_WAIVER, 0);
+					int referenceId = jObj.getInt(KEY_REFERENCE_ID);
+					int businessId = jObj.getInt(KEY_BUSINESS_ID);
 
 					if (BusinessType.AUTOS.getOrdinal() == businessId) {
-
-
-						double jugnooBalance = 0;
-
-
-						JSONObject userData = jObj.getJSONObject("user_data");
-
-						String userName = userData.getString("user_name");
-						String userImage = userData.getString("user_image");
-						String phoneNo = userData.getString("phone_no");
-						String rating = "4";
-						try {
-							rating = userData.getString("user_rating");
-						} catch (Exception e) {
-						}
-						if (userData.has("jugnoo_balance")) {
-							jugnooBalance = userData.getDouble("jugnoo_balance");
-							Log.i("jugnooblance", String.valueOf(jugnooBalance));
-						}
-
-						double pickupLatitude = jObj.getDouble("pickup_latitude");
-						double pickupLongitude = jObj.getDouble("pickup_longitude");
-
+						JSONObject userData = jObj.getJSONObject(KEY_USER_DATA);
+						String userName = userData.getString(KEY_USER_NAME);
+						String userImage = userData.getString(KEY_USER_IMAGE);
+						String phoneNo = userData.getString(KEY_PHONE_NO);
+						String rating = rating = userData.optString(KEY_USER_RATING, "4");
+						double jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
+						double pickupLatitude = jObj.getDouble(KEY_PICKUP_LATITUDE);
+						double pickupLongitude = jObj.getDouble(KEY_PICKUP_LONGITUDE);
 						LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
-
-						int isScheduled = 0;
-						String pickupTime = "";
-						if (jObj.has("is_scheduled")) {
-							isScheduled = jObj.getInt("is_scheduled");
-							if (isScheduled == 1 && jObj.has("pickup_time")) {
-								pickupTime = jObj.getString("pickup_time");
-							}
-						}
-
-						int freeRide = 0;
-						if (jObj.has("free_ride")) {
-							freeRide = jObj.getInt("free_ride");
-						}
-
-						CouponInfo couponInfo = null;
-						if (jObj.has("coupon")) {
-							try {
-								couponInfo = JSONParser.parseCouponInfo(jObj.getJSONObject("coupon"));
-							} catch (Exception e) {
-								Log.w("couponInfo", "e=" + e.toString());
-							}
-						}
-
-						PromoInfo promoInfo = null;
-						if (jObj.has("promotion")) {
-							try {
-								promoInfo = JSONParser.parsePromoInfo(jObj.getJSONObject("promotion"));
-							} catch (Exception e) {
-								Log.w("promoInfo", "e=" + e.toString());
-							}
-						}
+						int isScheduled = jObj.optInt(KEY_IS_SCHEDULED, 0);
+						String pickupTime = jObj.optString(KEY_PICKUP_TIME, "");
+						int freeRide = jObj.optInt(KEY_FREE_RIDE, 0);
+						CouponInfo couponInfo = JSONParser.parseCouponInfo(jObj);
+						PromoInfo promoInfo = JSONParser.parsePromoInfo(jObj);
 
 						int meterFareApplicable = jObj.optInt("meter_fare_applicable", 0);
 						int getJugnooFareEnabled = jObj.optInt("get_jugnoo_fare_enabled", 1);
@@ -4062,7 +3962,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 								waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal()));
 
-
 						GCMIntentService.clearNotifications(getApplicationContext());
 
 						initializeStartRideVariables();
@@ -4076,12 +3975,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
 							EngagementStatus.REQUESTED.getOrdinal()));
-
 				} else {
 					try {
-						Log.e("accept_a_request flag", "=" + flag);
-						String logMessage = jObj.getString("log");
-						DialogPopup.alertPopup(activity, "", "" + logMessage);
+						String message = JSONParser.getServerMessage(jObj);
+						DialogPopup.alertPopup(activity, "", "" + message);
 						new Handler().postDelayed(new Runnable() {
 							@Override
 							public void run() {
@@ -4095,6 +3992,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 
 				DialogPopup.dismissLoadingDialog();
+
+			} else{
+				reduceRideRequest(Data.dEngagementId);
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -4132,20 +4032,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void driverRejectRequestAsync(final Activity activity, final String customerId, final int referenceId) {
+	public void driverRejectRequestAsync(final Activity activity, final CustomerInfo customerInfo) {
 
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-
-
-//			RequestParams params = new RequestParams();
-
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", customerId);
+			params.put("customer_id", String.valueOf(customerInfo.getUserId()));
 			params.put("engagement_id", Data.dEngagementId);
 
-			params.put("reference_id", String.valueOf(referenceId));
+			params.put("reference_id", String.valueOf(customerInfo.getReferenceId()));
+			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 
 			RestClient.getApiServices().driverRejectRequestRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -4182,7 +4079,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 							reduceRideRequest(Data.dEngagementId);
-							nudgeRequestCancel(customerId);
+							nudgeRequestCancel(String.valueOf(customerInfo.getUserId()));
 
 						}
 
@@ -4191,13 +4088,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
-
-//					DialogPopup.dismissLoadingDialog();
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
-//					DialogPopup.dismissLoadingDialog();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
@@ -6036,8 +5930,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	@Override
-	public void onNewRideRequest(int perfectRide) {
-		if (userMode == UserMode.DRIVER && (driverScreenMode == DriverScreenMode.D_INITIAL || driverScreenMode == DriverScreenMode.D_RIDE_END || (perfectRide == 1))) {
+	public void onNewRideRequest(int perfectRide, int isPooled) {
+		if (driverScreenMode == DriverScreenMode.D_INITIAL
+				|| driverScreenMode == DriverScreenMode.D_RIDE_END
+				|| perfectRide == 1
+				|| isPooled == 1) {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

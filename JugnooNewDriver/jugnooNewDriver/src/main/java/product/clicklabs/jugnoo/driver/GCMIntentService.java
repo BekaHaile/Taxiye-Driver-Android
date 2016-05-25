@@ -39,14 +39,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
-import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
@@ -336,125 +334,97 @@ public class GCMIntentService extends IntentService {
 							int flag = jObj.getInt("flag");
 							String title = jObj.optString("title", "Jugnoo");
 							int canStore = jObj.optInt("canStore", 0);
-							int perfectRide = jObj.optInt("perfect_ride", 0);
 
-							int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
-									DriverScreenMode.D_INITIAL.getOrdinal());
-
-							if (PushFlags.REQUEST.getOrdinal() == flag
-									&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-									|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-									|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode
-									|| perfectRide == 1)
-									&&(Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ") )) {
-
-								//	    	    						 {   "engagement_id": engagement_id,
-								//	    	    							 "user_id": data.customer_id,
-								//	    	    							 "flag": g_enum_notificationFlags.REQUEST,
-								//	    	    							 "latitude": data.pickup_latitude,
-								//	    	    							 "longitude": data.pickup_longitude,
-								//	    	    							 "address": pickup_address
-								//	    	    							 "start_time": date}
-
-
-								String engagementId = jObj.getString("engagement_id");
-								String userId = jObj.getString("user_id");
-								double latitude = jObj.getDouble("latitude");
-								double longitude = jObj.getDouble("longitude");
-								String startTime = jObj.getString("start_time");
-								String address = jObj.getString("address");
-
-								String startTimeLocal = DateOperations.utcToLocal(startTime);
-
-								Log.i("startTimeLocal = ", "=" + startTimeLocal);
-
-								String endTime = "";
-								if (jObj.has("end_time")) {
-									endTime = jObj.getString("end_time");
+							if (PushFlags.REQUEST.getOrdinal() == flag) {
+								int perfectRide = jObj.optInt("perfect_ride", 0);
+								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
+								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
+										DriverScreenMode.D_INITIAL.getOrdinal());
+								boolean entertainRequest = false;
+								if(1 == perfectRide
+										&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")
+										&& Prefs.with(GCMIntentService.this).getInt(Constants.SP_POOL_RIDES_CONNECTED_COUNT, 0) < 2){
+									entertainRequest = true;
+								}
+								else if(1 == isPooled
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+									entertainRequest = true;
+								}
+								else if(0 == perfectRide && 0 == isPooled
+										&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
+										|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
+										|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+									entertainRequest = true;
 								}
 
-								int businessId = BusinessType.AUTOS.getOrdinal();
-								if (jObj.has("business_id")) {
-									businessId = jObj.getInt("business_id");
-								}
+								if(entertainRequest) {
+									String engagementId = jObj.getString("engagement_id");
+									String userId = jObj.getString("user_id");
+									double latitude = jObj.getDouble("latitude");
+									double longitude = jObj.getDouble("longitude");
+									String startTime = jObj.getString("start_time");
+									String address = jObj.getString("address");
 
-								long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-
-								if ("".equalsIgnoreCase(endTime)) {
-									long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
-									long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
-									requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
-								} else {
-									long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
-											startTimeLocal);
-									Log.i("startEndDiffMillis = ", "=" + startEndDiffMillis);
-									if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
-										requestTimeOutMillis = startEndDiffMillis;
+									String startTimeLocal = DateOperations.utcToLocal(startTime);
+									String endTime = jObj.optString("end_time", "");
+									long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
+									if ("".equalsIgnoreCase(endTime)) {
+										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);
+										long serverStartTimeLocalMillisPlus60 = serverStartTimeLocalMillis + 60000;
+										requestTimeOutMillis = serverStartTimeLocalMillisPlus60 - System.currentTimeMillis();
 									} else {
-										requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
-									}
-								}
-
-
-								double fareFactor = 1;
-								if (jObj.has("fare_factor")) {
-									fareFactor = jObj.getDouble("fare_factor");
-								}
-
-
-								sendRequestAckToServer(this, engagementId, currentTimeUTC);
-
-								FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
-
-								startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
-
-								if (HomeActivity.appInterruptHandler != null) {
-									if (UserMode.DRIVER == HomeActivity.userMode) {
-										if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode ||
-												DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-
-											int referenceId = jObj.getInt("reference_id");
-
-											CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-													Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
-													referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal());
-											Data.addCustomerInfo(customerInfo);
-
-											startRing(this);
-											flurryEventForRequestPush(engagementId);
-
-											Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
-											if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-												Log.i("TimeOutAlarmReceiver", "3");
-												startTimeoutAlarm(this);
-											}
-											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-//											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
-											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
-
-											Log.e("referenceId", "=" + referenceId);
+										long startEndDiffMillis = DateOperations.getTimeDifference(DateOperations.utcToLocal(endTime),
+												startTimeLocal);
+										if (startEndDiffMillis < GCMIntentService.REQUEST_TIMEOUT) {
+											requestTimeOutMillis = startEndDiffMillis;
+										} else {
+											requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 										}
 									}
-								} else {
-//									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
-									startRing(this);
-									flurryEventForRequestPush(engagementId);
 
-									Log.i("TimeOutAlarmReceiver", "4:" + jObj.optInt("penalise_driver_timeout", 0));
-									if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
-										Log.i("TimeOutAlarmReceiver", "3");
-										startTimeoutAlarm(this);
+									double fareFactor = jObj.optDouble("fare_factor", 1d);
+
+									sendRequestAckToServer(this, engagementId, currentTimeUTC);
+
+									FlurryEventLogger.requestPushReceived(this, engagementId, DateOperations.utcToLocal(startTime), currentTime);
+
+									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
+
+									if (HomeActivity.appInterruptHandler != null) {
+										int referenceId = jObj.optInt("reference_id", 0);
+										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
+												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
+												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
+												isPooled);
+										Data.addCustomerInfo(customerInfo);
+
+										startRing(this);
+										flurryEventForRequestPush(engagementId);
+
+										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+											startTimeoutAlarm(this);
+										}
+										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
+										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
+
+										Log.e("referenceId", "=" + referenceId);
+									} else {
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
+										startRing(this);
+										flurryEventForRequestPush(engagementId);
+
+										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
+											startTimeoutAlarm(this);
+										}
+
+										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
+										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 									}
-
-									RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
-									requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 								}
-
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
 

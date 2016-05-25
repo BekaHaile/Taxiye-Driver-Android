@@ -30,6 +30,7 @@ public class CustomerInfo {
 	private int status;
 	private String address, startTime;
 	private double fareFactor;
+	private int isPooled;
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, String schedulePickupTime, int freeRide,
@@ -95,7 +96,7 @@ public class CustomerInfo {
 	}
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status){
+						int referenceId, double fareFactor, int status, int isPooled){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -105,6 +106,7 @@ public class CustomerInfo {
 		this.referenceId = referenceId;
 		this.fareFactor = fareFactor;
 		this.status = status;
+		this.isPooled = isPooled;
 	}
 	
 	@Override
@@ -319,5 +321,13 @@ public class CustomerInfo {
 
 	public void setWaitingChargesApplicable(int waitingChargesApplicable) {
 		this.waitingChargesApplicable = waitingChargesApplicable;
+	}
+
+	public int getIsPooled() {
+		return isPooled;
+	}
+
+	public void setIsPooled(int isPooled) {
+		this.isPooled = isPooled;
 	}
 }

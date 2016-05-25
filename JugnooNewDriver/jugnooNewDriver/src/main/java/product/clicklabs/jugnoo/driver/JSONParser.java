@@ -79,22 +79,9 @@ public class JSONParser implements Constants {
 	}
 
 
-	public static FareStructure parseFareObject(JSONObject fareDetails) {
+	public static FareStructure parseFareObject(JSONObject jObj) {
 		try {
-//			{
-//		        "id": 1,
-//		        "fare_fixed": 25,
-//		        "fare_per_km": 6,
-//		        "fare_threshold_distance": 2,
-//		        "fare_per_min": 1,
-//		        "fare_threshold_time": 0,
-//		        "type": 0,
-//		        "per_ride_driver_subsidy": 20
-//		    }
-
-//			For testing
-//			return new FareStructure(40, 1, 20, 2, 1, 0, 0);
-
+			JSONObject fareDetails = jObj.getJSONObject("fare_details");
 			return new FareStructure(fareDetails.getDouble("fare_fixed"),
 					fareDetails.getDouble("fare_threshold_distance"),
 					fareDetails.getDouble("fare_per_km"),
@@ -109,29 +96,9 @@ public class JSONParser implements Constants {
 	}
 
 
-	public static CouponInfo parseCouponInfo(JSONObject couponObject) {
+	public static CouponInfo parseCouponInfo(JSONObject jObj) {
 		try {
-
-//			"coupon": {
-//	        "account_id": 367,
-//	        "coupon_id": 1,
-//	        "title": "Free ride",
-//	        "description": "Your next ride with Jugnoo upto Rs. 100 will be FREE. \n\nTerms of Use:\n1. The coupon will be applied automatically at the end of your next ride.\n2. Only one coupon will be applied in one ride.\n3. The maximum value of this coupon is Rs. 100 and you will have to pay the remaining amount at the end of the ride.\n4. Jugnoo reserves the right to discontinue the coupon at its discretion.",
-//	        "discount": 100,
-//	        "maximum": 100,
-//	        "image": "",
-//	        "type": 0,
-//	        "subtitle": "upto Rs. 100"
-//	    }
-
-//			For testing
-//			CouponInfo couponInfo = new CouponInfo(0, 
-//					"50% off", 
-//					"upto 100/-", 
-//					"discount", 
-//					50, 
-//					100);
-
+			JSONObject couponObject = jObj.getJSONObject("coupon");
 			CouponInfo couponInfo = new CouponInfo(couponObject.getString("title"),
 					couponObject.getString("subtitle"),
 					couponObject.getString("description"),
@@ -147,28 +114,13 @@ public class JSONParser implements Constants {
 			);
 			return couponInfo;
 		} catch (Exception e) {
-			Log.w("couponInfo", "e=" + e.toString());
 			return null;
 		}
 	}
 
-	public static PromoInfo parsePromoInfo(JSONObject jPromoObject) {
+	public static PromoInfo parsePromoInfo(JSONObject jObj) {
 		try {
-
-//            "promotion": {
-//                    "title": "CDCL pickup 10% cashback",
-//                    "promo_type": 2,
-//                    "benefit_type": 3,
-//                    "discount_percentage": 0,
-//                    "discount_maximum": 0,
-//                    "capped_fare": 0,
-//                    "capped_fare_maximum": 0,
-//                    "cashback_percentage": 10,
-//                    "drop_latitude": 0,
-//                    "drop_longitude": 0,
-//                    "drop_radius": 0
-//            }
-
+			JSONObject jPromoObject = jObj.getJSONObject("promotion");
 			PromoInfo promoInfo = new PromoInfo(jPromoObject.getString("title"),
 					jPromoObject.getInt("promo_type"),
 					jPromoObject.getInt("benefit_type"),
@@ -464,25 +416,8 @@ public class JSONParser implements Constants {
 			HomeActivity.totalFare = jLastRideData.getDouble("fare");
 			HomeActivity.waitStart = 2;
 
-			CouponInfo couponInfo = null;
-			PromoInfo promoInfo = null;
-
-			if (jLastRideData.has("coupon")) {
-				try {
-					couponInfo = JSONParser.parseCouponInfo(jLastRideData.getJSONObject("coupon"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-
-
-			if (jLastRideData.has("promotion")) {
-				try {
-					promoInfo = JSONParser.parsePromoInfo(jLastRideData.getJSONObject("promotion"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			CouponInfo couponInfo = JSONParser.parseCouponInfo(jLastRideData);
+			PromoInfo promoInfo = JSONParser.parsePromoInfo(jLastRideData);
 
 			int referenceId = 0;
 			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
@@ -493,13 +428,7 @@ public class JSONParser implements Constants {
 					jLastRideData.getString("user_image"), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
 			
 			
-			if(jLastRideData.has("fare_details")){
-				try{
-					Data.fareStructure = JSONParser.parseFareObject(jLastRideData.getJSONObject("fare_details"));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			Data.fareStructure = JSONParser.parseFareObject(jLastRideData);
 
 			if (jLastRideData.has("fare_factor")) {
 				try {
@@ -583,13 +512,8 @@ public class JSONParser implements Constants {
 						dReferenceId = jObject.getInt("reference_id");
 						dBusinessId = jObject.getInt("business_id");
 
-						if (jObject.has("fare_details")) {
-							try {
-								Data.fareStructure = JSONParser.parseFareObject(jObject.getJSONObject("fare_details"));
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
+						Data.fareStructure = JSONParser.parseFareObject(jObject);
+
 
 						if (jObject.has("fare_factor")) {
 							try {
@@ -673,20 +597,9 @@ public class JSONParser implements Constants {
 								if (jObject.has("free_ride")) {
 									freeRide = jObject.getInt("free_ride");
 								}
-								if (jObject.has("coupon")) {
-									try {
-										couponInfo = JSONParser.parseCouponInfo(jObject.getJSONObject("coupon"));
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
-								if (jObject.has("promotion")) {
-									try {
-										promoInfo = JSONParser.parsePromoInfo(jObject.getJSONObject("promotion"));
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-								}
+
+								couponInfo = JSONParser.parseCouponInfo(jObject);
+								promoInfo = JSONParser.parsePromoInfo(jObject);
 
 								try {
 									if (jObject.has("op_drop_latitude") && jObject.has("op_drop_longitude")) {
@@ -841,10 +754,12 @@ public class JSONParser implements Constants {
 				if (jActiveRequest.has("fare_factor")) {
 					fareFactor = jActiveRequest.getDouble("fare_factor");
 				}
+				int isPooled = jActiveRequest.optInt(KEY_IS_POOLED, 0);
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
-						startTime, requestAddress, referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal());
+						startTime, requestAddress, referenceId, fareFactor,
+						EngagementStatus.REQUESTED.getOrdinal(), isPooled);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
