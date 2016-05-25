@@ -110,6 +110,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.fragments.AttachedCustomersFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -336,7 +337,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	static UserMode userMode;
-	static DriverScreenMode driverScreenMode;
+	public static DriverScreenMode driverScreenMode;
 
 
 	Marker rideStartPositionMarker, customerLocationMarker = null;
@@ -389,6 +390,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private void setOpenedCustomerInfo(CustomerInfo customerInfo){
 		openedCustomerInfo = customerInfo;
 	}
+
+	private RelativeLayout relativeLayoutContainer;
+	private Button buttonAttachedCustomers;
 
 
 	@Override
@@ -464,6 +468,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			linearLayoutDEI = (LinearLayout) findViewById(R.id.linearLayoutDEI);
 			linearLayout_DEI = (LinearLayout) findViewById(R.id.linearLayout_DEI);
+			buttonAttachedCustomers = (Button) findViewById(R.id.buttonAttachedCustomers);
+
+			relativeLayoutContainer = (RelativeLayout) findViewById(R.id.relativeLayoutContainer);
+			relativeLayoutContainer.setVisibility(View.GONE);
+
 //			RelativeLayoutNotificationCenter = (RelativeLayout) findViewById(R.id.RelativeLayoutNotificationCenter);
 //			textViewDEI = (TextView) findViewById(R.id.textViewDEI);
 //			textViewDEI.setTypeface(Data.latoRegular(this));
@@ -895,6 +904,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					return false;
 				}
 			});
+
+			buttonAttachedCustomers.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(relativeLayoutContainer.getVisibility() == View.VISIBLE){
+						hideAttachedCustomersFragment();
+					} else{
+						showAttachedCustomersFragment();
+					}
+				}
+			});
+
 
 
 			// menu events
@@ -1801,7 +1822,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void acceptRequestFunc(CustomerInfo customerInfo) {
 		try {
-			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+			if (1 != customerInfo.getIsPooled() && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 					@Override
 					public void onSuccess(LatLng pickupLatLng, String customerName) {
@@ -1828,12 +1849,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						myLocation.getLatitude(),
 						myLocation.getLongitude());
 			}
-			else if(1 == customerInfo.getIsPooled()){
-
-			}
 			else {
-				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
-
 				if (Utils.getBatteryPercentage(this) >= 20) {
 					GCMIntentService.clearNotifications(HomeActivity.this);
 					GCMIntentService.stopRing(true);
@@ -1849,7 +1865,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void rejectRequestFuncCall(CustomerInfo customerInfo) {
 		try {
-			if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+			if (1 != customerInfo.getIsPooled() && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
 					@Override
 					public void onSuccess(String engagementId) {
@@ -1871,8 +1887,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String.valueOf(customerInfo.engagementId),
 						String.valueOf(customerInfo.referenceId));
 			} else {
-				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
-
 				GCMIntentService.clearNotifications(HomeActivity.this);
 				GCMIntentService.stopRing(true);
 				driverRejectRequestAsync(HomeActivity.this, customerInfo);
@@ -2651,7 +2665,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.getCustomerInfo(Data.dEngagementId).requestlLatLng));
+						customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.getCustomerInfo(Data.dEngagementId).getRequestlLatLng()));
 					}
 
 
@@ -3457,7 +3471,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onBackPressed() {
 		try {
-			if (userMode == UserMode.DRIVER) {
+			if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+				super.onBackPressed();
+			}
+			else if (userMode == UserMode.DRIVER) {
 				if (driverScreenMode == DriverScreenMode.D_IN_RIDE
 						|| driverScreenMode == DriverScreenMode.D_START_RIDE
 						|| driverScreenMode == DriverScreenMode.D_ARRIVED) {
@@ -3806,17 +3823,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						if (DriverScreenMode.D_IN_RIDE != driverScreenMode) {
+						if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 							holder = (ViewHolderDriverRequest) v.getTag();
-
 							CustomerInfo customerInfo = customerInfos.get(holder.id);
-
-							Data.dEngagementId = String.valueOf(customerInfo.engagementId);
 							setOpenedCustomerInfo(customerInfo);
-
 							driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
 							switchDriverScreen(driverScreenMode);
-
 							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), 1000, null);
 							FlurryEventLogger.event(RIDE_CHECKED);
 						}
@@ -3877,17 +3889,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			HashMap<String, String> params = new HashMap<String, String>();
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", String.valueOf(customerInfo.getUserId()));
-			params.put("engagement_id", Data.dEngagementId);
-			params.put("latitude", "" + Data.latitude);
-			params.put("longitude", "" + Data.longitude);
+			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 
-			params.put("device_name", Utils.getDeviceName());
-			params.put("imei", DeviceUniqueID.getUniqueId(this));
-			params.put("app_version", "" + Utils.getAppVersion(this));
+			if(customerInfo.getIsPooled() == 1){
+				if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
+						|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0){
+					Data.dEngagementId = String.valueOf(customerInfo.engagementId);
+				}
+				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+			}
+			else{
+				Data.dEngagementId = String.valueOf(customerInfo.engagementId);
+				params.put(KEY_ENGAGEMENT_ID, Data.dEngagementId);
+			}
 
-			params.put("reference_id", String.valueOf(customerInfo.getReferenceId()));
+
+			params.put(KEY_LATITUDE, "" + Data.latitude);
+			params.put(KEY_LONGITUDE, "" + Data.longitude);
+
+			params.put(KEY_DEVICE_NAME, Utils.getDeviceName());
+			params.put(KEY_IMEI, DeviceUniqueID.getUniqueId(this));
+			params.put(KEY_APP_VERSION, "" + Utils.getAppVersion(this));
+
+			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 
 			Log.i("request", String.valueOf(params));
@@ -3896,10 +3921,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			RestClient.getApiServices().driverAcceptRideRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
-					acceptRideSucess(jsonString, String.valueOf(customerInfo.getUserId()));
+					if(customerInfo.getIsPooled() == 1){
+						acceptRideSucess(jsonString,
+								String.valueOf(customerInfo.getEngagementId()),
+								String.valueOf(customerInfo.getUserId()));
+					} else{
+						Data.dEngagementId = String.valueOf(customerInfo.engagementId);
+						acceptRideSucess(jsonString,
+								Data.dEngagementId,
+								String.valueOf(customerInfo.getUserId()));
+					}
 					GCMIntentService.stopRing(true);
 				}
 
@@ -3916,7 +3949,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	public void acceptRideSucess(String jsonString, String customerId) {
+	public void acceptRideSucess(String jsonString, String engagementId, String customerId) {
 		try {
 			JSONObject jObj = new JSONObject(jsonString);
 			int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
@@ -3955,7 +3988,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
-						Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.dEngagementId),
+						Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(engagementId),
 								Integer.parseInt(customerId), referenceId,
 								userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 								userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
@@ -3985,7 +4018,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								DialogPopup.dismissAlertPopup();
 							}
 						}, 3000);
-						reduceRideRequest(Data.dEngagementId);
+						reduceRideRequest(engagementId);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3994,7 +4027,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				DialogPopup.dismissLoadingDialog();
 
 			} else{
-				reduceRideRequest(Data.dEngagementId);
+				reduceRideRequest(engagementId);
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -4037,11 +4070,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", String.valueOf(customerInfo.getUserId()));
-			params.put("engagement_id", Data.dEngagementId);
+			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+			params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 
-			params.put("reference_id", String.valueOf(customerInfo.getReferenceId()));
+			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 
 			RestClient.getApiServices().driverRejectRequestRetro(params, new Callback<RegisterScreenResponse>() {
@@ -4049,41 +4082,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
 
-							String errorMessage = jObj.getString("error");
-
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							} else {
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							}
-						} else {
-							try {
-								int flag = jObj.getInt("flag");
-								if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-									String log = jObj.getString("log");
-									DialogPopup.alertPopup(activity, "", "" + log);
+						JSONObject jObj = new JSONObject(jsonString);
+						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
+						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+							if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
+								String log = jObj.getString("log");
+								DialogPopup.alertPopup(activity, "", "" + log);
+							} else{
+								if (map != null) {
+									map.clear();
+									drawHeatMapData(heatMapResponseGlobal);
 								}
-							} catch (Exception e) {
-								e.printStackTrace();
+								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+
+								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()));
+								nudgeRequestCancel(String.valueOf(customerInfo.getUserId()));
+								new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 							}
-
-
-							if (map != null) {
-								map.clear();
-								drawHeatMapData(heatMapResponseGlobal);
-							}
-							stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-
-							reduceRideRequest(Data.dEngagementId);
-							nudgeRequestCancel(String.valueOf(customerInfo.getUserId()));
-
 						}
-
-						new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -6327,6 +6344,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										if (!Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").contains(" ")) {
 											Data.dEngagementId = Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ENGAGEMENT_ID, " ");
 											acceptRideSucess(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " "),
+													Data.dEngagementId,
 													Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_CUSTOMER_ID, " "));
 										}
 									}
@@ -7180,6 +7198,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (endNotDone) {
 				Data.dEngagementId = Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ENGAGEMENT_ID, " ");
 				acceptRideSucess(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " "),
+						Data.dEngagementId,
 						Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_CUSTOMER_ID, " "));
 			} else {
 				callAndHandleStateRestoreAPI();
@@ -7381,4 +7400,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		});
 	}
+
+
+
+	private AttachedCustomersFragment attachedCustomersFragment;
+	private AttachedCustomersFragment getAttachedCustomersFragment(){
+		if(attachedCustomersFragment == null){
+			attachedCustomersFragment = new AttachedCustomersFragment();
+		}
+		return attachedCustomersFragment;
+	}
+
+	private void showAttachedCustomersFragment(){
+		relativeLayoutContainer.setVisibility(View.VISIBLE);
+		getSupportFragmentManager().beginTransaction()
+				.add(relativeLayoutContainer.getId(), getAttachedCustomersFragment(),
+						AttachedCustomersFragment.class.getName())
+				.addToBackStack(AttachedCustomersFragment.class.getName())
+				.commitAllowingStateLoss();
+	}
+
+	private void hideAttachedCustomersFragment(){
+		onBackPressed();
+		relativeLayoutContainer.setVisibility(View.GONE);
+	}
+
 }

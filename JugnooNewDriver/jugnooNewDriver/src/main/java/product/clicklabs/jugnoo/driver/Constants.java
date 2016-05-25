@@ -69,5 +69,8 @@ public interface Constants {
     String KEY_IS_SCHEDULED = "is_scheduled";
     String KEY_PICKUP_TIME = "pickup_time";
     String KEY_FREE_RIDE = "free_ride";
+    String KEY_DEVICE_NAME = "device_name";
+    String KEY_IMEI = "imei";
+    String KEY_APP_VERSION = "app_version";
 
 }

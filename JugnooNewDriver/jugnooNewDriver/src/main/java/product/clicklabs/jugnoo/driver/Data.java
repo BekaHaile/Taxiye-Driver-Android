@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
@@ -275,6 +276,22 @@ public class Data {
 			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
 			for (CustomerInfo customerInfo : assignedCustomerInfos) {
 				if (customerInfo.getStatus() == status) {
+					customerInfos.add(customerInfo);
+				}
+			}
+			return customerInfos;
+		} else{
+			return null;
+		}
+	}
+
+	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForEngagedStatus(){
+		if(assignedCustomerInfos != null) {
+			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+				if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
+						|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
 					customerInfos.add(customerInfo);
 				}
 			}
