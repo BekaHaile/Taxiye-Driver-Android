@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.apis;
 
 import android.app.Activity;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class ApiFetchDriverApps {
         this.callback = callback;
     }
 
-    public void fetchDriverAppAsync(String accessToken, List appList) {
+    public void fetchDriverAppAsync(String accessToken, JSONArray appList) {
 
         if (AppStatus.getInstance(activity).isOnline(activity)) {
 

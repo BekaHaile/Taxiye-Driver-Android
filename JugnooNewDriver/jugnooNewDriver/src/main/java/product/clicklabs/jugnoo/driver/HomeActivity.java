@@ -72,6 +72,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -1905,7 +1906,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	public void apifetchAllDriverApps(List appList){
+	public void apifetchAllDriverApps(JSONArray appList){
 		try {
 			new ApiFetchDriverApps(this, new ApiFetchDriverApps.Callback() {
                 @Override

@@ -426,15 +426,17 @@ public class Utils {
 
 	}
 
-	public static List fetchAllApps(Context context){
-		int flags = PackageManager.GET_META_DATA |
-				PackageManager.GET_SHARED_LIBRARY_FILES |
-				PackageManager.GET_UNINSTALLED_PACKAGES;
+	public static JSONArray fetchAllApps(Context context){
+		int flags = PackageManager.GET_META_DATA ;
 
 		PackageManager pm = context.getPackageManager();
 		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+		JSONArray appList = new JSONArray();
+		for (ApplicationInfo appInfo : applications) {
+			appList.put(appInfo.packageName);
+		}
 
-		return applications;
+		return appList;
 	}
 
 
