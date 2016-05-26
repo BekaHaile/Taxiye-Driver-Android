@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
@@ -346,6 +347,75 @@ public class Data {
 			}
 		}
 		return false;
+	}
+
+
+	public static void setCustomerState(String engagementId, DriverScreenMode driverScreenMode){
+		CustomerInfo customerInfo = getCustomerInfo(engagementId);
+		if(customerInfo != null){
+			customerInfo.setStatus(getEngagementStatusFromDriverScreenMode(driverScreenMode).getOrdinal());
+		}
+	}
+
+	public static DriverScreenMode getCurrentState(){
+		CustomerInfo currentCustomerInfo = getCustomerInfo(dEngagementId);
+		if(currentCustomerInfo == null){
+			if(getAssignedCustomerInfosListForEngagedStatus() != null
+					&& getAssignedCustomerInfosListForEngagedStatus().size() > 0){
+				currentCustomerInfo = getAssignedCustomerInfosListForEngagedStatus().get(0);
+				dEngagementId = String.valueOf(currentCustomerInfo.getEngagementId());
+				return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
+			}
+		} else{
+			return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
+		}
+		return DriverScreenMode.D_INITIAL;
+	}
+
+
+
+
+	public static EngagementStatus getEngagementStatusFromDriverScreenMode(DriverScreenMode driverScreenMode){
+		switch(driverScreenMode){
+			case D_ARRIVED:
+				return EngagementStatus.ACCEPTED;
+
+			case D_START_RIDE:
+				return EngagementStatus.ARRIVED;
+
+			case D_IN_RIDE:
+				return EngagementStatus.STARTED;
+
+			case D_RIDE_END:
+				return EngagementStatus.ENDED;
+
+			case D_BEFORE_END_OPTIONS:
+				return EngagementStatus.STARTED;
+
+			case D_REQUEST_ACCEPT:
+				return EngagementStatus.REQUESTED;
+
+			default:
+				return EngagementStatus.REQUESTED;
+		}
+	}
+
+	public static DriverScreenMode getDriverScreenModeFromEngagementStatus(int status){
+		if(EngagementStatus.ACCEPTED.getOrdinal() == status){
+			return DriverScreenMode.D_ARRIVED;
+		}
+		else if(EngagementStatus.ARRIVED.getOrdinal() == status){
+			return DriverScreenMode.D_START_RIDE;
+		}
+		else if(EngagementStatus.STARTED.getOrdinal() == status){
+			return DriverScreenMode.D_IN_RIDE;
+		}
+		else if(EngagementStatus.ENDED.getOrdinal() == status){
+			return DriverScreenMode.D_RIDE_END;
+		}
+		else{
+			return DriverScreenMode.D_INITIAL;
+		}
 	}
 
 }

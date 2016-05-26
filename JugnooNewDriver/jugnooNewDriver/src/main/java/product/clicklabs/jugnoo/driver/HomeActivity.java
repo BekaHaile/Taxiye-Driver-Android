@@ -1327,23 +1327,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
-			// driver in ride layout events
-//		driverWaitRl.setOnClickListener(new View.OnClickListener() {
-//
-//			@Override
-//			public void onClick(View v) {
-//				if(waitStart == 2){
-//					startWait();
-//				}
-//				else if(waitStart == 1){
-//					stopWait();
-//				}
-//				else if(waitStart == 0){
-//					startWait();
-//				}
-//			}
-//		});
-
 			inrideFareInfoBtn.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -1478,6 +1461,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
 						MeteringService.clearNotifications(HomeActivity.this);
+						Data.removeCustomerInfo(Integer.parseInt(Data.dEngagementId));
 						driverScreenMode = DriverScreenMode.D_INITIAL;
 						switchDriverScreen(driverScreenMode);
 						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
@@ -2214,18 +2198,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void updateDriverRequestsAccAvailaviblity() {
 		try {
 			if (Data.userData != null) {
-				ArrayList<CustomerInfo> tempDriverRideRequests = new ArrayList<>();
-				tempDriverRideRequests.addAll(Data.getAssignedCustomerInfosListForStatus(
-						EngagementStatus.REQUESTED.getOrdinal()));
-				for (int i = 0; i < tempDriverRideRequests.size(); i++) {
-					if ((BusinessType.AUTOS == Data.getAssignedCustomerInfosListForStatus(
-							EngagementStatus.REQUESTED.getOrdinal()).get(i).businessType) && (1 != Data.userData.autosAvailable)) {
-						Data.removeCustomerInfo(Data.getAssignedCustomerInfosListForStatus(
-								EngagementStatus.REQUESTED.getOrdinal()).get(i).engagementId);
-					}
+				if(1 != Data.userData.autosAvailable){
+					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 				}
-				tempDriverRideRequests.clear();
-				tempDriverRideRequests = null;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2404,8 +2379,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void switchDriverScreen(final DriverScreenMode mode) {
+	public void switchDriverScreen(DriverScreenMode mode) {
 		if (userMode == UserMode.DRIVER) {
+
+			driverScreenMode = Data.getCurrentState();
+			mode = driverScreenMode;
 
 			initializeFusedLocationFetchers();
 
@@ -2918,23 +2896,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				startMeteringService();
 			}
 
-			new Thread(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						if (DriverScreenMode.D_INITIAL == mode) {
-							Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.VULNERABLE);
-						} else {
-							Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.NOT_VULNERABLE);
-						}
-					} catch (Exception e) {
-						Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.NOT_VULNERABLE);
-						e.printStackTrace();
-					} finally {
-					}
+			try {
+				if (DriverScreenMode.D_INITIAL == mode) {
+					Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.VULNERABLE);
+				} else {
+					Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.NOT_VULNERABLE);
 				}
-			}).start();
-
+			} catch (Exception e) {
+				Database2.getInstance(HomeActivity.this).updateDriverScreenMode(Database2.NOT_VULNERABLE);
+				e.printStackTrace();
+			} finally {
+			}
 			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, mode);
 		}
 	}
@@ -4148,14 +4120,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				params.put("access_token", Data.userData.accessToken);
 				params.put("engagement_id", Data.dEngagementId);
-				params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
+				params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).getUserId()));
 				params.put("pickup_latitude", "" + driverAtPickupLatLng.latitude);
 				params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
 				params.put("dryrun_distance", "" + totalDistance);
 				Log.i("dryrun_distance", String.valueOf(totalDistance));
 
 				if (Data.getCustomerInfo(Data.dEngagementId) != null) {
-					params.put("reference_id", "" + Data.getCustomerInfo(Data.dEngagementId).referenceId);
+					params.put("reference_id", "" + Data.getCustomerInfo(Data.dEngagementId).getReferenceId());
 				}
 				RestClient.getApiServices().driverMarkArriveRideRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -4183,6 +4155,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Log.writePathLogToFile(GpsDistanceCalculator.getEngagementIdFromSP(activity) + "m", "arrived sucessful");
 
 									driverScreenMode = DriverScreenMode.D_START_RIDE;
+									Data.setCustomerState(Data.dEngagementId, driverScreenMode);
+
 									switchDriverScreen(driverScreenMode);
 								} else {
 									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4332,6 +4306,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							editor.commit();
 
 							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+							Data.setCustomerState(Data.dEngagementId, driverScreenMode);
+
 							switchDriverScreen(driverScreenMode);
 
 							try{
@@ -4623,6 +4599,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							clearSPData();
 
 							driverScreenMode = DriverScreenMode.D_RIDE_END;
+							Data.setCustomerState(Data.dEngagementId, driverScreenMode);
 							switchDriverScreen(driverScreenMode);
 
 							driverUploadPathDataFileAsync(activity, Data.dEngagementId, totalHaversineDistanceInKm);
@@ -4890,6 +4867,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			clearSPData();
 
 			driverScreenMode = DriverScreenMode.D_RIDE_END;
+			Data.setCustomerState(Data.dEngagementId, driverScreenMode);
 			switchDriverScreen(driverScreenMode);
 
 
@@ -4964,9 +4942,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.put("access_token", Data.userData.accessToken);
 				params.put("given_rating", "" + givenRating);
 				params.put("engagement_id", engagementId);
-				params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
+				params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).getUserId()));
 
 				Log.i("params", "=" + params);
+
+				Data.removeCustomerInfo(Integer.parseInt(Data.dEngagementId));
 
 				RestClient.getApiServices().rateTheCustomer(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -7411,7 +7391,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		return attachedCustomersFragment;
 	}
 
-	private void showAttachedCustomersFragment(){
+	public void showAttachedCustomersFragment(){
 		relativeLayoutContainer.setVisibility(View.VISIBLE);
 		getSupportFragmentManager().beginTransaction()
 				.add(relativeLayoutContainer.getId(), getAttachedCustomersFragment(),
@@ -7420,7 +7400,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				.commitAllowingStateLoss();
 	}
 
-	private void hideAttachedCustomersFragment(){
+	public void hideAttachedCustomersFragment(){
 		onBackPressed();
 		relativeLayoutContainer.setVisibility(View.GONE);
 	}
