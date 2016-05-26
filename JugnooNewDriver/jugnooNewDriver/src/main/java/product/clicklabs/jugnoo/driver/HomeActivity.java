@@ -93,6 +93,7 @@ import java.util.concurrent.TimeUnit;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
+import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
@@ -4664,6 +4665,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						} else {
 
+							try {
+								new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+										Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+
 							int flag = ApiResponseFlags.RIDE_STARTED.getOrdinal();
 
 							if (jObj.has("flag")) {
@@ -6740,6 +6748,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onChangeStatePushReceived(int flag) {
 		try {
+			if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() ==flag) {
+				try {
+					new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+							Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 				callAndHandleStateRestoreAPI();
 			}
@@ -6751,6 +6767,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 				}
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -7989,6 +8006,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
+
+
 
 	private synchronized void startWalletUpdateTimeout(){
 		checkwalletUpdateTimeoutHandler = new Handler();

@@ -51,6 +51,7 @@ public interface Constants {
     String KEY_INVOICE_ID = "invoice_id";
     String KEY_CUSTOMER_PHONE_NO = "customer_phone_no";
     String KEY_CANCELLATION_REASON = "cancellation_reason";
+    String KEY_CALL_LOGS = "call_logs";
 
     String FETCH_APP_API_ENABLED = "fetch_app_api_enabled";
     String FETCH_APP_API_FREQUENCY = "fetch_app_api_frequency";
