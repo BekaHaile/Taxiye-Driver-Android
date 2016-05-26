@@ -35,6 +35,31 @@
             android:text="Customer"
             />
 
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20px"
+            android:layout_alignParentBottom="true">
+
+            <ImageView
+                android:layout_width="35px"
+                android:layout_height="30px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="28px"
+                android:src="@drawable/customer2_list_marker"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewShowDistance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="90px"
+                android:text="225 m away"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/relativeLayoutCall"
