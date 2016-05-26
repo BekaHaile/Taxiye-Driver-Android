@@ -54,5 +54,6 @@ public interface Constants {
 
     String FETCH_APP_API_ENABLED = "fetch_app_api_enabled";
     String FETCH_APP_API_FREQUENCY = "fetch_app_api_frequency";
+    String FETCH_APP_TIME = "fetch_app_time";
 
 }

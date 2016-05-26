@@ -1368,8 +1368,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			if((System.currentTimeMillis() - fetchAllAppTime)>Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_API_FREQUENCY, 0)&&
-					(Prefs.with(HomeActivity.this).getInt(Constants.FETCH_APP_API_ENABLED, 1)==1)) {
+			if(((System.currentTimeMillis() - Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_TIME, 0))>Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_API_FREQUENCY, 0))&&
+					(Prefs.with(HomeActivity.this).getInt(Constants.FETCH_APP_API_ENABLED, 1)>0)) {
 
 				apifetchAllDriverApps(Utils.fetchAllApps(HomeActivity.this));
 				Log.i("allApps", String.valueOf(Utils.fetchAllApps(HomeActivity.this)));
@@ -1911,7 +1911,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			new ApiFetchDriverApps(this, new ApiFetchDriverApps.Callback() {
                 @Override
                 public void onSuccess() {
-    				fetchAllAppTime = System.currentTimeMillis();
+					Prefs.with(HomeActivity.this).save(Constants.FETCH_APP_TIME, System.currentTimeMillis());
                 }
             }).fetchDriverAppAsync(Data.userData.accessToken, appList);
 		} catch (Exception e) {

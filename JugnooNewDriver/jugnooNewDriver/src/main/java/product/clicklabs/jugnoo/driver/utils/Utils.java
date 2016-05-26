@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.RideCancellationActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -427,16 +428,37 @@ public class Utils {
 	}
 
 	public static JSONArray fetchAllApps(Context context){
-		int flags = PackageManager.GET_META_DATA ;
+		try {
+			int flags = PackageManager.GET_META_DATA ;
 
-		PackageManager pm = context.getPackageManager();
-		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
-		JSONArray appList = new JSONArray();
-		for (ApplicationInfo appInfo : applications) {
-			appList.put(appInfo.packageName);
+			PackageManager pm = context.getPackageManager();
+			List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+			List<PackageInfo> packages = pm.getInstalledPackages(flags);
+			JSONArray appList = new JSONArray();
+
+			if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==1)) {
+                for (ApplicationInfo appInfo : applications) {
+                    appList.put(appInfo.packageName);
+                }
+            }else if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==2)){
+                for (ApplicationInfo appInfo : applications) {
+                    if( pm.getLaunchIntentForPackage(appInfo.packageName) != null ){
+                        appList.put(appInfo.packageName);
+                    }
+                }
+            }else if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==3)){
+                for (PackageInfo packageInfo : packages) {
+                    if (packageInfo.versionName != null && ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 1)) {
+                        appList.put(packageInfo.packageName);
+                    }
+                }
+            }
+
+			return appList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
-
-		return appList;
 	}
 
 
