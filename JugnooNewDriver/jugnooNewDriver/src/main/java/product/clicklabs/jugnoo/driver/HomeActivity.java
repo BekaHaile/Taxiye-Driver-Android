@@ -91,6 +91,7 @@ import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
+import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.AutoCustomerInfo;
@@ -4641,7 +4642,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						} else {
 
-							sendCallLogsHome(Data.dEngagementId);
+							try {
+								new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+										Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 
 							int flag = ApiResponseFlags.RIDE_STARTED.getOrdinal();
 
@@ -6720,7 +6726,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void onChangeStatePushReceived(int flag) {
 		try {
 			if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() ==flag) {
-				sendCallLogsHome(Data.dEngagementId);
+				try {
+					new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+							Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 				callAndHandleStateRestoreAPI();
@@ -7974,39 +7985,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void sendCallLogsHome(String engId) {
-		try {
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("access_token", Data.userData.accessToken);
-			params.put("eng_id", engId);
-			params.put("call_logs", Utils.getCallDetails(HomeActivity.this, Data.assignedCustomerInfo.phoneNumber));
-
-			Log.i("params", "=" + params);
-
-			RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-					try {
-						JSONObject jObj = new JSONObject(responseStr);
-						int flag = jObj.getInt("flag");
-						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				}
-
-				@Override
-				public void failure(RetrofitError error) {
-					Log.e("request fail", error.toString());
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	private synchronized void startWalletUpdateTimeout(){
