@@ -50,12 +50,20 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 	public static ActivityCloser activityCloser = null;
 
+	String engagementId = "";
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cancel_ride);
 
+		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)) {
+			engagementId = getIntent().getStringExtra(Constants.KEY_ENGAGEMENT_ID);
+		} else{
+			finish();
+			return;
+		}
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RideCancellationActivity.this, relative, 1134, 720, false);
@@ -162,74 +170,78 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 
 	public void driverCancelRideAsync(final Activity activity, final String reason) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
-			HashMap<String, String> params = new HashMap<String, String>();
-			params.put("access_token", Data.userData.accessToken);
-			params.put("customer_id", String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
-			params.put("engagement_id", Data.dEngagementId);
-			params.put("cancellation_reason", reason);
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put("access_token", Data.userData.accessToken);
+				params.put("customer_id", String.valueOf(Data.getCustomerInfo(engagementId).userId));
+				params.put("engagement_id", engagementId);
+				params.put("cancellation_reason", reason);
 
-			if (Data.getCustomerInfo(Data.dEngagementId) != null) {
-				params.put("reference_id", "" + Data.getCustomerInfo(Data.dEngagementId).referenceId);
-			}
-			RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					DialogPopup.dismissLoadingDialog();
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
+				if (Data.getCustomerInfo(engagementId) != null) {
+					params.put("reference_id", "" + Data.getCustomerInfo(engagementId).referenceId);
+				}
+				RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						DialogPopup.dismissLoadingDialog();
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
 
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							} else {
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							}
-						} else {
-							try {
-								int flag = jObj.getInt("flag");
-								if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-									String log = jObj.getString("log");
-									DialogPopup.alertPopup(activity, "", "" + log);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
+									DialogPopup.alertPopup(activity, "", errorMessage);
 								}
-							} catch (Exception e) {
-								e.printStackTrace();
+							} else {
+								try {
+									int flag = jObj.getInt("flag");
+									if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
+										String log = jObj.getString("log");
+										DialogPopup.alertPopup(activity, "", "" + log);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+								performBackPressed();
+								if (HomeActivity.appInterruptHandler != null) {
+									HomeActivity.appInterruptHandler.handleCancelRideSuccess();
+								}
 							}
 
-							performBackPressed();
-							if (HomeActivity.appInterruptHandler != null) {
-								HomeActivity.appInterruptHandler.handleCancelRideSuccess();
-							}
+							new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+
+							sendCallLogs(engagementId);
+
+							nudgeCancelRide(reason);
+
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						}
-
-						new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-
-						sendCallLogs(Data.dEngagementId);
-
-						nudgeCancelRide(reason);
-
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					}
-				}
 
-				@Override
-				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
-					performBackPressed();
-					if (HomeActivity.appInterruptHandler != null) {
-						HomeActivity.appInterruptHandler.handleCancelRideFailure();
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						performBackPressed();
+						if (HomeActivity.appInterruptHandler != null) {
+							HomeActivity.appInterruptHandler.handleCancelRideFailure();
+						}
 					}
-				}
-			});
-		} else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -237,8 +249,8 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		try{
 			JSONObject map = new JSONObject();
 			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
-			map.put(Constants.KEY_ENGAGEMENT_ID, Data.dEngagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(Data.dEngagementId).userId));
+			map.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
+			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).userId));
 			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -250,7 +262,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put("access_token", Data.userData.accessToken);
 				params.put("eng_id", engId);
-				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.getCustomerInfo(Data.dEngagementId).phoneNumber));
+				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.getCustomerInfo(engagementId).phoneNumber));
 
 				Log.i("params", "=" + params);
 

@@ -11,7 +11,6 @@ public class CustomerInfo {
 	
 	public int engagementId;
 	public int userId, referenceId;
-	public BusinessType businessType;
 	public String name, phoneNumber;
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
@@ -45,7 +44,6 @@ public class CustomerInfo {
 		this.requestlLatLng = requestlLatLng;
 		this.cachedApiEnabled = cachedApiEnabled;
 
-		this.businessType = BusinessType.AUTOS;
 		this.image = image;
 		this.rating = rating;
 		this.schedulePickupTime = schedulePickupTime;
@@ -74,7 +72,6 @@ public class CustomerInfo {
 		this.requestlLatLng = requestlLatLng;
 		this.cachedApiEnabled = cachedApiEnabled;
 
-		this.businessType = BusinessType.AUTOS;
 		this.image = image;
 		this.rating = "4";
 		this.schedulePickupTime = "";
@@ -102,7 +99,6 @@ public class CustomerInfo {
 		this.requestlLatLng = requestlLatLng;
 		this.startTime = startTime;
 		this.address = address;
-		this.businessType = BusinessType.AUTOS;
 		this.referenceId = referenceId;
 		this.fareFactor = fareFactor;
 		this.status = status;
@@ -112,7 +108,7 @@ public class CustomerInfo {
 	@Override
 	public String toString() {
 		return "engagementId = "+engagementId+" userId = "+userId+" referenceId = "+referenceId+
-				" businessType = "+businessType+" name = "+name+" requestlLatLng = "+requestlLatLng+
+				" name = "+name+" requestlLatLng = "+requestlLatLng+
 				", cachedApiEnabled="+cachedApiEnabled;
 	}
 
@@ -201,14 +197,6 @@ public class CustomerInfo {
 
 	public void setReferenceId(int referenceId) {
 		this.referenceId = referenceId;
-	}
-
-	public BusinessType getBusinessType() {
-		return businessType;
-	}
-
-	public void setBusinessType(BusinessType businessType) {
-		this.businessType = businessType;
 	}
 
 	public String getName() {

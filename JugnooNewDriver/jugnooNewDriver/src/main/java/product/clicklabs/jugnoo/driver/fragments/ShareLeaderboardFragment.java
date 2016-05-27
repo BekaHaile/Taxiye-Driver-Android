@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -33,6 +31,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.Item;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -278,7 +277,7 @@ public class ShareLeaderboardFragment extends Fragment {
 
 	public void getLeaderboardCall() {
 		try {
-			if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+			if (!((BaseFragmentActivity)activity).checkIfUserDataNull() && AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 				RestClient.getApiServices().leaderboardServerCall(Data.userData.accessToken, "",
 						new Callback<NewLeaderBoard>() {

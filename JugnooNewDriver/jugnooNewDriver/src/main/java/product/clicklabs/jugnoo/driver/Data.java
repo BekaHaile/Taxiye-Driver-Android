@@ -314,6 +314,11 @@ public class Data {
 			assignedCustomerInfos.addAll(customerInfos);
 		}
 	}
+	public static void clearAssignedCustomerInfosListAll(){
+		if(assignedCustomerInfos != null) {
+			assignedCustomerInfos.clear();
+		}
+	}
 
 	public static CustomerInfo getCustomerInfo(String engagementId){
 		try {
@@ -349,7 +354,6 @@ public class Data {
 		return false;
 	}
 
-
 	public static void setCustomerState(String engagementId, DriverScreenMode driverScreenMode){
 		CustomerInfo customerInfo = getCustomerInfo(engagementId);
 		if(customerInfo != null){
@@ -372,6 +376,17 @@ public class Data {
 		return DriverScreenMode.D_INITIAL;
 	}
 
+	public static CustomerInfo getCurrentCustomerInfo(){
+		return getCustomerInfo(Data.getCurrentEngagementId());
+	}
+
+	public static String getCurrentEngagementId(){
+		return Data.dEngagementId;
+	}
+
+	public static void setCurrentEngagementId(String engagementId){
+		Data.dEngagementId = engagementId;
+	}
 
 
 
