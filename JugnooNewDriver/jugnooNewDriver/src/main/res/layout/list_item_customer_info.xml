@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="90px"
+                android:layout_marginLeft="80px"
                 android:text="225 m away"
                 android:textColor="@color/black"
                 android:textSize="32px"/>

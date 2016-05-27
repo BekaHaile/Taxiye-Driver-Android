@@ -87,6 +87,17 @@
                 android:layout_marginRight="30px"
                 android:layout_marginTop="0px"
                 android:src="@drawable/auto_small_icon"
+                android:visibility="gone"
+                android:tag="mwar"/>
+
+            <ImageView
+                android:id="@+id/imageViewRequestTypePool"
+                android:layout_width="65px"
+                android:layout_height="38px"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="30px"
+                android:layout_marginTop="0px"
+                android:src="@drawable/pool_request_icon"
                 android:tag="mwar"/>
 
             <TextView
@@ -98,7 +109,7 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="34px"
-                android:layout_below="@+id/imageViewRequestType"
+                android:layout_marginTop="78px"
                 />
 
         </RelativeLayout>
