@@ -7,21 +7,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
-import product.clicklabs.jugnoo.driver.datastructure.InvoiceInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -30,7 +26,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class InvoiceDetailsActivity extends Activity {
+public class InvoiceDetailsActivity extends BaseActivity {
 
 	LinearLayout linearLayoutRoot;
 

@@ -11,19 +11,17 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.view.inputmethod.InputMethodInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.view.inputmethod.InputMethodSubtype;
 import android.widget.Toast;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.LoginViaOTP;
+import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.RegisterScreen;
+import product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 /**
@@ -31,15 +29,34 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
  */
 public class BaseActivity extends Activity {
 
-    private Resources resourcesEng, resources;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 		updateLanguage();
-
     }
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		checkIfUserDataNull();
+	}
+
+	public boolean checkIfUserDataNull() {
+		if (Data.userData == null
+				&& !(this instanceof SplashNewActivity
+					|| this instanceof LoginViaOTP
+					|| this instanceof OTPConfirmScreen
+					|| this instanceof RegisterScreen
+					|| this instanceof RequestDuplicateRegistrationActivity)) {
+			startActivity(new Intent(this, SplashNewActivity.class));
+			finish();
+			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 
 	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE, "");

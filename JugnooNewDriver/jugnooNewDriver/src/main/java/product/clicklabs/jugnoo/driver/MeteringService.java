@@ -20,8 +20,6 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -181,25 +179,11 @@ public class MeteringService extends Service {
 				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					if(fromGPS){
-						boolean showWait = false;
-						if(Data.getCustomerInfo(Data.dEngagementId) != null){
-							if(Data.getCustomerInfo(Data.dEngagementId).businessType.getOrdinal() == BusinessType.AUTOS.getOrdinal()){
-								if(Data.getCustomerInfo(Data.dEngagementId).waitingChargesApplicable == 1
-										&& DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
-									showWait = true;
-								}
-							}
-						}
 						String message = context.getResources().getString(R.string.total_distance)
 								+" = "+getDecimalFormat().format(Math.abs(distance) / 1000)
 								+ context.getResources().getString(R.string.km)+" "
 								+"\n"+context.getResources().getString(R.string.ride_time)
 								+" = " +Utils.getChronoTimeFromMillis(elapsedTime);
-
-						if(showWait){
-							message = message + "\n"+context.getResources().getString(R.string.wait_time)
-									+" = "+Utils.getChronoTimeFromMillis(waitTime);
-						}
 						generateNotification(context, message);
 					}
 					if(HomeActivity.appInterruptHandler != null){

@@ -72,5 +72,14 @@ public interface Constants {
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
     String KEY_APP_VERSION = "app_version";
+    String KEY_PERFECT_PICKUP_LATITUDE = "perfect_pickup_latitude";
+    String KEY_PERFECT_PICKUP_LONGITUDE = "perfect_pickup_longitude";
+    String KEY_PERFECT_USER_NAME = "perfect_user_name";
+    String KEY_PERFECT_PHONE_NO = "perfect_phone_no";
+    String KEY_LAST_ENGAGEMENT_INFO = "last_engagement_info";
+    String KEY_STATUS = "status";
+    String KEY_RATING = "rating";
+    String KEY_OP_DROP_LATITUDE = "op_drop_latitude";
+    String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
 
 }

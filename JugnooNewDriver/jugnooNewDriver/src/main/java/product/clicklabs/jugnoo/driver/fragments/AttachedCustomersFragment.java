@@ -62,8 +62,9 @@ public class AttachedCustomersFragment extends Fragment implements FlurryEventNa
 					@Override
 					public void onClick(int position, CustomerInfo customerInfo) {
 						try {
-							Data.dEngagementId = String.valueOf(customerInfo.getEngagementId());
+							Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 							activity.switchDriverScreen(HomeActivity.driverScreenMode);
+							activity.hideAttachedCustomersFragment();
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

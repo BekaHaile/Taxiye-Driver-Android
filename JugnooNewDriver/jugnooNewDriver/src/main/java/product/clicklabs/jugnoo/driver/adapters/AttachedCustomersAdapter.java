@@ -70,7 +70,7 @@ public class AttachedCustomersAdapter extends RecyclerView.Adapter<RecyclerView.
             public void onClick(View v) {
                 try {
                     int position = (int) v.getTag();
-                    callback.onCallUs(position, getItem(position));
+                    callback.onClick(position, getItem(position));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

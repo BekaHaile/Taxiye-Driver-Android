@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
@@ -39,7 +40,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class RegisterScreen extends Activity implements LocationUpdate{
+public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	
 	Button backBtn;
 	TextView title;

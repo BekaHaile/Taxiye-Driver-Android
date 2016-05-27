@@ -26,13 +26,14 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class RequestDuplicateRegistrationActivity extends Activity {
+public class RequestDuplicateRegistrationActivity extends BaseActivity {
 
 	RelativeLayout relative;
 

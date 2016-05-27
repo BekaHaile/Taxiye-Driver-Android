@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -35,7 +36,7 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 05/10/15.
  */
-public class SharingRidesActivity extends Activity {
+public class SharingRidesActivity extends BaseActivity {
 
 	LinearLayout relative;
 	Button backBtn;
@@ -59,7 +60,6 @@ public class SharingRidesActivity extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		HomeActivity.checkIfUserDataNull(this);
 	}
 
 	@Override

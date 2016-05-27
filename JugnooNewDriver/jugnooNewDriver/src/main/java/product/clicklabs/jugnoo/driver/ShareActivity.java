@@ -3,9 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,14 +14,15 @@ import com.flurry.android.FlurryAgent;
 import product.clicklabs.jugnoo.driver.adapters.ShareFragmentAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 
 
-public class ShareActivity extends FragmentActivity implements FlurryEventNames {
+public class ShareActivity extends BaseFragmentActivity implements FlurryEventNames {
 	
 	LinearLayout linearLayoutRoot;
 
