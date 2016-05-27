@@ -465,6 +465,7 @@
     <string name="ride_complete">যাএা সমাপ্ত হল ।</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">Resend OTP</string>
+    <string name="miss_call_otp">Give a Miss Call</string>
 
 
     <string-array name="CountryCodes" >

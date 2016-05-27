@@ -486,6 +486,7 @@
     <string name="ride_complete">ಸವಾರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ಓ ಟಿ ಪಿ ಮರುಕಳುಹಿಸಿ.</string>
+    <string name="miss_call_otp">Give a Miss Call</string>
 
 
     <string-array name="CountryCodes" >
