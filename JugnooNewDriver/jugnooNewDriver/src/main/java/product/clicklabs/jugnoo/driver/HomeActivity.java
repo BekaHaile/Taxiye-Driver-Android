@@ -3119,19 +3119,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Log.w("rateingD", "e" + e.getLocalizedMessage());
 				}
 				driverPassengerRatingValue.setText(decimalFormat.format(rateingD) + " " + getResources().getString(R.string.rating));
-
-				if ("".equalsIgnoreCase((Data.getCurrentCustomerInfo()).schedulePickupTime)) {
-					driverScheduledRideText.setVisibility(View.GONE);
-				} else {
-					String time = DateOperations.getTimeAMPM(DateOperations.utcToLocal((Data.getCurrentCustomerInfo()).schedulePickupTime));
-					if ("".equalsIgnoreCase(time)) {
-						driverScheduledRideText.setVisibility(View.GONE);
-					} else {
-						driverScheduledRideText.setVisibility(View.VISIBLE);
-						driverScheduledRideText.setText(getResources().getString(R.string.Scheduled_Ride_Pickup) + time);
-					}
-				}
-
+				driverScheduledRideText.setVisibility(View.GONE);
 
 				if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
@@ -3921,15 +3909,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
+					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
 					Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(engagementId),
 							Integer.parseInt(customerId), referenceId,
 							userName, phoneNo, pickuplLatLng, cachedApiEnabled,
-							userImage, rating, pickupTime, freeRide, couponInfo, promoInfo, jugnooBalance,
+							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
-							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal()));
+							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled));
 
 					GCMIntentService.clearNotifications(getApplicationContext());
 
@@ -4074,20 +4063,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			try {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
-//			RequestParams params = new RequestParams();
-
 				HashMap<String, String> params = new HashMap<String, String>();
 
-				params.put("access_token", Data.userData.accessToken);
-				params.put("engagement_id", Data.getCurrentEngagementId());
-				params.put("customer_id", String.valueOf(Data.getCurrentCustomerInfo().getUserId()));
-				params.put("pickup_latitude", "" + driverAtPickupLatLng.latitude);
-				params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
-				params.put("dryrun_distance", "" + totalDistance);
+				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
+				params.put(KEY_CUSTOMER_ID, String.valueOf(Data.getCurrentCustomerInfo().getUserId()));
+				params.put(KEY_PICKUP_LATITUDE, "" + driverAtPickupLatLng.latitude);
+				params.put(KEY_PICKUP_LONGITUDE, "" + driverAtPickupLatLng.longitude);
+				params.put(KEY_DRYRUN_DISTANCE, "" + totalDistance);
 				Log.i("dryrun_distance", String.valueOf(totalDistance));
 
 				if (Data.getCurrentCustomerInfo() != null) {
-					params.put("reference_id", "" + Data.getCurrentCustomerInfo().getReferenceId());
+					params.put(KEY_REFERENCE_ID, "" + Data.getCurrentCustomerInfo().getReferenceId());
 				}
 				RestClient.getApiServices().driverMarkArriveRideRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -6180,10 +6167,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						currentUserStatus = 1;
 					}
 					if (currentUserStatus != 0) {
-						String resp = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
+						String resp = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken);
 						Log.i("currentUserStatus0", resp);
 						if (resp.contains(Constants.SERVER_TIMEOUT)) {
-							String resp1 = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
+							String resp1 = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken);
 							Log.i("currentUserStatus1", resp);
 							if (resp1.contains(Constants.SERVER_TIMEOUT)) {
 								runOnUiThread(new Runnable() {
@@ -6235,10 +6222,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							currentUserStatus = 1;
 						}
 						if (currentUserStatus != 0) {
-							manualPatchPushStateRestoreResponse = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
+							manualPatchPushStateRestoreResponse = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken);
 
 							if (manualPatchPushStateRestoreResponse.contains(Constants.SERVER_TIMEOUT)) {
-								manualPatchPushStateRestoreResponse = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken, currentUserStatus);
+								manualPatchPushStateRestoreResponse = new JSONParser().getUserStatus(HomeActivity.this, Data.userData.accessToken);
 
 								if (manualPatchPushStateRestoreResponse.contains(Constants.SERVER_TIMEOUT)) {
 									runOnUiThread(new Runnable() {

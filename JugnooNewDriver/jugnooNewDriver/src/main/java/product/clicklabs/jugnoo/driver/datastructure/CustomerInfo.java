@@ -15,8 +15,7 @@ public class CustomerInfo {
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
 
-	public String image, rating, schedulePickupTime;
-	public int freeRide;
+	public String image, rating;
 	public CouponInfo couponInfo;
 	public PromoInfo promoInfo;
 	public double jugnooBalance;
@@ -32,10 +31,9 @@ public class CustomerInfo {
 	private int isPooled;
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
-						String image, String rating, String schedulePickupTime, int freeRide,
-						CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance, int meterFareApplicable,
-						int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status){
+						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
+						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
+						int status, int isPooled){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -46,8 +44,6 @@ public class CustomerInfo {
 
 		this.image = image;
 		this.rating = rating;
-		this.schedulePickupTime = schedulePickupTime;
-		this.freeRide = freeRide;
 		this.couponInfo = couponInfo;
 		this.promoInfo = promoInfo;
 		this.jugnooBalance = jugnooBalance;
@@ -60,6 +56,7 @@ public class CustomerInfo {
 		this.luggageChargesApplicable = luggageChargesApplicable;
 		this.waitingChargesApplicable = waitTimeApplicable;
 		this.setStatus(status);
+		this.isPooled = isPooled;
 	}
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -74,8 +71,6 @@ public class CustomerInfo {
 
 		this.image = image;
 		this.rating = "4";
-		this.schedulePickupTime = "";
-		this.freeRide = 0;
 		this.couponInfo = couponInfo;
 		this.promoInfo = promoInfo;
 		this.jugnooBalance = 0;
@@ -229,22 +224,6 @@ public class CustomerInfo {
 
 	public void setRating(String rating) {
 		this.rating = rating;
-	}
-
-	public String getSchedulePickupTime() {
-		return schedulePickupTime;
-	}
-
-	public void setSchedulePickupTime(String schedulePickupTime) {
-		this.schedulePickupTime = schedulePickupTime;
-	}
-
-	public int getFreeRide() {
-		return freeRide;
-	}
-
-	public void setFreeRide(int freeRide) {
-		this.freeRide = freeRide;
 	}
 
 	public CouponInfo getCouponInfo() {

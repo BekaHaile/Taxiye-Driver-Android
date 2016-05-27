@@ -81,5 +81,6 @@ public interface Constants {
     String KEY_RATING = "rating";
     String KEY_OP_DROP_LATITUDE = "op_drop_latitude";
     String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
+    String KEY_DRYRUN_DISTANCE = "dryrun_distance";
 
 }

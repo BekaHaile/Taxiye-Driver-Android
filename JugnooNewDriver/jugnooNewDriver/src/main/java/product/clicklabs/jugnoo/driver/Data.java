@@ -335,8 +335,9 @@ public class Data {
 	public static void addCustomerInfo(CustomerInfo customerInfo){
 		if(assignedCustomerInfos != null) {
 			if (assignedCustomerInfos.contains(customerInfo)) {
-				assignedCustomerInfos.remove(assignedCustomerInfos.indexOf(customerInfo));
-				assignedCustomerInfos.add(assignedCustomerInfos.indexOf(customerInfo), customerInfo);
+				int index = assignedCustomerInfos.indexOf(customerInfo);
+				assignedCustomerInfos.remove(index);
+				assignedCustomerInfos.add(index, customerInfo);
 			} else {
 				assignedCustomerInfos.add(customerInfo);
 			}
