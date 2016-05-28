@@ -23,6 +23,9 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -111,6 +114,7 @@ import product.clicklabs.jugnoo.driver.datastructure.StationData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.fragments.AttachedCustomersFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
+import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -226,12 +230,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	// Driver Engaged layout
 	RelativeLayout driverEngagedLayout;
 
-	TextView driverPassengerName, textViewCustomerPickupAddress;
-	TextView driverPassengerRatingValue;
+	TextView textViewCustomerPickupAddress;
 	RelativeLayout driverPassengerCallRl, perfectRidePassengerCallRl;
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName;
-	TextView driverScheduledRideText;
 	Button driverEngagedMyLocationBtn;
 
 	//Start ride layout
@@ -306,6 +308,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout linearLayoutEndRideMain;
 	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
 
+	CustomerSwitcher customerSwitcher;
 
 	// data variables declaration
 
@@ -334,7 +337,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public Location lastGPSLocation, lastFusedLocation;
 	public boolean distanceUpdateFromService = false;
 	public boolean walletBalanceUpdatePopup = false;
-
+	RecyclerView recyclerViewCustomersLinked;
 
 	static UserMode userMode;
 	public static DriverScreenMode driverScreenMode;
@@ -628,25 +631,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerInfoRl = (LinearLayout) findViewById(R.id.driverPassengerInfoRl);
 
 
-			driverPassengerName = (TextView) findViewById(R.id.driverPassengerName);
-			driverPassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverPerfectRidePassengerName = (TextView) findViewById(R.id.driverPerfectRidePassengerName);
 			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress);
 			textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
-			driverPassengerRatingValue = (TextView) findViewById(R.id.driverPassengerRatingValue);
-			driverPassengerRatingValue.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
 			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
-			driverScheduledRideText = (TextView) findViewById(R.id.driverScheduledRideText);
-			driverScheduledRideText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
-			driverPassengerRatingValue.setVisibility(View.GONE);
 
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
@@ -859,7 +855,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 
 
-
+			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
 
 			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
 					new KeyboardLayoutListener.KeyBoardStateHandler() {
@@ -2751,7 +2747,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					etaTimerRLayout.setVisibility(View.GONE);
 
-					driverScheduledRideText.setVisibility(View.GONE);
 
 					driverStartRideMainRl.setVisibility(View.GONE);
 					driverInRideMainRl.setVisibility(View.VISIBLE);
@@ -3088,37 +3083,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void setAssignedCustomerInfoToViews(DriverScreenMode mode) {
 		try {
-			driverPassengerName.setText(Data.getCurrentCustomerInfo().name);
-
+			double rateingD = 4;
 			try {
-				double rateingD = 4;
-				try {
-					rateingD = Double.parseDouble((Data.getCurrentCustomerInfo()).rating);
-				} catch (Exception e) {
-					Log.w("rateingD", "e" + e.getLocalizedMessage());
-				}
-				driverPassengerRatingValue.setText(decimalFormat.format(rateingD) + " " + getResources().getString(R.string.rating));
-				driverScheduledRideText.setVisibility(View.GONE);
-
-				if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
-					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					buttonDriverNavigation.setVisibility(View.GONE);
-					updateCustomerPickupAddress(Data.getCurrentCustomerInfo().requestlLatLng);
-				} else {
-					textViewCustomerPickupAddress.setVisibility(View.GONE);
-					buttonDriverNavigation.setVisibility(View.GONE);
-					if ((Data.getCurrentCustomerInfo()).dropLatLng != null) {
-						updateCustomerPickupAddress((Data.getCurrentCustomerInfo()).dropLatLng);
-					}
-				}
-
+				rateingD = Double.parseDouble((Data.getCurrentCustomerInfo()).rating);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Log.w("rateingD", "e" + e.getLocalizedMessage());
 			}
+
+			if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
+				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+				buttonDriverNavigation.setVisibility(View.GONE);
+				updateCustomerPickupAddress(Data.getCurrentCustomerInfo().requestlLatLng);
+			} else {
+				textViewCustomerPickupAddress.setVisibility(View.GONE);
+				buttonDriverNavigation.setVisibility(View.GONE);
+				if ((Data.getCurrentCustomerInfo()).dropLatLng != null) {
+					updateCustomerPickupAddress((Data.getCurrentCustomerInfo()).dropLatLng);
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	String address = "";
@@ -7106,4 +7092,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		relativeLayoutContainer.setVisibility(View.GONE);
 	}
 
+	@Override
+	public void updateCustomers() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				customerSwitcher.updateList();
+			}
+		});
+	}
 }

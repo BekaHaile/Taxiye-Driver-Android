@@ -48,4 +48,6 @@ public interface AppInterruptHandler {
 
 	void fetchHeatMapDataCall(Context context);
 
+	void updateCustomers();
+
 }

@@ -212,74 +212,16 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="10px"
-                                android:layout_marginTop="20px"
+                                android:layout_marginTop="10px"
                                 android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:id="@+id/passengerNameLl"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <RelativeLayout
-                                        android:id="@+id/customerInfo1"
-                                        android:layout_width="230px"
-                                        android:layout_height="match_parent"
-                                        android:splitMotionEvents="false"
-                                        android:layout_weight="1">
-
-                                    <ImageView
-                                        android:id="@+id/passangerImage"
-                                        android:layout_width="60px"
-                                        android:layout_height="60px"
-                                        android:gravity="center_vertical"
-                                        android:layout_marginLeft="25px"
-                                        android:layout_marginRight="25px"
-                                        android:src="@drawable/superhappy_face"/>
-
-                                    <TextView
-                                        android:id="@+id/driverPassengerName"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center_vertical"
-                                        android:layout_toRightOf="@+id/passangerImage"
-                                        android:singleLine="true"
-                                        android:text="Shanker"
-                                        android:textColor="@color/bg_grey_opaque"
-                                        android:textSize="40px" />
-                                    </RelativeLayout>
-
-
-                                    <RelativeLayout
-                                        android:id="@+id/customerInfo2"
-                                        android:layout_width="230px"
-                                        android:layout_height="match_parent"
-                                        android:splitMotionEvents="false"
-                                        android:background="@color/grey_light_more"
-                                        android:layout_weight="1">
-
-                                        <ImageView
-                                            android:id="@+id/passangerImage2"
-                                            android:layout_width="60px"
-                                            android:layout_height="60px"
-                                            android:gravity="center_vertical"
-                                            android:layout_marginLeft="25px"
-                                            android:layout_marginRight="25px"
-                                            android:src="@drawable/superhappy_face"/>
-
-                                        <TextView
-                                            android:id="@+id/driverPassengerName2"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center_vertical"
-                                            android:layout_toRightOf="@+id/passangerImage2"
-                                            android:singleLine="true"
-                                            android:text="Shanker"
-                                            android:textColor="@color/bg_grey_opaque"
-                                            android:textSize="40px" />
-                                    </RelativeLayout>
-
-                                </LinearLayout>
+                                <android.support.v7.widget.RecyclerView
+                                    android:id="@+id/recyclerViewCustomersLinked"
+                                    android:layout_width="720px"
+                                    android:layout_height="80px"
+                                    android:layout_below="@+id/topRlOuter"
+                                    >
+                                </android.support.v7.widget.RecyclerView>
 
                                 <LinearLayout
                                     android:layout_width="match_parent"
@@ -381,48 +323,6 @@
 
 
                             </LinearLayout>
-
-                            <RelativeLayout
-                                android:id="@+id/driverPassengerRatingRl"
-                                android:layout_width="420px"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="20px"
-                                android:layout_marginLeft="40px"
-                                android:splitMotionEvents="false"
-                                android:visibility="gone">
-
-                                <ImageView
-                                    android:id="@+id/driverPassengerRatingStar"
-                                    android:layout_width="46px"
-                                    android:layout_height="46px"
-                                    android:background="@drawable/star_empty" />
-
-                                <TextView
-                                    android:id="@+id/driverPassengerRatingValue"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginLeft="10px"
-                                    android:layout_toRightOf="@+id/driverPassengerRatingStar"
-                                    android:singleLine="true"
-                                    android:text="4.3 Rating"
-                                    android:textColor="@color/bg_grey_opaque"
-                                    android:textSize="38px" />
-                            </RelativeLayout>
-
-                            <TextView
-                                android:id="@+id/driverScheduledRideText"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="20px"
-                                android:layout_marginLeft="40px"
-                                android:layout_marginRight="40px"
-                                android:gravity="center_vertical"
-                                android:singleLine="true"
-                                android:text="Scheduled Ride Pickup: "
-                                android:textColor="@color/bg_grey_opaque"
-                                android:textSize="40px"
-                                android:visibility="gone" />
 
                             <ImageView
                                 android:id="@+id/customerInfoLine"

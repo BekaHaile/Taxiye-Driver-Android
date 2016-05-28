@@ -310,6 +310,9 @@ public class Data {
 			}
 			assignedCustomerInfos.clear();
 			assignedCustomerInfos.addAll(customerInfos);
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
 		}
 	}
 
@@ -334,6 +337,9 @@ public class Data {
 			} else {
 				assignedCustomerInfos.add(customerInfo);
 			}
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
 		}
 	}
 
@@ -342,6 +348,9 @@ public class Data {
 			int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
 			if (index > -1) {
 				assignedCustomerInfos.remove(index);
+				if(HomeActivity.appInterruptHandler != null){
+					HomeActivity.appInterruptHandler.updateCustomers();
+				}
 				return true;
 			}
 		}
