@@ -255,6 +255,7 @@
                                             android:layout_alignParentBottom="true">
 
                                             <ImageView
+                                                android:id="@+id/customerMarker"
                                                 android:layout_width="35px"
                                                 android:layout_height="30px"
                                                 android:layout_centerVertical="true"

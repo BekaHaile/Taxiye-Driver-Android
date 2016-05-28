@@ -230,8 +230,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	// Driver Engaged layout
 	RelativeLayout driverEngagedLayout;
 
-	TextView textViewCustomerPickupAddress;
-	RelativeLayout driverPassengerCallRl, perfectRidePassengerCallRl;
+	RelativeLayout perfectRidePassengerCallRl;
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
 	TextView driverPassengerCallText, driverPerfectRidePassengerName;
 	Button driverEngagedMyLocationBtn;
@@ -633,11 +632,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			driverPerfectRidePassengerName = (TextView) findViewById(R.id.driverPerfectRidePassengerName);
 			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
-			textViewCustomerPickupAddress = (TextView) findViewById(R.id.textViewCustomerPickupAddress);
-			textViewCustomerPickupAddress.setTypeface(Data.latoRegular(getApplicationContext()));
 
-
-			driverPassengerCallRl = (RelativeLayout) findViewById(R.id.driverPassengerCallRl);
 			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -1196,7 +1191,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			// driver start ride layout events
-			driverPassengerCallRl.setOnClickListener(new OnClickListener() {
+			customerSwitcher.driverPassengerCallRl.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -3091,11 +3086,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if (DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode) {
-				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+				customerSwitcher.textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 				buttonDriverNavigation.setVisibility(View.GONE);
 				updateCustomerPickupAddress(Data.getCurrentCustomerInfo().requestlLatLng);
 			} else {
-				textViewCustomerPickupAddress.setVisibility(View.GONE);
+				customerSwitcher.textViewCustomerPickupAddress.setVisibility(View.GONE);
 				buttonDriverNavigation.setVisibility(View.GONE);
 				if ((Data.getCurrentCustomerInfo()).dropLatLng != null) {
 					updateCustomerPickupAddress((Data.getCurrentCustomerInfo()).dropLatLng);
@@ -3111,7 +3106,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private void updateCustomerPickupAddress(final LatLng latLng) {
 		if (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-			textViewCustomerPickupAddress.setText(getResources().getString(R.string.loading));
+			customerSwitcher.textViewCustomerPickupAddress.setText(getResources().getString(R.string.loading));
 		}
 		new Thread(new Runnable() {
 			@Override
@@ -3122,7 +3117,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						@Override
 						public void run() {
 							if (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-								textViewCustomerPickupAddress.setText(address);
+								customerSwitcher.textViewCustomerPickupAddress.setText(address);
 								if ("".equalsIgnoreCase(address)) {
 									buttonDriverNavigation.setVisibility(View.GONE);
 								} else {

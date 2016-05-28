@@ -49,6 +49,15 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ViewHolder holder = (ViewHolder) viewholder;
         holder.linearLayoutRoot.setTag(position);
         holder.driverPassengerName.setText(customerInfo.getName());
+        if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))){
+            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.new_orange));
+            holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.white));
+
+        }else{
+            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.white));
+            holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.black));
+
+        }
 
         holder.linearLayoutRoot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +65,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 try {
                     int position = (int) v.getTag();
                     callback.onClick(position, getItem(position));
+                    notifyList();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
