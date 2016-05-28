@@ -56,5 +56,7 @@
     <dimen name="text_size_20">20px</dimen>
     <dimen name="text_size_18">18px</dimen>
 
+    <dimen name="top_bar_height">98px</dimen>
+
 
 </resources>

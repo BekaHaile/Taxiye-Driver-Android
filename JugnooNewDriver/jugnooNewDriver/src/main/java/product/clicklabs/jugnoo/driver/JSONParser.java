@@ -438,7 +438,7 @@ public class JSONParser implements Constants {
 										(Data.getCustomerInfo(engagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
 									}
 								}
-							} catch (JSONException e) {
+							} catch (Exception e) {
 								e.printStackTrace();
 							}
 

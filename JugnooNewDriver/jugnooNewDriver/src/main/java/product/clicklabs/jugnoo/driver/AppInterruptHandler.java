@@ -22,10 +22,6 @@ public interface AppInterruptHandler {
 
 	public void onChangeStatePushReceived(int flag);
 	
-	public void onStationChangedPushReceived();
-	
-	public void onCustomerCashDone();
-	
 	public void onCashAddedToWalletByCustomer(int userId, double balance);
 
 	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);

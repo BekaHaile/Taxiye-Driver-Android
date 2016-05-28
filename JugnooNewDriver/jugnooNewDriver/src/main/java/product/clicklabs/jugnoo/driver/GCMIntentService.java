@@ -517,15 +517,7 @@ public class GCMIntentService extends IntentService {
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
-							} else if (PushFlags.STATION_CHANGED.getOrdinal() == flag) {
-								String message1 = jObj.getString("message");
-								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onStationChangedPushReceived();
-									notificationManagerResume(this, message1, false);
-								} else {
-									notificationManager(this, message1, false);
-								}
-							}else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
+							} else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
 								int userId = jObj.getInt("user_id");
 								double balance = jObj.getDouble("balance");
 								if (HomeActivity.appInterruptHandler != null) {
