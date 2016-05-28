@@ -15,7 +15,6 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
-import product.clicklabs.jugnoo.driver.datastructure.PenalityData;
 import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
@@ -87,16 +86,6 @@ public class Database2 {                                                        
 	private static final String API_ID = "api_id";
 	private static final String API_URL = "api_url";
 	private static final String API_REQUEST_PARAMS = "api_request_params";
-
-	private static final String TABLE_PORT_NUMBER = "table_port_number";
-	private static final String PORT_ID = "port_id";
-	private static final String LIVE_PORT_NUMBER = "live_port_number";
-	private static final String DEV_PORT_NUMBER = "dev_port_number";
-	private static final String SALES_PORT_NUMBER = "sales_port_number";
-
-	private static final String DEFAULT_LIVE_PORT = "4012";
-	private static final String DEFAULT_DEV_PORT = "8012";
-	private static final String DEFAULT_SALES_PORT = "8200";
 
 
 	private static final String TABLE_RIDE_DATA = "table_ride_data";
@@ -229,13 +218,6 @@ public class Database2 {                                                        
 				+ API_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ API_URL + " TEXT, "
 				+ API_REQUEST_PARAMS + " TEXT"
-				+ ");");
-
-		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PORT_NUMBER + " ("
-				+ PORT_ID + " TEXT, "
-				+ LIVE_PORT_NUMBER + " TEXT, "
-				+ DEV_PORT_NUMBER + " TEXT, "
-				+ SALES_PORT_NUMBER + " TEXT"
 				+ ");");
 
 
@@ -892,119 +874,6 @@ public class Database2 {                                                        
 	public void checkStartPendingApisService(Context context) {
 		if (!HomeActivity.isServiceRunning(context, PushPendingCallsService.class.getName())) {
 			context.startService(new Intent(context, PushPendingCallsService.class));
-		}
-	}
-
-
-	public int insertDefaultPorts() {
-		deletePortNumbers();
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.PORT_ID, "1");
-			contentValues.put(Database2.LIVE_PORT_NUMBER, DEFAULT_LIVE_PORT);
-			contentValues.put(Database2.DEV_PORT_NUMBER, DEFAULT_DEV_PORT);
-			contentValues.put(Database2.SALES_PORT_NUMBER, DEFAULT_SALES_PORT);
-			database.insert(Database2.TABLE_PORT_NUMBER, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-
-	public String getLivePortNumber() {
-		try {
-			String[] columns = new String[]{Database2.LIVE_PORT_NUMBER};
-			Cursor cursor = database.query(Database2.TABLE_PORT_NUMBER, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String port = cursor.getString(cursor.getColumnIndex(Database2.LIVE_PORT_NUMBER));
-				return port;
-			} else {
-				insertDefaultPorts();
-				return DEFAULT_LIVE_PORT;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			insertDefaultPorts();
-			return DEFAULT_LIVE_PORT;
-		}
-	}
-
-	public void updateLivePortNumber(String port) {
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.LIVE_PORT_NUMBER, port);
-			database.update(Database2.TABLE_PORT_NUMBER, contentValues, Database2.PORT_ID + "=?", new String[]{"1"});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getDevPortNumber() {
-		try {
-			String[] columns = new String[]{Database2.DEV_PORT_NUMBER};
-			Cursor cursor = database.query(Database2.TABLE_PORT_NUMBER, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String port = cursor.getString(cursor.getColumnIndex(Database2.DEV_PORT_NUMBER));
-				return port;
-			} else {
-				insertDefaultPorts();
-				return DEFAULT_DEV_PORT;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			insertDefaultPorts();
-			return DEFAULT_DEV_PORT;
-		}
-	}
-
-	public void updateDevPortNumber(String port) {
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.DEV_PORT_NUMBER, port);
-			database.update(Database2.TABLE_PORT_NUMBER, contentValues, Database2.PORT_ID + "=?", new String[]{"1"});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public String getSalesPortNumber() {
-		try {
-			String[] columns = new String[]{Database2.SALES_PORT_NUMBER};
-			Cursor cursor = database.query(Database2.TABLE_PORT_NUMBER, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String port = cursor.getString(cursor.getColumnIndex(Database2.SALES_PORT_NUMBER));
-				return port;
-			} else {
-				insertDefaultPorts();
-				return DEFAULT_SALES_PORT;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			insertDefaultPorts();
-			return DEFAULT_SALES_PORT;
-		}
-	}
-
-	public void updateSalesPortNumber(String port) {
-		try {
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.SALES_PORT_NUMBER, port);
-			database.update(Database2.TABLE_PORT_NUMBER, contentValues, Database2.PORT_ID + "=?", new String[]{"1"});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public void deletePortNumbers() {
-		try {
-			database.delete(Database2.TABLE_PORT_NUMBER, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

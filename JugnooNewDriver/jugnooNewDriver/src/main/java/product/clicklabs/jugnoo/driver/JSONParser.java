@@ -142,43 +142,6 @@ public class JSONParser implements Constants {
 
 	public UserData parseUserData(Context context, JSONObject userData) throws Exception {
 
-//        {
-//            "flag": 150,
-//            "login": {
-//            "user_data": {
-//                "access_token": "35adf238dd7d1af82291ac6c2fe2f0ca6a978ed543d087507f7cf2e2b814dcfd",
-//                    "user_name": "Driver 2",
-//                    "user_image": "http://tablabar.s3.amazonaws.com/brand_images/user.png",
-//                    "phone_no": "+919780298413",
-//                    "referral_code": "DRIVER19",
-//                    "is_available": 0,
-//                    "autos_enabled": 1,
-//                    "meals_enabled": 0,
-//                    "fatafat_enabled": 1,
-//                    "autos_available": 0,
-//                    "meals_available": 0,
-//                    "fatafat_available": 0,
-//                    "gcm_intent": 1,
-//                    "current_user_status": 1,
-//                    "fare_details": [
-//                {
-//                    "fare_fixed": 20,
-//                    "fare_per_km": 5,
-//                    "fare_threshold_distance": 0,
-//                    "fare_per_min": 1,
-//                    "fare_threshold_time": 0
-//                }
-//                ],
-//                "exceptional_driver": 0
-//            },
-//            "popup": 0
-//        },
-//            "status": {
-//            "flag": 133,
-//                "active_requests": []
-//        }
-//        }
-
 
 		int freeRideIconDisable = 1;
 
@@ -276,7 +239,6 @@ public class JSONParser implements Constants {
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled", 0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled", 0);
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
-		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
 
@@ -339,35 +301,6 @@ public class JSONParser implements Constants {
 		return resp;
 	}
 
-
-	public void parsePortNumber(Context context, JSONObject jLoginObject) {
-		try {
-			if (jLoginObject.has("port_number")) {
-				String port = jLoginObject.getString("port_number");
-				updatePortNumber(context, port);
-				SplashNewActivity.initializeServerURL(context);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void updatePortNumber(Context context, String port) {
-		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
-
-		if (link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)) {
-			Database2.getInstance(context).updateSalesPortNumber(port);
-		} else if (link.equalsIgnoreCase(Data.DEV_SERVER_URL)) {
-			Database2.getInstance(context).updateDevPortNumber(port);
-		} else {
-			Database2.getInstance(context).updateLivePortNumber(port);
-		}
-	}
-
-
-//	Retrofit
-
 	public String getUserStatus(Context context, String accessToken) {
 		String returnResponse = "";
 		try {
@@ -394,13 +327,11 @@ public class JSONParser implements Constants {
 	}
 
 
+	//TODO ask ronak if to remove this section
 	public void parseLastRideData(JSONObject jObj){
-
 		try {
 			JSONArray lastEngInfoArr = jObj.getJSONArray("last_engagement_info");
 			JSONObject jLastRideData = lastEngInfoArr.getJSONObject(0);
-
-			Log.e("jLastRideData", "=" + jLastRideData);
 
 			Data.setCurrentEngagementId(jLastRideData.getString(KEY_ENGAGEMENT_ID));
 
@@ -416,45 +347,16 @@ public class JSONParser implements Constants {
 			int referenceId = 0;
 			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 
-			Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), Integer.parseInt(jLastRideData.getString("user_id")),
-					referenceId, jLastRideData.getString("user_name"), jLastRideData.getString("phone_no"), 
+			Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()),
+					Integer.parseInt(jLastRideData.getString(KEY_USER_ID)),
+					referenceId, jLastRideData.getString(KEY_USER_NAME), jLastRideData.getString(KEY_PHONE_NO),
 					new LatLng(0, 0), cachedApiEnabled,
-					jLastRideData.getString("user_image"), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
-			
-			
-			Data.fareStructure = JSONParser.parseFareObject(jLastRideData);
+					jLastRideData.getString(KEY_USER_IMAGE), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
 
-			if (jLastRideData.has("fare_factor")) {
-				try {
-					Data.fareStructure.fareFactor = jLastRideData.getDouble("fare_factor");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			if (jLastRideData.has("luggage_charges")) {
-				try {
-					Data.fareStructure.luggageFare = jLastRideData.getDouble("luggage_charges");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			if (jLastRideData.has("convenience_charge")) {
-				try {
-					Data.fareStructure.convenienceCharge = jLastRideData.getDouble("convenience_charge");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			if (jLastRideData.has("convenience_charge_waiver")) {
-				try {
-					Data.fareStructure.convenienceChargeWaiver = jLastRideData.getDouble("convenience_charge_waiver");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+
+			parseFareStructureForCustomer(jLastRideData);
 
 			parseEndRideData(jLastRideData, Data.getCurrentEngagementId(), HomeActivity.totalFare);
-
 
 			HomeActivity.driverScreenMode = DriverScreenMode.D_RIDE_END;
 
@@ -468,7 +370,7 @@ public class JSONParser implements Constants {
 	public String parseCurrentUserStatus(Context context, JSONObject jObject1) {
 		HomeActivity.userMode = UserMode.DRIVER;
 		try {
-			if (jObject1.has("error")) {
+			if (jObject1.has(KEY_ERROR)) {
 				return Constants.SERVER_TIMEOUT;
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
@@ -476,15 +378,17 @@ public class JSONParser implements Constants {
 				fillDriverRideRequests(jObject1);
 				setPreferredLangString(jObject1, context);
 
+				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
+				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
+				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
 				if (ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag) {
 					JSONArray lastEngInfoArr = jObject1.getJSONArray(KEY_LAST_ENGAGEMENT_INFO);
-					Data.clearAssignedCustomerInfosListAll();
-
 					for(int i=0; i<lastEngInfoArr.length(); i++) {
 						JSONObject jObjCustomer = lastEngInfoArr.getJSONObject(i);
 
+						//TODO ask ronak for fare details
+						parseFareStructureForCustomer(jObjCustomer);
 						if(i == 0) {
-							parseFareStructureForCustomer(jObjCustomer);
 							parsePerfectRideData(context, jObjCustomer);
 						}
 
@@ -542,6 +446,7 @@ public class JSONParser implements Constants {
 					}
 
 					try {
+						//TODO ask ronak to give single master id
 						Log.writePathLogToFile(Data.getCurrentEngagementId() + "accept", "JSONPARSER  = " + jObject1);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -744,36 +649,7 @@ public class JSONParser implements Constants {
 
 	public static ArrayList<PreviousAccountInfo> parsePreviousAccounts(JSONObject jsonObject) {
 		ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
-
-//        {
-//            "flag": 400,
-//            "users": [
-//            {
-//                "user_id": 145,
-//                "user_name": "Shankar16",
-//                "user_email": "shankar+16@jugnoo.in",
-//                "phone_no": "+919780111116",
-//                "date_registered": "2015-01-26T13:55:58.000Z"
-//            }
-//            ]
-//        }
-
-//        {
-//            "flag": 400,
-//            "users": [
-//            {
-//                "user_id": 145,
-//                "user_name": "Shankar16",
-//                "user_email": "shankar+16@jugnoo.in",
-//                "phone_no": "+919780111116",
-//                "date_registered": "2015-01-26T13:55:58.000Z",
-//                "allow_dup_regis": 0
-//            }
-//            ]
-//        }
-
 		try {
-
 			JSONArray jPreviousAccountsArr = jsonObject.getJSONArray("users");
 			for (int i = 0; i < jPreviousAccountsArr.length(); i++) {
 				JSONObject jPreviousAccount = jPreviousAccountsArr.getJSONObject(i);
@@ -783,31 +659,14 @@ public class JSONParser implements Constants {
 						jPreviousAccount.getString("phone_no"),
 						jPreviousAccount.getString("date_registered")));
 			}
-
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-
 		return previousAccountInfoList;
 	}
 
 
 	public static void parseCancellationReasons(JSONObject jObj, Context context) {
-
-//		"cancellation": {
-//      "message": "Cancellation of a ride more than 5 minutes after the driver is allocated will lead to cancellation charges of Rs. 20",
-//      "reasons": [
-//          "Driver is late",
-//          "Driver denied duty",
-//          "Changed my mind",
-//          "Booked another auto"
-//      ],
-//        "addn_reason":"foo"
-//  }
-
-
 		try {
 			Data.cancelOptionsList = new ArrayList<>();
 			Data.cancelOptionsList.add(new CancelOption(context.getResources().getString(R.string.Auto_not_working)));

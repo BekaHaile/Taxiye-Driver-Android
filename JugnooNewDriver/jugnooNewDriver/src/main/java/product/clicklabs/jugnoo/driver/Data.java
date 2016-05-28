@@ -144,9 +144,7 @@ public class Data {
 	
 	public static double latitude, longitude;
 	
-	public static int termsAgreed = 0;  // 0: not agreed,  1: agreed
-	
-	
+
 	
 	
 	
@@ -314,11 +312,6 @@ public class Data {
 			assignedCustomerInfos.addAll(customerInfos);
 		}
 	}
-	public static void clearAssignedCustomerInfosListAll(){
-		if(assignedCustomerInfos != null) {
-			assignedCustomerInfos.clear();
-		}
-	}
 
 	public static CustomerInfo getCustomerInfo(String engagementId){
 		try {
@@ -363,12 +356,12 @@ public class Data {
 	}
 
 	public static DriverScreenMode getCurrentState(){
-		CustomerInfo currentCustomerInfo = getCustomerInfo(dEngagementId);
+		CustomerInfo currentCustomerInfo = getCurrentCustomerInfo();
 		if(currentCustomerInfo == null){
 			if(getAssignedCustomerInfosListForEngagedStatus() != null
 					&& getAssignedCustomerInfosListForEngagedStatus().size() > 0){
 				currentCustomerInfo = getAssignedCustomerInfosListForEngagedStatus().get(0);
-				dEngagementId = String.valueOf(currentCustomerInfo.getEngagementId());
+				setCurrentEngagementId(String.valueOf(currentCustomerInfo.getEngagementId()));
 				return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
 			}
 		} else{

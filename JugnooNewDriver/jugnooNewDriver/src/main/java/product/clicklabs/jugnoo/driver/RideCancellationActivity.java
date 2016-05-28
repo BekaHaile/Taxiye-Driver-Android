@@ -175,13 +175,13 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("access_token", Data.userData.accessToken);
-				params.put("customer_id", String.valueOf(Data.getCustomerInfo(engagementId).userId));
-				params.put("engagement_id", engagementId);
-				params.put("cancellation_reason", reason);
+				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
+				params.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
+				params.put(Constants.KEY_CANCELLATION_REASON, reason);
 
 				if (Data.getCustomerInfo(engagementId) != null) {
-					params.put("reference_id", "" + Data.getCustomerInfo(engagementId).referenceId);
+					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCustomerInfo(engagementId).getReferenceId()));
 				}
 				RestClient.getApiServices().driverCancelRideRetro(params, new Callback<RegisterScreenResponse>() {
 					@Override

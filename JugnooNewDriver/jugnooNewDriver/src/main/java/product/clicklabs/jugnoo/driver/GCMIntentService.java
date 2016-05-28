@@ -23,12 +23,9 @@ import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
-import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -528,9 +525,7 @@ public class GCMIntentService extends IntentService {
 								} else {
 									notificationManager(this, message1, false);
 								}
-							} else if (PushFlags.CHANGE_PORT.getOrdinal() == flag) {
-								sendChangePortAckToServer(this, jObj);
-							} else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
+							}else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
 								int userId = jObj.getInt("user_id");
 								double balance = jObj.getDouble("balance");
 								if (HomeActivity.appInterruptHandler != null) {
@@ -1059,30 +1054,6 @@ public class GCMIntentService extends IntentService {
 	//context.sendBroadcast(new Intent("com.google.android.intent.action.GTALK_HEARTBEAT"));
 	//context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
 
-
-	public void sendChangePortAckToServer(final Context context, final JSONObject jObject1) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					SplashNewActivity.initializeServerURL(context);
-					Pair<String, String> accessTokenPair = JSONParser.getAccessTokenPair(context);
-
-					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-					nameValuePairs.add(new BasicNameValuePair("access_token", accessTokenPair.first));
-
-					Response response = RestClient.getApiServices().sendChangePortAckToServerRetro(accessTokenPair.first);
-					String result = new String(((TypedByteArray) response.getBody()).getBytes());
-
-					new JSONParser().parsePortNumber(context, jObject1);
-
-					nameValuePairs = null;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-	}
 
 
 	private void flurryEventForRequestPush(String engagementId) {
