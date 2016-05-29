@@ -14,7 +14,6 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
-import product.clicklabs.jugnoo.driver.utils.Log;
 
 /**
  * Created by aneeshbansal on 28/05/16.
@@ -66,17 +65,15 @@ public class CustomerSwitcher {
 	}
 
 
-	public void setDropAddress(){
-			try {
-
-				if (DriverScreenMode.D_IN_RIDE == activity.driverScreenMode ) {
-					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					textViewCustomerPickupAddress.setText("");
-				}
-
-			} catch (Exception e) {
-				e.printStackTrace();
+	public void setDropAddress() {
+		try {
+			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+				textViewCustomerPickupAddress.setText("");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

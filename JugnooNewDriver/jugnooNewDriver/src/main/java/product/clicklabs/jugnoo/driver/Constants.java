@@ -83,5 +83,7 @@ public interface Constants {
     String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
     String KEY_DRYRUN_DISTANCE = "dryrun_distance";
     String KEY_ERROR = "error";
+    String KEY_WALLET_BALANCE = "wallet_balance";
+    String KEY_DISTANCE = "distance";
 
 }

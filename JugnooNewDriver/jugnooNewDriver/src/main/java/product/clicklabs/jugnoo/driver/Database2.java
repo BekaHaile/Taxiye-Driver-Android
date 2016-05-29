@@ -872,7 +872,7 @@ public class Database2 {                                                        
 
 
 	public void checkStartPendingApisService(Context context) {
-		if (!HomeActivity.isServiceRunning(context, PushPendingCallsService.class.getName())) {
+		if (!Utils.isServiceRunning(context, PushPendingCallsService.class)) {
 			context.startService(new Intent(context, PushPendingCallsService.class));
 		}
 	}

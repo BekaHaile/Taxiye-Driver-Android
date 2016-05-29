@@ -30,6 +30,7 @@ public class CustomerInfo {
 	private double fareFactor;
 	private int isPooled;
 
+
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
