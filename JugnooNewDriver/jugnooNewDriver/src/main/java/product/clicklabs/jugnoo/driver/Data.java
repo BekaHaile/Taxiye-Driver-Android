@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
@@ -47,17 +46,7 @@ public class Data {
                                 DEBUG_PASSWORD_TEST = "4343";
 	
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
-	public static final String SP_ACCESS_TOKEN_KEY = "access_token", SP_IS_ACCESS_TOKEN_NEW = "is_access_token_new",
-			
-			SP_TOTAL_DISTANCE = "total_distance",
-			SP_RIDE_START_TIME = "ride_start_time", 
-			SP_LAST_LATITUDE = "last_latitude",
-			SP_LAST_LONGITUDE = "last_longitude",
-			SP_LAST_LOCATION_TIME = "last_location_time"
-			;
-	
-	
-	
+	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
 	
 	
@@ -65,7 +54,6 @@ public class Data {
 	
 	
 	
-
 
 	
 
@@ -176,8 +164,6 @@ public class Data {
 
 	
 	public static FareStructure fareStructure;
-
-	public static EndRideData endRideData;
 
     public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<>();
 

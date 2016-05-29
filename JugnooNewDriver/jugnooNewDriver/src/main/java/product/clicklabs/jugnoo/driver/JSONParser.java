@@ -66,14 +66,13 @@ public class JSONParser implements Constants {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		Editor editor = pref.edit();
 		editor.putString(Data.SP_ACCESS_TOKEN_KEY, accessToken);
-		editor.putString(Data.SP_IS_ACCESS_TOKEN_NEW, "1");
 		editor.commit();
 	}
 
 	public static Pair<String, String> getAccessTokenPair(Context context) {
 		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 		String accessToken = pref.getString(Data.SP_ACCESS_TOKEN_KEY, "");
-		String isAccessTokenNew = pref.getString(Data.SP_IS_ACCESS_TOKEN_NEW, "not_found");
+		String isAccessTokenNew = "1";
 		return new Pair<String, String>(accessToken, isAccessTokenNew);
 	}
 
@@ -327,45 +326,6 @@ public class JSONParser implements Constants {
 	}
 
 
-	//TODO ask ronak if to remove this section
-	public void parseLastRideData(JSONObject jObj){
-		try {
-			JSONArray lastEngInfoArr = jObj.getJSONArray("last_engagement_info");
-			JSONObject jLastRideData = lastEngInfoArr.getJSONObject(0);
-
-			Data.setCurrentEngagementId(jLastRideData.getString(KEY_ENGAGEMENT_ID));
-
-			HomeActivity.totalDistance = jLastRideData.getDouble("distance_travelled");
-			HomeActivity.waitTime = jLastRideData.optString("wait_time", "0");
-			HomeActivity.rideTime = jLastRideData.getString("ride_time");
-			HomeActivity.totalFare = jLastRideData.getDouble("fare");
-			HomeActivity.waitStart = 2;
-
-			CouponInfo couponInfo = JSONParser.parseCouponInfo(jLastRideData);
-			PromoInfo promoInfo = JSONParser.parsePromoInfo(jLastRideData);
-
-			int referenceId = 0;
-			int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
-
-			Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()),
-					Integer.parseInt(jLastRideData.getString(KEY_USER_ID)),
-					referenceId, jLastRideData.getString(KEY_USER_NAME), jLastRideData.getString(KEY_PHONE_NO),
-					new LatLng(0, 0), cachedApiEnabled,
-					jLastRideData.getString(KEY_USER_IMAGE), couponInfo, promoInfo, EngagementStatus.ENDED.getOrdinal()));
-
-
-			parseFareStructureForCustomer(jLastRideData);
-
-			parseEndRideData(jLastRideData, Data.getCurrentEngagementId(), HomeActivity.totalFare);
-
-			HomeActivity.driverScreenMode = DriverScreenMode.D_RIDE_END;
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-
-	}
-
 
 	public String parseCurrentUserStatus(Context context, JSONObject jObject1) {
 		HomeActivity.userMode = UserMode.DRIVER;
@@ -452,9 +412,6 @@ public class JSONParser implements Constants {
 						e.printStackTrace();
 					}
 
-				} else if (ApiResponseFlags.LAST_ENGAGEMENT_DATA.getOrdinal() == flag) {
-					parseLastRideData(jObject1);
-					return "";
 				}
 
 				if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
@@ -471,26 +428,20 @@ public class JSONParser implements Constants {
 
 		if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
 			HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-			clearSPData(context);
 		} else {
 			HomeActivity.driverScreenMode = Data.getDriverScreenModeFromEngagementStatus(
 					Data.getCurrentCustomerInfo().getStatus());
 
 			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-				SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
-				HomeActivity.totalDistance = Double.parseDouble(pref.getString(Data.SP_TOTAL_DISTANCE, "-1"));
+				HomeActivity.totalDistance = GpsDistanceCalculator.getTotalDistanceFromSP(context);
 				HomeActivity.previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
-
-				long rideStartTime = Long.parseLong(pref.getString(Data.SP_RIDE_START_TIME, "" + System.currentTimeMillis()));
+				long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(context);
 				long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
 				if (timeDiffToAdd > 0) {
 					HomeActivity.previousRideTime = timeDiffToAdd;
 				} else {
 					HomeActivity.previousRideTime = 0;
 				}
-
-				HomeActivity.waitStart = 2;
-
 			} else {
 				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
 			}
@@ -609,26 +560,10 @@ public class JSONParser implements Constants {
 	}
 
 
-	public void clearSPData(final Context context) {
-		SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
-		Editor editor = pref.edit();
 
-		editor.putString(Data.SP_TOTAL_DISTANCE, "-1");
-		editor.putString(Data.SP_RIDE_START_TIME, "" + System.currentTimeMillis());
-		editor.putString(Data.SP_LAST_LATITUDE, "0");
-		editor.putString(Data.SP_LAST_LONGITUDE, "0");
-		editor.putString(Data.SP_LAST_LOCATION_TIME, "" + System.currentTimeMillis());
-
-		editor.commit();
-
-		Database.getInstance(context).deleteSavedPath();
-
-	}
-
-
-	public static void parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
+	public static EndRideData parseEndRideData(JSONObject jObj, String engagementId, double totalFare) {
 		try {
-			Data.endRideData = new EndRideData(engagementId,
+			return new EndRideData(engagementId,
 					jObj.getDouble("fare"),
 					jObj.getDouble("discount"),
 					jObj.getDouble("paid_using_wallet"),
@@ -637,7 +572,7 @@ public class JSONParser implements Constants {
 
 		} catch (JSONException e) {
 			e.printStackTrace();
-			Data.endRideData = new EndRideData(engagementId,
+			return new EndRideData(engagementId,
 					totalFare,
 					0,
 					0,
