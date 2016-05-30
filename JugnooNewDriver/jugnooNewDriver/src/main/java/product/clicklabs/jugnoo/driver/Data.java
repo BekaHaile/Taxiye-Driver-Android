@@ -350,6 +350,7 @@ public class Data {
 		}
 	}
 
+
 	public static DriverScreenMode getCurrentState(){
 		CustomerInfo currentCustomerInfo = getCurrentCustomerInfo();
 		if(currentCustomerInfo == null){

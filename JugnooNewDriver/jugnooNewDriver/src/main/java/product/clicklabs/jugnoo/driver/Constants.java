@@ -90,4 +90,10 @@ public interface Constants {
     String KEY_POOL_FARE ="pool_fare";
     String KEY_POOL_TIME ="pool_time";
 
+    String SP_CUSTOMER_RIDE_DATAS_OBJECT = "sp_customer_ride_datas_object";
+    String KEY_HAVERSINE_DISTANCE = "haversine_distance";
+    String KEY_RIDE_TIME = "ride_time";
+    String KEY_WAIT_TIME = "wait_time";
+    String EMPTY_OBJECT = "{}";
+
 }

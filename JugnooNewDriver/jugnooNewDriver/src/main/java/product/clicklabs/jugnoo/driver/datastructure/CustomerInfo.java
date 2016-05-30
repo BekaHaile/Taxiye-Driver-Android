@@ -342,5 +342,4 @@ public class CustomerInfo {
 		this.poolTime = poolTime;
 		this.poolDistance = poolDistance;
 	}
-
 }

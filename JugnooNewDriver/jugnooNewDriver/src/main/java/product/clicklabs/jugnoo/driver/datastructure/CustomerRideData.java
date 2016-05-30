@@ -1,37 +1,14 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 /**
  * Created by shankar on 5/30/16.
  */
 public class CustomerRideData {
-	@SerializedName("distance")
-	@Expose
 	private double distance = 0;
-
-	@SerializedName("haversineDistance")
-	@Expose
 	private double haversineDistance = 0;
-
-	@SerializedName("rideTime")
-	@Expose
-	private long rideTime = 0;
-
-	@SerializedName("waitTime")
-	@Expose
+	private long startRideTime = System.currentTimeMillis();
 	private long waitTime = 0;
-
 	public CustomerRideData(){}
-
-	public CustomerRideData(double distance, double haversineDistance, long rideTime, long waitTime){
-		this.distance = distance;
-		this.haversineDistance = haversineDistance;
-		this.rideTime = rideTime;
-		this.waitTime = waitTime;
-	}
-
 
 	public double getDistance() {
 		return distance;
@@ -65,14 +42,17 @@ public class CustomerRideData {
 
 
 
-	public long getRideTime() {
-		return rideTime;
+	public long getStartRideTime() {
+		return startRideTime;
 	}
 
-	public void setRideTime(long rideTime) {
-		this.rideTime = rideTime;
+	public void setStartRideTime(long startRideTime) {
+		this.startRideTime = startRideTime;
 	}
 
+	public long getTotalRideTime(long totalRideTime) {
+		return totalRideTime - startRideTime;
+	}
 
 
 
@@ -83,6 +63,19 @@ public class CustomerRideData {
 
 	public void setWaitTime(long waitTime) {
 		this.waitTime = waitTime;
+	}
+
+	public long getTotalWaitTime(long totalWaitTime) {
+		return totalWaitTime - waitTime;
+	}
+
+
+
+	public void setValues(CustomerRideData customerRideData){
+		setDistance(customerRideData.getDistance());
+		setHaversineDistance(customerRideData.getHaversineDistance());
+		setStartRideTime(System.currentTimeMillis());
+		setWaitTime(customerRideData.getWaitTime());
 	}
 
 }
