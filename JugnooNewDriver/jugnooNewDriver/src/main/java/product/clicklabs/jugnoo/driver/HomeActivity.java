@@ -275,7 +275,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
 	CustomerRideData customerRideDataGlobal = new CustomerRideData();
-	long previousRideTime = 0;
+//	long previousRideTime = 0;
 
 	long fetchHeatMapTime = 0;
 
@@ -1447,13 +1447,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					customerRideDataGlobal.setDistance(GpsDistanceCalculator.getTotalDistanceFromSP(this));
 					customerRideDataGlobal.setWaitTime(GpsDistanceCalculator.getWaitTimeFromSP(this));
-					long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(this);
-					long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-					if (timeDiffToAdd > 0) {
-						previousRideTime = timeDiffToAdd;
-					} else {
-						previousRideTime = 0;
-					}
 				}
 
 
@@ -2316,8 +2309,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 
-					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(previousRideTime));
-					rideTimeChronometer.eclipsedTime = (long) previousRideTime;
+					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(Data.getCurrentCustomerInfo()
+							.getCustomerRideData().getElapsedRideTime()));
+					rideTimeChronometer.eclipsedTime = (long) Data.getCurrentCustomerInfo()
+							.getCustomerRideData().getElapsedRideTime();
 					rideTimeChronometer.start();
 
 
@@ -3400,7 +3395,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Database.getInstance(this).deleteSavedPath();
 
 			customerRideDataGlobal.setWaitTime(0);
-			previousRideTime = 0;
+			customerRideDataGlobal.setStartRideTime(System.currentTimeMillis());
 			customerRideDataGlobal.setDistance(-1);
 
 			MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.getCurrentEngagementId());
@@ -3544,9 +3539,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	private long getElapsedRideTimeFromSPInMillis(long rideTimeInMillisChrono) {
-		long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(this);
-		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
+	private long getElapsedRideTimeFromSPInMillis(CustomerInfo customerInfo, long rideTimeInMillisChrono) {
+		long timeDiffToAdd = System.currentTimeMillis() - customerInfo.getCustomerRideData().getStartRideTime();
 		if (timeDiffToAdd > 0) {
 			rideTimeInMillisChrono = timeDiffToAdd;
 		}
@@ -3566,7 +3560,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
-		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(rideTimeInMillis);
+		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(customerInfo, rideTimeInMillis);
 
 		if (customerInfo != null && customerInfo.waitingChargesApplicable != 1) {
 			customerInfo.getCustomerRideData().setWaitTime(0);
@@ -5450,7 +5444,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 						updateDistanceFareTexts(Data.getCurrentCustomerInfo()
 								.getCustomerRideData().getTotalDistance(customerRideDataGlobal.getDistance()),
-								elapsedTime,
+								Data.getCurrentCustomerInfo()
+										.getCustomerRideData().getElapsedRideTime(),
 								Data.getCurrentCustomerInfo()
 										.getCustomerRideData().getTotalWaitTime(customerRideDataGlobal.getWaitTime()));
 						if (rideStartPositionMarker == null) {

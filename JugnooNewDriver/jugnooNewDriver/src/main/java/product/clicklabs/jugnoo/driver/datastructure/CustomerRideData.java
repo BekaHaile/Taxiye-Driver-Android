@@ -46,13 +46,15 @@ public class CustomerRideData {
 		return startRideTime;
 	}
 
+	public long getElapsedRideTime() {
+		return System.currentTimeMillis() - startRideTime;
+	}
+
 	public void setStartRideTime(long startRideTime) {
 		this.startRideTime = startRideTime;
 	}
 
-	public long getTotalRideTime(long totalRideTime) {
-		return totalRideTime - startRideTime;
-	}
+
 
 
 
