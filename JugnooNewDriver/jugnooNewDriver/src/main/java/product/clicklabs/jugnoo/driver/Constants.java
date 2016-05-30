@@ -85,5 +85,6 @@ public interface Constants {
     String KEY_ERROR = "error";
     String KEY_WALLET_BALANCE = "wallet_balance";
     String KEY_DISTANCE = "distance";
+    String KEY_RIDE_PATH_DATA = "ride_path_data";
 
 }

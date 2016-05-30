@@ -274,10 +274,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
-	static double totalDistance = -1, totalFare = 0, totalHaversineDistance = -1;
-	static long totalWaitTime = 0;
+
+	double totalDistance = -1, totalHaversineDistance = -1;
+	long totalWaitTime = 0;
+	long previousWaitTime = 0, previousRideTime = 0;
+
 	long fetchHeatMapTime = 0;
-	static long previousWaitTime = 0, previousRideTime = 0;
+
+	double totalFare = 0;
 	String waitTime = "", rideTime = "";
 	EndRideData endRideData;
 
@@ -1112,7 +1116,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+						final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 						if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
 							if (customerInfo != null
 									&& 1 == customerInfo.meterFareApplicable) {
@@ -1145,7 +1149,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 												new OnClickListener() {
 													@Override
 													public void onClick(View v) {
-														endRideGPSCorrection(Data.getCurrentCustomerInfo());
+														endRideGPSCorrection(customerInfo);
 													}
 												},
 												new OnClickListener() {
@@ -1173,7 +1177,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											new OnClickListener() {
 												@Override
 												public void onClick(View v) {
-													endRideGPSCorrection(Data.getCurrentCustomerInfo());
+													endRideGPSCorrection(customerInfo);
 												}
 											},
 											new OnClickListener() {
@@ -1193,7 +1197,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (0 == rating) {
 								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.please_give_customer));
 							} else {
-								submitFeedbackToCustomerAsync(HomeActivity.this, Data.getCurrentEngagementId(), rating);
+								submitFeedbackToCustomerAsync(HomeActivity.this, customerInfo, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
 								driverScreenMode = DriverScreenMode.D_INITIAL;
 								switchDriverScreen(driverScreenMode);
@@ -1435,6 +1439,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				if (driverScreenMode == null) {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
+				}
+
+				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+					totalDistance = GpsDistanceCalculator.getTotalDistanceFromSP(this);
+					previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(this);
+					long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(this);
+					long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
+					if (timeDiffToAdd > 0) {
+						previousRideTime = timeDiffToAdd;
+					} else {
+						previousRideTime = 0;
+					}
 				}
 
 
@@ -2303,8 +2319,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 
-					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousRideTime));
-					rideTimeChronometer.eclipsedTime = (long) HomeActivity.previousRideTime;
+					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(previousRideTime));
+					rideTimeChronometer.eclipsedTime = (long) previousRideTime;
 					rideTimeChronometer.start();
 
 
@@ -2313,7 +2329,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.previousWaitTime);
+					updateDistanceFareTexts(totalDistance, rideTimeChronometer.eclipsedTime, previousWaitTime);
 
 					setAssignedCustomerInfoToViews(mode);
 
@@ -2334,7 +2350,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if ((Data.getCurrentCustomerInfo()).waitingChargesApplicable == 1) {
 							driverWaitRl.setVisibility(View.VISIBLE);
 							imageViewIRWaitSep.setVisibility(View.VISIBLE);
-							driverWaitValue.setText(Utils.getChronoTimeFromMillis(HomeActivity.previousWaitTime));
+							driverWaitValue.setText(Utils.getChronoTimeFromMillis(previousWaitTime));
 						} else {
 							driverWaitRl.setVisibility(View.GONE);
 							imageViewIRWaitSep.setVisibility(View.GONE);
@@ -2451,7 +2467,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private String getJugnooCalculatedFare() {
 		try {
-			double totalFare = getTotalFare(totalDistance, rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime);
+			double totalFare = getTotalFare(totalDistance, rideTimeChronometer.eclipsedTime, totalWaitTime);
 			return Utils.getDecimalFormatForMoney().format(totalFare);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2493,9 +2509,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			startService(new Intent(this, MeteringService.class));
 
 		} else {
-			Database2.getInstance(this).updateMetringState(Database2.OFF);
-			Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
-			stopService(new Intent(this, MeteringService.class));
+
+			if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
+					|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
+				Database2.getInstance(this).updateMetringState(Database2.OFF);
+				Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
+				stopService(new Intent(this, MeteringService.class));
+			}
 		}
 	}
 
@@ -3365,9 +3385,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Database2.getInstance(this).deleteAllCurrentPathItems();
 			Database.getInstance(this).deleteSavedPath();
 
-			HomeActivity.previousWaitTime = 0;
-			HomeActivity.previousRideTime = 0;
-			HomeActivity.totalDistance = -1;
+			previousWaitTime = 0;
+			previousRideTime = 0;
+			totalDistance = -1;
 
 			MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.getCurrentEngagementId());
 			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
@@ -3512,7 +3532,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	private long getElapsedRideTimeFromSPInMillis(Activity activity, long rideTimeInMillisChrono) {
+	private long getElapsedRideTimeFromSPInMillis(long rideTimeInMillisChrono) {
 		long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(this);
 		long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
 		if (timeDiffToAdd > 0) {
@@ -3534,7 +3554,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
-		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(activity, rideTimeInMillis);
+		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(rideTimeInMillis);
 
 		double rideMinutes = Math.round(((double)rideTimeInMillis) / 60000.0d);
 		double waitMinutes = Math.round(((double)waitTimeInMillis) / 60000.0d);
@@ -3931,9 +3951,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			final HashMap<String, String> params = new HashMap<String, String>();
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("engagement_id", engagementId);
-			params.put("ride_path_data", rideDataStr);
+			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put(KEY_ENGAGEMENT_ID, engagementId);
+			params.put(KEY_RIDE_PATH_DATA, rideDataStr);
 
 			Log.i(TAG, "driverUploadPathDataFileAsync params=" + params);
 
@@ -3952,7 +3972,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void submitFeedbackToCustomerAsync(final Activity activity, final String engagementId, final int givenRating) {
+	public void submitFeedbackToCustomerAsync(final Activity activity, final CustomerInfo customerInfo, final int givenRating) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
@@ -3960,14 +3980,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				HashMap<String, String> params = new HashMap<String, String>();
 
-				params.put("access_token", Data.userData.accessToken);
-				params.put("given_rating", "" + givenRating);
-				params.put("engagement_id", engagementId);
-				params.put("customer_id", String.valueOf(Data.getCurrentCustomerInfo().getUserId()));
+				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(KEY_GIVEN_RATING, String.valueOf(givenRating));
+				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+				params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 
 				Log.i("params", "=" + params);
 
-				Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()));
+				Data.removeCustomerInfo(customerInfo.getEngagementId());
 
 				RestClient.getApiServices().rateTheCustomer(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -3983,8 +4003,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								try{
 									JSONObject map = new JSONObject();
 									map.put(KEY_GIVEN_RATING, givenRating);
-									map.put(KEY_ENGAGEMENT_ID, engagementId);
-									map.put(KEY_CUSTOMER_ID, String.valueOf(Data.getCurrentCustomerInfo().userId));
+									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
 									NudgeClient.trackEvent(activity, NUDGE_RATING, map);
 								} catch(Exception e){
 									e.printStackTrace();
@@ -4482,7 +4502,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (myLocation != null) {
 						dialog.dismiss();
 						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-						double displacement = MapUtils.distance(driverAtPickupLatLng, Data.getCurrentCustomerInfo().requestlLatLng);
+						double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 
 						if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
 							buildAlertMessageNoGps();
@@ -4560,9 +4580,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					public void onClick(View view) {
 						if (AppStatus.getInstance(activity).isOnline(activity)) {
 							if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-								if (Data.getCurrentCustomerInfo() != null
-										&& (1 == ( Data.getCurrentCustomerInfo()).meterFareApplicable
-										|| 1 == ( Data.getCurrentCustomerInfo()).luggageChargesApplicable)) {
+								if (customerInfo != null
+										&& (1 == customerInfo.meterFareApplicable
+										|| 1 == customerInfo.luggageChargesApplicable)) {
 									driverScreenMode = DriverScreenMode.D_BEFORE_END_OPTIONS;
 									switchDriverScreen(driverScreenMode);
 									dialogEndRidePopup.dismiss();
@@ -4678,10 +4698,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (fusedLocationUsed) {
 						calculateFusedLocationDistance(activity, oldGPSLatLng,
 								new LatLng(locationToUse.getLatitude(), locationToUse.getLongitude()),
-								rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime, lastloctime, customerInfo);
+								rideTimeChronometer.eclipsedTime, totalWaitTime, lastloctime, customerInfo);
 					} else {
 						driverEndRideAsync(activity, oldGPSLatLng, locationToUse.getLatitude(), locationToUse.getLongitude(),
-								rideTimeChronometer.eclipsedTime, HomeActivity.totalWaitTime, 0, customerInfo);
+								rideTimeChronometer.eclipsedTime, totalWaitTime, 0, customerInfo);
 					}
 					return true;
 				} else {
@@ -5399,9 +5419,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if (UserMode.DRIVER == userMode
 				&& (DriverScreenMode.D_IN_RIDE == driverScreenMode
 				|| DriverScreenMode.D_ARRIVED == driverScreenMode)) {
-			HomeActivity.totalDistance = distance;
-			HomeActivity.totalHaversineDistance = totalHaversineDistance;
-			HomeActivity.totalWaitTime = waitTime;
+			HomeActivity.this.totalDistance = distance;
+			HomeActivity.this.totalHaversineDistance = totalHaversineDistance;
+			HomeActivity.this.totalWaitTime = waitTime;
 			HomeActivity.this.lastGPSLocation = lastGPSLocation;
 			HomeActivity.this.lastFusedLocation = lastFusedLocation;
 			HomeActivity.this.distanceUpdateFromService = true;

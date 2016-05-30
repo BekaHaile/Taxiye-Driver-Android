@@ -65,5 +65,10 @@ public class CouponInfo {
 		return status+","+title+", "+discountPrecent+", "+maximumDiscountValue
 				+", "+cappedFare+", "+cappedFareMaximum+", "+couponType+", "+benefitType+", "+droplLatLng+", "+dropRadius;
 	}
+
+
+	public class RideData{
+
+	}
 	
 }

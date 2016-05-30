@@ -431,20 +431,6 @@ public class JSONParser implements Constants {
 		} else {
 			HomeActivity.driverScreenMode = Data.getDriverScreenModeFromEngagementStatus(
 					Data.getCurrentCustomerInfo().getStatus());
-
-			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-				HomeActivity.totalDistance = GpsDistanceCalculator.getTotalDistanceFromSP(context);
-				HomeActivity.previousWaitTime = GpsDistanceCalculator.getWaitTimeFromSP(context);
-				long rideStartTime = GpsDistanceCalculator.getStartTimeFromSP(context);
-				long timeDiffToAdd = System.currentTimeMillis() - rideStartTime;
-				if (timeDiffToAdd > 0) {
-					HomeActivity.previousRideTime = timeDiffToAdd;
-				} else {
-					HomeActivity.previousRideTime = 0;
-				}
-			} else {
-				HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
-			}
 		}
 
 		return "";
