@@ -86,5 +86,8 @@ public interface Constants {
     String KEY_WALLET_BALANCE = "wallet_balance";
     String KEY_DISTANCE = "distance";
     String KEY_RIDE_PATH_DATA = "ride_path_data";
+    String KEY_POOL_DISTANCE= "pool_distance";
+    String KEY_POOL_FARE ="pool_fare";
+    String KEY_POOL_TIME ="pool_time";
 
 }

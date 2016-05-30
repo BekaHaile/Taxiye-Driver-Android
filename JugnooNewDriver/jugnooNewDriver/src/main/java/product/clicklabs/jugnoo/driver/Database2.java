@@ -700,41 +700,6 @@ public class Database2 {                                                        
 	}
 
 
-	public long getDriverServiceTimeToRestart() {
-		long timeToRestart = System.currentTimeMillis() - 1000;
-		try {
-			String[] columns = new String[]{Database2.TIME_TO_RESTART};
-			Cursor cursor = database.query(Database2.TABLE_DRIVER_SERVICE_TIME_TO_RESTART, columns, null, null, null, null, null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				timeToRestart = Long.parseLong(cursor.getString(cursor.getColumnIndex(Database2.TIME_TO_RESTART)));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return timeToRestart;
-	}
-
-
-	public void updateDriverServiceTimeToRestart(long timeToRestart) {
-		try {
-			deleteDriverServiceTimeToRestart();
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.TIME_TO_RESTART, "" + timeToRestart);
-			database.insert(Database2.TABLE_DRIVER_SERVICE_TIME_TO_RESTART, null, contentValues);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-
-	public void deleteDriverServiceTimeToRestart() {
-		try {
-			database.delete(Database2.TABLE_DRIVER_SERVICE_TIME_TO_RESTART, null, null);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	public String getDriverManualPatchPushReceived() {

@@ -48,13 +48,13 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         CustomerInfo customerInfo = getItem(position);
         ViewHolder holder = (ViewHolder) viewholder;
         holder.linearLayoutRoot.setTag(position);
-        holder.driverPassengerName.setText(customerInfo.getName());
-        if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))){
+        holder.driverPassengerName.setText(customerInfo.getName() );
+        if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
             holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.new_orange));
             holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.white));
 
         }else{
-            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.white));
+            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
             holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.black));
 
         }

@@ -2533,10 +2533,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				buttonDriverNavigation.setVisibility(View.GONE);
 				updateCustomerPickupAddress(Data.getCurrentCustomerInfo().getRequestlLatLng());
 			} else {
-				customerSwitcher.textViewCustomerPickupAddress.setVisibility(View.GONE);
+				customerSwitcher.textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 				buttonDriverNavigation.setVisibility(View.GONE);
 				if ((Data.getCurrentCustomerInfo()).getDropLatLng() != null) {
 					updateCustomerPickupAddress((Data.getCurrentCustomerInfo()).getDropLatLng());
+				}else {
+					customerSwitcher.textViewCustomerPickupAddress.setVisibility(View.GONE);
 				}
 			}
 		} catch (Exception e) {
@@ -2559,17 +2561,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						@Override
 						public void run() {
 							if (DriverScreenMode.D_ARRIVED == driverScreenMode || DriverScreenMode.D_START_RIDE == driverScreenMode) {
-								customerSwitcher.textViewCustomerPickupAddress.setText(address);
+
 								if ("".equalsIgnoreCase(address)) {
 									buttonDriverNavigation.setVisibility(View.GONE);
 								} else {
 									buttonDriverNavigation.setVisibility(View.VISIBLE);
+									customerSwitcher.textViewCustomerPickupAddress.setText(address);
 								}
 							} else {
 								if ("".equalsIgnoreCase(address)) {
 									buttonDriverNavigation.setVisibility(View.GONE);
 								} else {
 									buttonDriverNavigation.setVisibility(View.VISIBLE);
+									customerSwitcher.textViewCustomerPickupAddress.setText(address);
 								}
 							}
 						}

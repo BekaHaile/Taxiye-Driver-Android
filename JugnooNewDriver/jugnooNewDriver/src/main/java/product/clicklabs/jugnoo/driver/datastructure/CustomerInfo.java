@@ -24,11 +24,15 @@ public class CustomerInfo {
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable;
+	public double poolFare;
+	public long poolTime;
+	public double poolDistance;
 
 	private int status;
 	private String address, startTime;
 	private double fareFactor;
 	private int isPooled;
+
 
 	private CustomerRideData customerRideData = new CustomerRideData();
 
@@ -60,6 +64,7 @@ public class CustomerInfo {
 		this.waitingChargesApplicable = waitTimeApplicable;
 		this.setStatus(status);
 		this.isPooled = isPooled;
+
 	}
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -102,7 +107,9 @@ public class CustomerInfo {
 		this.status = status;
 		this.isPooled = isPooled;
 	}
-	
+
+
+
 	@Override
 	public String toString() {
 		return "engagementId = "+engagementId+" userId = "+userId+" referenceId = "+referenceId+
@@ -303,6 +310,37 @@ public class CustomerInfo {
 
 	public CustomerRideData getCustomerRideData() {
 		return customerRideData;
+	}
+
+	public double getPoolFare() {
+		return poolFare;
+	}
+
+	public void setPoolFare(double poolFare) {
+		this.poolFare = poolFare;
+	}
+
+	public long getPoolTime() {
+		return poolTime;
+	}
+
+	public void setPoolTime(long poolTime) {
+		this.poolTime = poolTime;
+	}
+
+	public double getPoolDistance() {
+		return poolDistance;
+	}
+
+	public void setPoolDistance(double poolDistance) {
+		this.poolDistance = poolDistance;
+	}
+
+
+	public void setCustomerFareValues(double poolFare, long poolTime, double poolDistance){
+		this.poolFare = poolFare;
+		this.poolTime = poolTime;
+		this.poolDistance = poolDistance;
 	}
 
 }

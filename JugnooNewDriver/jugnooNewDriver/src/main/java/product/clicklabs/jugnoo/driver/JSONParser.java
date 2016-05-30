@@ -377,6 +377,11 @@ public class JSONParser implements Constants {
 							int getJugnooFareEnabled = jObjCustomer.optInt("get_jugnoo_fare_enabled", 1);
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);
 							int waitingChargesApplicable = jObjCustomer.optInt("waiting_charges_applicable", 0);
+
+							double poolDistance = jObjCustomer.optDouble(KEY_POOL_DISTANCE, 0);
+							double poolFare =jObjCustomer.optDouble(KEY_POOL_FARE, 0);
+							long poolTime = jObjCustomer.optInt(KEY_POOL_TIME,0);
+
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 
@@ -384,10 +389,18 @@ public class JSONParser implements Constants {
 								Data.setCurrentEngagementId(engagementId);
 							}
 
-							Data.addCustomerInfo(new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
+							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 									dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									customerImage, customerRating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
-									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled));
+									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled);
+
+							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
+
+							Data.addCustomerInfo(customerInfo);
+
+
+
+
 							try {
 								if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
 									double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
