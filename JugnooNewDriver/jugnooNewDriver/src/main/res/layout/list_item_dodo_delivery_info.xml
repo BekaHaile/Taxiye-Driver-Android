@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/rootLinear">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="28px"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/textViewCustomerName"
+                android:layout_width="380px"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Aneesh"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="42px"
+                android:visibility="visible"/>
+
+
+            <TextView
+                android:id="@+id/textViewCustomerDeliveryAddress"
+                android:layout_width="380px"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="30px"
+                android:layout_marginTop="15px"
+                android:visibility="visible"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="7px"
+                android:layout_marginTop="20px">
+
+                <ImageView
+                    android:id="@+id/deliveryMarker"
+                    android:layout_width="35px"
+                    android:layout_height="30px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/customer2_list_marker"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewShowDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="60px"
+                    android:text="225 m away"
+                    android:textColor="@color/black"
+                    android:textSize="32px"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="15px"
+            android:layout_marginLeft="70px"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/driverPassengerCallRl"
+                android:layout_width="230px"
+                android:layout_height="70px"
+                android:background="@drawable/orange_btn_selector">
+
+                <ImageView
+                    android:id="@+id/driverCallIcon"
+                    android:layout_width="45px"
+                    android:layout_height="45px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="35px"
+                    android:src="@drawable/call_icon_selector"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/driverPassengerCallText"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="115px"
+                    android:text="@string/call"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="42px"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/markDeliveryRl"
+                android:layout_width="230px"
+                android:layout_height="70px"
+                android:layout_marginTop="20px"
+                android:background="@drawable/menu_black_btn_normal_rounded">
+
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/markDeliveredText"
+                    android:layout_width="150px"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15px"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:text="@string/mark_delivered"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="24px"/>
+            </RelativeLayout>
+
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
