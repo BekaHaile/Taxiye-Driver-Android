@@ -460,6 +460,8 @@
     <string name="enter_customer_phone_no">ગ્રાહકનો ફોન નંબર દાખલ કરો</string>
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
 
 
 

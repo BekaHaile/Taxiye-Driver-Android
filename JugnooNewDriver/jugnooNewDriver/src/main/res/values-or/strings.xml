@@ -464,6 +464,8 @@
     <string name="amnt_credited">Amount Credited</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
 
 
 

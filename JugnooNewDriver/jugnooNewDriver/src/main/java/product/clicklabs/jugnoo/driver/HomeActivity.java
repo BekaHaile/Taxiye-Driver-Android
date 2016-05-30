@@ -2497,8 +2497,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		} else {
 
-			if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
-					|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
+			if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
+					|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
 				Database2.getInstance(this).updateMetringState(Database2.OFF);
 				Prefs.with(this).save(SPLabels.METERING_STATE, Database2.OFF);
 				stopService(new Intent(this, MeteringService.class));

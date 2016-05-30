@@ -464,6 +464,8 @@
     <string name="enter_valid_amount">ദയവായി സാധുവായ തുക നൽകുക</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">റൈഡ് പൂർത്തിയായി</string>
+    <string name="no_not_verified">Phone Number not verified</string>
+    <string name="resend_OTP">Resend OTP</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

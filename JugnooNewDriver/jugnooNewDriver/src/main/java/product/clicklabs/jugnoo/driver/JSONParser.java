@@ -89,7 +89,7 @@ public class JSONParser implements Constants {
 					fareDetails.getDouble("fare_threshold_waiting_time"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(25, 2, 6, 1, 6, 0, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0);
 		}
 	}
 
