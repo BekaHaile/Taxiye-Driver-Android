@@ -30,6 +30,8 @@ public class CustomerInfo {
 	private double fareFactor;
 	private int isPooled;
 
+	private CustomerRideData customerRideData = new CustomerRideData();
+
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
@@ -298,4 +300,9 @@ public class CustomerInfo {
 	public void setIsPooled(int isPooled) {
 		this.isPooled = isPooled;
 	}
+
+	public CustomerRideData getCustomerRideData() {
+		return customerRideData;
+	}
+
 }
