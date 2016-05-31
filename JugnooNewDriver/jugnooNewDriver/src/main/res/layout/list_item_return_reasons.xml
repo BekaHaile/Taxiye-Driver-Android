@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/textViewReturnOption"
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="40px"
+        android:text="Driver is late"
+        android:textColor="@color/grey_dark"
+        android:layout_toRightOf="@+id/imageViewReturnOptionCheck"
+        android:textSize="30px"/>
+
+    <ImageView
+        android:id="@+id/imageViewReturnOptionCheck"
+        android:layout_width="36px"
+        android:layout_height="36px"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="40px"
+        android:src="@drawable/option_checked_orange"
+        android:tag="mwar"
+        />
+</RelativeLayout>

@@ -466,7 +466,7 @@
     <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">Resend OTP</string>
-
+    <string name="return_reasons">Reasons of Return</string>
 
 
     <string-array name="CountryCodes" >
