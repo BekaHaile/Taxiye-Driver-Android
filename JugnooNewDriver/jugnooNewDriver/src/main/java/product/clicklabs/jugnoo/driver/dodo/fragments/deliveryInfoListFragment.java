@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.dodo.fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,9 +19,11 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryInfoAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 
-public class DeliveryInfoListFragment extends Fragment implements FlurryEventNames {
+
+
+@SuppressLint("ValidFragment")
+public class DeliveryInfoListFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 	private RecyclerView recyclerViewDeliveryInfo;

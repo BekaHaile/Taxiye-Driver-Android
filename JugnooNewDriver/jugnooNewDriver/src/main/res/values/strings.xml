@@ -389,7 +389,7 @@
 	<string name="km_away">km away</string>
 	<string name="m_away">m away</string>
 	<string name="some_error_occured">Some error has occurred</string>
-	<string name="take_cash">Take Cash :</string>
+	<string name="take_cash">Take Cash </string>
 	<string name="wallet">Wallet</string>
 	<string name="Scheduled_Ride_Pickup">Scheduled Ride Pickup: </string>
 
@@ -528,10 +528,15 @@
 	<string name="no_not_verified">Phone Number not verified</string>
 	<string name="resend_OTP">Resend OTP</string>
 	<string name="return_reasons">Reasons of Return</string>
+
 	<string name="accepted">Accepted</string>
 	<string name="in_ride">In Ride</string>
 	<string name="arrive_at_pickup_location">Arrive at pickup location</string>
 	<string name="make_delivery">Make Delivery</string>
+
+	<string name="collected">Collected</string>
+	<string name="Returned">Returned</string>
+
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

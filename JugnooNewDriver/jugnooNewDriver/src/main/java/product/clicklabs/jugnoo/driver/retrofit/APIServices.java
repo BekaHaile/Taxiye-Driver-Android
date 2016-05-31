@@ -346,5 +346,15 @@ public interface APIServices {
 	void setPreferredLang(@FieldMap Map<String, String> params,
 						   Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/delivery_return_request")
+	void deliveryReturnRequest(@FieldMap Map<String, String> params,
+							   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/mark_delivered")
+	void markDelivered(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						Callback<EarningsDetailResponse> callback);
 
 }

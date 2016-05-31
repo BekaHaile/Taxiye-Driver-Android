@@ -487,6 +487,8 @@
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ಓ ಟಿ ಪಿ ಮರುಕಳುಹಿಸಿ.</string>
     <string name="return_reasons">Reasons of Return</string>
+    <string name="collected">Collected</string>
+    <string name="Returned">Returned</string>
 
 
     <string-array name="CountryCodes" >

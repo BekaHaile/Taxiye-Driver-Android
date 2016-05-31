@@ -1,12 +1,15 @@
 package product.clicklabs.jugnoo.driver.dodo.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,62 +22,29 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 /**
  * Created by aneeshbansal on 24/10/15.
  */
-class ViewHolderReturnOption {
-	TextView textViewReturnOption;
-	ImageView imageViewReturnOptionCheck;
-	RelativeLayout relative;
-	int id;
-}
 
-public class ReturnOptionsListAdapter extends BaseAdapter {
-	LayoutInflater mInflater;
-	ViewHolderReturnOption holder;
-	Context context;
+public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOptionsListAdapter.ViewHolder> {
 
-	public ReturnOptionsListAdapter(Context context) {
-		this.context = context;
-		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	private Activity activity;
+
+	public ReturnOptionsListAdapter(Activity activity) {
+		this.activity = activity;
+	}
+
+
+	@Override
+	public ReturnOptionsListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_return_reasons, parent, false);
+
+		RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT);
+		v.setLayoutParams(layoutParams);
+
+		ASSL.DoMagic(v);
+		return new ViewHolder(v, activity);
 	}
 
 	@Override
-	public int getCount() {
-		return Data.returnOptionsList.size();
-	}
-
-	@Override
-	public Object getItem(int position) {
-		return position;
-	}
-
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if (convertView == null) {
-			holder = new ViewHolderReturnOption();
-			convertView = mInflater.inflate(R.layout.list_item_return_reasons, null);
-
-			holder.textViewReturnOption = (TextView) convertView.findViewById(R.id.textViewReturnOption);
-			holder.textViewReturnOption.setTypeface(Data.latoRegular(context));
-			holder.imageViewReturnOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewReturnOptionCheck);
-
-			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
-
-			holder.relative.setTag(holder);
-
-			holder.relative.setLayoutParams(new ListView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
-			ASSL.DoMagic(holder.relative);
-
-			convertView.setTag(holder);
-		} else {
-			holder = (ViewHolderReturnOption) convertView.getTag();
-		}
-
-		holder.id = position;
-
+	public void onBindViewHolder(ReturnOptionsListAdapter.ViewHolder holder, int position) {
 		ReturnOptions returnOptions = Data.returnOptionsList.get(position);
 
 		holder.textViewReturnOption.setText(returnOptions.name);
@@ -88,14 +58,17 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.option_unchecked);
 		}
 
+		holder.relative.setTag(position);
 		holder.relative.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				try {
-					holder = (ViewHolderReturnOption) v.getTag();
+
+					int id = (int) v.getTag();
+
 					for(int i=0; i<Data.returnOptionsList.size(); i++){
-						if(holder.id == i){
+						if(id == i){
 							Data.returnOptionsList.get(i).checked = true;
 						}
 						else{
@@ -108,7 +81,29 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 				}
 			}
 		});
-
-		return convertView;
 	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	@Override
+	public int getItemCount() {
+		return Data.returnOptionsList.size();
+	}
+
+	public class ViewHolder extends RecyclerView.ViewHolder {
+		public TextView textViewReturnOption;
+		public ImageView imageViewReturnOptionCheck;
+		public RelativeLayout relative;
+		public ViewHolder(View convertView, Activity context) {
+			super(convertView);
+			textViewReturnOption = (TextView) convertView.findViewById(R.id.textViewReturnOption);
+			textViewReturnOption.setTypeface(Data.latoRegular(context));
+			imageViewReturnOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewReturnOptionCheck);
+			relative = (RelativeLayout) convertView.findViewById(R.id.relative);
+		}
+	}
+
 }

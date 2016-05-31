@@ -5846,4 +5846,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
+	public RelativeLayout getRelativeLayoutContainer(){
+		return relativeLayoutContainer;
+	}
 }

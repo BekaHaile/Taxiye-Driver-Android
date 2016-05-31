@@ -90,6 +90,7 @@ public interface Constants {
     String KEY_HAVERSINE_DISTANCE = "haversine_distance";
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
+    String KEY_RETURN_REASON = "return_reason";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
