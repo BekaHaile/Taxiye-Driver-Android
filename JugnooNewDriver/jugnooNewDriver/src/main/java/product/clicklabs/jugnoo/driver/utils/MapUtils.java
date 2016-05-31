@@ -152,13 +152,13 @@ public class MapUtils {
 		String fullAddress = "Unnamed";
 		try {
 			String language = "";
-//            if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
-//				language = "hi";
-//            } else{
-//				language = "en";
-//			}
 
 			language = context.getResources().getConfiguration().locale.toString();
+			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
+				language = "hi";
+            } else{
+				language = "en";
+			}
 
 //            Log.e("getGAPIAddress url", "="+url);
 
