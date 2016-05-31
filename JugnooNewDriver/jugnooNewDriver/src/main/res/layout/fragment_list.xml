@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:id="@+id/main" >
 
-    
-    <ProgressBar 
+
+    <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="140px"
         android:layout_height="140px"
         android:layout_centerInParent="true"
         />
-    
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
@@ -21,7 +21,7 @@
         android:listSelector="@drawable/transparent"
         android:splitMotionEvents="false" >
     </ListView>
-    
+
     <TextView
         android:id="@+id/textViewInfoDisplay"
         android:layout_width="wrap_content"

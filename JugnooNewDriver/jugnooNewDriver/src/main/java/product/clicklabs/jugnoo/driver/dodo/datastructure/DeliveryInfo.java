@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver.dodo.dodo.datastructure;
+package product.clicklabs.jugnoo.driver.dodo.datastructure;
 
 /**
  * Created by aneeshbansal on 30/05/16.
