@@ -59,16 +59,12 @@ public interface Constants {
     String KEY_CONVENIENCE_CHARGE = "convenience_charge";
     String KEY_CONVENIENCE_CHARGE_WAIVER = "convenience_charge_waiver";
     String KEY_REFERENCE_ID = "reference_id";
-    String KEY_BUSINESS_ID = "business_id";
     String KEY_USER_DATA = "user_data";
     String KEY_USER_IMAGE = "user_image";
     String KEY_USER_RATING = "user_rating";
     String KEY_JUGNOO_BALANCE = "jugnoo_balance";
     String KEY_PICKUP_LATITUDE = "pickup_latitude";
     String KEY_PICKUP_LONGITUDE = "pickup_longitude";
-    String KEY_IS_SCHEDULED = "is_scheduled";
-    String KEY_PICKUP_TIME = "pickup_time";
-    String KEY_FREE_RIDE = "free_ride";
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
     String KEY_APP_VERSION = "app_version";
@@ -95,5 +91,6 @@ public interface Constants {
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
     String EMPTY_OBJECT = "{}";
+    String KEY_IS_DODO = "is_dodo";
 
 }

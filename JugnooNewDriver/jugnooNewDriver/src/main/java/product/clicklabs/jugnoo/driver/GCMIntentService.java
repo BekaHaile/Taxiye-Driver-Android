@@ -330,11 +330,11 @@ public class GCMIntentService extends IntentService {
 							Log.i("push_notification", String.valueOf(jObj));
 							int flag = jObj.getInt("flag");
 							String title = jObj.optString("title", "Jugnoo");
-							int canStore = jObj.optInt("canStore", 0);
 
 							if (PushFlags.REQUEST.getOrdinal() == flag) {
 								int perfectRide = jObj.optInt("perfect_ride", 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
+								int isDodo = jObj.optInt(Constants.KEY_IS_DODO, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
@@ -345,6 +345,10 @@ public class GCMIntentService extends IntentService {
 									entertainRequest = true;
 								}
 								else if(1 == isPooled
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+									entertainRequest = true;
+								}
+								else if(1 == isDodo
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
 									entertainRequest = true;
 								}
@@ -394,7 +398,7 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled);
+												isPooled, isDodo);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this);

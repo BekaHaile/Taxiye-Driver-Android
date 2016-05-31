@@ -20,13 +20,13 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapter.ViewHolder> {
 
     private Activity activity;
-    private Callback callback;
     private ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
+    private Callback callback;
 
     public DeliveryInfoAdapter(Activity activity, ArrayList<DeliveryInfo> deliveryInfos, Callback callback) {
         this.activity = activity;
-        this.callback = callback;
         this.deliveryInfos = deliveryInfos;
+        this.callback = callback;
     }
 
 

@@ -2,6 +2,10 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+
 /**
  * Super class for customer info
  * @author shankar
@@ -33,8 +37,11 @@ public class CustomerInfo {
 	private double fareFactor;
 	private int isPooled;
 
-
 	private CustomerRideData customerRideData = new CustomerRideData();
+
+	private int isDodo;
+	private ArrayList<DeliveryInfo> deliveryInfos;
+
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -67,36 +74,13 @@ public class CustomerInfo {
 
 	}
 
-	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
-							String image, CouponInfo couponInfo, PromoInfo promoInfo, int status){
-		this.engagementId = engagementId;
-		this.userId = userId;
-		this.referenceId = referenceId;
-		this.name = name;
-		this.phoneNumber = phoneNumber;
-		this.requestlLatLng = requestlLatLng;
-		this.cachedApiEnabled = cachedApiEnabled;
-
-		this.image = image;
-		this.rating = "4";
-		this.couponInfo = couponInfo;
-		this.promoInfo = promoInfo;
-		this.jugnooBalance = 0;
-		this.dropLatLng = null;
-		this.luggageChargesApplicable = 0;
-		this.meterFareApplicable = 0;
-		this.getJugnooFareEnabled = 1;
-		this.waitingChargesApplicable = 0;
-		this.setStatus(status);
-	}
-
 
 	public CustomerInfo(int engagementId){
 		this.engagementId = engagementId;
 	}
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status, int isPooled){
+						int referenceId, double fareFactor, int status, int isPooled, int isDodo){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -106,6 +90,7 @@ public class CustomerInfo {
 		this.fareFactor = fareFactor;
 		this.status = status;
 		this.isPooled = isPooled;
+		this.isDodo = isDodo;
 	}
 
 
@@ -341,5 +326,21 @@ public class CustomerInfo {
 		this.poolFare = poolFare;
 		this.poolTime = poolTime;
 		this.poolDistance = poolDistance;
+	}
+
+	public int getIsDodo() {
+		return isDodo;
+	}
+
+	public void setIsDodo(int isDodo) {
+		this.isDodo = isDodo;
+	}
+
+	public ArrayList<DeliveryInfo> getDeliveryInfos() {
+		return deliveryInfos;
+	}
+
+	public void setDeliveryInfos(ArrayList<DeliveryInfo> deliveryInfos) {
+		this.deliveryInfos = deliveryInfos;
 	}
 }

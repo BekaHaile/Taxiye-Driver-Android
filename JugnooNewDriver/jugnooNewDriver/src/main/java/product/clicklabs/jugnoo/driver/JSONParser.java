@@ -453,6 +453,7 @@ public class JSONParser implements Constants {
 
 		if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
 			HomeActivity.driverScreenMode = DriverScreenMode.D_INITIAL;
+			Prefs.with(context).save(SP_CUSTOMER_RIDE_DATAS_OBJECT, EMPTY_OBJECT);
 		} else {
 			HomeActivity.driverScreenMode = Data.getDriverScreenModeFromEngagementStatus(
 					Data.getCurrentCustomerInfo().getStatus());
@@ -536,11 +537,12 @@ public class JSONParser implements Constants {
 					fareFactor = jActiveRequest.getDouble("fare_factor");
 				}
 				int isPooled = jActiveRequest.optInt(KEY_IS_POOLED, 0);
+				int isDodo = jActiveRequest.optInt(KEY_IS_DODO, 0);
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
-						EngagementStatus.REQUESTED.getOrdinal(), isPooled);
+						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDodo);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);

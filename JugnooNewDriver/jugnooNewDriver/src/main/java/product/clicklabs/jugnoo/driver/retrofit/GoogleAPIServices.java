@@ -31,4 +31,9 @@ public interface GoogleAPIServices {
 					 @Query("language") String language,
 					 @Query("sensor") Boolean sensor);
 
+	@GET("/directions/json")
+	Response getDirectionsWaypoints(@Query("origin") String originLatLng,
+						   @Query("destination") String destLatLng,
+						   @Query("waypoints") String waypoints);
+
 }

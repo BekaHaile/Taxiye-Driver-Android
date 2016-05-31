@@ -1501,7 +1501,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void acceptRequestFunc(CustomerInfo customerInfo) {
 		try {
-			if (1 != customerInfo.getIsPooled() && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+			if (1 != customerInfo.getIsPooled()
+					&& 1 != customerInfo.getIsDodo()
+					&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 					@Override
 					public void onSuccess(LatLng pickupLatLng, String customerName) {
@@ -1544,7 +1546,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void rejectRequestFuncCall(CustomerInfo customerInfo) {
 		try {
-			if (1 != customerInfo.getIsPooled() && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+			if (1 != customerInfo.getIsPooled()
+					&& 1 != customerInfo.getIsDodo()
+					&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiRejectRequest(this, new ApiRejectRequest.Callback() {
 					@Override
 					public void onSuccess(String engagementId) {
@@ -2704,12 +2708,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void saveCustomerRideDataInSP(CustomerInfo customerInfo){
 		try{
 			JSONObject jObj = new JSONObject(Prefs.with(this).getString(SP_CUSTOMER_RIDE_DATAS_OBJECT, EMPTY_OBJECT));
-			JSONObject jc = new JSONObject();
-			jc.put(KEY_DISTANCE, customerInfo.getCustomerRideData().getDistance());
-			jc.put(KEY_HAVERSINE_DISTANCE, customerInfo.getCustomerRideData().getHaversineDistance());
-			jc.put(KEY_RIDE_TIME, customerInfo.getCustomerRideData().getStartRideTime());
-			jc.put(KEY_WAIT_TIME, customerInfo.getCustomerRideData().getWaitTime());
-			jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
+			if(EngagementStatus.ENDED.getOrdinal() != customerInfo.getStatus()) {
+				JSONObject jc = new JSONObject();
+				jc.put(KEY_DISTANCE, customerInfo.getCustomerRideData().getDistance());
+				jc.put(KEY_HAVERSINE_DISTANCE, customerInfo.getCustomerRideData().getHaversineDistance());
+				jc.put(KEY_RIDE_TIME, customerInfo.getCustomerRideData().getStartRideTime());
+				jc.put(KEY_WAIT_TIME, customerInfo.getCustomerRideData().getWaitTime());
+				jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
+			} else{
+				jObj.remove(String.valueOf(customerInfo.getEngagementId()));
+			}
 			Prefs.with(this).save(SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
 		} catch(Exception e){
 			e.printStackTrace();
@@ -2852,6 +2860,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
 				textViewOtherRequestDetails, textViewRequestFareFactor;
 		Button buttonAcceptRide, buttonCancelRide;
+		ImageView imageViewRequestType;
 		RelativeLayout relative;
 		int id;
 	}
@@ -2939,6 +2948,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
 				holder.buttonCancelRide.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
@@ -2993,6 +3003,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestFareFactor.setText(getResources().getString(R.string.rate)+" " + decimalFormat.format(customerInfo.getFareFactor()) + "x");
 			} else {
 				holder.textViewRequestFareFactor.setVisibility(View.GONE);
+			}
+
+			if(customerInfo.getIsPooled() == 1){
+				holder.imageViewRequestType.setImageResource(R.drawable.ic_pool_request);
+			} else if(customerInfo.getIsDodo() == 1){
+				holder.imageViewRequestType.setImageResource(R.drawable.ic_dodo_request);
+			} else{
+				holder.imageViewRequestType.setImageResource(R.drawable.ic_auto_request);
 			}
 
 
@@ -3053,7 +3071,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-//	Retrofit
 
 	public void driverAcceptRideAsync(final Activity activity, final CustomerInfo customerInfo) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -3069,15 +3086,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 			params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 
-			if(customerInfo.getIsPooled() == 1){
+			if(customerInfo.getIsPooled() == 1 || customerInfo.getIsDodo() == 1){
 				if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
 						|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0){
-					Data.setCurrentEngagementId(String.valueOf(customerInfo.engagementId));
+					Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 				}
 				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 			}
 			else{
-				Data.setCurrentEngagementId(String.valueOf(customerInfo.engagementId));
+				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 				params.put(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
 			}
 
@@ -3091,6 +3108,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
+			params.put(KEY_IS_DODO, String.valueOf(customerInfo.getIsDodo()));
 
 			Log.i("request", String.valueOf(params));
 
@@ -3100,16 +3118,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 					Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, String.valueOf(System.currentTimeMillis()));
-					if(customerInfo.getIsPooled() == 1){
-						acceptRideSucess(jsonString,
-								String.valueOf(customerInfo.getEngagementId()),
-								String.valueOf(customerInfo.getUserId()));
-					} else{
-						Data.setCurrentEngagementId(String.valueOf(customerInfo.engagementId));
-						acceptRideSucess(jsonString,
-								Data.getCurrentEngagementId(),
-								String.valueOf(customerInfo.getUserId()));
-					}
+					acceptRideSucess(jsonString,
+							String.valueOf(customerInfo.getEngagementId()),
+							String.valueOf(customerInfo.getUserId()));
 					GCMIntentService.stopRing(true);
 				}
 
@@ -3243,6 +3254,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
+			params.put(KEY_IS_DODO, String.valueOf(customerInfo.getIsDodo()));
 
 			RestClient.getApiServices().driverRejectRequestRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -3686,6 +3698,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							driverScreenMode = DriverScreenMode.D_RIDE_END;
 							Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 							switchDriverScreen(driverScreenMode);
+							saveCustomerRideDataInSP(customerInfo);
 
 							driverUploadPathDataFileAsync(activity, String.valueOf(customerInfo.getEngagementId()), totalHaversineDistanceInKm);
 
@@ -3919,6 +3932,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverScreenMode = DriverScreenMode.D_RIDE_END;
 			Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 			switchDriverScreen(driverScreenMode);
+			saveCustomerRideDataInSP(customerInfo);
 
 
 			params.put("is_cached", "1");
