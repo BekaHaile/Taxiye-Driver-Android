@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.ReturnOptions;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 /**
@@ -38,7 +38,7 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return Data.cancelOptionsList.size();
+		return Data.returnOptionsList.size();
 	}
 
 	@Override
@@ -57,9 +57,9 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 			holder = new ViewHolderReturnOption();
 			convertView = mInflater.inflate(R.layout.list_item_return_reasons, null);
 
-			holder.textViewReturnOption = (TextView) convertView.findViewById(R.id.textViewCancelOption);
+			holder.textViewReturnOption = (TextView) convertView.findViewById(R.id.textViewReturnOption);
 			holder.textViewReturnOption.setTypeface(Data.latoRegular(context));
-			holder.imageViewReturnOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewCancelOptionCheck);
+			holder.imageViewReturnOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewReturnOptionCheck);
 
 			holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
@@ -75,11 +75,11 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 
 		holder.id = position;
 
-		CancelOption cancelOption = Data.cancelOptionsList.get(position);
+		ReturnOptions returnOptions = Data.returnOptionsList.get(position);
 
-		holder.textViewReturnOption.setText(cancelOption.name);
+		holder.textViewReturnOption.setText(returnOptions.name);
 
-		if(cancelOption.checked){
+		if(returnOptions.checked){
 			holder.relative.setBackgroundColor(Color.WHITE);
 			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.option_checked_orange);
 		}
@@ -94,12 +94,12 @@ public class ReturnOptionsListAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				try {
 					holder = (ViewHolderReturnOption) v.getTag();
-					for(int i=0; i<Data.cancelOptionsList.size(); i++){
+					for(int i=0; i<Data.returnOptionsList.size(); i++){
 						if(holder.id == i){
-							Data.cancelOptionsList.get(i).checked = true;
+							Data.returnOptionsList.get(i).checked = true;
 						}
 						else{
-							Data.cancelOptionsList.get(i).checked = false;
+							Data.returnOptionsList.get(i).checked = false;
 						}
 					}
 					notifyDataSetChanged();

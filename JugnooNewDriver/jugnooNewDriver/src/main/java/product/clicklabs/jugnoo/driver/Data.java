@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.ReturnOptions;
 import product.clicklabs.jugnoo.driver.utils.Log;
 
 /**
@@ -150,6 +151,7 @@ public class Data {
 	
 	
 	public static ArrayList<CancelOption> cancelOptionsList;
+	public static ArrayList<ReturnOptions> returnOptionsList;
 
 	public static String dEngagementId = "";
 
