@@ -356,7 +356,7 @@ public class JSONParser implements Constants {
 						if ((EngagementStatus.ACCEPTED.getOrdinal() == engagementStatus) ||
 								(EngagementStatus.STARTED.getOrdinal() == engagementStatus) ||
 								(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
-							int dReferenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
+							int referenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
 							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
 							String userId = jObjCustomer.getString(KEY_USER_ID);
 							double pickupLatitude = jObjCustomer.getDouble(KEY_PICKUP_LATITUDE);
@@ -390,7 +390,7 @@ public class JSONParser implements Constants {
 							}
 
 							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-									dReferenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
+									referenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									customerImage, customerRating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled);
 
@@ -530,7 +530,7 @@ public class JSONParser implements Constants {
 
 				startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
-				int referenceId = jActiveRequest.getInt("reference_id");
+				int referenceId = jActiveRequest.optInt(KEY_REFERENCE_ID, 0);
 
 				double fareFactor = 1;
 				if (jActiveRequest.has("fare_factor")) {

@@ -394,7 +394,7 @@ public class GCMIntentService extends IntentService {
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
 									if (HomeActivity.appInterruptHandler != null) {
-										int referenceId = jObj.optInt("reference_id", 0);
+										int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),

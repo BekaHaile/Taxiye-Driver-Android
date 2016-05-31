@@ -92,5 +92,7 @@ public interface Constants {
     String KEY_WAIT_TIME = "wait_time";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DODO = "is_dodo";
+    String KEY_DISTANCE_TRAVELLED = "distance_travelled";
+    String KEY_IS_CACHED = "is_cached";
 
 }

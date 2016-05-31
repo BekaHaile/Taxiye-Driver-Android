@@ -3148,7 +3148,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Data.fareStructure.luggageFare = jObj.optDouble(KEY_LUGGAGE_CHARGES, 0d);
 					Data.fareStructure.convenienceCharge = jObj.optDouble(KEY_CONVENIENCE_CHARGE, 0);
 					Data.fareStructure.convenienceChargeWaiver = jObj.optDouble(KEY_CONVENIENCE_CHARGE_WAIVER, 0);
-					int referenceId = jObj.getInt(KEY_REFERENCE_ID);
+					int referenceId = jObj.optInt(KEY_REFERENCE_ID, 0);
 
 					JSONObject userData = jObj.getJSONObject(KEY_USER_DATA);
 					String userName = userData.getString(KEY_USER_NAME);
@@ -3428,12 +3428,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			HashMap<String, String> params = new HashMap<String, String>();
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("engagement_id", String.valueOf(customerInfo.getEngagementId()));
-			params.put("customer_id", String.valueOf(customerInfo.getUserId()));
-			params.put("pickup_latitude", "" + driverAtPickupLatLng.latitude);
-			params.put("pickup_longitude", "" + driverAtPickupLatLng.longitude);
-			params.put("reference_id", String.valueOf(customerInfo.getReferenceId()));
+			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+			params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+			params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+			params.put(KEY_PICKUP_LATITUDE, String.valueOf(driverAtPickupLatLng.latitude));
+			params.put(KEY_PICKUP_LONGITUDE, String.valueOf(driverAtPickupLatLng.longitude));
+			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 
 			Log.i("params", "=" + params);
 
@@ -3605,16 +3605,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		final HashMap<String, String> params = new HashMap<>();
 
-		params.put("access_token", Data.userData.accessToken);
-		params.put("engagement_id", String.valueOf(customerInfo.getEngagementId()));
-		params.put("customer_id", String.valueOf(customerInfo.getUserId()));
-		params.put("latitude", "" + dropLatitude);
-		params.put("longitude", "" + dropLongitude);
-		params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
-		params.put("wait_time", waitTime);
-		params.put("ride_time", rideTime);
+		params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+		params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+		params.put(KEY_LATITUDE, String.valueOf(dropLatitude));
+		params.put(KEY_LONGITUDE, String.valueOf(dropLongitude));
+		params.put(KEY_DISTANCE_TRAVELLED, decimalFormat.format(totalDistanceInKm));
+		params.put(KEY_WAIT_TIME, waitTime);
+		params.put(KEY_RIDE_TIME, rideTime);
 		params.put(KEY_RIDE_TIME_SECONDS, rideTimeSecondsStr);
-		params.put("is_cached", "0");
+		params.put(KEY_IS_CACHED, "0");
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
@@ -3624,7 +3624,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		enteredMeterFare = 0;
 
 		if (customerInfo != null) {
-			params.put("reference_id", "" + customerInfo.referenceId);
+			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.referenceId));
 
 			try {
 				if (1 == customerInfo.meterFareApplicable) {
