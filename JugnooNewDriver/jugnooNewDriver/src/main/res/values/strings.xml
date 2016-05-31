@@ -528,6 +528,10 @@
 	<string name="no_not_verified">Phone Number not verified</string>
 	<string name="resend_OTP">Resend OTP</string>
 	<string name="return_reasons">Reasons of Return</string>
+	<string name="accepted">Accepted</string>
+	<string name="in_ride">In Ride</string>
+	<string name="arrive_at_pickup_location">Arrive at pickup location</string>
+	<string name="make_delivery">Make Delivery</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

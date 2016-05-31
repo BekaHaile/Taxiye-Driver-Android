@@ -39,7 +39,7 @@ public class CustomerInfo {
 
 	private CustomerRideData customerRideData = new CustomerRideData();
 
-	private int isDodo;
+	private int isDelivery;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 
 
@@ -80,7 +80,7 @@ public class CustomerInfo {
 	}
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status, int isPooled, int isDodo){
+						int referenceId, double fareFactor, int status, int isPooled, int isDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -90,7 +90,7 @@ public class CustomerInfo {
 		this.fareFactor = fareFactor;
 		this.status = status;
 		this.isPooled = isPooled;
-		this.isDodo = isDodo;
+		this.isDelivery = isDelivery;
 	}
 
 
@@ -328,12 +328,12 @@ public class CustomerInfo {
 		this.poolDistance = poolDistance;
 	}
 
-	public int getIsDodo() {
-		return isDodo;
+	public int getIsDelivery() {
+		return isDelivery;
 	}
 
-	public void setIsDodo(int isDodo) {
-		this.isDodo = isDodo;
+	public void setIsDelivery(int isDelivery) {
+		this.isDelivery = isDelivery;
 	}
 
 	public ArrayList<DeliveryInfo> getDeliveryInfos() {

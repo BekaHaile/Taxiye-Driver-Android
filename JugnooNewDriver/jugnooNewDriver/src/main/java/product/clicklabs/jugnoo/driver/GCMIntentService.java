@@ -334,7 +334,7 @@ public class GCMIntentService extends IntentService {
 							if (PushFlags.REQUEST.getOrdinal() == flag) {
 								int perfectRide = jObj.optInt("perfect_ride", 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
-								int isDodo = jObj.optInt(Constants.KEY_IS_DODO, 0);
+								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
@@ -348,7 +348,7 @@ public class GCMIntentService extends IntentService {
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
 									entertainRequest = true;
 								}
-								else if(1 == isDodo
+								else if(1 == isDelivery
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
 									entertainRequest = true;
 								}
@@ -398,7 +398,7 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDodo);
+												isPooled, isDelivery);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this);
@@ -532,9 +532,9 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.fetchHeatMapDataCall(this);
 								}
 							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
-								double dropLatitude = jObj.getDouble("op_drop_latitude");
-								double dropLongitude = jObj.getDouble("op_drop_longitude");
-								String engagementId = jObj.getString("engagement_id");
+								double dropLatitude = jObj.getDouble(Constants.KEY_OP_DROP_LATITUDE);
+								double dropLongitude = jObj.getDouble(Constants.KEY_OP_DROP_LONGITUDE);
+								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 								}

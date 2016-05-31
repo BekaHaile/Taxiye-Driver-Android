@@ -91,8 +91,13 @@ public interface Constants {
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
     String EMPTY_OBJECT = "{}";
-    String KEY_IS_DODO = "is_dodo";
+    String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
     String KEY_IS_CACHED = "is_cached";
+    String KEY_PR_DISTANCE = "pr_distance";
+    String KEY_DELIVERIES = "deliveries";
+    String KEY_DELIVERY_ID = "delivery_id";
+    String KEY_DELIVERY_ADDRESS = "delivery_address";
+    String KEY_DELIVERY_AMOUNT = "delivery_amount";
 
 }

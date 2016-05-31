@@ -19,14 +19,14 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by shankar on 5/31/16.
  */
-public class ApiGoogleWaypoints extends AsyncTask<String, Integer, String>{
+public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, String>{
 
 	private String strOrigin = "", strDestination = "", strWaypoints = "";
 	private int pathColor;
 	private GoogleMap map;
 	private Callback callback;
 
-	public ApiGoogleWaypoints(ArrayList<LatLng> latLngs, int pathColor, GoogleMap map, Callback callback){
+	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, GoogleMap map, Callback callback){
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<latLngs.size(); i++){
 			if(i == 0){

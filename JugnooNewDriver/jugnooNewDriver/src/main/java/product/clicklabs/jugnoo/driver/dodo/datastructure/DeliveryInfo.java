@@ -1,37 +1,47 @@
 package product.clicklabs.jugnoo.driver.dodo.datastructure;
 
+import com.google.android.gms.maps.model.LatLng;
+
 /**
  * Created by aneeshbansal on 30/05/16.
  */
 public class DeliveryInfo {
 
-	public int id;
-	public double distanceAway;
-	public String customerName;
-	public String deliverAddress;
-	public String customerNo;
+	private int id;
+	private LatLng latLng;
+	private String customerName;
+	private String deliveryAddress;
+	private String customerNo;
+	private double amount;
+	private int status;
 
 
-	public DeliveryInfo(int id, double distanceAway, String customerName, String deliverAddress,
-						String customerNo) {
+	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
+						String customerNo, double amount, int status) {
 		this.id = id;
-		this.distanceAway = distanceAway;
+		this.latLng = latLng;
 		this.customerName = customerName;
-		this.deliverAddress = deliverAddress;
+		this.deliveryAddress = deliveryAddress;
 		this.customerNo = customerNo;
+		this.amount = amount;
+		this.status = status;
 	}
 
 
-	public int Integer() {
+	public int getId() {
 		return id;
 	}
 
-	public double getDistanceAway() {
-		return distanceAway;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public void setDistanceAway(double distanceAway) {
-		this.distanceAway = distanceAway;
+	public LatLng getLatLng() {
+		return latLng;
+	}
+
+	public void setlatLng(LatLng latLng) {
+		this.latLng = latLng;
 	}
 
 	public String getCustomerName() {
@@ -42,12 +52,12 @@ public class DeliveryInfo {
 		this.customerName = customerName;
 	}
 
-	public String getDeliverAddress() {
-		return deliverAddress;
+	public String getDeliveryAddress() {
+		return deliveryAddress;
 	}
 
-	public void setDeliverAddress(String deliverAddress) {
-		this.deliverAddress = deliverAddress;
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
 
 	public String getCustomerNo() {
@@ -56,5 +66,21 @@ public class DeliveryInfo {
 
 	public void setCustomerNo(String customerNo) {
 		this.customerNo = customerNo;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
 	}
 }

@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -409,6 +410,10 @@ public class JSONParser implements Constants {
 										.setWaitTime(Long.parseLong(jc.optString(KEY_WAIT_TIME, "0")));
 							}
 
+							if(customerInfo.getIsDelivery() == 1){
+								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
+							}
+
 							Data.addCustomerInfo(customerInfo);
 
 
@@ -537,12 +542,12 @@ public class JSONParser implements Constants {
 					fareFactor = jActiveRequest.getDouble("fare_factor");
 				}
 				int isPooled = jActiveRequest.optInt(KEY_IS_POOLED, 0);
-				int isDodo = jActiveRequest.optInt(KEY_IS_DODO, 0);
+				int isDelivery = jActiveRequest.optInt(KEY_IS_DELIVERY, 0);
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
-						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDodo);
+						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
@@ -635,6 +640,27 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 
+	}
+
+
+	public static ArrayList<DeliveryInfo> parseDeliveryInfos(JSONObject jsonObject) {
+		ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
+		try {
+			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERIES);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jDelivery = jsonArray.getJSONObject(i);
+				deliveryInfos.add(new DeliveryInfo(jDelivery.getInt(KEY_DELIVERY_ID),
+						new LatLng(jDelivery.getDouble(KEY_LATITUDE), jDelivery.getDouble(KEY_LONGITUDE)),
+						jDelivery.getString(KEY_USER_NAME),
+						jDelivery.getString(KEY_DELIVERY_ADDRESS),
+						jDelivery.getString(KEY_PHONE_NO),
+						jDelivery.getDouble(KEY_DELIVERY_AMOUNT),
+						jDelivery.getInt(KEY_STATUS)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return deliveryInfos;
 	}
 
 }
