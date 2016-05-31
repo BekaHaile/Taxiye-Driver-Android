@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.dodo.TransactionUtils;
 import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryInfoAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -28,7 +29,7 @@ public class DeliveryInfoListFragment extends Fragment {
 	private LinearLayout linearLayoutRoot;
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
-
+	private TransactionUtils transactionUtils;
 
 	private View rootView;
 	private HomeActivity activity;
@@ -58,13 +59,20 @@ public class DeliveryInfoListFragment extends Fragment {
 		deliveryInfoAdapter = new DeliveryInfoAdapter(activity, new ArrayList<DeliveryInfo>(), new DeliveryInfoAdapter.Callback() {
 			@Override
 			public void onClick(int position, DeliveryInfo deliveryInfo) {
-
+				getTransactionUtils().openMarkDeliveryFragment(activity, activity.getRelativeLayoutContainer());
 			}
 		});
 
 		recyclerViewDeliveryInfo.setAdapter(deliveryInfoAdapter);
 
 		return rootView;
+	}
+
+	public TransactionUtils getTransactionUtils(){
+		if(transactionUtils == null){
+			transactionUtils = new TransactionUtils();
+		}
+		return transactionUtils;
 	}
 
 	@Override

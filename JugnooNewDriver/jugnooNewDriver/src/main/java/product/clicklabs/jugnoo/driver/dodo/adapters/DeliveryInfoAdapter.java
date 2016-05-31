@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.dodo.TransactionUtils;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
@@ -55,7 +56,6 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
 
                 @Override
                 public void onClick(View v) {
-
                 }
             });
         } catch (Exception e) {

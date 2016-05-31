@@ -5,6 +5,8 @@ import android.view.View;
 
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
+import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
+
 /**
  * Created by shankar on 1/27/16.
  */
@@ -17,6 +19,19 @@ public class TransactionUtils {
 					.add(container.getId(), new DeliveryReturnFragment(),
 							DeliveryReturnFragment.class.getName())
 					.addToBackStack(DeliveryReturnFragment.class.getName())
+					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+					.commitAllowingStateLoss();
+		}
+	}
+
+	public void openMarkDeliveryFragment(FragmentActivity activity, View container) {
+		if(!checkIfFragmentAdded(activity, MarkDeliveryFragment.class.getName())) {
+			activity.getSupportFragmentManager().beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.add(container.getId(), new MarkDeliveryFragment(),
+							MarkDeliveryFragment.class.getName())
+					.addToBackStack(MarkDeliveryFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
 							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();

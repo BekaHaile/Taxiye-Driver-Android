@@ -51,11 +51,11 @@ public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOption
 
 		if(returnOptions.checked){
 			holder.relative.setBackgroundColor(Color.WHITE);
-			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.option_checked_orange);
+			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.radio_select);
 		}
 		else{
 			holder.relative.setBackgroundColor(Color.TRANSPARENT);
-			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.option_unchecked);
+			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.radio_unslelcet);
 		}
 
 		holder.relative.setTag(position);
