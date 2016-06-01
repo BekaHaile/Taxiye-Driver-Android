@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/rootLinear"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:id="@+id/rootLinear">
+              android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,72 +11,68 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="420px"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="28px"
             android:orientation="vertical">
 
 
-            <TextView
-                android:id="@+id/textViewOrderId"
-                android:layout_width="380px"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="Order Id"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="42px"
-                android:visibility="visible"/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textViewOrderId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_id"
+                    android:textColor="@color/new_orange"
+                    android:textSize="36px"
+                    android:visibility="visible"
+                    android:layout_centerVertical="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewOrderIdValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15px"
+                    android:text="00000000000"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="42px"
+                    android:visibility="visible"
+                    android:layout_centerVertical="true"
+                    />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/textViewCustomerName"
                 android:layout_width="380px"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15px"
                 android:gravity="center_vertical"
                 android:text="Aneesh"
                 android:textColor="@color/bg_grey_opaque"
-                android:layout_marginTop="15px"
                 android:textSize="42px"
                 android:visibility="visible"/>
 
 
             <TextView
                 android:id="@+id/textViewCustomerDeliveryAddress"
-                android:layout_width="380px"
+                android:layout_width="420px"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="15px"
                 android:gravity="center_vertical"
                 android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
                 android:textColor="@color/bg_grey_opaque"
-                android:textSize="30px"
-                android:layout_marginTop="15px"
+                android:textSize="32px"
+                android:layout_marginBottom="10px"
                 android:visibility="visible"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="7px"
-                android:layout_marginTop="20px"
-                android:layout_marginBottom="10px">
 
-                <ImageView
-                    android:id="@+id/deliveryMarker"
-                    android:layout_width="35px"
-                    android:layout_height="30px"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/customer2_list_marker"/>
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewShowDistance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="60px"
-                    android:text="225 m away"
-                    android:textColor="@color/black"
-                    android:textSize="32px"/>
-
-            </RelativeLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -84,8 +80,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="25px"
-            android:layout_marginLeft="70px"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="45px"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -113,30 +109,9 @@
                     android:textSize="42px"/>
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/markDeliveryRl"
-                android:layout_width="230px"
-                android:layout_height="70px"
-                android:layout_marginTop="25px"
-                android:background="@drawable/menu_black_btn_normal_rounded">
-
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/markDeliveredText"
-                    android:layout_width="150px"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="15px"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="@string/mark_delivered"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="24px"/>
-            </RelativeLayout>
-
-                />
 
         </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

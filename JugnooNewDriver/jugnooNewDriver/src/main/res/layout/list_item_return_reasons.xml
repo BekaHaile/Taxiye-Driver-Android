@@ -24,7 +24,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="40px"
-        android:src="@drawable/option_checked_orange"
+        android:src="@drawable/radio_select"
         android:tag="mwar"
         />
 </RelativeLayout>
