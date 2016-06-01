@@ -56,12 +56,12 @@ public class CustomerSwitcher {
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
 		textViewRideStatus = (TextView) rootView.findViewById(R.id.textViewRideStatus);
 		textViewRideStatus.setTypeface(Fonts.mavenRegular(activity));
-		driverPassengerCallText = (TextView) rootView.findViewById(R.id.driverPassengerCallText);
+		driverPassengerCallText = (TextView) rootView.findViewById(R.id.textViewCall);
 		driverPassengerCallText.setTypeface(Fonts.mavenRegular(activity));
 		textViewRideInstructions = (TextView) rootView.findViewById(R.id.textViewRideInstructions);
 		textViewRideInstructions.setTypeface(Fonts.mavenRegular(activity));
 
-		driverPassengerCallRl = (RelativeLayout) rootView.findViewById(R.id.driverPassengerCallRl);
+		driverPassengerCallRl = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
 		relativeLayoutShowDistance = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutShowDistance);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);

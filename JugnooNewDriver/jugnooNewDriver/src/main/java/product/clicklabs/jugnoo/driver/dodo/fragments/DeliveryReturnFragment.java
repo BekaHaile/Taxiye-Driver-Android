@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,28 +12,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.DriverTimeoutCheck;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -43,69 +42,59 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("ValidFragment")
 public class DeliveryReturnFragment extends Fragment {
 
+	private LinearLayout relative;
 
-	LinearLayout relative;
+	private Button buttonBack;
+	private TextView textViewTitle;
+	private RecyclerView recyclerViewReturnOptions;
+	private Button buttonSubmit;
+	private ReturnOptionsListAdapter returnOptionsListAdapter;
 
-	ImageView imageViewBack;
-	TextView textViewTitle;
+	private View rootView;
+	private HomeActivity activity;
+	private DeliveryInfo deliveryInfo;
+	private int deliveryInfoId;
 
-	ReturnOptionsListAdapter returnOptionsListAdapter;
-	RecyclerView recyclerViewReturnOptions;
-
-	Button buttonSubmit;
-
-	ScrollView scrollView;
-	LinearLayout linearLayoutMain;
-
-	private FragmentActivity activity;
-
-	String engagementId = "";
-	LinearLayout main;
-
-	public DeliveryReturnFragment(){
+	public DeliveryReturnFragment(int deliveryInfoId){
+		this.deliveryInfoId = deliveryInfoId;
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		rootView = inflater.inflate(R.layout.fragment_delivery_return_reasons, container, false);
+		activity = (HomeActivity) getActivity();
+
+		relative = (LinearLayout) rootView.findViewById(R.id.relative);
+		try {
+			relative.setLayoutParams(new ViewGroup.LayoutParams(1134, 720));
+			ASSL.DoMagic(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
-		View rootView = inflater.inflate(R.layout.fragment_dodo_return_reasons, container, false);
-
-		main = (LinearLayout) rootView.findViewById(R.id.relative);
-		main.setLayoutParams(new ViewGroup.LayoutParams(1134, 720));
-		ASSL.DoMagic(main);
-
-
-
-
-		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
-		textViewTitle.setTypeface(Data.latoRegular(getActivity()), Typeface.BOLD);
+		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewTitle.setText("Title");
 
-		returnOptionsListAdapter = new ReturnOptionsListAdapter(getActivity());
-
+		
 		recyclerViewReturnOptions = (RecyclerView) rootView.findViewById(R.id.recyclerViewReturnOptions);
 		recyclerViewReturnOptions.setLayoutManager(new LinearLayoutManager(activity));
 		recyclerViewReturnOptions.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewReturnOptions.setHasFixedSize(false);
-
-
+		returnOptionsListAdapter = new ReturnOptionsListAdapter(activity);
 		recyclerViewReturnOptions.setAdapter(returnOptionsListAdapter);
 
-
 		buttonSubmit = (Button) rootView.findViewById(R.id.buttonSubmit);
-		buttonSubmit.setTypeface(Data.latoRegular(getActivity()));
-
-		scrollView = (ScrollView) rootView.findViewById(R.id.scrollView);
-		linearLayoutMain = (LinearLayout) rootView.findViewById(R.id.linearLayoutMain);
+		buttonSubmit.setTypeface(Data.latoRegular(activity));
 
 
-		imageViewBack.setOnClickListener(new View.OnClickListener() {
+		buttonBack.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				performBackPressed();
+				activity.onBackPressed();
 			}
 		});
 
@@ -122,19 +111,23 @@ public class DeliveryReturnFragment extends Fragment {
 							break;
 						}
 					}
-
 					if ("".equalsIgnoreCase(returnReasonString)) {
-						DialogPopup.alertPopup(getActivity(), "", getResources().getString(R.string.select_reason));
+						DialogPopup.alertPopup(activity, "", getResources().getString(R.string.select_reason));
 					} else {
-						deliveryReturnRequest(getActivity(), returnReasonString);
+						deliveryReturnRequest(activity, returnReasonString);
 					}
 				}
-
 			}
 		});
 
-
 		setReturnOptions();
+		try{
+			deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(Data.getCurrentCustomerInfo()
+					.getDeliveryInfos().indexOf(new DeliveryInfo(deliveryInfoId)));
+		} catch(Exception e){
+			e.printStackTrace();
+			activity.onBackPressed();
+		}
 		return rootView;
 	}
 
@@ -147,25 +140,23 @@ public class DeliveryReturnFragment extends Fragment {
 				}
 				returnOptionsListAdapter.notifyDataSetChanged();
 			} else {
-				performBackPressed();
+				activity.onBackPressed();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			performBackPressed();
+			activity.onBackPressed();
 		}
 	}
-
-
-	public void performBackPressed() {
-		
-	}
-	
 
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
@@ -173,11 +164,14 @@ public class DeliveryReturnFragment extends Fragment {
 
 	public void deliveryReturnRequest(final Activity activity, final String reason) {
 		try {
-			if (AppStatus.getInstance(getActivity()).isOnline(getActivity())) {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(Data.getCurrentCustomerInfo().getEngagementId()));
+				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
+				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_RETURN_REASON, reason);
 
 				RestClient.getApiServices().deliveryReturnRequest(params, new Callback<RegisterScreenResponse>() {
@@ -186,34 +180,27 @@ public class DeliveryReturnFragment extends Fragment {
 						DialogPopup.dismissLoadingDialog();
 						try {
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
+							JSONObject jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									deliveryInfo.setStatus(-1);
+									activity.onBackPressed();
+									DialogPopup.alertPopupWithListener(activity, "", message,
+											new View.OnClickListener() {
+												@Override
+												public void onClick(View v) {
+													activity.onBackPressed();
 
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
+												}
+											});
 								} else {
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-							} else {
-								try {
-									int flag = jObj.getInt("flag");
-									if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-										String log = jObj.getString("log");
-										DialogPopup.alertPopup(activity, "", "" + log);
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
+									DialogPopup.alertPopup(activity, "", message);
 								}
 							}
-
-							new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-
-
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						}
 					}
 

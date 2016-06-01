@@ -47,7 +47,7 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status, int isPooled){
+						int status, int isPooled, int isDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -71,6 +71,7 @@ public class CustomerInfo {
 		this.waitingChargesApplicable = waitTimeApplicable;
 		this.setStatus(status);
 		this.isPooled = isPooled;
+		this.isDelivery = isDelivery;
 
 	}
 

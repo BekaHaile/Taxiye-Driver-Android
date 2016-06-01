@@ -13,9 +13,9 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.dodo.TransactionUtils;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 
 public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapter.ViewHolder> {
@@ -48,16 +48,30 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
         try {
             DeliveryInfo deliveryInfo = getItem(position);
 
-            holder.textViewCustomerName.setText("");
-            holder.textViewCustomerDeliveryAddress.setText("");
-            holder.textViewShowDistance.setText("");
+            holder.textViewOrderIdValue.setText(String.valueOf(deliveryInfo.getId()));
+            holder.textViewCustomerName.setText(deliveryInfo.getCustomerName());
+            holder.textViewCustomerDeliveryAddress.setText(deliveryInfo.getDeliveryAddress());
+            holder.relativeLayoutCall.setTag(position);
+            holder.rootLinear.setTag(position);
 
-            holder.markDeliveryRl.setOnClickListener(new View.OnClickListener() {
+            holder.relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
+                    int pos = (int) v.getTag();
+                    callback.onCallClick(pos, getItem(pos));
                 }
             });
+
+            holder.rootLinear.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    int pos = (int) v.getTag();
+                    callback.onClick(pos, getItem(pos));
+                }
+            });
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,25 +92,29 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewCustomerName, textViewCustomerDeliveryAddress, textViewShowDistance;
-        public RelativeLayout driverPassengerCallRl, markDeliveryRl;
+        public TextView textViewOrderId, textViewOrderIdValue, textViewCustomerName, textViewCustomerDeliveryAddress, textViewCall;
+        public RelativeLayout relativeLayoutCall;
         public LinearLayout rootLinear;
         public ViewHolder(View convertView, Activity context) {
             super(convertView);
+            textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
+            textViewOrderId.setTypeface(Fonts.mavenRegular(context));
+            textViewOrderIdValue = (TextView) convertView.findViewById(R.id.textViewOrderIdValue);
+            textViewOrderIdValue.setTypeface(Fonts.mavenRegular(context));
             textViewCustomerName = (TextView) convertView.findViewById(R.id.textViewCustomerName);
-            textViewCustomerName.setTypeface(Data.latoRegular(context));
+            textViewCustomerName.setTypeface(Fonts.mavenRegular(context));
             textViewCustomerDeliveryAddress = (TextView) convertView.findViewById(R.id.textViewCustomerDeliveryAddress);
             textViewCustomerDeliveryAddress.setTypeface(Data.latoRegular(context));
-            textViewShowDistance = (TextView) convertView.findViewById(R.id.textViewShowDistance);
-            textViewShowDistance.setTypeface(Data.latoRegular(context));
-            driverPassengerCallRl = (RelativeLayout) convertView.findViewById(R.id.driverPassengerCallRl);
-            markDeliveryRl = (RelativeLayout) convertView.findViewById(R.id.markDeliveryRl);
+            textViewCall = (TextView) convertView.findViewById(R.id.textViewCall);
+            textViewCall.setTypeface(Data.latoRegular(context));
+            relativeLayoutCall = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutCall);
             rootLinear = (LinearLayout) convertView.findViewById(R.id.rootLinear);
         }
     }
 
     public interface Callback{
         void onClick(int position, DeliveryInfo deliveryInfo);
+        void onCallClick(int position, DeliveryInfo deliveryInfo);
     }
 
 }

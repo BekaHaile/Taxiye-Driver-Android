@@ -353,8 +353,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/mark_delivered")
-	void markDelivered(@Field("access_token") String accessToken,
-						@Field("login_type") String loginType,
-						Callback<EarningsDetailResponse> callback);
+	void markDelivered(@FieldMap Map<String, String> params,
+						Callback<RegisterScreenResponse> callback);
 
 }

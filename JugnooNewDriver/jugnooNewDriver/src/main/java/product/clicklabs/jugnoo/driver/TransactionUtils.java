@@ -1,9 +1,9 @@
-package product.clicklabs.jugnoo.driver.dodo;
+package product.clicklabs.jugnoo.driver;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
 
@@ -12,11 +12,24 @@ import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
  */
 public class TransactionUtils {
 
-	public void openDeliveryReturnFragment(FragmentActivity activity, View container) {
+	public void openDeliveryInfoListFragment(FragmentActivity activity, View container) {
+		if(!checkIfFragmentAdded(activity, DeliveryInfosListFragment.class.getName())) {
+			activity.getSupportFragmentManager().beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.add(container.getId(), new DeliveryInfosListFragment(),
+							DeliveryInfosListFragment.class.getName())
+					.addToBackStack(DeliveryInfosListFragment.class.getName())
+					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+					.commitAllowingStateLoss();
+		}
+	}
+
+	public void openDeliveryReturnFragment(FragmentActivity activity, View container, int id) {
 		if(!checkIfFragmentAdded(activity, DeliveryReturnFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new DeliveryReturnFragment(),
+					.add(container.getId(), new DeliveryReturnFragment(id),
 							DeliveryReturnFragment.class.getName())
 					.addToBackStack(DeliveryReturnFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
@@ -25,11 +38,11 @@ public class TransactionUtils {
 		}
 	}
 
-	public void openMarkDeliveryFragment(FragmentActivity activity, View container) {
+	public void openMarkDeliveryFragment(FragmentActivity activity, View container, int id) {
 		if(!checkIfFragmentAdded(activity, MarkDeliveryFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new MarkDeliveryFragment(),
+					.add(container.getId(), new MarkDeliveryFragment(id),
 							MarkDeliveryFragment.class.getName())
 					.addToBackStack(MarkDeliveryFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()

@@ -98,7 +98,7 @@
                         android:orientation="vertical">
 
                         <RelativeLayout
-                            android:id="@+id/driverPassengerCallRl"
+                            android:id="@+id/relativeLayoutCall"
                             android:layout_width="200px"
                             android:layout_height="70px"
                             android:background="@drawable/orange_btn_selector">
@@ -112,7 +112,7 @@
                                 android:src="@drawable/call_icon_selector"/>
 
                             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                                android:id="@+id/driverPassengerCallText"
+                                android:id="@+id/textViewCall"
                                 android:layout_width="150px"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"

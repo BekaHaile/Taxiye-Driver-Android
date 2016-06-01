@@ -530,7 +530,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 
 			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
-			driverPassengerCallText = (TextView) findViewById(R.id.driverPassengerCallText);
+			driverPassengerCallText = (TextView) findViewById(R.id.textViewCall);
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
@@ -1071,7 +1071,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			buttonMakeDelivery.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-
+					relativeLayoutContainer.setVisibility(View.VISIBLE);
+					getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this, getRelativeLayoutContainer());
 				}
 			});
 
@@ -2341,7 +2342,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverIRFareRl.setVisibility(View.VISIBLE);
 					}
-					setMakeDeliveryVisibility();
+					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
 
 
@@ -2681,8 +2682,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				super.onBackPressed();
 			}
 			else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-				relativeLayoutContainer.setVisibility(View.GONE);
 				super.onBackPressed();
+				relativeLayoutContainer.setVisibility(View.GONE);
+				setMakeDeliveryButtonVisibility();
 			}
 			else if (userMode == UserMode.DRIVER) {
 				if (driverScreenMode == DriverScreenMode.D_IN_RIDE
@@ -3105,7 +3107,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					JSONObject userData = jObj.getJSONObject(KEY_USER_DATA);
 					String userName = userData.getString(KEY_USER_NAME);
-					String userImage = userData.getString(KEY_USER_IMAGE);
+					String userImage = userData.optString(KEY_USER_IMAGE, "");
 					String phoneNo = userData.getString(KEY_PHONE_NO);
 					String rating = rating = userData.optString(KEY_USER_RATING, "4");
 					double jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
@@ -3122,6 +3124,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
+					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -3134,7 +3137,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
-							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled));
+							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled, isDelivery));
 
 					driverScreenMode = DriverScreenMode.D_ARRIVED;
 					switchDriverScreen(driverScreenMode);
@@ -5821,19 +5824,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 	}
 
-	public void setMakeDeliveryVisibility(){
+	public void setMakeDeliveryButtonVisibility(){
 		try{
 			buttonMakeDelivery.setVisibility(View.GONE);
 			//TODO delivery state check
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-				boolean allUnchecked = true;
+				boolean anyUnchecked = false;
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
-					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() != 0){
-						allUnchecked = false;
+					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() == 0){
+						anyUnchecked = true;
 						break;
 					}
 				}
-				if(allUnchecked) {
+				if(anyUnchecked) {
 					buttonMakeDelivery.setVisibility(View.VISIBLE);
 				}
 			}
@@ -5886,5 +5889,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public RelativeLayout getRelativeLayoutContainer(){
 		return relativeLayoutContainer;
+	}
+
+	private TransactionUtils transactionUtils;
+	public TransactionUtils getTransactionUtils(){
+		if(transactionUtils == null){
+			transactionUtils = new TransactionUtils();
+		}
+		return transactionUtils;
 	}
 }

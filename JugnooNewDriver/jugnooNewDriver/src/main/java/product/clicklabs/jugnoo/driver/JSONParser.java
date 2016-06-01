@@ -363,7 +363,7 @@ public class JSONParser implements Constants {
 							double pickupLatitude = jObjCustomer.getDouble(KEY_PICKUP_LATITUDE);
 							double pickupLongitude = jObjCustomer.getDouble(KEY_PICKUP_LONGITUDE);
 							String customerName = jObjCustomer.getString(KEY_USER_NAME);
-							String customerImage = jObjCustomer.getString(KEY_USER_IMAGE);
+							String customerImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
 							String customerPhone = jObjCustomer.getString(KEY_PHONE_NO);
 							String customerRating = jObjCustomer.optString(KEY_RATING, "4");
 							double jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
@@ -381,10 +381,11 @@ public class JSONParser implements Constants {
 
 							double poolDistance = jObjCustomer.optDouble(KEY_POOL_DISTANCE, 0);
 							double poolFare =jObjCustomer.optDouble(KEY_POOL_FARE, 0);
-							long poolTime = jObjCustomer.optInt(KEY_POOL_TIME,0);
+							long poolTime = jObjCustomer.optInt(KEY_POOL_TIME, 0);
 
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
+							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
 
 							if(i == 0){
 								Data.setCurrentEngagementId(engagementId);
@@ -393,7 +394,7 @@ public class JSONParser implements Constants {
 							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 									referenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									customerImage, customerRating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
-									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled);
+									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled, isDelivery);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 

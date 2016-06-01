@@ -27,6 +27,10 @@ public class DeliveryInfo {
 		this.status = status;
 	}
 
+	public DeliveryInfo(int id) {
+		this.id = id;
+	}
+
 
 	public int getId() {
 		return id;
@@ -82,5 +86,15 @@ public class DeliveryInfo {
 
 	public void setAmount(double amount) {
 		this.amount = amount;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		try{
+			return ((DeliveryInfo)o).getId() == getId();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
