@@ -77,6 +77,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
+import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
@@ -5823,8 +5824,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setMakeDeliveryVisibility(){
 		try{
 			buttonMakeDelivery.setVisibility(View.GONE);
+			//TODO delivery state check
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-				buttonMakeDelivery.setVisibility(View.VISIBLE);
+				boolean allUnchecked = true;
+				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
+					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() != 0){
+						allUnchecked = false;
+						break;
+					}
+				}
+				if(allUnchecked) {
+					buttonMakeDelivery.setVisibility(View.VISIBLE);
+				}
 			}
 		} catch (Exception e){
 			e.printStackTrace();
@@ -5836,9 +5847,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1
 					&& Data.getCurrentCustomerInfo().getDeliveryInfos() != null
 					&& Data.getCurrentCustomerInfo().getDeliveryInfos().size() > 0){
+				final String engagementId = Data.getCurrentEngagementId();
+				ArrayList<LatLng> latLngs = new ArrayList<>();
+				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
+					final MarkerOptions markerOptions = new MarkerOptions()
+							.position(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng())
+							.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+									.getTextBitmap(this, assl, String.valueOf(i), 18)))
+							.anchor(0.5f, 1);
+					map.addMarker(markerOptions);
+					latLngs.add(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng());
+				}
 
-			} else{
+				new ApiGoogleDirectionWaypoints(latLngs, D_TO_C_MAP_PATH_COLOR, map,
+						new ApiGoogleDirectionWaypoints.Callback() {
+							@Override
+							public void onPre() {
 
+							}
+
+							@Override
+							public boolean showPath() {
+								return engagementId == Data.getCurrentEngagementId()
+										&& driverScreenMode == DriverScreenMode.D_IN_RIDE;
+							}
+
+							@Override
+							public void polylineAdded(Polyline polyline) {
+
+							}
+						}).execute();
 			}
 		} catch (Exception e){
 			e.printStackTrace();

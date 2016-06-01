@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -126,6 +127,40 @@ public class CustomMapMarkerCreator {
 		marker.setTitle("");
 
 		return marker;
+	}
+
+
+	public static Bitmap getTextBitmap(final Context context, ASSL assl, String text, final int fontSize) {
+		float scale = Math.min(assl.Xscale(), assl.Yscale());
+		final TextView textView = new TextView(context);
+		textView.setText(text);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (scale * (float) fontSize));
+
+		final Rect boundsText = new Rect();
+
+
+		int width = (int)(95.0f * 0.85 * scale);
+		int height = (int)(160.0f * 0.85 * scale);
+
+		final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+		final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
+
+		final Paint paint = textView.getPaint();
+		paint.getTextBounds(text, 0, textView.length(), boundsText);
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setColor(Color.WHITE);
+
+		final Canvas canvasText = new Canvas(bmpText);
+
+		Drawable shape = context.getResources().getDrawable(R.drawable.ic_red_pin);
+		shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
+		shape.draw(canvasText);
+
+		canvasText.drawText(text, canvasText.getWidth() / 2, (31f*assl.Yscale()), paint);
+		canvasText.drawText("MIN", canvasText.getWidth() / 2, (int) (37f * assl.Yscale()) + boundsText.height(), paint);
+
+
+		return bmpText;
 	}
 
 }
