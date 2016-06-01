@@ -13,16 +13,11 @@ import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
 public class TransactionUtils {
 
 	public void openDeliveryInfoListFragment(FragmentActivity activity, View container) {
-		if(!checkIfFragmentAdded(activity, DeliveryInfosListFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
-					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new DeliveryInfosListFragment(),
+					.replace(container.getId(), new DeliveryInfosListFragment(),
 							DeliveryInfosListFragment.class.getName())
 					.addToBackStack(DeliveryInfosListFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
-		}
 	}
 
 	public void openDeliveryReturnFragment(FragmentActivity activity, View container, int id) {

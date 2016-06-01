@@ -50,14 +50,6 @@
         <!-- end ride review layout -->
         <include layout="@layout/layout_driver_end"/>
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            >
-        </RelativeLayout>
-
         <!-- top bar layout-->
         <include layout="@layout/layout_home_top_bar"/>
 
@@ -66,6 +58,16 @@
             android:layout_height="6px"
             android:layout_below="@+id/topRlOuter"
             android:background="@drawable/shadow_down"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/white"
+            >
+        </RelativeLayout>
+
 
     </RelativeLayout>
 

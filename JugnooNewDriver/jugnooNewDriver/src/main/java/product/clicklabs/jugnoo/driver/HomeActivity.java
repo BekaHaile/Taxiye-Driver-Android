@@ -2678,12 +2678,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onBackPressed() {
 		try {
-			if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
+			if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+				if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+					relativeLayoutContainer.setVisibility(View.GONE);
+				}
 				super.onBackPressed();
-			}
-			else if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
-				super.onBackPressed();
-				relativeLayoutContainer.setVisibility(View.GONE);
 				setMakeDeliveryButtonVisibility();
 			}
 			else if (userMode == UserMode.DRIVER) {
@@ -3105,14 +3104,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Data.fareStructure.convenienceChargeWaiver = jObj.optDouble(KEY_CONVENIENCE_CHARGE_WAIVER, 0);
 					int referenceId = jObj.optInt(KEY_REFERENCE_ID, 0);
 
-					JSONObject userData = jObj.getJSONObject(KEY_USER_DATA);
-					String userName = userData.getString(KEY_USER_NAME);
-					String userImage = userData.optString(KEY_USER_IMAGE, "");
-					String phoneNo = userData.getString(KEY_PHONE_NO);
-					String rating = rating = userData.optString(KEY_USER_RATING, "4");
-					double jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
-					double pickupLatitude = jObj.getDouble(KEY_PICKUP_LATITUDE);
-					double pickupLongitude = jObj.getDouble(KEY_PICKUP_LONGITUDE);
+					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 1);
+					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
+					String userName = "", userImage = "", phoneNo = "", rating = "";
+					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
+					if(isDelivery == 1){
+						userName = userData.optString(KEY_NAME, "");
+						userImage = userData.optString(KEY_USER_IMAGE, "");
+						phoneNo = userData.optString(KEY_PHONE, "");
+						rating = userData.optString(KEY_USER_RATING, "4");
+						jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
+						pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
+						pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
+					} else{
+						userName = userData.optString(KEY_USER_NAME, "");
+						userImage = userData.optString(KEY_USER_IMAGE, "");
+						phoneNo = userData.optString(KEY_PHONE_NO, "");
+						rating = userData.optString(KEY_USER_RATING, "4");
+						jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
+						pickupLatitude = jObj.optDouble(KEY_PICKUP_LATITUDE, 0);
+						pickupLongitude = jObj.optDouble(KEY_PICKUP_LONGITUDE, 0);
+					}
+
 					LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
 					CouponInfo couponInfo = JSONParser.parseCouponInfo(jObj);
 					PromoInfo promoInfo = JSONParser.parsePromoInfo(jObj);
@@ -3124,7 +3137,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
-					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -3437,6 +3449,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								if(customerInfo.getIsDelivery() == 1){
 									customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
+									Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 								}
 
 							}
@@ -5852,6 +5865,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& Data.getCurrentCustomerInfo().getDeliveryInfos().size() > 0){
 				final String engagementId = Data.getCurrentEngagementId();
 				ArrayList<LatLng> latLngs = new ArrayList<>();
+				latLngs.add(Data.getCurrentCustomerInfo().getRequestlLatLng());
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 					final MarkerOptions markerOptions = new MarkerOptions()
 							.position(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng())

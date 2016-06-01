@@ -328,13 +328,13 @@ public class GCMIntentService extends IntentService {
 						try {
 							JSONObject jObj = new JSONObject(message);
 							Log.i("push_notification", String.valueOf(jObj));
-							int flag = jObj.getInt("flag");
-							String title = jObj.optString("title", "Jugnoo");
+							int flag = jObj.getInt(Constants.KEY_FLAG);
+							String title = jObj.optString(Constants.KEY_TITLE, "Jugnoo");
 
 							if (PushFlags.REQUEST.getOrdinal() == flag) {
-								int perfectRide = jObj.optInt("perfect_ride", 0);
+								int perfectRide = jObj.optInt(Constants.KEY_PERFECT_RIDE, 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
-								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
+								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 1);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
@@ -361,15 +361,15 @@ public class GCMIntentService extends IntentService {
 								}
 
 								if(entertainRequest) {
-									String engagementId = jObj.getString("engagement_id");
-									String userId = jObj.getString("user_id");
-									double latitude = jObj.getDouble("latitude");
-									double longitude = jObj.getDouble("longitude");
+									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
+									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
+									double latitude = jObj.getDouble(Constants.KEY_LATITUDE);
+									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
 									String startTime = jObj.getString("start_time");
 									String address = jObj.getString("address");
 
 									String startTimeLocal = DateOperations.utcToLocal(startTime);
-									String endTime = jObj.optString("end_time", "");
+									String endTime = jObj.optString(Constants.KEY_END_TIME, "");
 									long requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 									if ("".equalsIgnoreCase(endTime)) {
 										long serverStartTimeLocalMillis = DateOperations.getMilliseconds(startTimeLocal);

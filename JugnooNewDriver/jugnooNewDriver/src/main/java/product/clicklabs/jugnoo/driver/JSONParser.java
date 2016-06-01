@@ -31,6 +31,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -347,7 +348,6 @@ public class JSONParser implements Constants {
 					for(int i=0; i<lastEngInfoArr.length(); i++) {
 						JSONObject jObjCustomer = lastEngInfoArr.getJSONObject(i);
 
-						//TODO ask ronak for fare details
 						parseFareStructureForCustomer(jObjCustomer);
 						if(i == 0) {
 							parsePerfectRideData(context, jObjCustomer);
@@ -359,14 +359,32 @@ public class JSONParser implements Constants {
 								(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
 							int referenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
 							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
-							String userId = jObjCustomer.getString(KEY_USER_ID);
-							double pickupLatitude = jObjCustomer.getDouble(KEY_PICKUP_LATITUDE);
-							double pickupLongitude = jObjCustomer.getDouble(KEY_PICKUP_LONGITUDE);
-							String customerName = jObjCustomer.getString(KEY_USER_NAME);
-							String customerImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
-							String customerPhone = jObjCustomer.getString(KEY_PHONE_NO);
-							String customerRating = jObjCustomer.optString(KEY_RATING, "4");
-							double jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
+							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 1);
+
+							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "";
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
+							if(isDelivery == 1){
+								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
+								userId = userData.optString(KEY_USER_ID, "");
+								userName = userData.optString(KEY_NAME, "");
+								userImage = userData.optString(KEY_USER_IMAGE, "");
+								phoneNo = userData.optString(KEY_PHONE, "");
+								rating = userData.optString(KEY_USER_RATING, "4");
+								jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
+								pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
+								pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
+							} else {
+								userId = jObjCustomer.optString(KEY_USER_ID, "");
+								userName = jObjCustomer.optString(KEY_USER_NAME, "");
+								userImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
+								phoneNo = jObjCustomer.optString(KEY_PHONE_NO, "");
+								rating = jObjCustomer.optString(KEY_USER_RATING, "4");
+								jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
+								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
+								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
+							}
+
+
 							CouponInfo couponInfo = JSONParser.parseCouponInfo(jObjCustomer);
 							PromoInfo promoInfo = JSONParser.parsePromoInfo(jObjCustomer);
 
@@ -385,15 +403,14 @@ public class JSONParser implements Constants {
 
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
-							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
 
 							if(i == 0){
 								Data.setCurrentEngagementId(engagementId);
 							}
 
 							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
-									referenceId, customerName, customerPhone, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
-									customerImage, customerRating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
+									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
+									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled, isDelivery);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
@@ -413,11 +430,10 @@ public class JSONParser implements Constants {
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
+								Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 							}
 
 							Data.addCustomerInfo(customerInfo);
-
-
 
 							try {
 								if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
@@ -432,12 +448,10 @@ public class JSONParser implements Constants {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-
 						}
 					}
 
 					try {
-						//TODO ask ronak to give single master id
 						Log.writePathLogToFile(Data.getCurrentEngagementId() + "accept", "JSONPARSER  = " + jObject1);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -647,21 +661,41 @@ public class JSONParser implements Constants {
 	public static ArrayList<DeliveryInfo> parseDeliveryInfos(JSONObject jsonObject) {
 		ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
 		try {
-			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERIES);
+			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERY_DATA);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jDelivery = jsonArray.getJSONObject(i);
 				deliveryInfos.add(new DeliveryInfo(jDelivery.getInt(KEY_DELIVERY_ID),
 						new LatLng(jDelivery.getDouble(KEY_LATITUDE), jDelivery.getDouble(KEY_LONGITUDE)),
-						jDelivery.getString(KEY_USER_NAME),
-						jDelivery.getString(KEY_DELIVERY_ADDRESS),
-						jDelivery.getString(KEY_PHONE_NO),
-						jDelivery.getDouble(KEY_DELIVERY_AMOUNT),
+						jDelivery.getString(KEY_NAME),
+						jDelivery.getString(KEY_ADDRESS),
+						jDelivery.getString(KEY_PHONE),
+						jDelivery.getDouble(KEY_COLLECT_CASH),
 						jDelivery.getInt(KEY_STATUS)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.728127, 76.800152), "Abc", "Some address", "1234", 100d, 0));
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.709550, 76.784260), "Abc", "Some address", "1234", 100d, 0));
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.726729, 76.769678), "Abc", "Some address", "1234", 100d, 0));
+
 		return deliveryInfos;
+	}
+
+	public static ArrayList<DeliveryReturnOption> parseDeliveryReturnOptions(JSONObject jsonObject){
+		ArrayList<DeliveryReturnOption> deliveryReturnOptions = new ArrayList<>();
+		try{
+			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERY_RETURN_OPTIONS);
+			for (int i = 0; i < jsonArray.length(); i++) {
+				JSONObject jOption = jsonArray.getJSONObject(i);
+				deliveryReturnOptions.add(new DeliveryReturnOption(jOption.getInt(KEY_ID), jOption.getString(KEY_NAME)));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		deliveryReturnOptions.add(new DeliveryReturnOption(1, "make"));
+		deliveryReturnOptions.add(new DeliveryReturnOption(2, "make"));
+		return deliveryReturnOptions;
 	}
 
 }

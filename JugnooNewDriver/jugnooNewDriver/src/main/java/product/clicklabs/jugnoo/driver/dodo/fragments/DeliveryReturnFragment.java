@@ -66,7 +66,7 @@ public class DeliveryReturnFragment extends Fragment {
 
 		relative = (LinearLayout) rootView.findViewById(R.id.relative);
 		try {
-			relative.setLayoutParams(new ViewGroup.LayoutParams(1134, 720));
+			relative.setLayoutParams(new ViewGroup.LayoutParams(720, 1134));
 			ASSL.DoMagic(relative);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class DeliveryReturnFragment extends Fragment {
 		recyclerViewReturnOptions.setAdapter(returnOptionsListAdapter);
 
 		buttonSubmit = (Button) rootView.findViewById(R.id.buttonSubmit);
-		buttonSubmit.setTypeface(Data.latoRegular(activity));
+		buttonSubmit.setTypeface(Fonts.mavenRegular(activity));
 
 
 		buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -103,11 +103,11 @@ public class DeliveryReturnFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (Data.returnOptionsList != null) {
+				if (Data.deliveryReturnOptionList != null) {
 					String returnReasonString = "";
-					for (int i = 0; i < Data.returnOptionsList.size(); i++) {
-						if (Data.returnOptionsList.get(i).checked) {
-							returnReasonString = Data.returnOptionsList.get(i).name;
+					for (int i = 0; i < Data.deliveryReturnOptionList.size(); i++) {
+						if (Data.deliveryReturnOptionList.get(i).isChecked()) {
+							returnReasonString = Data.deliveryReturnOptionList.get(i).getName();
 							break;
 						}
 					}
@@ -134,9 +134,9 @@ public class DeliveryReturnFragment extends Fragment {
 
 	private void setReturnOptions() {
 		try {
-			if (Data.returnOptionsList != null) {
-				for (int i = 0; i < Data.returnOptionsList.size(); i++) {
-					Data.returnOptionsList.get(i).checked = false;
+			if (Data.deliveryReturnOptionList != null) {
+				for (int i = 0; i < Data.deliveryReturnOptionList.size(); i++) {
+					Data.deliveryReturnOptionList.get(i).setChecked(false);
 				}
 				returnOptionsListAdapter.notifyDataSetChanged();
 			} else {

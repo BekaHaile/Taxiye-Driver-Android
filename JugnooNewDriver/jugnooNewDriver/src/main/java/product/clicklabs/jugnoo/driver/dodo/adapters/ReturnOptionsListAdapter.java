@@ -1,22 +1,18 @@
 package product.clicklabs.jugnoo.driver.dodo.adapters;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
-import product.clicklabs.jugnoo.driver.dodo.datastructure.ReturnOptions;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 /**
@@ -45,11 +41,11 @@ public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOption
 
 	@Override
 	public void onBindViewHolder(ReturnOptionsListAdapter.ViewHolder holder, int position) {
-		ReturnOptions returnOptions = Data.returnOptionsList.get(position);
+		DeliveryReturnOption deliveryReturnOption = Data.deliveryReturnOptionList.get(position);
 
-		holder.textViewReturnOption.setText(returnOptions.name);
+		holder.textViewReturnOption.setText(deliveryReturnOption.getName());
 
-		if(returnOptions.checked){
+		if(deliveryReturnOption.isChecked()){
 			holder.relative.setBackgroundColor(Color.WHITE);
 			holder.imageViewReturnOptionCheck.setImageResource(R.drawable.radio_select);
 		}
@@ -64,15 +60,13 @@ public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOption
 			@Override
 			public void onClick(View v) {
 				try {
-
 					int id = (int) v.getTag();
-
-					for(int i=0; i<Data.returnOptionsList.size(); i++){
+					for(int i=0; i<Data.deliveryReturnOptionList.size(); i++){
 						if(id == i){
-							Data.returnOptionsList.get(i).checked = true;
+							Data.deliveryReturnOptionList.get(i).setChecked(true);
 						}
 						else{
-							Data.returnOptionsList.get(i).checked = false;
+							Data.deliveryReturnOptionList.get(i).setChecked(false);
 						}
 					}
 					notifyDataSetChanged();
@@ -84,13 +78,11 @@ public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOption
 	}
 
 	@Override
-	public long getItemId(int position) {
-		return position;
-	}
-
-	@Override
 	public int getItemCount() {
-		return Data.returnOptionsList.size();
+		if(Data.deliveryReturnOptionList == null){
+			return 0;
+		}
+		return Data.deliveryReturnOptionList.size();
 	}
 
 	public class ViewHolder extends RecyclerView.ViewHolder {

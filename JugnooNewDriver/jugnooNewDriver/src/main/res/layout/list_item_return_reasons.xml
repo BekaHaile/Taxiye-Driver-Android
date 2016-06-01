@@ -11,7 +11,7 @@
         android:layout_width="600px"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="40px"
+        android:padding="25px"
         android:text="Driver is late"
         android:textColor="@color/grey_dark"
         android:layout_toRightOf="@+id/imageViewReturnOptionCheck"

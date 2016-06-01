@@ -96,9 +96,15 @@ public interface Constants {
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
     String KEY_IS_CACHED = "is_cached";
     String KEY_PR_DISTANCE = "pr_distance";
-    String KEY_DELIVERIES = "deliveries";
+    String KEY_DELIVERY_DATA = "delivery_data";
     String KEY_DELIVERY_ID = "delivery_id";
-    String KEY_DELIVERY_ADDRESS = "delivery_address";
-    String KEY_DELIVERY_AMOUNT = "delivery_amount";
+    String KEY_ADDRESS = "address";
+    String KEY_COLLECT_CASH = "collect_cash";
+    String KEY_DELIVERY_RETURN_OPTIONS = "delivery_return_options";
+    String KEY_ID = "id";
+    String KEY_NAME = "name";
+    String KEY_TITLE = "title";
+    String KEY_PERFECT_RIDE = "perfect_ride";
+    String KEY_END_TIME = "end_time";
 
 }
