@@ -466,9 +466,7 @@
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">Resend OTP</string>
     <string name="miss_call_otp">Give a Miss Call</string>
-    <string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
-        identity
-    </string>
+    <string name="give_missed_call_dialog_text">আমাক এটা মিচ কল দিয়ক আৰু আমি আপোনাৰ পৰিচয় নিচ্চিত কৰিম ।</string>
     <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
 
 

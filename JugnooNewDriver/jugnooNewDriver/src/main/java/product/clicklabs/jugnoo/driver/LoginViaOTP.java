@@ -53,12 +53,11 @@ public class LoginViaOTP extends BaseActivity {
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp, btnOtpViaCall;
 	ImageView imageViewYellowLoadingBar;
-	TextView textViewCounter;
+	TextView textViewCounter, textViewOr;
 	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 	int languagePrefStatus;
 	Configuration conf;
-	public static boolean otpScreenStatus = false;
-
+	String knowlarityMissedCallNumber = "";
 	Spinner spinner;
 	public static String OTP_SCREEN_OPEN = null;
 	List<String> categories = new ArrayList<>();
@@ -135,6 +134,9 @@ public class LoginViaOTP extends BaseActivity {
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		textViewOr = (TextView) findViewById(R.id.textViewOr);
+		textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -203,7 +205,7 @@ public class LoginViaOTP extends BaseActivity {
 		btnOtpViaCall.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!"".equalsIgnoreCase(Data.userData.knowlarityMissedCallNumber)) {
+				if (!"".equalsIgnoreCase(knowlarityMissedCallNumber)) {
 					DialogPopup.alertPopupTwoButtonsWithListeners(LoginViaOTP.this, "",
 							getResources().getString(R.string.give_missed_call_dialog_text),
 							getResources().getString(R.string.call_us),
@@ -211,7 +213,7 @@ public class LoginViaOTP extends BaseActivity {
 							new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									Utils.openCallIntent(LoginViaOTP.this, Data.userData.knowlarityMissedCallNumber);
+									Utils.openCallIntent(LoginViaOTP.this, knowlarityMissedCallNumber);
 								}
 							},
 							new View.OnClickListener() {
@@ -340,6 +342,7 @@ public class LoginViaOTP extends BaseActivity {
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
+								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "9896976999");
 								Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
 							} else {
 								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
@@ -396,6 +399,13 @@ public class LoginViaOTP extends BaseActivity {
 		@Override
 		public void onFinish() {
 			linearLayoutWaiting.setVisibility(View.GONE);
+			if("".equalsIgnoreCase(knowlarityMissedCallNumber)){
+				btnOtpViaCall.setVisibility(View.GONE);
+				textViewOr.setVisibility(View.GONE);
+			}else {
+				btnOtpViaCall.setVisibility(View.VISIBLE);
+				textViewOr.setVisibility(View.VISIBLE);
+			}
 			layoutResendOtp.setVisibility(View.VISIBLE);
 		}
 	}
