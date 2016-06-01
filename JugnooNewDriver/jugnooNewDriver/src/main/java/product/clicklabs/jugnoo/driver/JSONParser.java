@@ -329,6 +329,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_SUSCRIBER_KEY, userData.optString("pubnub_subscribe_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 
+
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
@@ -338,6 +339,9 @@ public class JSONParser implements Constants {
 		int paytmRechargeEnabled = userData.optInt("paytm_recharge_enabled", 0);
 		int destinationOptionEnable = userData.optInt("set_destination_option_enabled", 0);
 		long walletUpdateTimeout = userData.optLong("end_ride_fetch_balance_timeout", 3000);
+		String knowlarityMissedCallNumber = userData.optString("knowlarity_missed_call_number", "");
+
+
 		Data.termsAgreed = 1;
 		saveAccessToken(context, accessToken);
 		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
@@ -366,7 +370,7 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail, blockedAppPackageMessage);
+				userId, userEmail, blockedAppPackageMessage, knowlarityMissedCallNumber);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

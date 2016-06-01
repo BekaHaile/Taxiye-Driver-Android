@@ -49,14 +49,16 @@ import retrofit.mime.TypedByteArray;
  */
 public class LoginViaOTP extends BaseActivity {
 
-	LinearLayout linearLayoutWaiting, relative, otpETextLLayout,selectLanguageLl;
+	LinearLayout linearLayoutWaiting, relative, otpETextLLayout, selectLanguageLl, layoutResendOtp;
 	EditText phoneNoEt, otpEt;
-	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp;
+	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp, btnOtpViaCall;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter;
-	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE,"");
+	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 	int languagePrefStatus;
 	Configuration conf;
+	public static boolean otpScreenStatus = false;
+
 	Spinner spinner;
 	public static String OTP_SCREEN_OPEN = null;
 	List<String> categories = new ArrayList<>();
@@ -86,7 +88,13 @@ public class LoginViaOTP extends BaseActivity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
-		retrieveOTPFromSMS(intent);
+
+		if (intent.hasExtra("message")) {
+			retrieveOTPFromSMS(intent);
+		} else if (intent.hasExtra("otp")) {
+			retrieveOTPFromPush(intent);
+		}
+
 		super.onNewIntent(intent);
 	}
 
@@ -108,6 +116,7 @@ public class LoginViaOTP extends BaseActivity {
 		otpEt.setEnabled(false);
 		linearLayoutWaiting = (LinearLayout) findViewById(R.id.linearLayoutWaiting);
 		selectLanguageLl = (LinearLayout) findViewById(R.id.selectLanguageLl);
+		layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
 		otpETextLLayout = (LinearLayout) findViewById(R.id.otpETextLLayout);
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -115,6 +124,10 @@ public class LoginViaOTP extends BaseActivity {
 		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		btnReGenerateOtp = (Button) findViewById(R.id.btnReGenerateOtp);
 		btnReGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		btnOtpViaCall = (Button) findViewById(R.id.btnOtpViaCall);
+		btnOtpViaCall.setTypeface(Data.latoRegular(getApplicationContext()));
+
 		loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
 		loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		spinner = (Spinner) findViewById(R.id.language_spinner);
@@ -186,6 +199,33 @@ public class LoginViaOTP extends BaseActivity {
 			}
 		});
 
+
+		btnOtpViaCall.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!"".equalsIgnoreCase(Data.userData.knowlarityMissedCallNumber)) {
+					DialogPopup.alertPopupTwoButtonsWithListeners(LoginViaOTP.this, "",
+							getResources().getString(R.string.give_missed_call_dialog_text),
+							getResources().getString(R.string.call_us),
+							getResources().getString(R.string.cancel),
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									Utils.openCallIntent(LoginViaOTP.this, Data.userData.knowlarityMissedCallNumber);
+								}
+							},
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+
+								}
+							}, false, false
+					);
+				}
+			}
+		});
+
+
 		loginViaOtp.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -221,27 +261,7 @@ public class LoginViaOTP extends BaseActivity {
 
 
 		Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
-
 		OTP_SCREEN_OPEN = "yes";
-
-
-
-
-//		// Spinner Drop down elements
-//
-//		categories.add("Select Language");
-//		categories.add("Hindi");
-//		categories.add("Gujrati");
-//		categories.add("Oriya");
-//		categories.add("Malayalam");
-//		categories.add("Telgu");
-//		categories.add("Tamil");
-//		categories.add("Kannada");
-//		categories.add("English");
-
-		// Creating adapter for spinner
-
-
 
 	}
 
@@ -315,7 +335,7 @@ public class LoginViaOTP extends BaseActivity {
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
 								btnGenerateOtp.setVisibility(View.GONE);
-								btnReGenerateOtp.setVisibility(View.GONE);
+								layoutResendOtp.setVisibility(View.GONE);
 								loginViaOtp.setVisibility(View.VISIBLE);
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
@@ -376,7 +396,7 @@ public class LoginViaOTP extends BaseActivity {
 		@Override
 		public void onFinish() {
 			linearLayoutWaiting.setVisibility(View.GONE);
-			btnReGenerateOtp.setVisibility(View.VISIBLE);
+			layoutResendOtp.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -408,6 +428,28 @@ public class LoginViaOTP extends BaseActivity {
 			e.printStackTrace();
 		}
 	}
+
+
+	private void retrieveOTPFromPush(Intent intent) {
+		try {
+			String otp = "";
+			if (intent.hasExtra("otp")) {
+				otp = intent.getStringExtra("otp");
+			}
+			if (Utils.checkIfOnlyDigits(otp)) {
+				if (!"".equalsIgnoreCase(otp)) {
+					if (Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+						otpEt.setText(otp);
+						otpEt.setSelection(otpEt.getText().length());
+						loginViaOtp.performClick();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public void sendLoginValues(final Activity activity, final String emailId, final String phoneNo, final String password, final String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -545,7 +587,7 @@ public class LoginViaOTP extends BaseActivity {
 			loginDataFetched = false;
 			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
-		} else if(hasFocus && sendToOtpScreen){
+		} else if (hasFocus && sendToOtpScreen) {
 			sendIntentToOtpScreen();
 		}
 	}
