@@ -4259,38 +4259,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void fetchHeatMapData(final Activity activity) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-				final long responseTime = System.currentTimeMillis();
-				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
-					@Override
-					public void success(HeatMapResponse heatMapResponse, Response response) {
-						try {
-
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							Log.i("heat", jsonString);
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
-							String message = JSONParser.getServerMessage(jObj);
-							Log.i("fetchHeatmapData", ">message="+message);
-							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
-									heatMapResponseGlobal = heatMapResponse;
-									drawHeatMapData(heatMapResponseGlobal);
-									Log.i("Heat Map response", String.valueOf(heatMapResponse));
-									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
-									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.HEAT_MAP_RESPONSE);
-								}
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-					}
-				});
+//				final long responseTime = System.currentTimeMillis();
+//				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+//					@Override
+//					public void success(HeatMapResponse heatMapResponse, Response response) {
+//						try {
+//
+//							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+//							Log.i("heat", jsonString);
+//							JSONObject jObj;
+//							jObj = new JSONObject(jsonString);
+//							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
+//							String message = JSONParser.getServerMessage(jObj);
+//							Log.i("fetchHeatmapData", ">message="+message);
+//							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+//								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
+//									heatMapResponseGlobal = heatMapResponse;
+//									drawHeatMapData(heatMapResponseGlobal);
+//									Log.i("Heat Map response", String.valueOf(heatMapResponse));
+//									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+//									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.HEAT_MAP_RESPONSE);
+//								}
+//							}
+//						} catch (Exception exception) {
+//							exception.printStackTrace();
+//						}
+//
+//					}
+//
+//					@Override
+//					public void failure(RetrofitError error) {
+//					}
+//				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

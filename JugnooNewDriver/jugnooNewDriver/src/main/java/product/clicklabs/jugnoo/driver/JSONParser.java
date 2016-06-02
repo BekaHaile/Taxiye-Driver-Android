@@ -291,6 +291,7 @@ public class JSONParser implements Constants {
 		String resp = parseCurrentUserStatus(context, jUserStatusObject);
 
 		parseCancellationReasons(jObj,context);
+		Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 
 
 		try {
@@ -366,7 +367,7 @@ public class JSONParser implements Constants {
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
-								userId = userData.optString(KEY_USER_ID, "");
+								userId = userData.optString(KEY_USER_ID, "0");
 								userName = userData.optString(KEY_NAME, "");
 								userImage = userData.optString(KEY_USER_IMAGE, "");
 								phoneNo = userData.optString(KEY_PHONE, "");
@@ -375,7 +376,7 @@ public class JSONParser implements Constants {
 								pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
 								pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
 							} else {
-								userId = jObjCustomer.optString(KEY_USER_ID, "");
+								userId = jObjCustomer.optString(KEY_USER_ID, "0");
 								userName = jObjCustomer.optString(KEY_USER_NAME, "");
 								userImage = jObjCustomer.optString(KEY_USER_IMAGE, "");
 								phoneNo = jObjCustomer.optString(KEY_PHONE_NO, "");
@@ -430,8 +431,7 @@ public class JSONParser implements Constants {
 							}
 
 							if(customerInfo.getIsDelivery() == 1){
-								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
-								Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
+								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
 							}
 
 							Data.addCustomerInfo(customerInfo);
@@ -682,10 +682,9 @@ public class JSONParser implements Constants {
 	public static ArrayList<DeliveryReturnOption> parseDeliveryReturnOptions(JSONObject jsonObject){
 		ArrayList<DeliveryReturnOption> deliveryReturnOptions = new ArrayList<>();
 		try{
-			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERY_RETURN_OPTIONS);
+			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERY_CANCEL_REASONS);
 			for (int i = 0; i < jsonArray.length(); i++) {
-				JSONObject jOption = jsonArray.getJSONObject(i);
-				deliveryReturnOptions.add(new DeliveryReturnOption(jOption.getInt(KEY_ID), jOption.getString(KEY_NAME)));
+				deliveryReturnOptions.add(new DeliveryReturnOption(jsonArray.getString(i)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -347,11 +347,6 @@ public interface APIServices {
 						   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/delivery_return_request")
-	void deliveryReturnRequest(@FieldMap Map<String, String> params,
-							   Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
 	@POST("/mark_delivered")
 	void markDelivered(@FieldMap Map<String, String> params,
 						Callback<RegisterScreenResponse> callback);

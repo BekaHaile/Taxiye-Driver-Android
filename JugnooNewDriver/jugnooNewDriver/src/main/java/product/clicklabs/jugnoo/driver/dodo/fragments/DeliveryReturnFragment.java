@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver.dodo.fragments;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -173,12 +172,12 @@ public class DeliveryReturnFragment extends Fragment {
 				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(Data.getCurrentCustomerInfo().getEngagementId()));
 				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
-				params.put(Constants.KEY_RETURN_REASON, reason);
+				params.put(Constants.KEY_CANCEL_REASON, reason);
 				params.put(Constants.KEY_DISTANCE, String.valueOf(activity.getCustomerRideDataGlobal().getDistance()));
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
 
-				RestClient.getApiServices().deliveryReturnRequest(params, new Callback<RegisterScreenResponse>() {
+				RestClient.getApiServices().cancelDelivery(params, new Callback<RegisterScreenResponse>() {
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 						DialogPopup.dismissLoadingDialog();

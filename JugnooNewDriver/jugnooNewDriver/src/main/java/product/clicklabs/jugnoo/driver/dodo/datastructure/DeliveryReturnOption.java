@@ -5,8 +5,8 @@ public class DeliveryReturnOption {
 	private String name;
 	private boolean checked;
 
-	public DeliveryReturnOption(int id, String name){
-		this.id = id;
+	public DeliveryReturnOption(String name){
+		this.id = 0;
 		this.name = name;
 		this.checked = false;
 	}

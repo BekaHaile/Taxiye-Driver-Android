@@ -90,7 +90,7 @@ public interface Constants {
     String KEY_HAVERSINE_DISTANCE = "haversine_distance";
     String KEY_RIDE_TIME = "ride_time";
     String KEY_WAIT_TIME = "wait_time";
-    String KEY_RETURN_REASON = "return_reason";
+    String KEY_CANCEL_REASON = "cancel_reason";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
@@ -100,7 +100,7 @@ public interface Constants {
     String KEY_DELIVERY_ID = "delivery_id";
     String KEY_ADDRESS = "address";
     String KEY_COLLECT_CASH = "collect_cash";
-    String KEY_DELIVERY_RETURN_OPTIONS = "delivery_return_options";
+    String KEY_DELIVERY_CANCEL_REASONS = "delivery_cancel_reasons";
     String KEY_ID = "id";
     String KEY_NAME = "name";
     String KEY_TITLE = "title";
