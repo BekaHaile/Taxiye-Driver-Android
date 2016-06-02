@@ -356,4 +356,14 @@ public interface APIServices {
 	void markDelivered(@FieldMap Map<String, String> params,
 						Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/cancel_delivery")
+	void cancelDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	void endDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+
 }

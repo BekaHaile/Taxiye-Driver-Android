@@ -23,6 +23,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -108,7 +109,6 @@ public class MarkDeliveryFragment extends Fragment {
 
 							}
 						}, false, true);
-				markDelivered();
 			}
 		});
 
@@ -164,6 +164,9 @@ public class MarkDeliveryFragment extends Fragment {
 				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(Data.getCurrentCustomerInfo().getEngagementId()));
 				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
+				params.put(Constants.KEY_DISTANCE, String.valueOf(activity.getCustomerRideDataGlobal().getDistance()));
+				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
+				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
 
 				RestClient.getApiServices().markDelivered(params,
 						new Callback<RegisterScreenResponse>() {
@@ -177,7 +180,7 @@ public class MarkDeliveryFragment extends Fragment {
 									String message = JSONParser.getServerMessage(jObj);
 									if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-											deliveryInfo.setStatus(1);
+											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
 											DialogPopup.alertPopupWithListener(activity, "", message,
 													new View.OnClickListener() {
 														@Override

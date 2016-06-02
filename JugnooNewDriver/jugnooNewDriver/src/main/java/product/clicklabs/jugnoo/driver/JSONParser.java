@@ -32,6 +32,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -675,9 +676,9 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.728127, 76.800152), "Abc", "Some address", "1234", 100d, 0));
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.709550, 76.784260), "Abc", "Some address", "1234", 100d, 0));
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.726729, 76.769678), "Abc", "Some address", "1234", 100d, 0));
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.728127, 76.800152), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.709550, 76.784260), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
+		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.726729, 76.769678), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
 
 		return deliveryInfos;
 	}

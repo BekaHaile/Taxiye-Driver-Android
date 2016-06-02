@@ -101,6 +101,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -276,8 +277,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 	DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 
-	CustomerRideData customerRideDataGlobal = new CustomerRideData();
-//	long previousRideTime = 0;
+	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
 	long fetchHeatMapTime = 0;
 
@@ -2962,7 +2962,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(customerInfo.getIsPooled() == 1){
 				holder.imageViewRequestType.setImageResource(R.drawable.ic_pool_request);
 			} else if(customerInfo.getIsDelivery() == 1){
-				holder.imageViewRequestType.setImageResource(R.drawable.ic_dodo_request);
+				holder.imageViewRequestType.setImageResource(R.drawable.ic_delivery_request);
 			} else{
 				holder.imageViewRequestType.setImageResource(R.drawable.ic_auto_request);
 			}
@@ -5844,7 +5844,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
 				boolean anyUnchecked = false;
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
-					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() == 0){
+					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() == DeliveryStatus.PENDING.getOrdinal()){
 						anyUnchecked = true;
 						break;
 					}
@@ -5912,4 +5912,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		return transactionUtils;
 	}
+
+	public CustomerRideData getCustomerRideDataGlobal(){
+		return customerRideDataGlobal;
+	}
+
+	public Location getMyLocation(){
+		return myLocation;
+	}
+
 }

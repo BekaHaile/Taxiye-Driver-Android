@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -185,7 +186,7 @@ public class DeliveryReturnFragment extends Fragment {
 							String message = JSONParser.getServerMessage(jObj);
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									deliveryInfo.setStatus(-1);
+									deliveryInfo.setStatus(DeliveryStatus.CANCELLED.getOrdinal());
 									activity.onBackPressed();
 									DialogPopup.alertPopupWithListener(activity, "", message,
 											new View.OnClickListener() {
