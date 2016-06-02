@@ -80,7 +80,8 @@
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:splitMotionEvents="false">
+        android:splitMotionEvents="false"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/etLayout"
@@ -234,7 +235,7 @@
             android:text="@string/GENERATE_OTP"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
 
         <Button
@@ -246,7 +247,7 @@
             android:text="@string/verify_me"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <LinearLayout
             android:id="@+id/layoutResendOtp"
@@ -256,7 +257,7 @@
             android:gravity="center_horizontal"
             android:splitMotionEvents="false"
             android:orientation="vertical"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <Button
                 android:id="@+id/btnReGenerateOtp"
@@ -288,17 +289,29 @@
                 android:visibility="visible"/>
 
         </LinearLayout>
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="348px"
-            android:layout_height="56px"
-            android:layout_marginTop="48px"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/login"
-            android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"
-            android:visibility="visible"/>
+
 
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainLoginLinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="288px"
+            android:layout_height="288px"
+            android:background="@drawable/orange_circle"
+            android:text="@string/login"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="48px"
+            android:visibility="visible"/>
+
+        </LinearLayout>
 
 </LinearLayout>

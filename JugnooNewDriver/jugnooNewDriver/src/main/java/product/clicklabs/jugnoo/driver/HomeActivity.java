@@ -1632,6 +1632,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			Crashlytics.logException(e);
 		}
 
+
 	}
 
 	@Override
