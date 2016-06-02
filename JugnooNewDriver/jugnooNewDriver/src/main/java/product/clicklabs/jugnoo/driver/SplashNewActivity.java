@@ -68,6 +68,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.PendingApiHit;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -487,7 +488,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(context).getAllPendingAPICalls();
 						for(PendingAPICall pendingAPICall : pendingAPICalls){
 							Log.e(TAG, "pendingApiCall="+pendingAPICall);
-							startAPI(context, pendingAPICall);
+							new PendingApiHit().startAPI(context, pendingAPICall);
 						}
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
@@ -530,31 +531,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
     		e.printStackTrace();
     	}
     }
-    
-	public void startAPI(Context context, PendingAPICall pendingAPICall) {
-		try {
-			if (AppStatus.getInstance(context).isOnline(context)) {
-				Response response = null;
-				if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
-				}
-				else if(PendingCall.MARK_DELIVERED.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().markDeliveredSync(pendingAPICall.nameValuePairs);
-				}
-				else if(PendingCall.UPLOAD_RIDE_DATA.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().uploadRideDataSync(pendingAPICall.nameValuePairs);
-				}
-				Log.e(TAG, "response="+response);
-				if(response != null){
-					Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-					Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	
 	class ShowAnimListener implements AnimationListener{
 		

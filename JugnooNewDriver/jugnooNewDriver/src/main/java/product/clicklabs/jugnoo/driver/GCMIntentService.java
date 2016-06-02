@@ -334,7 +334,7 @@ public class GCMIntentService extends IntentService {
 							if (PushFlags.REQUEST.getOrdinal() == flag) {
 								int perfectRide = jObj.optInt(Constants.KEY_PERFECT_RIDE, 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
-								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 1);
+								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;

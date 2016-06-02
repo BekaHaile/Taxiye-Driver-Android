@@ -115,7 +115,7 @@ public class DeliveryReturnFragment extends Fragment {
 					if ("".equalsIgnoreCase(returnReasonString)) {
 						DialogPopup.alertPopup(activity, "", getResources().getString(R.string.select_reason));
 					} else {
-						deliveryReturnRequest(activity, returnReasonString);
+						deliveryReturnRequest(returnReasonString);
 					}
 				}
 			}
@@ -163,7 +163,7 @@ public class DeliveryReturnFragment extends Fragment {
 
 
 
-	public void deliveryReturnRequest(final Activity activity, final String reason) {
+	public void deliveryReturnRequest(final String reason) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -174,6 +174,9 @@ public class DeliveryReturnFragment extends Fragment {
 				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_RETURN_REASON, reason);
+				params.put(Constants.KEY_DISTANCE, String.valueOf(activity.getCustomerRideDataGlobal().getDistance()));
+				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
+				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
 
 				RestClient.getApiServices().deliveryReturnRequest(params, new Callback<RegisterScreenResponse>() {
 					@Override

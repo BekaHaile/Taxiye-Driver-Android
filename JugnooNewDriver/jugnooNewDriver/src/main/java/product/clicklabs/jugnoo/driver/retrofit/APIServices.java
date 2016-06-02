@@ -365,5 +365,8 @@ public interface APIServices {
 	@POST("/end_delivery")
 	void endDelivery(@FieldMap Map<String, String> params,
 					   Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	Response endDelivery(@FieldMap Map<String, String> params);
 
 }

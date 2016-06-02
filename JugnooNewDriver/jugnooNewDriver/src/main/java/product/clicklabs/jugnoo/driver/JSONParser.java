@@ -360,7 +360,7 @@ public class JSONParser implements Constants {
 								(EngagementStatus.ARRIVED.getOrdinal() == engagementStatus)) {
 							int referenceId = jObjCustomer.optInt(KEY_REFERENCE_ID, 0);
 							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
-							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 1);
+							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "";
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
@@ -676,10 +676,6 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.728127, 76.800152), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.709550, 76.784260), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
-		deliveryInfos.add(new DeliveryInfo(0, new LatLng(30.726729, 76.769678), "Abc", "Some address", "1234", 100d, DeliveryStatus.PENDING.getOrdinal()));
-
 		return deliveryInfos;
 	}
 
@@ -694,8 +690,6 @@ public class JSONParser implements Constants {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		deliveryReturnOptions.add(new DeliveryReturnOption(1, "make"));
-		deliveryReturnOptions.add(new DeliveryReturnOption(2, "make"));
 		return deliveryReturnOptions;
 	}
 

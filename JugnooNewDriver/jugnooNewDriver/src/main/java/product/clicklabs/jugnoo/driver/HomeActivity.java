@@ -3104,7 +3104,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Data.fareStructure.convenienceChargeWaiver = jObj.optDouble(KEY_CONVENIENCE_CHARGE_WAIVER, 0);
 					int referenceId = jObj.optInt(KEY_REFERENCE_ID, 0);
 
-					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 1);
+					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "";
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
@@ -3447,7 +3447,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 								}
 
-								if(customerInfo.getIsDelivery() == 1){
+								if (customerInfo.getIsDelivery() == 1) {
 									customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
 									Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 								}
@@ -3622,85 +3622,189 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		Log.i("end_ride params =", "=" + params);
 
+		String url = PendingCall.END_RIDE.getPath();
+		if(customerInfo.getIsDelivery() == 1){
+			url = PendingCall.END_DELIVERY.getPath();
+		}
+
 		if (customerInfo.getCachedApiEnabled() == 1) {
-			endRideOffline(activity, PendingCall.END_RIDE.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
+			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 		} else {
-			RestClient.getApiServices().autoEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
+//			RestClient.getApiServices().autoEndRideAPIRetro(params, new Callback<RegisterScreenResponse>() {
+//				@Override
+//				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+//					try {
+//						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+//						JSONObject jObj;
+//						jObj = new JSONObject(jsonString);
+//						if (!jObj.isNull("error")) {
+//							String errorMessage = jObj.getString("error");
+//
+//							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+//								HomeActivity.logoutUser(activity);
+//							} else {
+//								DialogPopup.alertPopup(activity, "", errorMessage);
+//							}
+//							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+//							rideTimeChronometer.start();
+//						} else {
+//
+//							try {
+//								totalFare = jObj.getDouble("fare");
+//							} catch (Exception e) {
+//								e.printStackTrace();
+//								totalFare = 0;
+//							}
+//
+//							endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
+//							if (customerInfo != null) {
+//								if (customerInfo.couponInfo != null) {
+//									customerInfo.couponInfo.couponApplied = true;
+//								} else if (customerInfo.promoInfo != null) {
+//									customerInfo.promoInfo.promoApplied = true;
+//								}
+//							}
+//
+//							if (map != null) {
+//								map.clear();
+//								drawHeatMapData(heatMapResponseGlobal);
+//							}
+//
+//							rideTimeChronometer.stop();
+//
+//
+//							driverScreenMode = DriverScreenMode.D_RIDE_END;
+//							Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
+//							switchDriverScreen(driverScreenMode);
+//							saveCustomerRideDataInSP(customerInfo);
+//
+//							driverUploadPathDataFileAsync(activity, String.valueOf(customerInfo.getEngagementId()), totalHaversineDistanceInKm);
+//
+//
+//							initializeStartRideVariables();
+//							nudgeRideEnd(dropLatitude, dropLongitude, params);
+//
+//						}
+//					} catch (Exception exception) {
+//						exception.printStackTrace();
+//						driverScreenMode = DriverScreenMode.D_IN_RIDE;
+//						rideTimeChronometer.start();
+//						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+//					}
+//					AGPSRefresh.hardRefreshGpsData(HomeActivity.this);
+//					DialogPopup.dismissLoadingDialog();
+//
+//				}
+//
+//				@Override
+//				public void failure(RetrofitError error) {
+//					Log.e("error", "=" + error);
+//					endRideOffline(activity, PendingCall.END_RIDE.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
+//							 customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+//				}
+//
+//
+//			});
+			if(customerInfo.getIsDelivery() == 1) {
+				RestClient.getApiServices().endDelivery(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+						eoRideTimeInMillis, eoWaitTimeInMillis, url));
+			} else{
+				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+						eoRideTimeInMillis, eoWaitTimeInMillis, url));
+			}
+		}
+	}
 
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							} else {
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							}
-							driverScreenMode = DriverScreenMode.D_IN_RIDE;
-							rideTimeChronometer.start();
-						} else {
+	private class CallbackEndRide<RegisterScreenResponse> implements Callback<RegisterScreenResponse>{
+		private CustomerInfo customerInfo;
+		private double totalHaversineDistanceInKm, dropLatitude, dropLongitude;
+		private HashMap<String, String> params;
+		private long eoRideTimeInMillis, eoWaitTimeInMillis;
+		private String url;
 
-							try {
-								totalFare = jObj.getDouble("fare");
-							} catch (Exception e) {
-								e.printStackTrace();
-								totalFare = 0;
-							}
+		public CallbackEndRide(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude, double dropLongitude, HashMap<String, String> params,
+							   long eoRideTimeInMillis, long eoWaitTimeInMillis, String url) {
+			this.customerInfo = customerInfo;
+			this.totalHaversineDistanceInKm = totalHaversineDistanceInKm;
+			this.dropLatitude = dropLatitude;
+			this.dropLongitude = dropLongitude;
+			this.params = params;
+			this.eoRideTimeInMillis = eoRideTimeInMillis;
+			this.eoWaitTimeInMillis = eoWaitTimeInMillis;
+			this.url = url;
+		}
 
-							endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
-							if (customerInfo != null) {
-								if (customerInfo.couponInfo != null) {
-									customerInfo.couponInfo.couponApplied = true;
-								} else if (customerInfo.promoInfo != null) {
-									customerInfo.promoInfo.promoApplied = true;
-								}
-							}
+		@Override
+		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+			try {
+				String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+				JSONObject jObj;
+				jObj = new JSONObject(jsonString);
+				if (!jObj.isNull("error")) {
+					String errorMessage = jObj.getString("error");
 
-							if (map != null) {
-								map.clear();
-								drawHeatMapData(heatMapResponseGlobal);
-							}
-
-							rideTimeChronometer.stop();
-
-
-							driverScreenMode = DriverScreenMode.D_RIDE_END;
-							Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
-							switchDriverScreen(driverScreenMode);
-							saveCustomerRideDataInSP(customerInfo);
-
-							driverUploadPathDataFileAsync(activity, String.valueOf(customerInfo.getEngagementId()), totalHaversineDistanceInKm);
-
-
-							initializeStartRideVariables();
-							nudgeRideEnd(dropLatitude, dropLongitude, params);
-
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						driverScreenMode = DriverScreenMode.D_IN_RIDE;
-						rideTimeChronometer.start();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+						HomeActivity.logoutUser(activity);
+					} else {
+						DialogPopup.alertPopup(activity, "", errorMessage);
 					}
-					AGPSRefresh.hardRefreshGpsData(HomeActivity.this);
-					DialogPopup.dismissLoadingDialog();
+					driverScreenMode = DriverScreenMode.D_IN_RIDE;
+					rideTimeChronometer.start();
+				} else {
+
+					try {
+						totalFare = jObj.getDouble("fare");
+					} catch (Exception e) {
+						e.printStackTrace();
+						totalFare = 0;
+					}
+
+					endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
+					if (customerInfo != null) {
+						if (customerInfo.couponInfo != null) {
+							customerInfo.couponInfo.couponApplied = true;
+						} else if (customerInfo.promoInfo != null) {
+							customerInfo.promoInfo.promoApplied = true;
+						}
+					}
+
+					if (map != null) {
+						map.clear();
+						drawHeatMapData(heatMapResponseGlobal);
+					}
+
+					rideTimeChronometer.stop();
+
+
+					driverScreenMode = DriverScreenMode.D_RIDE_END;
+					Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
+					switchDriverScreen(driverScreenMode);
+					saveCustomerRideDataInSP(customerInfo);
+
+					driverUploadPathDataFileAsync(activity, String.valueOf(customerInfo.getEngagementId()), totalHaversineDistanceInKm);
+
+
+					initializeStartRideVariables();
+					nudgeRideEnd(dropLatitude, dropLongitude, params);
 
 				}
+			} catch (Exception exception) {
+				exception.printStackTrace();
+				driverScreenMode = DriverScreenMode.D_IN_RIDE;
+				rideTimeChronometer.start();
+				DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+			}
+			AGPSRefresh.hardRefreshGpsData(HomeActivity.this);
+			DialogPopup.dismissLoadingDialog();
 
-				@Override
-				public void failure(RetrofitError error) {
-					Log.e("error", "=" + error);
-					endRideOffline(activity, PendingCall.END_RIDE.getPath(), params, eoRideTimeInMillis, eoWaitTimeInMillis,
-							 customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
-				}
+		}
 
-
-			});
+		@Override
+		public void failure(RetrofitError error) {
+			Log.e("error", "=" + error);
+			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
+					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 		}
 	}
 
