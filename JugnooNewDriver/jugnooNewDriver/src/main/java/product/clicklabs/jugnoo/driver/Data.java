@@ -290,14 +290,22 @@ public class Data {
 
 	public static void clearAssignedCustomerInfosListForStatus(int status){
 		if(assignedCustomerInfos != null) {
-			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
-			for (CustomerInfo customerInfo : assignedCustomerInfos) {
-				if (customerInfo.getStatus() != status) {
-					customerInfos.add(customerInfo);
+
+			for(int i=0; i<assignedCustomerInfos.size(); i++){
+				if(assignedCustomerInfos.get(i).getStatus() == status){
+					assignedCustomerInfos.remove(i);
+					i--;
 				}
 			}
-			assignedCustomerInfos.clear();
-			assignedCustomerInfos.addAll(customerInfos);
+
+//			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+//			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+//				if (customerInfo.getStatus() != status) {
+//					customerInfos.add(customerInfo);
+//				}
+//			}
+//			assignedCustomerInfos.clear();
+//			assignedCustomerInfos.addAll(customerInfos);
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
@@ -331,15 +339,17 @@ public class Data {
 		}
 	}
 
-	public static boolean removeCustomerInfo(int engagementId){
+	public static boolean removeCustomerInfo(int engagementId, int status){
 		if(assignedCustomerInfos != null) {
 			int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
 			if (index > -1) {
-				assignedCustomerInfos.remove(index);
-				if(HomeActivity.appInterruptHandler != null){
-					HomeActivity.appInterruptHandler.updateCustomers();
+				if(assignedCustomerInfos.get(index).getStatus() == status) {
+					assignedCustomerInfos.remove(index);
+					if (HomeActivity.appInterruptHandler != null) {
+						HomeActivity.appInterruptHandler.updateCustomers();
+					}
+					return true;
 				}
-				return true;
 			}
 		}
 		return false;

@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 
 /**
  * Created by aneeshbansal on 24/10/15.
@@ -92,7 +93,7 @@ public class ReturnOptionsListAdapter extends  RecyclerView.Adapter<ReturnOption
 		public ViewHolder(View convertView, Activity context) {
 			super(convertView);
 			textViewReturnOption = (TextView) convertView.findViewById(R.id.textViewReturnOption);
-			textViewReturnOption.setTypeface(Data.latoRegular(context));
+			textViewReturnOption.setTypeface(Fonts.mavenRegular(context));
 			imageViewReturnOptionCheck = (ImageView) convertView.findViewById(R.id.imageViewReturnOptionCheck);
 			relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 		}

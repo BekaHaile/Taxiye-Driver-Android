@@ -363,7 +363,7 @@ public class JSONParser implements Constants {
 							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
 							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
 
-							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "";
+							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "";
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
@@ -375,6 +375,7 @@ public class JSONParser implements Constants {
 								jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
 								pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
 								pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
+								address = userData.optString(KEY_ADDRESS, "");
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
 								userName = jObjCustomer.optString(KEY_USER_NAME, "");
@@ -384,6 +385,7 @@ public class JSONParser implements Constants {
 								jugnooBalance = jObjCustomer.optDouble(KEY_JUGNOO_BALANCE, 0);
 								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
 								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
+								address = jObjCustomer.optString(KEY_ADDRESS, "");
 							}
 
 
@@ -413,7 +415,7 @@ public class JSONParser implements Constants {
 							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
-									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled, isDelivery);
+									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled, isDelivery, address);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 

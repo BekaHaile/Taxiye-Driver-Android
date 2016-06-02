@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:padding="25px"
         android:text="Driver is late"
-        android:textColor="@color/grey_dark"
+        android:textColor="@color/text_color"
         android:layout_toRightOf="@+id/imageViewReturnOptionCheck"
         android:textSize="30px"/>
 

@@ -1,8 +1,12 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
+import java.util.Map;
+
 import retrofit.client.Response;
+import retrofit.http.EncodedQuery;
 import retrofit.http.GET;
 import retrofit.http.Query;
+import retrofit.http.QueryMap;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -34,6 +38,9 @@ public interface GoogleAPIServices {
 	@GET("/directions/json")
 	Response getDirectionsWaypoints(@Query("origin") String originLatLng,
 						   @Query("destination") String destLatLng,
-						   @Query("waypoints") String waypoints);
+						   @Query(value = "waypoints", encodeValue = false) String waypoints);
+
+	@GET("/directions/json")
+	Response getDirectionsWaypoints(@QueryMap(encodeNames = true) Map<String, String> params);
 
 }

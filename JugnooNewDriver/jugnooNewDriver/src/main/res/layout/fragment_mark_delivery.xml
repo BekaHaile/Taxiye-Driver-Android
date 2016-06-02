@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    android:layout_centerHorizontal="true">
+    android:layout_centerHorizontal="true"
+    android:soundEffectsEnabled="false"
+    >
 
     <include layout="@layout/layout_top_bar"/>
 
@@ -81,15 +83,12 @@
         />
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_marginTop="64px"
-        android:layout_marginLeft="15px"
-        android:layout_marginRight="15px"
-        android:layout_marginBottom="25px"
-        android:layout_gravity="center"
         android:splitMotionEvents="false"
+        android:layout_marginLeft="70px"
+        android:layout_marginRight="70px"
         >
 
 
@@ -97,9 +96,7 @@
             android:id="@+id/btnReturned"
             android:layout_width="250px"
             android:layout_height="83px"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="280px"
-            android:background="@drawable/new_orange_btn_selector_rounded"
+            android:background="@drawable/new_menu_black_btn_selector_rounded"
             android:text="@string/Returned"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
@@ -110,11 +107,11 @@
             android:layout_width="250px"
             android:layout_height="83px"
             android:padding="2px"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/new_menu_black_btn_selector_rounded"
+            android:background="@drawable/new_orange_btn_corner_selector"
             android:text="@string/collected"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
+            android:layout_alignParentRight="true"
             />
     </RelativeLayout>
 

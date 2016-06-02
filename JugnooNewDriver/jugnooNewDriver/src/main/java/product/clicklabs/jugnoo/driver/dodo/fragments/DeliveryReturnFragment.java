@@ -76,7 +76,7 @@ public class DeliveryReturnFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText("Title");
+		textViewTitle.setText(activity.getResources().getString(R.string.return_reasons));
 
 		
 		recyclerViewReturnOptions = (RecyclerView) rootView.findViewById(R.id.recyclerViewReturnOptions);

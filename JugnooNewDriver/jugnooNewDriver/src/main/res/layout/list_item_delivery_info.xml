@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/rootLinear"
-              xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLinear"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/list_white_selector"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10px"
+        android:layout_marginBottom="10px"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -26,25 +31,23 @@
                     android:id="@+id/textViewOrderId"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:text="@string/order_id"
                     android:textColor="@color/new_orange"
                     android:textSize="36px"
-                    android:visibility="visible"
-                    android:layout_centerVertical="true"
-                    />
+                    android:visibility="visible" />
 
                 <TextView
                     android:id="@+id/textViewOrderIdValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15px"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10px"
                     android:text="00000000000"
+                    android:layout_toRightOf="@+id/textViewOrderId"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="42px"
-                    android:visibility="visible"
-                    android:layout_centerVertical="true"
-                    />
+                    android:visibility="visible" />
 
             </RelativeLayout>
 
@@ -57,60 +60,59 @@
                 android:text="Aneesh"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="42px"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
 
             <TextView
                 android:id="@+id/textViewCustomerDeliveryAddress"
                 android:layout_width="420px"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10px"
                 android:layout_marginTop="15px"
                 android:gravity="center_vertical"
                 android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="32px"
-                android:layout_marginBottom="10px"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCall"
+            android:layout_width="230px"
+            android:layout_height="70px"
+            android:background="@drawable/orange_btn_selector"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="20px"
-            android:layout_marginTop="45px"
-            android:orientation="vertical">
+            >
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutCall"
-                android:layout_width="230px"
-                android:layout_height="70px"
-                android:background="@drawable/orange_btn_selector">
+            <ImageView
+                android:layout_width="45px"
+                android:layout_height="45px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="35px"
+                android:src="@drawable/call_icon_selector" />
 
-                <ImageView
-                    android:layout_width="45px"
-                    android:layout_height="45px"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="35px"
-                    android:src="@drawable/call_icon_selector"/>
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewCall"
+                android:layout_width="150px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="115px"
+                android:text="@string/call"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="42px" />
+        </RelativeLayout>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewCall"
-                    android:layout_width="150px"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="115px"
-                    android:text="@string/call"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="42px"/>
-            </RelativeLayout>
-
-
-        </LinearLayout>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/grey_btn"
+        />
 
 </LinearLayout>

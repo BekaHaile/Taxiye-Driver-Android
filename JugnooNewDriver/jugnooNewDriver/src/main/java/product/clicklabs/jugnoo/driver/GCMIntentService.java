@@ -433,7 +433,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
 								cancelUploadPathAlarm(this);
@@ -445,7 +445,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
 								cancelUploadPathAlarm(this);
@@ -457,7 +457,7 @@ public class GCMIntentService extends IntentService {
 								clearNotifications(this);
 
 								if (HomeActivity.appInterruptHandler != null) {
-									Data.removeCustomerInfo(Integer.parseInt(engagementId));
+									Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
 								cancelUploadPathAlarm(this);
@@ -919,7 +919,7 @@ public class GCMIntentService extends IntentService {
 				@Override
 				public void run() {
 					if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null) {
-						boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId));
+						boolean removed = Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 						if (removed) {
 							if (HomeActivity.appInterruptHandler != null) {
 								HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);

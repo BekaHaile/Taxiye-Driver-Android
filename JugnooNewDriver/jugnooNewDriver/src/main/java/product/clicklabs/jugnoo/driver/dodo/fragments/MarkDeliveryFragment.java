@@ -73,7 +73,7 @@ public class MarkDeliveryFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText("Title");
+		textViewTitle.setText(activity.getResources().getString(R.string.mark_delivered));
 
 		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
 		textViewOrderId.setTypeface(Fonts.mavenRegular(activity));
@@ -123,6 +123,13 @@ public class MarkDeliveryFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				activity.onBackPressed();
+			}
+		});
+
+		relative.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
 			}
 		});
 

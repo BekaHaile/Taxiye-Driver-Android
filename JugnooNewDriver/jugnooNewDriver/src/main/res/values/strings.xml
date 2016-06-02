@@ -538,6 +538,8 @@
 	<string name="Returned">Returned</string>
 	<string name="please_confirm_cash_taken">Please confirm you have taken cash</string>
 	<string name="confirm">Confirm</string>
+	<string name="start_delivery">Start Delivery</string>
+	<string name="deliveries">Deliveries</string>
 
 
 	<string-array name="CountryCodes" >

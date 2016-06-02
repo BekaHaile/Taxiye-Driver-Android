@@ -59,7 +59,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText("Title");
+		textViewTitle.setText(activity.getResources().getString(R.string.deliveries));
 
 		recyclerViewDeliveryInfo = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfo);
 		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));

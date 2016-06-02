@@ -21,7 +21,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewReturnOptions"
             android:layout_width="match_parent"
-            android:layout_height="890px"
+            android:layout_height="800px"
             android:fadeScrollbars="true"
             android:scrollbars="vertical"
             />

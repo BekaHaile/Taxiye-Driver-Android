@@ -32,14 +32,13 @@
                     android:id="@+id/recyclerViewCustomersLinked"
                     android:layout_width="720px"
                     android:layout_height="80px"
-                    android:layout_below="@+id/topRlOuter"
                     >
                 </android.support.v7.widget.RecyclerView>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10px"
+                    android:layout_marginBottom="10px"
                     >
 
                     <LinearLayout

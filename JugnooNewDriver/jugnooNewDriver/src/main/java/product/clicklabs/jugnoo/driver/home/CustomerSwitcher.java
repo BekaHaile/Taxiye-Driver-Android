@@ -123,8 +123,6 @@ public class CustomerSwitcher {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-				textViewCustomerPickupAddress.setText("");
-
 				if(customerInfo.getDropLatLng() != null
 						&& customerInfo.getIsDelivery() != 1){
 					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
@@ -136,11 +134,16 @@ public class CustomerSwitcher {
 				relativeLayoutShowDistance.setVisibility(View.GONE);
 
 			} else {
-				new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
-						callbackGetAddress).execute();
+				if(customerInfo.getAddress().equalsIgnoreCase("")){
+					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
+							callbackGetAddress).execute();
+				} else{
+					textViewCustomerPickupAddress.setText(customerInfo.getAddress());
+				}
+
 				textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 						.format(MapUtils.distance(customerInfo.getRequestlLatLng(),
-								new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())))
+								new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude()))/1000d)
 						+ " " + activity.getResources().getString(R.string.km));
 				relativeLayoutShowDistance.setVisibility(View.VISIBLE);
 			}
