@@ -27,7 +27,9 @@
                 android:id="@+id/driverImageRL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="20px"
+                >
 
                 <RelativeLayout
                     android:id="@+id/profileRl"
@@ -137,7 +139,6 @@
                 android:id="@+id/relativeLayoutAutosOn"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
-                android:layout_marginTop="20px"
                 android:background="@drawable/transparent"
                 android:splitMotionEvents="false"
                 >
@@ -165,6 +166,40 @@
 
                 <ImageView
                     android:id="@+id/imageViewAutosOnToggle"
+                    android:layout_width="90px"
+                    android:layout_height="72px"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20px"
+                    android:src="@drawable/jugnoo_on_button"
+                    android:tag="mwar"/>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutDeliveryOn"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/transparent"
+                android:splitMotionEvents="false"
+                >
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="4px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/line_menu"/>
+
+                <TextView
+                    android:id="@+id/textViewDeliveryOn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:text="@string/delivery_on"
+                    android:textColor="@color/white"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewDeliveryOnToggle"
                     android:layout_width="90px"
                     android:layout_height="72px"
                     android:layout_alignParentRight="true"

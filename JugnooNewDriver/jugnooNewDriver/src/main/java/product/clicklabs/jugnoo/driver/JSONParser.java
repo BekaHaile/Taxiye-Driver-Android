@@ -32,7 +32,6 @@ import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
-import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -195,6 +194,9 @@ public class JSONParser implements Constants {
 			sharingAvailable = 0;
 		}
 
+		int deliveryEnabled = userData.optInt(KEY_DELIVERY_ENABLED, 0);
+		int deliveryAvailable = deliveryEnabled == 0 ? 0 : userData.optInt(KEY_DELIVERY_AVAILABLE, 0);
+
 
 		try {
 			if (userData.has("gcm_intent")) {
@@ -250,7 +252,8 @@ public class JSONParser implements Constants {
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
 				|| fatafatAvailable == 1
-				|| sharingAvailable == 1) {
+				|| sharingAvailable == 1
+				) {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.YES);
 		} else {
 			Database2.getInstance(context).updateDriverServiceRun(Database2.NO);
@@ -268,7 +271,7 @@ public class JSONParser implements Constants {
 				referralSMSToCustomer, showDriverRating, driverArrivalDistance, referralMessage,
 				referralButtonText,referralDialogText, referralDialogHintText,remainigPenaltyPeriod,
 				timeoutMessage, paytmRechargeEnabled, destinationOptionEnable, walletUpdateTimeout,
-				userId, userEmail, blockedAppPackageMessage);
+				userId, userEmail, blockedAppPackageMessage, deliveryEnabled, deliveryAvailable);
 	}
 
 	public String parseAccessTokenLoginData(Context context, String response) throws Exception {

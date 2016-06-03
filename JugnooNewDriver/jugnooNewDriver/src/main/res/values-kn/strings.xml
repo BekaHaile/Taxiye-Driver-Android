@@ -500,6 +500,7 @@
     <string name="address">Address</string>
     <string name="get_directions">Get Directions</string>
     <string name="delivered">Delivered</string>
+    <string name="delivery_on">Delivery ON</string>
 
 
     <string-array name="CountryCodes" >

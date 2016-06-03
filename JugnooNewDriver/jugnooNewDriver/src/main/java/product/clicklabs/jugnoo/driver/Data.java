@@ -290,22 +290,27 @@ public class Data {
 
 	public static void clearAssignedCustomerInfosListForStatus(int status){
 		if(assignedCustomerInfos != null) {
-
 			for(int i=0; i<assignedCustomerInfos.size(); i++){
 				if(assignedCustomerInfos.get(i).getStatus() == status){
 					assignedCustomerInfos.remove(i);
 					i--;
 				}
 			}
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
+		}
+	}
 
-//			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
-//			for (CustomerInfo customerInfo : assignedCustomerInfos) {
-//				if (customerInfo.getStatus() != status) {
-//					customerInfos.add(customerInfo);
-//				}
-//			}
-//			assignedCustomerInfos.clear();
-//			assignedCustomerInfos.addAll(customerInfos);
+	public static void clearAssignedCustomerInfosListForStatusWithDelivery(int status, int isDelivery){
+		if(assignedCustomerInfos != null) {
+			for(int i=0; i<assignedCustomerInfos.size(); i++){
+				if(assignedCustomerInfos.get(i).getStatus() == status
+						&& assignedCustomerInfos.get(i).getIsDelivery() == isDelivery){
+					assignedCustomerInfos.remove(i);
+					i--;
+				}
+			}
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}

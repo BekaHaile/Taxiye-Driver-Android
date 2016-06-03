@@ -153,8 +153,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
-	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn;
-	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle;
+	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
+	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
 	RelativeLayout inviteFriendRl, driverRatingRl, notificationCenterRl;
 	TextView inviteFriendText, notificationCenterText;
@@ -406,6 +406,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
 			((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
+
+			relativeLayoutDeliveryOn = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOn);
+			((TextView) findViewById(R.id.textViewDeliveryOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
 
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
@@ -726,9 +730,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.autosAvailable == 1) {
-							changeJugnooON(0, false);
+							changeJugnooON(0, false, false);
 						} else {
-							changeJugnooON(1, false);
+							changeJugnooON(1, false, false);
 						}
 						FlurryEventLogger.event(JUGNOO_ON_OFF);
 					}
@@ -740,11 +744,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.sharingAvailable == 1) {
-							toggleSharingMode(0, false);
+							toggleSharingMode(0, false, false);
 						} else {
-							toggleSharingMode(1, false);
+							toggleSharingMode(1, false, false);
 						}
 						FlurryEventLogger.event(SHARING_ENABLE);
+					}
+				}
+			});
+
+			imageViewDeliveryOnToggle.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
+						if (Data.userData.getDeliveryAvailable() == 1) {
+							changeJugnooON(0, false, true);
+						} else {
+							changeJugnooON(1, false, true);
+						}
+						FlurryEventLogger.event(JUGNOO_ON_OFF);
 					}
 				}
 			});
@@ -1571,43 +1590,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	public void changeJugnooON(int mode, boolean enableSharing) {
+	public void changeJugnooON(int mode, boolean enableSharing, boolean toggleDelivery) {
 		if (mode == 1) {
 			if (myLocation != null) {
-				switchJugnooOnThroughServer(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), enableSharing);
+				switchJugnooOnThroughServer(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()),
+						enableSharing, toggleDelivery);
 			}
 			else{
 				Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 			}
 		} else {
 			if (Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 1) {
-				toggleSharingMode(0, true);
+				toggleSharingMode(0, true, toggleDelivery);
 			} else {
-				switchJugnooOnThroughServer(0, new LatLng(0, 0), false);
+				switchJugnooOnThroughServer(0, new LatLng(0, 0), false, toggleDelivery);
 			}
 		}
 	}
 
 
-	public void toggleSharingMode(int mode, boolean disableAutos) {
+	public void toggleSharingMode(int mode, boolean disableAutos, boolean toggleDelivery) {
 		if (mode == 1) {
 			if (myLocation != null) {
 				if (Data.userData.autosAvailable == 0) {
-					changeJugnooON(1, true);
+					changeJugnooON(1, true, toggleDelivery);
 				} else {
-					toggleSharingModeAPI(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), false);
+					toggleSharingModeAPI(1, new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), false, toggleDelivery);
 				}
 			}
 			else{
 				Toast.makeText(HomeActivity.this, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 			}
 		} else {
-			toggleSharingModeAPI(0, new LatLng(0, 0), disableAutos);
+			toggleSharingModeAPI(0, new LatLng(0, 0), disableAutos, toggleDelivery);
 		}
 	}
 
 
-	public void switchJugnooOnThroughServer(final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing) {
+	public void switchJugnooOnThroughServer(final int jugnooOnFlag, final LatLng latLng, final boolean enableSharing,
+											final boolean toggleDelivery) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1620,21 +1641,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				try {
 					HashMap<String, String> params = new HashMap<String, String>();
 
-					params.put("access_token", Data.userData.accessToken);
-					params.put("latitude", "" + latLng.latitude);
-					params.put("longitude", "" + latLng.longitude);
-					params.put("flag", "" + jugnooOnFlag);
+					params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 					params.put("business_id", "1");
+					if(toggleDelivery){
+						params.put(KEY_DELIVERY_FLAG, "" + jugnooOnFlag);
+						if(Data.userData.autosAvailable == 1 && jugnooOnFlag == 0 && myLocation != null) {
+							params.put(KEY_LATITUDE, "" + myLocation.getLatitude());
+							params.put(KEY_LONGITUDE, "" + myLocation.getLongitude());
+						} else{
+							params.put(KEY_LATITUDE, "" + latLng.latitude);
+							params.put(KEY_LONGITUDE, "" + latLng.longitude);
+						}
+					} else {
+						params.put(KEY_FLAG, "" + jugnooOnFlag);
+						params.put(KEY_LATITUDE, "" + latLng.latitude);
+						params.put(KEY_LONGITUDE, "" + latLng.longitude);
+					}
 
 					Response response = RestClient.getApiServices().switchJugnooOnThroughServerRetro(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);
 
-					if (jObj.has("flag")) {
-						int flag = jObj.getInt("flag");
+					if (jObj.has(KEY_FLAG)) {
+						int flag = jObj.getInt(KEY_FLAG);
 						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-							Data.userData.autosAvailable = jugnooOnFlag;
+							if(toggleDelivery){
+								Data.userData.setDeliveryAvailable(jugnooOnFlag);
+							} else {
+								Data.userData.autosAvailable = jugnooOnFlag;
+							}
 							changeJugnooONUIAndInitService();
 							if (jugnooOnFlag == 1) {
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
@@ -1652,7 +1688,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				dismissLoadingFromBackground();
 
 				if (jugnooOnFlag == 1 && enableSharing && Data.userData.sharingEnabled == 1 && Data.userData.sharingAvailable == 0) {
-					toggleSharingMode(1, false);
+					toggleSharingMode(1, false, toggleDelivery);
 				}
 			}
 		}).start();
@@ -1674,7 +1710,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void toggleSharingModeAPI(final int mode, final LatLng latLng, final boolean disableAutos) {
+	public void toggleSharingModeAPI(final int mode, final LatLng latLng, final boolean disableAutos,
+									 final boolean toggleDelivery) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -1713,7 +1750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				dismissLoadingFromBackground();
 				if (mode == 0 && disableAutos && Data.userData.autosEnabled == 1 && Data.userData.autosAvailable == 1) {
-					switchJugnooOnThroughServer(0, new LatLng(0, 0), false);
+					switchJugnooOnThroughServer(0, new LatLng(0, 0), false, toggleDelivery);
 				}
 			}
 		}).start();
@@ -1755,6 +1792,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutSharingOn.setVisibility(View.GONE);
 				Data.userData.sharingAvailable = 0;
 			}
+
+			if (1 == Data.userData.getDeliveryEnabled()) {
+				relativeLayoutDeliveryOn.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutDeliveryOn.setVisibility(View.GONE);
+				Data.userData.setDeliveryAvailable(0);
+			}
 		}
 	}
 
@@ -1777,7 +1821,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_on_button);
 						} else {
 							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+						}
 
+						if (1 == Data.userData.getDeliveryAvailable()) {
+							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+						} else {
+							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 						}
 
 						if (!checkIfDriverOnline()) {
@@ -1829,7 +1878,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if (0 == Data.userData.autosAvailable
 				&& 0 == Data.userData.mealsAvailable
 				&& 0 == Data.userData.fatafatAvailable
-				&& 0 == Data.userData.sharingAvailable) {
+				&& 0 == Data.userData.sharingAvailable
+				&& 0 == Data.userData.getDeliveryAvailable()) {
 			return false;
 		} else {
 			return true;
@@ -1849,7 +1899,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (Data.userData != null) {
 				if(1 != Data.userData.autosAvailable){
-					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
+					Data.clearAssignedCustomerInfosListForStatusWithDelivery(EngagementStatus.REQUESTED.getOrdinal(), 0);
+				}
+				if(1 != Data.userData.getDeliveryAvailable()){
+					Data.clearAssignedCustomerInfosListForStatusWithDelivery(EngagementStatus.REQUESTED.getOrdinal(), 1);
 				}
 			}
 		} catch (Exception e) {
@@ -1860,7 +1913,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void updateReceiveRequestsFlag() {
 		if (Data.userData != null) {
-			if (0 == Data.userData.autosAvailable && 0 == Data.userData.mealsAvailable && 0 == Data.userData.fatafatAvailable) {
+			if (0 == Data.userData.autosAvailable
+					&& 0 == Data.userData.mealsAvailable
+					&& 0 == Data.userData.fatafatAvailable
+					&& 0 == Data.userData.getDeliveryAvailable()) {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal());
 			}
 		}
@@ -4191,38 +4247,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void fetchHeatMapData(final Activity activity) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
-//				final long responseTime = System.currentTimeMillis();
-//				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
-//					@Override
-//					public void success(HeatMapResponse heatMapResponse, Response response) {
-//						try {
-//
-//							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-//							Log.i("heat", jsonString);
-//							JSONObject jObj;
-//							jObj = new JSONObject(jsonString);
-//							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
-//							String message = JSONParser.getServerMessage(jObj);
-//							Log.i("fetchHeatmapData", ">message="+message);
-//							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-//								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
-//									heatMapResponseGlobal = heatMapResponse;
-//									drawHeatMapData(heatMapResponseGlobal);
-//									Log.i("Heat Map response", String.valueOf(heatMapResponse));
-//									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
-//									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.HEAT_MAP_RESPONSE);
-//								}
-//							}
-//						} catch (Exception exception) {
-//							exception.printStackTrace();
-//						}
-//
-//					}
-//
-//					@Override
-//					public void failure(RetrofitError error) {
-//					}
-//				});
+				final long responseTime = System.currentTimeMillis();
+				RestClient.getApiServices().getHeatMapAsync(Data.userData.accessToken, new Callback<HeatMapResponse>() {
+					@Override
+					public void success(HeatMapResponse heatMapResponse, Response response) {
+						try {
+
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							Log.i("heat", jsonString);
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							Log.i("fetchHeatmapData", ">message="+message);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
+									heatMapResponseGlobal = heatMapResponse;
+									drawHeatMapData(heatMapResponseGlobal);
+									Log.i("Heat Map response", String.valueOf(heatMapResponse));
+									Log.i("Heat Map response", String.valueOf(heatMapResponseGlobal));
+									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.HEAT_MAP_RESPONSE);
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+					}
+				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

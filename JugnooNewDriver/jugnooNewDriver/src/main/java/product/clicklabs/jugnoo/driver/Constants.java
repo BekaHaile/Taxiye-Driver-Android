@@ -106,5 +106,8 @@ public interface Constants {
     String KEY_TITLE = "title";
     String KEY_PERFECT_RIDE = "perfect_ride";
     String KEY_END_TIME = "end_time";
+    String KEY_DELIVERY_ENABLED = "delivery_enabled";
+    String KEY_DELIVERY_AVAILABLE = "delivery_available";
+    String KEY_DELIVERY_FLAG = "delivery_flag";
 
 }
