@@ -519,11 +519,11 @@
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="ride_complete">రైడ్ పూర్తయింది</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP">ఓ.టి.పి మళ్లీ పంపించు</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">మాకు ఒక మిస్డ్ కాల్ ఇవ్వండి మరియు మేము మీ గుర్తింపుని ద్రువికరిస్తాము</string>
     <string name="give_misscall_to_verify">నిర్ధారణకు మిస్డ్ కాల్ఇవ్వండి</string>
-    <string name="please_press_here">Please Press Here</string>
+    <string name="please_press_here">దయచేసి ఇక్కడ నొక్కండి</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

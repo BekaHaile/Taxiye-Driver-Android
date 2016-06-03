@@ -465,11 +465,11 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">റൈഡ് പൂർത്തിയായി</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP">O.T.P. വീണ്ടും അയക്കാൻ</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">നിങ്ങൾ ഞങ്ങൾക്ക് ഒരു മിസ്ഡ് കോൾ നൽകിയാൽ  നിങ്ങളുടെ ഐഡൻറിറ്റി ഞങ്ങൾ പരിശോധിക്കാം</string>
-    <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
-    <string name="please_press_here">Please Press Here</string>
+    <string name="give_misscall_to_verify">സ്ഥിരീകരിക്കുന്നതിന് മിസ്സ്‌കാൾ ചെയ്യുക</string>
+    <string name="please_press_here">ഇവിടെ അമർത്തുക</string>
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

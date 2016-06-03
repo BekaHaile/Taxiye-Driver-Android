@@ -461,11 +461,11 @@
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP">O.T.P. ફરી મોકલો</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
-    <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
-    <string name="please_press_here">Please Press Here</string>
+    <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
+    <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
 
 
     <string-array name="CountryCodes" >

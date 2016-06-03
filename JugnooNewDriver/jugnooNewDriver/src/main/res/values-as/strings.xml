@@ -464,11 +464,11 @@
     <string name="data_effective_format">*Data effective from </string>
     <string name="ride_complete">যাএা সমাপ্ত হল ।</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP">অ.টি.পি আকৌ পঠাওঁক</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">আমাক এটা মিচ কল দিয়ক আৰু আমি আপোনাৰ পৰিচয় নিচ্চিত কৰিম ।</string>
-    <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
-    <string name="please_press_here">Please Press Here</string>
+    <string name="give_misscall_to_verify">নিচ্চিত কৰাৰ বাবে মিচ কল দিয়ক ।</string>
+    <string name="please_press_here">অনুগ্ৰহ কৰি ইয়াত টিপক ।</string>
 
 
     <string-array name="CountryCodes" >

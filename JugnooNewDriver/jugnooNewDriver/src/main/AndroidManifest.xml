@@ -3,8 +3,8 @@
     package="product.clicklabs.jugnoo.driver"
 
 
-    android:versionCode="235"
-    android:versionName="2.3.5" >
+    android:versionCode="236"
+    android:versionName="2.3.6" >
 
     <uses-sdk
         android:minSdkVersion="14"

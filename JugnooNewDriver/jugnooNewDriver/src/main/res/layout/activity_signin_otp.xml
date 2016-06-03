@@ -305,7 +305,7 @@
         android:visibility="gone"
         android:splitMotionEvents="false">
 
-       <TextView
+       <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:layout_gravity="center_horizontal"

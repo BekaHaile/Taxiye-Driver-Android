@@ -93,7 +93,7 @@ public class LoginViaOTP extends BaseActivity {
 		if (intent.hasExtra("message")) {
 			retrieveOTPFromSMS(intent);
 		} else if (intent.hasExtra("otp")) {
-			retrieveOTPFromPush(intent);
+//			retrieveOTPFromPush(intent);
 		}
 
 		super.onNewIntent(intent);
@@ -478,25 +478,25 @@ public class LoginViaOTP extends BaseActivity {
 	}
 
 
-	private void retrieveOTPFromPush(Intent intent) {
-		try {
-			String otp = "";
-			if (intent.hasExtra("otp")) {
-				otp = intent.getStringExtra("otp");
-			}
-			if (Utils.checkIfOnlyDigits(otp)) {
-				if (!"".equalsIgnoreCase(otp)) {
-					if (Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
-						otpEt.setText(otp);
-						otpEt.setSelection(otpEt.getText().length());
-						loginViaOtp.performClick();
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	private void retrieveOTPFromPush(Intent intent) {
+//		try {
+//			String otp = "";
+//			if (intent.hasExtra("otp")) {
+//				otp = intent.getStringExtra("otp");
+//			}
+//			if (Utils.checkIfOnlyDigits(otp)) {
+//				if (!"".equalsIgnoreCase(otp)) {
+//					if (Boolean.parseBoolean(Prefs.with(LoginViaOTP.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+//						otpEt.setText(otp);
+//						otpEt.setSelection(otpEt.getText().length());
+//						loginViaOtp.performClick();
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 
 	public void sendLoginValues(final Activity activity, final String emailId, final String phoneNo, final String password, final String otp) {
@@ -648,11 +648,7 @@ public class LoginViaOTP extends BaseActivity {
 		}
 
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
-
-		// Drop down layout style - list view with radio button
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-		// attaching data adapter to spinner
 		spinner.setAdapter(dataAdapter);
 
 		if (!selectedLanguage.equalsIgnoreCase("")) {
@@ -666,15 +662,8 @@ public class LoginViaOTP extends BaseActivity {
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
 
-
-				// Showing selected spinner item
-
 				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
-
 				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
-//					finish();
-//					overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//					startActivity(getIntent());
 					selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 					onCreate(new Bundle());
 				}

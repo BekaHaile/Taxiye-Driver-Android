@@ -445,7 +445,7 @@
 	<string name="destination_menu">Destination</string>
 	<string name="no_current_notification">No Current Notification</string>
 	<string name="phone">Phone :</string>
-	<string name="GENERATE_OTP">GENERATE OTP</string>
+	<string name="GENERATE_OTP">Generate OTP</string>
 	<string name="otp">OTP</string>
 	<string name="signin_via_otp">Sign in via OTP</string>
 	<string name="Neutral">Neutral</string>

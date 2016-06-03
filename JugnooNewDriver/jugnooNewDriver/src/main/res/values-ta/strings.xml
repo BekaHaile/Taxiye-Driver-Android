@@ -543,13 +543,11 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">சவாரி வெற்றிகரமாக முடிந்தது </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
+    <string name="resend_OTP">ஒ டி பீ -ஐ மீண்டும் அனுப்பவும்</string>
     <string name="miss_call_otp">Give a Miss Call</string>
-    <string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
-        identity
-    </string>
-    <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
-    <string name="please_press_here">Please Press Here</string>
+    <string name="give_missed_call_dialog_text">எங்களுக்கு மிஸ்ட் கால் கொடுங்கள் நாங்கள் உங்கள் அடையாளத்தைச் சரிபார்கிறோம்</string>
+    <string name="give_misscall_to_verify">சரிபார்க்க மிஸ்ட் கால் கொடுக்கவும்.</string>
+    <string name="please_press_here">தயவு செய்து இங்கே அழுத்தவும்</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

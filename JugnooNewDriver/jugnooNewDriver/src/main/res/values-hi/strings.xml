@@ -522,8 +522,8 @@
 	<string name="resend_OTP">ओटीपी पुन: भेजें</string>
 	<string name="miss_call_otp">Give a Miss Call</string>
 	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दें और हम आपकी पहचान सत्यापित करेंगे |</string>
-	<string name="give_misscall_to_verify">Give Miss Call to Verify</string>
-	<string name="please_press_here">Please Press Here</string>
+	<string name="give_misscall_to_verify">वैरिफाई करने के लिए मिस कॉल करें</string>
+	<string name="please_press_here">कृपया यहाँ दबाएँ</string>
 
 
 	<string-array name="CountryCodes" >
