@@ -158,7 +158,6 @@ public class CustomMapMarkerCreator {
 
 		canvasText.drawText(text, canvasText.getWidth() / 2, (25f*assl.Yscale()), paint);
 
-
 		return bmpText;
 	}
 

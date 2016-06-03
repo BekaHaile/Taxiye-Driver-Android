@@ -73,6 +73,10 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
 		this.address = address;
+
+		if(this.isDelivery == 1){
+			this.waitingChargesApplicable = 1;
+		}
 	}
 
 

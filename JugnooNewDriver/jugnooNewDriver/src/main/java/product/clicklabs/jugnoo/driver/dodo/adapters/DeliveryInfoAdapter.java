@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 
@@ -51,6 +52,22 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             holder.textViewOrderIdValue.setText(String.valueOf(deliveryInfo.getId()));
             holder.textViewCustomerName.setText(deliveryInfo.getCustomerName());
             holder.textViewCustomerDeliveryAddress.setText(deliveryInfo.getDeliveryAddress());
+
+            holder.textViewOrderStatus.setVisibility(View.VISIBLE);
+            if(deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
+                holder.rootLinear.setBackgroundResource(R.drawable.bg_white_grey_light_selector);
+                holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.pending));
+            } else {
+                holder.rootLinear.setBackgroundResource(R.drawable.bg_grey_light);
+                if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
+                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.completed));
+                } else if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.cancelled));
+                } else{
+                    holder.textViewOrderStatus.setVisibility(View.GONE);
+                }
+            }
+
             holder.relativeLayoutCall.setTag(position);
             holder.rootLinear.setTag(position);
 
@@ -68,7 +85,9 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 @Override
                 public void onClick(View v) {
                     int pos = (int) v.getTag();
-                    callback.onClick(pos, getItem(pos));
+                    if(getItem(pos).getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+                        callback.onClick(pos, getItem(pos));
+                    }
                 }
             });
 
@@ -92,7 +111,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewOrderId, textViewOrderIdValue, textViewCustomerName, textViewCustomerDeliveryAddress, textViewCall;
+        public TextView textViewOrderId, textViewOrderIdValue, textViewCustomerName, textViewCustomerDeliveryAddress, textViewCall, textViewOrderStatus;
         public RelativeLayout relativeLayoutCall;
         public LinearLayout rootLinear;
         public ViewHolder(View convertView, Activity context) {
@@ -107,6 +126,8 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             textViewCustomerDeliveryAddress.setTypeface(Data.latoRegular(context));
             textViewCall = (TextView) convertView.findViewById(R.id.textViewCall);
             textViewCall.setTypeface(Data.latoRegular(context));
+            textViewOrderStatus = (TextView) convertView.findViewById(R.id.textViewOrderStatus);
+            textViewOrderStatus.setTypeface(Fonts.mavenRegular(context));
             relativeLayoutCall = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutCall);
             rootLinear = (LinearLayout) convertView.findViewById(R.id.rootLinear);
         }

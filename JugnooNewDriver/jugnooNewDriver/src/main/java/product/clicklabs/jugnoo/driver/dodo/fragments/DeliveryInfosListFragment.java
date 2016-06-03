@@ -95,6 +95,18 @@ public class DeliveryInfosListFragment extends Fragment {
 	}
 
 	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		try {
+			if (!hidden) {
+                deliveryInfoAdapter.notifyDataSetChanged();
+            }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		try {

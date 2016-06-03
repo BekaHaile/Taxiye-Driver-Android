@@ -39,9 +39,10 @@
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:text="@string/alert"
-                android:textColor="@color/blue_btn"
+                android:textColor="@color/text_color"
                 android:textSize="50px"
-                android:visibility="gone"
+                android:visibility="visible"
+                android:layout_marginTop="40px"
 
                 />
 
@@ -51,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="60px"
+                android:layout_marginTop="40px"
                 android:gravity="center"
                 android:text="@string/message"
                 android:lineSpacingExtra="10px"
@@ -67,14 +68,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="30px"
+                android:layout_marginTop="40px"
                 android:layout_marginLeft="15px"
                 android:layout_marginRight="15px"
                 android:layout_marginBottom="25px"
                 android:layout_gravity="center"
                 android:splitMotionEvents="false"
                 >
-
 
                 <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"

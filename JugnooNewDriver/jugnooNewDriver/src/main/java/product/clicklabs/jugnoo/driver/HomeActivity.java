@@ -3366,10 +3366,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void initializeStartRideVariables() {
-		if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
-				|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0) {
+		if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
+				|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
 			Utils.deleteCache(this);
-
 
 			if (DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode.getOrdinal()
 					|| DriverScreenMode.D_ARRIVED.getOrdinal() == driverScreenMode.getOrdinal()
@@ -3390,7 +3389,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
 			MeteringService.gpsInstance(this).stop();
 			Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
-
 		}
 	}
 
@@ -5907,14 +5905,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 					final MarkerOptions markerOptions = new MarkerOptions()
 							.position(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng())
+							.title("")
+							.snippet("")
+							.anchor(0.5f, 0.9f)
 							.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-									.getTextBitmap(this, assl, String.valueOf(i), 18)))
+									.getTextBitmap(this, assl, String.valueOf(i+1), 18)))
 							.anchor(0.5f, 1);
 					map.addMarker(markerOptions);
 					latLngs.add(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng());
 				}
 
-				new ApiGoogleDirectionWaypoints(latLngs, D_TO_C_MAP_PATH_COLOR, map,
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_btn), map,
 						new ApiGoogleDirectionWaypoints.Callback() {
 							@Override
 							public void onPre() {
