@@ -56,7 +56,8 @@ import retrofit.mime.TypedByteArray;
  */
 public class LoginViaOTP extends BaseActivity {
 
-	LinearLayout linearLayoutWaiting, relative, otpETextLLayout, selectLanguageLl, layoutResendOtp, mainLoginLinear, mainLinear;
+	LinearLayout linearLayoutWaiting, otpETextLLayout, selectLanguageLl, layoutResendOtp, mainLoginLinear, mainLinear;
+	RelativeLayout relative;
 	EditText phoneNoEt, otpEt;
 	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp, btnOtpViaCall, btnLogin;
 	ImageView imageViewYellowLoadingBar;
@@ -107,7 +108,7 @@ public class LoginViaOTP extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_signin_otp);
 
-		relative = (LinearLayout) findViewById(R.id.relative);
+		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(LoginViaOTP.this, relative, 1134, 720, false);
 
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
@@ -224,7 +225,6 @@ public class LoginViaOTP extends BaseActivity {
 								@Override
 								public void onClick(View v) {
 									mainLoginLinear.setVisibility(View.VISIBLE);
-									mainLinear.setVisibility(View.GONE);
 									Utils.openCallIntent(LoginViaOTP.this, knowlarityMissedCallNumber);
 								}
 							},
@@ -323,6 +323,7 @@ public class LoginViaOTP extends BaseActivity {
 								languagePrefStatus = jObj.getInt("locale_preference_enabled");
 								JSONArray jArray = jObj.getJSONArray("locales");
 								if (jArray != null) {
+									categories.clear();
 									for (int i = 0; i < jArray.length(); i++) {
 										categories.add(jArray.get(i).toString());
 									}
@@ -374,11 +375,12 @@ public class LoginViaOTP extends BaseActivity {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
 								btnGenerateOtp.setVisibility(View.GONE);
 								layoutResendOtp.setVisibility(View.GONE);
+								mainLoginLinear.setVisibility(View.GONE);
 								loginViaOtp.setVisibility(View.VISIBLE);
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
-								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "9896976999");
+								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "");
 								Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
 							} else {
 								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
@@ -724,7 +726,7 @@ public class LoginViaOTP extends BaseActivity {
 			String selection;
 			Cursor cursor;
 
-			selectionArgs = new String[]{Long.toString(System.currentTimeMillis() - 3600000)};
+			selectionArgs = new String[]{Long.toString(System.currentTimeMillis() - 900000)};
 			selection = "date>?";
 			cursor = LoginViaOTP.this.getContentResolver().query(uri, null, selection, selectionArgs, null);
 

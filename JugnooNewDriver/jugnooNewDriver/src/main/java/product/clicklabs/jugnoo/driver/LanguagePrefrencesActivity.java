@@ -264,6 +264,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
                             JSONArray jArray = jObj.getJSONArray("locales");
                             if (jArray != null) {
+								languages.clear();
                                 for (int i = 0; i < jArray.length(); i++) {
                                     languages.add(jArray.get(i).toString());
                                 }

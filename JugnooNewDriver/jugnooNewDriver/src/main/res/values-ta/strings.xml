@@ -549,6 +549,7 @@
         identity
     </string>
     <string name="give_misscall_to_verify">Give Miss Call to Verify</string>
+    <string name="please_press_here">Please Press Here</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

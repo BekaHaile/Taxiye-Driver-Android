@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/relative"
+<RelativeLayout android:id="@+id/relative"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
               android:background="@drawable/background_white"
-              android:orientation="vertical"
               android:splitMotionEvents="false">
 
     <RelativeLayout
@@ -79,6 +78,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:layout_below="@+id/topRl"
         android:orientation="vertical"
         android:splitMotionEvents="false"
         android:visibility="visible">
@@ -242,7 +242,7 @@
             android:id="@+id/loginViaOtp"
             android:layout_width="648px"
             android:layout_height="90px"
-            android:layout_marginTop="108px"
+            android:layout_marginTop="48px"
             android:background="@drawable/orange_btn_selector"
             android:text="@string/verify_me"
             android:textColor="@drawable/white_color_selector"
@@ -253,7 +253,7 @@
             android:id="@+id/layoutResendOtp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="98px"
+            android:layout_marginTop="72px"
             android:gravity="center_horizontal"
             android:splitMotionEvents="false"
             android:orientation="vertical"
@@ -273,7 +273,7 @@
                 android:id="@+id/textViewOr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="42px"
+                android:layout_marginTop="32px"
                 android:textSize="32px"
                 android:text="@string/or"/>
 
@@ -281,7 +281,7 @@
                 android:id="@+id/btnOtpViaCall"
                 android:layout_width="648px"
                 android:layout_height="90px"
-                android:layout_marginTop="42px"
+                android:layout_marginTop="32px"
                 android:background="@drawable/orange_btn_selector"
                 android:text="@string/give_misscall_to_verify"
                 android:textColor="@drawable/white_color_selector"
@@ -297,21 +297,41 @@
         android:id="@+id/mainLoginLinear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:gravity="bottom"
+        android:layout_below="@+id/topRl"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent_white"
         android:orientation="vertical"
         android:visibility="gone"
         android:splitMotionEvents="false">
 
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center_horizontal"
+           android:textSize="30px"
+           android:text="@string/please_press_here"/>
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15px"
+            android:background="@drawable/triangle_1"/>
+       
         <Button
             android:id="@+id/btnLogin"
-            android:layout_width="288px"
-            android:layout_height="288px"
-            android:background="@drawable/orange_circle"
+            android:layout_width="412px"
+            android:layout_height="90px"
+            android:layout_marginTop="15px"
+            android:layout_marginBottom="28px"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/orange_btn_selector"
             android:text="@string/login"
             android:textColor="@drawable/white_color_selector"
-            android:textSize="48px"
+            android:textSize="@dimen/button_text_size"
             android:visibility="visible"/>
 
         </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
