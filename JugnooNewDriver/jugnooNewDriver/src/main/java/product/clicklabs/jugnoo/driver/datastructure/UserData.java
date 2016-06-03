@@ -19,7 +19,7 @@ public class UserData {
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
-					String userId, String userEmail, String blockedAppPackageMessage) {
+					String userId, String userEmail, String blockedAppPackageMessage ) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;

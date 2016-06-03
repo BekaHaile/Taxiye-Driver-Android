@@ -622,6 +622,14 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 								}
+							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
+								String otp = jObj.getString("message");
+								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
+									Intent otpConfirmScreen = new Intent(this, LoginViaOTP.class);
+									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+									otpConfirmScreen.putExtra("otp", otp);
+									startActivity(otpConfirmScreen);
+								}
 							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
 								String url = jObj.getString("file_url");
 								String id = jObj.getString("file_id");

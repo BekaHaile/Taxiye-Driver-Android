@@ -422,6 +422,37 @@ public class DialogPopup {
 		}
 		
 	}
+
+	public static Dialog showLoadingDialog(Context context, String message, boolean newInstance) {
+
+		try {
+			Dialog dialog;
+			if(newInstance){
+				dialog = new ProgressDialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+			} else{
+				dismissLoadingDialog();
+				progressDialog = new ProgressDialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+				dialog = progressDialog;
+			}
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.show();
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(false);
+			dialog.setContentView(R.layout.dialog_loading);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL((Activity)context, frameLayout, 1134, 720, false);
+
+			TextView messageText = (TextView) dialog.findViewById(R.id.textView1); messageText.setTypeface(Data.latoRegular(context));
+			messageText.setText(message);
+			return dialog;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
 	

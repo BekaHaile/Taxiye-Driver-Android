@@ -66,7 +66,7 @@
 
 	<string name="first_name">First Name</string>
 	<string name="last_name">Last Name</string>
-	<string name="phone_number">Phone number</string>
+	<string name="phone_number">Phone Number</string>
 	<string name="confirm_password">Confirm Password</string>
 
 	<string name="confirmation_code">Confirmation Code</string>
@@ -264,7 +264,7 @@
 	<string name="location_setting">Location Settings</string>
 	<string name="location_setting_enable_message">Location is not enabled. Do you want to enable it from settings menu?</string>
 	<string name="luggage_charge">Luggage Charge</string>
-	<string name="login">LOGIN</string>
+	<string name="login">Login</string>
 
 	<string name="restart_phone">Please Restart Your Phone</string>
 	<string name="money_to_take">Money To take: Rs</string>
@@ -359,7 +359,7 @@
 	<string name="updating">Updating ...</string>
 	<string name="user_cancel_request">User has canceled the request</string>
 	<string name="verification">VERIFICATION</string>
-	<string name="verify_me">VERIFY ME</string>
+	<string name="verify_me">Verify Me</string>
 
 	<string name="waiting_for_location">Waiting for location...</string>
 	<string name="wait">Wait</string>
@@ -529,6 +529,11 @@
 	<string name="no_not_verified">Phone Number not verified</string>
 	<string name="resend_OTP">Resend OTP</string>
 	<string name="miss_call_otp">Give a Miss Call</string>
+	<string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
+		identity
+	</string>
+	<string name="give_misscall_to_verify">Give Missed Call To Verify</string>
+	<string name="please_press_here">Please Press Here</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

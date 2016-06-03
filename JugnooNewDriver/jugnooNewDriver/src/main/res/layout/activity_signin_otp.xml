@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/relative"
+<RelativeLayout android:id="@+id/relative"
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
               android:background="@drawable/background_white"
-              android:orientation="vertical"
               android:splitMotionEvents="false">
 
     <RelativeLayout
@@ -24,54 +23,51 @@
             android:textSize="@dimen/button_text_size"/>
 
         <!--<TextView-->
-            <!--android:id="@+id/title"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--android:gravity="center"-->
-            <!--android:text="@string/login"-->
-            <!--android:textColor="@color/white"-->
-            <!--android:textSize="40px"/>-->
+        <!--android:id="@+id/title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/login"-->
+        <!--android:textColor="@color/white"-->
+        <!--android:textSize="40px"/>-->
 
-       <LinearLayout
-           android:id="@+id/selectLanguageLl"
-           android:layout_width="380px"
-           android:layout_height="80px"
-           android:layout_alignParentRight="true"
-           android:layout_marginTop="3px"
-           android:layout_marginRight="5px"
-           android:visibility="gone"
-           android:background="@drawable/background_white_rounded_orange_bordered">
-
-
-           <ImageView
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center"
-               android:layout_marginLeft="6px"
-               android:background="@drawable/language_icon"/>
-
-           <ImageView
-               android:layout_width="2px"
-               android:layout_height="match_parent"
-               android:layout_marginLeft="6px"
-               android:background="@color/new_orange"/>
+        <LinearLayout
+            android:id="@+id/selectLanguageLl"
+            android:layout_width="380px"
+            android:layout_height="80px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5px"
+            android:layout_marginTop="3px"
+            android:background="@drawable/background_white_rounded_orange_bordered"
+            android:visibility="gone">
 
 
-           <Spinner
-               android:id="@+id/language_spinner"
-               android:layout_width="match_parent"
-               android:layout_centerVertical="true"
-               android:layout_height="match_parent"
-               android:textAlignment="center"
-               android:popupBackground="@drawable/background_white_rounded_orange_bordered"
-               />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="6px"
+                android:background="@drawable/language_icon"/>
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6px"
+                android:background="@color/new_orange"/>
 
 
+            <Spinner
+                android:id="@+id/language_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:popupBackground="@drawable/background_white_rounded_orange_bordered"
+                android:textAlignment="center"
+                />
 
 
-       </LinearLayout>
-
+        </LinearLayout>
 
 
     </RelativeLayout>
@@ -82,8 +78,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:layout_below="@+id/topRl"
         android:orientation="vertical"
-        android:splitMotionEvents="false">
+        android:splitMotionEvents="false"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/etLayout"
@@ -165,9 +163,9 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
-                    android:inputType="number"
                     android:background="@color/transparent"
                     android:hint="@string/otp"
+                    android:inputType="number"
                     android:singleLine="true"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -231,37 +229,109 @@
         <Button
             android:id="@+id/btnGenerateOtp"
             android:layout_width="648px"
-            android:layout_height="99px"
+            android:layout_height="90px"
             android:layout_marginTop="108px"
             android:background="@drawable/orange_btn_selector"
             android:text="@string/GENERATE_OTP"
             android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"/>
+            android:textSize="@dimen/button_text_size"
+            android:visibility="visible"/>
 
 
         <Button
             android:id="@+id/loginViaOtp"
             android:layout_width="648px"
-            android:layout_height="99px"
-            android:layout_marginTop="108px"
+            android:layout_height="90px"
+            android:layout_marginTop="48px"
             android:background="@drawable/orange_btn_selector"
             android:text="@string/verify_me"
-            android:visibility="gone"
             android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"/>
+            android:textSize="@dimen/button_text_size"
+            android:visibility="gone"/>
 
-        <Button
-            android:id="@+id/btnReGenerateOtp"
-            android:layout_width="648px"
-            android:layout_height="99px"
-            android:layout_marginTop="108px"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/resend_OTP"
-            android:visibility="gone"
-            android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"/>
+        <LinearLayout
+            android:id="@+id/layoutResendOtp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="72px"
+            android:gravity="center_horizontal"
+            android:splitMotionEvents="false"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <Button
+                android:id="@+id/btnReGenerateOtp"
+                android:layout_width="648px"
+                android:layout_height="90px"
+                android:background="@drawable/orange_btn_selector"
+                android:text="@string/resend_OTP"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                android:visibility="visible"/>
+
+            <TextView
+                android:id="@+id/textViewOr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32px"
+                android:textSize="32px"
+                android:text="@string/or"/>
+
+            <Button
+                android:id="@+id/btnOtpViaCall"
+                android:layout_width="648px"
+                android:layout_height="90px"
+                android:layout_marginTop="32px"
+                android:background="@drawable/orange_btn_selector"
+                android:text="@string/give_misscall_to_verify"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                android:visibility="visible"/>
+
+        </LinearLayout>
 
 
     </LinearLayout>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/mainLoginLinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_below="@+id/topRl"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/transparent_white"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:splitMotionEvents="false">
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_gravity="center_horizontal"
+           android:textSize="30px"
+           android:text="@string/please_press_here"/>
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15px"
+            android:background="@drawable/triangle_1"/>
+       
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="412px"
+            android:layout_height="90px"
+            android:layout_marginTop="15px"
+            android:layout_marginBottom="28px"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/orange_btn_selector"
+            android:text="@string/login"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"
+            android:visibility="visible"/>
+
+        </LinearLayout>
+
+</RelativeLayout>

@@ -88,4 +88,10 @@ public class SPLabels {
     public static final String PUBNUB_PUBLISHER_KEY = "pubnub_publisher_key";
     public static final String PUBNUB_SUSCRIBER_KEY = "pubnub_suscriber_key";
     public static final String PUBNUB_CHANNEL = "pubnub_channel";
+    public static final String LOGIN_VIA_OTP_STATE = "login_via_otp_state";
+
+    public static final String DRIVER_LOGIN_PHONE_NUMBER = "driver_login_phone_number";
+    public static final String DRIVER_LOGIN_TIME = "driver_login_time";
+
+
 }

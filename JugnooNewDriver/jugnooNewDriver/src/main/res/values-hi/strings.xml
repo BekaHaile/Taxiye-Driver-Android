@@ -521,6 +521,9 @@
 	<string name="no_not_verified">Phone Number not verified</string>
 	<string name="resend_OTP">ओटीपी पुन: भेजें</string>
 	<string name="miss_call_otp">Give a Miss Call</string>
+	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दें और हम आपकी पहचान सत्यापित करेंगे |</string>
+	<string name="give_misscall_to_verify">Give Miss Call to Verify</string>
+	<string name="please_press_here">Please Press Here</string>
 
 
 	<string-array name="CountryCodes" >
