@@ -50,15 +50,13 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             DeliveryInfo deliveryInfo = getItem(position);
 
             holder.textViewOrderIdValue.setText(String.valueOf(deliveryInfo.getId()));
-            holder.textViewCustomerName.setText(deliveryInfo.getCustomerName());
-            holder.textViewCustomerDeliveryAddress.setText(deliveryInfo.getDeliveryAddress());
+            holder.textViewCustomerNameValue.setText(deliveryInfo.getCustomerName());
+            holder.textViewCustomerDeliveryAddressValue.setText(deliveryInfo.getDeliveryAddress());
 
             holder.textViewOrderStatus.setVisibility(View.VISIBLE);
             if(deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
-                holder.rootLinear.setBackgroundResource(R.drawable.bg_white_grey_light_selector);
-                holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.pending));
+                holder.textViewOrderStatus.setVisibility(View.GONE);
             } else {
-                holder.rootLinear.setBackgroundResource(R.drawable.bg_grey_light);
                 if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
                     holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.completed));
                 } else if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
@@ -68,17 +66,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 }
             }
 
-            holder.relativeLayoutCall.setTag(position);
             holder.rootLinear.setTag(position);
-
-            holder.relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    int pos = (int) v.getTag();
-                    callback.onCallClick(pos, getItem(pos));
-                }
-            });
 
             holder.rootLinear.setOnClickListener(new View.OnClickListener() {
 
@@ -111,31 +99,27 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textViewOrderId, textViewOrderIdValue, textViewCustomerName, textViewCustomerDeliveryAddress, textViewCall, textViewOrderStatus;
-        public RelativeLayout relativeLayoutCall;
-        public LinearLayout rootLinear;
+        public TextView textViewOrderIdValue, textViewCustomerNameValue, textViewCustomerDeliveryAddressValue, textViewOrderStatus;
+        public RelativeLayout rootLinear;
         public ViewHolder(View convertView, Activity context) {
             super(convertView);
-            textViewOrderId = (TextView) convertView.findViewById(R.id.textViewOrderId);
-            textViewOrderId.setTypeface(Fonts.mavenRegular(context));
             textViewOrderIdValue = (TextView) convertView.findViewById(R.id.textViewOrderIdValue);
             textViewOrderIdValue.setTypeface(Fonts.mavenRegular(context));
-            textViewCustomerName = (TextView) convertView.findViewById(R.id.textViewCustomerName);
-            textViewCustomerName.setTypeface(Fonts.mavenRegular(context));
-            textViewCustomerDeliveryAddress = (TextView) convertView.findViewById(R.id.textViewCustomerDeliveryAddress);
-            textViewCustomerDeliveryAddress.setTypeface(Data.latoRegular(context));
-            textViewCall = (TextView) convertView.findViewById(R.id.textViewCall);
-            textViewCall.setTypeface(Data.latoRegular(context));
+            textViewCustomerNameValue = (TextView) convertView.findViewById(R.id.textViewCustomerNameValue);
+            textViewCustomerNameValue.setTypeface(Fonts.mavenRegular(context));
+            textViewCustomerDeliveryAddressValue = (TextView) convertView.findViewById(R.id.textViewCustomerDeliveryAddressValue);
+            textViewCustomerDeliveryAddressValue.setTypeface(Fonts.mavenRegular(context));
             textViewOrderStatus = (TextView) convertView.findViewById(R.id.textViewOrderStatus);
             textViewOrderStatus.setTypeface(Fonts.mavenRegular(context));
-            relativeLayoutCall = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutCall);
-            rootLinear = (LinearLayout) convertView.findViewById(R.id.rootLinear);
+            rootLinear = (RelativeLayout) convertView.findViewById(R.id.rootLinear);
+            ((TextView) convertView.findViewById(R.id.textViewOrderId)).setTypeface(Fonts.mavenRegular(context));
+            ((TextView) convertView.findViewById(R.id.textViewCustomerName)).setTypeface(Fonts.mavenRegular(context));
+            ((TextView) convertView.findViewById(R.id.textViewCustomerDeliveryAddress)).setTypeface(Fonts.mavenRegular(context));
         }
     }
 
     public interface Callback{
         void onClick(int position, DeliveryInfo deliveryInfo);
-        void onCallClick(int position, DeliveryInfo deliveryInfo);
     }
 
 }

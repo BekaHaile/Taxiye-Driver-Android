@@ -58,7 +58,8 @@
                android:layout_gravity="center_horizontal"
                android:gravity="center_vertical"
                android:layout_marginTop="20px"
-               android:textSize="38px"/>
+               android:textSize="38px"
+               android:textColor="@color/text_color"/>
 
            <ImageView
                android:id="@+id/imageViewCompleted"
@@ -71,6 +72,8 @@
        </LinearLayout>
 
    </LinearLayout>
+
+
 
 
     <android.support.v7.widget.RecyclerView

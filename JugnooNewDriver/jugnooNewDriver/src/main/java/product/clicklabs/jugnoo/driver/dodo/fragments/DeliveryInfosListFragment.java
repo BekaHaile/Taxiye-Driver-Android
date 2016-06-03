@@ -16,11 +16,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryInfoAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -38,6 +42,7 @@ public class DeliveryInfosListFragment extends Fragment {
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
 
+	private ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
 
 	private View rootView;
 	private HomeActivity activity;
@@ -68,7 +73,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		textViewCurrent.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
 		imageViewCompleted = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
-		imageViewCurrent = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
+		imageViewCurrent = (ImageView) rootView.findViewById(R.id.imageViewCurrent);
 
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
@@ -83,12 +88,11 @@ public class DeliveryInfosListFragment extends Fragment {
 		currentLLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
-				textViewCompleted.setTextColor(getResources().getColor(R.color.black));
+				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
 				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
-				imageViewCompleted.setVisibility(View.GONE);
-
+				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
+				updateList(DeliveryStatus.PENDING);
 
 			}
 		});
@@ -96,28 +100,22 @@ public class DeliveryInfosListFragment extends Fragment {
 		completedLLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
 				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
-				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
 				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
-				imageViewCurrent.setVisibility(View.GONE);
-
+				updateList(DeliveryStatus.COMPLETED);
 			}
 		});
 
 
 		deliveryInfoAdapter = new DeliveryInfoAdapter(activity,
-				Data.getCurrentCustomerInfo().getDeliveryInfos(),
+				deliveryInfos,
 				new DeliveryInfoAdapter.Callback() {
 					@Override
 					public void onClick(int position, DeliveryInfo deliveryInfo) {
 						activity.getTransactionUtils().openMarkDeliveryFragment(activity,
 								activity.getRelativeLayoutContainer(), deliveryInfo.getId());
-					}
-
-					@Override
-					public void onCallClick(int position, DeliveryInfo deliveryInfo) {
-						Utils.openCallIntent(activity, deliveryInfo.getCustomerNo());
 					}
 				});
 
@@ -130,9 +128,26 @@ public class DeliveryInfosListFragment extends Fragment {
 			}
 		});
 
+		updateList(DeliveryStatus.PENDING);
 
 		return rootView;
 	}
+
+
+	private void updateList(DeliveryStatus deliveryStatus){
+		deliveryInfos.clear();
+		for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
+					&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+				deliveryInfos.add(deliveryInfo);
+			} else if(deliveryStatus.getOrdinal() != DeliveryStatus.PENDING.getOrdinal()
+					&& deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+				deliveryInfos.add(deliveryInfo);
+			}
+		}
+		deliveryInfoAdapter.notifyDataSetChanged();
+	}
+
 
 	@Override
 	public void onHiddenChanged(boolean hidden) {
