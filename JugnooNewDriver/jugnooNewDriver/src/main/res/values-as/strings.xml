@@ -477,6 +477,8 @@
     <string name="current">Current</string>
     <string name="to_no_colon">To</string>
     <string name="address">Address</string>
+    <string name="get_directions">Get Directions</string>
+    <string name="delivered">Delivered</string>
 
 
     <string-array name="CountryCodes" >

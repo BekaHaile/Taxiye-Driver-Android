@@ -34,7 +34,7 @@
             android:paddingLeft="20px"
             android:paddingRight="20px"
             android:text="Order Id: 0000000"
-            android:textColor="@color/text_color"
+            android:textColor="@color/black"
             android:textSize="48px"/>
 
         <ImageView
@@ -49,21 +49,124 @@
 
 
     <TextView
-        android:id="@+id/textViewTakeCash"
+        android:id="@+id/textViewCustomerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="72px"
-        android:gravity="center"
-        android:text="@string/take_cash"
-        android:lineSpacingExtra="10px"
-        android:maxHeight="800px"
-        android:paddingLeft="20px"
-        android:paddingRight="20px"
-        android:textColor="@color/black"
-        android:textSize="40px"
+        android:layout_marginTop="42px"
+        android:text="Aneesh Bansal"
+        android:textSize="32px"/>
 
-        />
+    <TextView
+        android:id="@+id/textViewCustomerAddress"
+        android:layout_width="414px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="42px"
+        android:gravity="center"
+        android:text="1254, Madhya Marg, Opposite Mandir, Sector 28B, Chandigarh"
+        android:textSize="32px"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="32px"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="220px"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="102px"
+                android:layout_height="102px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/delivery_call"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/call"
+                android:layout_marginTop="18px"
+                android:textColor="@color/new_orange"
+                android:layout_gravity="center_horizontal"
+                android:textSize="32px"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="220px"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="72px">
+
+            <ImageView
+                android:layout_width="102px"
+                android:layout_height="102px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/get_directions"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/get_directions"
+                android:layout_marginTop="18px"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/new_orange"
+                android:textSize="32px"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="32px"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="220px"
+            android:layout_height="2px"
+            android:id="@+id/imageViewHorizontal3"
+            android:layout_centerVertical="true"
+            android:background="@color/black"/>
+
+        <TextView
+            android:id="@+id/textViewTakeCash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imageViewHorizontal3"
+            android:gravity="center"
+            android:text="@string/take_cash"
+            android:lineSpacingExtra="10px"
+            android:maxHeight="800px"
+            android:paddingLeft="20px"
+            android:paddingRight="20px"
+            android:textColor="@color/black"
+            android:textSize="40px"
+
+            />
+
+        <ImageView
+            android:layout_width="220px"
+            android:layout_height="2px"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/textViewTakeCash"
+            android:id="@+id/imageViewHorizontal4"
+            android:background="@color/black"/>
+
+    </RelativeLayout>
+
+
 
     <TextView
         android:id="@+id/textViewAmount"
@@ -108,7 +211,7 @@
             android:layout_height="83px"
             android:padding="2px"
             android:background="@drawable/new_orange_btn_corner_selector"
-            android:text="@string/collected"
+            android:text="@string/delivered"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             android:layout_alignParentRight="true"
