@@ -191,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <!-- customer info layout -->
                     <RelativeLayout
@@ -370,7 +370,7 @@
                             android:background="@color/white_translucent"
                             android:orientation="vertical"
                             android:splitMotionEvents="false"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -753,116 +753,6 @@
 
                             </RelativeLayout>
 
-                            <!-- in ride fare info rl-->
-                            <RelativeLayout
-                                android:id="@+id/inrideFareInfoRl"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white_translucent"
-                                android:visibility="gone"
-                                >
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="2px"
-                                    android:background="@drawable/shadow_up"/>
-
-                                <LinearLayout
-                                    android:id="@+id/inrideMinFareLinear"
-                                    android:layout_width="235px"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20px"
-                                    android:layout_marginTop="10px"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/inrideMinFareText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="@string/min_fare"
-                                        android:textColor="@color/black"
-                                        android:textSize="26px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:id="@+id/inrideMinFareValue"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="10px"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Rs 25.5 for 2.5 km"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"/>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/inrideFareAfterLinear"
-                                    android:layout_width="360px"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25px"
-                                    android:layout_marginTop="10px"
-                                    android:layout_toRightOf="@+id/inrideMinFareLinear"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/inrideFareAfterText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Fare (after 2 km)"
-                                        android:textColor="@color/black"
-                                        android:textSize="26px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:id="@+id/inrideFareAfterValue"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="10px"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Rs 6 per km + Re 1 per min"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"/>
-                                </LinearLayout>
-
-                                <Button
-                                    android:id="@+id/inrideFareInfoBtn"
-                                    android:layout_width="60px"
-                                    android:layout_height="60px"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="20px"
-                                    android:background="@drawable/info_btn"
-                                    android:tag="mwar"/>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/inrideMinFareLinear"
-                                    android:layout_marginTop="10px"
-                                    >
-                                    <TextView
-                                        android:id="@+id/textViewInRideConvenienceCharges"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="5px"
-                                        android:layout_marginLeft="20px"
-                                        android:layout_marginRight="20px"
-                                        android:text="Convenience charges for customer: Rs 0"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"
-                                        android:visibility="gone"
-                                        />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -919,7 +809,7 @@
                 android:layout_marginTop="90px"
                 android:animateLayoutChanges="true"
                 android:splitMotionEvents="false"
-                android:visibility="visible"
+                android:visibility="gone"
                 >
 
 

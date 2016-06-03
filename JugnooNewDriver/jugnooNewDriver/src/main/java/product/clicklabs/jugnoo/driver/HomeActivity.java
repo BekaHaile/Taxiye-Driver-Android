@@ -258,9 +258,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	PausableChronometer rideTimeChronometer;
 	RelativeLayout driverWaitRl;
 	ImageView imageViewIRWaitSep, imageViewETASmily;
-	RelativeLayout inrideFareInfoRl;
-	TextView inrideMinFareText, inrideMinFareValue, inrideFareAfterText, inrideFareAfterValue, textViewInRideConvenienceCharges;
-	Button inrideFareInfoBtn;
 	Button driverEndRideBtn;
 
 	public static int waitStart = 2;
@@ -690,19 +687,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverWaitValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			imageViewIRWaitSep = (ImageView) findViewById(R.id.imageViewIRWaitSep);
 
-			inrideFareInfoRl = (RelativeLayout) findViewById(R.id.inrideFareInfoRl);
-			inrideMinFareText = (TextView) findViewById(R.id.inrideMinFareText);
-			inrideMinFareText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-			inrideMinFareValue = (TextView) findViewById(R.id.inrideMinFareValue);
-			inrideMinFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
-			inrideFareAfterText = (TextView) findViewById(R.id.inrideFareAfterText);
-			inrideFareAfterText.setTypeface(Data.latoRegular(getApplicationContext()));
-			inrideFareAfterValue = (TextView) findViewById(R.id.inrideFareAfterValue);
-			inrideFareAfterValue.setTypeface(Data.latoRegular(getApplicationContext()));
-			textViewInRideConvenienceCharges = (TextView) findViewById(R.id.textViewInRideConvenienceCharges);
-			textViewInRideConvenienceCharges.setTypeface(Data.latoRegular(this));
-			textViewInRideConvenienceCharges.setVisibility(View.GONE);
-			inrideFareInfoBtn = (Button) findViewById(R.id.inrideFareInfoBtn);
 
 			driverWaitRl.setVisibility(View.GONE);
 			imageViewIRWaitSep.setVisibility(View.GONE);
@@ -1341,13 +1325,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			}
 //		});
 
-			inrideFareInfoBtn.setOnClickListener(new OnClickListener() {
 
-				@Override
-				public void onClick(View v) {
-					sendToFareDetails();
-				}
-			});
 
 			driverEndRideBtn.setOnClickListener(new OnClickListener() {
 
@@ -2749,6 +2727,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					if ((Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis()) > 0) {
 						etaTimerRLayout.setVisibility(View.VISIBLE);
@@ -2813,6 +2793,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2858,7 +2840,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					setAssignedCustomerInfoToViews(mode);
 
-					setTextToFareInfoTextViews(inrideMinFareValue, inrideFareAfterValue, inrideFareAfterText, textViewInRideConvenienceCharges);
 
 
 					driverInitialLayout.setVisibility(View.GONE);
@@ -2874,32 +2855,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (BusinessType.FATAFAT.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						startCustomerPathUpdateTimer();
 						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
-						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
 						imageViewIRWaitSep.setVisibility(View.GONE);
 					} else if (BusinessType.MEALS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						cancelCustomerPathUpdateTimer();
 						driverEndRideBtn.setText(getResources().getString(R.string.mark_delivered));
-						inrideFareInfoRl.setVisibility(View.GONE);
 						driverWaitRl.setVisibility(View.GONE);
 						imageViewIRWaitSep.setVisibility(View.GONE);
 					} else if (BusinessType.AUTOS.getOrdinal() == Data.assignedCustomerInfo.businessType.getOrdinal()) {
 						startCustomerPathUpdateTimer();
 						driverEndRideBtn.setText(getResources().getString(R.string.end_ride));
-
-						try {
-							if (Data.assignedCustomerInfo instanceof AutoCustomerInfo) {
-								if (((AutoCustomerInfo) Data.assignedCustomerInfo).meterFareApplicable == 1) {
-									inrideFareInfoRl.setVisibility(View.GONE);
-								} else {
-									inrideFareInfoRl.setVisibility(View.GONE);
-								}
-							} else {
-								inrideFareInfoRl.setVisibility(View.GONE);
-							}
-						} catch (Exception e) {
-							inrideFareInfoRl.setVisibility(View.GONE);
-						}
 
 						try {
 							if (((AutoCustomerInfo) Data.assignedCustomerInfo).waitingChargesApplicable == 1) {
@@ -2920,6 +2885,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startMapAnimateAndUpdateRideDataTimer();
 					cancelStationPathUpdateTimer();
 
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 					createPerfectRideMarker();
 
 
@@ -2958,6 +2925,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverEngagedLayout.setVisibility(View.GONE);
 					etaTimerRLayout.setVisibility(View.GONE);
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -4404,8 +4372,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			perfectRidestationMarker = map.addMarker(markerOptionsStationLocation);
 			CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, perfectRidestationMarker.getSnippet(), "");
 			map.setInfoWindowAdapter(customIW);
-
-
 		}
 	}
 
@@ -6746,32 +6712,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void onChangeStatePushReceived(int flag) {
-		try {
-			if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() ==flag) {
+	public void onChangeStatePushReceived(final int flag) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
 				try {
-					new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-							Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+						try {
+							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+									Data.dEngagementId, Data.assignedCustomerInfo.phoneNumber);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+						callAndHandleStateRestoreAPI();
+					}
+					if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
+						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+						new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
+						Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+						if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+							perfectRidePassengerInfoRl.setVisibility(View.GONE);
+							driverPassengerInfoRl.setVisibility(View.VISIBLE);
+						}
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				removePRMarkerAndRefreshList();
 			}
-			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-				callAndHandleStateRestoreAPI();
-			}
-			if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
-				Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-				new ApiAcceptRide().perfectRideVariables(this, "", "", "", 0, 0);
-				Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-				if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() ==flag) {
-					perfectRidePassengerInfoRl.setVisibility(View.GONE);
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		removePRMarkerAndRefreshList();
+		});
 	}
 
 
