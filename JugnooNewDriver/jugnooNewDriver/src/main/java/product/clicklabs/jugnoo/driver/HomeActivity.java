@@ -101,6 +101,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
@@ -5952,12 +5953,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		return transactionUtils;
 	}
 
-	public CustomerRideData getCustomerRideDataGlobal(){
-		return customerRideDataGlobal;
-	}
 
 	public Location getMyLocation(){
 		return myLocation;
+	}
+
+
+
+	public double getCurrentDeliveryDistance(){
+		double distance = customerRideDataGlobal.getDistance();
+		for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+				distance = distance - deliveryInfo.getDistance();
+			}
+		}
+		return distance;
+	}
+
+	public long getCurrentDeliveryWaitTime(){
+		long waitTime = customerRideDataGlobal.getWaitTime();
+		for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+				waitTime = waitTime - deliveryInfo.getWaitTime();
+			}
+		}
+		return waitTime;
+	}
+
+	public long getCurrentDeliveryTime(){
+		long deliveryTime = System.currentTimeMillis() - customerRideDataGlobal.getStartRideTime();
+		for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+				deliveryTime = deliveryTime - deliveryInfo.getDeliveryTime();
+			}
+		}
+		return deliveryTime;
 	}
 
 }

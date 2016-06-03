@@ -173,9 +173,16 @@ public class DeliveryReturnFragment extends Fragment {
 				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_CANCEL_REASON, reason);
-				params.put(Constants.KEY_DISTANCE, String.valueOf(activity.getCustomerRideDataGlobal().getDistance()));
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
+
+				final double distance = activity.getCurrentDeliveryDistance();
+				final long deliveryTime = activity.getCurrentDeliveryTime();
+				final long waitTime = activity.getCurrentDeliveryWaitTime();
+
+				params.put(Constants.KEY_DISTANCE, String.valueOf(distance));
+				params.put(Constants.KEY_RIDE_TIME, String.valueOf(deliveryTime/1000l));
+				params.put(Constants.KEY_WAIT_TIME, String.valueOf(waitTime/1000l));
 
 				RestClient.getApiServices().cancelDelivery(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -189,6 +196,7 @@ public class DeliveryReturnFragment extends Fragment {
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									deliveryInfo.setStatus(DeliveryStatus.CANCELLED.getOrdinal());
+									deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
 									activity.onBackPressed();
 									DialogPopup.alertPopupWithListener(activity, "", message,
 											new View.OnClickListener() {

@@ -15,9 +15,13 @@ public class DeliveryInfo {
 	private double amount;
 	private int status;
 
+	private double distance = 0;
+	private long deliveryTime = System.currentTimeMillis();
+	private long waitTime = 0;
+
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
-						String customerNo, double amount, int status) {
+						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime) {
 		this.id = id;
 		this.latLng = latLng;
 		this.customerName = customerName;
@@ -25,6 +29,9 @@ public class DeliveryInfo {
 		this.customerNo = customerNo;
 		this.amount = amount;
 		this.status = status;
+		this.distance = distance;
+		this.deliveryTime = deliveryTime * 1000l;
+		this.waitTime = waitTime * 1000l;
 	}
 
 	public DeliveryInfo(int id) {
@@ -96,5 +103,35 @@ public class DeliveryInfo {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public long getDeliveryTime() {
+		return deliveryTime;
+	}
+
+	public void setDeliveryTime(long deliveryTime) {
+		this.deliveryTime = deliveryTime;
+	}
+
+	public long getWaitTime() {
+		return waitTime;
+	}
+
+	public void setWaitTime(long waitTime) {
+		this.waitTime = waitTime;
+	}
+
+	public void setDeliveryValues(double distance, long deliveryTime, long waitTime){
+		setDistance(distance);
+		setDeliveryTime(deliveryTime);
+		setWaitTime(waitTime);
 	}
 }

@@ -668,13 +668,17 @@ public class JSONParser implements Constants {
 			JSONArray jsonArray = jsonObject.getJSONArray(KEY_DELIVERY_DATA);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jDelivery = jsonArray.getJSONObject(i);
-				deliveryInfos.add(new DeliveryInfo(jDelivery.getInt(KEY_DELIVERY_ID),
+				DeliveryInfo deliveryInfo = new DeliveryInfo(jDelivery.getInt(KEY_DELIVERY_ID),
 						new LatLng(jDelivery.getDouble(KEY_LATITUDE), jDelivery.getDouble(KEY_LONGITUDE)),
 						jDelivery.getString(KEY_NAME),
 						jDelivery.getString(KEY_ADDRESS),
 						jDelivery.getString(KEY_PHONE),
 						jDelivery.getDouble(KEY_COLLECT_CASH),
-						jDelivery.getInt(KEY_STATUS)));
+						jDelivery.getInt(KEY_STATUS),
+						jDelivery.optDouble(KEY_DISTANCE, 0),
+						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
+						jDelivery.optLong(KEY_WAIT_TIME, 0));
+				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
