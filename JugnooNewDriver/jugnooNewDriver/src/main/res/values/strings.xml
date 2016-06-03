@@ -542,6 +542,7 @@
 	<string name="deliveries">Deliveries</string>
 	<string name="pending">Pending</string>
 	<string name="cancelled">Cancelled</string>
+	<string name="current">Current</string>
 
 
 	<string-array name="CountryCodes" >

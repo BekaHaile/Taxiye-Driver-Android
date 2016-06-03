@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,7 +32,9 @@ public class DeliveryInfosListFragment extends Fragment {
 	private LinearLayout linearLayoutRoot;
 
 	private Button buttonBack;
-	private TextView textViewTitle;
+	private LinearLayout currentLLayout, completedLLayout;
+	private TextView textViewTitle, textViewCompleted, textViewCurrent;
+	private ImageView imageViewCompleted, imageViewCurrent;
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
 
@@ -56,6 +59,17 @@ public class DeliveryInfosListFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		currentLLayout = (LinearLayout) rootView.findViewById(R.id.currentLLayout);
+		completedLLayout = (LinearLayout) rootView.findViewById(R.id.completedLLayout);
+
+		textViewCompleted = (TextView) rootView.findViewById(R.id.textViewCompleted);
+		textViewCompleted.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCurrent = (TextView) rootView.findViewById(R.id.textViewCurrent);
+		textViewCurrent.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+
+		imageViewCompleted = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
+		imageViewCurrent = (ImageView) rootView.findViewById(R.id.imageViewCompleted);
+
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
@@ -65,6 +79,32 @@ public class DeliveryInfosListFragment extends Fragment {
 		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));
 		recyclerViewDeliveryInfo.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewDeliveryInfo.setHasFixedSize(false);
+
+		currentLLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+				textViewCompleted.setTextColor(getResources().getColor(R.color.black));
+				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				imageViewCompleted.setVisibility(View.GONE);
+
+
+			}
+		});
+
+		completedLLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
+				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				imageViewCurrent.setVisibility(View.GONE);
+
+			}
+		});
+
 
 		deliveryInfoAdapter = new DeliveryInfoAdapter(activity,
 				Data.getCurrentCustomerInfo().getDeliveryInfos(),

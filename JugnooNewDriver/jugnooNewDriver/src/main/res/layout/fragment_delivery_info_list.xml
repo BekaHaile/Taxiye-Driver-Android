@@ -9,6 +9,70 @@
     android:splitMotionEvents="false">
     <include layout="@layout/layout_top_bar"/>
 
+   <LinearLayout
+       android:id="@+id/currentCompetedLLayout"
+       android:layout_width="match_parent"
+       android:layout_height="90px"
+       android:orientation="horizontal"
+       android:layout_marginBottom="5px">
+
+       <LinearLayout
+           android:id="@+id/currentLLayout"
+           android:layout_width="360px"
+           android:layout_height="match_parent"
+           android:orientation="vertical">
+
+           <TextView
+               android:id="@+id/textViewCurrent"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/current"
+               android:layout_gravity="center_horizontal"
+               android:gravity="center_vertical"
+               android:layout_marginTop="20px"
+               android:textColor="@color/new_orange"
+               android:textSize="38px"/>
+
+           <ImageView
+               android:id="@+id/imageViewCurrent"
+               android:layout_width="match_parent"
+               android:layout_height="4px"
+               android:layout_marginTop="20px"
+               android:layout_gravity="bottom"
+               android:background="@color/new_orange"/>
+
+       </LinearLayout>
+
+       <LinearLayout
+           android:id="@+id/completedLLayout"
+           android:layout_width="360px"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:gravity="center_horizontal">
+
+           <TextView
+               android:id="@+id/textViewCompleted"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="@string/completed"
+               android:layout_gravity="center_horizontal"
+               android:gravity="center_vertical"
+               android:layout_marginTop="20px"
+               android:textSize="38px"/>
+
+           <ImageView
+               android:id="@+id/imageViewCompleted"
+               android:layout_width="match_parent"
+               android:layout_height="4px"
+               android:layout_marginTop="20px"
+               android:layout_gravity="bottom"
+               android:background="@color/transparent"/>
+
+       </LinearLayout>
+
+   </LinearLayout>
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDeliveryInfo"
         android:layout_width="match_parent"
