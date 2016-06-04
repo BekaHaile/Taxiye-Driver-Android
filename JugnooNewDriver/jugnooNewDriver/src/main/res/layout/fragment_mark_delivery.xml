@@ -75,6 +75,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/callCustomerLLayout"
             android:layout_width="220px"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -88,6 +89,7 @@
 
 
             <TextView
+                android:id="@+id/textViewCustomerCall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/call"
@@ -100,6 +102,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/getDirectionsLLayout"
             android:layout_width="220px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -113,6 +116,7 @@
                 android:background="@drawable/get_directions"/>
 
             <TextView
+                android:id="@+id/textViewGetDirections"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/get_directions"

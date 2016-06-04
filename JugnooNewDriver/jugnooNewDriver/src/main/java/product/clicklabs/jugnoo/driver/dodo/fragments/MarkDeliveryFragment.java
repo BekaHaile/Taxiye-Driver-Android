@@ -40,11 +40,13 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("ValidFragment")
 public class MarkDeliveryFragment extends Fragment {
 
-	private LinearLayout relative;
+	private LinearLayout relative, getDirectionsLLayout, callCustomerLLayout;
 
 	private Button buttonBack;
-	private TextView textViewTitle;
-	private TextView textViewOrderId, textViewAmount;
+
+	private TextView textViewOrderId, textViewAmount, textViewCustomerName, textViewTakeCash,
+			textViewCustomerAddress, textViewGetDirections, textViewCustomerCall, textViewTitle;
+
 	private Button btnCollected, btnReturned;
 
 	private View rootView;
@@ -70,10 +72,26 @@ public class MarkDeliveryFragment extends Fragment {
 			e.printStackTrace();
 		}
 
+		getDirectionsLLayout = (LinearLayout) rootView.findViewById(R.id.getDirectionsLLayout);
+		callCustomerLLayout = (LinearLayout) rootView.findViewById(R.id.callCustomerLLayout);
+
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
+
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewTitle.setText(activity.getResources().getString(R.string.mark_delivered));
+
+		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
+		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewTakeCash = (TextView) rootView.findViewById(R.id.textViewTakeCash);
+		textViewTakeCash.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCustomerAddress = (TextView) rootView.findViewById(R.id.textViewCustomerAddress);
+		textViewCustomerAddress.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+
+		textViewGetDirections = (TextView) rootView.findViewById(R.id.textViewGetDirections);
+		textViewGetDirections.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCustomerCall = (TextView) rootView.findViewById(R.id.textViewCustomerCall);
+		textViewCustomerCall.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
 		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
 		textViewOrderId.setTypeface(Fonts.mavenRegular(activity));
@@ -116,6 +134,22 @@ public class MarkDeliveryFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				activity.getTransactionUtils().openDeliveryReturnFragment(activity, activity.getRelativeLayoutContainer(), deliveryInfo.getId());
+			}
+		});
+
+
+		callCustomerLLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+
+		getDirectionsLLayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
 			}
 		});
 
