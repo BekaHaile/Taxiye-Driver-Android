@@ -481,6 +481,7 @@
     <string name="orders_delivered">Orders Delivered</string>
     <string name="orders_returned">Orders Returned</string>
     <string name="rate_your_vendor">Rate Your Vendor</string>
+    <string name="view_orders">View Orders</string>
 
 
     <string-array name="CountryCodes" >

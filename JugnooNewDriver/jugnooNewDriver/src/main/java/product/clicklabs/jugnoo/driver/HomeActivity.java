@@ -5969,9 +5969,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setMakeDeliveryButtonVisibility(){
+		buttonMakeDelivery.setVisibility(View.GONE);
 		try{
-			buttonMakeDelivery.setVisibility(View.GONE);
-			//TODO delivery state check
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
 				boolean anyUnchecked = false;
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
@@ -5980,12 +5979,49 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						break;
 					}
 				}
-				if(anyUnchecked) {
-					buttonMakeDelivery.setVisibility(View.VISIBLE);
-				}
+				buttonMakeDelivery.setVisibility(View.VISIBLE);
+				setMakeDeliveryButtonState(anyUnchecked);
+				setEndRideButtonState(anyUnchecked);
+			} else {
+				throw new Exception();
 			}
 		} catch (Exception e){
 			e.printStackTrace();
+			setEndRideButtonState(true);
+		}
+	}
+
+	private void setEndRideButtonState(boolean isDefault){
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverEndRideBtn.getLayoutParams();
+		if(isDefault) {
+			params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
+			params.leftMargin = 0;
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			driverEndRideBtn.setLayoutParams(params);
+			driverEndRideBtn.setBackgroundResource(R.drawable.menu_black_btn_selector);
+		} else{
+			params.width = (int) (getResources().getDimension(R.dimen.button_width_big_extra) * ASSL.Xscale());
+			params.leftMargin = (int) (45f * ASSL.Xscale());
+			params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+			driverEndRideBtn.setLayoutParams(params);
+			driverEndRideBtn.setBackgroundResource(R.drawable.orange_btn_selector);
+		}
+	}
+
+	private void setMakeDeliveryButtonState(boolean isDefault){
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonMakeDelivery.getLayoutParams();
+		if(isDefault) {
+			params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
+			params.rightMargin = 0;
+			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+			buttonMakeDelivery.setLayoutParams(params);
+			buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
+		} else{
+			params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
+			params.rightMargin = (int) (45f * ASSL.Xscale());
+			params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+			buttonMakeDelivery.setLayoutParams(params);
+			buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
 		}
 	}
 
