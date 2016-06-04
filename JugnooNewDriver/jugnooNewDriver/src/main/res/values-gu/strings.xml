@@ -51,8 +51,8 @@
     <string name="about_2_text">ભાવ પત્રક </string>
     <string name="about_3_text">પેહલા 2 કિમી:30રૂ.અને 2કિમી પછી 10/કિમી અને વેટીંગ સમય 1.50રૂ/મિનીટ 15 મિનીટ પછી </string>
     <string name="save_to_favorite">Save To Favorite</string>
-    <string name="ride_in_progress">Ride in progress...</string>
-    <string name="assigning_driver">Assigning driver...</string>
+    <string name="ride_in_progress">સવારી ચાલુ છે</string>
+    <string name="assigning_driver">ડ્રાઈવર નિયુક્ત હોયે છે</string>
     <string name="check_all">Check All</string>
     <string name="uncheck_all">Uncheck All</string>
     <string name="customer_pickup_text">A pickup has been assigned to you. Please pick the customer.</string>
@@ -461,7 +461,6 @@
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
     <string name="return_reasons">Reasons of Return</string>
     <string name="collected">Collected</string>
     <string name="Returned">Returned</string>
@@ -494,6 +493,11 @@
     <string name="Return">Return</string>
     <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
+    <string name="resend_OTP">O.T.P. ફરી મોકલો</string>
+    <string name="miss_call_otp">Give a Miss Call</string>
+    <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
+    <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
+    <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
 
 
     <string-array name="CountryCodes" >

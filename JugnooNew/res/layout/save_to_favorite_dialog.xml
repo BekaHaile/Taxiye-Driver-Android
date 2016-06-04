@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:orientation="vertical"
+        android:splitMotionEvents="false"
+         >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30px"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false"
+         >
+        
+        
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="40px"
+        android:splitMotionEvents="false"
+        
+             >
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:gravity="center"
+                android:text="@string/save_to_favorite"
+                android:textColor="@color/blue_btn"
+                android:textSize="50px" 
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                
+                />
+            
+            <ImageView 
+                android:layout_width="580px"
+                android:layout_height="2px"
+                android:background="@color/grey_light"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20px"
+                android:layout_marginBottom="20px"
+                />
+		 
+            
+            
+            <EditText 
+                android:id="@+id/favoriteNameEt"
+                android:layout_width="580px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:singleLine="true"
+                android:hint="@string/enter_name_for_favorite"
+                android:textColor="@color/black"
+                android:textSize="38px" 
+                android:padding="20px"
+                android:layout_marginTop="40px"
+                android:background="@drawable/edittext_background"
+                />
+            
+            
+            
+
+                    <Button
+                        android:id="@+id/btnOk"
+                        android:layout_width="247px"
+                        android:layout_height="83px"
+                        android:layout_marginTop="30px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/blue_btn_selector"
+                        android:singleLine="true"
+                        android:text="@string/ok"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size" 
+                android:layout_gravity="center_horizontal"
+                />
+
+            
+            
+        </LinearLayout>
+        
+          <Button
+            android:id="@+id/crossbtn"
+            android:layout_width="62px"
+            android:layout_height="62px"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/cross_circle"
+            android:singleLine="true" 
+            android:layout_marginRight="20px"
+            android:layout_marginTop="20px"
+                android:tag="mwar"
+                
+                />
+    </RelativeLayout>
+
+</FrameLayout>

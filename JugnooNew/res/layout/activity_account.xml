@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/bg_grey_opaque"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Coupons"
+            android:textColor="@color/white"
+            android:textSize="48px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+                    android:id="@+id/relativeLayoutReferral"
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:background="@color/black" >
+
+                    <TextView
+                        android:id="@+id/textViewWantMoreRides"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Want more FREE rides?"
+                        android:textColor="@color/white"
+                        android:textSize="36px"
+                        android:layout_marginLeft="20px"
+                        />
+
+                    <Button
+                        android:id="@+id/buttonReferUs"
+                        android:layout_width="200px"
+                        android:layout_height="60px"
+                        android:layout_centerVertical="true"
+                        android:text="Refer us"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@drawable/white_color_selector"
+                        android:background="@drawable/blue_btn_selector"
+                        android:textSize="36px"
+                        android:layout_marginRight="20px"
+                         />
+
+                    
+                </RelativeLayout>
+                
+    <RelativeLayout
+                    android:id="@+id/relativeLayoutPromoCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                     >
+
+        <TextView
+                        android:id="@+id/textViewEnterCouponCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter referral/promo code to get FREE rides:"
+                        android:textColor="@color/black"
+                        android:textSize="26px"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginTop="20px"
+                        />
+        
+        <RelativeLayout 
+                        android:layout_width="680px"
+                        android:layout_height="80px"
+            android:layout_below="@+id/textViewEnterCouponCode"
+                        android:background="@drawable/edittext_background"
+                        android:layout_marginLeft="20px"
+                        android:layout_marginTop="10px"
+            >
+                    <EditText
+                        android:id="@+id/editTextPromoCode"
+                        android:layout_width="540px"
+                        android:layout_height="80px"
+                        android:layout_gravity="center_vertical"
+                        android:layout_centerVertical="true"
+                        android:hint="Enter Referral/Promo code"
+                        android:textColor="@color/black"
+                        android:textSize="36px"
+                        android:singleLine="true"
+                        android:background="@color/transparent"
+                        android:paddingLeft="20px"
+                        android:paddingRight="0px"
+                        />
+
+                    <Button
+                        android:id="@+id/buttonApplyPromoCode"
+                        android:layout_width="140px"
+                        android:layout_height="80px"
+                        android:layout_centerVertical="true"
+                        android:text="Apply"
+                        android:layout_alignParentRight="true"
+                        android:textColor="@drawable/blue_alpha_color_selector"
+                        android:background="@color/transparent"
+                        android:textSize="36px"
+                         />
+</RelativeLayout>
+                    
+                </RelativeLayout>
+    
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        android:layout_marginTop="20px"
+         >
+
+
+                <ListView
+                    android:id="@+id/listViewCoupons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0px"
+                    android:divider="@drawable/transparent"
+                    android:dividerHeight="0px"
+                    android:listSelector="@drawable/transparent"
+                    android:splitMotionEvents="false" >
+                </ListView>
+
+        <TextView
+            android:id="@+id/textViewAccountInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="TextView"
+            android:textColor="@color/black"
+            android:textSize="48px" />
+
+        <ProgressBar
+            android:id="@+id/progressBarAccount"
+            android:layout_width="140px"
+            android:layout_height="140px"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</LinearLayout>

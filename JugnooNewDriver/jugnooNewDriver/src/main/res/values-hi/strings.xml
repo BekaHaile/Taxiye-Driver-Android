@@ -481,7 +481,7 @@
 	<string name="referral">रेफरल</string>
 	<string name="NA">लागू नहीं</string>
 	<string name="Invoice">चालान </string>
-	<string name="recharge_amount_for_customer"></string>
+	<string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s</string>
 	<string name="Ride">सवारी</string>
 	<string name="customer_id">ग्राहक आईडी</string>
 	<string name="paytm_transaction">पेटीएम लेनदेन</string>
@@ -552,6 +552,10 @@
 	<string name="Return">Return</string>
 	<string name="delivery">Delivery</string>
 	<string name="delivery_cancelled">Delivery Cancelled</string>
+	<string name="miss_call_otp">Give a Miss Call</string>
+	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दें और हम आपकी पहचान सत्यापित करेंगे |</string>
+	<string name="give_misscall_to_verify">वैरिफाई करने के लिए मिस कॉल करें</string>
+	<string name="please_press_here">कृपया यहाँ दबाएँ</string>
 
 
 	<string-array name="CountryCodes" >

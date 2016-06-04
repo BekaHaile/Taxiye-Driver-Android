@@ -465,7 +465,6 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="resend_OTP">Resend OTP</string>
     <string name="return_reasons">Reasons of Return</string>
     <string name="collected">Collected</string>
     <string name="Returned">Returned</string>
@@ -498,6 +497,11 @@
     <string name="Return">Return</string>
     <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
+    <string name="resend_OTP">ଓଟିପି ଆଉଥରେ ପଠାଯିବ.</string>
+    <string name="miss_call_otp">Give a Miss Call</string>
+    <string name="give_missed_call_dialog_text">ଆମକୁ ଗୋଟେ ମିସକଲ ଦିଅନ୍ତୁ ଅମେ ଅପଣଂକ ପରିଚୟ ଜାନ୍ଚ କରିବୁ</string>
+    <string name="give_misscall_to_verify">ଜାଂଚ୍ ପାଇଁ ଆମକୁ ମିସ୍-କଲ୍ ଦିଅନ୍ତୁ</string>
+    <string name="please_press_here">ଦୟାକରି ଏହିଠାରେ ଟିପନ୍ତୁ.</string>
 
 
     <string-array name="CountryCodes" >

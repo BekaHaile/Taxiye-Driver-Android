@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/bg_grey_opaque"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="Help"
+            android:textColor="@color/white"
+            android:textSize="48px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:splitMotionEvents="false" 
+        >
+        
+        <ListView
+        android:id="@+id/listViewHelp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/black_translucent"
+        android:dividerHeight="1px"
+        android:listSelector="@drawable/transparent"
+        android:splitMotionEvents="false" >
+    </ListView>
+    
+        <RelativeLayout 
+            android:id="@+id/helpExpandedRl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:visibility="gone"
+            
+            >
+            
+            <WebView 
+                android:id="@+id/helpWebview"
+   				android:layout_width="fill_parent"
+   				android:layout_height="fill_parent"
+                />
+            
+            
+            <ProgressBar 
+        android:id="@+id/progressBarHelp"
+        android:layout_width="140px"
+        android:layout_height="140px"
+        android:layout_centerInParent="true"
+        />
+        
+        
+            
+            
+        
+        <TextView
+        android:id="@+id/textViewInfoDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text=""
+        android:textColor="@color/black"
+        android:textSize="@dimen/button_text_size" />
+            
+            
+        </RelativeLayout>
+        
+        
+    </RelativeLayout>
+
+</LinearLayout>

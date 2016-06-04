@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topRl"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:splitMotionEvents="false" >
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="VERIFICATION"
+                android:textColor="@color/black_text"
+                android:textSize="30.6px" />
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="70.7px"
+                android:layout_height="86.9px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:padding="25px"
+                android:src="@drawable/back_orange_selector"
+                android:tag="mwar" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mainLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="40px"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <TextView
+                    android:id="@+id/otpHelpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="0px"
+                    android:gravity="center"
+                    android:text="Please enter the One Time Password you just received via SMS at 9999999999"
+                    android:textColor="@color/black_text"
+                    android:textSize="32px" />
+
+                <EditText
+                    android:id="@+id/editTextOTP"
+                    android:layout_width="628px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20px"
+                    android:background="#0000"
+                    android:gravity="center_vertical"
+                    android:hint="Enter One Time Password"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="30px" />
+
+                <ImageView
+                    android:layout_width="628px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@color/yellow_alpha" />
+
+                <Button
+                    android:id="@+id/buttonVerify"
+                    android:layout_width="648px"
+                    android:layout_height="100px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50px"
+                    android:background="@drawable/button_yellow_selector"
+                    android:text="VERIFY ME"
+                    android:textColor="@drawable/text_color_white_alpha_selector"
+                    android:textSize="@dimen/button_text_size" />
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutOTPThroughCall"
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:layout_marginTop="50px"
+                    android:background="@color/white_light_grey" >
+
+                    <TextView
+                        android:id="@+id/textViewOTPNotReceived"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20px"
+                        android:gravity="center"
+                        android:text="I didn&apos;t receive the OTP"
+                        android:textColor="@color/black_text"
+                        android:textSize="30px" />
+
+                    <TextView
+                        android:id="@+id/textViewCallMe"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="80px"
+                        android:gravity="center"
+                        android:text="CALL ME"
+                        android:textColor="@drawable/text_color_black_alpha_selector"
+                        android:textSize="30px" />
+
+                    <ImageView
+                        android:layout_width="13px"
+                        android:layout_height="26px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40px"
+                        android:src="@drawable/arrow_icon_selector"
+                        android:tag="mwar" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@color/yellow_alpha" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutChangePhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="100px"
+                    android:layout_marginTop="50px"
+                    android:background="@color/white_light_grey" >
+
+                    <TextView
+                        android:id="@+id/textViewChangePhone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20px"
+                        android:gravity="center"
+                        android:text="Change phone number"
+                        android:textColor="@color/black_text"
+                        android:textSize="30px" />
+
+                    <TextView
+                        android:id="@+id/textViewChange"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="80px"
+                        android:gravity="center"
+                        android:text="CHANGE"
+                        android:textColor="@drawable/text_color_black_alpha_selector"
+                        android:textSize="30px" />
+
+                    <ImageView
+                        android:layout_width="13px"
+                        android:layout_height="26px"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40px"
+                        android:src="@drawable/arrow_icon_selector"
+                        android:tag="mwar" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_alignParentBottom="true"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@color/yellow_alpha" />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

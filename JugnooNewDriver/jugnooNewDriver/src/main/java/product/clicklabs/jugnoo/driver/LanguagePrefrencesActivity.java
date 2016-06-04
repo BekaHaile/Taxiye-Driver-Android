@@ -240,74 +240,83 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 	private void fetchLangList(final Activity activity) {
 		progressBar.setVisibility(View.VISIBLE);
 
-		HashMap<String, String> params = new HashMap<>();
-		params.put("device_model_name", android.os.Build.MODEL);
-		params.put("android_version", android.os.Build.VERSION.RELEASE);
-		params.put("access_token", Data.userData.accessToken);
+		try {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("device_model_name", android.os.Build.MODEL);
+			params.put("android_version", android.os.Build.VERSION.RELEASE);
+			params.put("access_token", Data.userData.accessToken);
 
-		RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
-			@Override
-			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
-						} else {
-							updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-						}
-					} else {
+			RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+                @Override
+                public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                    try {
+                        String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                        JSONObject jObj;
+                        jObj = new JSONObject(jsonString);
+                        if (!jObj.isNull("error")) {
+                            String errorMessage = jObj.getString("error");
+                            if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+                                HomeActivity.logoutUser(activity);
+                            } else {
+                                updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                            }
+                        } else {
 
-						JSONArray jArray = jObj.getJSONArray("locales");
-						if (jArray != null) {
-							for (int i = 0; i < jArray.length(); i++) {
-								languages.add(jArray.get(i).toString());
-							}
-						}
-						updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
-					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
-					updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-				}
-				progressBar.setVisibility(View.GONE);
-			}
+                            JSONArray jArray = jObj.getJSONArray("locales");
+                            if (jArray != null) {
+								languages.clear();
+                                for (int i = 0; i < jArray.length(); i++) {
+                                    languages.add(jArray.get(i).toString());
+                                }
+                            }
+                            updateListData(activity.getResources().getString(R.string.no_language_to_select), false);
+                        }
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                        updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                    }
+                    progressBar.setVisibility(View.GONE);
+                }
 
-			@Override
-			public void failure(RetrofitError error) {
-				progressBar.setVisibility(View.GONE);
-				updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-			}
-		});
+                @Override
+                public void failure(RetrofitError error) {
+                    progressBar.setVisibility(View.GONE);
+                    updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                }
+            });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
 
 
 	private void setPreferredLanguage() {
-		HashMap<String, String> params = new HashMap<>();
-		params.put("locale", conf.locale.toString());
-		params.put("access_token", Data.userData.accessToken);
+		try {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("locale", conf.locale.toString());
+			params.put("access_token", Data.userData.accessToken);
 
-		RestClient.getApiServices().setPreferredLang(params, new Callback<RegisterScreenResponse>() {
-			@Override
-			public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
+			RestClient.getApiServices().setPreferredLang(params, new Callback<RegisterScreenResponse>() {
+                @Override
+                public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+                    try {
+                        String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                        JSONObject jObj;
+                        jObj = new JSONObject(jsonString);
 
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
-			}
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                }
 
-			@Override
-			public void failure(RetrofitError error) {
-			}
-		});
+                @Override
+                public void failure(RetrofitError error) {
+                }
+            });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

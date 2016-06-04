@@ -364,4 +364,10 @@ public interface APIServices {
 	@POST("/end_delivery")
 	Response endDelivery(@FieldMap Map<String, String> params);
 
+	@FormUrlEncoded
+	@POST("/fetch_all_driver_apps")
+	void fetchAlldriverApps(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
+
+
 }

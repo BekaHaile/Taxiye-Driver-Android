@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@drawable/common_bg"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topRl"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:splitMotionEvents="false" >
+
+            <Button
+                android:id="@+id/backBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="82px"
+                android:layout_centerVertical="true"
+                android:background="@drawable/transparent"
+                android:text="Back"
+                android:textColor="@drawable/blue_alpha_color_selector"
+                android:textSize="@dimen/button_text_size" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="VERIFICATION"
+                android:textColor="@color/blue_btn"
+                android:textSize="@dimen/button_text_size" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/mainLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+
+            
+            <TextView 
+                android:id="@+id/otpHelpText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please enter the One Time Password you just received via SMS at 9999999999"
+            android:textColor="@color/white"
+            android:textSize="32px" 
+            android:gravity="center"
+            android:layout_margin="20px"
+            android:layout_centerHorizontal="true"
+                />
+            
+            <EditText
+                android:id="@+id/otpEt"
+                android:layout_width="650px"
+                android:layout_height="100px"
+                android:background="@drawable/white_bg_rounded"
+                android:capitalize="words"
+                android:hint="Enter One Time Password"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="34px" 
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/otpHelpText"
+                android:inputType="number"
+                android:maxLength="4"
+                />
+
+            <Button
+                android:id="@+id/confirmBtn"
+                android:layout_width="648px"
+                android:layout_height="99px"
+                android:layout_marginTop="45px"
+                android:background="@drawable/blue_btn_selector"
+                android:text="CONFIRM"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/otpEt"
+                 />
+            
+            
+            
+            
+            <TextView 
+                android:id="@+id/pleaseWaitText"
+            android:layout_width="220px"
+            android:layout_height="wrap_content"
+            android:text="Please wait for 30 seconds"
+            android:textColor="@color/white"
+            android:textSize="32px" 
+            android:gravity="center"
+            android:layout_marginTop="500px"
+            android:layout_centerHorizontal="true"
+                />
+            
+            
+            
+            <Button
+                android:id="@+id/callMeBtn"
+                android:layout_width="348px"
+                android:layout_height="99px"
+                android:background="@drawable/black_btn_selector"
+                android:text="CALL ME"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size" 
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/weWillCallText"
+                />
+            
+            
+            
+            
+            <TextView 
+                android:id="@+id/weWillCallText"
+            android:layout_width="600px"
+            android:layout_height="wrap_content"
+            android:text="Didn't receive the password on SMS yet? We will give you a call to let you know your One Time Password"
+           android:textColor="@color/white"
+            android:textSize="32px" 
+            android:gravity="center"
+            android:layout_margin="20px"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+                />
+            
+            
+            
+            
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -152,6 +152,11 @@ public class MapUtils {
 		try {
 			String language = "";
 			language = context.getResources().getConfiguration().locale.toString();
+			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
+				language = "hi";
+            } else{
+				language = "en";
+			}
 
 			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
 					language, false);

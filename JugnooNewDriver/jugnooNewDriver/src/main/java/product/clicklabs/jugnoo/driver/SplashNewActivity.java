@@ -53,7 +53,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
+//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -248,17 +248,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		
 		
 		try {																						// to get AppVersion, OS version, country code and device name
-			Data.appVersion = Utils.getAppVersion(this);
-			Log.i("appVersion", Data.appVersion + "..");
-			Data.osVersion = android.os.Build.VERSION.RELEASE;
-			Log.i("osVersion", Data.osVersion + "..");
-			Data.country = getApplicationContext().getResources().getConfiguration().locale.getDisplayCountry(Locale.getDefault());
-			Log.i("countryCode", Data.country + "..");
-			Data.deviceName = Utils.getDeviceName();
-			Log.i("deviceName", Data.deviceName + "..");
-
-			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(this);
-			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
+			Data.filldetails(SplashNewActivity.this);
 		} catch (Exception e) {
 			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
 		}
@@ -322,9 +312,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //
 //		}
 
-
-		Intent intent = new Intent(this, PubnubService.class);
-		startService(intent);
+//
+//		Intent intent = new Intent(this, PubnubService.class);
+//		startService(intent);
 
 	}
 

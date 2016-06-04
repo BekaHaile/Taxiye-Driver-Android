@@ -48,21 +48,21 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 		if (item.equalsIgnoreCase("English")) {
 			languageToLoad = "en";
-		} else if (item.equalsIgnoreCase("Hindi")) {
+		} else if (item.equalsIgnoreCase("हिन्दी")) {
 			languageToLoad = "hi";
-		} else if (item.equalsIgnoreCase("Gujrati")) {
+		} else if (item.equalsIgnoreCase("ગુજરાતી")) {
 			languageToLoad = "gu";
-		} else if (item.equalsIgnoreCase("Oriya")) {
+		} else if (item.equalsIgnoreCase("ଓଡ଼ିଆ")) {
 			languageToLoad = "or";
-		} else if (item.equalsIgnoreCase("Malayalam")) {
+		} else if (item.equalsIgnoreCase("മലയാളം")) {
 			languageToLoad = "ml";
-		} else if (item.equalsIgnoreCase("Tamil")) {
+		} else if (item.equalsIgnoreCase("தமிழ்")) {
 			languageToLoad = "ta";
-		} else if (item.equalsIgnoreCase("Telugu")) {
+		} else if (item.equalsIgnoreCase("తెలుగు")) {
 			languageToLoad = "te";
-		} else if (item.equalsIgnoreCase("Kannada")) {
+		} else if (item.equalsIgnoreCase("ಕನ್ನಡ")) {
 			languageToLoad = "kn";
-		} else if (item.equalsIgnoreCase("Assamese")) {
+		} else if (item.equalsIgnoreCase("অসমীয়া")) {
 			languageToLoad = "as";
 		} else {
 			languageToLoad = "en";

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rv"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="50px"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false" >
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" 
+            android:padding="2px"
+            >
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:gravity="center"
+                android:paddingLeft="40px"
+                android:paddingRight="40px"
+                android:text="Title"
+                android:textColor="@color/grey_dark_more"
+                android:textSize="50px"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="0px"
+                android:layout_marginTop="40px"
+                android:gravity="center"
+                android:lineSpacingExtra="10px"
+                android:maxHeight="800px"
+                android:paddingLeft="40px"
+                android:paddingRight="40px"
+                android:text="Message"
+                android:textColor="@color/black"
+                android:textSize="34px"
+                android:visibility="gone" />
+
+            <EditText
+                android:id="@+id/etCode"
+                android:layout_width="480px"
+                android:layout_height="80px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:layout_marginBottom="40px"
+                android:background="@drawable/edittext_background"
+                android:gravity="center"
+                android:hint="@string/enter_code"
+                android:inputType="number"
+                android:paddingLeft="30px"
+                android:paddingRight="30px"
+                android:textColor="@color/black"
+                android:textCursorDrawable="@null"
+                android:textSize="38px" />
+            
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/grey_light" />
+            <Button
+                android:id="@+id/btnConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="83px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="0px"
+                android:background="@drawable/button_white_yellow_br_selector"
+                android:singleLine="true"
+                android:text="OK"
+                android:textColor="@drawable/text_color_yellow_white_selector"
+                android:textSize="34px" />
+            
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

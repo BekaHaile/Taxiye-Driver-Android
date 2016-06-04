@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="30px"
+    android:splitMotionEvents="false" >
+    
+    <RelativeLayout
+            android:id="@+id/relativeLayoutCoupon"
+            android:layout_width="644px"
+            android:layout_height="244px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20px"
+            android:background="@drawable/coupon_bg"
+            android:tag="mwar"
+             >
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCouponTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:orientation="vertical" >
+
+                
+                <TextView
+                    android:id="@+id/textViewYouHave"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="You have"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="0px"
+                    android:textSize="50px" />
+                
+                <TextView
+                    android:id="@+id/textViewCouponTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="1 Free Ride"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="0px"
+                    android:textSize="50px" />
+
+                <TextView
+                    android:id="@+id/textViewCouponSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="20px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="of up to Rs. 100/-"
+                    android:textColor="@color/black"
+                    android:textSize="34px" />
+                
+                <TextView
+                    android:id="@+id/textViewExpiryDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:layout_marginTop="20px"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="Expiring on 10th Jan, 2015"
+                    android:textColor="@color/black"
+                    android:textSize="24px" />
+                
+            </LinearLayout>
+
+            
+        </RelativeLayout>
+    
+
+</RelativeLayout>

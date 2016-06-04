@@ -252,46 +252,50 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 
 	private void getInvoiceHistory(final Activity activity) {
 		progressBar.setVisibility(View.VISIBLE);
-		RestClient.getApiServices().invoiceHistory(Data.userData.accessToken, "1", new Callback<InvoiceHistoryResponse>() {
-					@Override
-					public void success(InvoiceHistoryResponse invoiceHistoryResponse, Response response) {
-						try {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj;
-							jObj = new JSONObject(jsonString);
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
-								} else {
-									updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-								}
+		try {
+			RestClient.getApiServices().invoiceHistory(Data.userData.accessToken, "1", new Callback<InvoiceHistoryResponse>() {
+                        @Override
+                        public void success(InvoiceHistoryResponse invoiceHistoryResponse, Response response) {
+                            try {
+                                String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                                JSONObject jObj;
+                                jObj = new JSONObject(jsonString);
+                                if (!jObj.isNull("error")) {
+                                    String errorMessage = jObj.getString("error");
+                                    if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+                                        HomeActivity.logoutUser(activity);
+                                    } else {
+                                        updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                                    }
 
-							} else {
+                                } else {
 
-								for (int i = 0; i < invoiceHistoryResponse.getData().size(); i++) {
-									InvoiceHistoryResponse.Datum data = invoiceHistoryResponse.getData().get(i);
-									InvoiceInfo invoiceInfo = new InvoiceInfo(data.getInvoiceId(),data.getAmountToBePaid(),
-											data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus());
-									invoices.add(invoiceInfo);
-								}
+                                    for (int i = 0; i < invoiceHistoryResponse.getData().size(); i++) {
+                                        InvoiceHistoryResponse.Datum data = invoiceHistoryResponse.getData().get(i);
+                                        InvoiceInfo invoiceInfo = new InvoiceInfo(data.getInvoiceId(),data.getAmountToBePaid(),
+                                                data.getFromDate(), data.getToDate(), data.getInvoiceDate(), data.getInvoiceStatus());
+                                        invoices.add(invoiceInfo);
+                                    }
 
-								updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-							updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-						}
-						progressBar.setVisibility(View.GONE);
-					}
+                                    updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
+                                }
+                            } catch (Exception exception) {
+                                exception.printStackTrace();
+                                updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                            }
+                            progressBar.setVisibility(View.GONE);
+                        }
 
 
-					@Override
-					public void failure(RetrofitError error) {
-						progressBar.setVisibility(View.GONE);
-						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
-					}
-				});
+                        @Override
+                        public void failure(RetrofitError error) {
+                            progressBar.setVisibility(View.GONE);
+                            updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+                        }
+                    });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

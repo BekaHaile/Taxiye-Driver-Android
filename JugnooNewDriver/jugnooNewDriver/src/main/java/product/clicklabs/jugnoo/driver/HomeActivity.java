@@ -60,6 +60,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,7 +78,9 @@ import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
+import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
+import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
@@ -285,6 +288,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
 	long fetchHeatMapTime = 0;
+	long fetchAllAppTime = 0;
 
 	double totalFare = 0;
 	String waitTime = "", rideTime = "";
@@ -1127,6 +1131,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			if(((System.currentTimeMillis() - Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_TIME, 0))>Prefs.with(HomeActivity.this).getLong(Constants.FETCH_APP_API_FREQUENCY, 0))&&
+					(Prefs.with(HomeActivity.this).getInt(Constants.FETCH_APP_API_ENABLED, 1)>0)) {
+
+				apifetchAllDriverApps(Utils.fetchAllApps(HomeActivity.this));
+				Log.i("allApps", String.valueOf(Utils.fetchAllApps(HomeActivity.this)));
+
+			}
 
 			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
 
@@ -1365,6 +1376,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 
+
 	}
 
 	@Override
@@ -1593,6 +1605,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				GCMIntentService.stopRing(true);
 				driverRejectRequestAsync(HomeActivity.this, customerInfo);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void apifetchAllDriverApps(JSONArray appList){
+		try {
+			new ApiFetchDriverApps(this, new ApiFetchDriverApps.Callback() {
+                @Override
+                public void onSuccess() {
+					Prefs.with(HomeActivity.this).save(Constants.FETCH_APP_TIME, System.currentTimeMillis());
+                }
+            }).fetchDriverAppAsync(Data.userData.accessToken, appList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1893,14 +1918,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private boolean checkIfDriverOnline() {
-		if (0 == Data.userData.autosAvailable
-				&& 0 == Data.userData.mealsAvailable
-				&& 0 == Data.userData.fatafatAvailable
-				&& 0 == Data.userData.sharingAvailable
-				&& 0 == Data.userData.getDeliveryAvailable()) {
+		try {
+			if (0 == Data.userData.autosAvailable
+					&& 0 == Data.userData.mealsAvailable
+					&& 0 == Data.userData.fatafatAvailable
+					&& 0 == Data.userData.sharingAvailable
+					&& 0 == Data.userData.getDeliveryAvailable()) {
+				return false;
+			} else {
+				return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
-		} else {
-			return true;
 		}
 	}
 
@@ -2300,6 +2330,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2345,6 +2377,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -2436,6 +2470,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					startMapAnimateAndUpdateRideDataTimer();
 
+					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 					createPerfectRideMarker();
 
 
@@ -2471,6 +2507,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -3536,6 +3573,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								DialogPopup.alertPopup(activity, "", errorMessage);
 							}
 						} else {
+
+							try {
+								new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+										Data.dEngagementId, customerInfo.getPhoneNumber());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 
 							int flag = ApiResponseFlags.RIDE_STARTED.getOrdinal();
 
@@ -5180,22 +5224,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void onChangeStatePushReceived(int flag) {
-		try {
-			if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-				callAndHandleStateRestoreAPI();
-			} else {
-				Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-				new ApiAcceptRide().perfectRideVariables(this, "", "", "", 0, 0);
-				Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-				if(PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-					perfectRidePassengerInfoRl.setVisibility(View.GONE);
+	public void onChangeStatePushReceived(final int flag, final String engagementId) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+						try {
+							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+									Data.dEngagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+						callAndHandleStateRestoreAPI();
+					}
+					if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
+						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+						new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
+						Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+						if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+							perfectRidePassengerInfoRl.setVisibility(View.GONE);
+							driverPassengerInfoRl.setVisibility(View.VISIBLE);
+						}
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
+				removePRMarkerAndRefreshList();
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		removePRMarkerAndRefreshList();
+		});
 	}
 
 
@@ -5954,6 +6014,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
+
+
 
 	private synchronized void startWalletUpdateTimeout(){
 		checkwalletUpdateTimeoutHandler = new Handler();

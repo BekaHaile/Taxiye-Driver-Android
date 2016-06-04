@@ -518,6 +518,10 @@
     <string name="Return">Return</string>
     <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
+    <string name="miss_call_otp">Give a Miss Call</string>
+    <string name="give_missed_call_dialog_text">ದಯವಿಟ್ಟು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ, ನಾವು ನಿಮ್ಮ ಓ.ಟಿ.ಪಿ ಕೋಡ್  ಬಗ್ಗೆ ತಿಳಿಸುತ್ತೇವೆ.</string>
+    <string name="give_misscall_to_verify">ಪರಿಶೀಲಿಸಲು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ</string>
+    <string name="please_press_here">ದಯವಿಟ್ಟು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
 
 
     <string-array name="CountryCodes" >

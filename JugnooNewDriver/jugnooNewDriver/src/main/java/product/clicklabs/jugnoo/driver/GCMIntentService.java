@@ -476,8 +476,9 @@ public class GCMIntentService extends IntentService {
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
 								String logMessage = jObj.getString("message");
+								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, true);
 								} else {
 									notificationManager(this, logMessage, true);
@@ -487,8 +488,9 @@ public class GCMIntentService extends IntentService {
 								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 
 								String logMessage = jObj.getString("message");
+								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);
@@ -539,6 +541,14 @@ public class GCMIntentService extends IntentService {
 								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
+								}
+							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
+								String otp = jObj.getString("message");
+								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
+									Intent otpConfirmScreen = new Intent(this, LoginViaOTP.class);
+									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+									otpConfirmScreen.putExtra("otp", otp);
+									startActivity(otpConfirmScreen);
 								}
 							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
 								String url = jObj.getString("file_url");

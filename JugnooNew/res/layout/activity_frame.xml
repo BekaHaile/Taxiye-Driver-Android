@@ -1,0 +1,253 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="495px"
+        android:layout_height="match_parent"
+        android:background="@color/bg_grey"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:splitMotionEvents="false" >
+
+        <RelativeLayout
+            android:id="@+id/profileRl"
+            android:layout_width="300px"
+            android:layout_height="300px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="110px"
+            android:splitMotionEvents="false"
+            android:tag="mwar" >
+
+            <ImageView
+                android:id="@+id/profileBack"
+                android:layout_width="300px"
+                android:layout_height="300px"
+                android:background="@drawable/ring"
+                android:tag="mwar" />
+
+            <ImageView
+                android:id="@+id/profileImg"
+                android:layout_width="270px"
+                android:layout_height="270px"
+                android:layout_centerInParent="true"
+                android:tag="mwar" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profileRl"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10px"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/white"
+            android:textSize="34px" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <RelativeLayout
+                    android:id="@+id/couponsRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/couponsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Coupons"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+
+                    <ImageView
+                        android:layout_width="72px"
+                        android:layout_height="47px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="20px"
+                        android:layout_toRightOf="@+id/couponsText"
+                        android:src="@drawable/free_rides_icon"
+                        android:tag="mwar" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/inviteFriendRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/inviteFriendText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Invite &amp; Get FREE Rides"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/walletRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/walletText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Jugnoo Cash"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+                    
+                    
+                    <TextView
+                        android:id="@+id/textViewJugnooBalance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="20px"
+                        android:padding="10px"
+                        android:text="300"
+                        android:textColor="@color/black"
+                        android:background="@drawable/background_yellow_rounded"
+                        android:textSize="30px" />
+                    
+                    
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bookingsRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/bookingsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="@string/rides"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/fareDetailsRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/fareDetailsText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Fare Details"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/helpRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/helpText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="Help"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:layout_alignParentBottom="true"
+                        android:background="@drawable/menu_divider" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/logoutRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="84px"
+                    android:background="@drawable/menu_item_selector"
+                    android:splitMotionEvents="false" >
+
+                    <TextView
+                        android:id="@+id/logoutText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="42px"
+                        android:text="@string/logout"
+                        android:textColor="@color/white"
+                        android:textSize="34px" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</FrameLayout>

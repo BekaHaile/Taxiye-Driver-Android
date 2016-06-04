@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="96px"
+        android:splitMotionEvents="false" >
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="CHANGE PHONE NUMBER"
+            android:textColor="@color/black_text"
+            android:textSize="30.6px" />
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="70.7px"
+            android:layout_height="86.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="25px"
+            android:src="@drawable/back_orange_selector"
+            android:tag="mwar" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:splitMotionEvents="false" >
+
+        <LinearLayout
+            android:id="@+id/mainLinear"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false" >
+
+            <TextView
+                android:id="@+id/textViewChangePhoneNoHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black_text_alpha"
+                android:gravity="center_horizontal"
+                android:textSize="28px"
+                android:layout_marginTop="40px"
+                android:layout_marginLeft="50px"
+                android:layout_marginRight="40px"
+                android:text="Please enter your new phone number"/>
+
+
+            <EditText
+                    android:id="@+id/editTextNewPhoneNumber"
+                    android:layout_width="628px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50px"
+                    android:background="#0000"
+                    android:gravity="center_vertical"
+                    android:hint="Enter New Phone Number"
+                    android:inputType="phone"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black_text"
+                    android:textColorHint="@color/black_text_alpha"
+                    android:textCursorDrawable="@null"
+                    android:textSize="30px" />
+
+                <ImageView
+                    android:layout_width="628px"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@color/yellow_alpha" />
+                
+
+            
+            <Button
+                    android:id="@+id/buttonChangePhoneNumber"
+                    android:layout_width="648px"
+                    android:layout_height="100px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="70px"
+                    android:background="@drawable/button_yellow_selector"
+                    android:text="SUBMIT"
+                    android:textColor="@drawable/text_color_white_alpha_selector"
+                    android:textSize="@dimen/button_text_size" />
+
+            <TextView
+                android:id="@+id/textViewScroll"
+                android:layout_width="wrap_content"
+                android:layout_height="20px"
+                android:layout_marginTop="20px"
+                android:text="      "
+                android:textColor="@color/white"
+                android:textSize="10px" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

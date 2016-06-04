@@ -110,7 +110,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5px"
                     android:singleLine="true"
-                    android:text="23 June, 2014"
+                    android:text="@string/NA"
                     android:textColor="@color/new_orange"
                     android:layout_toRightOf="@+id/dateTimeTextFrom"
                     android:textSize="32px"
@@ -148,7 +148,7 @@
                     android:layout_marginLeft="5px"
                     android:singleLine="true"
                     android:layout_toRightOf="@+id/dateTimeTextTo"
-                    android:text="26 June, 2014"
+                    android:text="@string/NA"
                     android:textColor="@color/new_orange"
                     android:textSize="32px"
                     />

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="product.clicklabs.jugnoo.driver"
-
-
     android:versionCode="237"
     android:versionName="2.3.7" >
 
@@ -201,7 +199,7 @@
         </receiver>
         <receiver
             android:name=".IncomingSmsReceiver"
-            android:enabled="true">
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>

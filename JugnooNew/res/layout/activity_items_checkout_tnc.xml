@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:splitMotionEvents="false" >
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/bg_grey_opaque"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_inv_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="TERMS and CONDITIONS"
+            android:textColor="@color/orange_text"
+            android:textSize="34px" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:splitMotionEvents="false" >
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/relativeLayoutAD" />
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutAD"
+            android:layout_width="match_parent"
+            android:layout_height="112px"
+            android:layout_alignParentBottom="true"
+             >
+
+            <Button
+                android:id="@+id/buttonAgree"
+                android:layout_width="360px"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/orange_bg_selector"
+                android:singleLine="true"
+                android:text="AGREE"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="34px" />
+
+            <Button
+                android:id="@+id/buttonDisagree"
+                android:layout_width="360px"
+                android:layout_height="match_parent"
+                android:background="@drawable/white_bg_selector"
+                android:singleLine="true"
+                android:text="DISAGREE"
+                android:textColor="@drawable/black_color_selector"
+                android:textSize="34px" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/black_translucent_level_2" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

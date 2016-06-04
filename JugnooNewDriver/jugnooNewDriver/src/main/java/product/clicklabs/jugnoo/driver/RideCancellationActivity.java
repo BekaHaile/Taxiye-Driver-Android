@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
+import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -23,7 +24,6 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -218,7 +218,12 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 
 							new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 
-							sendCallLogs(engagementId);
+						try {
+							new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
+									Data.dEngagementId, Data.getCustomerInfo(engagementId).phoneNumber);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
 							nudgeCancelRide(reason);
 
@@ -256,40 +261,5 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			e.printStackTrace();
 		}
 	}
-
-	public void sendCallLogs(String engId) {
-		try {
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put("access_token", Data.userData.accessToken);
-				params.put("eng_id", engId);
-				params.put("call_logs", Utils.getCallDetails(RideCancellationActivity.this, Data.getCustomerInfo(engagementId).phoneNumber));
-
-				Log.i("params", "=" + params);
-
-				RestClient.getApiServices().sendCallLogs(params, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						try {
-							JSONObject jObj = new JSONObject(responseStr);
-							int flag = jObj.getInt("flag");
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						Log.e("request fail", error.toString());
-					}
-				});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 
 }

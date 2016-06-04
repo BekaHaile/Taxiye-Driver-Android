@@ -1,0 +1,212 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relative"
+    android:layout_width="720px"
+    android:layout_height="1134px"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topBar"
+            android:layout_width="720px"
+            android:layout_height="96px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/yellow" >
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="REQUEST REGISTRATION"
+                android:textColor="@color/white"
+                android:textSize="30.6px" />
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="60.7px"
+                android:layout_height="76.9px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10px"
+                android:padding="20px"
+                android:src="@drawable/back_white_selector" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:splitMotionEvents="false" >
+
+            <LinearLayout
+                android:id="@+id/linearLayoutMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white_light_grey"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <TextView
+                    android:id="@+id/textViewRegistration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40px"
+                    android:textColor="@color/black_text"
+                    android:textSize="30px"
+                    android:text="Registration Information"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="30px">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/textViewRegisterName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text"
+                            android:textSize="28px"
+                            android:layout_marginLeft="40px"
+                            android:text="Name:"/>
+
+                        <TextView
+                            android:id="@+id/textViewRegisterNameValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text_grey"
+                            android:textSize="28px"
+                            android:text="User1"
+                            android:layout_marginLeft="180px"
+                            android:layout_marginRight="40px"
+                            android:singleLine="true"
+                            />
+
+                        </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10px">
+
+                        <TextView
+                            android:id="@+id/textViewRegisterEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text"
+                            android:textSize="28px"
+                            android:layout_marginLeft="40px"
+                            android:text="Email:"/>
+
+                        <TextView
+                            android:id="@+id/textViewRegisterEmailValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text_grey"
+                            android:textSize="28px"
+                            android:text="User1"
+                            android:layout_marginLeft="180px"
+                            android:layout_marginRight="40px"
+                            android:singleLine="true"
+                            />
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10px">
+
+                        <TextView
+                            android:id="@+id/textViewRegisterPhone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text"
+                            android:textSize="28px"
+                            android:layout_marginLeft="40px"
+                            android:text="Phone:"/>
+
+                        <TextView
+                            android:id="@+id/textViewRegisterPhoneValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black_text_grey"
+                            android:textSize="28px"
+                            android:text="User1"
+                            android:layout_marginLeft="180px"
+                            android:layout_marginRight="40px"
+                            android:singleLine="true"
+                            />
+
+                    </RelativeLayout>
+
+                    </LinearLayout>
+
+
+                <EditText
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="310px"
+                    android:layout_marginLeft="40px"
+                    android:layout_marginRight="40px"
+                    android:layout_marginTop="50px"
+                    android:background="@drawable/background_white_rounded"
+                    android:gravity="left"
+                    android:hint="You have already created 2 accounts from this device. Please explain the reason for creating a new account."
+                    android:padding="20px"
+                    android:scrollbars="vertical"
+                    android:textSize="24px"
+                    android:textColor="@color/black_text"
+                    android:textColorHint="@color/black_text_alpha"
+                    />
+
+
+                <TextView
+                    android:id="@+id/textViewRegisterHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/black_text_alpha"
+                    android:gravity="center_horizontal"
+                    android:textSize="28px"
+                    android:layout_marginTop="40px"
+                    android:layout_marginLeft="40px"
+                    android:layout_marginRight="40px"
+                    android:text="We will revert to you soon"/>
+
+
+                <Button
+                    android:id="@+id/buttonSubmitRequest"
+                    android:layout_width="648px"
+                    android:layout_height="100px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40px"
+                    android:background="@drawable/button_yellow_selector"
+                    android:text="SUBMIT REQUEST"
+                    android:textColor="@drawable/text_color_white_alpha_selector"
+                    android:textSize="@dimen/button_text_size" />
+
+                <TextView
+                    android:id="@+id/textViewScroll"
+                    android:layout_width="20px"
+                    android:layout_height="20px"
+                    android:text=" " />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -17,6 +17,7 @@ import org.json.JSONArray;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
@@ -26,7 +27,9 @@ import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
+import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Stores common static data for access for all activities across the application
@@ -251,6 +254,24 @@ public class Data {
 			digitalRegular = Typeface.createFromAsset(appContext.getAssets(), "fonts/digital_regular.ttf");
 		}
 		return digitalRegular;
+	}
+
+	public static void filldetails(Context context){
+		try {																						// to get AppVersion, OS version, country code and device name
+			Data.appVersion = Utils.getAppVersion(context);
+			Log.i("appVersion", Data.appVersion + "..");
+			Data.osVersion = android.os.Build.VERSION.RELEASE;
+			Log.i("osVersion", Data.osVersion + "..");
+			Data.country = context.getResources().getConfiguration().locale.getDisplayCountry(Locale.getDefault());
+			Log.i("countryCode", Data.country + "..");
+			Data.deviceName = Utils.getDeviceName();
+			Log.i("deviceName", Data.deviceName + "..");
+
+			Data.uniqueDeviceId = DeviceUniqueID.getUniqueId(context);
+			Log.i("uniqueDeviceId", Data.uniqueDeviceId);
+		} catch (Exception e) {
+			Log.e("error in fetching appversion and gcm key", ".." + e.toString());
+		}
 	}
 
 

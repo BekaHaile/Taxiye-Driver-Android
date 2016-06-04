@@ -22,6 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.location.FusedLocationProviderApi;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 
@@ -176,22 +180,22 @@ public class Utils {
 
 	public static boolean mockLocationEnabled(Location location) {
 
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -420,6 +424,40 @@ public class Utils {
 		}
 		return telerickshawDriver;
 
+	}
+
+	public static JSONArray fetchAllApps(Context context){
+		try {
+			int flags = PackageManager.GET_META_DATA ;
+
+			PackageManager pm = context.getPackageManager();
+			List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
+			List<PackageInfo> packages = pm.getInstalledPackages(flags);
+			JSONArray appList = new JSONArray();
+
+			if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==1)) {
+                for (ApplicationInfo appInfo : applications) {
+                    appList.put(appInfo.packageName);
+                }
+            }else if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==2)){
+                for (ApplicationInfo appInfo : applications) {
+                    if( pm.getLaunchIntentForPackage(appInfo.packageName) != null ){
+                        appList.put(appInfo.packageName);
+                    }
+                }
+            }else if((Prefs.with(context).getInt(Constants.FETCH_APP_API_ENABLED, 1)==3)){
+                for (PackageInfo packageInfo : packages) {
+                    if (packageInfo.versionName != null && ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 1)) {
+                        appList.put(packageInfo.packageName);
+                    }
+                }
+            }
+
+			return appList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 
