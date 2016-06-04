@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="280px">
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20px"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewCustomerName"
+            android:layout_width="450px"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Aneesh Bansal"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="36px"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/textViewCustomerPickupAddress"
+            android:layout_width="450px"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="24px"
+            android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
+            android:textColor="@color/bg_grey_opaque"
+            android:textSize="30px"
+            android:visibility="visible"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDeliveryCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="32px">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewDeliveryCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30px"
+                android:text="@string/delivery_numbers"/>
+
+            <TextView
+                android:id="@+id/textViewDeliveryCountValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="24px"
+                android:layout_toRightOf="@+id/textViewDeliveryCountText"
+                android:text="06"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20px"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutCall"
+            android:layout_width="180px"
+            android:layout_height="70px"
+            android:background="@drawable/orange_btn_selector">
+
+            <ImageView
+                android:id="@+id/driverCallIcon"
+                android:layout_width="45px"
+                android:layout_height="45px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="15px"
+                android:src="@drawable/call_icon_selector"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewCall"
+                android:layout_width="150px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="75px"
+                android:text="@string/call"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="42px"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutFare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="24px">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewFareText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="30px"
+                android:text="@string/fare1"/>
+
+            <TextView
+                android:id="@+id/textViewApprox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16px"
+                android:text="@string/approx"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewFareValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/linearLayoutFare"
+                android:text="Rs. 200"
+                android:layout_marginLeft="10px"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/textViewShowDistance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="24px"
+            android:text="225 m away"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

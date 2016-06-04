@@ -246,12 +246,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	ImageView imageViewEndRideWaitSep;
 
 	LinearLayout linearLayoutMeterFareEditText;
-	TextView textViewMeterFareRupee;
+	TextView textViewMeterFareRupee, textViewDeliveryCountValue;
 	EditText editTextEnterMeterFare;
 
 	RelativeLayout relativeLayoutEndRideLuggageCount;
 	ImageView imageViewEndRideLuggageCountPlus, imageViewEndRideLuggageCountMinus;
-	TextView textViewEndRideLuggageCount;
+	TextView textViewEndRideLuggageCount, textViewFareValue;
 
 	LinearLayout endRideInfoRl;
 	TextView jugnooRideOverText, takeFareText;
@@ -351,7 +351,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		openedCustomerInfo = customerInfo;
 	}
 
-	private RelativeLayout relativeLayoutContainer;
+	private RelativeLayout relativeLayoutContainer, relativeLayoutFare, relativeLayoutDeliveryCount;
 
 
 	@Override
@@ -692,6 +692,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewOrdersReturnedValue.setTypeface(Fonts.mavenRegular(this));
 			relativeLayoutDeliveryOver.setVisibility(View.GONE);
 			linearLayoutEndDelivery.setVisibility(View.GONE);
+
+
+			//Customer Info Layout
+			((TextView) findViewById(R.id.textViewDeliveryCountText)).setTypeface(Fonts.mavenRegular(activity));
+			((TextView) findViewById(R.id.textViewApprox)).setTypeface(Fonts.mavenRegular(activity));
+			((TextView) findViewById(R.id.textViewFareText)).setTypeface(Fonts.mavenRegular(activity));
+
+			textViewDeliveryCountValue = (TextView) findViewById(R.id.textViewDeliveryCountValue);
+			textViewDeliveryCountValue.setTypeface(Fonts.mavenRegular(this));
+			textViewFareValue = (TextView) findViewById(R.id.textViewFareValue);
+			textViewDeliveryCountValue.setTypeface(Fonts.mavenRegular(this));
+
+			relativeLayoutFare = (RelativeLayout) findViewById(R.id.relativeLayoutFare);
+			relativeLayoutDeliveryCount = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryCount);
 
 
 

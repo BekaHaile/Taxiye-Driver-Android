@@ -234,7 +234,7 @@
 	<string name="enter_otp">Enter One Time Password</string>
 	<string name="email">Email:</string>
 
-	<string name="fare1">Fare</string>
+	<string name="fare1">Fare :</string>
 	<string name="forgot_password_cap">FORGOT PASSWORD</string>
 	<string name="free_ride">FREE RIDE</string>
 	<string name="final_amount">Final Amount</string>
@@ -553,6 +553,8 @@
 	<string name="orders_returned">Orders Returned</string>
 	<string name="rate_your_vendor">Rate Your Vendor</string>
 	<string name="view_orders">View Orders</string>
+	<string name="delivery_numbers">No. of Delivery :</string>
+	<string name="approx">(Approx)</string>
 
 
 	<string-array name="CountryCodes" >

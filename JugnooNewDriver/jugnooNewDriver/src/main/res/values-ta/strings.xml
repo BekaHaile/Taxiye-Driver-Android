@@ -564,6 +564,8 @@
     <string name="orders_returned">Orders Returned</string>
     <string name="rate_your_vendor">Rate Your Vendor</string>
     <string name="view_orders">View Orders</string>
+    <string name="delivery_numbers">No. of Delivery</string>
+    <string name="approx">(Approx)</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
