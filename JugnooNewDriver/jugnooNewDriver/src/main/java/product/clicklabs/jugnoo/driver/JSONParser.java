@@ -352,6 +352,7 @@ public class JSONParser implements Constants {
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ARRIVED.getOrdinal());
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
+				Data.nextPickupLatLng = null;
 				if (ApiResponseFlags.ENGAGEMENT_DATA.getOrdinal() == flag) {
 					JSONArray lastEngInfoArr = jObject1.getJSONArray(KEY_LAST_ENGAGEMENT_INFO);
 					for(int i=0; i<lastEngInfoArr.length(); i++) {
@@ -473,7 +474,7 @@ public class JSONParser implements Constants {
 
 				}
 
-				if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
+				if (Data.nextPickupLatLng == null) {
 					Prefs.with(context).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
 					Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
 					new ApiAcceptRide().perfectRideVariables(context, "", "", "", 0, 0);

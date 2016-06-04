@@ -2465,6 +2465,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						driverIRFareRl.setVisibility(View.VISIBLE);
 					}
 					setMakeDeliveryButtonVisibility();
+					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
 
 
@@ -5237,17 +5238,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							e.printStackTrace();
 						}
 					}
-					if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-						callAndHandleStateRestoreAPI();
-					}
-					if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
-						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-						new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
-						Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-						if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-							perfectRidePassengerInfoRl.setVisibility(View.GONE);
-							driverPassengerInfoRl.setVisibility(View.VISIBLE);
-						}
+//					if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
+//						callAndHandleStateRestoreAPI();
+//					}
+//					if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
+//						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
+//						new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
+//						Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
+//						if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+//							perfectRidePassengerInfoRl.setVisibility(View.GONE);
+//							driverPassengerInfoRl.setVisibility(View.VISIBLE);
+//						}
+//					}
+
+					callAndHandleStateRestoreAPI();
+					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+						perfectRidePassengerInfoRl.setVisibility(View.GONE);
+						driverPassengerInfoRl.setVisibility(View.VISIBLE);
 					}
 
 				} catch (Exception e) {

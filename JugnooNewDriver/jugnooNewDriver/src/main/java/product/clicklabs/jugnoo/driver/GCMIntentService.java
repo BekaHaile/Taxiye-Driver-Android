@@ -340,8 +340,7 @@ public class GCMIntentService extends IntentService {
 								boolean entertainRequest = false;
 								if(1 == perfectRide
 										&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
-										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")
-										&& Prefs.with(GCMIntentService.this).getInt(Constants.SP_POOL_RIDES_CONNECTED_COUNT, 0) < 2){
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
 									entertainRequest = true;
 								}
 								else if(1 == isPooled
