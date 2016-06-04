@@ -58,7 +58,7 @@
                         android:background="@color/white_translucent"
                         android:gravity="center"
                         android:padding="25px"
-                        android:text="Wait here..."
+                        android:text="@string/wait_here"
                         android:textColor="@color/bg_grey_opaque"
                         android:textSize="32px"
                         android:visibility="gone"/>
@@ -94,7 +94,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:gravity="center"
-                            android:text="Jugnoo is OFF now."
+                            android:text="@string/jugnoo_off"
                             android:textColor="@color/black"
                             android:textSize="44px"/>
                     </RelativeLayout>
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:splitMotionEvents="false"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/textViewBeforeAcceptRequestInfo"
@@ -151,7 +151,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="15px">
-                        <Button
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverAcceptRideBtn"
                             android:layout_width="410px"
                             android:layout_height="99px"
@@ -161,7 +161,7 @@
                             android:textColor="@drawable/white_color_selector"
                             android:textSize="@dimen/button_text_size"/>
 
-                        <Button
+                        <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                             android:id="@+id/driverCancelRequestBtn"
                             android:layout_width="240px"
                             android:layout_height="99px"
@@ -171,7 +171,7 @@
                             android:background="@drawable/new_menu_black_btn_selector_rounded"
                             android:text="@string/cancel"
                             android:textColor="@drawable/white_color_selector"
-                            android:textSize="@dimen/button_text_size"/>
+                            android:textSize="32px"/>
                     </RelativeLayout>
 
                     <!--<Button-->
@@ -284,9 +284,9 @@
                                             android:layout_marginLeft="35px"
                                             android:src="@drawable/call_icon_selector"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverPassengerCallText"
-                                            android:layout_width="wrap_content"
+                                            android:layout_width="150px"
                                             android:layout_height="wrap_content"
                                             android:layout_centerVertical="true"
                                             android:layout_marginLeft="115px"
@@ -370,7 +370,7 @@
                             android:background="@color/white_translucent"
                             android:orientation="vertical"
                             android:splitMotionEvents="false"
-                            android:visibility="gone">
+                            android:visibility="visible">
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
@@ -502,7 +502,6 @@
                         android:layout_alignParentBottom="true"
                         android:gravity="bottom"
                         android:orientation="vertical"
-
                         >
 
 
@@ -521,7 +520,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="25px">
 
-                                <Button
+                                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                     android:id="@+id/driverStartRideBtn"
                                     android:layout_width="410px"
                                     android:layout_height="99px"
@@ -530,7 +529,7 @@
                                     android:textColor="@drawable/white_color_selector"
                                     android:textSize="@dimen/button_text_size"/>
 
-                                <Button
+                                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                     android:id="@+id/buttonMarkArrived"
                                     android:layout_width="410px"
                                     android:layout_height="99px"
@@ -541,7 +540,7 @@
 
                             </RelativeLayout>
 
-                            <Button
+                            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                                 android:id="@+id/driverCancelRideBtn"
                                 android:layout_width="240px"
                                 android:layout_height="99px"
@@ -551,7 +550,7 @@
                                 android:background="@drawable/new_menu_black_btn_selector_rounded"
                                 android:text="@string/cancel"
                                 android:textColor="@drawable/white_color_selector"
-                                android:textSize="@dimen/button_text_size"/>
+                                android:textSize="32px"/>
 
 
                         </RelativeLayout>
@@ -610,7 +609,7 @@
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverIRDistanceValue"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -618,7 +617,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4.7 Kms"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -638,13 +636,12 @@
                                         android:gravity="center"
                                         android:splitMotionEvents="false">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverRideTimeText"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="Ride Time"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -657,7 +654,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text=""
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -678,12 +674,11 @@
                                         android:splitMotionEvents="false"
                                         android:visibility="visible">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/driverWaitText"
                                             android:layout_width="178px"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/wait_time"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"
@@ -697,7 +692,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/bg_grey_opaque"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -759,116 +753,6 @@
 
                             </RelativeLayout>
 
-                            <!-- in ride fare info rl-->
-                            <RelativeLayout
-                                android:id="@+id/inrideFareInfoRl"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/white_translucent"
-                                android:visibility="gone"
-                                >
-
-                                <ImageView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="2px"
-                                    android:background="@drawable/shadow_up"/>
-
-                                <LinearLayout
-                                    android:id="@+id/inrideMinFareLinear"
-                                    android:layout_width="235px"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="20px"
-                                    android:layout_marginTop="10px"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/inrideMinFareText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Min Fare"
-                                        android:textColor="@color/black"
-                                        android:textSize="26px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:id="@+id/inrideMinFareValue"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="10px"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Rs 25.5 for 2.5 km"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"/>
-                                </LinearLayout>
-
-                                <LinearLayout
-                                    android:id="@+id/inrideFareAfterLinear"
-                                    android:layout_width="360px"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginLeft="25px"
-                                    android:layout_marginTop="10px"
-                                    android:layout_toRightOf="@+id/inrideMinFareLinear"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/inrideFareAfterText"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Fare (after 2 km)"
-                                        android:textColor="@color/black"
-                                        android:textSize="26px"
-                                        android:textStyle="bold"/>
-
-                                    <TextView
-                                        android:id="@+id/inrideFareAfterValue"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="10px"
-                                        android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="Rs 6 per km + Re 1 per min"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"/>
-                                </LinearLayout>
-
-                                <Button
-                                    android:id="@+id/inrideFareInfoBtn"
-                                    android:layout_width="60px"
-                                    android:layout_height="60px"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_centerVertical="true"
-                                    android:layout_marginRight="20px"
-                                    android:background="@drawable/info_btn"
-                                    android:tag="mwar"/>
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@+id/inrideMinFareLinear"
-                                    android:layout_marginTop="10px"
-                                    >
-                                    <TextView
-                                        android:id="@+id/textViewInRideConvenienceCharges"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginBottom="5px"
-                                        android:layout_marginLeft="20px"
-                                        android:layout_marginRight="20px"
-                                        android:text="Convenience charges for customer: Rs 0"
-                                        android:textColor="@color/black"
-                                        android:textSize="28px"
-                                        android:visibility="gone"
-                                        />
-
-                                </LinearLayout>
-
-                            </RelativeLayout>
-
                         </LinearLayout>
 
                     </LinearLayout>
@@ -896,7 +780,9 @@
                         android:tag="mwar"
                         android:text="@string/click_for_direction"
                         android:visibility="gone"
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="28px"
+                        />
 
                 </RelativeLayout>
 
@@ -965,14 +851,15 @@
                                     android:singleLine="true"
                                     android:text="@string/reached_destination"
                                     android:textColor="@color/grey_black"
+                                    android:visibility="gone"
                                     android:textSize="36px"/>
 
                                 <!-- reached distance km, time, fare layout -->
                                 <LinearLayout
                                     android:id="@+id/reviewReachedDistanceRl"
                                     android:layout_width="match_parent"
-                                    android:layout_height="126px"
-                                    android:layout_marginTop="15px"
+                                    android:layout_height="140px"
+                                    android:layout_marginTop="25px"
                                     android:background="@color/white"
                                     android:gravity="center_vertical"
                                     android:orientation="horizontal"
@@ -992,12 +879,11 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/distance"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewDistanceValue"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
@@ -1005,7 +891,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4.7 Kms"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1025,12 +910,11 @@
                                         android:splitMotionEvents="false"
                                         android:visibility="visible">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewWaitText"
-                                            android:layout_width="178px"
+                                            android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/wait_time"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1042,7 +926,6 @@
                                             android:layout_below="@+id/reviewWaitText"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1063,14 +946,13 @@
                                         android:gravity="center"
                                         android:splitMotionEvents="false">
 
-                                        <TextView
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                             android:id="@+id/reviewRideTimeText"
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
-                                            android:text="Ride Time"
+                                            android:text="@string/ride_time"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
 
@@ -1082,7 +964,6 @@
                                             android:layout_centerHorizontal="true"
                                             android:layout_marginTop="5px"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="4 min"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1099,6 +980,7 @@
                                         android:layout_height="match_parent"
                                         android:layout_weight="1"
                                         android:gravity="center"
+                                        android:visibility="gone"
                                         android:splitMotionEvents="false">
 
                                         <TextView
@@ -1107,7 +989,6 @@
                                             android:layout_height="wrap_content"
                                             android:layout_centerHorizontal="true"
                                             android:gravity="center"
-                                            android:singleLine="true"
                                             android:text="@string/fare"
                                             android:textColor="@color/menu_black"
                                             android:textSize="@dimen/end_ride_details_text_size"/>
@@ -1144,7 +1025,7 @@
                                         android:id="@+id/textViewEnterMeterFare"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="ENTER FARE"
+                                        android:text="@string/enter_fare"
                                         android:textColor="@color/white"
                                         android:textSize="40px"
                                         />
@@ -1206,7 +1087,7 @@
                             <RelativeLayout
                                 android:id="@+id/relativeLayoutEndRideCustomerAmount"
                                 android:layout_width="match_parent"
-                                android:layout_height="310px"
+                                android:layout_height="320px"
                                 android:layout_below="@+id/upLayout"
                                 android:visibility="visible"
                                 >
@@ -1218,34 +1099,52 @@
                                     android:layout_height="wrap_content"
                                     android:layout_centerHorizontal="true"
                                     android:layout_centerVertical="true"
+                                    android:layout_marginTop="25px"
                                     android:orientation="vertical"
                                     android:splitMotionEvents="false"
                                     android:visibility="visible">
 
-                                    <TextView
+                                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                         android:id="@+id/jugnooRideOverText"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         android:gravity="center"
-                                        android:singleLine="true"
-                                        android:text="The Jugnoo ride is over."
+                                        android:text="@string/jugnoo_ride_over"
                                         android:textColor="@color/black"
-                                        android:textSize="40px"/>
+                                        android:textSize="48px" />
 
-                                    <TextView
-                                        android:id="@+id/takeFareText"
+
+                                    <LinearLayout
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
-                                        android:layout_marginBottom="40px"
-                                        android:layout_marginTop="10px"
+                                        android:layout_marginTop="40px"
                                         android:gravity="center"
                                         android:paddingLeft="40px"
-                                        android:paddingRight="40px"
-                                        android:text="Please take the fare as shown above from the customer."
-                                        android:textColor="@color/black"
-                                        android:textSize="40px"/>
+                                        android:paddingRight="40px">
+
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                                            android:id="@+id/takeFareText"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="@string/take_cash"
+                                            android:textColor="@color/black"
+                                            android:textSize="72px" />
+
+
+                                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                                            android:id="@+id/takeFareValue"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text=" Rs100"
+                                            android:singleLine="true"
+                                            android:textColor="@color/black"
+                                            android:visibility="gone"
+                                            android:textSize="72px" />
+
+                                    </LinearLayout>
+
                                 </LinearLayout>
 
                                 <!-- coupon layout-->
@@ -1257,7 +1156,7 @@
                                     android:layout_centerVertical="true"
                                     android:background="@drawable/coupon_text_box"
                                     android:tag="mwar"
-                                    android:visibility="visible">
+                                    android:visibility="gone">
 
                                     <LinearLayout
                                         android:id="@+id/linearLayoutCouponTitle"
@@ -1274,7 +1173,7 @@
                                             android:layout_marginLeft="20px"
                                             android:layout_marginRight="20px"
                                             android:gravity="center"
-                                            android:text="Free Ride"
+                                            android:text="@string/free_ride"
                                             android:textColor="@color/white"
                                             android:textSize="46px"/>
 
@@ -1287,7 +1186,7 @@
                                             android:layout_marginRight="20px"
                                             android:layout_marginTop="40px"
                                             android:gravity="center"
-                                            android:text="of upto Rs. 100/-"
+                                            android:text="@string/of_upto_100"
                                             android:textColor="@color/white"
                                             android:textSize="32px"
                                             android:visibility="visible"/>
@@ -1307,7 +1206,7 @@
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center_horizontal"
                                             android:gravity="center"
-                                            android:text="Pay"
+                                            android:text="@string/pay"
                                             android:textColor="@color/white"
                                             android:textSize="46px"/>
 
@@ -1350,7 +1249,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Amount"
+                                                android:text="@string/amount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1379,7 +1278,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Discount"
+                                                android:text="@string/discount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1408,7 +1307,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Final Amount"
+                                                android:text="@string/final_amount"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1437,7 +1336,7 @@
                                                 android:layout_width="wrap_content"
                                                 android:layout_height="wrap_content"
                                                 android:layout_centerVertical="true"
-                                                android:text="Jugnoo Cash"
+                                                android:text="@string/jugnoo_cash"
                                                 android:textColor="@color/grey_dark_less"
                                                 android:textSize="30px"/>
 
@@ -1467,7 +1366,7 @@
                                             android:layout_width="match_parent"
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
-                                            android:text="Take"
+                                            android:text="@string/take"
                                             android:textColor="@color/black"
                                             android:textSize="50px"/>
 
@@ -1546,9 +1445,9 @@
                                     android:layout_width="300px"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
+                                    android:text="@string/no_lugage"
                                     android:layout_marginLeft="100px"
                                     android:gravity="center"
-                                    android:text="NO LUGGAGE"
                                     android:textColor="@color/black"
                                     android:textSize="40px"
                                     />
@@ -1562,7 +1461,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentBottom="true"
-                                android:layout_marginBottom="128px"
+                                android:layout_marginBottom="148px"
                                 android:gravity="center_horizontal"
                                 android:orientation="vertical"
                                 >
@@ -1584,13 +1483,13 @@
 
                                         />
 
-                                    <TextView
+                                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                                         android:id="@+id/textViewRateYourCustomer"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_centerHorizontal="true"
                                         android:gravity="center"
-                                        android:text="Rate Your Customer"
+                                        android:text="@string/Rate_Your_Customer"
                                         android:textColor="@color/black"
                                         android:textSize="32px"
                                         />
@@ -1612,7 +1511,7 @@
                                     style="@style/RatingBarBlue"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="48px"
+                                    android:layout_marginTop="72px"
                                     android:numStars="5"
                                     android:rating="1"
                                     android:stepSize="1.0"
@@ -1623,7 +1522,7 @@
                                     android:id="@+id/reviewSubmitBtn"
                                     android:layout_width="648px"
                                     android:layout_height="99px"
-                                    android:layout_marginTop="48px"
+                                    android:layout_marginTop="52px"
                                     android:background="@drawable/new_orange_btn_round_corner_normal"
                                     android:text="@string/submit"
                                     android:textColor="@drawable/white_color_selector"
@@ -1633,9 +1532,9 @@
                                     android:id="@+id/reviewSkipBtn"
                                     android:layout_width="648px"
                                     android:layout_height="99px"
-                                    android:layout_marginTop="24px"
+                                    android:layout_marginTop="32px"
                                     android:background="@drawable/white_bg"
-                                    android:text="Skip"
+                                    android:text="@string/skip"
                                     android:textColor="@color/new_orange"
                                     android:textSize="@dimen/button_text_size"
                                     android:visibility="visible"
@@ -1672,7 +1571,7 @@
                                         android:layout_marginRight="20px"
                                         android:layout_marginTop="10px"
                                         android:gravity="center"
-                                        android:text="USE JUGNOO FARE"
+                                        android:text="@string/use_jugnoo_fare"
                                         android:textColor="@drawable/blue_btn_color_selector"
                                         android:textSize="@dimen/button_small_text_size"
                                         android:visibility="visible"/>
@@ -1712,7 +1611,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerVertical="true"
                                         android:layout_marginLeft="20px"
-                                        android:text="Distance:\n"
+                                        android:text="@string/distance2"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1724,7 +1623,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_centerHorizontal="true"
                                         android:layout_centerVertical="true"
-                                        android:text="Time:\n"
+                                        android:text="@string/time_new"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1736,7 +1635,7 @@
                                         android:layout_alignParentRight="true"
                                         android:layout_centerVertical="true"
                                         android:layout_marginRight="20px"
-                                        android:text="Fare:\n"
+                                        android:text="@string/fare2"
                                         android:textColor="@color/black"
                                         android:textSize="30px"
                                         />
@@ -1768,7 +1667,7 @@
                                             android:layout_height="wrap_content"
                                             android:gravity="center"
                                             android:singleLine="true"
-                                            android:text="Min Fare"
+                                            android:text="@string/min_fare"
                                             android:textColor="@color/black"
                                             android:textSize="26px"
                                             android:textStyle="bold"/>
@@ -1894,7 +1793,7 @@
                         android:layout_centerHorizontal="true"
                         android:layout_centerVertical="true"
                         android:gravity="center"
-                        android:text="JUGNOO"
+                        android:text="@string/JUGNOO"
                         android:textColor="@color/white"
                         android:textSize="48px"/>
 
@@ -2110,7 +2009,6 @@
                                 android:textColor="@color/white"
                                 android:textSize="34px"/>
 
-
                             <RelativeLayout
                                 android:id="@+id/driverRatingRl"
                                 android:layout_width="wrap_content"
@@ -2189,7 +2087,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Jugnoo ON"
+                        android:text="@string/jugnoo_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2224,7 +2122,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Meals ON"
+                        android:text="@string/meals_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2259,7 +2157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Fatafat ON"
+                        android:text="@string/fatafat_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2294,7 +2192,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Sharing ON"
+                        android:text="@string/sharing_on"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2322,7 +2220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Invite &amp; Earn"
+                        android:text="@string/invite_earn"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2340,7 +2238,7 @@
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/paymentText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -2395,7 +2293,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Sharing Rides"
+                        android:text="@string/sharing_rides"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2419,7 +2317,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Fare Details"
+                        android:text="@string/fare_details"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2438,13 +2336,13 @@
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/textViewSuperDrivers"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Super Drivers"
+                        android:text="@string/super_driver"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2477,13 +2375,13 @@
                     android:splitMotionEvents="false"
                     android:visibility="gone">
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/notificationCenterText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Notifications"
+                        android:text="@string/Notifications"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2532,7 +2430,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="42px"
-                        android:text="Destination"
+                        android:text="@string/destination_menu"
                         android:textColor="@color/white"
                         android:textSize="34px"/>
 
@@ -2605,7 +2503,7 @@
                     android:layout_height="84px"
                     android:background="@drawable/menu_item_selector"
                     android:splitMotionEvents="false"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/languagePrefrencesText"

@@ -279,7 +279,7 @@ public class ShareLeaderboardFragment extends Fragment {
 	public void getLeaderboardCall() {
 		try {
 			if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 				RestClient.getApiServices().leaderboardServerCall(Data.userData.accessToken, "",
 						new Callback<NewLeaderBoard>() {
 							@Override
@@ -338,7 +338,7 @@ public class ShareLeaderboardFragment extends Fragment {
 						public void onClick(View v) {
 						}
 					}, true, false);
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

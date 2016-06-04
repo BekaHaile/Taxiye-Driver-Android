@@ -41,7 +41,6 @@ public class SPLabels {
 
     public static final String SHARING_ENGAGEMENTS_COMPLETED = "sharingEngagementsCompleted";
 
-    public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
 
 	public static final String CUSTOM_SERVER_URL = "customServer";
 
@@ -83,5 +82,16 @@ public class SPLabels {
     public static final String REQUEST_LOGIN_OTP_FLAG = "requestLoginOtpFlag";
     public static final String ACCEPT_RIDE_TIME = "acceptRideTime";
     public static final String NOTIFICATION_SAVE_COUNT = "notification_save_count";
+    public static final String SELECTED_LANGUAGE = "selected_language";
+    public static final String HEAT_MAP_REFRESH_FREQUENCY = "heat_map_refresh_frequency";
+
+    public static final String PUBNUB_PUBLISHER_KEY = "pubnub_publisher_key";
+    public static final String PUBNUB_SUSCRIBER_KEY = "pubnub_suscriber_key";
+    public static final String PUBNUB_CHANNEL = "pubnub_channel";
+    public static final String LOGIN_VIA_OTP_STATE = "login_via_otp_state";
+
+    public static final String DRIVER_LOGIN_PHONE_NUMBER = "driver_login_phone_number";
+    public static final String DRIVER_LOGIN_TIME = "driver_login_time";
+
 
 }

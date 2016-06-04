@@ -38,11 +38,6 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 	public LeaderboardActivityResponse leaderboardActivityResponse;
 
 
-	String str3 = "Your Referral Code is ";
-	SpannableString sstr;
-
-
-
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -86,10 +81,8 @@ public class ShareActivity extends FragmentActivity implements FlurryEventNames 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
 		new ASSL(ShareActivity.this, linearLayoutRoot, 1134, 720, false);
 
-
-
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
-		shareFragmentAdapter = new ShareFragmentAdapter(getSupportFragmentManager());
+		shareFragmentAdapter = new ShareFragmentAdapter(this, getSupportFragmentManager());
 		viewPager.setAdapter(shareFragmentAdapter);
 
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);

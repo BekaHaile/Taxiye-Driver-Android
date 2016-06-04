@@ -86,7 +86,7 @@ public class DriverLeaderboardAdapter extends BaseAdapter  {
 
         if(driverLeaderboard.noEntry){
             holder.textViewSno.setText("");
-            holder.textViewDriverName.setText("No data to show");
+            holder.textViewDriverName.setText(context.getResources().getString(R.string.no_data_to_show));
             holder.textViewRidesTaken.setText("");
         }
         else{

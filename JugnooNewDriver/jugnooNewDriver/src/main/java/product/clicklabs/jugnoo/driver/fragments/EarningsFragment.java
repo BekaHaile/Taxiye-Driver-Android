@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -132,12 +133,12 @@ public class EarningsFragment extends Fragment {
 				textViewTodayValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getDaily().getEarnings());
 				textViewWeekValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getWeekly().getEarnings());
 				textViewMonthValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getMonthly().getEarnings());
-				textViewTodayRides.setText("Rides : "+earningsDetailResponse.getDaily().getRides());
-				textViewTodayValueReferral.setText("Referral : "+earningsDetailResponse.getDaily().getReferrals());
-				textViewWeekRides.setText("Rides : "+earningsDetailResponse.getWeekly().getRides());
-				textViewWeekValueReferral.setText("Referral : "+earningsDetailResponse.getWeekly().getReferrals());
-				textViewMonthRides.setText("Rides : "+earningsDetailResponse.getMonthly().getRides());
-				textViewMonthValueReferral.setText("Referral : "+earningsDetailResponse.getMonthly().getReferrals());
+				textViewTodayRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getDaily().getRides());
+				textViewTodayValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getDaily().getReferrals());
+				textViewWeekRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getWeekly().getRides());
+				textViewWeekValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getWeekly().getReferrals());
+				textViewMonthRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getMonthly().getRides());
+				textViewMonthValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getMonthly().getReferrals());
 				dateTimeValueFromWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getStartDate()));
 				dateTimeValueToWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getEndDate()));
 				dateTimeValueFromMonth.setText(DateOperations.reverseDate(earningsDetailResponse.getMonthly().getStartDate()));
@@ -151,43 +152,51 @@ public class EarningsFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		ASSL.closeActivity(linearLayoutRoot);
+		try {
+			ASSL.closeActivity(linearLayoutRoot);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
 	public void getLeaderboardActivityCall() {
-		if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
-			RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
-					new Callback<EarningsDetailResponse>() {
-						@Override
-						public void success(EarningsDetailResponse earningsDetailResponse, Response response) {
-							DialogPopup.dismissLoadingDialog();
-							try {
-								String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-								JSONObject jObj;
-								jObj = new JSONObject(jsonString);
-								int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-								String message = JSONParser.getServerMessage(jObj);
-								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-										EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
-										update();
-										Log.v("success at", "leaderboeard");
-									} else {
-										DialogPopup.alertPopup(activity, "", message);
-									}
-								}
-							} catch (Exception exception) {
-								exception.printStackTrace();
-							}
-						}
+		try {
+			if (!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
+                DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+                RestClient.getApiServices().earningDetails(Data.userData.accessToken, Data.LOGIN_TYPE,
+                        new Callback<EarningsDetailResponse>() {
+                            @Override
+                            public void success(EarningsDetailResponse earningsDetailResponse, Response response) {
+                                DialogPopup.dismissLoadingDialog();
+                                try {
+                                    String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                                    JSONObject jObj;
+                                    jObj = new JSONObject(jsonString);
+                                    int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+                                    String message = JSONParser.getServerMessage(jObj);
+                                    if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+                                        if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+                                            EarningsFragment.this.earningsDetailResponse = earningsDetailResponse;
+                                            update();
+                                            Log.v("success at", "leaderboeard");
+                                        } else {
+                                            DialogPopup.alertPopup(activity, "", message);
+                                        }
+                                    }
+                                } catch (Exception exception) {
+                                    exception.printStackTrace();
+                                }
+                            }
 
-						@Override
-						public void failure(RetrofitError error) {
-							DialogPopup.dismissLoadingDialog();
-						}
-					});
+                            @Override
+                            public void failure(RetrofitError error) {
+                                DialogPopup.dismissLoadingDialog();
+                            }
+                        });
+            }
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 

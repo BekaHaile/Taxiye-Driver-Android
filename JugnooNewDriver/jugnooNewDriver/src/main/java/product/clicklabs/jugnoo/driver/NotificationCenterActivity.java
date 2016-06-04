@@ -166,7 +166,7 @@ public class NotificationCenterActivity extends BaseActivity implements DisplayP
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 				if(!swipeRefreshLayout.isRefreshing()) {
-					DialogPopup.showLoadingDialog(NotificationCenterActivity.this, "Loading...");
+					DialogPopup.showLoadingDialog(NotificationCenterActivity.this, getResources().getString(R.string.loading));
 				}
 				HashMap<String, String> params = new HashMap<>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);

@@ -66,7 +66,7 @@
                     android:layout_centerHorizontal="true"
                     android:background="@drawable/new_orange_btn_selector_rounded"
                     android:singleLine="true"
-                    android:text="Go to Play Store"
+                    android:text="@string/go_to_playstore"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size" />
             </RelativeLayout>

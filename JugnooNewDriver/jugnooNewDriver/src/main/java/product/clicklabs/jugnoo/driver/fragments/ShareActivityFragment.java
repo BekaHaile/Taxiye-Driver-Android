@@ -125,7 +125,7 @@ public class ShareActivityFragment extends Fragment {
 
 	public void getLeaderboardActivityCall() {
 		if(!HomeActivity.checkIfUserDataNull(activity) && AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().leaderboardActivityServerCall(Data.userData.accessToken, Data.LOGIN_TYPE,
 					new Callback<LeaderboardActivityResponse>() {
 						@Override

@@ -52,7 +52,7 @@ public class ApiAcceptRide {
 					GCMIntentService.clearNotifications(activity);
 					GCMIntentService.stopRing(true);
 
-					DialogPopup.showLoadingDialog(activity, "Loading...");
+					DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 
 					HashMap<String, String> params = new HashMap<String, String>();
 

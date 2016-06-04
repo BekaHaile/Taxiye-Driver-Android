@@ -111,7 +111,8 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 				
 				if("".equalsIgnoreCase(phoneNumber)){
 					emailEt.requestFocus();
-					emailEt.setError("Please enter phone number");
+					emailEt.setError(getResources().getString(R.string.enter_valid_phone_number));
+
 				}
 				else{
 					String phone = Utils.retrievePhoneNumberTenChars(phoneNumber);
@@ -122,7 +123,8 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 					}
 					else{
 						emailEt.requestFocus();
-						emailEt.setError("Please enter valid phone number");
+						emailEt.setError(getResources().getString(R.string.enter_valid_phone_number));
+
 					}
 				}
 				
@@ -216,10 +218,10 @@ public class ForgotPasswordScreen extends Activity implements FlurryEventNames{
 //	Retrofit
 
 
-	public void forgotPasswordAsync(final Activity activity, final String phoneNumber){
-		DialogPopup.showLoadingDialog(activity, "Loading...");
 
-		RestClient.getApiServices().forgotpassword(phoneNumber, new Callback<BookingHistoryResponse>() {
+	public void forgotPasswordAsync(final Activity activity, final String email){
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+		RestClient.getApiServices().forgotpassword(email, new Callback<BookingHistoryResponse>() {
 			@Override
 			public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {
 				if(response != null) {

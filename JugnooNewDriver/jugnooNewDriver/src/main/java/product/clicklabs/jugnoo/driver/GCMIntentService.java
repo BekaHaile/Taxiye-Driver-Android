@@ -467,7 +467,6 @@ public class GCMIntentService extends IntentService {
 														businessId, referenceId, orderAmount, fareFactor));
 											}
 
-
 											startRing(this);
 											flurryEventForRequestPush(engagementId);
 
@@ -479,7 +478,7 @@ public class GCMIntentService extends IntentService {
 											RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 											requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 //											notificationManagerResume(this, "You have got a new request.", true);
-											notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
+											notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
 											HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide);
 
 											Log.e("referenceId", "=" + referenceId);
@@ -487,7 +486,7 @@ public class GCMIntentService extends IntentService {
 									}
 								} else {
 //									notificationManager(this, "You have got a new request.", true);
-									notificationManagerResumeAction(this, "You have got a new request." + "\n" + address, true, engagementId);
+									notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
 									startRing(this);
 									flurryEventForRequestPush(engagementId);
 
@@ -623,6 +622,14 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
 								}
+							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
+								String otp = jObj.getString("message");
+								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
+									Intent otpConfirmScreen = new Intent(this, LoginViaOTP.class);
+									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+									otpConfirmScreen.putExtra("otp", otp);
+									startActivity(otpConfirmScreen);
+								}
 							} else if (PushFlags.JUGNOO_AUDIO.getOrdinal() == flag) {
 								String url = jObj.getString("file_url");
 								String id = jObj.getString("file_id");
@@ -684,7 +691,7 @@ public class GCMIntentService extends IntentService {
 									intent1.putExtra("sharing_engagement_data", jObj.toString());
 									startActivity(intent1);
 								}
-								notificationManagerCustomID(this, title, "Sharing payment recieved for Phone "
+								notificationManagerCustomID(this, title, getResources().getString(R.string.sharing_payment_recieved)
 												+ Utils.hidePhoneNoString(sharingRideData.customerPhoneNumber),
 										Integer.parseInt(sharingRideData.sharingEngagementId), SplashNewActivity.class, null);
 							}

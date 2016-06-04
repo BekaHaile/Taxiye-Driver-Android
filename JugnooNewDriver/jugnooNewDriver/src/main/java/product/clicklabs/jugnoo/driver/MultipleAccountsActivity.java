@@ -18,10 +18,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.EnglishNumberToWords;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class MultipleAccountsActivity extends Activity {
+public class MultipleAccountsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
@@ -60,8 +61,12 @@ public class MultipleAccountsActivity extends Activity {
         textViewLikeToCreate = (TextView) findViewById(R.id.textViewLikeToCreate); textViewLikeToCreate.setTypeface(Data.latoRegular(this));
 
         relativeLayoutMailUs = (RelativeLayout) findViewById(R.id.relativeLayoutMailUs);
-        textViewContactUs = (TextView) findViewById(R.id.textViewContactUs); textViewContactUs.setTypeface(Data.latoLight(this), Typeface.BOLD);
-        textViewMailUs = (TextView) findViewById(R.id.textViewMailUs); textViewMailUs.setTypeface(Data.latoRegular(this));
+        textViewContactUs = (TextView) findViewById(R.id.textViewContactUs);
+		textViewContactUs.setTypeface(Data.latoLight(this), Typeface.BOLD);
+		textViewContactUs.setText(getStringText(R.string.please_contact_customer_care));
+
+        textViewMailUs = (TextView) findViewById(R.id.textViewMailUs);
+		textViewMailUs.setTypeface(Data.latoRegular(this));
 
 
         previousAccountsAdapter = new PreviousAccountsAdapter(this);
@@ -95,7 +100,7 @@ public class MultipleAccountsActivity extends Activity {
         scrollView.smoothScrollTo(0,0);
 
         try {
-            textViewMultipleAccountsCreated.setText(EnglishNumberToWords.convert(Data.previousAccountInfoList.size()) + " accounts have already been created on this device");
+            textViewMultipleAccountsCreated.setText(EnglishNumberToWords.convert(Data.previousAccountInfoList.size()) + getResources().getString(R.string.no_of_account));
         } catch(Exception e){
             e.printStackTrace();
             performBackPressed();

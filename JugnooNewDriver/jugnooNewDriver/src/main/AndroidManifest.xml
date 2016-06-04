@@ -2,237 +2,195 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="product.clicklabs.jugnoo.driver"
 
-    android:versionCode="233"
-    android:versionName="2.3.3" >
+
+    android:versionCode="236"
+    android:versionName="2.3.6" >
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="19"/>
+        android:targetSdkVersion="19" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_CALL_LOG"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.CLEAR_APP_CACHE"/>
-    <uses-permission android:name="android.permission.SEND_SMS"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CLEAR_APP_CACHE" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE"/>
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
-
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
-    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE" />
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
+        android:protectionLevel="signature" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
-        android:required="true"/>
+        android:required="true" />
 
-    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="product.clicklabs.jugnoo.driver.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/jugnoo_icon"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme"
-        android:name=".MyApplication">
-
+        android:theme="@style/AppTheme">
         <receiver
-            android:name="product.clicklabs.jugnoo.driver.GcmBroadcastReceiver"
+            android:name=".GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="product.clicklabs.jugnoo.driver"/>
+                <category android:name="product.clicklabs.jugnoo.driver" />
             </intent-filter>
         </receiver>
 
-        <service android:name="product.clicklabs.jugnoo.driver.GCMIntentService"/>
-
+        <service android:name=".GCMIntentService" />
 
         <activity
-            android:name="product.clicklabs.jugnoo.driver.SplashNewActivity"
+            android:name=".SplashNewActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-            android:name="product.clicklabs.jugnoo.driver.SplashLogin"
+            android:name=".SplashLogin"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.HomeActivity"
+            android:name=".HomeActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.RegisterScreen"
+            android:name=".RegisterScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.ForgotPasswordScreen"
+            android:name=".ForgotPasswordScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.TriCitySupplyActivity"
+            android:name=".TriCitySupplyActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.HelpActivity"
+            android:name=".HelpActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.LanguagePrefrencesActivity"
+            android:name=".LanguagePrefrencesActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.DriverHistoryActivity"
+            android:name=".DriverHistoryActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.OTPConfirmScreen"
+            android:name=".OTPConfirmScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".ShareActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.HelpParticularActivity"
+            android:name=".HelpParticularActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.NotificationCenterActivity"
+            android:name=".NotificationCenterActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.DriverPatymRecharge"
+            android:name=".DriverPatymRecharge"
             android:label="@string/app_name"
-            android:windowSoftInputMode="adjustPan|adjustResize"
-            android:screenOrientation="portrait" >
-        </activity>
-
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan|adjustResize"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.MultipleAccountsActivity"
+            android:name=".MultipleAccountsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity"
+            android:name=".RequestDuplicateRegistrationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity"
+            android:name=".ChangePhoneBeforeOTPActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.RideDetailsActivity"
+            android:name=".RideDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.DriverLeaderboardActivity"
+            android:name=".DriverLeaderboardActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.SharingRidesActivity"
+            android:name=".SharingRidesActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.DriverProfileActivity"
+            android:name=".DriverProfileActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.RideCancellationActivity"
+            android:name=".RideCancellationActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.EditDriverProfile"
+            android:name=".EditDriverProfile"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.PhoneEditOTPConfirmScreen"
+            android:name=".PhoneEditOTPConfirmScreen"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.LoginViaOTP"
+            android:name=".LoginViaOTP"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.services.DownloadActivity"
+            android:name=".services.DownloadActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.PaymentActivity"
+            android:name=".PaymentActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"></activity>
         <activity
-            android:name="product.clicklabs.jugnoo.driver.InvoiceDetailsActivity"
+            android:name=".InvoiceDetailsActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait"></activity>
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
@@ -241,26 +199,23 @@
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
             </intent-filter>
         </receiver>
-        <receiver android:name="product.clicklabs.jugnoo.driver.IncomingSmsReceiver"
-            android:enabled="true">
+        <receiver
+            android:name=".IncomingSmsReceiver"
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
-        <service android:name="product.clicklabs.jugnoo.driver.services.NotificationService"
-                 android:label="@string/app_name"
-                 android:enabled="true"
-                 android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
-
+        <service
+            android:name=".services.NotificationService"
+            android:enabled="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
-
                 <action android:name="android.service.notification.NotificationListenerService" />
-
             </intent-filter>
-
         </service>
-
         <service
             android:name="com.google.android.gms.analytics.AnalyticsService"
             android:enabled="true"
@@ -279,140 +234,115 @@
         </receiver>
 
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
-
         <service
-            android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
+            android:name=".DriverLocationUpdateService"
             android:enabled="true"
             android:exported="true"
-            android:process=":DriverLocationUpdateService">
-        </service>
-
+            android:process=":DriverLocationUpdateService"></service>
         <service
-            android:name="product.clicklabs.jugnoo.driver.services.DownloadService"
+            android:name=".services.DownloadService"
             android:enabled="true"
-            android:exported="true">
-        </service>
-
+            android:exported="true"></service>
         <service
-            android:name="product.clicklabs.jugnoo.driver.DriverTimeoutIntentService"
-            android:enabled="true"
-            >
-        </service>
-
+            android:name=".DriverTimeoutIntentService"
+            android:enabled="true"></service>
         <service
-            android:name="product.clicklabs.jugnoo.driver.ContactsUploadService"
+            android:name=".ContactsUploadService"
             android:enabled="true"
-            android:exported="true">
-        </service>
-
+            android:exported="true"></service>
         <service
-            android:name="product.clicklabs.jugnoo.driver.PushPendingCallsService"
+            android:name=".PushPendingCallsService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"></service>
         <service
-            android:name="product.clicklabs.jugnoo.driver.MeteringService"
+            android:name=".MeteringService"
             android:enabled="true"
-            android:exported="true">
-        </service>
-
+            android:exported="true"></service>
         <service
             android:name=".services.SyncMessageService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.LocationReceiverDriver"/>
-        <receiver android:name="product.clicklabs.jugnoo.driver.GPSLocationReceiverBackground"/>
-        <receiver
-            android:name="product.clicklabs.jugnoo.driver.FusedLocationReceiverBackgroundBalanced"/>
-        <receiver
-            android:name="product.clicklabs.jugnoo.driver.FusedLocationReceiverBackgroundHigh"/>
-
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.BootCompletedReceiver">
+        <receiver android:name=".LocationReceiverDriver" />
+        <receiver android:name=".GPSLocationReceiverBackground" />
+        <receiver android:name=".FusedLocationReceiverBackgroundBalanced" />
+        <receiver android:name=".FusedLocationReceiverBackgroundHigh" />
+        <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateAlarmReceiver">
+        <receiver android:name=".DriverLocationUpdateAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.SEND_LOCATION"/>
+                <action android:name="product.clicklabs.jugnoo.driver.SEND_LOCATION" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.MeteringAlarmReceiver">
+        <receiver android:name=".MeteringAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION"/>
+                <action android:name="product.clicklabs.jugnoo.driver.CHECK_LOCATION" />
             </intent-filter>
         </receiver>
-
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.PathUploadReceiver">
-            <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH"/>
-            </intent-filter>
-        </receiver>
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.TimeOutAlarmReceiver" >
+        <receiver android:name=".PathUploadReceiver">
             <intent-filter>
                 <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
             </intent-filter>
         </receiver>
-
-        <receiver android:name="product.clicklabs.jugnoo.driver.DriverServiceRestartReceiver" >
+        <receiver android:name=".TimeOutAlarmReceiver">
             <intent-filter>
-                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE"/>
+                <action android:name="product.clicklabs.jugnoo.driver.UPOLOAD_PATH" />
             </intent-filter>
         </receiver>
-
+        <receiver android:name=".DriverServiceRestartReceiver">
+            <intent-filter>
+                <action android:name="product.clicklabs.jugnoo.driver.RESTART_SERVICE" />
+            </intent-filter>
+        </receiver>
         <receiver
             android:name=".services.DownloadBroadcastReceiver"
             android:enabled="false"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
             </intent-filter>
         </receiver>
 
-
-
         <activity
-            android:name="product.clicklabs.jugnoo.driver.BlankActivityForDialog"
+            android:name=".BlankActivityForDialog"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
-        <service android:name=".sticky.GeanieView"/>
-
+        <service android:name=".sticky.GeanieView" />
 
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_api_key"/>
-
+            android:value="@string/google_maps_api_key" />
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="f96b4d9d9886e413041e7b14fa52434b87709356"/>
+            android:value="f96b4d9d9886e413041e7b14fa52434b87709356" />
 
-
-
-        <!-- nudgesopt integration-->
-        <receiver android:name="com.nudgespot.notification.GcmBroadcastReceiver"
-                  android:permission="com.google.android.c2dm.permission.SEND" >
+        <!-- nudgesopt integration -->
+        <receiver
+            android:name="com.nudgespot.notification.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="product.clicklabs.jugnoo.driver" />
             </intent-filter>
         </receiver>
+
         <service android:name="com.nudgespot.notification.GcmIntentService" />
+
         <activity
             android:name="com.nudgespot.notification.ReceiverActivity"
-            android:theme="@android:style/Theme.NoDisplay" >
-        </activity>
+            android:theme="@android:style/Theme.NoDisplay"></activity>
 
-
+        <service
+            android:name=".pubnub.PubnubService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

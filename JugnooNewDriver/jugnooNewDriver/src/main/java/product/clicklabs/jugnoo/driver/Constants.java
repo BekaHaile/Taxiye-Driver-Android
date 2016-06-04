@@ -5,7 +5,6 @@ package product.clicklabs.jugnoo.driver;
  */
 public interface Constants {
 
-    long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3; //in seconds
 
     String PHONE_NO_VERIFY = "phone_no_verify";
 
@@ -52,5 +51,10 @@ public interface Constants {
     String KEY_INVOICE_ID = "invoice_id";
     String KEY_CUSTOMER_PHONE_NO = "customer_phone_no";
     String KEY_CANCELLATION_REASON = "cancellation_reason";
+    String KEY_CALL_LOGS = "call_logs";
+
+    String FETCH_APP_API_ENABLED = "fetch_app_api_enabled";
+    String FETCH_APP_API_FREQUENCY = "fetch_app_api_frequency";
+    String FETCH_APP_TIME = "fetch_app_time";
 
 }

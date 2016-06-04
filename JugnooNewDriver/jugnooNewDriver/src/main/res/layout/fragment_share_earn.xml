@@ -42,7 +42,7 @@
                     android:background="@drawable/referral_box">
 
 
-                    <TextView
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                         android:id="@+id/textViewReferralCodeDisplay"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -51,8 +51,7 @@
                         android:layout_marginRight="20px"
                         android:layout_marginTop="15px"
                         android:gravity="center"
-                        android:singleLine="true"
-                        android:text="Your Referral Code is"
+                        android:text="@string/your_referral_code"
                         android:textColor="@color/black"
                         android:textSize="36px"
                         />
@@ -97,7 +96,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="32px"
                         android:background="@drawable/new_orange_btn_selector_rounded"
-                        android:text="शेयर करें"
+                        android:text="@string/share"
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="48px"/>
                     <ImageView

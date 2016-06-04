@@ -53,11 +53,11 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="60px"
                 android:gravity="center"
+                android:text="@string/message"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:text="Message"
                 android:textColor="@color/black"
                 android:textSize="34px"
 
@@ -76,27 +76,26 @@
                 >
 
 
-                <Button
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnOk"
                     android:layout_width="220px"
                     android:layout_height="83px"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="280px"
                     android:background="@drawable/new_orange_btn_selector_rounded"
-                    android:singleLine="true"
                     android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
                     />
 
-                <Button
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                     android:id="@+id/btnCancel"
                     android:layout_width="220px"
                     android:layout_height="83px"
                     android:layout_marginLeft="28px"
+                    android:padding="2px"
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/new_menu_black_btn_selector_rounded"
-                    android:singleLine="true"
                     android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"

@@ -24,13 +24,12 @@
             android:layout_gravity="center_vertical"
             >
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewTransTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="12px"
-                android:singleLine="true"
                 android:text="Ride"
                 android:textColor="@color/new_orange"
                 android:textSize="36px"/>
@@ -67,13 +66,12 @@
 
             </RelativeLayout>
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewRideId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="12px"
-                android:singleLine="true"
                 android:text="Ride ID: 1111"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="30px"/>
@@ -86,7 +84,7 @@
                 android:layout_marginLeft="15px"
                 android:layout_marginTop="12px"
                 android:singleLine="true"
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="30px"/>
 
@@ -137,10 +135,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="290px"
+            android:layout_width="300px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20px"
+            android:layout_marginLeft="15px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_orange_bordered">
 
@@ -188,9 +186,8 @@
                     android:gravity="center"
                     android:layout_marginTop="5px"
                     android:layout_marginBottom="10px"
-                    android:singleLine="true"
                     android:layout_below="@+id/textViewCustomerPaid"
-                    android:text="Paid in Cash"
+                    android:text="@string/paid_cash"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="20px"/>
             </LinearLayout>
@@ -227,7 +224,7 @@
                     android:gravity="center"
                     android:layout_marginTop="5px"
                     android:layout_marginBottom="10px"
-                    android:text="Account"
+                    android:text="@string/account"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="20px"/>
             </LinearLayout>

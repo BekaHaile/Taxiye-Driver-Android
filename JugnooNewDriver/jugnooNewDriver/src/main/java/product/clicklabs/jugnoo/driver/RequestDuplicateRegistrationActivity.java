@@ -113,7 +113,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 			textViewRegisterNameValue.setText(OTPConfirmScreen.emailRegisterData.name);
 			textViewRegisterEmailValue.setText(OTPConfirmScreen.emailRegisterData.emailId);
 			textViewRegisterPhoneValue.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-			editTextMessage.setHint("You have already created " + Data.previousAccountInfoList.size() + " accounts from this device. Please explain the reason for creating a new account.");
+			editTextMessage.setHint(getResources().getString(R.string.You_have_already_created, Data.previousAccountInfoList.size()));
 		} catch(Exception e){
             e.printStackTrace();
             performBackPressed();
@@ -193,7 +193,7 @@ public class RequestDuplicateRegistrationActivity extends Activity {
 	public void submitDuplicateRegistrationRequestAPI(final Activity activity, String messageStr, String name, String email, String phone) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
-			DialogPopup.showLoadingDialog(activity, "Loading...");
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 			HashMap<String, String> params = new HashMap<String, String>();

@@ -126,7 +126,7 @@
                 android:textColor="@color/white"
                 android:textSize="40px" />
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewDriverId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -138,7 +138,7 @@
                 android:textColor="@color/white"
                 android:textSize="40px" />
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewRankCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -149,7 +149,8 @@
                 android:text="@string/rank_city"
                 android:textColor="@color/white"
                 android:textSize="40px" />
-            <TextView
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewRankOverall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

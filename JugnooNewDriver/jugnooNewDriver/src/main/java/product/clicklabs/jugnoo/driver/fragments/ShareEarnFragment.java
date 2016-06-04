@@ -57,16 +57,7 @@ public class ShareEarnFragment extends Fragment {
 	TextView textViewShareReferral;
 
 
-	String str1 = "Share your referral code ",
-			str2 = " with your friends and they will get a FREE ride because of your referral and once they have used Jugnoo, " +
-					"you will earn a FREE ride (upto Rs. 100) as well.",
-			str3 = "Your Referral Code is ";
 	SpannableString sstr;
-
-
-	String shareStr1 = "Hey, \nUse Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr11 = "Use Jugnoo app to call an auto at your doorsteps. It is cheap, convenient and zero haggling. Use this referral code: ";
-	String shareStr2 = " to get FREE ride upto Rs. 100.\nDownload it from here: http://smarturl.it/jugnoo";
 
 
 	private View rootView;
@@ -115,37 +106,19 @@ public class ShareEarnFragment extends Fragment {
 			sstr.setSpan(bss, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			sstr.setSpan(clrs, 0, sstr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-//			textViewShareReferral.setText("");
-//			textViewShareReferral.append(str1);
-//			textViewShareReferral.append(sstr);
-//			textViewShareReferral.append(str2);
 
 			textViewReferralCodeDisplay.setText("");
-			textViewReferralCodeDisplay.append(str3);
+			textViewReferralCodeDisplay.append(getResources().getString(R.string.your_referral_code));
 			textViewReferralCodeValue.setText(sstr);
 			textViewReferralCodeValue.setTypeface(Data.latoHeavy(activity));
 
-			//कस्टमर को अपने  Referral code             से Jugnoo App डाउनलोड करवाएऔर पाए 3० रुपए और कस्टमर को दिलवाए Jugnoo कैश ।
-
-//			String hindiMessage = "आमंत्रण बोनस! कस्टमर को अपने "+  + " Jugnoo App डाउनलोड करवांए और पांए "+ getResources().getString(R.string.rupee) + " 30 और कस्टमर को दिलवाए Jugnoo कैश ।";
-
-			String hindi1 = "कस्टमर को अपने Referral code ";
-			String hindi2 = " से Jugnoo App डाउनलोड करवाएँ और पाएँ " + getResources().getString(R.string.rupee) + " " + Data.userData.customerReferralBonus + " और कस्टमर को दिलवाएँ Jugnoo कैश ।";
-
 			textViewShareReferral.setText(Data.userData.referralMessage);
-//			textViewShareReferral.setText("");
-//			textViewShareReferral.append(hindi1);
-//			textViewShareReferral.append(sstr);
-//			textViewShareReferral.append(hindi2);
-
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			activity.finish();
 			activity.overridePendingTransition(R.anim.left_in, R.anim.left_out);
 		}
-
-
 
 		buttonShare.setOnClickListener(new View.OnClickListener() {
 
@@ -155,9 +128,6 @@ public class ShareEarnFragment extends Fragment {
 				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_INVITE_EARN_CLICK, null);
 			}
 		});
-
-
-
 
 		return rootView;
 	}
@@ -209,12 +179,12 @@ public class ShareEarnFragment extends Fragment {
 						String code = customerNumber.getText().toString().trim();
 						if ("".equalsIgnoreCase(code)) {
 							customerNumber.requestFocus();
-							customerNumber.setError("Phone Number can't be empty.");
+							customerNumber.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 						} else {
 							code = Utils.retrievePhoneNumberTenChars(code);
 							if (!Utils.validPhoneNumber(code)) {
 								customerNumber.requestFocus();
-								customerNumber.setError("Please enter valid phone number");
+								customerNumber.setError(getResources().getString(R.string.valid_phone_number));
 							} else {
 								sendReferralMessage(activity, "+91" + code);
 								dialog.dismiss();
@@ -267,65 +237,12 @@ public class ShareEarnFragment extends Fragment {
 		}
 
 	}
-//	//---sends an SMS message to another device---
-//	private void sendSMS(final String phoneNumber, String message)
-//	{
-//		String SENT = "SMS_SENT";
-//		String DELIVERED = "SMS_DELIVERED";
-//
-//		PendingIntent sentPI = PendingIntent.getBroadcast(activity, 0,
-//				new Intent(SENT), 0);
-//
-//		PendingIntent deliveredPI = PendingIntent.getBroadcast(activity, 0,
-//				new Intent(DELIVERED), 0);
-//
-//		//---when the SMS has been sent---
-//		activity.registerReceiver(new BroadcastReceiver() {
-//			@Override
-//			public void onReceive(Context arg0, Intent arg1) {
-//				switch (getResultCode()) {
-//					case Activity.RESULT_OK:
-//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
-//						break;
-//					case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-//						break;
-//					case SmsManager.RESULT_ERROR_NO_SERVICE:
-//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-//						break;
-//					case SmsManager.RESULT_ERROR_NULL_PDU:
-//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-//						break;
-//					case SmsManager.RESULT_ERROR_RADIO_OFF:
-//						DialogPopup.alertPopup(activity, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर नहीं हो पाया है।");
-//						break;
-//				}
-//			}
-//		}, new IntentFilter(SENT));
-//
-//		//---when the SMS has been delivered---
-//		activity.registerReceiver(new BroadcastReceiver() {
-//			@Override
-//			public void onReceive(Context arg0, Intent arg1) {
-//				switch (getResultCode()) {
-//					case Activity.RESULT_OK:
-//						break;
-////					case Activity.RESULT_CANCELED:
-////						DialogPopup.alertPopup(ShareActivity1.this, "", "आपका रेफ़रल कोड कस्टमर " + phoneNumber + " के साथ शेयर कर दिया गया है।");
-////						break;
-//				}
-//			}
-//		}, new IntentFilter(DELIVERED));
-//
-//		SmsManager sms = SmsManager.getDefault();
-//		sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
-//	}
 
 	public void sendReferralMessage(final Activity activity, String phone_no) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-				DialogPopup.showLoadingDialog(activity, "Loading...");
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 
 				HashMap<String, String> params = new HashMap<String, String>();
 

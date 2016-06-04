@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="INVOICE DETAILS"
+            android:text="@string/invoice_detail"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="-4px"
         android:layout_marginRight="-4px"
-        android:layout_marginTop="40px"
+        android:layout_marginTop="20px"
         android:layout_marginBottom="24px">
 
 
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25px"
-            android:text="Invoice Id:"
+            android:text="@string/invoice_id"
             android:textColor="@color/black"
             android:textSize="32px"/>
         <TextView
@@ -59,9 +59,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25px"
-            android:layout_marginTop="20px"
+            android:layout_marginTop="15px"
             android:layout_below="@+id/textViewCurrentInvoiceId"
-            android:text="Status:"
+            android:text="@string/status"
             android:textColor="@color/black"
             android:textSize="32px"/>
 
@@ -70,23 +70,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="25px"
-            android:layout_marginTop="20px"
+            android:layout_marginTop="15px"
             android:layout_below="@+id/textViewCurrentInvoiceStatus"
-            android:text="Generated On:"
+            android:text="@string/generated_on"
             android:textColor="@color/black"
             android:textSize="32px"/>
 
         <RelativeLayout
             android:id="@+id/textViewLastInvDate"
-            android:layout_width="320px"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="25px">
+            android:layout_marginLeft="25px"
+            android:layout_marginTop="15px"
+            android:layout_below="@+id/textViewCurrentInvoiceGeneratedOn">
 
             <RelativeLayout
                 android:id="@+id/dateTimeRlFrom"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:splitMotionEvents="false">
@@ -96,23 +96,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="15px"
-                    android:layout_toLeftOf="@+id/dateTimeValueFrom"
                     android:singleLine="true"
-                    android:text="From:"
+                    android:text="@string/from"
                     android:textColor="@color/black"
                     android:textSize="32px"
                     />
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/imageViewTimeFrom"-->
-                    <!--android:layout_width="30px"-->
-                    <!--android:layout_height="30px"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_marginLeft="15px"-->
-                    <!--android:layout_toLeftOf="@+id/dateTimeValueFrom"-->
-                    <!--android:src="@drawable/date_orange_icon"-->
-                    <!--android:tag="mwar"/>-->
 
                 <TextView
                     android:id="@+id/dateTimeValueFrom"
@@ -120,10 +109,10 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5px"
-                    android:layout_alignParentRight="true"
                     android:singleLine="true"
-                    android:text="23 June, 2014"
+                    android:text="@string/NA"
                     android:textColor="@color/new_orange"
+                    android:layout_toRightOf="@+id/dateTimeTextFrom"
                     android:textSize="32px"
                     />
 
@@ -132,46 +121,34 @@
 
             <RelativeLayout
                 android:id="@+id/dateTimeRlTo"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="20px"
-                android:layout_alignParentRight="true"
-                android:layout_below="@+id/dateTimeRlFrom"
+                android:layout_toRightOf="@+id/dateTimeRlFrom"
+                android:layout_marginLeft="10px"
                 android:splitMotionEvents="false">
 
-                <TextView
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/dateTimeTextTo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15px"
-                    android:singleLine="true"
-                    android:layout_toLeftOf="@+id/dateTimeValueTo"
-                    android:text="To:"
+                    android:text="@string/to"
                     android:textColor="@color/black"
                     android:textSize="32px"
                     />
 
-                <!--<ImageView-->
-                    <!--android:id="@+id/imageViewTimeTo"-->
-                    <!--android:layout_width="30px"-->
-                    <!--android:layout_height="30px"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_toLeftOf="@+id/dateTimeValueTo"-->
-                    <!--android:layout_marginLeft="15px"-->
-                    <!--android:src="@drawable/date_orange_icon"-->
-                    <!--android:tag="mwar"/>-->
 
                 <TextView
                     android:id="@+id/dateTimeValueTo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="5px"
                     android:singleLine="true"
-                    android:text="26 June, 2014"
+                    android:layout_toRightOf="@+id/dateTimeTextTo"
+                    android:text="@string/NA"
                     android:textColor="@color/new_orange"
                     android:textSize="32px"
                     />
@@ -210,7 +187,7 @@
 
             <TextView
                 android:id="@+id/textViewPaidByCstmr"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -238,11 +215,11 @@
             android:layout_below="@+id/relativeLayoutPaidByCstmr"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewPaidUsingCstmr"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -270,11 +247,11 @@
             android:layout_below="@+id/relativeLayoutUsingCstmr"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewPaidByJugnoo"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -302,11 +279,11 @@
             android:layout_below="@+id/relativeLayoutPaidByJugnoo"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewCancelSubsidy"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -334,7 +311,7 @@
             android:layout_below="@+id/relativeLayoutCancelSubsidy"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewPhoneDeduction"
@@ -376,11 +353,11 @@
             android:layout_below="@+id/relativeLayoutPhoneDeduction"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewReferral"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -408,11 +385,11 @@
             android:layout_below="@+id/relativeLayoutReferral"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewManualAdj"
-                android:layout_width="wrap_content"
+                android:layout_width="480px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
@@ -451,7 +428,7 @@
             android:layout_below="@+id/relativeLayoutManualAdj"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewJugnooCmsn"
@@ -493,7 +470,7 @@
             android:layout_below="@+id/relativeLayoutJugnooCmsn"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewPaytmCash"
@@ -536,7 +513,7 @@
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
             android:layout_marginBottom="24px"
-            android:layout_marginTop="24px">
+            android:layout_marginTop="20px">
 
             <TextView
                 android:id="@+id/textViewOutstandingAmnt"
@@ -596,7 +573,7 @@
             android:layout_marginTop="24px"
             android:textSize="42px"/>
 
-        <TextView
+        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewTotalAmnt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

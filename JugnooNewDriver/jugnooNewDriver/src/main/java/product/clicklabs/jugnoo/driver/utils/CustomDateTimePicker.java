@@ -163,7 +163,7 @@ public class CustomDateTimePicker implements OnClickListener {
 		btn_set = new Button(activity);
 		button_params.setMargins(5, 0, 0, 0);
 		btn_set.setLayoutParams(button_params);
-		btn_set.setText("Set");
+		btn_set.setText(activity.getResources().getString(R.string.set));
 		btn_set.setId(SET);
 		btn_set.setOnClickListener(this);
 		btn_set.setTypeface(Data.latoRegular(activity));

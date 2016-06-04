@@ -48,7 +48,7 @@
                 android:layout_marginTop="12px"
                 android:layout_below="@+id/textViewInvoiceId"
                 android:singleLine="true"
-                android:text="Status"
+                android:text="@string/status"
                 android:textColor="@color/bg_grey_opaque"
                 android:textSize="30px"/>
 
@@ -84,7 +84,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="15px"
                     android:singleLine="true"
-                    android:text="Generated On:"
+                    android:text="@string/generated_on"
                     android:textColor="@color/black"
                     android:textSize="28px"
                     />
@@ -133,7 +133,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15px"
                         android:singleLine="true"
-                        android:text="From:"
+                        android:text="@string/from"
                         android:textColor="@color/black"
                         android:textSize="28px"
                         />
@@ -178,7 +178,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15px"
                         android:singleLine="true"
-                        android:text="To:"
+                        android:text="@string/to"
                         android:textColor="@color/black"
                         android:textSize="28px"
                         />
