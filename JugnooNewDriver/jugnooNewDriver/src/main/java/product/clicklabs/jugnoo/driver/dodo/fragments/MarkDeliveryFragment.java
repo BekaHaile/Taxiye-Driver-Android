@@ -40,13 +40,11 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("ValidFragment")
 public class MarkDeliveryFragment extends Fragment {
 
-	private LinearLayout relative, getDirectionsLLayout, callCustomerLLayout;
+	private LinearLayout relative, linearLayoutGetDirections, linearLayoutCallCustomer;
 
 	private Button buttonBack;
-
-	private TextView textViewOrderId, textViewAmount, textViewCustomerName, textViewTakeCash,
-			textViewCustomerAddress, textViewGetDirections, textViewCustomerCall, textViewTitle;
-
+	private TextView textViewOrderId, textViewAmount, textViewCustomerName,
+			textViewCustomerAddress, textViewTitle;
 	private Button btnCollected, btnReturned;
 
 	private View rootView;
@@ -72,8 +70,8 @@ public class MarkDeliveryFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		getDirectionsLLayout = (LinearLayout) rootView.findViewById(R.id.getDirectionsLLayout);
-		callCustomerLLayout = (LinearLayout) rootView.findViewById(R.id.callCustomerLLayout);
+		linearLayoutGetDirections = (LinearLayout) rootView.findViewById(R.id.linearLayoutGetDirections);
+		linearLayoutCallCustomer = (LinearLayout) rootView.findViewById(R.id.linearLayoutCallCustomer);
 
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 
@@ -82,26 +80,23 @@ public class MarkDeliveryFragment extends Fragment {
 		textViewTitle.setText(activity.getResources().getString(R.string.mark_delivered));
 
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
-		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTakeCash = (TextView) rootView.findViewById(R.id.textViewTakeCash);
-		textViewTakeCash.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewTakeCash)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCustomerAddress = (TextView) rootView.findViewById(R.id.textViewCustomerAddress);
 		textViewCustomerAddress.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		textViewGetDirections = (TextView) rootView.findViewById(R.id.textViewGetDirections);
-		textViewGetDirections.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewCustomerCall = (TextView) rootView.findViewById(R.id.textViewCustomerCall);
-		textViewCustomerCall.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewGetDirections)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewCustomerCall)).setTypeface(Fonts.mavenRegular(activity));
 
 		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
-		textViewOrderId.setTypeface(Fonts.mavenRegular(activity));
+		textViewOrderId.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		((TextView) rootView.findViewById(R.id.textViewTakeCash)).setTypeface(Fonts.mavenRegular(activity));
 		textViewAmount = (TextView) rootView.findViewById(R.id.textViewAmount);
-		textViewAmount.setTypeface(Fonts.mavenRegular(activity));
+		textViewAmount.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
-		btnCollected = (Button) rootView.findViewById(R.id.btnCollected);
+		btnCollected = (Button) rootView.findViewById(R.id.buttonCollected);
 		btnCollected.setTypeface(Fonts.mavenRegular(activity));
-		btnReturned = (Button) rootView.findViewById(R.id.btnReturned);
+		btnReturned = (Button) rootView.findViewById(R.id.buttonReturned);
 		btnReturned.setTypeface(Fonts.mavenRegular(activity));
 
 
@@ -138,18 +133,26 @@ public class MarkDeliveryFragment extends Fragment {
 		});
 
 
-		callCustomerLLayout.setOnClickListener(new View.OnClickListener() {
+		linearLayoutCallCustomer.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				try {
+					Utils.openCallIntent(activity, deliveryInfo.getCustomerNo());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 
 
-		getDirectionsLLayout.setOnClickListener(new View.OnClickListener() {
+		linearLayoutGetDirections.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				try{
+					Utils.openNavigationIntent(activity, deliveryInfo.getDeliveryAddress());
+				} catch(Exception e){
+					e.printStackTrace();
+				}
 			}
 		});
 
@@ -175,6 +178,8 @@ public class MarkDeliveryFragment extends Fragment {
 			textViewOrderId.setText(activity.getResources().getString(R.string.order_id)+": "+deliveryInfo.getId());
 			textViewAmount.setText(activity.getResources().getString(R.string.rupee)
 					+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
+			textViewCustomerName.setText(deliveryInfo.getCustomerName());
+			textViewCustomerAddress.setText(deliveryInfo.getDeliveryAddress());
 		} catch(Exception e){
 			e.printStackTrace();
 			activity.onBackPressed();

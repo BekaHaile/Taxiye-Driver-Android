@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -255,7 +254,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewEndRideLuggageCount;
 
 	LinearLayout endRideInfoRl;
-	TextView jugnooRideOverText, takeFareText, takeFareValue;
+	TextView jugnooRideOverText, takeFareText;
 
 	Button reviewSubmitBtn;
 	RelativeLayout relativeLayoutRateCustomer;
@@ -265,6 +264,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	ScrollView scrollViewEndRide;
 	LinearLayout linearLayoutEndRideMain;
 	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
+
+	RelativeLayout relativeLayoutDeliveryOver;
+	LinearLayout linearLayoutEndDelivery;
+	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
+
 
 	CustomerSwitcher customerSwitcher;
 
@@ -660,9 +664,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			takeFareText = (TextView) findViewById(R.id.takeFareText);
 			takeFareText.setTypeface(Data.latoHeavy(getApplicationContext()));
 
-			takeFareValue = (TextView) findViewById(R.id.takeFareValue);
-			takeFareValue.setTypeface(Data.latoHeavy(getApplicationContext()));
-
 
 			reviewSubmitBtn = (Button) findViewById(R.id.reviewSubmitBtn);
 			reviewSubmitBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -679,6 +680,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			scrollViewEndRide = (ScrollView) findViewById(R.id.scrollViewEndRide);
 			linearLayoutEndRideMain = (LinearLayout) findViewById(R.id.linearLayoutEndRideMain);
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+
+			relativeLayoutDeliveryOver = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOver);
+			((TextView)findViewById(R.id.textViewDeliveryIsOver)).setTypeface(Fonts.mavenRegular(this));
+			linearLayoutEndDelivery = (LinearLayout) findViewById(R.id.linearLayoutEndDelivery);
+			((TextView)findViewById(R.id.textViewOrdersDelivered)).setTypeface(Fonts.mavenRegular(this));
+			((TextView)findViewById(R.id.textViewOrdersReturned)).setTypeface(Fonts.mavenRegular(this));
+			textViewOrdersDeliveredValue = (TextView) findViewById(R.id.textViewOrdersDeliveredValue);
+			textViewOrdersDeliveredValue.setTypeface(Fonts.mavenRegular(this));
+			textViewOrdersReturnedValue = (TextView) findViewById(R.id.textViewOrdersReturnedValue);
+			textViewOrdersReturnedValue.setTypeface(Fonts.mavenRegular(this));
+			relativeLayoutDeliveryOver.setVisibility(View.GONE);
+			linearLayoutEndDelivery.setVisibility(View.GONE);
+
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
@@ -1950,10 +1964,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				if (myLocation != null) {
-					Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
-					Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-					mapIntent.setPackage("com.google.android.apps.maps");
-					startActivity(mapIntent);
+					Utils.openNavigationIntent(HomeActivity.this, address);
 					Intent intent = new Intent(HomeActivity.this, GeanieView.class);
 					startService(intent);
 				} else {
@@ -2071,9 +2082,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewFareValue.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(totalFare));
 
 
-					jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
-					takeFareText.setText(getResources().getString(R.string.take_cash)+" "+getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(endRideData.toPay ));
-					takeFareValue.setText(getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+					if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
+						takeFareText.setText(getResources().getText(R.string.rupee) + " "
+								+ Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
+						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
+
+						int totalDelivered = 0;
+						int totalUndelivered = 0;
+						for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+							if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
+								totalDelivered++;
+							} else{
+								totalUndelivered--;
+							}
+						}
+						textViewOrdersDeliveredValue.setText(String.valueOf(totalDelivered));
+						textViewOrdersReturnedValue.setText(String.valueOf(totalUndelivered));
+						textViewRateYourCustomer.setText(getResources().getString(R.string.rate_your_vendor));
+					} else{
+						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
+						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
+								+getResources().getText(R.string.rupee)+" "
+								+Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+						relativeLayoutDeliveryOver.setVisibility(View.GONE);
+						linearLayoutEndDelivery.setVisibility(View.GONE);
+						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
+					}
+
+					takeFareText.setText(getResources().getString(R.string.take_cash)+" "+getResources().getText(R.string.rupee)+" "+Utils.getDecimalFormatForMoney().format(endRideData.toPay));
 					endRideInfoRl.setVisibility(View.VISIBLE);
 					reviewFareValue.setText(getResources().getString(R.string.rupees) + " " + Utils.getDecimalFormatForMoney().format(endRideData.toPay));
 

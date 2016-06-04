@@ -75,7 +75,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/callCustomerLLayout"
+            android:id="@+id/linearLayoutCallCustomer"
             android:layout_width="220px"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
@@ -102,7 +102,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/getDirectionsLLayout"
+            android:id="@+id/linearLayoutGetDirections"
             android:layout_width="220px"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -200,7 +200,7 @@
 
 
         <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-            android:id="@+id/btnReturned"
+            android:id="@+id/buttonReturned"
             android:layout_width="250px"
             android:layout_height="83px"
             android:background="@drawable/new_menu_black_btn_selector_rounded"
@@ -210,7 +210,7 @@
             />
 
         <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-            android:id="@+id/btnCollected"
+            android:id="@+id/buttonCollected"
             android:layout_width="250px"
             android:layout_height="83px"
             android:padding="2px"
