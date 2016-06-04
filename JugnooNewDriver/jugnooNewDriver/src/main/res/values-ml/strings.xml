@@ -496,6 +496,8 @@
     <string name="delivery_id">Delivery Id</string>
     <string name="deliver">Deliver</string>
     <string name="Return">Return</string>
+    <string name="delivery">Delivery</string>
+    <string name="delivery_cancelled">Delivery Cancelled</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
