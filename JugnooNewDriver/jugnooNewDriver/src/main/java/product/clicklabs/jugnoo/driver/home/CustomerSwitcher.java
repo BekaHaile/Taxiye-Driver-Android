@@ -4,6 +4,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,7 +20,6 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -37,9 +37,10 @@ public class CustomerSwitcher {
 
 	private RecyclerView recyclerViewCustomersLinked;
 
-	private TextView textViewCustomerPickupAddress, textViewShowDistance, textViewRideStatus,
-			driverPassengerCallText, textViewRideInstructions;
-	private RelativeLayout driverPassengerCallRl, relativeLayoutShowDistance;
+	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
+			textViewDeliveryFare, textViewShowDistance;
+	private RelativeLayout relativeLayoutCall;
+	private LinearLayout linearLayoutDeliveryFare;
 
 	private CustomerInfoAdapter customerInfoAdapter;
 
@@ -50,19 +51,20 @@ public class CustomerSwitcher {
 
 	public void init(View rootView){
 
+		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
+		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
+		textViewDeliveryCount.setTypeface(Fonts.mavenRegular(activity));
+		textViewDeliveryFare = (TextView) rootView.findViewById(R.id.textViewDeliveryFare);
+		textViewDeliveryFare.setTypeface(Fonts.mavenRegular(activity));
 		textViewShowDistance = (TextView) rootView.findViewById(R.id.textViewShowDistance);
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
-		textViewRideStatus = (TextView) rootView.findViewById(R.id.textViewRideStatus);
-		textViewRideStatus.setTypeface(Fonts.mavenRegular(activity));
-		driverPassengerCallText = (TextView) rootView.findViewById(R.id.textViewCall);
-		driverPassengerCallText.setTypeface(Fonts.mavenRegular(activity));
-		textViewRideInstructions = (TextView) rootView.findViewById(R.id.textViewRideInstructions);
-		textViewRideInstructions.setTypeface(Fonts.mavenRegular(activity));
+		((TextView)rootView.findViewById(R.id.textViewDeliveryApprox)).setTypeface(Fonts.mavenRegular(activity));
 
-		driverPassengerCallRl = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
-		relativeLayoutShowDistance = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutShowDistance);
+		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
+		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
 		recyclerViewCustomersLinked.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
@@ -83,7 +85,7 @@ public class CustomerSwitcher {
 
 		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
-		driverPassengerCallRl.setOnClickListener(new View.OnClickListener() {
+		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -121,45 +123,65 @@ public class CustomerSwitcher {
 	public void setCustomerData() {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			textViewCustomerName.setText(customerInfo.getName());
 			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 				if(customerInfo.getDropLatLng() != null
 						&& customerInfo.getIsDelivery() != 1){
+					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 							callbackGetAddress).execute();
 				} else{
-					textViewCustomerPickupAddress.setText("");
+					textViewCustomerPickupAddress.setVisibility(View.GONE);
 				}
-				textViewShowDistance.setText("");
-				relativeLayoutShowDistance.setVisibility(View.GONE);
+				updateDistanceOnLocationChanged();
+				textViewDeliveryCount.setVisibility(View.GONE);
+				linearLayoutDeliveryFare.setVisibility(View.GONE);
 
 			} else {
+				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 				if(customerInfo.getAddress().equalsIgnoreCase("")){
 					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 							callbackGetAddress).execute();
 				} else{
 					textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 				}
-
-				textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-						.format(MapUtils.distance(customerInfo.getRequestlLatLng(),
-								new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude()))/1000d)
-						+ " " + activity.getResources().getString(R.string.km));
-				relativeLayoutShowDistance.setVisibility(View.VISIBLE);
+				updateDistanceOnLocationChanged();
+				if(customerInfo.getIsDelivery() == 1){
+					textViewDeliveryCount.setVisibility(View.VISIBLE);
+					textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
+							+ " " + customerInfo.getTotalDeliveries());
+					linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
+					textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
+							+ ": " + customerInfo.getDeliveryFare());
+				} else{
+					textViewDeliveryCount.setVisibility(View.GONE);
+					linearLayoutDeliveryFare.setVisibility(View.GONE);
+				}
 			}
-			if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()){
-				textViewRideStatus.setText(activity.getResources().getString(R.string.accepted));
-				textViewRideInstructions.setText(activity.getResources().getString(R.string.arrive_at_pickup_location));
-			}
-			else if(customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
-				textViewRideStatus.setText(activity.getResources().getString(R.string.arrived));
-				textViewRideInstructions.setText(activity.getResources().getString(R.string.arrived));
-			}
-			else if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
-				textViewRideStatus.setText(activity.getResources().getString(R.string.in_ride));
-				textViewRideInstructions.setText(activity.getResources().getString(R.string.in_ride));
+			if(Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1){
+				recyclerViewCustomersLinked.setVisibility(View.GONE);
+			} else{
+				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void updateDistanceOnLocationChanged(){
+		try{
+			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+				textViewShowDistance.setVisibility(View.GONE);
+			} else {
+				textViewShowDistance.setVisibility(View.VISIBLE);
+				if (HomeActivity.myLocation != null) {
+					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+							+ " " + activity.getResources().getString(R.string.km));
+				}
+			}
+		} catch(Exception e){
 			e.printStackTrace();
 		}
 	}

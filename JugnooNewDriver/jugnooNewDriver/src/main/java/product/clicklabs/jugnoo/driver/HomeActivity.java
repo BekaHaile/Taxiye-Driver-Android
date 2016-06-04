@@ -246,12 +246,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	ImageView imageViewEndRideWaitSep;
 
 	LinearLayout linearLayoutMeterFareEditText;
-	TextView textViewMeterFareRupee, textViewDeliveryCountValue;
+	TextView textViewMeterFareRupee;
 	EditText editTextEnterMeterFare;
 
 	RelativeLayout relativeLayoutEndRideLuggageCount;
 	ImageView imageViewEndRideLuggageCountPlus, imageViewEndRideLuggageCountMinus;
-	TextView textViewEndRideLuggageCount, textViewFareValue;
+	TextView textViewEndRideLuggageCount;
 
 	LinearLayout endRideInfoRl;
 	TextView jugnooRideOverText, takeFareText;
@@ -351,7 +351,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		openedCustomerInfo = customerInfo;
 	}
 
-	private RelativeLayout relativeLayoutContainer, relativeLayoutFare, relativeLayoutDeliveryCount;
+	private RelativeLayout relativeLayoutContainer;
 
 
 	@Override
@@ -696,19 +696,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutDeliveryOver.setVisibility(View.GONE);
 			linearLayoutEndDelivery.setVisibility(View.GONE);
 
-
-			//Customer Info Layout
-			((TextView) findViewById(R.id.textViewDeliveryCountText)).setTypeface(Fonts.mavenRegular(activity));
-			((TextView) findViewById(R.id.textViewApprox)).setTypeface(Fonts.mavenRegular(activity));
-			((TextView) findViewById(R.id.textViewFareText)).setTypeface(Fonts.mavenRegular(activity));
-
-			textViewDeliveryCountValue = (TextView) findViewById(R.id.textViewDeliveryCountValue);
-			textViewDeliveryCountValue.setTypeface(Fonts.mavenRegular(this));
-			textViewFareValue = (TextView) findViewById(R.id.textViewFareValue);
-			textViewDeliveryCountValue.setTypeface(Fonts.mavenRegular(this));
-
-			relativeLayoutFare = (RelativeLayout) findViewById(R.id.relativeLayoutFare);
-			relativeLayoutDeliveryCount = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryCount);
 
 
 
@@ -2324,6 +2311,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setEtaTimerVisibility();
 					startCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
+					setTextViewRideInstructions();
 
 					break;
 
@@ -2373,6 +2361,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					startCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
+					setTextViewRideInstructions();
 
 					break;
 
@@ -3260,6 +3249,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
+					int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+					double deliveryFare = jObj.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -3272,7 +3263,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userName, phoneNo, pickuplLatLng, cachedApiEnabled,
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
-							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled, isDelivery, address));
+							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
+							isDelivery, address, totalDeliveries, deliveryFare));
 
 					driverScreenMode = DriverScreenMode.D_ARRIVED;
 					switchDriverScreen(driverScreenMode);
@@ -3319,7 +3311,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			MarkerOptions markerOptions = new MarkerOptions();
 			markerOptions.title("next_pickup_marker");
 			markerOptions.position(Data.nextPickupLatLng);
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPerfectRidePinMarkerBitmap(HomeActivity.this, assl)));
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
 			perfectRideMarker = map.addMarker(markerOptions);
 			CustomInfoWindow customIW = new CustomInfoWindow(HomeActivity.this, perfectRideMarker.getSnippet(), "");
 			map.setInfoWindowAdapter(customIW);
@@ -4563,7 +4556,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		markerOptions.title(Data.getCurrentEngagementId());
 		markerOptions.snippet("");
 		markerOptions.position(customerLatLng);
-		markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPassengerMarkerBitmap(HomeActivity.this, assl)));
+		if(Data.getCurrentCustomerInfo() == null
+				|| Data.getCurrentCustomerInfo().getIsDelivery() == 0){
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+		} else{
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+					.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
+		}
+
+
 		return markerOptions;
 	}
 
@@ -5001,7 +5003,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							markerOptions.title(String.valueOf(customerInfos.get(i).engagementId));
 							markerOptions.snippet("");
 							markerOptions.position(customerInfos.get(i).requestlLatLng);
-							markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPassengerMarkerBitmap(HomeActivity.this, assl)));
+							if(customerInfos.get(i).getIsDelivery() == 1){
+								markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
+							} else {
+								markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+							}
 
 							map.addMarker(markerOptions);
 
@@ -5309,6 +5315,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						zoomToCurrentLocationAtFirstLocationFix(location);
 					}
 				}
+				customerSwitcher.updateDistanceOnLocationChanged();
 			} else {
 				reconnectLocationFetchers();
 			}

@@ -410,6 +410,8 @@ public class JSONParser implements Constants {
 
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
+							int totalDeliveries = jObjCustomer.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+							double deliveryFare = jObjCustomer.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
 
 
 							if(i == 0){
@@ -419,7 +421,8 @@ public class JSONParser implements Constants {
 							CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId), Integer.parseInt(userId),
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
-									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled, isDelivery, address);
+									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
+									isDelivery, address, totalDeliveries, deliveryFare);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 
@@ -565,11 +568,14 @@ public class JSONParser implements Constants {
 				}
 				int isPooled = jActiveRequest.optInt(KEY_IS_POOLED, 0);
 				int isDelivery = jActiveRequest.optInt(KEY_IS_DELIVERY, 0);
+				int totalDeliveries = jActiveRequest.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+				double deliveryFare = jActiveRequest.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
-						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery);
+						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
+						totalDeliveries, deliveryFare);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);

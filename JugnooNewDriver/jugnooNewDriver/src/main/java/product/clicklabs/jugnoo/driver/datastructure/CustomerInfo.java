@@ -41,13 +41,15 @@ public class CustomerInfo {
 
 	private int isDelivery;
 	private ArrayList<DeliveryInfo> deliveryInfos;
+	private int totalDeliveries;
+	private double deliveryFare;
 
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status, int isPooled, int isDelivery, String address){
+						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double deliveryFare){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -77,6 +79,8 @@ public class CustomerInfo {
 		if(this.isDelivery == 1){
 			this.waitingChargesApplicable = 1;
 		}
+		this.totalDeliveries = totalDeliveries;
+		this.deliveryFare = deliveryFare;
 	}
 
 
@@ -85,7 +89,8 @@ public class CustomerInfo {
 	}
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status, int isPooled, int isDelivery){
+						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
+						int totalDeliveries, double deliveryFare){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -96,6 +101,8 @@ public class CustomerInfo {
 		this.status = status;
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
+		this.totalDeliveries = totalDeliveries;
+		this.deliveryFare = deliveryFare;
 	}
 
 
@@ -347,5 +354,21 @@ public class CustomerInfo {
 
 	public void setDeliveryInfos(ArrayList<DeliveryInfo> deliveryInfos) {
 		this.deliveryInfos = deliveryInfos;
+	}
+
+	public int getTotalDeliveries() {
+		return totalDeliveries;
+	}
+
+	public void setTotalDeliveries(int totalDeliveries) {
+		this.totalDeliveries = totalDeliveries;
+	}
+
+	public double getDeliveryFare() {
+		return deliveryFare;
+	}
+
+	public void setDeliveryFare(double deliveryFare) {
+		this.deliveryFare = deliveryFare;
 	}
 }

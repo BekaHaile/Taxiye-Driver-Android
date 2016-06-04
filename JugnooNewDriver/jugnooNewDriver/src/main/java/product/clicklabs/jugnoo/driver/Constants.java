@@ -109,5 +109,7 @@ public interface Constants {
     String KEY_DELIVERY_ENABLED = "delivery_enabled";
     String KEY_DELIVERY_AVAILABLE = "delivery_available";
     String KEY_DELIVERY_FLAG = "delivery_flag";
+    String KEY_TOTAL_DELIVERIES = "total_deliveries";
+    String KEY_DELIVERY_FARE = "delivery_fare";
 
 }

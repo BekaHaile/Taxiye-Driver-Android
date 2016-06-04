@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -27,7 +26,6 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
 @SuppressLint("ValidFragment")
@@ -157,7 +155,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		super.onHiddenChanged(hidden);
 		try {
 			if (!hidden) {
-                deliveryInfoAdapter.notifyDataSetChanged();
+				updateList(DeliveryStatus.COMPLETED);
             }
 		} catch (Exception e) {
 			e.printStackTrace();
