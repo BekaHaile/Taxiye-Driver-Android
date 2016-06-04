@@ -26,8 +26,8 @@
 
     <style name="RatingBarBlue" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/driver_ratting_star_orange_selector</item>
-        <item name="android:minHeight">56dp</item>
-        <item name="android:maxHeight">56dp</item>
+        <item name="android:minHeight">46dp</item>
+        <item name="android:maxHeight">46dp</item>
     </style>
 
     <style name="RatingBarWhite" parent="@android:style/Widget.RatingBar">

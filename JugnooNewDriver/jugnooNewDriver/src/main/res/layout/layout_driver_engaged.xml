@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/top_bar_height"
     android:splitMotionEvents="false"
-    android:visibility="visible"
-    android:layout_marginTop="@dimen/top_bar_height">
+    android:visibility="visible">
 
     <!-- customer info layout -->
     <RelativeLayout
@@ -180,14 +180,14 @@
             android:id="@+id/textViewRideInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
             android:background="@color/white"
-            android:textSize="@dimen/text_size_30"
-            android:textColor="@color/text_color"
             android:gravity="center"
             android:padding="15px"
-            android:layout_marginBottom="10px"
             android:text="hello"
-            android:visibility="gone"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_30"
+            android:visibility="visible"
             />
 
 
@@ -224,8 +224,8 @@
                 android:id="@+id/driverCancelRideBtn"
                 android:layout_width="240px"
                 android:layout_height="99px"
-                android:layout_marginRight="15px"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="15px"
                 android:background="@drawable/new_menu_black_btn_selector_rounded"
                 android:text="@string/cancel"
                 android:textColor="@drawable/white_color_selector"
@@ -251,22 +251,25 @@
                 android:background="@drawable/shadow_up"/>
 
             <!-- in ride operations rl-->
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="280px"
+                android:layout_height="wrap_content"
                 android:background="@color/white_translucent"
+                android:orientation="vertical"
                 android:splitMotionEvents="false"
                 android:visibility="visible"
                 >
 
                 <!-- reached distance km, time, fare layout -->
                 <LinearLayout
+                    android:id="@+id/linearLayoutRideValues"
                     android:layout_width="match_parent"
                     android:layout_height="150px"
+                    android:layout_marginBottom="-14px"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
 
                     <RelativeLayout
@@ -347,6 +350,7 @@
                         android:gravity="center"
                         android:splitMotionEvents="false"
                         android:visibility="visible">
+
                         <ImageView
                             android:layout_width="2px"
                             android:layout_height="90px"
@@ -356,8 +360,8 @@
                             android:id="@+id/driverWaitText"
                             android:layout_width="178px"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
                             android:layout_centerHorizontal="true"
+                            android:gravity="center"
                             android:text="@string/wait_time"
                             android:textColor="@color/bg_grey_opaque"
                             android:textSize="@dimen/end_ride_details_text_size"
@@ -420,34 +424,37 @@
                     </RelativeLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/driverEndRideBtn"
-                    android:layout_width="430px"
-                    android:layout_height="90px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="27px"
-                    android:layout_marginLeft="45px"
-                    android:background="@drawable/menu_black_btn_selector"
-                    android:text="@string/end_ride"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="28px"
+                    android:layout_marginBottom="28px"
+                    >
 
-                <Button
-                    android:id="@+id/buttonMakeDelivery"
-                    android:layout_width="200px"
-                    android:layout_height="90px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="45px"
-                    android:layout_marginBottom="27px"
-                    android:background="@drawable/menu_black_btn_selector"
-                    android:text="@string/make_delivery"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    android:visibility="visible"
-                    />
+                    <Button
+                        android:id="@+id/driverEndRideBtn"
+                        android:layout_width="400px"
+                        android:layout_height="90px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/menu_black_btn_selector"
+                        android:text="@string/end_ride"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"/>
 
-            </RelativeLayout>
+                    <Button
+                        android:id="@+id/buttonMakeDelivery"
+                        android:layout_width="400px"
+                        android:layout_height="90px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/menu_black_btn_selector"
+                        android:text="@string/make_delivery"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"
+                        android:visibility="visible"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>

@@ -488,6 +488,9 @@
     <string name="view_orders">View Orders</string>
     <string name="delivery_numbers">No. of Delivery</string>
     <string name="approx">(Approx)</string>
+    <string name="start_the_ride">Start the ride</string>
+    <string name="deliver_order_number">Deliver order no. %s</string>
+    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
