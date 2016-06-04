@@ -415,7 +415,7 @@ public class JSONParser implements Constants {
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 							int totalDeliveries = jObjCustomer.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-							double deliveryFare = jObjCustomer.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
+							double estimatedFare = jObjCustomer.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 
 
 							if(i == 0){
@@ -426,7 +426,7 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, deliveryFare);
+									isDelivery, address, totalDeliveries, estimatedFare);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 
@@ -573,13 +573,14 @@ public class JSONParser implements Constants {
 				int isPooled = jActiveRequest.optInt(KEY_IS_POOLED, 0);
 				int isDelivery = jActiveRequest.optInt(KEY_IS_DELIVERY, 0);
 				int totalDeliveries = jActiveRequest.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-				double deliveryFare = jActiveRequest.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
+				double estimatedFare = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+				String userName = jActiveRequest.optString(Constants.KEY_NAME, "");
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, deliveryFare);
+						totalDeliveries, estimatedFare, userName);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);

@@ -152,7 +152,7 @@ public class CustomerSwitcher {
 							+ " " + customerInfo.getTotalDeliveries());
 					linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 					textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
-							+ ": " + customerInfo.getDeliveryFare());
+							+ ": " + customerInfo.getEstimatedFare());
 				} else{
 					textViewDeliveryCount.setVisibility(View.GONE);
 					linearLayoutDeliveryFare.setVisibility(View.GONE);
@@ -182,7 +182,6 @@ public class CustomerSwitcher {
 				}
 			}
 		} catch(Exception e){
-			e.printStackTrace();
 		}
 	}
 

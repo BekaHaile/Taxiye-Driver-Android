@@ -42,14 +42,14 @@ public class CustomerInfo {
 	private int isDelivery;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private int totalDeliveries;
-	private double deliveryFare;
+	private double estimatedFare;
 
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double deliveryFare){
+						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -80,7 +80,7 @@ public class CustomerInfo {
 			this.waitingChargesApplicable = 1;
 		}
 		this.totalDeliveries = totalDeliveries;
-		this.deliveryFare = deliveryFare;
+		this.estimatedFare = estimatedFare;
 	}
 
 
@@ -90,7 +90,7 @@ public class CustomerInfo {
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
-						int totalDeliveries, double deliveryFare){
+						int totalDeliveries, double estimatedFare, String userName){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -102,7 +102,8 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
 		this.totalDeliveries = totalDeliveries;
-		this.deliveryFare = deliveryFare;
+		this.estimatedFare = estimatedFare;
+		this.name = userName;
 	}
 
 
@@ -364,11 +365,11 @@ public class CustomerInfo {
 		this.totalDeliveries = totalDeliveries;
 	}
 
-	public double getDeliveryFare() {
-		return deliveryFare;
+	public double getEstimatedFare() {
+		return estimatedFare;
 	}
 
-	public void setDeliveryFare(double deliveryFare) {
-		this.deliveryFare = deliveryFare;
+	public void setEstimatedFare(double estimatedFare) {
+		this.estimatedFare = estimatedFare;
 	}
 }

@@ -256,7 +256,7 @@
                 android:id="@+id/relativeLayoutDeliveryOver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:layout_marginTop="40px"
                 >
 
@@ -349,6 +349,7 @@
                 android:layout_marginLeft="36px"
                 android:layout_marginRight="36px"
                 android:layout_marginBottom="36px"
+                android:visibility="gone"
                 >
                 <RelativeLayout
                     android:layout_width="match_parent"

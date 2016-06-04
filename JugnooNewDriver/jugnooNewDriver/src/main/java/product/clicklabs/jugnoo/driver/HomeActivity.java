@@ -3287,7 +3287,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 					int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-					double deliveryFare = jObj.optDouble(Constants.KEY_DELIVERY_FARE, 0d);
+					double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -3301,7 +3301,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, deliveryFare));
+							isDelivery, address, totalDeliveries, estimatedFare));
 
 					driverScreenMode = DriverScreenMode.D_ARRIVED;
 					switchDriverScreen(driverScreenMode);
