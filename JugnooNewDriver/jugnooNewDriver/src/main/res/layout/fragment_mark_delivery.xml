@@ -296,7 +296,7 @@
             android:layout_width="250px"
             android:layout_height="83px"
             android:background="@drawable/new_menu_black_btn_selector_rounded"
-            android:text="@string/Returned"
+            android:text="@string/Return"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             />
@@ -307,7 +307,7 @@
             android:layout_height="83px"
             android:padding="2px"
             android:background="@drawable/new_orange_btn_corner_selector"
-            android:text="@string/delivered"
+            android:text="@string/deliver"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             android:layout_alignParentRight="true"

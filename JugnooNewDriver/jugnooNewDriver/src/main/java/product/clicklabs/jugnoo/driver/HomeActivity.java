@@ -4637,7 +4637,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
 			textMessage.setTypeface(Data.latoRegular(activity));
 
-			textMessage.setText(getResources().getString(R.string.start_ride_text));
+			if(customerInfo.getIsDelivery()==1){
+				textMessage.setText(getResources().getString(R.string.start_delivery_text));
+			}else{
+				textMessage.setText(getResources().getString(R.string.start_ride_text));
+			}
+
+
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);

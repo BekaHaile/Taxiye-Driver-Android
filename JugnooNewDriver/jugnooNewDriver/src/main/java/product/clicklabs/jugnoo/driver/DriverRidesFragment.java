@@ -211,8 +211,6 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 			holder.textViewTransTypeText.setVisibility(View.GONE);
 
 
-
-
 			final RideInfo rideInfo = rides.get(position);
 
 			holder.id = position;
@@ -233,7 +231,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewTransTypeText.setVisibility(View.VISIBLE);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.dateTimeValue.setVisibility(View.VISIBLE);
-				holder.textViewRideId.setText(activity.getStringText(R.string.Ride_id)+": " + rideInfo.id);
+				holder.textViewRideId.setText(activity.getStringText(R.string.Ride_id) + ": " + rideInfo.id);
 				holder.textViewRideId.setVisibility(View.VISIBLE);
 
 				if ("".equalsIgnoreCase(rideInfo.statusString)) {
@@ -272,9 +270,8 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 				holder.distanceValue.setVisibility(View.VISIBLE);
 				holder.rideTimeValue.setVisibility(View.VISIBLE);
-				holder.distanceValue.setText(rideInfo.distance+" " + activity.getStringText(R.string.km) + ", ");
+				holder.distanceValue.setText(rideInfo.distance + " " + activity.getStringText(R.string.km) + ", ");
 				holder.rideTimeValue.setText(rideInfo.rideTime + " " + activity.getStringText(R.string.min));
-
 
 
 			} else if (rideInfo.type.equalsIgnoreCase("referral")) {
@@ -287,7 +284,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
 				holder.textViewTransTypeText.setText(activity.getStringText(R.string.referral));
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
-				holder.textViewRideId.setText(getResources().getString(R.string.customer_id)+": " + rideInfo.customerId);
+				holder.textViewRideId.setText(getResources().getString(R.string.customer_id) + ": " + rideInfo.customerId);
 				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.referralAmount)));
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble("0")));
 				holder.textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(rideInfo.referralAmount))));
@@ -320,7 +317,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				holder.textViewBalanceText.setVisibility(View.VISIBLE);
 				holder.textViewStatusString.setVisibility(View.VISIBLE);
 				holder.textViewTransTypeText.setText(activity.getStringText(R.string.paytm_transaction));
-				holder.textViewRideId.setText(activity.getStringText(R.string.phone_no)+rideInfo.phone);
+				holder.textViewRideId.setText(activity.getStringText(R.string.phone_no) + rideInfo.phone);
 				holder.dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(rideInfo.dateTime)));
 				holder.textViewActualFareFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
 				holder.textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(rideInfo.amount)));
@@ -341,7 +338,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 				@Override
 				public void onClick(View v) {
 					holder = (ViewHolderDriverRides) v.getTag();
-					if(rides.get(holder.id).type.equalsIgnoreCase("ride")) {
+					if (rides.get(holder.id).type.equalsIgnoreCase("ride")) {
 						RideDetailsActivity.openedRideInfo = rides.get(holder.id);
 						getActivity().startActivity(new Intent(getActivity(), RideDetailsActivity.class));
 						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -358,65 +355,68 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 
 	private void getRidesAsync(final Activity activity) {
 		try {
+
 			progressBar.setVisibility(View.VISIBLE);
 			RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
-                    new Callback<NewBookingHistoryRespose>() {
-                        @Override
-                        public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
-                            try {
-                                String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-                                JSONObject jObj;
-                                jObj = new JSONObject(jsonString);
-                                if (!jObj.isNull("error")) {
-                                    String errorMessage = jObj.getString("error");
-                                    if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-                                        HomeActivity.logoutUser(activity);
-                                    } else {
-                                        updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-                                    }
+					new Callback<NewBookingHistoryRespose>() {
+						@Override
+						public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
+							try {
+								if (activity != null) {
+									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									JSONObject jObj;
+									jObj = new JSONObject(jsonString);
+									if (!jObj.isNull("error")) {
+										String errorMessage = jObj.getString("error");
+										if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+											HomeActivity.logoutUser(activity);
+										} else {
+											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+										}
 
-                                } else {
+									} else {
 
-                                    for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
-                                        NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
-                                        RideInfo rideInfo = null;
-                                        if(data.getType().equalsIgnoreCase("ride")) {
-                                             rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
-                                                    data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
-                                                    data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
-                                                    data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
-                                                    data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-                                                    data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
-                                        } else if(data.getType().equalsIgnoreCase("referral")) {
-                                            rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
-                                        } else if(data.getType().equalsIgnoreCase("phone_deductions")) {
-                                            rideInfo =new RideInfo(data.getAmount(), data.getType(), data.getTime());
-                                        } else if(data.getType().equalsIgnoreCase("paytm_transaction")){
-                                            rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());
-                                        }
+										for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
+											NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
+											RideInfo rideInfo = null;
+											if (data.getType().equalsIgnoreCase("ride")) {
+												rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
+														data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
+														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
+														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
+														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
+											} else if (data.getType().equalsIgnoreCase("referral")) {
+												rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
+											} else if (data.getType().equalsIgnoreCase("phone_deductions")) {
+												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime());
+											} else if (data.getType().equalsIgnoreCase("paytm_transaction")) {
+												rideInfo = new RideInfo(data.getAmount(), data.getType(), data.getTime(), data.getStatus(), data.getPhone());
+											}
 
-                                        if(rideInfo!=null) {
-                                            rides.add(rideInfo);
-                                        }
-                                    }
-
-
-                                    updateListData(getResources().getString(R.string.no_rides), false);
-                                }
-                            } catch (Exception exception) {
-                                exception.printStackTrace();
-                                updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-                            }
-                            progressBar.setVisibility(View.GONE);
-                        }
+											if (rideInfo != null) {
+												rides.add(rideInfo);
+											}
+										}
 
 
-                        @Override
-                        public void failure(RetrofitError error) {
-                            progressBar.setVisibility(View.GONE);
-                            updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-                        }
-                    });
+										updateListData(getResources().getString(R.string.no_rides), false);
+									}
+								}
+							} catch (Exception exception) {
+								exception.printStackTrace();
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							}
+							progressBar.setVisibility(View.GONE);
+						}
+
+
+						@Override
+						public void failure(RetrofitError error) {
+							progressBar.setVisibility(View.GONE);
+							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+						}
+					});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

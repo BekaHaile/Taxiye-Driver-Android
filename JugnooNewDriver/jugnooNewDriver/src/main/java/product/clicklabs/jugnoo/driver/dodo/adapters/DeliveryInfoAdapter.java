@@ -58,9 +58,12 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 holder.textViewOrderStatus.setVisibility(View.GONE);
             } else {
                 if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
-                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.completed));
+                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.delivered));
+                    holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.green_delivery));
                 } else if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
-                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.cancelled));
+                    holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.returned));
+                    holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.red_status));
+
                 } else{
                     holder.textViewOrderStatus.setVisibility(View.GONE);
                 }
