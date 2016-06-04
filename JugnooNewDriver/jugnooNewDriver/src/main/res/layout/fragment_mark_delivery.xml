@@ -129,12 +129,103 @@
         </LinearLayout>
 
     </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/LinearLayoutReDelivery"
+        android:layout_width="700px"
+        android:layout_height="196px"
+        android:orientation="vertical"
+        android:layout_marginTop="98px"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        android:background="@color/white_little_dark">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDeliveryStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px">
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="400px"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="48px"
+                android:text="@string/status"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+            <TextView
+                android:id="@+id/textViewColon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15px"
+                android:layout_toLeftOf="@+id/textViewStatusValue"
+                android:gravity="center_vertical"
+                android:text=":"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+            <TextView
+                android:id="@+id/textViewStatusValue"
+                android:layout_width="184px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="32px"
+                android:text="@string/Returned"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutConvenienceCharges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28px">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewReturnReason"
+                android:layout_width="400px"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="48px"
+                android:text="@string/return_reasons"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+            <TextView
+                android:id="@+id/textViewColon2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15px"
+                android:layout_toLeftOf="@+id/textViewReturnReasonValue"
+                android:gravity="center_vertical"
+                android:text=":"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+            <TextView
+                android:id="@+id/textViewReturnReasonValue"
+                android:layout_width="184px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:layout_marginRight="32px"
+                android:text="customer not available"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80px"
         android:layout_marginTop="32px"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="visible">
 
         <ImageView
             android:layout_width="220px"
@@ -186,6 +277,7 @@
         android:paddingRight="20px"
         android:textColor="@color/black"
         android:textSize="108px"
+        android:visibility="visible"
 
         />
 

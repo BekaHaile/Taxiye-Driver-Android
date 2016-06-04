@@ -40,11 +40,11 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("ValidFragment")
 public class MarkDeliveryFragment extends Fragment {
 
-	private LinearLayout relative, linearLayoutGetDirections, linearLayoutCallCustomer;
+	private LinearLayout relative, linearLayoutGetDirections, linearLayoutCallCustomer, LinearLayoutReDelivery;
 
 	private Button buttonBack;
 	private TextView textViewOrderId, textViewAmount, textViewCustomerName,
-			textViewCustomerAddress, textViewTitle;
+			textViewCustomerAddress, textViewTitle, textViewStatusValue, textViewReturnReasonValue;
 	private Button btnCollected, btnReturned;
 
 	private View rootView;
@@ -72,6 +72,7 @@ public class MarkDeliveryFragment extends Fragment {
 
 		linearLayoutGetDirections = (LinearLayout) rootView.findViewById(R.id.linearLayoutGetDirections);
 		linearLayoutCallCustomer = (LinearLayout) rootView.findViewById(R.id.linearLayoutCallCustomer);
+		LinearLayoutReDelivery = (LinearLayout) rootView.findViewById(R.id.LinearLayoutReDelivery);
 
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 
@@ -84,6 +85,12 @@ public class MarkDeliveryFragment extends Fragment {
 		((TextView) rootView.findViewById(R.id.textViewTakeCash)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCustomerAddress = (TextView) rootView.findViewById(R.id.textViewCustomerAddress);
 		textViewCustomerAddress.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		((TextView) rootView.findViewById(R.id.textViewStatus)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewReturnReason)).setTypeface(Fonts.mavenRegular(activity));
+		textViewStatusValue  = (TextView) rootView.findViewById(R.id.textViewStatusValue);
+		textViewStatusValue.setTypeface(Fonts.mavenRegular(activity));
+		textViewReturnReasonValue = (TextView) rootView.findViewById(R.id.textViewReturnReasonValue);
+		textViewReturnReasonValue.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
 		((TextView) rootView.findViewById(R.id.textViewGetDirections)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewCustomerCall)).setTypeface(Fonts.mavenRegular(activity));

@@ -37,7 +37,7 @@ public class DeliveryInfosListFragment extends Fragment {
 
 	private Button buttonBack;
 	private LinearLayout currentLLayout, completedLLayout;
-	private TextView textViewTitle, textViewCompleted, textViewCurrent;
+	private TextView textViewTitle, textViewCompleted, textViewCurrent, textViewMerchantMessage;
 	private ImageView imageViewCompleted, imageViewCurrent;
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
@@ -79,6 +79,9 @@ public class DeliveryInfosListFragment extends Fragment {
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewTitle.setText(activity.getResources().getString(R.string.deliveries));
+
+		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
+		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
 
 		recyclerViewDeliveryInfo = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfo);
 		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));

@@ -45,7 +45,7 @@ public class DeliveryReturnFragment extends Fragment {
 	private LinearLayout relative;
 
 	private Button buttonBack;
-	private TextView textViewTitle;
+	private TextView textViewTitle, textViewReturnReasons;
 	private RecyclerView recyclerViewReturnOptions;
 	private Button buttonSubmit;
 	private ReturnOptionsListAdapter returnOptionsListAdapter;
@@ -78,6 +78,8 @@ public class DeliveryReturnFragment extends Fragment {
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewTitle.setText(activity.getResources().getString(R.string.return_reasons));
 
+		textViewReturnReasons = (TextView) rootView.findViewById(R.id.textViewReturnReasons);
+		textViewReturnReasons.setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
 		
 		recyclerViewReturnOptions = (RecyclerView) rootView.findViewById(R.id.recyclerViewReturnOptions);
 		recyclerViewReturnOptions.setLayoutManager(new LinearLayoutManager(activity));

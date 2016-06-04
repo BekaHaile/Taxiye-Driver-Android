@@ -74,6 +74,20 @@
    </LinearLayout>
 
 
+    <TextView
+        android:id="@+id/textViewMerchantMessage"
+        android:layout_width="match_parent"
+        android:layout_height="98px"
+        android:textSize="32px"
+        android:text="message from vendor"
+        android:gravity="center"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="6px"
+        android:background="@drawable/shadow_down"
+        android:layout_below="@+id/linearLayoutMain"/>
+
 
 
     <android.support.v7.widget.RecyclerView

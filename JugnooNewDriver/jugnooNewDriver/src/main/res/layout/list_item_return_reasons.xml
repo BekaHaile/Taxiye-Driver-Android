@@ -12,10 +12,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="25px"
+        android:layout_marginLeft="20px"
         android:text="Driver is late"
         android:textColor="@color/text_color"
         android:layout_toRightOf="@+id/imageViewReturnOptionCheck"
-        android:textSize="30px"/>
+        android:textSize="32px"/>
 
     <ImageView
         android:id="@+id/imageViewReturnOptionCheck"
@@ -23,7 +24,7 @@
         android:layout_height="36px"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="40px"
+        android:layout_marginLeft="54px"
         android:src="@drawable/radio_select"
         android:tag="mwar"
         />
