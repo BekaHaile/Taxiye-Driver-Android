@@ -506,6 +506,8 @@
     <string name="give_missed_call_dialog_text">നിങ്ങൾ ഞങ്ങൾക്ക് ഒരു മിസ്ഡ് കോൾ നൽകിയാൽ  നിങ്ങളുടെ ഐഡൻറിറ്റി ഞങ്ങൾ പരിശോധിക്കാം</string>
     <string name="give_misscall_to_verify">സ്ഥിരീകരിക്കുന്നതിന് മിസ്സ്‌കാൾ ചെയ്യുക</string>
     <string name="please_press_here">ഇവിടെ അമർത്തുക</string>
+    <string name="delivery_completed">Delivery Completed</string>
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>
