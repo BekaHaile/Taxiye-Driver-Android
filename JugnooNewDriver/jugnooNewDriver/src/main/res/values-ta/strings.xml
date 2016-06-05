@@ -580,7 +580,10 @@
     <string name="give_missed_call_dialog_text">எங்களுக்கு மிஸ்ட் கால் கொடுங்கள் நாங்கள் உங்கள் அடையாளத்தைச் சரிபார்கிறோம்</string>
     <string name="give_misscall_to_verify">சரிபார்க்க மிஸ்ட் கால் கொடுக்கவும்.</string>
     <string name="please_press_here">தயவு செய்து இங்கே அழுத்தவும்</string>
-
+    <string name="accepted">Accepted</string>
+    <string name="in_ride">In Ride</string>
+    <string name="arrive_at_pickup_location">Arrive at pickup location</string>
+    <string name="make_delivery">Make Delivery</string>
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

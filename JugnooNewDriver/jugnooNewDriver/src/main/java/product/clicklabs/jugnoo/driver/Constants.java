@@ -26,6 +26,7 @@ public interface Constants {
     long HEAT_MAP_FETCH_DELAY = 120000;
 
     String KEY_RIDE_TIME_SECONDS = "ride_time_seconds";
+    String KEY_WAIT_TIME_SECONDS = "wait_time_seconds";
     String KEY_PICTURE = "picture";
     String KEY_IMAGE = "image";
 

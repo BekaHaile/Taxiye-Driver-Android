@@ -557,7 +557,10 @@
     <string name="give_missed_call_dialog_text">మాకు ఒక మిస్డ్ కాల్ ఇవ్వండి మరియు మేము మీ గుర్తింపుని ద్రువికరిస్తాము</string>
     <string name="give_misscall_to_verify">నిర్ధారణకు మిస్డ్ కాల్ఇవ్వండి</string>
     <string name="please_press_here">దయచేసి ఇక్కడ నొక్కండి</string>
-
+    <string name="accepted">Accepted</string>
+    <string name="in_ride">In Ride</string>
+    <string name="arrive_at_pickup_location">Arrive at pickup location</string>
+    <string name="make_delivery">Make Delivery</string>
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

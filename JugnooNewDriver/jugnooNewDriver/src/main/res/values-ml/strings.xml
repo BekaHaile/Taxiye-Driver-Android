@@ -497,7 +497,10 @@
     <string name="Return">Return</string>
     <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
-
+    <string name="accepted">Accepted</string>
+    <string name="in_ride">In Ride</string>
+    <string name="arrive_at_pickup_location">Arrive at pickup location</string>
+    <string name="make_delivery">Make Delivery</string>
     <string name="resend_OTP">O.T.P. വീണ്ടും അയക്കാൻ</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">നിങ്ങൾ ഞങ്ങൾക്ക് ഒരു മിസ്ഡ് കോൾ നൽകിയാൽ  നിങ്ങളുടെ ഐഡൻറിറ്റി ഞങ്ങൾ പരിശോധിക്കാം</string>

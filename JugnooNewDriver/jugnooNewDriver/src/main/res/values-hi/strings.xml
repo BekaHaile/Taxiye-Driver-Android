@@ -556,7 +556,10 @@
 	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दें और हम आपकी पहचान सत्यापित करेंगे |</string>
 	<string name="give_misscall_to_verify">वैरिफाई करने के लिए मिस कॉल करें</string>
 	<string name="please_press_here">कृपया यहाँ दबाएँ</string>
-
+	<string name="accepted">Accepted</string>
+	<string name="in_ride">In Ride</string>
+	<string name="arrive_at_pickup_location">Arrive at pickup location</string>
+	<string name="make_delivery">Make Delivery</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

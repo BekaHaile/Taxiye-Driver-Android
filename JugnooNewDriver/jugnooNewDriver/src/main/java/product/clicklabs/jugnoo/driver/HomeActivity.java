@@ -3707,13 +3707,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		rideTimeInMillis = getElapsedRideTimeFromSPInMillis(customerInfo, rideTimeInMillis);
 
+		long customerWaitTimeMillis = customerInfo
+				.getCustomerRideData().getTotalWaitTime(customerRideDataGlobal.getWaitTime());
+
 		if (customerInfo != null && customerInfo.waitingChargesApplicable != 1) {
-			customerInfo.getCustomerRideData().setWaitTime(0);
+			customerWaitTimeMillis = 0;
 		}
 
 		double rideMinutes = Math.round(((double)rideTimeInMillis) / 60000.0d);
-		double waitMinutes = Math.round(((double)customerInfo
-				.getCustomerRideData().getTotalWaitTime(customerRideDataGlobal.getWaitTime())) / 60000.0d);
+		double waitMinutes = Math.round(((double) customerWaitTimeMillis) / 60000.0d);
 
 		if (rideMinutes < Limit_endRideMinute) {
 			rideTime = decimalFormatNoDecimal.format(rideMinutes);
@@ -3725,12 +3727,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			waitTime = decimalFormatNoDecimal.format(waitMinutes);
 		}
 
-		double rideTimeSeconds = Math.ceil(((double)rideTimeInMillis) / 1000d);
+		double rideTimeSeconds = Math.ceil(((double) rideTimeInMillis) / 1000d);
 		String rideTimeSecondsStr = decimalFormatNoDecimal.format(rideTimeSeconds);
+		double waitTimeSeconds = Math.ceil(((double)customerWaitTimeMillis) / 1000d);
+		String waitTimeSecondsStr = decimalFormatNoDecimal.format(waitTimeSeconds);
 
 		final long eoRideTimeInMillis = rideTimeInMillis;
-		final long eoWaitTimeInMillis = customerInfo
-				.getCustomerRideData().getTotalWaitTime(customerRideDataGlobal.getWaitTime());
+		final long eoWaitTimeInMillis = customerWaitTimeMillis;
 
 
 		final double totalHaversineDistanceInKm = Math.abs(customerInfo
@@ -3747,6 +3750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_WAIT_TIME, waitTime);
 		params.put(KEY_RIDE_TIME, rideTime);
 		params.put(KEY_RIDE_TIME_SECONDS, rideTimeSecondsStr);
+		params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
 		params.put(KEY_IS_CACHED, "0");
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
