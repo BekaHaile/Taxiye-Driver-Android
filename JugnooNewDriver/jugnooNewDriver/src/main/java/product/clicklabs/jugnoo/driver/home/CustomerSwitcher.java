@@ -128,7 +128,7 @@ public class CustomerSwitcher {
 				if(customerInfo.getDropLatLng() != null
 						&& customerInfo.getIsDelivery() != 1){
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
+					new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 							callbackGetAddress).execute();
 				} else{
 					textViewCustomerPickupAddress.setVisibility(View.GONE);
