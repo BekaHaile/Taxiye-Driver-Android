@@ -464,19 +464,7 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">റൈഡ് പൂർത്തിയായി</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="to_no_colon">To</string>
-    <string name="address">Address</string>
-    <string name="delivered">Delivered</string>
-    <string name="delivery_on">Delivery ON</string>
-    <string name="delivery_is_over">Delivery is Over</string>
-    <string name="start_the_ride">Start the ride</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-    <string name="delivery_id">Delivery Id</string>
-    <string name="delivery_cancelled">Delivery Cancelled</string>
     <string name="miss_call_otp">Give a Miss Call</string>
-    <string name="delivery_completed">Delivery Completed</string>
 
 
     <string name="give_missed_call_dialog_text">നിങ്ങൾ ഞങ്ങൾക്ക് ഒരു  ഒരു മിസ്ഡ് കോൾ നൽകിയാൽ ഞങ്ങൾ നിങ്ങളുടെ  ഐഡൻറിറ്റി പരിശോധിക്കുന്നതായിരിക്കും </string>
@@ -511,12 +499,24 @@
     <string name="deliver">എത്തിക്കണം</string>
     <string name="Return">മടക്കം</string>
     <string name="amnt_credited">ക്രെഡിറ്റ്‌ ചെയ്ത തുക</string>
-    <string name="no_deliveries_pending">No deliveries pending</string>
-    <string name="no_deliveries_completed">No deliveries completed</string>
-    <string name="cash_collected">Cash Collected</string>
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
 
+    <string name="delivery_id">ഡെലിവറി ഐഡി</string>
+    <string name="delivery_completed">ഡെലിവറി പൂർത്തിയായത്</string>
+    <string name="delivery_cancelled">ഡെലിവറി റദ്ദാക്കിയവ</string>
+    <string name="cancelled">റദ്ദാക്കി</string>
+    <string name="address">വിലാസം</string>
+    <string name="delivered">കൈമാറി</string>
+    <string name="delivery_on">ഡെലിവറി ഓൺ </string>
+    <string name="delivery_is_over">ഡെലിവറി കഴിഞ്ഞു</string>
+    <string name="start_the_ride">റൈഡ് ആരംഭിക്കുക</string>
+    <string name="deliver_order_number">ഡെലിവറി ചെയ്യേണ്ട ഓർഡർ നമ്പ %s</string>
+    <string name="all_orders_have_been_delivered">എല്ലാ ഡെലിവറികളും എത്തിച്ചു </string>
+    <string name="to_no_colon">To</string>
+    <string name="no_deliveries_pending">ഡെലിവറികൾ എല്ലാം പൂർത്തിയായി</string>
+    <string name="no_deliveries_completed">ഡെലിവറികൾ ഒന്നും പൂർത്തിയായില്ല</string>
+    <string name="cash_collected">ക്യാഷ് ശേഖരിച്ചു</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

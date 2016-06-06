@@ -505,7 +505,7 @@
     <string name="delivery_on">પહોચસે </string>
     <string name="delivery_is_over">ડીલીવરી પૂર્ણ </string>
     <string name="start_the_ride">સવારી શરુ કરો</string>
-    <string name="deliver_order_number">ડીલીવરી નો  ઓર્ડર નંબર </string>
+    <string name="deliver_order_number">ડીલીવરી નો  ઓર્ડર નંબર %s</string>
     <string name="all_orders_have_been_delivered">બધાજ ઓર્ડરની  ડીલીવર થઈ ગયા </string>
     <string name="to_no_colon">માટે </string>
     <string name="no_deliveries_pending">કોઈ ડિલિવરી બાકી નથી </string>

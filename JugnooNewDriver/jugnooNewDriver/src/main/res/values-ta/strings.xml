@@ -592,7 +592,7 @@
     <string name="delivery_on">ஒப்படைப்புகள் ஆன் </string>
     <string name="delivery_is_over">ஒப்படைப்பு முடிந்துவிட்டது</string>
     <string name="start_the_ride">சவாரி தொடங்க</string>
-    <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். ((%s)) </string>
+    <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். %s </string>
     <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
