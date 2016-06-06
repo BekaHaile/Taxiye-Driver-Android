@@ -441,7 +441,7 @@
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="@dimen/button_text_size"/>
 
-                    <Button
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                         android:id="@+id/buttonMakeDelivery"
                         android:layout_width="400px"
                         android:layout_height="90px"
@@ -451,6 +451,7 @@
                         android:textColor="@drawable/white_color_selector"
                         android:textSize="@dimen/button_text_size"
                         android:visibility="visible"
+                        android:padding="6px"
                         />
                 </RelativeLayout>
 

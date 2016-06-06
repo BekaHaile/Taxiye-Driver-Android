@@ -417,6 +417,7 @@ public class JSONParser implements Constants {
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 							int totalDeliveries = jObjCustomer.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 							double estimatedFare = jObjCustomer.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+							String vendorMessage = jObjCustomer.optString(Constants.KEY_VENDOR_MESSAGE, "");
 
 
 							if(i == 0){
@@ -427,7 +428,7 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, estimatedFare);
+									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 

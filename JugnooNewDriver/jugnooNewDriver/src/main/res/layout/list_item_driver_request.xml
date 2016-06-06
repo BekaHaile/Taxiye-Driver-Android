@@ -1,142 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
+    android:orientation="vertical"
     android:padding="30px"
     android:splitMotionEvents="false">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/background_white_rounded_orange_bordered"
+        android:orientation="vertical"
         android:padding="20px"
         android:splitMotionEvents="false"
-
         >
 
-        <TextView
-            android:id="@+id/textViewRequestAddress"
-            android:layout_width="420px"
-            android:layout_height="wrap_content"
-            android:text="Sector 28, Chandigarh"
-            android:textColor="@color/black"
-            android:textSize="30px"/>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutDist"
-            android:layout_width="420px"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textViewRequestAddress"
-            android:layout_marginTop="10px"
-            android:splitMotionEvents="false">
-            <TextView
-                android:id="@+id/textViewRequestDistance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:text="100.00 km away"
-                android:textColor="@color/black"
-                android:textSize="30px"
-                android:visibility="visible"
-                />
-
-            <TextView
-                android:id="@+id/textViewRequestTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
-                android:singleLine="true"
-                android:text="30 sec ago"
-                android:textColor="@color/black_grey"
-                android:textSize="32px"
-                android:layout_below="@+id/textViewRequestDistance"
-                />
-
-            <TextView
-                android:id="@+id/textViewOtherRequestDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
-                android:singleLine="true"
-                android:text="Amount to pay Rs 500"
-                android:textColor="@color/black"
-                android:textSize="30px"
-                android:layout_below="@+id/textViewRequestTime"
-                android:visibility="gone"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px"
-            android:layout_marginRight="30px"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="@+id/relativeLayoutDist"
-            >
-
-            <ImageView
-                android:id="@+id/imageViewRequestType"
-                android:layout_width="80px"
-                android:layout_height="80px"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="30px"
-                android:layout_marginTop="0px"
-                android:src="@drawable/ic_delivery_request"
-                android:visibility="visible"
-                android:tag="mwar"/>
-
-            <TextView
-                android:id="@+id/textViewRequestFareFactor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Rate: 1.42x"
-                android:singleLine="true"
-                android:layout_centerHorizontal="true"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="34px"
-                android:layout_marginTop="78px"
-                />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutDist2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutDist"
-            android:layout_marginTop="30px"
+            android:orientation="horizontal"
+            >
+
+            <LinearLayout
+                android:layout_width="420px"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/textViewRequestName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sankar"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_30"
+                    android:layout_marginBottom="6px"/>
+
+                <TextView
+                    android:id="@+id/textViewRequestAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Sector 28, Chandigarh"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_30"
+                    android:layout_marginBottom="6px"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewRequestDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10px"
+                    android:layout_marginBottom="6px"
+                    android:singleLine="true"
+                    android:text="No. of deliveries: 9"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_30"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewRequestTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewRequestDistance"
+                    android:singleLine="true"
+                    android:text="30 sec ago"
+                    android:textColor="@color/text_color_light"
+                    android:textSize="@dimen/text_size_30"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <ImageView
+                    android:id="@+id/imageViewRequestType"
+                    android:layout_width="80px"
+                    android:layout_height="80px"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_delivery_request"
+                    android:tag="mwar"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/textViewRequestFareFactor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10px"
+                    android:singleLine="true"
+                    android:text="Rate: 1.42x"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="34px"
+                    />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutDeliveryFare"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8px"
+                    android:visibility="visible"
+                    >
+
+                    <TextView
+                        android:id="@+id/textViewDeliveryFare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rs. 200"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewDeliveryApprox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/text_color"
+                        android:text="@string/approx"/>
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/textViewRequestDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="100 km away"
+                    android:layout_marginTop="6px"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_28"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
             android:splitMotionEvents="false">
 
-                <Button
-                    android:id="@+id/buttonAcceptRide"
-                    android:layout_width="380px"
-                    android:layout_height="69px"
-                    android:background="@drawable/orange_btn_selector"
-                    android:text="@string/accept"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    />
+            <Button
+                android:id="@+id/buttonAcceptRide"
+                android:layout_width="380px"
+                android:layout_height="69px"
+                android:background="@drawable/orange_btn_selector"
+                android:text="@string/accept"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                />
 
-                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                    android:id="@+id/buttonCancelRide"
-                    android:layout_width="200px"
-                    android:layout_height="69px"
-                    android:background="@drawable/menu_black_btn_selector"
-                    android:layout_toRightOf="@+id/buttonAcceptRide"
-                    android:text="@string/cancel"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    android:layout_marginLeft="30px"
-                    />
+            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                android:id="@+id/buttonCancelRide"
+                android:layout_width="200px"
+                android:layout_height="69px"
+                android:layout_marginLeft="30px"
+                android:layout_toRightOf="@+id/buttonAcceptRide"
+                android:background="@drawable/menu_black_btn_selector"
+                android:text="@string/cancel"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                />
 
         </RelativeLayout>
 
+    </LinearLayout>
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

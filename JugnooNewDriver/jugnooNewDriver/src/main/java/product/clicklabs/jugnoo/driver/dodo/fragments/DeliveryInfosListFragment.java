@@ -79,7 +79,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		textViewTitle.setText(activity.getResources().getString(R.string.deliveries));
 
 		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
-		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);
+		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity));
 
 		recyclerViewDeliveryInfo = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfo);
 		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));
@@ -89,22 +89,13 @@ public class DeliveryInfosListFragment extends Fragment {
 		currentLLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
-				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
-				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
-				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
 				updateList(DeliveryStatus.PENDING);
-
 			}
 		});
 
 		completedLLayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
-				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
-				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
-				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
 				updateList(DeliveryStatus.COMPLETED);
 			}
 		});
@@ -131,22 +122,50 @@ public class DeliveryInfosListFragment extends Fragment {
 
 		updateList(DeliveryStatus.PENDING);
 
+		try {
+			String message = Data.getCurrentCustomerInfo().getVendorMessage();
+			textViewMerchantMessage.setVisibility(View.GONE);
+			if(!"".equalsIgnoreCase(message)){
+				textViewMerchantMessage.setVisibility(View.VISIBLE);
+				textViewMerchantMessage.setText(message);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		return rootView;
 	}
 
 
 	private void updateList(DeliveryStatus deliveryStatus){
-		deliveryInfos.clear();
-		for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
-			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
-					&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
-				deliveryInfos.add(deliveryInfo);
-			} else if(deliveryStatus.getOrdinal() != DeliveryStatus.PENDING.getOrdinal()
-					&& deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
-				deliveryInfos.add(deliveryInfo);
+		try {
+			deliveryInfos.clear();
+			for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+				if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
+						&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+					deliveryInfos.add(deliveryInfo);
+				} else if(deliveryStatus.getOrdinal() != DeliveryStatus.PENDING.getOrdinal()
+						&& deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+					deliveryInfos.add(deliveryInfo);
+				}
 			}
+			deliveryInfoAdapter.notifyDataSetChanged();
+
+			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()){
+				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
+				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
+			} else{
+				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
+				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
+				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
+				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		deliveryInfoAdapter.notifyDataSetChanged();
 	}
 
 

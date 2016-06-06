@@ -21,6 +21,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -2635,6 +2636,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								buttonDriverNavigation.setVisibility(View.GONE);
 							} else {
 								buttonDriverNavigation.setVisibility(View.VISIBLE);
+								customerSwitcher.textViewCustomerPickupAddressSetText(address);
 							}
 						}
 					});
@@ -2959,11 +2961,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	class ViewHolderDriverRequest {
-		TextView textViewRequestAddress, textViewRequestDistance, textViewRequestTime,
-				textViewOtherRequestDetails, textViewRequestFareFactor;
+		TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
+				textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare, textViewDeliveryApprox,
+				textViewRequestDistance;
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType;
-		RelativeLayout relative;
+		LinearLayout relative, linearLayoutDeliveryFare;
 		int id;
 	}
 
@@ -3036,16 +3039,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder = new ViewHolderDriverRequest();
 				convertView = mInflater.inflate(R.layout.list_item_driver_request, null);
 
+				holder.textViewRequestName = (TextView) convertView.findViewById(R.id.textViewRequestName);
+				holder.textViewRequestName.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestAddress = (TextView) convertView.findViewById(R.id.textViewRequestAddress);
 				holder.textViewRequestAddress.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
-				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestDetails = (TextView) convertView.findViewById(R.id.textViewRequestDetails);
+				holder.textViewRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestTime = (TextView) convertView.findViewById(R.id.textViewRequestTime);
 				holder.textViewRequestTime.setTypeface(Data.latoRegular(getApplicationContext()));
-				holder.textViewOtherRequestDetails = (TextView) convertView.findViewById(R.id.textViewOtherRequestDetails);
-				holder.textViewOtherRequestDetails.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestFareFactor = (TextView) convertView.findViewById(R.id.textViewRequestFareFactor);
 				holder.textViewRequestFareFactor.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+				holder.textViewDeliveryFare = (TextView) convertView.findViewById(R.id.textViewDeliveryFare);
+				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
+				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
+				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
 				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
@@ -3053,7 +3062,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 
 
-				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
+				holder.relative = (LinearLayout) convertView.findViewById(R.id.relative);
+				holder.linearLayoutDeliveryFare = (LinearLayout) convertView.findViewById(R.id.linearLayoutDeliveryFare);
 
 				holder.relative.setTag(holder);
 				holder.buttonAcceptRide.setTag(holder);
@@ -3072,17 +3082,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			holder.id = position;
 
-			try {
-				holder.textViewRequestAddress.setText(customerInfo.getAddress());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 
-
+			holder.textViewRequestAddress.setText(customerInfo.getAddress());
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
 			long timeDiffInSec = timeDiff / 1000;
 			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
-
 			if (myLocation != null) {
 				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
 				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
@@ -3097,7 +3101,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
-			holder.textViewOtherRequestDetails.setVisibility(View.GONE);
+			holder.textViewRequestName.setVisibility(View.GONE);
+			holder.textViewRequestDetails.setVisibility(View.GONE);
+			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
+			if(customerInfo.getIsDelivery() == 1){
+				if(customerInfo.getTotalDeliveries() > 0) {
+					holder.textViewRequestDetails.setVisibility(View.VISIBLE);
+					holder.textViewRequestDetails.setText(getResources().getString(R.string.delivery_numbers)
+							+ " " + customerInfo.getTotalDeliveries());
+				}
+				holder.textViewRequestName.setVisibility(View.VISIBLE);
+				holder.textViewRequestName.setText(customerInfo.getName());
+				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
+				holder.textViewDeliveryFare.setText(getResources().getString(R.string.fare1)
+						+" "+getResources().getString(R.string.rupee)
+						+" "+Utils.getDecimalFormatForMoney().format(customerInfo.getEstimatedFare()));
+			}
 
 
 			if (customerInfo.getFareFactor() > 1 || customerInfo.getFareFactor() < 1) {
@@ -3289,6 +3308,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 					int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 					double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+					String vendorMessage = jObj.optString(Constants.KEY_VENDOR_MESSAGE, "");
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 
@@ -3302,7 +3322,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare));
+							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage));
 
 					driverScreenMode = DriverScreenMode.D_ARRIVED;
 					switchDriverScreen(driverScreenMode);
@@ -6152,6 +6172,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			buttonMakeDelivery.setLayoutParams(params);
 			buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
+			buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
 		} else{
 			params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
 			params.rightMargin = (int) (30f * ASSL.Xscale());
@@ -6193,7 +6214,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
 						(int)(720f * ASSL.Xscale()), (int)(1134f * ASSL.Yscale()), (int)(50f * ASSL.Xscale())));
 
-				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_btn), map,
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
 						new ApiGoogleDirectionWaypoints.Callback() {
 							@Override
 							public void onPre() {

@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.dodo.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -26,6 +27,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -157,6 +159,7 @@ public class MarkDeliveryFragment extends Fragment {
 			public void onClick(View v) {
 				try{
 					Utils.openNavigationIntent(activity, deliveryInfo.getDeliveryAddress());
+					activity.startService(new Intent(activity, GeanieView.class));
 				} catch(Exception e){
 					e.printStackTrace();
 				}

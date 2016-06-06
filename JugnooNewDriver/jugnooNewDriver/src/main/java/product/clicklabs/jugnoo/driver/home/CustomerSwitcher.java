@@ -185,6 +185,14 @@ public class CustomerSwitcher {
 		}
 	}
 
+	public void textViewCustomerPickupAddressSetText(String address){
+		try{
+			textViewCustomerPickupAddress.setText(address);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+
 	private ApiGoogleGeocodeAddress.Callback callbackGetAddress = new ApiGoogleGeocodeAddress.Callback() {
 		@Override
 		public void onPre() {

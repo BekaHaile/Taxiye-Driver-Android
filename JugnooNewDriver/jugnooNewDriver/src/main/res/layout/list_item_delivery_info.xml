@@ -109,6 +109,7 @@
         />
 
     <ImageView
+        android:id="@+id/imageViewForward"
         android:layout_width="60px"
         android:layout_height="60px"
         android:background="@drawable/back_inv_btn_selector"

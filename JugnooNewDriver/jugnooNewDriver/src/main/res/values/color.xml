@@ -53,6 +53,7 @@
     <color name="white_little_dark">#F8F8F8</color>
     <color name="new_orange">#F6853A</color>
     <color name="menu_black_pressed">#97918D</color>
+    <color name="new_orange_path">#F8A654</color>
 
 
     <color name="blue_dark_btn">#3B5999</color>
@@ -134,6 +135,7 @@
 
 
     <color name="text_color">#2F221B</color>
+    <color name="text_color_light">#992F221B</color>
     
    
 </resources>

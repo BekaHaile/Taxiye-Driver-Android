@@ -5,13 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
@@ -56,7 +55,11 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             holder.textViewOrderStatus.setVisibility(View.VISIBLE);
             if(deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
                 holder.textViewOrderStatus.setVisibility(View.GONE);
+                holder.imageViewForward.setVisibility(View.VISIBLE);
+                holder.rootLinear.setBackgroundResource(R.drawable.bg_white_grey_light_selector);
             } else {
+                holder.imageViewForward.setVisibility(View.GONE);
+                holder.rootLinear.setBackgroundResource(R.drawable.bg_white);
                 if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
                     holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.delivered));
                     holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.green_delivery));
@@ -104,6 +107,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textViewOrderIdValue, textViewCustomerNameValue, textViewCustomerDeliveryAddressValue, textViewOrderStatus;
         public RelativeLayout rootLinear;
+        public ImageView imageViewForward;
         public ViewHolder(View convertView, Activity context) {
             super(convertView);
             textViewOrderIdValue = (TextView) convertView.findViewById(R.id.textViewOrderIdValue);
@@ -115,6 +119,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             textViewOrderStatus = (TextView) convertView.findViewById(R.id.textViewOrderStatus);
             textViewOrderStatus.setTypeface(Fonts.mavenRegular(context));
             rootLinear = (RelativeLayout) convertView.findViewById(R.id.rootLinear);
+            imageViewForward = (ImageView) convertView.findViewById(R.id.imageViewForward);
             ((TextView) convertView.findViewById(R.id.textViewOrderId)).setTypeface(Fonts.mavenRegular(context));
             ((TextView) convertView.findViewById(R.id.textViewCustomerName)).setTypeface(Fonts.mavenRegular(context));
             ((TextView) convertView.findViewById(R.id.textViewCustomerDeliveryAddress)).setTypeface(Fonts.mavenRegular(context));

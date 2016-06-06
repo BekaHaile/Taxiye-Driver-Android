@@ -43,13 +43,15 @@ public class CustomerInfo {
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private int totalDeliveries;
 	private double estimatedFare;
+	private String vendorMessage;
 
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare){
+						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare,
+						String vendorMessage){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -81,6 +83,7 @@ public class CustomerInfo {
 		}
 		this.totalDeliveries = totalDeliveries;
 		this.estimatedFare = estimatedFare;
+		this.vendorMessage = vendorMessage;
 	}
 
 
@@ -371,5 +374,13 @@ public class CustomerInfo {
 
 	public void setEstimatedFare(double estimatedFare) {
 		this.estimatedFare = estimatedFare;
+	}
+
+	public String getVendorMessage() {
+		return vendorMessage;
+	}
+
+	public void setVendorMessage(String vendorMessage) {
+		this.vendorMessage = vendorMessage;
 	}
 }
