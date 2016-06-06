@@ -13,8 +13,7 @@
        android:id="@+id/currentCompetedLLayout"
        android:layout_width="match_parent"
        android:layout_height="90px"
-       android:orientation="horizontal"
-       android:layout_marginBottom="5px">
+       android:orientation="horizontal">
 
        <LinearLayout
            android:id="@+id/currentLLayout"
@@ -89,15 +88,31 @@
         android:layout_below="@+id/linearLayoutMain"/>
 
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerViewDeliveryInfo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:splitMotionEvents="false"
-        android:scrollbars="vertical"
-        android:fadeScrollbars="true"
-        >
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewPlaceholderMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_30"
+            android:text="message from vendor"
+            android:layout_centerInParent="true"
+            android:textColor="@color/text_color_light"
+            android:visibility="gone"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewDeliveryInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical"
+            android:splitMotionEvents="false"
+            >
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
 
 </LinearLayout>

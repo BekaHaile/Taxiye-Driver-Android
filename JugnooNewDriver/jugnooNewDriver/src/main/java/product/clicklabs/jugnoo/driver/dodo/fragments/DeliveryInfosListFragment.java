@@ -35,7 +35,7 @@ public class DeliveryInfosListFragment extends Fragment {
 
 	private Button buttonBack;
 	private LinearLayout currentLLayout, completedLLayout;
-	private TextView textViewTitle, textViewCompleted, textViewCurrent, textViewMerchantMessage;
+	private TextView textViewTitle, textViewCompleted, textViewCurrent, textViewMerchantMessage, textViewPlaceholderMessage;
 	private ImageView imageViewCompleted, imageViewCurrent;
 	private RecyclerView recyclerViewDeliveryInfo;
 	private DeliveryInfoAdapter deliveryInfoAdapter;
@@ -80,6 +80,9 @@ public class DeliveryInfosListFragment extends Fragment {
 
 		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
 		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity));
+		textViewPlaceholderMessage = (TextView) rootView.findViewById(R.id.textViewPlaceholderMessage);
+		textViewPlaceholderMessage.setTypeface(Fonts.mavenRegular(activity));
+		textViewPlaceholderMessage.setVisibility(View.GONE);
 
 		recyclerViewDeliveryInfo = (RecyclerView) rootView.findViewById(R.id.recyclerViewDeliveryInfo);
 		recyclerViewDeliveryInfo.setLayoutManager(new LinearLayoutManager(activity));
@@ -152,16 +155,25 @@ public class DeliveryInfosListFragment extends Fragment {
 			}
 			deliveryInfoAdapter.notifyDataSetChanged();
 
+			textViewPlaceholderMessage.setVisibility(View.GONE);
 			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()){
 				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
 				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
 				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
 				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
+				if(deliveryInfos.size() == 0){
+					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
+					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_pending));
+				}
 			} else{
 				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
 				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
 				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
 				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
+				if(deliveryInfos.size() == 0){
+					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
+					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_completed));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

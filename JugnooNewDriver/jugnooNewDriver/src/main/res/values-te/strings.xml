@@ -566,6 +566,8 @@
     <string name="Return">రిటర్న్</string>
     <string name="amnt_credited">డబ్బులు మీ ఖాతా లో జమ చేయబడినవి </string>
     <string name="delivery_id">డెలివరీ ఐడి</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

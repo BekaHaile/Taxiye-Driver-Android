@@ -589,6 +589,8 @@
     <string name="Return">திரும்ப</string>
     <string name="amnt_credited">வந்த தொகை</string>
     <string name="delivery_id">விநியோக ஐடி</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

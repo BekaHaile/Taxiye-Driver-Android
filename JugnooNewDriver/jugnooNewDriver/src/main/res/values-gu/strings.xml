@@ -506,6 +506,8 @@
     <string name="Return">પરત</string>
     <string name="amnt_credited">રકમ જમા</string>
     <string name="delivery_id">ડીલીવરી આડી </string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
 
     <string-array name="CountryCodes" >

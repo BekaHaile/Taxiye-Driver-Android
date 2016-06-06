@@ -508,6 +508,8 @@
     <string name="delivery_id">ডেলিভাৰি আ ই দি</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

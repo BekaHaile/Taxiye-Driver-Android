@@ -511,6 +511,8 @@
     <string name="Return">ଫେରାଇବା.</string>
     <string name="amnt_credited">ରାଶି ଆସିଯାଇଛି.</string>
     <string name="delivery_id">ଡେଲିଭେରି ଆଇଡି.</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
 
     <string-array name="CountryCodes" >

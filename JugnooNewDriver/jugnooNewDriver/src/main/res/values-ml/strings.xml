@@ -511,6 +511,8 @@
     <string name="deliver">എത്തിക്കണം</string>
     <string name="Return">മടക്കം</string>
     <string name="amnt_credited">ക്രെഡിറ്റ്‌ ചെയ്ത തുക</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
 
 
     <string-array name="CountryCodes" >

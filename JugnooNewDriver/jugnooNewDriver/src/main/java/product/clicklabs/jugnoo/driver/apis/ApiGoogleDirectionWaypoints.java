@@ -56,8 +56,13 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 
 	@Override
 	protected String doInBackground(String... params) {
-		Response response = RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
-		return new String(((TypedByteArray)response.getBody()).getBytes());
+		try {
+			Response response = RestClient.getGoogleApiServices().getDirectionsWaypoints(strOrigin, strDestination, strWaypoints);
+			return new String(((TypedByteArray)response.getBody()).getBytes());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

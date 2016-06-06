@@ -152,7 +152,8 @@ public class CustomerSwitcher {
 							+ " " + customerInfo.getTotalDeliveries());
 					linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 					textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
-							+ ": " + customerInfo.getEstimatedFare());
+							+ ": " + activity.getResources().getString(R.string.rupee)
+							+" "+customerInfo.getEstimatedFare());
 				} else{
 					textViewDeliveryCount.setVisibility(View.GONE);
 					linearLayoutDeliveryFare.setVisibility(View.GONE);
@@ -170,7 +171,8 @@ public class CustomerSwitcher {
 
 	public void updateDistanceOnLocationChanged(){
 		try{
-			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
+					|| DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
 				textViewShowDistance.setVisibility(View.GONE);
 			} else {
 				textViewShowDistance.setVisibility(View.VISIBLE);
@@ -178,7 +180,7 @@ public class CustomerSwitcher {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-							+ " " + activity.getResources().getString(R.string.km));
+							+ " " + activity.getResources().getString(R.string.km_away));
 				}
 			}
 		} catch(Exception e){

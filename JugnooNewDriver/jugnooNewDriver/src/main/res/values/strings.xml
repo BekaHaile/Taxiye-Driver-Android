@@ -573,6 +573,8 @@
 	</string>
 	<string name="give_misscall_to_verify">Give Missed Call To Verify</string>
 	<string name="please_press_here">Please Press Here</string>
+	<string name="no_deliveries_pending">No deliveries pending</string>
+	<string name="no_deliveries_completed">No deliveries completed</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
