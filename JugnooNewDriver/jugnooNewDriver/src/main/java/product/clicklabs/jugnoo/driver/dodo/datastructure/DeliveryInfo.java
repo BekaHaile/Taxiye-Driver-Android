@@ -18,10 +18,12 @@ public class DeliveryInfo {
 	private double distance = 0;
 	private long deliveryTime = System.currentTimeMillis();
 	private long waitTime = 0;
+	private String cancelReason;
 
 
 	public DeliveryInfo(int id, LatLng latLng, String customerName, String deliveryAddress,
-						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime) {
+						String customerNo, double amount, int status, double distance, long deliveryTime, long waitTime,
+						String cancelReason) {
 		this.id = id;
 		this.latLng = latLng;
 		this.customerName = customerName;
@@ -32,6 +34,7 @@ public class DeliveryInfo {
 		this.distance = distance;
 		this.deliveryTime = deliveryTime * 1000l;
 		this.waitTime = waitTime * 1000l;
+		this.cancelReason = cancelReason;
 	}
 
 	public DeliveryInfo(int id) {
@@ -133,5 +136,13 @@ public class DeliveryInfo {
 		setDistance(distance);
 		setDeliveryTime(deliveryTime);
 		setWaitTime(waitTime);
+	}
+
+	public String getCancelReason() {
+		return cancelReason;
+	}
+
+	public void setCancelReason(String cancelReason) {
+		this.cancelReason = cancelReason;
 	}
 }

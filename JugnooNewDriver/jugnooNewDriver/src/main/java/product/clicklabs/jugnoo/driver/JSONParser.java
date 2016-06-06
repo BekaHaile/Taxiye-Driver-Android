@@ -371,8 +371,10 @@ public class JSONParser implements Constants {
 							String engagementId = jObjCustomer.getString(KEY_ENGAGEMENT_ID);
 							int isDelivery = jObjCustomer.optInt(KEY_IS_DELIVERY, 0);
 
-							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "";
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
+							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
+									vendorMessage = "";
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0;
+							int totalDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
 								userId = userData.optString(KEY_USER_ID, "0");
@@ -384,6 +386,9 @@ public class JSONParser implements Constants {
 								pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
 								pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
 								address = userData.optString(KEY_ADDRESS, "");
+								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
 								userName = jObjCustomer.optString(KEY_USER_NAME, "");
@@ -415,9 +420,6 @@ public class JSONParser implements Constants {
 
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
-							int totalDeliveries = jObjCustomer.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-							double estimatedFare = jObjCustomer.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
-							String vendorMessage = jObjCustomer.optString(Constants.KEY_VENDOR_MESSAGE, "");
 
 
 							if(i == 0){
@@ -693,7 +695,8 @@ public class JSONParser implements Constants {
 						jDelivery.getInt(KEY_STATUS),
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
-						jDelivery.optLong(KEY_WAIT_TIME, 0));
+						jDelivery.optLong(KEY_WAIT_TIME, 0),
+						jDelivery.optString(KEY_CANCEL_REASON, ""));
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {

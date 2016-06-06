@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Super class for customer info
@@ -368,8 +369,12 @@ public class CustomerInfo {
 		this.totalDeliveries = totalDeliveries;
 	}
 
-	public double getEstimatedFare() {
-		return estimatedFare;
+	public String getEstimatedFare() {
+		if(estimatedFare > 0){
+			return Utils.getDecimalFormatForMoney().format(estimatedFare);
+		} else{
+			return "-";
+		}
 	}
 
 	public void setEstimatedFare(double estimatedFare) {

@@ -219,9 +219,9 @@ public class MarkDeliveryFragment extends Fragment {
 
 			if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
 				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
-				relativeLayoutOperations.setVisibility(View.VISIBLE);
 				textViewStatusValue.setText(activity.getResources().getString(R.string.cancelled));
 				textViewReturnReason.setText(activity.getResources().getString(R.string.return_reasons));
+				textViewReturnReasonValue.setText(deliveryInfo.getCancelReason());
 			}
 			else if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);

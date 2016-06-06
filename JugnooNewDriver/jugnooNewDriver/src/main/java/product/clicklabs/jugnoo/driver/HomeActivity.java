@@ -3135,7 +3135,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 				holder.textViewDeliveryFare.setText(getResources().getString(R.string.fare1)
 						+" "+getResources().getString(R.string.rupee)
-						+" "+Utils.getDecimalFormatForMoney().format(customerInfo.getEstimatedFare()));
+						+" "+customerInfo.getEstimatedFare());
 			}
 
 
@@ -3293,8 +3293,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
-					String userName = "", userImage = "", phoneNo = "", rating = "", address = "";
-					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0;
+					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
+							vendorMessage = "";
+					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0;
+					int totalDeliveries = 0;
 					if(isDelivery == 1){
 						userName = userData.optString(KEY_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -3304,6 +3306,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						pickupLatitude = userData.optDouble(KEY_LATITUDE, 0);
 						pickupLongitude = userData.optDouble(KEY_LONGITUDE, 0);
 						address = userData.optString(KEY_ADDRESS, "");
+						totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
+						estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -3326,9 +3331,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
-					int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
-					double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
-					String vendorMessage = jObj.optString(Constants.KEY_VENDOR_MESSAGE, "");
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 

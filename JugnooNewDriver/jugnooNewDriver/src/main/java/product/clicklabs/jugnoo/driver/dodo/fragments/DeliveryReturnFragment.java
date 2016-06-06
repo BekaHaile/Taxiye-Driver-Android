@@ -199,6 +199,7 @@ public class DeliveryReturnFragment extends Fragment {
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									deliveryInfo.setStatus(DeliveryStatus.CANCELLED.getOrdinal());
 									deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
+									deliveryInfo.setCancelReason(reason);
 									activity.onBackPressed();
 									DialogPopup.alertPopupWithListener(activity, "", message,
 											new View.OnClickListener() {
