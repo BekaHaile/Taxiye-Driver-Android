@@ -68,13 +68,13 @@
 
             <TextView
                 android:id="@+id/textViewCustomerAddress"
-                android:layout_width="414px"
+                android:layout_width="640px"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="42px"
                 android:gravity="center"
-                android:text="1254, Madhya Marg, Opposite Mandir, Sector 28B, Chandigarh"
-                android:textSize="32px"/>
+                android:text="1254, Madhya Marg, Opposite Mandir, Sector 28B, Chandigarh madsnkjldhljkashgdkjhgasjkhdgkjlashdn kjhdasjklhgdlkj as"
+                android:textSize="@dimen/text_size_30"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"

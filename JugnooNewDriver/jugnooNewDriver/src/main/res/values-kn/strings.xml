@@ -490,7 +490,7 @@
     <string name="delivered">Delivered</string>
     <string name="delivery_on">Delivery ON</string>
     <string name="delivery_is_over">Delivery is Over</string>
-    <string name="start_the_ride">Start the ride</string>
+    <string name="start_the_delivery">Start the ride</string>
     <string name="deliver_order_number">Deliver order no. %s</string>
     <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
     <string name="miss_call_otp">Give a Miss Call</string>
@@ -536,6 +536,7 @@
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
     <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+    <string name="details">Details</string>
 
 
     <string-array name="CountryCodes" >

@@ -84,7 +84,6 @@
                     android:id="@+id/imageViewRequestType"
                     android:layout_width="80px"
                     android:layout_height="80px"
-                    android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_delivery_request"
                     android:tag="mwar"
                     android:visibility="visible"/>
@@ -99,6 +98,7 @@
                     android:text="Rate: 1.42x"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="34px"
+                    android:visibility="visible"
                     />
 
                 <LinearLayout

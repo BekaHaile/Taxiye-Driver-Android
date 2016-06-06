@@ -567,12 +567,13 @@
     <string name="delivered">పంపించబడింది</string>
     <string name="delivery_on">డెలివరీ ఆన్ </string>
     <string name="delivery_is_over">డెలివరీ అయిపోయింది</string>
-    <string name="start_the_ride">రైడ్ ప్రారంభించండి</string>
+    <string name="start_the_delivery">రైడ్ ప్రారంభించండి</string>
     <string name="deliver_order_number">డెలివరీ ఆర్డర్ సంఖ్య. %s</string>
     <string name="all_orders_have_been_delivered">అన్ని ఆర్డర్లు డెలివరీ చెయ్యబడ్డాయి</string>
     <string name="to_no_colon">కు </string>
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
+    <string name="details">Details</string>
 
 
     <string-array name="CountryCodes" >

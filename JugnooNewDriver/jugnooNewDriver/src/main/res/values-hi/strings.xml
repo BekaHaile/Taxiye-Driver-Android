@@ -563,7 +563,7 @@
 	<string name="delivered">पहुंचा दिया</string>
 	<string name="delivery_on">डिलिवरी पर</string>
 	<string name="delivery_is_over">डिलीवरी समाप्त हो गयी है </string>
-	<string name="start_the_ride">सवारी शुरू</string>
+	<string name="start_the_delivery">सवारी शुरू</string>
 	<string name="deliver_order_number">डिलीवरी ऑर्डर नंबर %s</string>
 	<string name="all_orders_have_been_delivered">सभी ऑर्डर डिलीवर्ड कर दिए गये हैं </string>
 	<string name="to_no_colon">को</string>
@@ -572,6 +572,7 @@
 	<string name="s_no">S No.</string>
 	<string name="order_no">Order No.</string>
 	<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+	<string name="details">Details</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

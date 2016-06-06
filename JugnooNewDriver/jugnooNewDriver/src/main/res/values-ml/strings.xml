@@ -511,13 +511,14 @@
     <string name="delivered">കൈമാറി</string>
     <string name="delivery_on">ഡെലിവറി ഓൺ </string>
     <string name="delivery_is_over">ഡെലിവറി കഴിഞ്ഞു</string>
-    <string name="start_the_ride">റൈഡ് ആരംഭിക്കുക</string>
+    <string name="start_the_delivery">റൈഡ് ആരംഭിക്കുക</string>
     <string name="deliver_order_number">ഡെലിവറി ചെയ്യേണ്ട ഓർഡർ നമ്പ %s</string>
     <string name="all_orders_have_been_delivered">എല്ലാ ഡെലിവറികളും എത്തിച്ചു </string>
     <string name="to_no_colon">To</string>
     <string name="no_deliveries_pending">ഡെലിവറികൾ എല്ലാം പൂർത്തിയായി</string>
     <string name="no_deliveries_completed">ഡെലിവറികൾ ഒന്നും പൂർത്തിയായില്ല</string>
     <string name="cash_collected">ക്യാഷ് ശേഖരിച്ചു</string>
+    <string name="details">Details</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

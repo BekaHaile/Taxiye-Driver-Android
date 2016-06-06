@@ -6124,7 +6124,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
 				} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
-					textViewRideInstructions.setText(getResources().getString(R.string.start_the_ride));
+					textViewRideInstructions.setText(getResources().getString(R.string.start_the_delivery));
 				} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 					for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 						if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus()

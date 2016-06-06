@@ -84,7 +84,7 @@ public class MarkDeliveryFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.mark_delivered));
+		textViewTitle.setText(activity.getResources().getString(R.string.details));
 
 		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
 		textViewOrderId.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
@@ -219,13 +219,13 @@ public class MarkDeliveryFragment extends Fragment {
 
 			if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
 				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
-				textViewStatusValue.setText(activity.getResources().getString(R.string.cancelled));
+				textViewStatusValue.setText(activity.getResources().getString(R.string.returned));
 				textViewReturnReason.setText(activity.getResources().getString(R.string.return_reasons));
 				textViewReturnReasonValue.setText(deliveryInfo.getCancelReason());
 			}
 			else if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
-				textViewStatusValue.setText(activity.getResources().getString(R.string.completed));
+				textViewStatusValue.setText(activity.getResources().getString(R.string.delivered));
 				textViewReturnReason.setText(activity.getResources().getString(R.string.cash_collected));
 				textViewReturnReasonValue.setText(activity.getResources().getString(R.string.rupee)
 						+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));

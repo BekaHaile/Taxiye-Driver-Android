@@ -504,7 +504,7 @@
     <string name="delivered">પહોચાડ્યું </string>
     <string name="delivery_on">પહોચસે </string>
     <string name="delivery_is_over">ડીલીવરી પૂર્ણ </string>
-    <string name="start_the_ride">સવારી શરુ કરો</string>
+    <string name="start_the_delivery">સવારી શરુ કરો</string>
     <string name="deliver_order_number">ડીલીવરી નો  ઓર્ડર નંબર %s</string>
     <string name="all_orders_have_been_delivered">બધાજ ઓર્ડરની  ડીલીવર થઈ ગયા </string>
     <string name="to_no_colon">માટે </string>
@@ -513,6 +513,7 @@
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
     <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+    <string name="details">Details</string>
 
 
     <string-array name="CountryCodes" >
