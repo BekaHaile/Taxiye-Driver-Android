@@ -41,7 +41,6 @@
     <string name="share">Share</string>
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="amnt_credited">Amount Credited</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
     <string name="enter_some_amount">અમુક રકમ દાખલ કરો</string>
@@ -461,48 +460,53 @@
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="return_reasons">Reasons of Return</string>
-    <string name="collected">Collected</string>
-    <string name="Returned">Returned</string>
-    <string name="please_confirm_cash_taken">Please confirm you have taken cash</string>
-    <string name="confirm">Confirm</string>
-    <string name="start_delivery">Start Delivery</string>
-    <string name="deliveries">Deliveries</string>
-    <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
-    <string name="current">Current</string>
     <string name="to_no_colon">To</string>
     <string name="address">Address</string>
-    <string name="get_directions">Get Directions</string>
     <string name="delivered">Delivered</string>
     <string name="delivery_on">Delivery ON</string>
     <string name="delivery_is_over">Delivery is Over</string>
-    <string name="orders_delivered">Orders Delivered</string>
-    <string name="orders_returned">Orders Returned</string>
-    <string name="rate_your_vendor">Rate Your Vendor</string>
-    <string name="view_orders">View Orders</string>
-    <string name="delivery_numbers">No. of Delivery</string>
-    <string name="approx">(Approx)</string>
     <string name="start_the_ride">Start the ride</string>
     <string name="deliver_order_number">Deliver order no. %s</string>
     <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-    <string name="returned">Returned</string>
-    <string name="start_delivery_text">Are you sure you want to start Delivery?</string>
-    <string name="delivery_id">Delivery Id</string>
-    <string name="deliver">Deliver</string>
-    <string name="Return">Return</string>
-    <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
     <string name="resend_OTP">O.T.P. ફરી મોકલો</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
     <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
     <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
-    <string name="accepted">Accepted</string>
-    <string name="in_ride">In Ride</string>
-    <string name="arrive_at_pickup_location">Arrive at pickup location</string>
-    <string name="make_delivery">Make Delivery</string>
     <string name="delivery_completed">Delivery Completed</string>
+
+
+    <string name="return_reasons">વળતર કારણ</string>
+    <string name="Returned">વળતર</string>
+    <string name="collected">લીધું</string>
+    <string name="accepted">સ્વીકારાયું</string>
+    <string name="in_ride">રાઇડ ચાલુ છે </string>
+    <string name="arrive_at_pickup_location">પિક અપ ની જગ્યા પર આગમન થઇ ગયું છે </string>
+    <string name="make_delivery">ડિલીવરી કરો </string>
+
+    <string name="please_confirm_cash_taken">કૃપા કરીને ખાતરી કરો કે તમે રોકડા લેવામાં આવ્યા છે</string>
+    <string name="confirm">ખાતરી કરો</string>
+    <string name="start_delivery">ડીલીવરી માટે નીકળો </string>
+    <string name="deliveries">ડિલિવરી</string>
+    <string name="pending">બાકી</string>
+    <string name="current">વર્તમાન</string>
+    <string name="get_directions">દિશા-નિર્દેશો મેળવો</string>
+    <string name="delivery">ડિલિવરી</string>
+    <string name="orders_delivered">ડીલીવરી થઇ ગયી છે </string>
+    <string name="orders_returned">ડીલીવરી પાછી આઈ છે </string>
+    <string name="rate_your_vendor">તમારા વેન્ડર ને રેટિંગ આપો</string>
+    <string name="view_orders">ઓર્ડર્સ જુઓ</string>
+    <string name="delivery_numbers">ડીલીવરી ની સંખ્યા </string>
+    <string name="approx">અંદાજે </string>
+    <string name="returned">પરત</string>
+    <string name="start_delivery_text">શું તમે સાચે ડીલીવરી શરુ કરવા માંગો છો </string>
+    <string name="deliver">ડીલીવરી થઇ ગયી છે </string>
+    <string name="Return">પરત</string>
+    <string name="amnt_credited">રકમ જમા</string>
+    <string name="delivery_id">ડીલીવરી આડી </string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -511,7 +511,6 @@
     <string name="share">వాటా</string>
     <string name="phone_no_cnt_be_empty">ఫోన్ నంబర్ ఖాళీగా ఉండకూడదు</string>
 
-    <string name="amnt_credited">Amount Credited</string>
     <string name="enter_some_amount">డబ్బు మొత్తం ఎంటర్ చేయండి</string>
     <string name="enter_less_amount">తక్కువ మొత్తంలో నమోదు చేయండి</string>
     <string name="enter_valid_amount">చెల్లుబాటు అయ్యే మొత్తాన్ని నమోదు చేయండి</string>
@@ -519,49 +518,54 @@
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="ride_complete">రైడ్ పూర్తయింది</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="return_reasons">Reasons of Return</string>
-    <string name="collected">Collected</string>
-    <string name="Returned">Returned</string>
-    <string name="please_confirm_cash_taken">Please confirm you have taken cash</string>
-    <string name="confirm">Confirm</string>
-    <string name="start_delivery">Start Delivery</string>
-    <string name="deliveries">Deliveries</string>
-    <string name="pending">Pending</string>
     <string name="cancelled">Cancelled</string>
-    <string name="current">Current</string>
     <string name="to_no_colon">To</string>
     <string name="address">Address</string>
-    <string name="get_directions">Get Directions</string>
     <string name="delivered">Delivered</string>
     <string name="delivery_on">Delivery ON</string>
     <string name="delivery_is_over">Delivery is Over</string>
-    <string name="orders_delivered">Orders Delivered</string>
-    <string name="orders_returned">Orders Returned</string>
-    <string name="rate_your_vendor">Rate Your Vendor</string>
-    <string name="view_orders">View Orders</string>
-    <string name="delivery_numbers">No. of Delivery</string>
-    <string name="approx">(Approx)</string>
     <string name="start_the_ride">Start the ride</string>
     <string name="deliver_order_number">Deliver order no. %s</string>
     <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-    <string name="returned">Returned</string>
-    <string name="start_delivery_text">Are you sure you want to start Delivery?</string>
-    <string name="delivery_id">Delivery Id</string>
-    <string name="deliver">Deliver</string>
-    <string name="Return">Return</string>
-    <string name="delivery">Delivery</string>
     <string name="delivery_cancelled">Delivery Cancelled</string>
 
-    <string name="resend_OTP">ఓ.టి.పి మళ్లీ పంపించు</string>
     <string name="miss_call_otp">Give a Miss Call</string>
-    <string name="give_missed_call_dialog_text">మాకు ఒక మిస్డ్ కాల్ ఇవ్వండి మరియు మేము మీ గుర్తింపుని ద్రువికరిస్తాము</string>
+    <string name="delivery_completed">Delivery Completed</string>
+
+
+    <string name="give_missed_call_dialog_text">మాకు ఒక మిస్డ్ కాల్ ఇవ్వండి మేము మీ గుర్తింపుని ద్రువికరిస్తాము</string>
     <string name="give_misscall_to_verify">నిర్ధారణకు మిస్డ్ కాల్ఇవ్వండి</string>
     <string name="please_press_here">దయచేసి ఇక్కడ నొక్కండి</string>
-    <string name="accepted">Accepted</string>
-    <string name="in_ride">In Ride</string>
-    <string name="arrive_at_pickup_location">Arrive at pickup location</string>
-    <string name="make_delivery">Make Delivery</string>
-    <string name="delivery_completed">Delivery Completed</string>
+    <string name="resend_OTP">ఓ.టి.పి మళ్లీ పంపించు</string>
+
+    <string name="return_reasons">తిరిగి వచ్చు కారణాలు</string>
+    <string name="Returned">తిరిగి వచ్చు</string>
+    <string name="collected">తీసుకొనబడింది</string>
+    <string name="accepted">అంగీకరించబడినది</string>
+    <string name="in_ride">రైడ్ లో ఉన్నారు </string>
+    <string name="arrive_at_pickup_location">పికప్ స్థానముకు రండి</string>
+    <string name="make_delivery">డెలివరీ చేయండి</string>
+
+    <string name="please_confirm_cash_taken">దయచేసి మీరు నగదు తీసుకునట్టు నిర్ధారించండి </string>
+    <string name="confirm">నిర్ధారించండి</string>
+    <string name="start_delivery">డెలివరీ ప్రారంభం</string>
+    <string name="deliveries">డెలివరీలు</string>
+    <string name="pending">పెండింగ్</string>
+    <string name="current">ప్రస్తుత</string>
+    <string name="get_directions">దిశలను పొందండి</string>
+    <string name="delivery">డెలివరీ</string>
+    <string name="orders_delivered">ఆర్డర్స్ పంపించబడింది</string>
+    <string name="orders_returned">ఆర్డర్స్ తిరిగి పంపబడ్డాయి</string>
+    <string name="rate_your_vendor">మీ వెండార్ కు రేటింగ్ ఇవ్వండి  </string>
+    <string name="view_orders">ఆర్డర్స్ చూడండి</string>
+    <string name="delivery_numbers">డెలివరీ సంఖ్య</string>
+    <string name="approx">(సుమారుగా )</string>
+    <string name="returned">తిరిగి పంపబడ్డాయి</string>
+    <string name="start_delivery_text">మీరు ఖచితంగా డెలివరీ ప్రరంభిచాలి అనుకుంటునారా?</string>
+    <string name="deliver">డెలివర్</string>
+    <string name="Return">రిటర్న్</string>
+    <string name="amnt_credited">డబ్బులు మీ ఖాతా లో జమ చేయబడినవి </string>
+    <string name="delivery_id">డెలివరీ ఐడి</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
