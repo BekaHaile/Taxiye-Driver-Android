@@ -518,19 +518,8 @@
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
 	<string name="no_not_verified">Phone Number not verified</string>
-	<string name="cancelled">रद्द</string>
-	<string name="to_no_colon">To</string>
-	<string name="address">Address</string>
-	<string name="delivered">Delivered</string>
-	<string name="delivery_on">Delivery ON</string>
-	<string name="delivery_is_over">Delivery is Over</string>
-	<string name="start_the_ride">Start the ride</string>
-	<string name="deliver_order_number">Deliver order no. %s</string>
-	<string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-	<string name="delivery_cancelled">Delivery Cancelled</string>
 	<string name="miss_call_otp">Give a Miss Call</string>
 	<string name="please_press_here">कृपया यहाँ दबाएँ</string>
-	<string name="delivery_completed">Delivery Completed</string>
 
 	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दे और हम आपकी पहचान वैरिफाई करेंगे</string>
 	<string name="give_misscall_to_verify">सत्यापित करने के लिए हमे एक मिस कॉल दें </string>
@@ -566,6 +555,21 @@
 	<string name="delivery_id">डिलीवरी आइडी</string>
 	<string name="no_deliveries_pending">No deliveries pending</string>
 	<string name="no_deliveries_completed">No deliveries completed</string>
+
+
+	<string name="delivery_completed">डिलीवरी पूर्ण हुआ </string>
+	<string name="delivery_cancelled">डिलीवरी रद्द हो गयी</string>
+	<string name="cancelled">रद्द हो गयी / गया</string>
+	<string name="address">पता</string>
+	<string name="delivered">पहुंचा दिया</string>
+	<string name="delivery_on">डिलिवरी पर</string>
+	<string name="delivery_is_over">डिलीवरी समाप्त हो गयी है </string>
+	<string name="start_the_ride">सवारी शुरू</string>
+	<string name="deliver_order_number">डिलीवरी ऑर्डर नंबर %s</string>
+	<string name="all_orders_have_been_delivered">सभी ऑर्डर डिलीवर्ड कर दिए गये हैं </string>
+	<string name="to_no_colon">को</string>
+	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
+	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

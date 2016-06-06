@@ -495,21 +495,23 @@
     <string name="in_ride">যাত্রা চলি আছে ।</string>
     <string name="arrive_at_pickup_location">পিকআপ লকেচনত আহি পালে</string>
     <string name="make_delivery">ডেলিভাৰি  কৰক</string>
-    <string name="delivery_completed">Delivery Completed</string>
-    <string name="start_the_ride">Start the ride</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
     <string name="returned">ওভতিল</string>
-    <string name="delivered">Delivered</string>
-    <string name="delivery_on">Delivery ON</string>
-    <string name="delivery_is_over">Delivery is Over</string>
-    <string name="address">Address</string>
-    <string name="cancelled">Cancelled</string>
     <string name="delivery_id">ডেলিভাৰি আ ই দি</string>
     <string name="miss_call_otp">Give a Miss Call</string>
-    <string name="delivery_cancelled">Delivery Cancelled</string>
-    <string name="no_deliveries_pending">No deliveries pending</string>
-    <string name="no_deliveries_completed">No deliveries completed</string>
+
+
+    <string name="delivery_completed">ডেলিভাৰি সমাপ্ত</string>
+    <string name="delivery_cancelled">ডেলিভাৰি বাটিল</string>
+    <string name="cancelled">বাটিল</string>
+    <string name="address">ঠিকনা</string>
+    <string name="delivered">ডেলিভাৰি হল</string>
+    <string name="delivery_on">ডেলিভাৰি অন</string>
+    <string name="delivery_is_over">ডেলিভাৰি শেষ</string>
+    <string name="start_the_ride">ৰাইদ আৰম্ভ কৰক</string>
+    <string name="deliver_order_number">ডেলিভাৰ অৰ্দাৰ নং. %s</string>
+    <string name="all_orders_have_been_delivered">সকলো অৰ্দাৰ ডেলিভাৰ হৈ গল</string>
+    <string name="no_deliveries_pending">কনো ডেলিভাৰি পেনদিং নাই</string>
+    <string name="no_deliveries_completed">কনো ডেলিভাৰি সমাপ্ত হোৱা নাই</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

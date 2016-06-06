@@ -464,22 +464,11 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="to_no_colon">To</string>
-    <string name="address">Address</string>
-    <string name="delivered">Delivered</string>
-    <string name="delivery_on">Delivery ON</string>
-    <string name="delivery_is_over">Delivery is Over</string>
-    <string name="start_the_ride">Start the ride</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-    <string name="delivery_cancelled">Delivery Cancelled</string>
     <string name="resend_OTP">ଓଟିପି ଆଉଥରେ ପଠାଯିବ.</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">ଆମକୁ ଗୋଟେ ମିସକଲ ଦିଅନ୍ତୁ ଅମେ ଅପଣଂକ ପରିଚୟ ଜାନ୍ଚ କରିବୁ</string>
     <string name="give_misscall_to_verify">ଜାଂଚ୍ ପାଇଁ ଆମକୁ ମିସ୍-କଲ୍ ଦିଅନ୍ତୁ</string>
     <string name="please_press_here">ଦୟାକରି ଏହିଠାରେ ଟିପନ୍ତୁ.</string>
-    <string name="delivery_completed">Delivery Completed</string>
 
 
 
@@ -514,6 +503,19 @@
     <string name="no_deliveries_pending">No deliveries pending</string>
     <string name="no_deliveries_completed">No deliveries completed</string>
 
+    <string name="delivery_completed">ଡେଲିଭରି ସଂପୁର୍ଣ ହେଲା</string>
+    <string name="delivery_cancelled">ଡେଲିଭରି କ୍ୟାନ୍-ସଲ୍</string>
+    <string name="cancelled">କ୍ୟାନ୍-ସଲ୍ ହୋଇଗଲା</string>
+    <string name="address">ଠିକଣା</string>
+    <string name="delivered">ପହଁଚାଇ ଦିଆଗଲା</string>
+    <string name="delivery_on">ଡେଲିଭରି ଉପରେ</string>
+    <string name="delivery_is_over">ଡେଲିଭରି ସମାପ୍ତ ହେଲା</string>
+    <string name="start_the_ride">ରାଇଡ୍ ଷ୍ଟାର୍ଟ୍ କରନ୍ତୁ</string>
+    <string name="deliver_order_number">ଡେଲିଭରି ଅଡ଼ର୍ ନମ୍ବର୍ %s</string>
+    <string name="all_orders_have_been_delivered">ସବୁ ଅଡ଼ର୍ ଡେଲିଭରି କରିଦିଆଯାଇଛି</string>
+    <string name="to_no_colon">କୁ</string>
+    <string name="no_deliveries_pending">କୌଣସି ଡେଲିଭରି ପେଣ୍ଡିଂଗ୍ ନାହିଁ</string>
+    <string name="no_deliveries_completed">ଡେଲିଭରି ପୁରଣ ହୋଇ ନାହିଁ</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

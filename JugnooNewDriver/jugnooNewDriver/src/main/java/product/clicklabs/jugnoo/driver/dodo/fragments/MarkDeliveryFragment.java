@@ -185,7 +185,7 @@ public class MarkDeliveryFragment extends Fragment {
 			deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(Data.getCurrentCustomerInfo()
 					.getDeliveryInfos().indexOf(new DeliveryInfo(deliveryInfoId)));
 
-			textViewOrderId.setText(activity.getResources().getString(R.string.order_id)+": "+deliveryInfo.getId());
+			textViewOrderId.setText(activity.getResources().getString(R.string.delivery_id)+": "+deliveryInfo.getId());
 			textViewAmount.setText(activity.getResources().getString(R.string.rupee)
 					+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
 			textViewCustomerName.setText(deliveryInfo.getCustomerName());

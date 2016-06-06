@@ -11,6 +11,8 @@
 
     <include layout="@layout/layout_top_bar"/>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80px"
@@ -18,7 +20,7 @@
         android:gravity="center">
 
         <ImageView
-            android:layout_width="120px"
+            android:layout_width="110px"
             android:layout_height="2px"
             android:id="@+id/imageViewHorizontal1"
             android:layout_centerVertical="true"
@@ -33,12 +35,12 @@
             android:lineSpacingExtra="10px"
             android:paddingLeft="20px"
             android:paddingRight="20px"
-            android:text="Order Id: 0000000"
+            android:text="Delivery Id: 0000000"
             android:textColor="@color/black"
             android:textSize="48px"/>
 
         <ImageView
-            android:layout_width="120px"
+            android:layout_width="110px"
             android:layout_height="2px"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/textViewOrderId"

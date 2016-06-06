@@ -460,22 +460,11 @@
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="to_no_colon">To</string>
-    <string name="address">Address</string>
-    <string name="delivered">Delivered</string>
-    <string name="delivery_on">Delivery ON</string>
-    <string name="delivery_is_over">Delivery is Over</string>
-    <string name="start_the_ride">Start the ride</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
-    <string name="delivery_cancelled">Delivery Cancelled</string>
     <string name="resend_OTP">O.T.P. ફરી મોકલો</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
     <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
     <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
-    <string name="delivery_completed">Delivery Completed</string>
 
 
     <string name="return_reasons">વળતર કારણ</string>
@@ -508,6 +497,20 @@
     <string name="delivery_id">ડીલીવરી આડી </string>
     <string name="no_deliveries_pending">No deliveries pending</string>
     <string name="no_deliveries_completed">No deliveries completed</string>
+
+    <string name="delivery_completed">ડીલીવરી સંપૂર્ણ </string>
+    <string name="delivery_cancelled">ડીલીવરી રદ્દ </string>
+    <string name="cancelled">રદ્દ </string>
+    <string name="address">સરનામું </string>
+    <string name="delivered">પહોચાડ્યું </string>
+    <string name="delivery_on">પહોચસે </string>
+    <string name="delivery_is_over">ડીલીવરી પૂર્ણ </string>
+    <string name="start_the_ride">સવારી શરુ કરો</string>
+    <string name="deliver_order_number">ડીલીવરી નો  ઓર્ડર નંબર </string>
+    <string name="all_orders_have_been_delivered">બધાજ ઓર્ડરની  ડીલીવર થઈ ગયા </string>
+    <string name="to_no_colon">માટે </string>
+    <string name="no_deliveries_pending">કોઈ ડિલિવરી બાકી નથી </string>
+    <string name="no_deliveries_completed">કોઈ ડિલિવરી પૂર્ણ નથી </string>
 
 
     <string-array name="CountryCodes" >
