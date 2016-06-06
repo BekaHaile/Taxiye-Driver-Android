@@ -23,6 +23,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -602,9 +603,9 @@ public class Utils {
 		locationManager.sendExtraCommand("gps", "force_time_injection", bundle);
 	}
 
-	public static void openNavigationIntent(Context context, String address){
+	public static void openNavigationIntent(Context context, LatLng latLng){
 		try {
-			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + address);
+			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude+","+latLng.longitude);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			context.startActivity(mapIntent);

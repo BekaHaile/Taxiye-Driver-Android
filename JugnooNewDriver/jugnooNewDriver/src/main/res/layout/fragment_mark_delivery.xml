@@ -94,7 +94,9 @@
                         android:layout_width="102px"
                         android:layout_height="102px"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/delivery_call"/>
+                        android:background="@drawable/delivery_call"
+                        android:tag="mwar"
+                        />
 
 
                     <TextView
@@ -122,7 +124,9 @@
                         android:layout_width="102px"
                         android:layout_height="102px"
                         android:layout_gravity="center_horizontal"
-                        android:background="@drawable/get_directions"/>
+                        android:background="@drawable/get_directions"
+                        android:tag="mwar"
+                        />
 
                     <TextView
                         android:id="@+id/textViewGetDirections"
@@ -278,7 +282,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32px"
                 android:gravity="center"
-                android:text="Rs. 100"
+                android:text="Rs. 0"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
                 android:paddingLeft="20px"

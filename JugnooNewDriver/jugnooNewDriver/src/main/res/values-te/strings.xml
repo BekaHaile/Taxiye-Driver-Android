@@ -558,6 +558,7 @@
     <string name="cash_collected">Cash Collected</string>
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
+    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 
     <string name="delivery_completed">డెలివరీ పూర్తయింది</string>
     <string name="delivery_cancelled">డెలివరీ కాన్సిల్</string>

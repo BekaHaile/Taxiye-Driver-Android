@@ -501,6 +501,7 @@
     <string name="amnt_credited">ക്രെഡിറ്റ്‌ ചെയ്ത തുക</string>
     <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
+    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 
     <string name="delivery_id">ഡെലിവറി ഐഡി</string>
     <string name="delivery_completed">ഡെലിവറി പൂർത്തിയായത്</string>

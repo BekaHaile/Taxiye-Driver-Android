@@ -2001,12 +2001,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		@Override
 		public void onClick(View v) {
-
 			try {
 				if (myLocation != null) {
-					Utils.openNavigationIntent(HomeActivity.this, address);
-					Intent intent = new Intent(HomeActivity.this, GeanieView.class);
-					startService(intent);
+					LatLng latLng = null;
+					if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+							&& Data.getCurrentCustomerInfo().getIsDelivery() != 1
+							&& Data.getCurrentCustomerInfo().getDropLatLng() != null){
+						latLng = Data.getCurrentCustomerInfo().getDropLatLng();
+					}
+					else if(DriverScreenMode.D_ARRIVED == driverScreenMode
+								|| DriverScreenMode.D_START_RIDE == driverScreenMode){
+						latLng = Data.getCurrentCustomerInfo().getRequestlLatLng();
+					}
+					if(latLng != null) {
+						Utils.openNavigationIntent(HomeActivity.this, latLng);
+						Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+						startService(intent);
+					}
 				} else {
 					Toast.makeText(getApplicationContext(), getResources().getString(R.string.waiting_for_location), Toast.LENGTH_LONG).show();
 				}

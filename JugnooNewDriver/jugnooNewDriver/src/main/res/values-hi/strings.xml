@@ -571,6 +571,7 @@
 	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
 	<string name="s_no">S No.</string>
 	<string name="order_no">Order No.</string>
+	<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
