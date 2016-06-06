@@ -8,9 +8,9 @@
 
 
 
-	<string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!-- Live-->
+	<!-- <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live-->
 	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
-	<!-- <string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> General-->
+	<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> <!-- General-->
 
 
 
@@ -576,6 +576,8 @@
 	<string name="no_deliveries_pending">No deliveries pending</string>
 	<string name="no_deliveries_completed">No deliveries completed</string>
 	<string name="cash_collected">Cash Collected</string>
+	<string name="s_no">S No.</string>
+	<string name="order_no">Order No.</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

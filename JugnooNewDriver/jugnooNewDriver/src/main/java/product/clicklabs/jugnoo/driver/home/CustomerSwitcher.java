@@ -132,6 +132,7 @@ public class CustomerSwitcher {
 							callbackGetAddress).execute();
 				} else{
 					textViewCustomerPickupAddress.setVisibility(View.GONE);
+					activity.updateNavigationButton("");
 				}
 				updateDistanceOnLocationChanged();
 				textViewDeliveryCount.setVisibility(View.GONE);
@@ -143,7 +144,7 @@ public class CustomerSwitcher {
 					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 							callbackGetAddress).execute();
 				} else{
-					textViewCustomerPickupAddress.setText(customerInfo.getAddress());
+					activity.updateNavigationButton(customerInfo.getAddress());
 				}
 				updateDistanceOnLocationChanged();
 				if(customerInfo.getIsDelivery() == 1){
@@ -203,7 +204,7 @@ public class CustomerSwitcher {
 
 		@Override
 		public void onPost(String address) {
-			textViewCustomerPickupAddress.setText(address);
+			activity.updateNavigationButton(address);
 		}
 	};
 

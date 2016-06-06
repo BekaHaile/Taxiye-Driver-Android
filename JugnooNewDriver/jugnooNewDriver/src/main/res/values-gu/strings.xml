@@ -510,6 +510,8 @@
     <string name="to_no_colon">માટે </string>
     <string name="no_deliveries_pending">કોઈ ડિલિવરી બાકી નથી </string>
     <string name="no_deliveries_completed">કોઈ ડિલિવરી પૂર્ણ નથી </string>
+    <string name="s_no">S No.</string>
+    <string name="order_no">Order No.</string>
 
 
     <string-array name="CountryCodes" >

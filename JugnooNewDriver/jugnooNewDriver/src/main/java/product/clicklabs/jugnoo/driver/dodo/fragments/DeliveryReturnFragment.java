@@ -76,7 +76,7 @@ public class DeliveryReturnFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.return_reasons));
+		textViewTitle.setText(activity.getResources().getString(R.string.delivery));
 
 		textViewReturnReasons = (TextView) rootView.findViewById(R.id.textViewReturnReasons);
 		textViewReturnReasons.setTypeface(Fonts.mavenRegular(activity), Typeface.NORMAL);

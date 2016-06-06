@@ -26,7 +26,7 @@
                 android:id="@+id/textViewOrderId"
                 android:layout_width="160px"
                 android:layout_height="wrap_content"
-                android:text="@string/delivery_id"
+                android:text="@string/order_no"
                 android:textColor="@color/new_orange"
                 android:textSize="@dimen/text_size_30"
                 />

@@ -2633,16 +2633,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				try {
-					address = MapUtils.getGAPIAddress(HomeActivity.this, latLng, true);
+					final String address = MapUtils.getGAPIAddress(HomeActivity.this, latLng, true);
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							if ("".equalsIgnoreCase(address)) {
-								buttonDriverNavigation.setVisibility(View.GONE);
-							} else {
-								buttonDriverNavigation.setVisibility(View.VISIBLE);
-								customerSwitcher.textViewCustomerPickupAddressSetText(address);
-							}
+							updateNavigationButton(address);
 						}
 					});
 				} catch (Exception e) {
@@ -2652,6 +2647,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}).start();
 	}
 
+	public void updateNavigationButton(String address){
+		this.address = address;
+		if ("".equalsIgnoreCase(address)) {
+			buttonDriverNavigation.setVisibility(View.GONE);
+		} else {
+			buttonDriverNavigation.setVisibility(View.VISIBLE);
+			customerSwitcher.textViewCustomerPickupAddressSetText(address);
+		}
+	}
 
 	@Override
 	public synchronized void onGPSLocationChanged(Location location) {
@@ -4226,12 +4230,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 
 							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}
 
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						}
 						perfectRideStateRestore();
 						DialogPopup.dismissLoadingDialog();
@@ -4241,7 +4243,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					public void failure(RetrofitError error) {
 						Log.e("request fail", error.toString());
 						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 						perfectRideStateRestore();
 					}
 				});
@@ -4608,7 +4609,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
 											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
 											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder),
-													(int) (720f * ASSL.Xscale()), (int) (720f * ASSL.Xscale()),
+													(int) (660f * ASSL.Xscale()), (int) (660f * ASSL.Xscale()),
 													(int) (minRatio * 50)), MAP_ANIMATION_TIME, null);
 											mapAnimatedToCustomerPath = true;
 										}
@@ -5666,7 +5667,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if ((Data.getCurrentCustomerInfo() != null)) {
 			( Data.getCurrentCustomerInfo()).dropLatLng = dropLatLng;
 			startCustomerPathUpdateTimer();
-			if (( Data.getCurrentCustomerInfo()).dropLatLng != null && DriverScreenMode.D_IN_RIDE ==driverScreenMode) {
+			if (( Data.getCurrentCustomerInfo()).dropLatLng != null && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				updateCustomerDropAddressNavigation(Data.getCurrentCustomerInfo().dropLatLng);
 			}
 		}
@@ -6228,7 +6229,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					e.printStackTrace();
 				}
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
-						(int) (720f * ASSL.Xscale()), (int) (720f * ASSL.Xscale()),
+						(int) (660f * ASSL.Xscale()), (int) (660f * ASSL.Xscale()),
 						(int)(50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
