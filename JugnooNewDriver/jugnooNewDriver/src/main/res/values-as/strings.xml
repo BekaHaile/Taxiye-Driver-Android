@@ -512,6 +512,7 @@
     <string name="all_orders_have_been_delivered">সকলো অৰ্দাৰ ডেলিভাৰ হৈ গল</string>
     <string name="no_deliveries_pending">কনো ডেলিভাৰি পেনদিং নাই</string>
     <string name="no_deliveries_completed">কনো ডেলিভাৰি সমাপ্ত হোৱা নাই</string>
+    <string name="cash_collected">Cash Collected</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

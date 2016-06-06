@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -42,11 +43,15 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("ValidFragment")
 public class MarkDeliveryFragment extends Fragment {
 
-	private LinearLayout relative, linearLayoutGetDirections, linearLayoutCallCustomer, LinearLayoutReDelivery;
+	private LinearLayout relative,
+			linearLayoutGetDirections, linearLayoutCallCustomer, linearLayoutDeliveryStatus;
 
 	private Button buttonBack;
 	private TextView textViewOrderId, textViewAmount, textViewCustomerName,
-			textViewCustomerAddress, textViewTitle, textViewStatusValue, textViewReturnReasonValue;
+			textViewCustomerAddress, textViewTitle,
+			textViewStatusValue, textViewReturnReason, textViewReturnReasonValue;
+	private RelativeLayout relativeLayoutTakeCash, relativeLayoutOperations;
+
 	private Button btnCollected, btnReturned;
 
 	private View rootView;
@@ -72,37 +77,38 @@ public class MarkDeliveryFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		linearLayoutGetDirections = (LinearLayout) rootView.findViewById(R.id.linearLayoutGetDirections);
-		linearLayoutCallCustomer = (LinearLayout) rootView.findViewById(R.id.linearLayoutCallCustomer);
-		LinearLayoutReDelivery = (LinearLayout) rootView.findViewById(R.id.LinearLayoutReDelivery);
-
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
-
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewTitle.setText(activity.getResources().getString(R.string.mark_delivered));
 
+		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
+		textViewOrderId.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewTakeCash)).setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCustomerAddress = (TextView) rootView.findViewById(R.id.textViewCustomerAddress);
-		textViewCustomerAddress.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		((TextView) rootView.findViewById(R.id.textViewStatus)).setTypeface(Fonts.mavenRegular(activity));
-		((TextView) rootView.findViewById(R.id.textViewReturnReason)).setTypeface(Fonts.mavenRegular(activity));
-		textViewStatusValue  = (TextView) rootView.findViewById(R.id.textViewStatusValue);
-		textViewStatusValue.setTypeface(Fonts.mavenRegular(activity));
-		textViewReturnReasonValue = (TextView) rootView.findViewById(R.id.textViewReturnReasonValue);
-		textViewReturnReasonValue.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		textViewCustomerAddress.setTypeface(Fonts.mavenRegular(activity));
 
+		linearLayoutGetDirections = (LinearLayout) rootView.findViewById(R.id.linearLayoutGetDirections);
+		linearLayoutCallCustomer = (LinearLayout) rootView.findViewById(R.id.linearLayoutCallCustomer);
 		((TextView) rootView.findViewById(R.id.textViewGetDirections)).setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewCustomerCall)).setTypeface(Fonts.mavenRegular(activity));
 
-		textViewOrderId = (TextView) rootView.findViewById(R.id.textViewOrderId);
-		textViewOrderId.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
+		linearLayoutDeliveryStatus = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryStatus);
+		((TextView) rootView.findViewById(R.id.textViewStatus)).setTypeface(Fonts.mavenRegular(activity));
+		textViewStatusValue  = (TextView) rootView.findViewById(R.id.textViewStatusValue);
+		textViewStatusValue.setTypeface(Fonts.mavenRegular(activity));
+		textViewReturnReason = (TextView) rootView.findViewById(R.id.textViewReturnReason);
+		textViewReturnReason.setTypeface(Fonts.mavenRegular(activity));
+		textViewReturnReasonValue = (TextView) rootView.findViewById(R.id.textViewReturnReasonValue);
+		textViewReturnReasonValue.setTypeface(Fonts.mavenRegular(activity));
+
+		relativeLayoutTakeCash = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutTakeCash);
 		((TextView) rootView.findViewById(R.id.textViewTakeCash)).setTypeface(Fonts.mavenRegular(activity));
 		textViewAmount = (TextView) rootView.findViewById(R.id.textViewAmount);
 		textViewAmount.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 
+		relativeLayoutOperations = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutOperations);
 		btnCollected = (Button) rootView.findViewById(R.id.buttonCollected);
 		btnCollected.setTypeface(Fonts.mavenRegular(activity));
 		btnReturned = (Button) rootView.findViewById(R.id.buttonReturned);
@@ -190,6 +196,32 @@ public class MarkDeliveryFragment extends Fragment {
 					+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
 			textViewCustomerName.setText(deliveryInfo.getCustomerName());
 			textViewCustomerAddress.setText(deliveryInfo.getDeliveryAddress());
+
+			linearLayoutGetDirections.setVisibility(View.GONE);
+			linearLayoutDeliveryStatus.setVisibility(View.GONE);
+			relativeLayoutTakeCash.setVisibility(View.GONE);
+			textViewAmount.setVisibility(View.GONE);
+			relativeLayoutOperations.setVisibility(View.GONE);
+
+			if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
+				relativeLayoutOperations.setVisibility(View.VISIBLE);
+				textViewStatusValue.setText(activity.getResources().getString(R.string.cancelled));
+				textViewReturnReason.setText(activity.getResources().getString(R.string.return_reasons));
+			}
+			else if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
+				linearLayoutDeliveryStatus.setVisibility(View.VISIBLE);
+				textViewStatusValue.setText(activity.getResources().getString(R.string.completed));
+				textViewReturnReason.setText(activity.getResources().getString(R.string.cash_collected));
+				textViewReturnReasonValue.setText(activity.getResources().getString(R.string.rupee)
+						+Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()));
+			}
+			else{
+				linearLayoutGetDirections.setVisibility(View.VISIBLE);
+				relativeLayoutTakeCash.setVisibility(View.VISIBLE);
+				textViewAmount.setVisibility(View.VISIBLE);
+				relativeLayoutOperations.setVisibility(View.VISIBLE);
+			}
 		} catch(Exception e){
 			e.printStackTrace();
 			activity.onBackPressed();

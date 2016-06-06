@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:text="Rs. 200"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_30"/>
+                android:textSize="@dimen/text_size_28"/>
 
             <TextView
                 android:id="@+id/textViewDeliveryApprox"
@@ -112,14 +112,14 @@
         </LinearLayout>
 
 
-        <TextView
+        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewShowDistance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8px"
             android:text="225 m away"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_30"
+            android:textSize="@dimen/text_size_28"
             android:visibility="visible"
             />
 

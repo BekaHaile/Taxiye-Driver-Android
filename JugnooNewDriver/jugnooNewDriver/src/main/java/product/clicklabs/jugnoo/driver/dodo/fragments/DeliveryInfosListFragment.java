@@ -41,11 +41,14 @@ public class DeliveryInfosListFragment extends Fragment {
 	private DeliveryInfoAdapter deliveryInfoAdapter;
 
 	private ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
+	private DeliveryStatus deliveryStatusOpened = DeliveryStatus.PENDING;
 
 	private View rootView;
 	private HomeActivity activity;
 
-	public DeliveryInfosListFragment() {}
+	public DeliveryInfosListFragment(DeliveryStatus deliveryStatus) {
+		deliveryStatusOpened = deliveryStatus;
+	}
 
 
 	@Override
@@ -123,7 +126,7 @@ public class DeliveryInfosListFragment extends Fragment {
 			}
 		});
 
-		updateList(DeliveryStatus.PENDING);
+		updateList(deliveryStatusOpened);
 
 		try {
 			String message = Data.getCurrentCustomerInfo().getVendorMessage();
@@ -175,6 +178,7 @@ public class DeliveryInfosListFragment extends Fragment {
 					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_completed));
 				}
 			}
+			deliveryStatusOpened = deliveryStatus;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -186,7 +190,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		super.onHiddenChanged(hidden);
 		try {
 			if (!hidden) {
-				updateList(DeliveryStatus.COMPLETED);
+				updateList(deliveryStatusOpened);
             }
 		} catch (Exception e) {
 			e.printStackTrace();

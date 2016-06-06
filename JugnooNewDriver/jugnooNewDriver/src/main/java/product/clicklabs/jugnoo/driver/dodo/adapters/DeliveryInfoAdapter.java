@@ -57,17 +57,22 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 holder.textViewOrderStatus.setVisibility(View.GONE);
                 holder.imageViewForward.setVisibility(View.VISIBLE);
                 holder.rootLinear.setBackgroundResource(R.drawable.bg_white_grey_light_selector);
-            } else {
-                holder.imageViewForward.setVisibility(View.GONE);
-                holder.rootLinear.setBackgroundResource(R.drawable.bg_white);
+            }
+            else {
                 if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
                     holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.delivered));
                     holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.green_delivery));
-                } else if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+                    holder.imageViewForward.setVisibility(View.VISIBLE);
+                    holder.rootLinear.setBackgroundResource(R.drawable.bg_white_grey_light_selector);
+                }
+                else if(deliveryInfo.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
                     holder.textViewOrderStatus.setText(activity.getResources().getString(R.string.returned));
                     holder.textViewOrderStatus.setTextColor(activity.getResources().getColor(R.color.red_status));
+                    holder.imageViewForward.setVisibility(View.GONE);
+                    holder.rootLinear.setBackgroundResource(R.drawable.bg_white);
 
-                } else{
+                }
+                else{
                     holder.textViewOrderStatus.setVisibility(View.GONE);
                 }
             }
@@ -79,7 +84,8 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 @Override
                 public void onClick(View v) {
                     int pos = (int) v.getTag();
-                    if(getItem(pos).getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+                    if(getItem(pos).getStatus() == DeliveryStatus.PENDING.getOrdinal()
+                            || getItem(pos).getStatus() == DeliveryStatus.COMPLETED.getOrdinal()) {
                         callback.onClick(pos, getItem(pos));
                     }
                 }

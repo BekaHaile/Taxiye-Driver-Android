@@ -553,8 +553,7 @@
 	<string name="deliver">पहुंचाना</string>
 	<string name="Return">वापसी</string>
 	<string name="delivery_id">डिलीवरी आइडी</string>
-	<string name="no_deliveries_pending">No deliveries pending</string>
-	<string name="no_deliveries_completed">No deliveries completed</string>
+	<string name="cash_collected">Cash Collected</string>
 
 
 	<string name="delivery_completed">डिलीवरी पूर्ण हुआ </string>

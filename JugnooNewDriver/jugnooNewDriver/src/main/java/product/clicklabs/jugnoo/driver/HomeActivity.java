@@ -342,6 +342,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
+	private final int MAP_ANIMATION_TIME = 300;
 
 
 	public ASSL assl;
@@ -1118,7 +1119,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
-					getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this, getRelativeLayoutContainer());
+					if(anyDeliveriesUnchecked()){
+						getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this, getRelativeLayoutContainer(), DeliveryStatus.PENDING);
+					} else{
+						getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this, getRelativeLayoutContainer(), DeliveryStatus.COMPLETED);
+					}
 				}
 			});
 
@@ -1978,11 +1983,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		public void onClick(View v) {
 			if (myLocation != null) {
 				if (map.getCameraPosition().zoom < 12) {
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12));
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12), MAP_ANIMATION_TIME, null);
 				} else if (map.getCameraPosition().zoom < 15) {
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 15));
+					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 15), MAP_ANIMATION_TIME, null);
 				} else {
-					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())));
+					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())), MAP_ANIMATION_TIME, null);
 				}
 			}
 			else{
@@ -3146,7 +3151,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							setOpenedCustomerInfo(customerInfo);
 							driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
 							switchDriverScreen(driverScreenMode);
-							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), 1000, null);
+							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), MAP_ANIMATION_TIME, null);
 							FlurryEventLogger.event(RIDE_CHECKED);
 						}
 					} catch (Exception e) {
@@ -4602,7 +4607,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											LatLngBounds.Builder builder = new LatLngBounds.Builder();
 											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
 											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder), (int) (minRatio * 100)));
+											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder),
+													(int) (720f * ASSL.Xscale()), (int) (720f * ASSL.Xscale()),
+													(int) (minRatio * 50)), MAP_ANIMATION_TIME, null);
 											mapAnimatedToCustomerPath = true;
 										}
 									}
@@ -5432,7 +5439,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (map != null) {
 				if (!zoomedToMyLocation) {
-					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())));
+					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(), location.getLongitude())), MAP_ANIMATION_TIME, null);
 					zoomedToMyLocation = true;
 				}
 			}
@@ -6122,17 +6129,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
+	private boolean anyDeliveriesUnchecked(){
+		boolean anyUnchecked = false;
+		try {
+			for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
+				if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() == DeliveryStatus.PENDING.getOrdinal()){
+					anyUnchecked = true;
+					break;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return anyUnchecked;
+	}
+
 	public void setMakeDeliveryButtonVisibility(){
 		buttonMakeDelivery.setVisibility(View.GONE);
 		try{
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-				boolean anyUnchecked = false;
-				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
-					if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus() == DeliveryStatus.PENDING.getOrdinal()){
-						anyUnchecked = true;
-						break;
-					}
-				}
+				boolean anyUnchecked = anyDeliveriesUnchecked();
 				buttonMakeDelivery.setVisibility(View.VISIBLE);
 				setTextViewRideInstructions();
 				setMakeDeliveryButtonState(anyUnchecked);
@@ -6212,7 +6228,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					e.printStackTrace();
 				}
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
-						(int)(720f * ASSL.Xscale()), (int)(1134f * ASSL.Yscale()), (int)(50f * ASSL.Xscale())));
+						(int) (720f * ASSL.Xscale()), (int) (720f * ASSL.Xscale()),
+						(int)(50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
 						new ApiGoogleDirectionWaypoints.Callback() {

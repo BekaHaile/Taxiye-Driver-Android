@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
@@ -12,9 +13,9 @@ import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
  */
 public class TransactionUtils {
 
-	public void openDeliveryInfoListFragment(FragmentActivity activity, View container) {
+	public void openDeliveryInfoListFragment(FragmentActivity activity, View container, DeliveryStatus deliveryStatus) {
 			activity.getSupportFragmentManager().beginTransaction()
-					.replace(container.getId(), new DeliveryInfosListFragment(),
+					.replace(container.getId(), new DeliveryInfosListFragment(deliveryStatus),
 							DeliveryInfosListFragment.class.getName())
 					.addToBackStack(DeliveryInfosListFragment.class.getName())
 					.commitAllowingStateLoss();
