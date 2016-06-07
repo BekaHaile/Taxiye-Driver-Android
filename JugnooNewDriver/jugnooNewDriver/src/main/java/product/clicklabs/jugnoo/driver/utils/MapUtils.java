@@ -147,12 +147,10 @@ public class MapUtils {
 	
 	
 	//http://maps.googleapis.com/maps/api/geocode/json?latlng=30.75,76.75
-	//Locale.getDefault().getLanguage(
 	public static String getGAPIAddress(Context context, LatLng latLng, boolean toLocality) {
 		String fullAddress = "Unnamed";
 		try {
 			String language = "";
-
 			language = context.getResources().getConfiguration().locale.toString();
 			if(language.equalsIgnoreCase("hi") || language.equalsIgnoreCase("hi_in")){
 				language = "hi";
@@ -160,14 +158,10 @@ public class MapUtils {
 				language = "en";
 			}
 
-//            Log.e("getGAPIAddress url", "="+url);
-
 			Response response = RestClient.getGoogleApiServices().geocode(latLng.latitude + "," + latLng.longitude,
 					language, false);
 			String responseStr = new String(((TypedByteArray)response.getBody()).getBytes());
 			JSONObject jsonObj = new JSONObject(responseStr);
-
-//            Log.e("jsonObj", "="+jsonObj);
 
 			
 			String status = jsonObj.getString("status");

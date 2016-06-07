@@ -11,6 +11,7 @@ public class UserData {
 	public double driverArrivalDistance;
 	public long remainigPenaltyPeriod, walletUpdateTimeout;
 	public String userId, userEmail, blockedAppPackageMessage;
+	private int deliveryEnabled, deliveryAvailable;
 
 	public UserData(String accessToken, String userName, String userImage, String referralCode, String phoneNo,
 					int freeRideIconDisable, int autosEnabled, int mealsEnabled, int fatafatEnabled,
@@ -19,7 +20,8 @@ public class UserData {
 					double showDriverRating, double driverArrivalDistance, String referralMessage, String referralButtonText,
 					String referralDialogText, String referralDialogHintText, long remainigPenaltyPeriod,
 					String timeoutMessage, int paytmRechargeEnabled, int destinationOptionEnable, long walletUpdateTimeout,
-					String userId, String userEmail, String blockedAppPackageMessage ) {
+					String userId, String userEmail, String blockedAppPackageMessage,
+					int deliveryEnabled, int deliveryAvailable) {
 
 		this.accessToken = accessToken;
 		this.userName = userName;
@@ -58,6 +60,8 @@ public class UserData {
 		this.userId = userId;
 		this.userEmail = userEmail;
 		this.blockedAppPackageMessage = blockedAppPackageMessage;
+		this.deliveryEnabled = deliveryEnabled;
+		this.deliveryAvailable = deliveryAvailable;
 	}
 
 	public String getUserId() {
@@ -74,5 +78,21 @@ public class UserData {
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
+	}
+
+	public int getDeliveryEnabled() {
+		return deliveryEnabled;
+	}
+
+	public void setDeliveryEnabled(int deliveryEnabled) {
+		this.deliveryEnabled = deliveryEnabled;
+	}
+
+	public int getDeliveryAvailable() {
+		return deliveryAvailable;
+	}
+
+	public void setDeliveryAvailable(int deliveryAvailable) {
+		this.deliveryAvailable = deliveryAvailable;
 	}
 }

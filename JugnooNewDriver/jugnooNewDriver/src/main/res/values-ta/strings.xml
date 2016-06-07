@@ -539,15 +539,65 @@
     <string name="enter_some_amount">தயவு செய்து கட்டணத்தை உள்ளிடவும்</string>
     <string name="enter_less_amount">தயவு செய்து குறைந்த  கட்டணத்தை உள்ளிடவும்</string>
     <string name="enter_valid_amount">செல்லுபடியாகும் கட்டணத்தை உள்ளிடவும்</string>
-    <string name="amnt_credited">Amount Credited</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">சவாரி வெற்றிகரமாக முடிந்தது </string>
     <string name="no_not_verified">Phone Number not verified</string>
+    <string name="to_no_colon">To</string>
     <string name="resend_OTP">ஒ டி பீ -ஐ மீண்டும் அனுப்பவும்</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">எங்களுக்கு மிஸ்ட் கால் கொடுங்கள் நாங்கள் உங்கள் அடையாளத்தைச் சரிபார்கிறோம்</string>
     <string name="give_misscall_to_verify">சரிபார்க்க மிஸ்ட் கால் கொடுக்கவும்.</string>
     <string name="please_press_here">தயவு செய்து இங்கே அழுத்தவும்</string>
+
+
+
+    <string name="return_reasons"> திரும்புவதற்கான காரணம் </string>
+    <string name="Returned">திரும்ப </string>
+    <string name="collected">சேகரிக்கப்பட்ட</string>
+    <string name="accepted"> ஏற்றுக்கொள்ளப்பட்ட </string>
+    <string name="in_ride">சவாரியில் </string>
+    <string name="arrive_at_pickup_location">பிக் அப் இடத்திற்கு வந்து அடைய </string>
+    <string name="make_delivery">ஒப்படைக்க </string>
+
+    <string name="please_confirm_cash_taken">பணம் பெற்றதை தயவுசெய்து உறுதிபடுத்தவும்</string>
+    <string name="confirm">உறுதி</string>
+    <string name="start_delivery">ஒப்படைப்பு   தொடங்க</string>
+    <string name="deliveries">ஒப்படைப்புகள்</string>
+    <string name="pending">நிலுவையில்</string>
+    <string name="current">தற்போதைய</string>
+    <string name="get_directions">திசைகள் பெற</string>
+    <string name="delivery">ஒப்படைக்க</string>
+    <string name="orders_delivered">ஆடர்கள் ஒப்படைக்கபட்டன</string>
+    <string name="orders_returned">ஆடர்கள் திரும்ப</string>
+    <string name="rate_your_vendor">உங்கள் விற்பனையாளரை மதிப்பிடவும்</string>
+    <string name="view_orders">ஆடர்கள் பார்க்க</string>
+    <string name="delivery_numbers">ஒப்படைப்பு எண்ணிக்கை</string>
+    <string name="approx">சுமார்</string>
+    <string name="returned">திரும்ப</string>
+    <string name="start_delivery_text">விநியோகம் துடங்குவதில் உறுதியாக இருக்கீர்களா</string>
+    <string name="deliver">ஒப்படைக்க</string>
+    <string name="Return">திரும்ப</string>
+    <string name="amnt_credited">வந்த தொகை</string>
+    <string name="delivery_id">விநியோக ஐடி</string>
+    <string name="no_deliveries_pending">No deliveries pending</string>
+    <string name="no_deliveries_completed">No deliveries completed</string>
+    <string name="cash_collected">Cash Collected</string>
+
+
+    <string name="delivery_completed">ஒப்படைப்பு  நிறைவு</string>
+    <string name="delivery_cancelled">ஒப்படைப்ப ரத்து</string>
+    <string name="cancelled">ரத்து</string>
+    <string name="address">முகவரி</string>
+    <string name="delivered">ஒப்படைக்கபட்டன</string>
+    <string name="delivery_on">ஒப்படைப்புகள் ஆன் </string>
+    <string name="delivery_is_over">ஒப்படைப்பு முடிந்துவிட்டது</string>
+    <string name="start_the_delivery">சவாரி தொடங்க</string>
+    <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். %s </string>
+    <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
+    <string name="s_no">S No.</string>
+    <string name="order_no">Order No.</string>
+    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+    <string name="details">Details</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

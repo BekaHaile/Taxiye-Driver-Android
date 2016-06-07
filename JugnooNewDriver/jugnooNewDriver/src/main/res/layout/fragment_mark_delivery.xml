@@ -1,0 +1,343 @@
+<LinearLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:layout_centerHorizontal="true"
+    android:soundEffectsEnabled="false"
+    >
+
+    <include layout="@layout/layout_top_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80px"
+                android:layout_marginTop="15px"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="120px"
+                    android:layout_height="2px"
+                    android:id="@+id/imageViewHorizontal1"
+                    android:layout_centerVertical="true"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewOrderId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/imageViewHorizontal1"
+                    android:layout_centerVertical="true"
+                    android:lineSpacingExtra="10px"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:text="Order Id: 0000000"
+                    android:textColor="@color/black"
+                    android:textSize="48px"/>
+
+                <ImageView
+                    android:layout_width="120px"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textViewOrderId"
+                    android:id="@+id/imageViewHorizontal2"
+                    android:background="@color/black"/>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/textViewCustomerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="42px"
+                android:text="Aneesh Bansal"
+                android:textSize="32px"/>
+
+            <TextView
+                android:id="@+id/textViewCustomerAddress"
+                android:layout_width="640px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="42px"
+                android:gravity="center"
+                android:text="1254, Madhya Marg, Opposite Mandir, Sector 28B, Chandigarh madsnkjldhljkashgdkjhgasjkhdgkjlashdn kjhdasjklhgdlkj as"
+                android:textSize="@dimen/text_size_30"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32px"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutCallCustomer"
+                    android:layout_width="220px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="102px"
+                        android:layout_height="102px"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/delivery_call"
+                        android:tag="mwar"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/textViewCustomerCall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/call"
+                        android:layout_marginTop="18px"
+                        android:textColor="@color/new_orange"
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="32px"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutGetDirections"
+                    android:layout_width="220px"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="72px">
+
+                    <ImageView
+                        android:layout_width="102px"
+                        android:layout_height="102px"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/get_directions"
+                        android:tag="mwar"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewGetDirections"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/get_directions"
+                        android:layout_marginTop="18px"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="@color/new_orange"
+                        android:textSize="32px"/>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutDeliveryStatus"
+                android:layout_width="700px"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="80px"
+                android:layout_marginRight="20px"
+                android:layout_marginLeft="20px"
+                android:layout_gravity="center_horizontal"
+                android:visibility="visible"
+                android:background="@color/white_little_dark">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginRight="30px"
+                    >
+
+                    <TextView
+                        android:id="@+id/textViewStatus"
+                        android:layout_width="300px"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/status"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/textViewStatus"
+                        android:gravity="center_vertical"
+                        android:text=":"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+
+                    <TextView
+                        android:id="@+id/textViewStatusValue"
+                        android:layout_width="330px"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical|right"
+                        android:text="@string/Returned"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20px"
+                    android:layout_marginBottom="20px"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginRight="30px"
+                    >
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewReturnReason"
+                        android:layout_width="300px"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@string/return_reasons"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/textViewReturnReason"
+                        android:gravity="center_vertical"
+                        android:text=":"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+
+                    <TextView
+                        android:id="@+id/textViewReturnReasonValue"
+                        android:layout_width="330px"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center_vertical|right"
+                        android:text="customer "
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutTakeCash"
+                android:layout_width="match_parent"
+                android:layout_height="80px"
+                android:layout_marginTop="32px"
+                android:gravity="center"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="220px"
+                    android:layout_height="2px"
+                    android:id="@+id/imageViewHorizontal3"
+                    android:layout_centerVertical="true"
+                    android:background="@color/black"/>
+
+                <TextView
+                    android:id="@+id/textViewTakeCash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewHorizontal3"
+                    android:gravity="center"
+                    android:text="@string/take_cash"
+                    android:lineSpacingExtra="10px"
+                    android:maxHeight="800px"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:textColor="@color/black"
+                    android:textSize="40px"
+
+                    />
+
+                <ImageView
+                    android:layout_width="220px"
+                    android:layout_height="2px"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textViewTakeCash"
+                    android:id="@+id/imageViewHorizontal4"
+                    android:background="@color/black"/>
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/textViewAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="32px"
+                android:gravity="center"
+                android:text="Rs. 0"
+                android:lineSpacingExtra="10px"
+                android:maxHeight="800px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:textColor="@color/black"
+                android:textSize="108px"
+                android:visibility="visible"
+
+                />
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutOperations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64px"
+                android:layout_marginBottom="40px"
+                android:splitMotionEvents="false"
+                android:layout_marginLeft="70px"
+                android:layout_marginRight="70px"
+                >
+
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/buttonReturned"
+                    android:layout_width="250px"
+                    android:layout_height="83px"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    android:text="@string/Return"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/buttonCollected"
+                    android:layout_width="250px"
+                    android:layout_height="83px"
+                    android:padding="2px"
+                    android:background="@drawable/new_orange_btn_corner_selector"
+                    android:text="@string/deliver"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>
+
+
+
+
+
+

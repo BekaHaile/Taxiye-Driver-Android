@@ -494,7 +494,6 @@
 	<string name="customer_2">ग्राहक 2</string>
 	<string name="kms">किलोमीटर्स </string>
 	<string name="mark_delivered">दिया गया चिन्हित करें </string>
-	<string name="order_id">आदेश आईडी</string>
 	<string name="thanks_for_feedback">आपके बहुमूल्य प्रतिक्रिया के लिए शुक्रिया</string>
 	<string name="total_amnt_till_now">अब तक कुल राशि</string>
 	<string name="invoice_date">चालान की तारीख</string>
@@ -515,16 +514,65 @@
 	<string name="enter_some_amount">कृपया कुछ राशि दर्ज करें</string>
 	<string name="enter_less_amount">कृपया कम राशि प्रवेश करें</string>
 	<string name="enter_valid_amount">कृपया वैध राशि दर्ज करें</string>
-	<string name="amnt_credited">Amount Credited</string>
+	<string name="amnt_credited">राशि जमा की गयी </string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
 	<string name="no_not_verified">Phone Number not verified</string>
-	<string name="resend_OTP">ओटीपी पुन: भेजें</string>
 	<string name="miss_call_otp">Give a Miss Call</string>
-	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दें और हम आपकी पहचान सत्यापित करेंगे |</string>
-	<string name="give_misscall_to_verify">वैरिफाई करने के लिए मिस कॉल करें</string>
 	<string name="please_press_here">कृपया यहाँ दबाएँ</string>
 
+	<string name="give_missed_call_dialog_text">हमें एक मिस कॉल दे और हम आपकी पहचान वैरिफाई करेंगे</string>
+	<string name="give_misscall_to_verify">सत्यापित करने के लिए हमे एक मिस कॉल दें </string>
+	<string name="resend_OTP">पुनः ओटीपी भेजें </string>
+
+	<string name="return_reasons">वापसी का कारण</string>
+	<string name="Returned">वापसी  </string>
+	<string name="collected">इकट्ठा किया </string>
+	<string name="order_id">ऑर्डर आईडी</string>
+	<string name="accepted">स्वीकार किया</string>
+	<string name="in_ride">सवारी मे है </string>
+	<string name="arrive_at_pickup_location">पिक स्थान पर पहुँच गया </string>
+	<string name="make_delivery">वितरण करें</string>
+
+	<string name="please_confirm_cash_taken">कृपया पुष्टि करें कि आपने नकदी ले लिया है</string>
+	<string name="confirm">पुष्टि करें</string>
+	<string name="start_delivery">वितरण शुरू</string>
+	<string name="deliveries">वितरण </string>
+	<string name="pending">रूका हुआ</string>
+	<string name="current">वर्तमान</string>
+	<string name="get_directions">दिशा निर्देश प्राप्त करें</string>
+	<string name="delivery">वितरण </string>
+	<string name="orders_delivered">ऑर्डर डिलीवर कर दिया गया </string>
+	<string name="orders_returned">ऑर्डर लौटे </string>
+	<string name="rate_your_vendor">अपने विक्रेता का मुल्यांकन करें</string>
+	<string name="view_orders">ऑर्डर देखें</string>
+	<string name="delivery_numbers"> डिलीवरी की संख्या</string>
+	<string name="approx">(लगभग)</string>
+	<string name="returned">लौटा हुआ</string>
+	<string name="start_delivery_text">क्या आप सुनिश्चित है वितरण स्टार्ट करने के लिए ?</string>
+	<string name="deliver">पहुंचाना</string>
+	<string name="Return">वापसी</string>
+	<string name="delivery_id">डिलीवरी आइडी</string>
+	<string name="cash_collected">Cash Collected</string>
+
+
+	<string name="delivery_completed">डिलीवरी पूर्ण हुआ </string>
+	<string name="delivery_cancelled">डिलीवरी रद्द हो गयी</string>
+	<string name="cancelled">रद्द हो गयी / गया</string>
+	<string name="address">पता</string>
+	<string name="delivered">पहुंचा दिया</string>
+	<string name="delivery_on">डिलिवरी पर</string>
+	<string name="delivery_is_over">डिलीवरी समाप्त हो गयी है </string>
+	<string name="start_the_delivery">सवारी शुरू</string>
+	<string name="deliver_order_number">डिलीवरी ऑर्डर नंबर %s</string>
+	<string name="all_orders_have_been_delivered">सभी ऑर्डर डिलीवर्ड कर दिए गये हैं </string>
+	<string name="to_no_colon">को</string>
+	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
+	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
+	<string name="s_no">S No.</string>
+	<string name="order_no">Order No.</string>
+	<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+	<string name="details">Details</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

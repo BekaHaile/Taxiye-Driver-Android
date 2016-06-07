@@ -50,8 +50,10 @@
     <color name="grey_btn">#8E8E8E</color>
     <color name="grey_btn_pressed">#7E7E7E</color>
     <color name="new_orange_pressed">#F8A654</color>
+    <color name="white_little_dark">#F8F8F8</color>
     <color name="new_orange">#F6853A</color>
     <color name="menu_black_pressed">#97918D</color>
+    <color name="new_orange_path">#F8A654</color>
 
 
     <color name="blue_dark_btn">#3B5999</color>
@@ -112,6 +114,10 @@
     
     <color name="dialog_border_color">#AA7E7D78</color>
 
+
+    <color name="green_delivery">#09BC15</color>
+    <color name="red_delivery">#ee2e2e</color>
+
     <!-- share lb colors-->
     <color name="grey_lb_list">#f6f6f6</color>
     <color name="white_60">#9AFFFFFF</color>
@@ -125,6 +131,11 @@
         <item>@color/yellow_jugnoo</item>
         <item>@color/transparent</item>
     </integer-array>
+
+
+
+    <color name="text_color">#2F221B</color>
+    <color name="text_color_light">#992F221B</color>
     
    
 </resources>

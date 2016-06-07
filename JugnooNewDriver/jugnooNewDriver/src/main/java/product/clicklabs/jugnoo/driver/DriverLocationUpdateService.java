@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -72,8 +73,8 @@ public class DriverLocationUpdateService extends Service {
         	e.printStackTrace();
         }
     }
-    
-    
+
+
     public static void updateServerData(final Context context){
     	String SHARED_PREF_NAME = "myPref";
     	String SP_ACCESS_TOKEN_KEY = "access_token";
@@ -168,8 +169,8 @@ public class DriverLocationUpdateService extends Service {
     		String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
 			android.util.Log.i("driverLocation","");
     		if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
-				android.util.Log.i("driverLocation", driverServiceRun);
-				android.util.Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);
+				Log.i("driverLocation", driverServiceRun);
+				Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
 				restartService.setPackage(getPackageName());
 				PendingIntent restartServicePI = PendingIntent.getService(getApplicationContext(), 1, restartService, PendingIntent.FLAG_ONE_SHOT);

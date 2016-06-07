@@ -5,14 +5,11 @@ import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
-import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -24,7 +21,6 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -45,7 +41,8 @@ public class ApiAcceptRide {
 		this.callback = callback;
 	}
 
-	public void acceptRide(String accessToken, final String customerId, final String engagementId, final String referenceId, final double latitude, final double longitude){
+	public void acceptRide(String accessToken, final String customerId, final String engagementId,
+						   final String referenceId, final double latitude, final double longitude){
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				if (Utils.getBatteryPercentage(activity) >= 20) {
@@ -124,13 +121,11 @@ public class ApiAcceptRide {
 	}
 
 	public void perfectRideVariables(Context activity, String customerId, String engagementId, String referenceId, double latitude, double longitude){
-
 			Prefs.with(activity).save(SPLabels.PERFECT_ENGAGEMENT_ID, engagementId);
 			Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_ID, customerId);
 			Prefs.with(activity).save(SPLabels.PERFECT_REFERENCE_ID, referenceId);
 			Prefs.with(activity).save(SPLabels.PERFECT_LATITUDE, String.valueOf(latitude));
 			Prefs.with(activity).save(SPLabels.PERFECT_LONGITUDE, String.valueOf(longitude));
-
 	}
 
 }

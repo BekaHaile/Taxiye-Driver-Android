@@ -41,7 +41,6 @@
     <string name="share">Share</string>
     <string name="no_language_to_select">Language Option Not Available</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="amnt_credited">Amount Credited</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
     <string name="enter_some_amount">અમુક રકમ દાખલ કરો</string>
@@ -466,6 +465,55 @@
     <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
     <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
     <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
+
+
+    <string name="return_reasons">વળતર કારણ</string>
+    <string name="Returned">વળતર</string>
+    <string name="collected">લીધું</string>
+    <string name="accepted">સ્વીકારાયું</string>
+    <string name="in_ride">રાઇડ ચાલુ છે </string>
+    <string name="arrive_at_pickup_location">પિક અપ ની જગ્યા પર આગમન થઇ ગયું છે </string>
+    <string name="make_delivery">ડિલીવરી કરો </string>
+
+    <string name="please_confirm_cash_taken">કૃપા કરીને ખાતરી કરો કે તમે રોકડા લેવામાં આવ્યા છે</string>
+    <string name="confirm">ખાતરી કરો</string>
+    <string name="start_delivery">ડીલીવરી માટે નીકળો </string>
+    <string name="deliveries">ડિલિવરી</string>
+    <string name="pending">બાકી</string>
+    <string name="current">વર્તમાન</string>
+    <string name="get_directions">દિશા-નિર્દેશો મેળવો</string>
+    <string name="delivery">ડિલિવરી</string>
+    <string name="orders_delivered">ડીલીવરી થઇ ગયી છે </string>
+    <string name="orders_returned">ડીલીવરી પાછી આઈ છે </string>
+    <string name="rate_your_vendor">તમારા વેન્ડર ને રેટિંગ આપો</string>
+    <string name="view_orders">ઓર્ડર્સ જુઓ</string>
+    <string name="delivery_numbers">ડીલીવરી ની સંખ્યા </string>
+    <string name="approx">અંદાજે </string>
+    <string name="returned">પરત</string>
+    <string name="start_delivery_text">શું તમે સાચે ડીલીવરી શરુ કરવા માંગો છો </string>
+    <string name="deliver">ડીલીવરી થઇ ગયી છે </string>
+    <string name="Return">પરત</string>
+    <string name="amnt_credited">રકમ જમા</string>
+    <string name="delivery_id">ડીલીવરી આડી </string>
+    <string name="cash_collected">Cash Collected</string>
+
+    <string name="delivery_completed">ડીલીવરી સંપૂર્ણ </string>
+    <string name="delivery_cancelled">ડીલીવરી રદ્દ </string>
+    <string name="cancelled">રદ્દ </string>
+    <string name="address">સરનામું </string>
+    <string name="delivered">પહોચાડ્યું </string>
+    <string name="delivery_on">પહોચસે </string>
+    <string name="delivery_is_over">ડીલીવરી પૂર્ણ </string>
+    <string name="start_the_delivery">સવારી શરુ કરો</string>
+    <string name="deliver_order_number">ડીલીવરી નો  ઓર્ડર નંબર %s</string>
+    <string name="all_orders_have_been_delivered">બધાજ ઓર્ડરની  ડીલીવર થઈ ગયા </string>
+    <string name="to_no_colon">માટે </string>
+    <string name="no_deliveries_pending">કોઈ ડિલિવરી બાકી નથી </string>
+    <string name="no_deliveries_completed">કોઈ ડિલિવરી પૂર્ણ નથી </string>
+    <string name="s_no">S No.</string>
+    <string name="order_no">Order No.</string>
+    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
+    <string name="details">Details</string>
 
 
     <string-array name="CountryCodes" >

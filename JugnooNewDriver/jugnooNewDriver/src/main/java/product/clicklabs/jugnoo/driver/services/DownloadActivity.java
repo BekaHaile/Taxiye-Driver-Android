@@ -4,25 +4,22 @@ package product.clicklabs.jugnoo.driver.services;
  * Created by aneeshbansal on 04/02/16.
  */
 
-import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.File;
-
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 
-public class DownloadActivity extends Activity implements DownloadResultReceiver.Receiver {
+public class DownloadActivity extends BaseActivity implements DownloadResultReceiver.Receiver {
 
 	private final String TAG = DownloadActivity.class.getSimpleName();
 

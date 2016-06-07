@@ -1,27 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
-import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
-import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
-import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
-import product.clicklabs.jugnoo.driver.utils.Utils;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Typeface;
@@ -40,7 +18,26 @@ import android.widget.TextView.OnEditorActionListener;
 
 import com.flurry.android.FlurryAgent;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 public class DriverPatymRecharge extends BaseActivity {
 
@@ -73,10 +70,16 @@ public class DriverPatymRecharge extends BaseActivity {
 		super.onResume();
 	}
 
+	String engagementId = "";
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_driver_paytm_recharge);
+
+		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
+			engagementId = getIntent().getStringExtra(Constants.KEY_ENGAGEMENT_ID);
+		}
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(DriverPatymRecharge.this, relative, 1134, 720, false);
@@ -166,11 +169,16 @@ public class DriverPatymRecharge extends BaseActivity {
 			}
 		});
 
-		if (DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
-				DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode) {
-			editTextPhone.setText(Data.assignedCustomerInfo.phoneNumber);
-		} else {
-			editTextPhone.setText(Prefs.with(DriverPatymRecharge.this).getString(SPLabels.CUSTOMER_PHONE_NUMBER, ""));
+		try {
+			if ((DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode ||
+					DriverScreenMode.D_RIDE_END == HomeActivity.driverScreenMode)
+					&& Data.getCustomerInfo(engagementId) != null) {
+				editTextPhone.setText(Data.getCustomerInfo(engagementId).phoneNumber);
+			} else {
+				editTextPhone.setText(Prefs.with(DriverPatymRecharge.this).getString(SPLabels.CUSTOMER_PHONE_NUMBER, ""));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);

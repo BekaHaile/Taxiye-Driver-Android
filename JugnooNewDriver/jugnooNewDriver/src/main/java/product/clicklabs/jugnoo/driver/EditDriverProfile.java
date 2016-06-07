@@ -28,8 +28,8 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -39,7 +39,7 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 14/01/16.
  */
-public class EditDriverProfile extends Activity {
+public class EditDriverProfile extends BaseActivity {
 	LinearLayout relative, activity_profile_screen;
 	RelativeLayout driverDetailsRLL;
 	Button backBtn;

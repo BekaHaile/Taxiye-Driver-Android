@@ -26,6 +26,7 @@ public interface Constants {
     long HEAT_MAP_FETCH_DELAY = 120000;
 
     String KEY_RIDE_TIME_SECONDS = "ride_time_seconds";
+    String KEY_WAIT_TIME_SECONDS = "wait_time_seconds";
     String KEY_PICTURE = "picture";
     String KEY_IMAGE = "image";
 
@@ -56,5 +57,66 @@ public interface Constants {
     String FETCH_APP_API_ENABLED = "fetch_app_api_enabled";
     String FETCH_APP_API_FREQUENCY = "fetch_app_api_frequency";
     String FETCH_APP_TIME = "fetch_app_time";
+
+    String KEY_IS_POOLED = "is_pooled";
+    String SP_POOL_RIDES_CONNECTED_COUNT = "sp_pool_rides_connected_count";
+    String KEY_FARE_FACTOR = "fare_factor";
+    String KEY_LUGGAGE_CHARGES = "luggage_charges";
+    String KEY_CONVENIENCE_CHARGE = "convenience_charge";
+    String KEY_CONVENIENCE_CHARGE_WAIVER = "convenience_charge_waiver";
+    String KEY_REFERENCE_ID = "reference_id";
+    String KEY_USER_DATA = "user_data";
+    String KEY_USER_IMAGE = "user_image";
+    String KEY_USER_RATING = "user_rating";
+    String KEY_JUGNOO_BALANCE = "jugnoo_balance";
+    String KEY_PICKUP_LATITUDE = "pickup_latitude";
+    String KEY_PICKUP_LONGITUDE = "pickup_longitude";
+    String KEY_DEVICE_NAME = "device_name";
+    String KEY_IMEI = "imei";
+    String KEY_APP_VERSION = "app_version";
+    String KEY_PERFECT_PICKUP_LATITUDE = "perfect_pickup_latitude";
+    String KEY_PERFECT_PICKUP_LONGITUDE = "perfect_pickup_longitude";
+    String KEY_PERFECT_USER_NAME = "perfect_user_name";
+    String KEY_PERFECT_PHONE_NO = "perfect_phone_no";
+    String KEY_LAST_ENGAGEMENT_INFO = "last_engagement_info";
+    String KEY_STATUS = "status";
+    String KEY_RATING = "rating";
+    String KEY_OP_DROP_LATITUDE = "op_drop_latitude";
+    String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
+    String KEY_DRYRUN_DISTANCE = "dryrun_distance";
+    String KEY_ERROR = "error";
+    String KEY_WALLET_BALANCE = "wallet_balance";
+    String KEY_DISTANCE = "distance";
+    String KEY_RIDE_PATH_DATA = "ride_path_data";
+    String KEY_POOL_DISTANCE= "pool_distance";
+    String KEY_POOL_FARE ="pool_fare";
+    String KEY_POOL_TIME ="pool_time";
+
+    String SP_CUSTOMER_RIDE_DATAS_OBJECT = "sp_customer_ride_datas_object";
+    String KEY_HAVERSINE_DISTANCE = "haversine_distance";
+    String KEY_RIDE_TIME = "ride_time";
+    String KEY_WAIT_TIME = "wait_time";
+    String KEY_CANCEL_REASON = "cancel_reason";
+    String EMPTY_OBJECT = "{}";
+    String KEY_IS_DELIVERY = "is_delivery";
+    String KEY_DISTANCE_TRAVELLED = "distance_travelled";
+    String KEY_IS_CACHED = "is_cached";
+    String KEY_PR_DISTANCE = "pr_distance";
+    String KEY_DELIVERY_DATA = "delivery_data";
+    String KEY_DELIVERY_ID = "delivery_id";
+    String KEY_ADDRESS = "address";
+    String KEY_COLLECT_CASH = "collect_cash";
+    String KEY_DELIVERY_CANCEL_REASONS = "delivery_cancel_reasons";
+    String KEY_ID = "id";
+    String KEY_NAME = "name";
+    String KEY_TITLE = "title";
+    String KEY_PERFECT_RIDE = "perfect_ride";
+    String KEY_END_TIME = "end_time";
+    String KEY_DELIVERY_ENABLED = "delivery_enabled";
+    String KEY_DELIVERY_AVAILABLE = "delivery_available";
+    String KEY_DELIVERY_FLAG = "delivery_flag";
+    String KEY_TOTAL_DELIVERIES = "total_deliveries";
+    String KEY_ESTIMATED_FARE = "estimated_fare";
+    String KEY_VENDOR_MESSAGE = "vendor_message";
 
 }

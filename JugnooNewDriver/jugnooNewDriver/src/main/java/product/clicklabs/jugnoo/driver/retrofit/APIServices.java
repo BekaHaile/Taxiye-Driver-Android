@@ -10,7 +10,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
@@ -94,17 +93,6 @@ public interface APIServices {
 	void logoutRetro(@FieldMap Map<String, String> params,
 					 Callback<RegisterScreenResponse> callback);
 
-
-	@FormUrlEncoded
-	@POST("/get_nearest_station")
-	void fetchStationDataAPIRetro(@FieldMap Map<String, String> params,
-								  Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
-	@POST("/mark_delivered")
-	void fatafatEndRideAPIRetro(@FieldMap Map<String, String> params,
-								Callback<RegisterScreenResponse> callback);
-
 	@FormUrlEncoded
 	@POST("/mark_delivered")
 	Response markDeliveredSync(@FieldMap Map<String, String> params);
@@ -175,16 +163,6 @@ public interface APIServices {
 							  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/start_end_wait")
-	void startEndWaitRetro(@FieldMap Map<String, String> params,
-						   Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
-	@POST("/acknowledge_stationing")
-	void acknowledgeStationDataReadRetro(@FieldMap Map<String, String> params,
-										 Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
 	@POST("/change_availability")
 	Response switchJugnooOnThroughServerRetro(@FieldMap Map<String, String> params);
 
@@ -192,9 +170,6 @@ public interface APIServices {
 	@POST("/toggle_sharing_mode")
 	Response toggleSharingMode(@FieldMap Map<String, String> params);
 
-	@FormUrlEncoded
-	@POST("/acknowledge_port_change")
-	Response sendChangePortAckToServerRetro(@Field("access_token") String accessToken);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_heartbeat")
@@ -370,6 +345,24 @@ public interface APIServices {
 	@POST("/set_locale_preference")
 	void setPreferredLang(@FieldMap Map<String, String> params,
 						   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/mark_delivered")
+	void markDelivered(@FieldMap Map<String, String> params,
+						Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cancel_delivery")
+	void cancelDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	void endDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	Response endDelivery(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/fetch_all_driver_apps")

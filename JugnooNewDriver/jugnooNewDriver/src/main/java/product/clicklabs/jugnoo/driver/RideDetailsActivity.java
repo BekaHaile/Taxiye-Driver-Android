@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -12,13 +11,13 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class RideDetailsActivity extends Activity {
+public class RideDetailsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
@@ -226,12 +225,7 @@ public class RideDetailsActivity extends Activity {
 			textViewFromValue.setText(openedRideInfo.fromLocation);
 			textViewToValue.setText(openedRideInfo.toLocation);
 
-
-			if (BusinessType.AUTOS.getOrdinal() == openedRideInfo.businessId) {
-				imageViewRequestType.setImageResource(R.drawable.request_autos);
-			} else if (BusinessType.FATAFAT.getOrdinal() == openedRideInfo.businessId) {
-				imageViewRequestType.setImageResource(R.drawable.request_fatafat);
-			}
+			imageViewRequestType.setImageResource(R.drawable.request_autos);
 
 		} else {
 			performBackPressed();

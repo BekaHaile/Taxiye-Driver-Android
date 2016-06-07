@@ -12,7 +12,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 
 public interface AppInterruptHandler {
 	
-	public void onNewRideRequest(int perfectRide);
+	public void onNewRideRequest(int perfectRide, int isPooled);
 	
 	public void onCancelRideRequest(String engagementId, boolean acceptedByOtherDriver);
 	
@@ -20,11 +20,7 @@ public interface AppInterruptHandler {
 	
 	public void onManualDispatchPushReceived();
 
-	public void onChangeStatePushReceived(int flag);
-	
-	public void onStationChangedPushReceived();
-	
-	public void onCustomerCashDone();
+	public void onChangeStatePushReceived(int flag, String engagementId);
 	
 	public void onCashAddedToWalletByCustomer(int userId, double balance);
 
@@ -47,5 +43,7 @@ public interface AppInterruptHandler {
 	void driverTimeoutDialogPopup(long timeoutInterwal);
 
 	void fetchHeatMapDataCall(Context context);
+
+	void updateCustomers();
 
 }
