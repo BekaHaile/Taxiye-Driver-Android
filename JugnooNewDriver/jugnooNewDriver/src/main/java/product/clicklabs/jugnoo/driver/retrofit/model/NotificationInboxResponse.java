@@ -90,7 +90,6 @@ public class NotificationInboxResponse {
         @SerializedName("image")
         @Expose
         private String notificationImage;
-        private boolean expanded;
 
         public NotificationData(int notificationId, String timePushArrived, String title, String message, int deepIndex, String timeToDisplay, String timeTillDisplay, String notificationImage) {
             this.notificationId = notificationId;
@@ -101,7 +100,6 @@ public class NotificationInboxResponse {
             this.timeToDisplay = timeToDisplay;
             this.timeTillDisplay = timeTillDisplay;
             this.notificationImage = notificationImage;
-            this.expanded = false;
         }
 
         public int getNotificationId() {
@@ -158,14 +156,6 @@ public class NotificationInboxResponse {
 
         public void setNotificationImage(String notificationImage) {
             this.notificationImage = notificationImage;
-        }
-
-        public boolean isExpanded() {
-            return expanded;
-        }
-
-        public void setExpanded(boolean expanded) {
-            this.expanded = expanded;
         }
 
         public String getTitle() {
