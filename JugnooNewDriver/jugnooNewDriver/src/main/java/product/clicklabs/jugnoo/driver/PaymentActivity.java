@@ -3,9 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.text.SpannableString;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -14,8 +12,6 @@ import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.PaymentFragmentAdapter;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -33,9 +29,6 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 	ViewPager viewPager;
 	PaymentFragmentAdapter paymentFragmentAdapter;
 	PagerSlidingTabStrip tabs;
-
-	public LeaderboardResponse leaderboardResponse;
-	public LeaderboardActivityResponse leaderboardActivityResponse;
 
 	@Override
 	protected void onStart() {
@@ -71,8 +64,6 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
 		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
-//		tabs.setBackgroundResource(R.color.menu_black);
-//		tabs.setTabBackground(R.color.new_orange);
 		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 

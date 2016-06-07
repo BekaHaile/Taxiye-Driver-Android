@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -297,10 +296,10 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 					holder.textViewStatusString.setVisibility(View.VISIBLE);
 					if ("Delivery Cancelled".equalsIgnoreCase(rideInfo.statusString)) {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.red_status));
-						holder.textViewStatusString.setText(activity.getStringText(R.string.delivery_completed));
+						holder.textViewStatusString.setText(activity.getStringText(R.string.delivery_cancelled));
 					} else {
 						holder.textViewStatusString.setTextColor(getActivity().getResources().getColor(R.color.bg_grey_opaque));
-						holder.textViewStatusString.setText(activity.getStringText(R.string.delivery_cancelled));
+						holder.textViewStatusString.setText(activity.getStringText(R.string.delivery_completed));
 					}
 				}
 
@@ -408,7 +407,6 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 	}
 
 
-//	Retrofit
 
 	private void getRidesAsync(final Activity activity) {
 		try {
