@@ -3832,7 +3832,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			url = PendingCall.END_DELIVERY.getPath();
 		}
 
-		if (customerInfo.getCachedApiEnabled() == 1) {
+		if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
 			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 		} else {
@@ -3933,8 +3933,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void failure(RetrofitError error) {
 			Log.e("error", "=" + error);
-			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+			if(customerInfo.getIsDelivery() != 1) {
+				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
+						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+			} else{
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
 		}
 	}
 
@@ -6224,8 +6228,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				builder.include(Data.getCurrentCustomerInfo().getRequestlLatLng());
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
+					LatLng latLng = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng();
+					if(!latLngs.contains(latLng)){
+						latLngs.add(latLng);
+						builder.include(latLng);
+					} else{
+						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d);
+					}
 					final MarkerOptions markerOptions = new MarkerOptions()
-							.position(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng())
+							.position(latLng)
 							.title("")
 							.snippet("")
 							.anchor(0.5f, 0.9f)
@@ -6233,8 +6244,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									.getTextBitmap(this, assl, String.valueOf(i+1), 18)))
 							.anchor(0.5f, 1);
 					map.addMarker(markerOptions);
-					latLngs.add(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng());
-					builder.include(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng());
+
 				}
 				try {
 					builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
@@ -6242,8 +6252,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					e.printStackTrace();
 				}
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
-						(int) (660f * ASSL.Xscale()), (int) (660f * ASSL.Xscale()),
-						(int)(50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
+						(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
+						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
 						new ApiGoogleDirectionWaypoints.Callback() {

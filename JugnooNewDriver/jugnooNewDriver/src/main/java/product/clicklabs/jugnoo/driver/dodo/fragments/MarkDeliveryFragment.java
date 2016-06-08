@@ -12,9 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
@@ -36,7 +33,6 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -123,35 +119,25 @@ public class MarkDeliveryFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				try {
-					if(HomeActivity.myLocation != null) {
-						LatLng driverAtPickupLatLng = new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude());
-						double displacement = MapUtils.distance(driverAtPickupLatLng, deliveryInfo.getLatLng());
-						if (displacement <= HomeActivity.DRIVER_START_RIDE_CHECK_METERS) {
-							DialogPopup.alertPopupTwoButtonsWithListeners(activity,
-									activity.getResources().getString(R.string.order_id) + ": " + deliveryInfo.getId(),
-									activity.getResources().getString(R.string.please_confirm_cash_taken)
-											+ " " + activity.getResources().getString(R.string.rupee)
-											+ Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()),
-									activity.getResources().getString(R.string.confirm),
-									activity.getResources().getString(R.string.cancel),
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
-											markDelivered();
-										}
-									},
-									new View.OnClickListener() {
-										@Override
-										public void onClick(View v) {
+					DialogPopup.alertPopupTwoButtonsWithListeners(activity,
+							activity.getResources().getString(R.string.order_id) + ": " + deliveryInfo.getId(),
+							activity.getResources().getString(R.string.please_confirm_cash_taken)
+									+ " " + activity.getResources().getString(R.string.rupee)
+									+ Utils.getDecimalFormatForMoney().format(deliveryInfo.getAmount()),
+							activity.getResources().getString(R.string.confirm),
+							activity.getResources().getString(R.string.cancel),
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									markDelivered();
+								}
+							},
+							new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
 
-										}
-									}, false, true);
-						} else {
-							DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_delivery_location));
-						}
-					} else{
-						Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
-					}
+								}
+							}, false, true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

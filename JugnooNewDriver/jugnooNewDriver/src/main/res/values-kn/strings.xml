@@ -531,7 +531,7 @@
     <string name="delivered">ವಿತರಿಸಲಾಗಿದೆ </string>
     <string name="delivery_on">ಡೆಲಿವರಿ ಚಾಲ್ತಿಯಲ್ಲಿದೆ </string>
     <string name="delivery_is_over">ಡೆಲಿವರಿ ಮುಕ್ತಾಯ ವಾಗಿದೆ </string>
-    <string name="start_the_ride">ಸವಾರಿಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>
+    <!--<string name="start_the_ride">ಸವಾರಿಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>-->
     <string name="deliver_order_number">ಡೆಲಿವರಿಯ ಆರ್ಡರ್ ಸಂಖ್ಯೆ </string>
     <string name="all_orders_have_been_delivered">ಎಲ್ಲಾ  ಆರ್ಡರ್ಸ್ ಗಳನ್ನು  ಡೆಲಿವರಿ ಮಾಡಲಾಗಿದೆ </string>
     <string name="to_no_colon">ಗೆ</string>
