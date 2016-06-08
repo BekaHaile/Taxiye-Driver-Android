@@ -484,15 +484,7 @@
     <string name="ride_complete">ಸವಾರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ಓ ಟಿ ಪಿ ಮರುಕಳುಹಿಸಿ.</string>
-    <string name="cancelled">Cancelled</string>
-    <string name="to_no_colon">To</string>
-    <string name="address">Address</string>
-    <string name="delivered">Delivered</string>
-    <string name="delivery_on">Delivery ON</string>
-    <string name="delivery_is_over">Delivery is Over</string>
     <string name="start_the_delivery">Start the ride</string>
-    <string name="deliver_order_number">Deliver order no. %s</string>
-    <string name="all_orders_have_been_delivered">All Orders have been Delivered</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">ದಯವಿಟ್ಟು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ, ನಾವು ನಿಮ್ಮ ಓ.ಟಿ.ಪಿ ಕೋಡ್  ಬಗ್ಗೆ ತಿಳಿಸುತ್ತೇವೆ.</string>
     <string name="give_misscall_to_verify">ಪರಿಶೀಲಿಸಲು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ</string>
@@ -530,13 +522,23 @@
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
-    <string name="no_deliveries_pending">No deliveries pending</string>
-    <string name="no_deliveries_completed">No deliveries completed</string>
-    <string name="cash_collected">Cash Collected</string>
-    <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
     <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
     <string name="details">Details</string>
+
+    <string name="cancelled">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
+    <string name="address">ವಿಳಾಸ</string>
+    <string name="delivered">ವಿತರಿಸಲಾಗಿದೆ </string>
+    <string name="delivery_on">ಡೆಲಿವರಿ ಚಾಲ್ತಿಯಲ್ಲಿದೆ </string>
+    <string name="delivery_is_over">ಡೆಲಿವರಿ ಮುಕ್ತಾಯ ವಾಗಿದೆ </string>
+    <string name="start_the_ride">ಸವಾರಿಯನ್ನು ಪ್ರಾರಂಭಿಸಿ</string>
+    <string name="deliver_order_number">ಡೆಲಿವರಿಯ ಆರ್ಡರ್ ಸಂಖ್ಯೆ </string>
+    <string name="all_orders_have_been_delivered">ಎಲ್ಲಾ  ಆರ್ಡರ್ಸ್ ಗಳನ್ನು  ಡೆಲಿವರಿ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="to_no_colon">ಗೆ</string>
+    <string name="no_deliveries_pending">ಯಾವುದೇ ಡೆಲಿವರಿಯ ಉಳಿದಿಲ್ಲ </string>
+    <string name="no_deliveries_completed">ಯಾವುದೇ ಡೆಲಿವರಿಯ ಪೂರ್ಣ ಗೊಂಡಿಲ್ಲ </string>
+    <string name="cash_collected">ನಗದು ಹಣ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ</string>
+    <string name="s_no">ಕ್ರಮ ಸಂ. </string>
 
 
     <string-array name="CountryCodes" >
