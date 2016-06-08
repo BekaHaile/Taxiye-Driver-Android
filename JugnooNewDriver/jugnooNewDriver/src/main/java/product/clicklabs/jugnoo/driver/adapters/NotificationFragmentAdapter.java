@@ -5,9 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.fragments.NotificationMessagesFragment;
 import product.clicklabs.jugnoo.driver.fragments.NotificationTipsFragment;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
 /**
@@ -25,6 +27,8 @@ public class NotificationFragmentAdapter extends FragmentPagerAdapter {
 	@Override
 	public Fragment getItem(int position) {
 		Fragment fragment = null;
+
+
 		switch(position){
 			case 0:
 				fragment = new NotificationMessagesFragment();
@@ -40,16 +44,23 @@ public class NotificationFragmentAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-		return 2;
+		if(Prefs.with(context).getInt(Constants.SHOW_NOTIFICATION_TIPS, 0)==1){
+			return 2;
+		}
+		return 1;
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
+
+		String message = Prefs.with(context).getString(Constants.NOTIFICATION_MSG_TEXT, "Message");
+		String tips = Prefs.with(context).getString(Constants.NOTIFICATION_TIPS_TEXT, "Tips To Earn");
+
 		switch (position) {
 			case 0:
-				return context.getResources().getString(R.string.Messages);
+				return message;
 			case 1:
-				return context.getResources().getString(R.string.tricks);
+				return tips;
 		}
 
 		return null;
