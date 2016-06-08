@@ -8,9 +8,9 @@
 
 
 
-	<!-- <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> Live-->
+	<string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!-- Live-->
 	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
-	<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> <!-- General-->
+	<!-- <string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> General-->
 
 
 
@@ -553,7 +553,7 @@
 	<string name="orders_returned">Orders Returned</string>
 	<string name="rate_your_vendor">Rate Your Vendor</string>
 	<string name="view_orders">View Orders</string>
-	<string name="delivery_numbers">No. of Delivery :</string>
+	<string name="delivery_numbers">No. of Deliveries :</string>
 	<string name="approx">(Approx)</string>
 	<string name="start_the_delivery">Start the delivery</string>
 	<string name="deliver_order_number">Deliver order no. %s</string>

@@ -6246,28 +6246,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 					DeliveryInfo deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i);
 					LatLng latLng = deliveryInfo.getLatLng();
+					if(Utils.compareDouble(latLng.latitude, 0) != 0
+							&& Utils.compareDouble(latLng.longitude, 0) != 0) {
+						if (counterMap.containsKey(latLng)) {
+							counterMap.put(latLng, counterMap.get(latLng) + 1);
+						} else {
+							counterMap.put(latLng, 1);
+						}
 
-					if(counterMap.containsKey(latLng)){
-						counterMap.put(latLng, counterMap.get(latLng)+1);
-					}else{
-						counterMap.put(latLng, 1);
+						if (!latLngs.contains(latLng)) {
+							latLngs.add(latLng);
+							builder.include(latLng);
+						} else {
+							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
+						}
+						final MarkerOptions markerOptions = new MarkerOptions()
+								.position(latLng)
+								.title("")
+								.snippet("")
+								.anchor(0.5f, 0.9f)
+								.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+										.getTextBitmap(this, assl, String.valueOf(deliveryInfo.getIndex() + 1), 18)))
+								.anchor(0.5f, 1);
+						map.addMarker(markerOptions);
 					}
-
-					if(!latLngs.contains(latLng)){
-						latLngs.add(latLng);
-						builder.include(latLng);
-					} else{
-						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double)(counterMap.get(latLng)));
-					}
-					final MarkerOptions markerOptions = new MarkerOptions()
-							.position(latLng)
-							.title("")
-							.snippet("")
-							.anchor(0.5f, 0.9f)
-							.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-									.getTextBitmap(this, assl, String.valueOf(deliveryInfo.getIndex()+1), 18)))
-							.anchor(0.5f, 1);
-					map.addMarker(markerOptions);
 
 				}
 				try {
