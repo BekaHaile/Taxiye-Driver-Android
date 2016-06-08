@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     android:id="@+id/root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -35,53 +35,31 @@
     </RelativeLayout>
 
 
-    <LinearLayout
-        android:id="@+id/linearLayoutNoNotifications"
+
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/topRl"
-        android:gravity="center"
-        android:orientation="vertical"
-        >
-        <ImageView
-            android:layout_width="241px"
-            android:layout_height="342px"
-            android:src="@drawable/ic_no_items"
-            android:tag="mwar"
-            />
+        android:layout_height="6px"
+        android:background="@drawable/shadow_down"
+        />
 
-        <TextView
-            android:id="@+id/textViewNoNotifications"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="30px"
-            android:text="@string/no_current_notification"
-            android:textColor="@color/black"
-            android:textSize="32px"
-            />
-
-    </LinearLayout>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_refresh_layout"
+    <product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_below="@+id/topRl"
+        android:layout_height="99px"
+        android:visibility="visible"
+        app:pstsIndicatorHeight="7px"
+        app:pstsDividerColor="@color/menu_black"
+        app:pstsShouldExpand="true"
+        app:pstsUnderlineColor="@color/white"
+        app:pstsUnderlineHeight="2px"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/my_request_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadeScrollbars="true"
-            android:scrollbars="vertical"
-            />
-
-
-    </android.support.v4.widget.SwipeRefreshLayout>
-
-
-
-
-</RelativeLayout>
+</LinearLayout>
