@@ -218,7 +218,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	RelativeLayout perfectRidePassengerCallRl;
 	LinearLayout perfectRidePassengerInfoRl, driverPassengerInfoRl;
-	TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions;
+	TextView driverPassengerCallText, driverPerfectRidePassengerName, textViewRideInstructions, textViewRideInstructionsInRide;
 	Button driverEngagedMyLocationBtn;
 
 	//Start ride layout
@@ -548,6 +548,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPerfectRidePassengerName.setTypeface(Data.latoRegular(getApplicationContext()));
 			textViewRideInstructions = (TextView) findViewById(R.id.textViewRideInstructions);
 			textViewRideInstructions.setTypeface(Fonts.mavenRegular(this));
+			textViewRideInstructionsInRide = (TextView) findViewById(R.id.textViewRideInstructionsInRide);
+			textViewRideInstructionsInRide.setTypeface(Fonts.mavenRegular(this));
 
 			perfectRidePassengerCallRl = (RelativeLayout) findViewById(R.id.perfectRidePassengerCallRl);
 			driverPassengerCallText = (TextView) findViewById(R.id.textViewCall);
@@ -6129,22 +6131,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private void setTextViewRideInstructions(){
 		try {
 			textViewRideInstructions.setVisibility(View.GONE);
+			textViewRideInstructionsInRide.setVisibility(View.GONE);
 			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1) {
-				textViewRideInstructions.setVisibility(View.VISIBLE);
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
-				} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+				}
+				else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.start_the_delivery));
-				} else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+				}
+				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+					textViewRideInstructionsInRide.setVisibility(View.VISIBLE);
 					for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 						if(Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getStatus()
 								== DeliveryStatus.PENDING.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
+							textViewRideInstructionsInRide.setText(getResources().getString(R.string.deliver_order_number,
 									String.valueOf(i+1)));
 							return;
 						}
 					}
-					textViewRideInstructions.setText(getResources().getString(R.string.all_orders_have_been_delivered));
+					textViewRideInstructionsInRide.setText(getResources().getString(R.string.all_orders_have_been_delivered));
 				}
 			}
 		} catch (Exception e) {
