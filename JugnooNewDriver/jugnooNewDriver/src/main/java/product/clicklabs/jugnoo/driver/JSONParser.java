@@ -696,7 +696,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""));
+						jDelivery.optString(KEY_CANCEL_REASON, ""), i);
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {

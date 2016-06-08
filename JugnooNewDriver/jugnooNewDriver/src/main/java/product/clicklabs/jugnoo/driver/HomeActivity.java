@@ -78,8 +78,8 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
-import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
+import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -3741,8 +3741,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							   long rideTimeInMillis, int flagDistanceTravelled, final CustomerInfo customerInfo) {
 		DialogPopup.showLoadingDialog(activity,  getResources().getString(R.string.loading));
 
-		double totalDistanceInKm = Math.abs(customerInfo
-				.getCustomerRideData().getTotalDistance(customerRideDataGlobal.getDistance()) / 1000.0);
+		double totalDistance = customerInfo
+				.getCustomerRideData().getTotalDistance(customerRideDataGlobal.getDistance());
+		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
 
 		double Limit_endRideMinute = 360;
 		double Average_endRideMinute = totalDistanceInKm * 2;
@@ -3937,7 +3938,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
 			} else{
-				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
+					driverScreenMode = DriverScreenMode.D_IN_RIDE;
+					rideTimeChronometer.start();
+				}
+				DialogPopup.dismissLoadingDialog();
 			}
 		}
 	}
@@ -6227,13 +6233,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				latLngs.add(Data.getCurrentCustomerInfo().getRequestlLatLng());
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				builder.include(Data.getCurrentCustomerInfo().getRequestlLatLng());
+
+				HashMap<LatLng,Integer> counterMap = new HashMap<>();
+
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
-					LatLng latLng = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i).getLatLng();
+					DeliveryInfo deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i);
+					LatLng latLng = deliveryInfo.getLatLng();
+
+					if(counterMap.containsKey(latLng)){
+						counterMap.put(latLng, counterMap.get(latLng)+1);
+					}else{
+						counterMap.put(latLng, 1);
+					}
+
 					if(!latLngs.contains(latLng)){
 						latLngs.add(latLng);
 						builder.include(latLng);
 					} else{
-						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d);
+						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double)(counterMap.get(latLng)));
 					}
 					final MarkerOptions markerOptions = new MarkerOptions()
 							.position(latLng)
@@ -6241,7 +6258,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							.snippet("")
 							.anchor(0.5f, 0.9f)
 							.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-									.getTextBitmap(this, assl, String.valueOf(i+1), 18)))
+									.getTextBitmap(this, assl, String.valueOf(deliveryInfo.getIndex()+1), 18)))
 							.anchor(0.5f, 1);
 					map.addMarker(markerOptions);
 
