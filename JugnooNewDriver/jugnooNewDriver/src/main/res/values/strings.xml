@@ -517,7 +517,7 @@
 	<string name="select_destination">Please select atleast one Destination</string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="fatafat_on">Fatafat On</string>
-	<string name="Notifications">Notifications</string>
+	<string name="Notifications">NOTIFICATIONS</string>
 	<string name="PAYMENTS">PAYMENTS</string>
 	<string name="enter_customer_phone_no">Enter Customer Phone No.</string>
 	<string name="invoice_detail">INVOICE DETAILS</string>
@@ -580,6 +580,9 @@
 	<string name="order_no">Order No.</string>
 	<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 	<string name="details">Details</string>
+	<string name="Messages">Messages</string>
+	<string name="Hints">Hints</string>
+	<string name="tricks">Tricks To Earn</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
