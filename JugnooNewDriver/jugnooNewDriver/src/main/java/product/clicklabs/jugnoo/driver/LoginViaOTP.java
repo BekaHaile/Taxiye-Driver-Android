@@ -56,10 +56,10 @@ import retrofit.mime.TypedByteArray;
  */
 public class LoginViaOTP extends BaseActivity {
 
-	LinearLayout linearLayoutWaiting, otpETextLLayout, selectLanguageLl, layoutResendOtp, mainLoginLinear, mainLinear;
+	LinearLayout linearLayoutWaiting, otpETextLLayout, selectLanguageLl, layoutResendOtp, mainLoginLinear, mainLinear, btnReGenerateOtp, btnOtpViaCall;
 	RelativeLayout relative;
 	EditText phoneNoEt, otpEt;
-	Button backBtn, btnGenerateOtp, loginViaOtp, btnReGenerateOtp, btnOtpViaCall, btnLogin;
+	Button backBtn, btnGenerateOtp, loginViaOtp, btnLogin;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter, textViewOr;
 	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
@@ -114,6 +114,7 @@ public class LoginViaOTP extends BaseActivity {
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setHint(getStringText(R.string.phone_number));
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt.setEnabled(true);
 		otpEt = (EditText) findViewById(R.id.otpEt);
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt.setEnabled(false);
@@ -129,11 +130,9 @@ public class LoginViaOTP extends BaseActivity {
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
 		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
-		btnReGenerateOtp = (Button) findViewById(R.id.btnReGenerateOtp);
-		btnReGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
+		btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
 
-		btnOtpViaCall = (Button) findViewById(R.id.btnOtpViaCall);
-		btnOtpViaCall.setTypeface(Data.latoRegular(getApplicationContext()));
+		btnOtpViaCall = (LinearLayout) findViewById(R.id.btnOtpViaCall);
 
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -173,6 +172,7 @@ public class LoginViaOTP extends BaseActivity {
 					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
+					phoneNoEt.setEnabled(false);
 					generateOTP(phoneNo);
 					try {
 						textViewCounter.setText("0:30");
@@ -224,7 +224,8 @@ public class LoginViaOTP extends BaseActivity {
 							new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									mainLoginLinear.setVisibility(View.VISIBLE);
+									btnLogin.setVisibility(View.VISIBLE);
+									layoutResendOtp.setVisibility(View.GONE);
 									Utils.openCallIntent(LoginViaOTP.this, knowlarityMissedCallNumber);
 								}
 							},
@@ -375,7 +376,7 @@ public class LoginViaOTP extends BaseActivity {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
 								btnGenerateOtp.setVisibility(View.GONE);
 								layoutResendOtp.setVisibility(View.GONE);
-								mainLoginLinear.setVisibility(View.GONE);
+								btnLogin.setVisibility(View.GONE);
 								loginViaOtp.setVisibility(View.VISIBLE);
 								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
@@ -581,8 +582,9 @@ public class LoginViaOTP extends BaseActivity {
 								DialogPopup.alertPopup(activity, "", message);
 							} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
-								mainLinear.setVisibility(View.VISIBLE);
-								mainLoginLinear.setVisibility(View.GONE);
+//								mainLinear.setVisibility(View.VISIBLE);
+								layoutResendOtp.setVisibility(View.VISIBLE);
+								btnLogin.setVisibility(View.GONE);
 								otpEt.setText("");
 							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", getResources().getString(R.string.no_not_verified));
@@ -591,6 +593,7 @@ public class LoginViaOTP extends BaseActivity {
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
 									startService(new Intent(activity, DriverLocationUpdateService.class));
 									Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
+									Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 									startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
 									finish();
 									overridePendingTransition(R.anim.right_in, R.anim.right_out);
