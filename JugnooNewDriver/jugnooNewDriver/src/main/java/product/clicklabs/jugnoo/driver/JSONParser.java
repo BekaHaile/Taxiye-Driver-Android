@@ -438,19 +438,6 @@ public class JSONParser implements Constants {
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
 
-							JSONObject jObj = new JSONObject(Prefs.with(context).getString(SP_CUSTOMER_RIDE_DATAS_OBJECT, EMPTY_OBJECT));
-							if(jObj.has(engagementId)) {
-								JSONObject jc = jObj.getJSONObject(engagementId);
-								customerInfo.getCustomerRideData()
-										.setDistance(Double.parseDouble(jc.optString(KEY_DISTANCE, "0")));
-								customerInfo.getCustomerRideData()
-										.setHaversineDistance(Double.parseDouble(jc.optString(KEY_HAVERSINE_DISTANCE, "0")));
-								customerInfo.getCustomerRideData()
-										.setStartRideTime(Long.parseLong(jc.optString(KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis()))));
-								customerInfo.getCustomerRideData()
-										.setWaitTime(Long.parseLong(jc.optString(KEY_WAIT_TIME, "0")));
-							}
-
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
 							}

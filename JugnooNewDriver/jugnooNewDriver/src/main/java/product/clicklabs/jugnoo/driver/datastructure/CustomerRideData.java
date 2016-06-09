@@ -18,11 +18,6 @@ public class CustomerRideData {
 		this.distance = distance;
 	}
 
-	public double getTotalDistance(double totalDistance) {
-		return totalDistance - distance;
-	}
-
-
 
 
 
@@ -34,9 +29,6 @@ public class CustomerRideData {
 		this.haversineDistance = haversineDistance;
 	}
 
-	public double getTotalHaversineDistance(double totalHaversineDistance) {
-		return totalHaversineDistance - haversineDistance;
-	}
 
 
 
@@ -44,10 +36,6 @@ public class CustomerRideData {
 
 	public long getStartRideTime() {
 		return startRideTime;
-	}
-
-	public long getElapsedRideTime() {
-		return System.currentTimeMillis() - startRideTime;
 	}
 
 	public void setStartRideTime(long startRideTime) {
@@ -65,19 +53,6 @@ public class CustomerRideData {
 
 	public void setWaitTime(long waitTime) {
 		this.waitTime = waitTime;
-	}
-
-	public long getTotalWaitTime(long totalWaitTime) {
-		return totalWaitTime - waitTime;
-	}
-
-
-
-	public void setValues(CustomerRideData customerRideData){
-		setDistance(customerRideData.getDistance());
-		setHaversineDistance(customerRideData.getHaversineDistance());
-		setStartRideTime(System.currentTimeMillis());
-		setWaitTime(customerRideData.getWaitTime());
 	}
 
 }
