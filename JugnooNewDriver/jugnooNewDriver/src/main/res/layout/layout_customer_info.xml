@@ -63,7 +63,7 @@
             android:id="@+id/relativeLayoutCall"
             android:layout_width="180px"
             android:layout_height="70px"
-            android:background="@drawable/orange_btn_selector">
+            android:background="@drawable/new_orange_btn_corner_normal">
 
             <ImageView
                 android:id="@+id/driverCallIcon"

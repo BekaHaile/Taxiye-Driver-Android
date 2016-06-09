@@ -123,6 +123,9 @@ public class CustomerSwitcher {
 	public void setCustomerData() {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+
+			Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor());
+
 			textViewCustomerName.setText(customerInfo.getName());
 			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 				if(customerInfo.getDropLatLng() != null
@@ -162,8 +165,10 @@ public class CustomerSwitcher {
 			}
 			if(Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1){
 				recyclerViewCustomersLinked.setVisibility(View.GONE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
 			} else{
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

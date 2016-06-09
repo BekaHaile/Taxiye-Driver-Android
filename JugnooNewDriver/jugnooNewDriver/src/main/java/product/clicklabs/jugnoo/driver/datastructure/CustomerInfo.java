@@ -51,6 +51,7 @@ public class CustomerInfo {
 	private double estimatedFare;
 	private String vendorMessage;
 
+	private String color;
 
 
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
@@ -390,7 +391,6 @@ public class CustomerInfo {
 		this.vendorMessage = vendorMessage;
 	}
 
-
 	public double getTotalDistance(double distance, Context context){
 		try {
 			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
@@ -447,4 +447,11 @@ public class CustomerInfo {
 		return waitTime;
 	}
 
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
 }

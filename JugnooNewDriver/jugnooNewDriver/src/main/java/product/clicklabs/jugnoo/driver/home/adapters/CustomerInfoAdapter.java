@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
@@ -35,7 +34,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_customer_brief_info, parent, false);
 
-        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(300, 80);
+        RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(360, 80);
         v.setLayoutParams(layoutParams);
 
         ASSL.DoMagic(v);

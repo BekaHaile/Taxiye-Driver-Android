@@ -10,6 +10,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -609,6 +614,26 @@ public class Utils {
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			context.startActivity(mapIntent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static void setDrawableColor(View view, String color){
+		try {
+			if (color == null || (color.length() != 7 && color.length() != 9)) {
+				color = "#F6853A";
+			}
+			int intColor = Color.parseColor(color);
+			Drawable background = view.getBackground();
+			if (background instanceof ShapeDrawable) {
+				((ShapeDrawable) background).getPaint().setColor(intColor);
+			} else if (background instanceof GradientDrawable) {
+				((GradientDrawable) background).setColor(intColor);
+			} else if (background instanceof ColorDrawable) {
+				((ColorDrawable) background).setColor(intColor);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

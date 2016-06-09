@@ -2362,6 +2362,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
+					Utils.setDrawableColor(buttonMarkArrived, Data.getCurrentCustomerInfo().getColor());
+
 					setEtaTimerVisibility();
 					startCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
@@ -2413,6 +2415,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
+					Utils.setDrawableColor(driverStartRideBtn, Data.getCurrentCustomerInfo().getColor());
 
 
 					startCustomerPathUpdateTimer();
