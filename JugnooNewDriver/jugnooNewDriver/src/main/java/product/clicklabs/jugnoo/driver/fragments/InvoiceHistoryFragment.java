@@ -47,6 +47,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 	TextView textViewInfoDisplay;
 	ListView listView;
 
+
 	DriverRidesListAdapter driverRidesListAdapter;
 
 	RelativeLayout main;
@@ -74,11 +75,13 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 		textViewInfoDisplay.setTypeface(Data.latoRegular(getActivity()));
 		listView = (ListView) rootView.findViewById(R.id.listView);
 
+
 		driverRidesListAdapter = new DriverRidesListAdapter();
 		listView.setAdapter(driverRidesListAdapter);
 
 		progressBar.setVisibility(View.GONE);
 		textViewInfoDisplay.setVisibility(View.GONE);
+
 
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -134,6 +137,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 		TextView textViewInvoiceId, dateTimeValueFrom, dateTimeValueTo, textViewStatusString,
 				textViewInvoiceFare, dateTimeValueGenerated;
 		ImageView imageViewRequestType;
+		ImageView statusImage;
 		RelativeLayout relative;
 		int id;
 	}
@@ -180,6 +184,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 				holder.dateTimeValueGenerated = (TextView) convertView.findViewById(R.id.dateTimeValueGenerated);
 				holder.dateTimeValueGenerated.setTypeface(Data.latoRegular(getActivity()));
 
+				holder.statusImage = (ImageView) convertView.findViewById(R.id.statusImage);
 				holder.imageViewRequestType = (ImageView) convertView.findViewById(R.id.imageViewRequestType);
 
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
@@ -215,29 +220,42 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 
 				holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
 				holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
-				holder.textViewStatusString.setText(invoiceInfo.statusString);
+
+				if(invoiceInfo.statusString.equalsIgnoreCase("Success")) {
+					holder.textViewStatusString.setText(getResources().getString(R.string.success));
+					holder.statusImage.setImageResource(R.drawable.green_tick);
+					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
+				}else if(invoiceInfo.statusString.equalsIgnoreCase("Pending")){
+					holder.textViewStatusString.setText(getResources().getString(R.string.pending));
+					holder.statusImage.setImageResource(R.drawable.exclamation_red);
+					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.red_delivery));
+				}else if(invoiceInfo.statusString.equalsIgnoreCase("Outstanding Adjusted")){
+					holder.textViewStatusString.setText(getResources().getString(R.string.outstanding_amount));
+					holder.statusImage.setImageResource(R.drawable.rupee_green);
+					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
+				}
 				holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
 
 
+//				holder.relative.setOnClickListener(new View.OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						holder = (ViewHolderDriverRides) v.getTag();
+//						Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
+//						intent.putExtra("invoice_id", invoiceInfo.id);
+//						getActivity().startActivity(intent);
+//						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//						try {
+//							JSONObject map = new JSONObject();
+//							map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
+//							NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
+//						} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
 
-			holder.relative.setOnClickListener(new View.OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					holder = (ViewHolderDriverRides) v.getTag();
-					Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
-					intent.putExtra("invoice_id", invoiceInfo.id);
-					getActivity().startActivity(intent);
-					getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					try{
-						JSONObject map = new JSONObject();
-						map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
-						NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
-					} catch(Exception e){
-						e.printStackTrace();
-					}
-				}
-			});
 			} catch (Resources.NotFoundException e) {
 				e.printStackTrace();
 			}

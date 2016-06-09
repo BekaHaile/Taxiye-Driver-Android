@@ -542,6 +542,7 @@
     <string name="no_deliveries_completed">ಯಾವುದೇ ಡೆಲಿವರಿಯ ಪೂರ್ಣ ಗೊಂಡಿಲ್ಲ </string>
     <string name="cash_collected">ನಗದು ಹಣ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ</string>
     <string name="s_no">ಕ್ರಮ ಸಂ. </string>
+    <string name="success">Success</string>
 
 
     <string-array name="CountryCodes" >

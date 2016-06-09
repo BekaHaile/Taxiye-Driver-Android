@@ -603,6 +603,7 @@
     <string name="no_deliveries_completed">எந்த ஒப்படைப்புகளும் முடியவில்லை </string>
     <string name="cash_collected">பணம் சேகரிக்கப்பட்டது </string>
     <string name="s_no">வரிசை எண்</string>
+    <string name="success">Success</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

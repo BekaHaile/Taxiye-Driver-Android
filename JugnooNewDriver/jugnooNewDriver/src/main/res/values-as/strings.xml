@@ -520,6 +520,7 @@
     <string name="Messages">Messages</string>
     <string name="Hints">Hints</string>
     <string name="tricks">Tricks To Earn</string>
+    <string name="success">Success</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
