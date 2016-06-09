@@ -574,6 +574,7 @@
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
     <string name="details">Details</string>
+    <string name="success">Success</string>
 
 
     <string-array name="CountryCodes" >
