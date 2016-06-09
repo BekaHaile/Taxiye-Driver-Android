@@ -517,6 +517,7 @@
     <string name="order_no">Order No.</string>
     <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
     <string name="details">Details</string>
+    <string name="success">Success</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
