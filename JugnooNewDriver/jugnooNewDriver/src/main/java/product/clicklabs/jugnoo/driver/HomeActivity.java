@@ -4193,6 +4193,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			totalHaversineDistance = totalHaversineDistance / 1000;
 			rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
 
+			rideDataStr = rideDataStr + "\n" + LocationFetcher.getSavedLatFromSP(activity) +"," + LocationFetcher.getSavedLngFromSP(activity);
+
+
 			final HashMap<String, String> params = new HashMap<String, String>();
 
 			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
