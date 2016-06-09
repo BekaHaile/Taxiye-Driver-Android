@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -165,6 +166,7 @@ public class NotificationTipsFragment extends Fragment {
 
 	public void getFareDetailsAsync(final Activity activity) {
 		if (AppStatus.getInstance(activity).isOnline(activity)) {
+			Configuration conf = getResources().getConfiguration();
 			if (activity != null) {
 				progressBar.setVisibility(View.VISIBLE);
 				textViewInfo.setVisibility(View.GONE);
@@ -172,8 +174,8 @@ public class NotificationTipsFragment extends Fragment {
 				loadHTMLContent("");
 
 
-				RestClient.getApiServices().getHelpSection(4, new Callback<BookingHistoryResponse>() {
-
+				RestClient.getApiServices().getHelpSectionNew(8,conf.locale.toString(),
+						new Callback<BookingHistoryResponse>() {
 
 					@Override
 					public void success(BookingHistoryResponse bookingHistoryResponse, Response response) {

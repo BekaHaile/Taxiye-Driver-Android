@@ -61,6 +61,12 @@ public interface APIServices {
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/get_information")
+	void getHelpSectionNew(@Field("section") int section,
+						   @Field("locale") String locale,
+						Callback<BookingHistoryResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/send_otp_via_call")
 	void initiateOTPCall(@Field("phone_no") String phoneNo,
 						 Callback<BookingHistoryResponse> callback);
