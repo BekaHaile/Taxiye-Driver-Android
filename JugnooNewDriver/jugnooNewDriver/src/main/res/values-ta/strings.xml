@@ -591,7 +591,6 @@
     <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். %s </string>
     <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
     <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
     <string name="details">Details</string>
     <string name="Messages">Messages</string>
     <string name="Hints">Hints</string>
@@ -603,7 +602,10 @@
     <string name="no_deliveries_completed">எந்த ஒப்படைப்புகளும் முடியவில்லை </string>
     <string name="cash_collected">பணம் சேகரிக்கப்பட்டது </string>
     <string name="s_no">வரிசை எண்</string>
-    <string name="success">Success</string>
+
+    <string name="present_near_delivery_location">இந்த ஆடர் ஒப்படைக்க பட்டது என்று உறுதி செய்வதற்கு, நீங்கள் ஒப்படைக்க வேண்டிய இடத்திற்கு அருகில் இருக்க வேண்டும் </string>"
+    <string name="success">வெற்றி</string>
+    <string name="outstanding_amount">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
