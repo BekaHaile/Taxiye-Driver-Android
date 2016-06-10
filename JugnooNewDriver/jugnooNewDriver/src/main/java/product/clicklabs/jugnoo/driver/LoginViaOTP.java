@@ -659,6 +659,7 @@ public class LoginViaOTP extends BaseActivity {
 				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
 				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
 					selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+					customCountDownTimer.cancel();
 					onCreate(new Bundle());
 				}
 			}
