@@ -172,10 +172,8 @@ public class CustomerSwitcher {
 
 	public void updateDistanceOnLocationChanged(){
 		try{
-			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode
-					|| DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
-				textViewShowDistance.setVisibility(View.GONE);
-			} else {
+			textViewShowDistance.setVisibility(View.GONE);
+			if(DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
 				textViewShowDistance.setVisibility(View.VISIBLE);
 				if (HomeActivity.myLocation != null) {
 					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
