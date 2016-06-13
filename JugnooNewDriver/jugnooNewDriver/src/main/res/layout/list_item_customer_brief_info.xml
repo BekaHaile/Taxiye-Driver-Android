@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="10px"
         android:text="Shanker"
-        android:textColor="@color/bg_grey_opaque"
+        android:textColor="@color/text_color"
         android:textSize="@dimen/text_size_34"/>
 
 </LinearLayout>

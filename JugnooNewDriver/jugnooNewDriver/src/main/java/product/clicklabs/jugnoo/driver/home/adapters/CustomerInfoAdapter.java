@@ -13,6 +13,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 
 public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -47,7 +48,9 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         CustomerInfo customerInfo = getItem(position);
         ViewHolder holder = (ViewHolder) viewholder;
         holder.linearLayoutRoot.setTag(position);
-        holder.driverPassengerName.setText(customerInfo.getName() );
+        holder.driverPassengerName.setText(customerInfo.getName());
+        Utils.setTextColor(holder.driverPassengerName, customerInfo.getColor(),
+                activity.getResources().getColor(R.color.text_color));
         if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
             holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.new_orange));
             holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.white));

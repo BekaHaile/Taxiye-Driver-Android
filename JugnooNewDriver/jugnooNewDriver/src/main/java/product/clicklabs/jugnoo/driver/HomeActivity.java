@@ -305,7 +305,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static DriverScreenMode driverScreenMode;
 
 
-	Marker rideStartPositionMarker, customerLocationMarker = null;
+	Marker rideStartPositionMarker;
 	Polyline pathToCustomerPolyline = null;
 
 	static AppInterruptHandler appInterruptHandler;
@@ -2316,7 +2316,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (getOpenedCustomerInfo() != null) {
 						if(map != null){
-							customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(getOpenedCustomerInfo().getRequestlLatLng()));
+							map.addMarker(getCustomerLocationMarkerOptions(getOpenedCustomerInfo().getRequestlLatLng()));
 						}
 					}
 
@@ -2344,7 +2344,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
+						map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
+						setAttachedCustomerMarkers();
 					}
 
 					customerSwitcher.setCustomerData();
@@ -2362,7 +2363,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
-					Utils.setDrawableColor(buttonMarkArrived, Data.getCurrentCustomerInfo().getColor());
+					Utils.setDrawableColor(buttonMarkArrived, Data.getCurrentCustomerInfo().getColor(),
+							getResources().getColor(R.color.new_orange));
 
 					setEtaTimerVisibility();
 					startCustomerPathUpdateTimer();
@@ -2381,7 +2383,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
+						map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
 					}
 
 
@@ -2415,7 +2417,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverStartRideBtn.setText(getResources().getString(R.string.start_ride));
 					}
-					Utils.setDrawableColor(driverStartRideBtn, Data.getCurrentCustomerInfo().getColor());
+					Utils.setDrawableColor(driverStartRideBtn, Data.getCurrentCustomerInfo().getColor(),
+							getResources().getColor(R.color.new_orange));
 
 
 					startCustomerPathUpdateTimer();
@@ -4553,11 +4556,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void run() {
 					if (myLocation != null) {
 						if ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.getCurrentCustomerInfo() != null)) {
-							getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().requestlLatLng);
+							//TODO getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().requestlLatLng);
 						}
 						else if ((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.getCurrentCustomerInfo() != null)) {
 							if (( Data.getCurrentCustomerInfo()).dropLatLng != null) {
-								getCustomerPathAndDisplay(Data.getCurrentCustomerInfo().requestlLatLng, ( Data.getCurrentCustomerInfo()).dropLatLng);
+								//TODO getCustomerPathAndDisplay(Data.getCurrentCustomerInfo().requestlLatLng, ( Data.getCurrentCustomerInfo()).dropLatLng);
 							}
 						}
 					}
@@ -4615,14 +4618,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							public void run() {
 								try {
 									if (toShowPathToCustomer()) {
-										if (customerLocationMarker != null) {
-											customerLocationMarker.remove();
-										}
 										if (pathToCustomerPolyline != null) {
 											pathToCustomerPolyline.remove();
 										}
-
-										customerLocationMarker = map.addMarker(getCustomerLocationMarkerOptions(customerLatLng));
+										map.addMarker(getCustomerLocationMarkerOptions(customerLatLng));
 
 										PolylineOptions polylineOptions = new PolylineOptions();
 										polylineOptions.width(ASSL.Xscale() * 5).color(D_TO_C_MAP_PATH_COLOR).geodesic(true);
@@ -6266,15 +6265,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 						}
-						final MarkerOptions markerOptions = new MarkerOptions()
-								.position(latLng)
-								.title("")
-								.snippet("")
-								.anchor(0.5f, 0.9f)
-								.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-										.getTextBitmap(this, assl, String.valueOf(deliveryInfo.getIndex() + 1), 18)))
-								.anchor(0.5f, 1);
-						map.addMarker(markerOptions);
+						addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1));
 					}
 
 				}
@@ -6310,6 +6301,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 
+	}
+
+	private void addDropPinMarker(GoogleMap map, LatLng latLng, String text){
+		final MarkerOptions markerOptions = new MarkerOptions()
+				.position(latLng)
+				.title("")
+				.snippet("")
+				.anchor(0.5f, 0.9f)
+				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.getTextBitmap(this, assl, text, 18)));
+		map.addMarker(markerOptions);
 	}
 
 	public RelativeLayout getRelativeLayoutContainer(){
@@ -6359,6 +6361,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		}
 		return deliveryTime;
+	}
+
+
+	private void setAttachedCustomerMarkers(){
+		for(int i=0; i<Data.getAssignedCustomerInfosListForEngagedStatus().size(); i++){
+			CustomerInfo customerInfo = Data.getAssignedCustomerInfosListForEngagedStatus().get(i);
+			if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
+					&& customerInfo.getDropLatLng() != null){
+				addDropPinMarker(map, customerInfo.getDropLatLng(), String.valueOf(i+ 1));
+			} else{
+
+			}
+		}
 	}
 
 }

@@ -124,7 +124,8 @@ public class CustomerSwitcher {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 
-			Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor());
+			Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor(),
+					activity.getResources().getColor(R.color.new_orange));
 
 			textViewCustomerName.setText(customerInfo.getName());
 			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {

@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
@@ -620,12 +621,12 @@ public class Utils {
 	}
 
 
-	public static void setDrawableColor(View view, String color){
+	public static void setDrawableColor(View view, String color, int defaultColor){
 		try {
-			if (color == null || (color.length() != 7 && color.length() != 9)) {
-				color = "#F6853A";
+			int intColor = defaultColor;
+			if (color != null && (color.length() == 7 || color.length() == 9)) {
+				intColor = Color.parseColor(color);
 			}
-			int intColor = Color.parseColor(color);
 			Drawable background = view.getBackground();
 			if (background instanceof ShapeDrawable) {
 				((ShapeDrawable) background).getPaint().setColor(intColor);
@@ -633,6 +634,20 @@ public class Utils {
 				((GradientDrawable) background).setColor(intColor);
 			} else if (background instanceof ColorDrawable) {
 				((ColorDrawable) background).setColor(intColor);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void setTextColor(View view, String color, int defaultColor){
+		try {
+			int intColor = defaultColor;
+			if (color != null && (color.length() == 7 || color.length() == 9)) {
+				intColor = Color.parseColor(color);
+			}
+			if(view instanceof TextView) {
+				((TextView) view).setTextColor(intColor);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
