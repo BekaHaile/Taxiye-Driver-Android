@@ -2486,6 +2486,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setMakeDeliveryButtonVisibility();
 					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
+					setTextViewRideInstructions();
 
 
 					startMapAnimateAndUpdateRideDataTimer();
