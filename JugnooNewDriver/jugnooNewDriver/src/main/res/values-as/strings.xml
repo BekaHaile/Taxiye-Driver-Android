@@ -523,6 +523,9 @@
     <string name="present_near_delivery_location">আপোনাৰ অৰ্দাৰ ডেলিভাৰ মাৰ্ক কৰিবলৈ আপুনি ডেলিভাৰি লকেচনৰ কাষত থাকিব লাগিব ।</string>
     <string name="success">সফল</string>
     <string name="outstanding_amount">আগৰ বাকি এদজাষ্ট কৰা হল</string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -525,6 +525,9 @@
     <string name="present_near_delivery_location">ഈ ഓർഡർ ഡെലിവറി ചെയ്തു എന്ന്  അടയാളപ്പെടുത്താൻ താങ്കൾ ഡെലിവറി സ്ഥലത്തിനടുത്ത് ഉണ്ടായിരിക്കണം.</string>
     <string name="success">കഴിഞ്ഞു</string>
     <string name="outstanding_amount">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

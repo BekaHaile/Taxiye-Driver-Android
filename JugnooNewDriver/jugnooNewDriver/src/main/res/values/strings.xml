@@ -585,6 +585,9 @@
 	<string name="tricks">Tricks To Earn</string>
 	<string name="success">Success</string>
 	<string name="outstanding_amount">Outstanding Adjusted</string>
+	<string name="delivery_fare">Delivery Fare</string>
+	<string name="return_subsidy">Return Subsidy</string>
+	<string name="return_distance">Return Distance</string>
 
 
 	<string-array name="CountryCodes" >
