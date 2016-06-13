@@ -10,7 +10,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -652,6 +657,22 @@ public class Utils {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static Bitmap setBitmapColor(Bitmap sourceBitmap, String color, int defaultColor){
+		int intColor = defaultColor;
+		if (color != null && (color.length() == 7 || color.length() == 9)) {
+			intColor = Color.parseColor(color);
+		}
+		Bitmap resultBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0,
+				sourceBitmap.getWidth() - 1, sourceBitmap.getHeight() - 1);
+		Paint p = new Paint();
+		ColorFilter filter = new LightingColorFilter(intColor, 1);
+		p.setColorFilter(filter);
+
+		Canvas canvas = new Canvas(resultBitmap);
+		canvas.drawBitmap(resultBitmap, 0, 0, p);
+		return resultBitmap;
 	}
 
 }

@@ -2316,7 +2316,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (getOpenedCustomerInfo() != null) {
 						if(map != null){
-							map.addMarker(getCustomerLocationMarkerOptions(getOpenedCustomerInfo().getRequestlLatLng()));
+							addCustomerPickupMarker(map, getOpenedCustomerInfo(), getOpenedCustomerInfo().getRequestlLatLng());
 						}
 					}
 
@@ -2344,7 +2344,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
 						setAttachedCustomerMarkers();
 					}
 
@@ -2383,7 +2382,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
-						map.addMarker(getCustomerLocationMarkerOptions(Data.getCurrentCustomerInfo().getRequestlLatLng()));
+						setAttachedCustomerMarkers();
 					}
 
 
@@ -2443,6 +2442,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						map.clear();
+						setAttachedCustomerMarkers();
 					}
 
 					long waitTime = Data.getCurrentCustomerInfo()
@@ -2489,7 +2489,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else{
 						driverIRFareRl.setVisibility(View.VISIBLE);
 					}
-					setMakeDeliveryButtonVisibility();
 					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
 					setTextViewRideInstructions();
@@ -2751,6 +2750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private void setEtaTimerVisibility(){
 		try {
 			if (Data.getCurrentCustomerInfo().getIsDelivery() == 0
+					&& Data.getCurrentCustomerInfo().getIsPooled() == 0
 					&& Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) - System.currentTimeMillis() > 0) {
 				etaTimerRLayout.setVisibility(View.VISIBLE);
 				if (Prefs.with(this).getLong(SPLabels.CURRENT_ETA, 0) > 0) {
@@ -4621,7 +4621,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										if (pathToCustomerPolyline != null) {
 											pathToCustomerPolyline.remove();
 										}
-										map.addMarker(getCustomerLocationMarkerOptions(customerLatLng));
+										addCustomerPickupMarker(map, Data.getCurrentCustomerInfo(), customerLatLng);
 
 										PolylineOptions polylineOptions = new PolylineOptions();
 										polylineOptions.width(ASSL.Xscale() * 5).color(D_TO_C_MAP_PATH_COLOR).geodesic(true);
@@ -4654,22 +4654,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public MarkerOptions getCustomerLocationMarkerOptions(LatLng customerLatLng) {
+	public void addCustomerPickupMarker(GoogleMap map, CustomerInfo customerInfo, LatLng latLng) {
 		MarkerOptions markerOptions = new MarkerOptions();
-		markerOptions.title(Data.getCurrentEngagementId());
+		markerOptions.title(String.valueOf(customerInfo.getEngagementId()));
 		markerOptions.snippet("");
-		markerOptions.position(customerLatLng);
-		if(Data.getCurrentCustomerInfo() == null
-				|| Data.getCurrentCustomerInfo().getIsDelivery() == 0){
-			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
-		} else{
+		markerOptions.position(latLng);
+		if(customerInfo.getIsDelivery() == 1){
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
 					.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
 		}
-
-
-		return markerOptions;
+		else if(customerInfo.getIsPooled() == 1){
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(Utils.setBitmapColor(CustomMapMarkerCreator
+							.createCustomMarkerBitmap(HomeActivity.this, assl, 30f, 72f, R.drawable.ic_pool_marker),
+							customerInfo.getColor(), activity.getResources().getColor(R.color.new_orange))));
+		}
+		else{
+			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+		}
+		map.addMarker(markerOptions);
 	}
 
 
@@ -5102,18 +5105,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (DriverScreenMode.D_RIDE_END != driverScreenMode
 							&& DriverScreenMode.D_IN_RIDE != driverScreenMode) {
 						for (int i = 0; i < customerInfos.size(); i++) {
-							MarkerOptions markerOptions = new MarkerOptions();
-							markerOptions.title(String.valueOf(customerInfos.get(i).engagementId));
-							markerOptions.snippet("");
-							markerOptions.position(customerInfos.get(i).requestlLatLng);
-							if(customerInfos.get(i).getIsDelivery() == 1){
-								markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createCustomMarkerBitmap(HomeActivity.this, assl, 51f, 70f, R.drawable.ic_delivery_pickup_marker)));
-							} else {
-								markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
-							}
-
-							map.addMarker(markerOptions);
-
+							addCustomerPickupMarker(map, customerInfos.get(i), customerInfos.get(i).requestlLatLng);
 						}
 					}
 
@@ -6193,7 +6185,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				throw new Exception();
 			}
 		} catch (Exception e){
-			e.printStackTrace();
 			setEndRideButtonState(true);
 		}
 	}
@@ -6242,11 +6233,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& Data.getCurrentCustomerInfo().getDeliveryInfos().size() > 0){
 				final String engagementId = Data.getCurrentEngagementId();
 				ArrayList<LatLng> latLngs = new ArrayList<>();
-				latLngs.add(Data.getCurrentCustomerInfo().getRequestlLatLng());
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				builder.include(Data.getCurrentCustomerInfo().getRequestlLatLng());
-
 				HashMap<LatLng,Integer> counterMap = new HashMap<>();
+
+				try {
+					LatLng driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+					builder.include(driverLatLng);
+					latLngs.add(driverLatLng);
+				} catch (Exception e) {}
+
+				latLngs.add(Data.getCurrentCustomerInfo().getRequestlLatLng());
+				builder.include(Data.getCurrentCustomerInfo().getRequestlLatLng());
 
 				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
 					DeliveryInfo deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i);
@@ -6269,33 +6266,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 				}
-				try {
-					builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
 						(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
 						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
-				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
-						new ApiGoogleDirectionWaypoints.Callback() {
-							@Override
-							public void onPre() {
+				if(latLngs.size() > 1) {
+					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
+							new ApiGoogleDirectionWaypoints.Callback() {
+								@Override
+								public void onPre() {
 
-							}
+								}
 
-							@Override
-							public boolean showPath() {
-								return engagementId == Data.getCurrentEngagementId()
-										&& driverScreenMode == DriverScreenMode.D_IN_RIDE;
-							}
+								@Override
+								public boolean showPath() {
+									return engagementId == Data.getCurrentEngagementId()
+											&& driverScreenMode == DriverScreenMode.D_IN_RIDE;
+								}
 
-							@Override
-							public void polylineAdded(Polyline polyline) {
+								@Override
+								public void polylineAdded(Polyline polyline) {
 
-							}
-						}).execute();
+								}
+							}).execute();
+				}
 			}
 		} catch (Exception e){
 			e.printStackTrace();
@@ -6365,14 +6360,77 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private void setAttachedCustomerMarkers(){
-		for(int i=0; i<Data.getAssignedCustomerInfosListForEngagedStatus().size(); i++){
-			CustomerInfo customerInfo = Data.getAssignedCustomerInfosListForEngagedStatus().get(i);
-			if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
-					&& customerInfo.getDropLatLng() != null){
-				addDropPinMarker(map, customerInfo.getDropLatLng(), String.valueOf(i+ 1));
-			} else{
+		try {
+			ArrayList<LatLng> latLngs = new ArrayList<>();
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			HashMap<LatLng,Integer> counterMap = new HashMap<>();
 
+			try {
+				LatLng driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+				builder.include(driverLatLng);
+				latLngs.add(driverLatLng);
+			} catch (Exception e) {}
+
+			for(int i=0; i<Data.getAssignedCustomerInfosListForEngagedStatus().size(); i++){
+				CustomerInfo customerInfo = Data.getAssignedCustomerInfosListForEngagedStatus().get(i);
+				LatLng latLng = null;
+				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
+						&& customerInfo.getIsDelivery() != 1
+						&& customerInfo.getDropLatLng() != null){
+					latLng = customerInfo.getDropLatLng();
+				} else{
+					latLng = customerInfo.getRequestlLatLng();
+				}
+
+				if(latLng != null
+						&& Utils.compareDouble(latLng.latitude, 0) != 0
+						&& Utils.compareDouble(latLng.longitude, 0) != 0) {
+					if (counterMap.containsKey(latLng)) {
+						counterMap.put(latLng, counterMap.get(latLng) + 1);
+					} else {
+						counterMap.put(latLng, 1);
+					}
+					if (!latLngs.contains(latLng)) {
+						latLngs.add(latLng);
+						builder.include(latLng);
+					} else {
+						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
+					}
+					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
+							&& customerInfo.getIsDelivery() != 1
+							&& customerInfo.getDropLatLng() != null){
+						addDropPinMarker(map, latLng, String.valueOf(i + 1));
+					} else{
+						addCustomerPickupMarker(map, customerInfo, latLng);
+					}
+				}
 			}
+
+			map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
+					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
+
+			if(latLngs.size() > 1) {
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
+						new ApiGoogleDirectionWaypoints.Callback() {
+							@Override
+							public void onPre() {
+
+							}
+
+							@Override
+							public boolean showPath() {
+								return Data.getAssignedCustomerInfosListForEngagedStatus().size() > 0;
+							}
+
+							@Override
+							public void polylineAdded(Polyline polyline) {
+
+							}
+						}).execute();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

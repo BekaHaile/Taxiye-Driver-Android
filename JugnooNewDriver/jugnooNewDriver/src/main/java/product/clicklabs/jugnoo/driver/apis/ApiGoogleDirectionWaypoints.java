@@ -8,6 +8,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -22,11 +24,26 @@ import retrofit.mime.TypedByteArray;
 public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, String>{
 
 	private String strOrigin = "", strDestination = "", strWaypoints = "";
+	private LatLng latLngInit;
 	private int pathColor;
 	private GoogleMap map;
 	private Callback callback;
 
 	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, GoogleMap map, Callback callback){
+		latLngInit = latLngs.get(0);
+		Collections.sort(latLngs, new Comparator<LatLng>() {
+
+			@Override
+			public int compare(LatLng lhs, LatLng rhs) {
+				if (latLngInit != null) {
+					double distanceLhs = MapUtils.distance(latLngInit, lhs);
+					double distanceRhs = MapUtils.distance(latLngInit, rhs);
+					return (int) (distanceLhs - distanceRhs);
+				}
+				return 0;
+			}
+		});
+
 		StringBuilder sb = new StringBuilder();
 		for(int i=0; i<latLngs.size(); i++){
 			if(i == 0){
