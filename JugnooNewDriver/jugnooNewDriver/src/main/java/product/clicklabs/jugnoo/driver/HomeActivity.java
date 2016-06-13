@@ -164,6 +164,7 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import product.clicklabs.jugnoo.driver.widgets.LinearLayoutManagerScrollControl;
 import retrofit.Callback;
@@ -340,6 +341,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
 	long fetchHeatMapTime = 0;
+	double startRideAlarmDisplacement;
+	long fetchAllAppTime = 0;
 
 	double totalFare = 0;
 	String waitTime = "", rideTime = "";
@@ -2873,6 +2876,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			try {
+				startRideAlarmHandler.removeCallbacks(startRideAlarmRunnalble);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			relativeLayoutEnterDestination.setVisibility(View.GONE);
@@ -3028,6 +3036,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
+//					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.dCustLatLng);
+//					startRideAlarmHandler.postDelayed(smilyRunnalble, 5000);
+
+					setEtaTimerVisibility();
+					startCustomerPathUpdateTimer();
+					cancelMapAnimateAndUpdateRideDataTimer();
 					setTextViewRideInstructions();
 					updateCustomers();
 
@@ -3103,6 +3117,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+
+					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
+					startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
 
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
@@ -3290,6 +3307,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	Handler startRideAlarmHandler = new Handler();
+	boolean reachedDestination = false;
+	Runnable startRideAlarmRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0)) {
+					reachedDestination = true;
+				}
+				if (reachedDestination && (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0))) {
+
+
+					DialogPopup.alertPopup(activity, "", "If Customer is with you, than please start ride");
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 2, true, true);
+
+				}
+			} catch (Exception e) {
+
+			}
+			startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 2000);
+		}
+	};
 
 
 	public void startMeteringService() {

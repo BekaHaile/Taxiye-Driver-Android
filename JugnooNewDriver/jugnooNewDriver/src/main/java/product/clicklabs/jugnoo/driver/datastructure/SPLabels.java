@@ -103,4 +103,6 @@ public class SPLabels {
 	public static final String LAST_PICK_UP = "last_pick_up";
 	public static final String ADD_HOME = "add_home";
 	public static final String ADD_WORK = "add_work";
+    public static final String START_RIDE_ALERT_RADIUS = "start_ride_alert_radius";
+
 }
