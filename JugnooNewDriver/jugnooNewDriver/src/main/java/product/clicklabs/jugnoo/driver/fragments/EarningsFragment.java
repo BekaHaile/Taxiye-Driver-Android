@@ -187,32 +187,32 @@ public class EarningsFragment extends Fragment {
 
 
 				textViewTodayRidesNumber.setText(""+earningsDetailResponse.getDaily().getRides());
-				textViewTodayRidesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewTodayRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getRidesAmount());
 
 				textViewTodayReferralNumber.setText(""+earningsDetailResponse.getDaily().getReferrals());
-				textViewTodayReferralValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewTodayReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getReferralAmount());
 
-				textViewTodayDeliveriesNumber.setText("");
-				textViewTodayDeliveriesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewTodayDeliveriesNumber.setText(""+earningsDetailResponse.getDaily().getDeliveryCount());
+				textViewTodayDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getDeliveryCharges());
 
 
 				textViewWeekRidesNumber.setText(""+earningsDetailResponse.getWeekly().getRides());
-				textViewWeekRidesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewWeekRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getRidesAmount());
 
 				textViewWeekReferralNumber.setText(""+earningsDetailResponse.getWeekly().getReferrals());
-				textViewWeekReferralValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewWeekReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getReferralAmount());
 
-				textViewWeekDeliveriesNumber.setText("");
-				textViewWeekDeliveriesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewWeekDeliveriesNumber.setText(""+earningsDetailResponse.getWeekly().getDeliveryCount());
+				textViewWeekDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getDeliveryCharges());
 
 				textViewMonthRidesNumber.setText(""+earningsDetailResponse.getMonthly().getRides());
-				textViewMonthRidesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewMonthRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getRidesAmount());
 
-				textViewMonthDeliveriesNumber.setText("");
-				textViewMonthDeliveriesValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewMonthDeliveriesNumber.setText(""+earningsDetailResponse.getMonthly().getDeliveryCount());
+				textViewMonthDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getDeliveryCharges());
 
 				textViewMonthReferralNumber.setText(""+earningsDetailResponse.getMonthly().getReferrals());
-				textViewMonthReferralValue.setText(getResources().getString(R.string.rupee)+"");
+				textViewMonthReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getReferralAmount());
 
 
 				dateTimeValueFromWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getStartDate()));

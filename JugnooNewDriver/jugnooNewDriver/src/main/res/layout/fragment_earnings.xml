@@ -15,7 +15,7 @@
             android:gravity="center_horizontal"
             android:layout_marginLeft="8px"
             android:layout_marginRight="24px"
-            android:layout_height="300px"
+            android:layout_height="280px"
             android:background="@color/white_light_grey"
             >
 
@@ -71,7 +71,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewTodayRidesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:gravity="center_horizontal"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -85,7 +86,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -118,7 +119,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewTodayReferralText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:gravity="center_horizontal"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -132,7 +134,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -164,7 +166,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewTodayDeliveriesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:gravity="center_horizontal"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -178,7 +181,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -202,7 +205,7 @@
             android:layout_width="match_parent"
             android:gravity="center_horizontal"
             android:layout_marginTop="24px"
-            android:layout_height="300px"
+            android:layout_height="290px"
             android:layout_marginLeft="8px"
             android:layout_marginRight="24px"
             >
@@ -265,7 +268,7 @@
                             android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextFromWeek"
                             android:singleLine="true"
-                            android:text="23 June, 2014"
+                            android:text="@string/NA"
                             android:textColor="@color/new_orange"
                             android:textSize="28px"
                             />
@@ -300,7 +303,7 @@
                             android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextToWeek"
                             android:singleLine="true"
-                            android:text="23 June, 2014"
+                            android:text="@string/NA"
                             android:textColor="@color/new_orange"
                             android:textSize="28px"
                             />
@@ -336,7 +339,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewWeekRidesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:gravity="center_horizontal"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -350,7 +354,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -383,7 +387,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewWeekReferralText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:text="0"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -397,7 +402,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -429,7 +434,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewWeekDeliveriesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:gravity="center_horizontal"
+                    android:text="0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -443,7 +449,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -527,7 +533,7 @@
                             android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextFrom"
                             android:singleLine="true"
-                            android:text="23 June, 2014"
+                            android:text="@string/NA"
                             android:textColor="@color/new_orange"
                             android:textSize="28px"
                             />
@@ -562,7 +568,7 @@
                             android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextTo"
                             android:singleLine="true"
-                            android:text="23 June, 2014"
+                            android:text="@string/NA"
                             android:textColor="@color/new_orange"
                             android:textSize="28px"
                             />
@@ -598,7 +604,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewMonthRidesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:text="0"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -612,7 +619,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -645,7 +652,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewMonthReferralText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:text="0"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -659,7 +667,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -691,7 +699,8 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewMonthDeliveriesText"
                     android:layout_marginLeft="40px"
-                    android:text="2000"
+                    android:text="0"
+                    android:gravity="center_horizontal"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
@@ -705,7 +714,7 @@
                     android:gravity="right"
                     android:layout_marginRight="16px"
                     android:layout_marginLeft="190px"
-                    android:text="Rs. 222"
+                    android:text="Rs. 0"
                     android:textColor="@color/black"
                     android:textSize="32px" />
 
