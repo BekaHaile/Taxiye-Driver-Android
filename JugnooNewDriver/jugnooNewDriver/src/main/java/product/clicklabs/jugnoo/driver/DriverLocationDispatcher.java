@@ -51,47 +51,61 @@ public class DriverLocationDispatcher {
 				
 				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
+						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
+								DriverScreenMode.D_INITIAL.getOrdinal());
+						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
+						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
 
-						HashMap<String, String> nameValuePairs = new HashMap<>();
-						nameValuePairs.put("access_token", accessToken);
-						nameValuePairs.put("latitude", "" + location.getLatitude());
-						nameValuePairs.put("longitude", "" + location.getLongitude());
-						nameValuePairs.put("bearing", "" + location.getBearing());
-						nameValuePairs.put("device_token", deviceToken);
-						nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
-						nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
+						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
+								|| ((screenMode == DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal()
+									|| screenMode == DriverScreenMode.D_ARRIVED.getOrdinal()
+									|| screenMode == DriverScreenMode.D_START_RIDE.getOrdinal())
+									&& diff >= acceptedStateTime)) {
 
-						Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
-						RestClient.setupRestClient(serverUrl);
+							HashMap<String, String> nameValuePairs = new HashMap<>();
+							nameValuePairs.put("access_token", accessToken);
+							nameValuePairs.put("latitude", "" + location.getLatitude());
+							nameValuePairs.put("longitude", "" + location.getLongitude());
+							nameValuePairs.put("bearing", "" + location.getBearing());
+							nameValuePairs.put("device_token", deviceToken);
+							nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
+							nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
 
-						Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
-						String result = new String(((TypedByteArray)response.getBody()).getBytes());
+							Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
-						Log.i(TAG, "sendLocationToServer result=" + result);
+							RestClient.setupRestClient(serverUrl);
 
-						try{
-							//{"log":"Updated"}
-							JSONObject jObj = new JSONObject(result);
-							if(jObj.has("log")){
-								String log = jObj.getString("log");
-								if("Updated".equalsIgnoreCase(log)){
-									Database2.getInstance(context).updateDriverLastLocationTime();
-									FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
+							Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
+							String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+							Log.i(TAG, "sendLocationToServer result=" + result);
+
+							try {
+								//{"log":"Updated"}
+								JSONObject jObj = new JSONObject(result);
+								if (jObj.has("log")) {
+									String log = jObj.getString("log");
+									if ("Updated".equalsIgnoreCase(log)) {
+										Database2.getInstance(context).updateDriverLastLocationTime();
+										Prefs.with(context).save(SPLabels.UPDATE_DRIVER_LOCATION_TIME, System.currentTimeMillis());
+										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
+									}
 								}
+
+								int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+								if (ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag) {
+									String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
+									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
+									sendLocationToServer(context);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 
-							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-							if(ApiResponseFlags.RESET_DEVICE_TOKEN.getOrdinal() == flag){
-								String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
-								Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
-								sendLocationToServer(context);
-							}
-						} catch(Exception e){
-							e.printStackTrace();
+							nameValuePairs = null;
 						}
-						
-						nameValuePairs = null;
 					}
 				}
 
