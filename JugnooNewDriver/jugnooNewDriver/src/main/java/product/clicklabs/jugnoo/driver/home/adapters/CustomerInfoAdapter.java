@@ -44,21 +44,20 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewholder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         CustomerInfo customerInfo = getItem(position);
-        ViewHolder holder = (ViewHolder) viewholder;
+        ViewHolder holder = (ViewHolder) viewHolder;
         holder.linearLayoutRoot.setTag(position);
         holder.driverPassengerName.setText(customerInfo.getName());
-        Utils.setTextColor(holder.driverPassengerName, customerInfo.getColor(),
-                activity.getResources().getColor(R.color.text_color));
+
         if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
-            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.new_orange));
+            Utils.setDrawableColor(holder.linearLayoutRoot, customerInfo.getColor(),
+                    activity.getResources().getColor(R.color.new_orange));
             holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.white));
-
-        }else{
+        } else {
             holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
-            holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.black));
-
+            Utils.setTextColor(holder.driverPassengerName, customerInfo.getColor(),
+                    activity.getResources().getColor(R.color.text_color));
         }
 
         holder.linearLayoutRoot.setOnClickListener(new View.OnClickListener() {
