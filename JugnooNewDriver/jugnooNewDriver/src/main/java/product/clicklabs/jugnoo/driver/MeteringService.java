@@ -20,6 +20,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -178,18 +179,28 @@ public class MeteringService extends Service {
 				@Override
 				public void updateDistanceTime(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
-					if(fromGPS){
-						String message = context.getResources().getString(R.string.total_distance)
-								+" = "+getDecimalFormat().format(Math.abs(distance) / 1000)
-								+ context.getResources().getString(R.string.km)+" "
-								+"\n"+context.getResources().getString(R.string.ride_time)
-								+" = " +Utils.getChronoTimeFromMillis(elapsedTime);
-						generateNotification(context, message);
-					}
-					if(HomeActivity.appInterruptHandler != null){
-						HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,
-								lastGPSLocation,
-								lastFusedLocation, totalHaversineDistance);
+					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
+							DriverScreenMode.D_INITIAL.getOrdinal());
+					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
+							|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
+							|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
+						if (fromGPS) {
+							String message = context.getResources().getString(R.string.total_distance)
+									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000)
+									+ context.getResources().getString(R.string.km) + " "
+									+ "\n" + context.getResources().getString(R.string.ride_time)
+									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);
+							generateNotification(context, message);
+						}
+						if (HomeActivity.appInterruptHandler != null) {
+							HomeActivity.appInterruptHandler.updateMeteringUI(Math.abs(distance), elapsedTime, waitTime,
+									lastGPSLocation,
+									lastFusedLocation, totalHaversineDistance);
+						}
+					} else{
+						Database2.getInstance(context).updateMetringState(Database2.OFF);
+						Prefs.with(context).save(SPLabels.METERING_STATE, Database2.OFF);
+						context.stopService(new Intent(context, MeteringService.class));
 					}
 				}
 				

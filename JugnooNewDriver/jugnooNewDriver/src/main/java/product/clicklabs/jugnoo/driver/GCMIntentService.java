@@ -837,7 +837,6 @@ public class GCMIntentService extends IntentService {
 					ringStopTimer.cancel();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}

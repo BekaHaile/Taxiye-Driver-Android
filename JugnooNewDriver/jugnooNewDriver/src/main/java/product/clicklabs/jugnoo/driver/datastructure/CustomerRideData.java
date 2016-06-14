@@ -1,5 +1,9 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.content.Context;
+
+import product.clicklabs.jugnoo.driver.GpsDistanceCalculator;
+
 /**
  * Created by shankar on 5/30/16.
  */
@@ -10,7 +14,11 @@ public class CustomerRideData {
 	private long waitTime = 0;
 	public CustomerRideData(){}
 
-	public double getDistance() {
+	public double getDistance(Context context) {
+		double spDistance = GpsDistanceCalculator.getTotalDistanceFromSP(context);
+		if(spDistance > distance){
+			distance = spDistance;
+		}
 		return distance;
 	}
 
