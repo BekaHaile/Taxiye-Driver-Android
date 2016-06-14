@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
@@ -336,6 +337,13 @@ public interface APIServices {
 	void earningDetails(@Field("access_token") String accessToken,
 									   @Field("login_type") String loginType,
 									   Callback<EarningsDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_delivery_details")
+	void deliveryDetails(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						 @Field("delivery_id") int deliveryId,
+						Callback<DeliveryDetailResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_pushes_for_user")

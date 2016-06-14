@@ -116,6 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
+                    android:layout_marginTop="5px"
                     android:text="Ride Distance: 5.6 Km"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
@@ -129,6 +130,7 @@
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Total Time: 10 min"
+                    android:layout_marginTop="5px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 
@@ -139,6 +141,7 @@
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Return Distance: 4 Km"
+                    android:layout_marginTop="5px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"
                     android:visibility="visible"
@@ -150,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
+                    android:layout_marginTop="5px"
                     android:text="No of Deliveries: 4 "
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"

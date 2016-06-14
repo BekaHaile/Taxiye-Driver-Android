@@ -14,15 +14,23 @@ import com.flurry.android.FlurryAgent;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import product.clicklabs.jugnoo.driver.adapters.CancelOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -44,12 +52,16 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 	ImageView imageViewRequestType;
 
+	int delivery_id;
+
 	NonScrollListView listViewDeliveryAddresses;
 	DeliveryAddressListAdapter deliveryAddressListAdapter;
-
+	DeliveryDetailResponse deliveryDetailResponse;
 	RelativeLayout relativeLayoutDeliveryFare, relativeLayoutReturnSubsidy, relativeLayoutJugnooCut;
 
 	public static RideInfo openedRideInfo;
+	ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList = new ArrayList<>();
+
 
 	@Override
 	protected void onStart() {
@@ -77,6 +89,11 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(DeliveryDetailsActivity.this, relative, 1134, 720, false);
 
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			delivery_id = extras.getInt("delivery_id");
+		}
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
@@ -86,7 +103,8 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
 
 
-		idValue = (TextView) findViewById(R.id.idValue); idValue.setTypeface(Data.latoRegular(this));
+		idValue = (TextView) findViewById(R.id.idValue);
+		idValue.setTypeface(Data.latoRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
 		dateTimeValue.setTypeface(Data.latoRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
@@ -141,7 +159,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 
 		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
-		deliveryAddressListAdapter = new DeliveryAddressListAdapter(DeliveryDetailsActivity.this);
+		deliveryAddressListAdapter = new DeliveryAddressListAdapter(DeliveryDetailsActivity.this, deliveryAddressList);
 		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
 
 
@@ -155,74 +173,112 @@ public class DeliveryDetailsActivity extends BaseActivity {
 			}
 		});
 
+		getDeliveryDetails();
 
-		if (openedRideInfo != null) {
-			idValue.setText(getResources().getString(R.string.delivery_id)+" "+openedRideInfo.id);
-			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
+		update();
 
-			distanceValue.setText(getResources().getString(R.string.distance)+": "
-					+Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance))
-					+ " "+getResources().getString(R.string.km));
 
-			rideTimeValue.setText(getResources().getString(R.string.total_time)+": "
-					+openedRideInfo.rideTime + " "+getResources().getString(R.string.min));
+	}
 
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
-				textViewReturnDistance.setVisibility(View.GONE);
+	public void update() {
+		try {
+			if (deliveryDetailResponse != null) {
+				idValue.setText(getResources().getString(R.string.delivery_id) + " "
+						+ deliveryDetailResponse.getDetails().getRideId());
+				dateTimeValue.setText(DateOperations.convertDate(DateOperations.
+						utcToLocal(deliveryDetailResponse.getDetails().getTime())));
+
+				distanceValue.setText(getResources().getString(R.string.distance) + ": "
+						+ Utils.getDecimalFormatForMoney().
+						format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getRideDistance())))
+						+ " " + getResources().getString(R.string.km));
+
+				rideTimeValue.setText(getResources().getString(R.string.total_time) + ": "
+						+ deliveryDetailResponse.getDetails().getTotalTime() + " " + getResources().getString(R.string.min));
+
+				if (Utils.compareDouble(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().
+						getReturnDistance())), 0) == 0) {
+					textViewReturnDistance.setVisibility(View.GONE);
+				} else {
+					textViewReturnDistance.setVisibility(View.VISIBLE);
+					textViewReturnDistance.setText(getResources().getString(R.string.return_distance) + ": "
+							+ deliveryDetailResponse.getDetails().getReturnDistance() + " " + getResources().getString(R.string.km));
+				}
+
+				textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().
+						format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getRideFare()))));
+
+				if (Utils.compareDouble(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().
+						getDeliveryFare())), 0) == 0) {
+					relativeLayoutDeliveryFare.setVisibility(View.GONE);
+				} else {
+					relativeLayoutDeliveryFare.setVisibility(View.VISIBLE);
+					textViewDeliveryFareValue.setText(Utils.getDecimalFormatForMoney().
+							format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getDeliveryFare()))));
+				}
+
+				if (Utils.compareDouble(Double.parseDouble(openedRideInfo.luggageCharges), 0) == 0) {
+					relativeLayoutReturnSubsidy.setVisibility(View.GONE);
+				} else {
+					relativeLayoutReturnSubsidy.setVisibility(View.VISIBLE);
+					textViewReturnSubsidyValue.setText(Utils.getDecimalFormatForMoney().
+							format(Double.parseDouble(openedRideInfo.luggageCharges)));
+				}
+
+				relativeLayoutJugnooCut.setVisibility(View.GONE);
+				if ("0".equalsIgnoreCase(String.valueOf(deliveryDetailResponse.getDetails().getJugnooCut()))) {
+					relativeLayoutJugnooCut.setVisibility(View.GONE);
+				} else {
+					relativeLayoutJugnooCut.setVisibility(View.VISIBLE);
+					textViewJugnooCutValue.setText(deliveryDetailResponse.getDetails().getJugnooCut());
+				}
+
+				textViewActualFare.setText(getResources().getString(R.string.rupee) + " " +
+						Utils.getDecimalFormatForMoney().format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getTotalFare()))));
+				textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " "
+						+ Utils.getDecimalFormatForMoney().format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getPaidInCash()))));
+
+				if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
+					textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " "
+							+ Utils.getDecimalFormatForMoney().
+							format(Math.abs(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance()))))));
+					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
+					textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
+					textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+				} else {
+					textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " +
+							Utils.getDecimalFormatForMoney().
+									format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance()))));
+					textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
+					textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
+					textViewAccountBalanceText.setText(getResources().getString(R.string.account));
+				}
+				textViewFromValue.setText(deliveryDetailResponse.getDetails().getFrom());
+				imageViewRequestType.setImageResource(R.drawable.request_autos);
+
+				deliveryAddressList.addAll(deliveryDetailResponse.getDetails().getTo());
+				setDeliveryAddressList();
+
+
 			} else {
-				textViewReturnDistance.setVisibility(View.VISIBLE);
-				textViewReturnDistance.setText(getResources().getString(R.string.return_distance)+": "
-						+ openedRideInfo.waitTime + " "+getResources().getString(R.string.km));
+				performBackPressed();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
-
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.convenienceCharges), 0) == 0) {
-				relativeLayoutDeliveryFare.setVisibility(View.GONE);
+	private void setDeliveryAddressList() {
+		try {
+			if (deliveryAddressList != null) {
+				deliveryAddressListAdapter.notifyDataSetChanged();
 			} else {
-				relativeLayoutDeliveryFare.setVisibility(View.VISIBLE);
-				textViewDeliveryFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.convenienceCharges)));
+				performBackPressed();
 			}
-
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.luggageCharges), 0) == 0) {
-				relativeLayoutReturnSubsidy.setVisibility(View.GONE);
-			} else {
-				relativeLayoutReturnSubsidy.setVisibility(View.VISIBLE);
-				textViewReturnSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.luggageCharges)));
-			}
-
-			relativeLayoutJugnooCut.setVisibility(View.GONE);
-//			if("0".equalsIgnoreCase(openedRideInfo.)){
-//				relativeLayoutJugnooCut.setVisibility(View.GONE);
-//			}
-//			else{
-//				relativeLayoutJugnooCut.setVisibility(View.VISIBLE);
-//				textViewConvayenceChargeValue.setText(openedRideInfo.cancelSubsidy);
-//			}
-
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
-
-			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
-			} else {
-				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
-			}
-			textViewFromValue.setText(openedRideInfo.fromLocation);
-
-			imageViewRequestType.setImageResource(R.drawable.request_autos);
-
-		} else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			performBackPressed();
 		}
-
-
 	}
 
 
@@ -246,30 +302,41 @@ public class DeliveryDetailsActivity extends BaseActivity {
 	}
 
 
-	public void fetchDeliveryData(final Activity activity) {
+	public void getDeliveryDetails() {
 		try {
-			RestClient.getApiServices().getDestinationData(Data.userData.accessToken, new Callback<DestinationDataResponse>() {
-				@Override
-				public void success(DestinationDataResponse destinationDataResponse, Response response) {
-					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						String message = JSONParser.getServerMessage(jObj);
-						int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-							}
-						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-					}
-				}
+			if (!(DeliveryDetailsActivity.this.checkIfUserDataNull() && AppStatus.getInstance(DeliveryDetailsActivity.this).isOnline(DeliveryDetailsActivity.this))) {
+				DialogPopup.showLoadingDialog(DeliveryDetailsActivity.this, DeliveryDetailsActivity.this.getResources().getString(R.string.loading));
 
-				@Override
-				public void failure(RetrofitError error) {
-				}
-			});
+				RestClient.getApiServices().deliveryDetails(Data.userData.accessToken, Data.LOGIN_TYPE, delivery_id,
+						new Callback<DeliveryDetailResponse>() {
+							@Override
+							public void success(DeliveryDetailResponse deliveryDetailResponse, Response response) {
+								DialogPopup.dismissLoadingDialog();
+								try {
+									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									JSONObject jObj;
+									jObj = new JSONObject(jsonString);
+									int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+									String message = JSONParser.getServerMessage(jObj);
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(DeliveryDetailsActivity.this, jObj, flag)) {
+										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+											DeliveryDetailsActivity.this.deliveryDetailResponse = deliveryDetailResponse;
+											update();
+										} else {
+											DialogPopup.alertPopup(DeliveryDetailsActivity.this, "", message);
+										}
+									}
+								} catch (Exception exception) {
+									exception.printStackTrace();
+								}
+							}
+
+							@Override
+							public void failure(RetrofitError error) {
+								DialogPopup.dismissLoadingDialog();
+							}
+						});
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
