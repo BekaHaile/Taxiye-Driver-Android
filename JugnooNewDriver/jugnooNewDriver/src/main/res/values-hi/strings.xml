@@ -582,6 +582,7 @@
 	<string name="delivery_fare">Delivery Fare</string>
 	<string name="return_subsidy">Return Subsidy</string>
 	<string name="return_distance">Return Distance</string>
+	<string name="delivery_details">DELIVERY DETAILS</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

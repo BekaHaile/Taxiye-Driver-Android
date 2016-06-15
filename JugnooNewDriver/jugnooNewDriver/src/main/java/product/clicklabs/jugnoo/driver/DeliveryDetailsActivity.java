@@ -52,14 +52,13 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 	ImageView imageViewRequestType;
 
-	int delivery_id;
+	String ride_id;
 
 	NonScrollListView listViewDeliveryAddresses;
 	DeliveryAddressListAdapter deliveryAddressListAdapter;
 	DeliveryDetailResponse deliveryDetailResponse;
 	RelativeLayout relativeLayoutDeliveryFare, relativeLayoutReturnSubsidy, relativeLayoutJugnooCut;
 
-	public static RideInfo openedRideInfo;
 	ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList = new ArrayList<>();
 
 
@@ -84,14 +83,14 @@ public class DeliveryDetailsActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_ride_details);
+		setContentView(R.layout.activity_delivery_details);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(DeliveryDetailsActivity.this, relative, 1134, 720, false);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
-			delivery_id = extras.getInt("delivery_id");
+			ride_id = extras.getString("delivery_id");
 		}
 
 		backBtn = (Button) findViewById(R.id.backBtn);
@@ -141,7 +140,6 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Data.latoRegular(this));
 
 		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Data.latoRegular(this));
 
@@ -154,7 +152,6 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
 
 
@@ -217,12 +214,12 @@ public class DeliveryDetailsActivity extends BaseActivity {
 							format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getDeliveryFare()))));
 				}
 
-				if (Utils.compareDouble(Double.parseDouble(openedRideInfo.luggageCharges), 0) == 0) {
+				if (Utils.compareDouble(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getReturnSubsidy())), 0) == 0) {
 					relativeLayoutReturnSubsidy.setVisibility(View.GONE);
 				} else {
 					relativeLayoutReturnSubsidy.setVisibility(View.VISIBLE);
 					textViewReturnSubsidyValue.setText(Utils.getDecimalFormatForMoney().
-							format(Double.parseDouble(openedRideInfo.luggageCharges)));
+							format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getReturnSubsidy()))));
 				}
 
 				relativeLayoutJugnooCut.setVisibility(View.GONE);
@@ -238,7 +235,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 				textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " "
 						+ Utils.getDecimalFormatForMoney().format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getPaidInCash()))));
 
-				if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
+				if (Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance())) < 0) {
 					textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " "
 							+ Utils.getDecimalFormatForMoney().
 							format(Math.abs(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getAccountBalance()))))));
@@ -260,8 +257,6 @@ public class DeliveryDetailsActivity extends BaseActivity {
 				setDeliveryAddressList();
 
 
-			} else {
-				performBackPressed();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -307,7 +302,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 			if (!(DeliveryDetailsActivity.this.checkIfUserDataNull() && AppStatus.getInstance(DeliveryDetailsActivity.this).isOnline(DeliveryDetailsActivity.this))) {
 				DialogPopup.showLoadingDialog(DeliveryDetailsActivity.this, DeliveryDetailsActivity.this.getResources().getString(R.string.loading));
 
-				RestClient.getApiServices().deliveryDetails(Data.userData.accessToken, Data.LOGIN_TYPE, delivery_id,
+				RestClient.getApiServices().deliveryDetails(Data.userData.accessToken, Data.LOGIN_TYPE, ride_id,
 						new Callback<DeliveryDetailResponse>() {
 							@Override
 							public void success(DeliveryDetailResponse deliveryDetailResponse, Response response) {

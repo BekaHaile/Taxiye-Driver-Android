@@ -339,10 +339,10 @@ public interface APIServices {
 									   Callback<EarningsDetailResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/get_delivery_details")
+	@POST("/delivery_details")
 	void deliveryDetails(@Field("access_token") String accessToken,
 						@Field("login_type") String loginType,
-						 @Field("delivery_id") int deliveryId,
+						 @Field("ride_id") String rideId,
 						Callback<DeliveryDetailResponse> callback);
 
 	@FormUrlEncoded

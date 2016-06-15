@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/ride_details"
+            android:text="@string/delivery_details"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
@@ -94,7 +94,7 @@
                 android:id="@+id/distTimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="15px"
                 android:layout_marginLeft="30px"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:layout_marginTop="5px"
+                    android:layout_marginTop="10px"
                     android:text="Ride Distance: 5.6 Km"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
@@ -130,7 +130,7 @@
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Total Time: 10 min"
-                    android:layout_marginTop="5px"
+                    android:layout_marginTop="10px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 
@@ -141,7 +141,7 @@
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Return Distance: 4 Km"
-                    android:layout_marginTop="5px"
+                    android:layout_marginTop="10px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"
                     android:visibility="visible"
@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:layout_marginTop="5px"
+                    android:layout_marginTop="10px"
                     android:text="No of Deliveries: 4 "
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"
@@ -168,13 +168,14 @@
             android:orientation="vertical"
             android:layout_marginLeft="20px"
             android:layout_marginTop="15px"
+            android:layout_marginBottom="15px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_orange_bordered">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="15px">
 
                 <TextView
                     android:id="@+id/textViewRideFare"
@@ -483,6 +484,8 @@
                 android:id="@+id/linearLayoutTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="60px"
+                android:layout_marginRight="20px"
                 android:splitMotionEvents="false">
 
                 <product.clicklabs.jugnoo.driver.utils.NonScrollListView
