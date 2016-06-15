@@ -106,8 +106,6 @@ public class Data {
 
 
 
-
-
 //for live
 
 

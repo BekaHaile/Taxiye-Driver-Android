@@ -326,6 +326,12 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
+        <activity
+            android:name="product.clicklabs.jugnoo.driver.DriverDocumentActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+
         <service android:name=".sticky.GeanieView" />
 
         <meta-data
