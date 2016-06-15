@@ -2347,7 +2347,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						setAttachedCustomerMarkers();
 					}
 
-					customerSwitcher.setCustomerData();
+					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
@@ -2387,7 +2387,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					customerSwitcher.setCustomerData();
+					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
 
 					driverInitialLayout.setVisibility(View.GONE);
@@ -2456,7 +2456,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							rideTimeChronometer.eclipsedTime,
 							waitTime);
 
-					customerSwitcher.setCustomerData();
+					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
 
 					driverInitialLayout.setVisibility(View.GONE);
@@ -2649,35 +2649,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	String address = "";
-
-	private void updateCustomerDropAddressNavigation(final LatLng latLng) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					final String address = MapUtils.getGAPIAddress(HomeActivity.this, latLng, true);
-					runOnUiThread(new Runnable() {
-						@Override
-						public void run() {
-							updateNavigationButton(address);
-						}
-					});
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}).start();
-	}
-
-	public void updateNavigationButton(String address){
-		this.address = address;
-		if ("".equalsIgnoreCase(address)) {
-			buttonDriverNavigation.setVisibility(View.GONE);
-		} else {
-			buttonDriverNavigation.setVisibility(View.VISIBLE);
-			customerSwitcher.textViewCustomerPickupAddressSetText(address);
-		}
+	public void buttonDriverNavigationSetVisibility(int visibility){
+		buttonDriverNavigation.setVisibility(visibility);
 	}
 
 	@Override
@@ -5179,7 +5152,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						if (engagementId.equalsIgnoreCase(Data.getCurrentEngagementId())) {
+						if (engagementId.equalsIgnoreCase(String.valueOf(getOpenedCustomerInfo().getEngagementId()))) {
 							DialogPopup.dismissLoadingDialog();
 							driverScreenMode = DriverScreenMode.D_INITIAL;
 							switchDriverScreen(driverScreenMode);
@@ -5232,7 +5205,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					if (driverScreenMode == DriverScreenMode.D_REQUEST_ACCEPT) {
-						if (engagementId.equalsIgnoreCase(Data.getCurrentEngagementId())) {
+						if (engagementId.equalsIgnoreCase(String.valueOf(getOpenedCustomerInfo().getEngagementId()))) {
 							driverScreenMode = DriverScreenMode.D_INITIAL;
 							switchDriverScreen(driverScreenMode);
 						}
@@ -5291,19 +5264,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							e.printStackTrace();
 						}
 					}
-//					if (Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
-//						callAndHandleStateRestoreAPI();
-//					}
-//					if (!(Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" "))) {
-//						Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ");
-//						new ApiAcceptRide().perfectRideVariables(HomeActivity.this, "", "", "", 0, 0);
-//						Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, "");
-//						if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-//							perfectRidePassengerInfoRl.setVisibility(View.GONE);
-//							driverPassengerInfoRl.setVisibility(View.VISIBLE);
-//						}
-//					}
-
 					callAndHandleStateRestoreAPI();
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 						perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -5676,21 +5636,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			@Override
 			public void run() {
-				if (engagementId.equalsIgnoreCase(Data.getCurrentEngagementId())) {
-					updateDropLatLngandPath(dropLatLng);
-				}
+				updateDropLatLngandPath(engagementId, dropLatLng);
 			}
 		});
 	}
 
 
-	private void updateDropLatLngandPath(LatLng dropLatLng) {
-		if ((Data.getCurrentCustomerInfo() != null)) {
-			( Data.getCurrentCustomerInfo()).dropLatLng = dropLatLng;
-			startCustomerPathUpdateTimer();
-			if (( Data.getCurrentCustomerInfo()).dropLatLng != null && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-				updateCustomerDropAddressNavigation(Data.getCurrentCustomerInfo().dropLatLng);
-			}
+	private void updateDropLatLngandPath(String engagementId, LatLng dropLatLng) {
+		try {
+			Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
+			customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
+			setAttachedCustomerMarkers();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

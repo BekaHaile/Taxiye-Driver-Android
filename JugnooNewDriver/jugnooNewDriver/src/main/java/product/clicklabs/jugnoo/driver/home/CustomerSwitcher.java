@@ -77,7 +77,6 @@ public class CustomerSwitcher {
 			public void onClick(int position, CustomerInfo customerInfo) {
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 				activity.switchDriverScreen(HomeActivity.driverScreenMode);
-				setCustomerData();
 			}
 
 		});
@@ -120,54 +119,57 @@ public class CustomerSwitcher {
 	}
 
 
-	public void setCustomerData() {
+	public void setCustomerData(int engagementId) {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			if(engagementId == customerInfo.getEngagementId()) {
+				Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor(),
+						activity.getResources().getColor(R.color.new_orange));
 
-			Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor(),
-					activity.getResources().getColor(R.color.new_orange));
-
-			textViewCustomerName.setText(customerInfo.getName());
-			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-				if(customerInfo.getDropLatLng() != null
-						&& customerInfo.getIsDelivery() != 1){
-					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-							callbackGetAddress).execute();
-				} else{
-					textViewCustomerPickupAddress.setVisibility(View.GONE);
-					activity.updateNavigationButton("");
-				}
-				updateDistanceOnLocationChanged();
-				textViewDeliveryCount.setVisibility(View.GONE);
-				linearLayoutDeliveryFare.setVisibility(View.GONE);
-
-			} else {
-				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-				if(customerInfo.getAddress().equalsIgnoreCase("")){
-					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
-							callbackGetAddress).execute();
-				} else{
-					activity.updateNavigationButton(customerInfo.getAddress());
-				}
-				updateDistanceOnLocationChanged();
-				if(customerInfo.getIsDelivery() == 1){
-					textViewDeliveryCount.setVisibility(View.VISIBLE);
-					textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
-							+ " " + customerInfo.getTotalDeliveries());
-					linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-					textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
-							+ ": " + activity.getResources().getString(R.string.rupee)
-							+" "+customerInfo.getEstimatedFare());
-				} else{
+				textViewCustomerName.setText(customerInfo.getName());
+				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+					if (customerInfo.getDropLatLng() != null
+							&& customerInfo.getIsDelivery() != 1) {
+						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
+								callbackGetAddress).execute();
+					} else {
+						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						activity.buttonDriverNavigationSetVisibility(View.GONE);
+					}
+					updateDistanceOnLocationChanged();
 					textViewDeliveryCount.setVisibility(View.GONE);
 					linearLayoutDeliveryFare.setVisibility(View.GONE);
+
+				} else {
+					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+					activity.buttonDriverNavigationSetVisibility(View.GONE);
+					if (customerInfo.getAddress().equalsIgnoreCase("")) {
+						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
+								callbackGetAddress).execute();
+					} else {
+						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					}
+					updateDistanceOnLocationChanged();
+					if (customerInfo.getIsDelivery() == 1) {
+						textViewDeliveryCount.setVisibility(View.VISIBLE);
+						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
+								+ " " + customerInfo.getTotalDeliveries());
+						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
+						textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
+								+ ": " + activity.getResources().getString(R.string.rupee)
+								+ " " + customerInfo.getEstimatedFare());
+					} else {
+						textViewDeliveryCount.setVisibility(View.GONE);
+						linearLayoutDeliveryFare.setVisibility(View.GONE);
+					}
 				}
 			}
-			if(Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1){
+			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
 				recyclerViewCustomersLinked.setVisibility(View.GONE);
 				textViewCustomerName.setVisibility(View.VISIBLE);
-			} else{
+			} else {
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
 				textViewCustomerName.setVisibility(View.GONE);
 			}
@@ -192,13 +194,6 @@ public class CustomerSwitcher {
 		}
 	}
 
-	public void textViewCustomerPickupAddressSetText(String address){
-		try{
-			textViewCustomerPickupAddress.setText(address);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
 	private ApiGoogleGeocodeAddress.Callback callbackGetAddress = new ApiGoogleGeocodeAddress.Callback() {
 		@Override
@@ -208,7 +203,9 @@ public class CustomerSwitcher {
 
 		@Override
 		public void onPost(String address) {
-			activity.updateNavigationButton(address);
+			Data.getCurrentCustomerInfo().setAddress(address);
+			textViewCustomerPickupAddress.setText(address);
+			activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 		}
 	};
 

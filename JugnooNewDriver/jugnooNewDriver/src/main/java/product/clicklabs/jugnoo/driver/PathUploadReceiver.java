@@ -104,7 +104,7 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                 String accessToken = Database2.getInstance(context).getDLDAccessToken();
                                 String locations = locationDataArr.toString();
-                                String engagementId = MeteringService.gpsInstance(context).getEngagementIdFromSP(context);
+                                String engagementId = GpsDistanceCalculator.getEngagementIdFromSP(context);
                                 String serverUrl = Database2.getInstance(context).getDLDServerUrl();
                                 long responseTime = System.currentTimeMillis();
                                 if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(engagementId)) && (!"".equalsIgnoreCase(serverUrl))){

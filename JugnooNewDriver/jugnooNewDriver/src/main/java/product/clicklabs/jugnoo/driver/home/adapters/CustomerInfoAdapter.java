@@ -50,12 +50,12 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.linearLayoutRoot.setTag(position);
         holder.driverPassengerName.setText(customerInfo.getName());
 
+        holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
         if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
             Utils.setDrawableColor(holder.linearLayoutRoot, customerInfo.getColor(),
                     activity.getResources().getColor(R.color.new_orange));
             holder.driverPassengerName.setTextColor(activity.getResources().getColor(R.color.white));
         } else {
-            holder.linearLayoutRoot.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
             Utils.setTextColor(holder.driverPassengerName, customerInfo.getColor(),
                     activity.getResources().getColor(R.color.text_color));
         }

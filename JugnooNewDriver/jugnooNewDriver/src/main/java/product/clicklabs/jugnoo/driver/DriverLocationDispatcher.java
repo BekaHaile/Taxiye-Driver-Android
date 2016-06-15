@@ -120,9 +120,7 @@ public class DriverLocationDispatcher {
 							new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))));
 
 					if (!"".equalsIgnoreCase(pickupLatitude) && !"".equalsIgnoreCase(pickupLongitude)
-						&& Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
-						new LatLng(Double.parseDouble(pickupLatitude), Double.parseDouble(pickupLongitude))))
-						< Double.parseDouble(driverArrivedDistance)){
+						&& distance < Double.parseDouble(driverArrivedDistance)){
 
 						if(HomeActivity.appInterruptHandler != null){
 							HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
