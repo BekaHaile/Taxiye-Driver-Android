@@ -28,8 +28,6 @@ import com.kbeanie.imagechooser.api.ChooserType;
 import com.kbeanie.imagechooser.api.ChosenImage;
 import com.kbeanie.imagechooser.api.ImageChooserListener;
 import com.kbeanie.imagechooser.api.ImageChooserManager;
-import com.loopj.android.http.AsyncHttpClient;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RoundBorderTransform;
 
@@ -46,8 +44,8 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DocInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient1;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -55,7 +53,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 import retrofit.mime.TypedFile;
-import rmn.androidscreenlibrary.ASSL;
 
 public class DocumentListFragment extends Fragment implements ImageChooserListener {
 
@@ -70,7 +67,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	RelativeLayout main;
 
-	AsyncHttpClient fetchRidesClient;
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
 	String userEmail, docUrl;
@@ -107,9 +103,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	@Override
 	public void onDestroy() {
-		if (fetchRidesClient != null) {
-			fetchRidesClient.cancelAllRequests(true);
-		}
+//		if (fetchRidesClient != null) {
+//			fetchRidesClient.cancelAllRequests(true);
+//		}
 		super.onDestroy();
 	}
 
@@ -248,7 +244,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						}
 						userEmail = docRequirementResponse.getUserEmail();
 						docUrl = docRequirementResponse.getDocUrl();
-						RestClient1.setupRestClient(docUrl);
+						RestClient.setupRestClient(docUrl);
 
 					}
 				} catch (Exception exception) {
@@ -411,7 +407,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 		TypedFile typedFile;
 		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-		RestClient1.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
+		RestClient.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
 			@Override
 			public void success(DocRequirementResponse docRequirementResponse, Response response) {
 				try {

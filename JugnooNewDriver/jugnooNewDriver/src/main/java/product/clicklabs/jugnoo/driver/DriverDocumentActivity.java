@@ -6,7 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import rmn.androidscreenlibrary.ASSL;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
+
 
 public class DriverDocumentActivity extends FragmentActivity{
 
