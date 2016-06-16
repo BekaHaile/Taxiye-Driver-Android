@@ -74,6 +74,9 @@ public class DeliveryDetailResponse {
 		@SerializedName("return_distance")
 		@Expose
 		private Integer returnDistance;
+		@SerializedName("no_of_deliveries")
+		@Expose
+		private Integer noOfDeliveries;
 		@SerializedName("ride_fare")
 		@Expose
 		private Integer rideFare;
@@ -190,6 +193,15 @@ public class DeliveryDetailResponse {
 		 */
 		public void setReturnDistance(Integer returnDistance) {
 			this.returnDistance = returnDistance;
+		}
+
+
+		public Integer getNoOfDeliveries() {
+			return noOfDeliveries;
+		}
+
+		public void setNoOfDeliveries(Integer noOfDeliveries) {
+			this.noOfDeliveries = noOfDeliveries;
 		}
 
 		/**

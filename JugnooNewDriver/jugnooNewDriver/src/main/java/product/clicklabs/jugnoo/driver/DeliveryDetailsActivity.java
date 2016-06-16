@@ -180,7 +180,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 	public void update() {
 		try {
 			if (deliveryDetailResponse != null) {
-				idValue.setText(getResources().getString(R.string.delivery_id) + " "
+				idValue.setText(getResources().getString(R.string.delivery_id) + ": "
 						+ deliveryDetailResponse.getDetails().getRideId());
 				dateTimeValue.setText(DateOperations.convertDate(DateOperations.
 						utcToLocal(deliveryDetailResponse.getDetails().getTime())));
@@ -204,6 +204,9 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 				textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().
 						format(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().getRideFare()))));
+
+				textViewNoOfDeliveries.setText(getResources().getString(R.string.delivery_numbers) + " "
+						+ deliveryDetailResponse.getDetails().getNoOfDeliveries());
 
 				if (Utils.compareDouble(Double.parseDouble(String.valueOf(deliveryDetailResponse.getDetails().
 						getDeliveryFare())), 0) == 0) {
