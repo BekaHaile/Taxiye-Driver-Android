@@ -2894,6 +2894,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			Database2.getInstance(this).close();
 
+			cancelCustomerPathUpdateTimer();
+			cancelMapAnimateAndUpdateRideDataTimer();
+
 			System.gc();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4350,7 +4353,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				if (myLocation != null) {
 					double totalDistanceInKm = Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) / 1000.0);
-					long rideTimeSeconds = rideTimeChronometer.eclipsedTime / 1000;
+					long rideTimeSeconds = customerInfo.getElapsedRideTime(HomeActivity.this) / 1000;
 					double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
 					int lastLogId = Integer.parseInt((Prefs.with(HomeActivity.this).getString(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0)));
 					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
