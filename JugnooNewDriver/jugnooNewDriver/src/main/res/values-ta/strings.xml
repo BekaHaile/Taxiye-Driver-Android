@@ -601,6 +601,8 @@
     <string name="success">Success</string>
     <string name="vehicle_status">Vehicle Status</string>
     <string name="rented">Rented</string>
+    <string name="auto_driver_confirmation">Are you an auto driver?</string>
+    <string name="auto_status_confirmation">Do you have an auto ?</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

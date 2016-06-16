@@ -333,7 +333,7 @@
 	<string name="rate">Rate: </string>
 	<string name="ride_in_progress_cant_logout">Ride in progress. You can logout only after the ride ends.</string>
 	<string name="rate_applied">Rate Applied</string>
-	<string name="register">REGISTER</string>
+	<string name="register">Register</string>
 	<string name="request_registration">REQUEST REGISTRATION</string>
 	<string name="reg_info">Registration Information</string>
 	<string name="ride_details">RIDE DETAILS</string>
@@ -595,6 +595,8 @@
 	<string name="vehicle_status">Vehicle Status</string>
 	<string name="owner">Owner</string>
 	<string name="rented">Rented</string>
+	<string name="auto_driver_confirmation">Are you an auto driver?</string>
+	<string name="auto_status_confirmation">Do you have an auto ?</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

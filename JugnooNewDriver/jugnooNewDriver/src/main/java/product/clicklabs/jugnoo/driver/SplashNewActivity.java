@@ -85,7 +85,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 
-	LinearLayout relative;
+	LinearLayout relative, linearLayoutAutoStatus, linearLayoutAutoDriverConfirmation, linearLayoutSignUpIn;
+	TextView textViewConfirmationText,textViewStatusText;
 	
 	ImageView imageViewJugnooLogo;
 	
@@ -95,7 +96,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ProgressBar progressBar1;
 	Configuration conf;
 
-	Button buttonLogin, buttonRegister;
+	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo;
 	
 	static boolean loginDataFetched = false;
 	boolean loginFailed = false;
@@ -192,8 +193,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		jugnooTextImg = (ImageView) findViewById(R.id.jugnooTextImg);
 		jugnooTextImg2 = (ImageView) findViewById(R.id.jugnooTextImg2);
 		jugnooTextImgRl.setVisibility(View.GONE);
-		
-		
+
+		linearLayoutAutoStatus = (LinearLayout) findViewById(R.id.linearLayoutAutoStatus);
+		linearLayoutAutoDriverConfirmation = (LinearLayout) findViewById(R.id.linearLayoutAutoDriverConfirmation);
+		linearLayoutSignUpIn = (LinearLayout) findViewById(R.id.linearLayoutSignUpIn);
+
+		buttonStatusYes = (Button) findViewById(R.id.buttonStatusYes);
+		buttonStatusNo = (Button) findViewById(R.id.buttonStatusNo);
+		buttonConfirmationYes = (Button) findViewById(R.id.buttonConfirmationYes);
+		buttonConfirmationNo = (Button) findViewById(R.id.buttonConfirmationNo);
+
+		textViewConfirmationText = (TextView) findViewById(R.id.textViewConfirmationText);
+		textViewStatusText = (TextView) findViewById(R.id.textViewConfirmationText);
+
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		progressBar1.setVisibility(View.GONE);
 		
@@ -222,6 +234,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
+				linearLayoutSignUpIn.setVisibility(View.GONE);
+				linearLayoutAutoDriverConfirmation.setVisibility(View.VISIBLE);
 				getCityAsync();
 			}
 		});
@@ -246,7 +260,34 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		
+		buttonConfirmationYes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonConfirmationNo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonStatusYes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonStatusNo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
 		Data.generateKeyHash(SplashNewActivity.this);
 		
 		
@@ -559,7 +600,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
 		final long responseTime = System.currentTimeMillis();
 		conf = getResources().getConfiguration();
-		if(!"".equalsIgnoreCase(accPair.first)){
+		if (!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -812,7 +853,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			btnOk.setText(activity.getResources().getString(R.string.update));
 			
-			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
 			btnCancel.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -983,7 +1025,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				textMessage.setVisibility(View.GONE);
 				
 				
-				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Data.latoRegular(activity));
+				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm);
+				btnConfirm.setTypeface(Data.latoRegular(activity));
 				
 				btnConfirm.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -1145,7 +1188,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 					btnOk.setText("LIVE");
 					
-					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral); btnNeutral.setTypeface(Data.latoRegular(activity));
+					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral);
+					btnNeutral.setTypeface(Data.latoRegular(activity));
 					btnNeutral.setText("DEV");
 					
 					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="1134px"
-    android:background="@drawable/spalsh_new_background"
+    android:background="@drawable/spalsh_new_background_gradient"
     android:orientation="vertical"
     android:splitMotionEvents="false">
 
@@ -28,39 +28,23 @@
         <RelativeLayout
             android:id="@+id/jugnooTextImgRl"
             android:layout_width="390px"
-            android:layout_height="390px"
+            android:layout_height="190px"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="340px"
-            android:tag="mwar"
-            >
-
+            android:tag="mwar">
 
             <ImageView
                 android:id="@+id/jugnooTextImg"
                 android:layout_width="379px"
                 android:layout_height="136px"
-                android:tag="mwar"
-
-                />
-
+                android:tag="mwar"/>
 
             <ImageView
                 android:id="@+id/jugnooTextImg2"
                 android:layout_width="90px"
                 android:layout_height="90px"
-                android:src="@drawable/transparent"
+                android:src="@drawable/transparent"/>
 
-                />
-
-            <ImageView
-                android:id="@+id/jugnooAutoImg"
-                android:layout_width="387px"
-                android:layout_height="252px"
-                android:layout_marginTop="80px"
-                android:layout_below="@+id/jugnooTextImg2"
-                android:src="@drawable/auto_icon"
-
-                />
         </RelativeLayout>
 
         <ProgressBar
@@ -72,13 +56,14 @@
             />
 
         <LinearLayout
+            android:id="@+id/linearLayoutSignUpIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="117px"
             android:orientation="vertical"
-            >
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/buttonLogin"
@@ -101,6 +86,99 @@
                 android:visibility="visible"
                 />
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutAutoDriverConfirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="117px"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewConfirmationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_driver_confirmation"
+                android:textSize="44px"
+                android:textColor="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120px"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonConfirmationYes"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:text="@string/yes"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+                <Button
+                    android:id="@+id/buttonConfirmationNo"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:layout_marginLeft="48px"
+                    android:text="@string/no"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutAutoStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="117px"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_status_confirmation"
+                android:textSize="44px"
+                android:textColor="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120px"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonStatusYes"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:text="@string/yes"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+                <Button
+                    android:id="@+id/buttonStatusNo"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:layout_marginLeft="48px"
+                    android:text="@string/no"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
