@@ -13,6 +13,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
 
 
@@ -22,6 +23,8 @@ public class MyApplication extends Application {
 
 	private static MyApplication mInstance;
 
+	private EngagementSP engagementSP;
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -29,6 +32,8 @@ public class MyApplication extends Application {
 
 		AnalyticsTrackers.initialize(this);
 		AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+
+		engagementSP = new EngagementSP(this);
 	}
 
 	public static synchronized MyApplication getInstance() {
@@ -110,4 +115,7 @@ public class MyApplication extends Application {
 		t.send(eventBuilder.build());
 	}
 
+	public EngagementSP getEngagementSP() {
+		return engagementSP;
+	}
 }

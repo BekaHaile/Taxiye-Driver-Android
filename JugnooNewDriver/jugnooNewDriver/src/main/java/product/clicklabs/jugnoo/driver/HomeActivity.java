@@ -2194,7 +2194,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 
-					Database2.getInstance(this).deleteAllCurrentPathItems();
+//					TODO to check if other things are working as expected by stopping this
+// 					Database2.getInstance(this).deleteAllCurrentPathItems();
 				} else {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
 					switchDriverScreen(driverScreenMode);
@@ -2561,6 +2562,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
+				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				if (DriverScreenMode.D_ARRIVED == mode) {
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, Data.userData.accessToken);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, Data.getCurrentEngagementId());
@@ -2568,8 +2570,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, "" + Data.getCurrentCustomerInfo().referenceId);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, "" + Data.getCurrentCustomerInfo().requestlLatLng.latitude);
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "" + Data.getCurrentCustomerInfo().requestlLatLng.longitude);
-
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				} else {
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, "");
 					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, "");
@@ -5778,12 +5778,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void markArrivedInterrupt(final LatLng latLng) {
+	public void markArrivedInterrupt(final LatLng latLng, final int engagementId) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				GCMIntentService.clearNotifications(activity);
-				driverMarkArriveRideAsync(activity, latLng, Data.getCurrentCustomerInfo());
+				driverMarkArriveRideAsync(activity, latLng, Data.getCustomerInfo(String.valueOf(engagementId)));
 			}
 		});
 	}

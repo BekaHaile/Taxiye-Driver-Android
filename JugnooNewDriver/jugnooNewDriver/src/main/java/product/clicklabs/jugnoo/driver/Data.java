@@ -362,6 +362,7 @@ public class Data {
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
+			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
 	}
 
@@ -385,6 +386,7 @@ public class Data {
 		CustomerInfo customerInfo = getCustomerInfo(engagementId);
 		if(customerInfo != null){
 			customerInfo.setStatus(getEngagementStatusFromDriverScreenMode(driverScreenMode).getOrdinal());
+			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
 	}
 

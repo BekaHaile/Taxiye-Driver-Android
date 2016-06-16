@@ -1201,6 +1201,23 @@ public class Database2 {                                                        
 		}
 	}
 
+	public int getCurrentPathItemsLastId() {
+		try {
+			Cursor cursor = database.rawQuery("select " + ID + " from " + TABLE_CURRENT_PATH + " order by " + ID + " desc limit 1", null);
+			if(cursor.getCount() > 0){
+				cursor.moveToFirst();
+				return cursor.getInt(cursor.getColumnIndex(ID));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+
+
+
+
 
 	public int getGpsState() {
 		try {

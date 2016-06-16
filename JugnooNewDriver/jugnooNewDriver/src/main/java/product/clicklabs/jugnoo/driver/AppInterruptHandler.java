@@ -38,7 +38,7 @@ public interface AppInterruptHandler {
 	void handleCancelRideSuccess();
 	void handleCancelRideFailure();
 
-	void markArrivedInterrupt(LatLng latLng);
+	void markArrivedInterrupt(LatLng latLng, int engagementId);
 
 	void driverTimeoutDialogPopup(long timeoutInterwal);
 

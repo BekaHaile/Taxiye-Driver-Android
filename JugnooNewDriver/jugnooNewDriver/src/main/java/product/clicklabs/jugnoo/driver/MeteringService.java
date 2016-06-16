@@ -81,7 +81,7 @@ public class MeteringService extends Service {
     public void startUploadPathAlarm() {
         // check task is scheduled or not
         boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH).putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this)),
+            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH),
             PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp) {
@@ -90,7 +90,6 @@ public class MeteringService extends Service {
 
         Intent intent = new Intent(this, PathUploadReceiver.class);
         intent.setAction(UPOLOAD_PATH);
-        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -102,7 +101,6 @@ public class MeteringService extends Service {
     public void cancelUploadPathAlarm() {
         Intent intent = new Intent(this, PathUploadReceiver.class);
         intent.setAction(UPOLOAD_PATH);
-        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);

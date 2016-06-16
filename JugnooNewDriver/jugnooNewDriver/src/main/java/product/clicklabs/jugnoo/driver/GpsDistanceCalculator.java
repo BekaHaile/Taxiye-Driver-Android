@@ -129,19 +129,6 @@ public class GpsDistanceCalculator {
 		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at start =" + totalDistance);
 	}
 
-	public void resume() {
-		if (isMeteringStateActive(context)) {
-			connectGPSListener(context);
-		}
-	}
-
-	public void pause() {
-		if (isMeteringStateActive(context)) {
-			saveData(context, lastGPSLocation, lastLocationTime);
-			disconnectGPSListener();
-		}
-	}
-
 
 	public void saveState() {
 		saveData(context, lastGPSLocation, lastLocationTime);

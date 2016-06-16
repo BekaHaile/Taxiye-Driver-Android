@@ -128,9 +128,9 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                         FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     }
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
-//                                                    if(HomeActivity.appInterruptHandler != null){
-//                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
-//                                                    }
+                                                    if(HomeActivity.appInterruptHandler != null){
+                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
+                                                    }
                                                 }
                                             }
                                         } catch(Exception e){
@@ -170,7 +170,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
     public void cancelUploadPathAlarm(Context context) {
         Intent intent = new Intent(context, PathUploadReceiver.class);
         intent.setAction(MeteringService.UPOLOAD_PATH);
-        intent.putExtra("engagement_id", MeteringService.gpsInstance(context).getEngagementIdFromSP(context));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MeteringService.UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);
