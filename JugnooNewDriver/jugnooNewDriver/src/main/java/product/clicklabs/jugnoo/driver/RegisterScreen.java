@@ -3,11 +3,8 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.content.res.Resources;
-=======
 import android.database.DataSetObserver;
->>>>>>> feature_make_driver_new: Register screen ui changes
 import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -55,13 +52,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-<<<<<<< HEAD
 public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	
-=======
-public class RegisterScreen extends Activity implements LocationUpdate {
-
->>>>>>> feature_make_driver_new: Register screen ui changes
 	Button backBtn;
 	TextView title;
 
@@ -177,96 +169,6 @@ public class RegisterScreen extends Activity implements LocationUpdate {
 				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 
-
-<<<<<<< HEAD
-				try {
-					if ("".equalsIgnoreCase(name)) {
-                        nameEt.requestFocus();
-                        nameEt.setError(getResources().getString(R.string.enter_name));
-                    } else {
-                        if ("".equalsIgnoreCase(emailId)) {
-                            emailIdEt.requestFocus();
-                            emailIdEt.setError(getResources().getString(R.string.Pls_enter_email));
-                        } else {
-                            if ("".equalsIgnoreCase(confirmEmail)) {
-                                confirmEmailIdEt.requestFocus();
-                                confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_id));
-                            } else {
-                                if (emailId.equalsIgnoreCase(confirmEmail)) {
-                                    if ("".equalsIgnoreCase(phoneNo)) {
-                                        phoneNoEt.requestFocus();
-                                        phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
-                                    } else {
-                                        //TODO remove extra characters phoneNo
-                                        phoneNo = phoneNo.replace(" ", "");
-                                        phoneNo = phoneNo.replace("(", "");
-                                        phoneNo = phoneNo.replace("/", "");
-                                        phoneNo = phoneNo.replace(")", "");
-                                        phoneNo = phoneNo.replace("N", "");
-                                        phoneNo = phoneNo.replace(",", "");
-                                        phoneNo = phoneNo.replace("*", "");
-                                        phoneNo = phoneNo.replace(";", "");
-                                        phoneNo = phoneNo.replace("#", "");
-                                        phoneNo = phoneNo.replace("-", "");
-                                        phoneNo = phoneNo.replace(".", "");
-
-                                        if (phoneNo.length() >= 10) {
-                                            phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
-                                            if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
-                                                phoneNoEt.requestFocus();
-                                                phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                            } else {
-                                                phoneNo = "+91" + phoneNo;
-
-                                                if ("".equalsIgnoreCase(password)) {
-                                                    passwordEt.requestFocus();
-                                                    passwordEt.setError(getResources().getString(R.string.enter_password));
-                                                } else {
-                                                    if ("".equalsIgnoreCase(confirmPassword)) {
-                                                        confirmPasswordEt.requestFocus();
-                                                        confirmPasswordEt.setError(getResources().getString(R.string.confirm_password));
-                                                    } else {
-                                                        if (isEmailValid(emailId)) {
-                                                            if (isPhoneValid(phoneNo)) {
-                                                                if (password.equals(confirmPassword)) {
-                                                                    if (password.length() >= 6) {
-                                                                        sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
-                                                                        FlurryEventLogger.emailSignupClicked(emailId);
-                                                                    } else {
-                                                                        passwordEt.requestFocus();
-                                                                        passwordEt.setError(getResources().getString(R.string.password_atleast_6));
-                                                                    }
-                                                                } else {
-                                                                    passwordEt.requestFocus();
-                                                                    passwordEt.setError(getResources().getString(R.string.password_not_match));
-                                                                }
-                                                            } else {
-                                                                phoneNoEt.requestFocus();
-                                                                phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                                            }
-                                                        } else {
-                                                            emailIdEt.requestFocus();
-                                                            emailIdEt.setError(getResources().getString(R.string.valid_email));
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            phoneNoEt.requestFocus();
-                                            phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                        }
-                                    }
-                                }
-                                else{
-                                    confirmEmailIdEt.requestFocus();
-                                    confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_text));
-                                }
-                            }
-                        }
-                    }
-				} catch (Resources.NotFoundException e) {
-					e.printStackTrace();
-=======
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
@@ -314,7 +216,6 @@ public class RegisterScreen extends Activity implements LocationUpdate {
 						}
 
 					}
->>>>>>> feature_make_driver_new: Register screen ui changes
 				}
 			}
 
@@ -347,10 +248,6 @@ public class RegisterScreen extends Activity implements LocationUpdate {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
-<<<<<<< HEAD
-=======
-
->>>>>>> feature_make_driver_new: Register screen ui changes
 			@Override
 			public void deviceTokenReceived(final String regId) {
 				Data.deviceToken = regId;

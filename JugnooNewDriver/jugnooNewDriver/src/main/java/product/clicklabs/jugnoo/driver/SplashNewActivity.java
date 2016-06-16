@@ -163,7 +163,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
+//		Fabric.with(this, new Crashlytics());
 		
 
 		bundleHomePush = getIntent().getExtras();
@@ -1457,7 +1457,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 
 	private void getCityAsync(){
-		RestClient.getApiServices().getCityRetro(new Callback<CityResponse>() {
+		RestClient.getApiServices().getCityRetro("auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
 				try {

@@ -391,6 +391,7 @@ public interface APIServices {
 							 Callback<DocRequirementResponse> cb);
 
 	@FormUrlEncoded
-	@POST("/get_city")
-	void getCityRetro(Callback<CityResponse> callback);
+	@POST("/get_all_cities")
+	void getCityRetro(@Field("password") String password,
+					  Callback<CityResponse> callback);
 }

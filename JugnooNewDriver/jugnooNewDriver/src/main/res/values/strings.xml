@@ -592,6 +592,9 @@
 	<string name="details">Details</string>
 	<string name="success">Success</string>
 	<string name="outstanding_amount">Outstanding Amount</string>
+	<string name="vehicle_status">Vehicle Status</string>
+	<string name="owner">Owner</string>
+	<string name="rented">Rented</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
