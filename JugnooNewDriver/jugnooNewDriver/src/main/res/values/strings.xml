@@ -185,6 +185,10 @@
 	<string name="profile">PROFILE</string>
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
+	<string name="auto_number">Auto number</string>
+	<string name="Choose_one">Choose one:</string>
+	<string name="is_rented">I have a rented auto.</string>
+	<string name="is_owned">I own my auto.</string>
 
 	<string name="Documents">Documents</string>
 	<string name="Document_type">Document type</string>

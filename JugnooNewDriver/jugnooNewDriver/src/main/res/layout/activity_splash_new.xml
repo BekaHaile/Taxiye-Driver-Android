@@ -98,7 +98,7 @@
                 android:layout_marginTop="24px"
                 android:background="@drawable/background_white_rounded_bordered"
                 android:textSize="@dimen/button_text_size"
-                android:visibility="gone"
+                android:visibility="visible"
                 />
 
 

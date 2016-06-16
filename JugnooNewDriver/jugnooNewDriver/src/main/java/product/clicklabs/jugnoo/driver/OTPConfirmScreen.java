@@ -415,13 +415,14 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 
 class EmailRegisterData {
-	String name, emailId, phoneNo, password, accessToken;
+	String name, emailId, phoneNo, password, accessToken, autoNum;
 
-	public EmailRegisterData(String name, String emailId, String phoneNo, String password, String accessToken) {
+	public EmailRegisterData(String name, String emailId, String phoneNo, String password, String accessToken, String autoNum) {
 		this.name = name;
 		this.emailId = emailId;
 		this.phoneNo = phoneNo;
 		this.password = password;
 		this.accessToken = accessToken;
+		this.autoNum = autoNum;
 	}
 }
