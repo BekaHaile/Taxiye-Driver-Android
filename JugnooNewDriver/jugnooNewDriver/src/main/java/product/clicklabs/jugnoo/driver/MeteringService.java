@@ -179,9 +179,7 @@ public class MeteringService extends Service {
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 							DriverScreenMode.D_INITIAL.getOrdinal());
-					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-							|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-							|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
+					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS) {
 							String message = context.getResources().getString(R.string.total_distance)
 									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000)

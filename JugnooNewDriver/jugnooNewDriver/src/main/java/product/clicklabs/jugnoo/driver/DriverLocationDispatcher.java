@@ -60,12 +60,8 @@ public class DriverLocationDispatcher {
 						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000);
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
-						if (((screenMode == DriverScreenMode.D_INITIAL.getOrdinal()
-								|| screenMode == DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal()
-								|| screenMode == DriverScreenMode.D_RIDE_END.getOrdinal()) && diff >= freeStateTime)
-								|| ((screenMode != DriverScreenMode.D_ARRIVED.getOrdinal()
-										|| screenMode == DriverScreenMode.D_START_RIDE.getOrdinal()
-										|| screenMode == DriverScreenMode.D_IN_RIDE.getOrdinal()) && diff >= acceptedStateTime)) {
+						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
+								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);

@@ -2563,7 +2563,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					EngagementStatus.REQUESTED.getOrdinal()));
 
 			try {
-				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				updateReceiveRequestsFlag();
 			} catch (Exception e) {
