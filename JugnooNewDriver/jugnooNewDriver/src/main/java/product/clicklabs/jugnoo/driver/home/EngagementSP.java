@@ -3,10 +3,12 @@ package product.clicklabs.jugnoo.driver.home;
 import android.content.Context;
 
 import com.google.gson.Gson;
-
-import org.json.JSONArray;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
@@ -37,14 +39,10 @@ public class EngagementSP {
 			if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 					|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
 					|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-				JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
-				JSONArray jsonArrayNew = new JSONArray();
+				List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+
 				boolean anyCustomerInRide = false;
-				for(int i=0; i<jsonArray.length(); i++){
-					EngagementSPData engagementSPData = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
-					if(engagementSPData.getEngagementId() != customerInfo.getEngagementId()){
-						jsonArrayNew.put(jsonArray.getJSONObject(i));
-					}
+				for(EngagementSPData engagementSPData : engagementSPDatas){
 					if(engagementSPData.getStatus() == EngagementStatus.STARTED.getOrdinal()){
 						anyCustomerInRide = true;
 					}
@@ -56,11 +54,18 @@ public class EngagementSP {
 				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
 					pathStartId = Database2.getInstance(context).getCurrentPathItemsLastId();
 				}
-				jsonArrayNew.put(gson.toJson(new EngagementSPData(customerInfo.getEngagementId(), pathStartId, customerInfo.getStatus(),
-								customerInfo.getRequestlLatLng().latitude, customerInfo.getRequestlLatLng().longitude,
-								customerInfo.getUserId(), customerInfo.getReferenceId()),
-						EngagementSPData.class));
-				Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
+
+				EngagementSPData engagementSPData = new EngagementSPData(customerInfo.getEngagementId(), pathStartId, customerInfo.getStatus(),
+						customerInfo.getRequestlLatLng().latitude, customerInfo.getRequestlLatLng().longitude,
+						customerInfo.getUserId(), customerInfo.getReferenceId());
+
+				if(engagementSPDatas.contains(engagementSPData)){
+					engagementSPDatas.set(engagementSPDatas.indexOf(engagementSPData), engagementSPData);
+				} else{
+					engagementSPDatas.add(engagementSPData);
+				}
+
+				saveEngagementSPDatasToPrefs(engagementSPDatas);
 				if(anyCustomerInRide){
 					Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_IN_RIDE.getOrdinal());
 				} else{
@@ -74,16 +79,11 @@ public class EngagementSP {
 
 	public void removeCustomer(int engagementId){
 		try {
-			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
-			JSONArray jsonArrayNew = new JSONArray();
-			for (int i = 0; i < jsonArray.length(); i++) {
-				EngagementSPData engagementSPData = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
-				if(engagementSPData.getEngagementId() != engagementId){
-					jsonArrayNew.put(jsonArray.getInt(i));
-				}
-			}
-			Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
-			if(jsonArrayNew.length() == 0){
+			List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+			engagementSPDatas.remove(new EngagementSPData(engagementId));
+			saveEngagementSPDatasToPrefs(engagementSPDatas);
+
+			if(engagementSPDatas.size() == 0){
 				Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 			}
 		} catch (Exception e) {
@@ -93,32 +93,44 @@ public class EngagementSP {
 
 
 	public ArrayList<EngagementSPData> getAttachedEngagementsData(){
-		ArrayList<EngagementSPData> engagementSPDatas = new ArrayList<>();
-		try{
-			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
-			for(int i=0; i<jsonArray.length(); i++){
-				engagementSPDatas.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class));
-			}
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		return engagementSPDatas;
+		return (ArrayList<EngagementSPData>) getEngagementSPDatasFromPrefs();
 	}
 
 	public void updateEngagementSPData(EngagementSPData engagementSPData){
 		try{
-			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
-			JSONArray jsonArrayNew = new JSONArray();
-			for (int i = 0; i < jsonArray.length(); i++) {
-				EngagementSPData engagementSPDataSaved = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
-				if(engagementSPDataSaved.getEngagementId() != engagementSPData.getEngagementId()){
-					jsonArrayNew.put(jsonArray.getInt(i));
-				} else{
-					jsonArrayNew.put(gson.toJson(engagementSPData));
-				}
+			List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+			if(engagementSPDatas.contains(engagementSPData)){
+				engagementSPDatas.set(engagementSPDatas.indexOf(engagementSPData), engagementSPData);
 			}
-			Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
+			saveEngagementSPDatasToPrefs(engagementSPDatas);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
 
+
+	private List<EngagementSPData> getEngagementSPDatasFromPrefs(){
+		List<EngagementSPData> engagementSPDatas;
+		try{
+			engagementSPDatas = gson.fromJson(Prefs.with(context)
+							.getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY),
+					new TypeToken<List<EngagementSPData>>(){}.getType());
+		} catch (Exception e){
+			e.printStackTrace();
+			engagementSPDatas = new ArrayList<>();
+		}
+		return engagementSPDatas;
+	}
+
+	private void saveEngagementSPDatasToPrefs(List<EngagementSPData> engagementSPDatas){
+		try{
+			JsonElement element = gson.toJsonTree(engagementSPDatas,
+					new TypeToken<List<EngagementSPData>>() {}.getType());
+			if (!element.isJsonArray()) {
+				throw new Exception();
+			}
+			JsonArray jsonArray = element.getAsJsonArray();
+			Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArray.toString());
 		} catch (Exception e){
 			e.printStackTrace();
 		}

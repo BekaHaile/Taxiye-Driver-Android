@@ -43,6 +43,10 @@ public class EngagementSPData {
 		this.referenceId = referenceId;
 	}
 
+	public EngagementSPData(int engagementId){
+		this.engagementId = engagementId;
+	}
+
 	public int getPathStartId() {
 		return pathStartId;
 	}
@@ -97,5 +101,15 @@ public class EngagementSPData {
 
 	public void setEngagementId(int engagementId) {
 		this.engagementId = engagementId;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		try{
+			return ((EngagementSPData)o).getEngagementId() == getEngagementId();
+		} catch(Exception e){
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
