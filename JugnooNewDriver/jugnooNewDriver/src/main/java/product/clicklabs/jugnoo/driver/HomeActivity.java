@@ -1972,11 +1972,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void updateReceiveRequestsFlag() {
 		if (Data.userData != null) {
-			if (0 == Data.userData.autosAvailable
-					&& 0 == Data.userData.mealsAvailable
-					&& 0 == Data.userData.fatafatAvailable
-					&& 0 == Data.userData.getDeliveryAvailable()) {
-				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal());
+			if (DriverScreenMode.D_INITIAL == driverScreenMode) {
+				if (0 == Data.userData.autosAvailable
+						&& 0 == Data.userData.mealsAvailable
+						&& 0 == Data.userData.fatafatAvailable
+						&& 0 == Data.userData.getDeliveryAvailable()) {
+					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_OFFLINE.getOrdinal());
+				}
 			}
 		}
 	}
@@ -2563,26 +2565,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_SCREEN_MODE, mode.getOrdinal());
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
-				if (DriverScreenMode.D_ARRIVED == mode) {
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, Data.userData.accessToken);
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, String.valueOf(Data.getCurrentCustomerInfo().userId));
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, "" + Data.getCurrentCustomerInfo().referenceId);
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, "" + Data.getCurrentCustomerInfo().requestlLatLng.latitude);
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "" + Data.getCurrentCustomerInfo().requestlLatLng.longitude);
-				} else {
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ACCESS_TOKEN, "");
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ENGAGEMENT_ID, "");
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_CUSTOMER_ID, "");
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_REFERENCE_ID, "");
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LATITUDE, "");
-					Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_C_PICKUP_LONGITUDE, "");
-				}
+				updateReceiveRequestsFlag();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
-			updateReceiveRequestsFlag();
 
 			if (mode != DriverScreenMode.D_BEFORE_END_OPTIONS) {
 				startMeteringService();

@@ -8,6 +8,9 @@ import com.google.gson.annotations.SerializedName;
  */
 public class EngagementSPData {
 
+	@SerializedName("engagementId")
+	@Expose
+	private int engagementId;
 	@SerializedName("pathStartId")
 	@Expose
 	private int pathStartId;
@@ -29,8 +32,9 @@ public class EngagementSPData {
 
 
 
-	public EngagementSPData(int pathStartId, int status, double pickupLatitude, double pickupLongitude,
+	public EngagementSPData(int engagementId, int pathStartId, int status, double pickupLatitude, double pickupLongitude,
 							int customerId, int referenceId) {
+		this.engagementId = engagementId;
 		this.pathStartId = pathStartId;
 		this.status = status;
 		this.pickupLatitude = pickupLatitude;
@@ -85,5 +89,13 @@ public class EngagementSPData {
 
 	public void setReferenceId(int referenceId) {
 		this.referenceId = referenceId;
+	}
+
+	public int getEngagementId() {
+		return engagementId;
+	}
+
+	public void setEngagementId(int engagementId) {
+		this.engagementId = engagementId;
 	}
 }

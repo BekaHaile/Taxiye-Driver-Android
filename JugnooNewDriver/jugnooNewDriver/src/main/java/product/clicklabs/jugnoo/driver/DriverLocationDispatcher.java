@@ -60,21 +60,21 @@ public class DriverLocationDispatcher {
 						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000);
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
-						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
-								|| ((screenMode == DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal()
-									|| screenMode == DriverScreenMode.D_ARRIVED.getOrdinal()
-									|| screenMode == DriverScreenMode.D_START_RIDE.getOrdinal())
-									&& diff >= acceptedStateTime)) {
-
+						if (((screenMode == DriverScreenMode.D_INITIAL.getOrdinal()
+								|| screenMode == DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal()
+								|| screenMode == DriverScreenMode.D_RIDE_END.getOrdinal()) && diff >= freeStateTime)
+								|| ((screenMode != DriverScreenMode.D_ARRIVED.getOrdinal()
+										|| screenMode == DriverScreenMode.D_START_RIDE.getOrdinal()
+										|| screenMode == DriverScreenMode.D_IN_RIDE.getOrdinal()) && diff >= acceptedStateTime)) {
 
 							HashMap<String, String> nameValuePairs = new HashMap<>();
-							nameValuePairs.put("access_token", accessToken);
-							nameValuePairs.put("latitude", "" + location.getLatitude());
-							nameValuePairs.put("longitude", "" + location.getLongitude());
-							nameValuePairs.put("bearing", "" + location.getBearing());
-							nameValuePairs.put("device_token", deviceToken);
-							nameValuePairs.put("location_accuracy", "" + location.getAccuracy());
-							nameValuePairs.put("app_version", String.valueOf(Utils.getAppVersion(context)));
+							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+							nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
+							nameValuePairs.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
+							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
+							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
+							nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
+							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 
 							Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
 
@@ -106,12 +106,11 @@ public class DriverLocationDispatcher {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-
 						}
 					}
 				}
 
-				checkForMarkArrived(context, location);
+				checkForMarkArrived(context, location, accessToken);
 
 				wakeLock.release();
 			}
@@ -126,13 +125,11 @@ public class DriverLocationDispatcher {
 	
 
 
-	private void checkForMarkArrived(Context context, Location location){
+	private void checkForMarkArrived(Context context, Location location, String accessToken){
 		try{
 			String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
-			ArrayList<Integer> engagementIds = MyApplication.getInstance().getEngagementSP().getAttachedEngagements();
-			for(Integer engagementId : engagementIds){
-				EngagementSPData engagementSPData = MyApplication.getInstance().getEngagementSP()
-						.getEngagementSPData(engagementId);
+			ArrayList<EngagementSPData> engagementSPDatas = MyApplication.getInstance().getEngagementSP().getAttachedEngagementsData();
+			for(EngagementSPData engagementSPData : engagementSPDatas){
 				try {
 					if(engagementSPData.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
 						double distance = Math.abs(MapUtils.distance(new LatLng(location.getLatitude(), location.getLongitude()),
@@ -140,20 +137,19 @@ public class DriverLocationDispatcher {
 						if (distance < Double.parseDouble(driverArrivedDistance)){
 							if(HomeActivity.appInterruptHandler != null){
 								HomeActivity.appInterruptHandler.markArrivedInterrupt(new LatLng(location.getLatitude(),
-										location.getLongitude()), engagementId);
+										location.getLongitude()), engagementSPData.getEngagementId());
 							} else{
-								String accessTokenA = Prefs.with(context).getString(SPLabels.DRIVER_ACCESS_TOKEN, "");
 								HashMap<String, String> nameValuePairs = new HashMap<>();
-								nameValuePairs.put("access_token", accessTokenA);
-								nameValuePairs.put("engagement_id", String.valueOf(engagementId));
-								nameValuePairs.put("customer_id", String.valueOf(engagementSPData.getCustomerId()));
-								nameValuePairs.put("pickup_latitude", String.valueOf(location.getLatitude()));
-								nameValuePairs.put("pickup_longitude", String.valueOf(location.getLongitude()));
-								nameValuePairs.put("reference_id", String.valueOf(engagementSPData.getReferenceId()));
+								nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+								nameValuePairs.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(engagementSPData.getEngagementId()));
+								nameValuePairs.put(Constants.KEY_CUSTOMER_ID, String.valueOf(engagementSPData.getCustomerId()));
+								nameValuePairs.put(Constants.KEY_PICKUP_LATITUDE, String.valueOf(location.getLatitude()));
+								nameValuePairs.put(Constants.KEY_PICKUP_LONGITUDE, String.valueOf(location.getLongitude()));
+								nameValuePairs.put(Constants.KEY_REFERENCE_ID, String.valueOf(engagementSPData.getReferenceId()));
 
 								RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
 								engagementSPData.setStatus(EngagementStatus.ARRIVED.getOrdinal());
-								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementId, engagementSPData);
+								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementSPData);
 							}
 							break;
 						}

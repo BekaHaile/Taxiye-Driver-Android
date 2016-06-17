@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 
@@ -19,10 +21,8 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
  */
 public class EngagementSP {
 
-	private final String SP_ENGAGEMENTS_ATTACHED = "sp_engagement_ids_attached";
-	private final String SP_ENGAGEMENT_DATA_SUFFIX = "_espd";
+	private final String SP_ENGAGEMENTS_ATTACHED = "sp_engagement_attached";
 	private final String EMPTY_JSON_ARRAY = "[]";
-	private final String EMPTY_JSON_OBJECT = "{}";
 
 	private Context context;
 	private Gson gson;
@@ -38,26 +38,53 @@ public class EngagementSP {
 					|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
 					|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
 				JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
-				boolean alreadyAdded = false;
+				JSONArray jsonArrayNew = new JSONArray();
+				boolean anyCustomerInRide = false;
 				for(int i=0; i<jsonArray.length(); i++){
-					if(jsonArray.getInt(i) == customerInfo.getEngagementId()){
-						alreadyAdded = true;
-						break;
+					EngagementSPData engagementSPData = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
+					if(engagementSPData.getEngagementId() != customerInfo.getEngagementId()){
+						jsonArrayNew.put(jsonArray.getJSONObject(i));
+					}
+					if(engagementSPData.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+						anyCustomerInRide = true;
 					}
 				}
-				if(!alreadyAdded) {
-					jsonArray.put(customerInfo.getEngagementId());
-					Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArray.toString());
+				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+					anyCustomerInRide = true;
 				}
 				int pathStartId = Integer.MAX_VALUE;
 				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
 					pathStartId = Database2.getInstance(context).getCurrentPathItemsLastId();
 				}
-				Prefs.with(context).save(String.valueOf(customerInfo.getEngagementId())+SP_ENGAGEMENT_DATA_SUFFIX,
-						gson.toJson(new EngagementSPData(pathStartId, customerInfo.getStatus(),
-										customerInfo.getRequestlLatLng().latitude, customerInfo.getRequestlLatLng().longitude,
-										customerInfo.getUserId(), customerInfo.getReferenceId()),
-								EngagementSPData.class));
+				jsonArrayNew.put(gson.toJson(new EngagementSPData(customerInfo.getEngagementId(), pathStartId, customerInfo.getStatus(),
+								customerInfo.getRequestlLatLng().latitude, customerInfo.getRequestlLatLng().longitude,
+								customerInfo.getUserId(), customerInfo.getReferenceId()),
+						EngagementSPData.class));
+				Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
+				if(anyCustomerInRide){
+					Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_IN_RIDE.getOrdinal());
+				} else{
+					Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_ARRIVED.getOrdinal());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void removeCustomer(int engagementId){
+		try {
+			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
+			JSONArray jsonArrayNew = new JSONArray();
+			for (int i = 0; i < jsonArray.length(); i++) {
+				EngagementSPData engagementSPData = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
+				if(engagementSPData.getEngagementId() != engagementId){
+					jsonArrayNew.put(jsonArray.getInt(i));
+				}
+			}
+			Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
+			if(jsonArrayNew.length() == 0){
+				Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -65,35 +92,33 @@ public class EngagementSP {
 	}
 
 
-	public ArrayList<Integer> getAttachedEngagements(){
-		ArrayList<Integer> engagementIds = new ArrayList<>();
+	public ArrayList<EngagementSPData> getAttachedEngagementsData(){
+		ArrayList<EngagementSPData> engagementSPDatas = new ArrayList<>();
 		try{
 			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
 			for(int i=0; i<jsonArray.length(); i++){
-				engagementIds.add(jsonArray.getInt(i));
+				engagementSPDatas.add(gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class));
 			}
 		} catch (Exception e){
 			e.printStackTrace();
 		}
-		return engagementIds;
+		return engagementSPDatas;
 	}
 
-
-	public EngagementSPData getEngagementSPData(int engagementId){
+	public void updateEngagementSPData(EngagementSPData engagementSPData){
 		try{
-			return gson.fromJson(Prefs.with(context).getString(String.valueOf(engagementId)+SP_ENGAGEMENT_DATA_SUFFIX,
-							EMPTY_JSON_OBJECT),
-					EngagementSPData.class);
-		} catch (Exception e){
-			e.printStackTrace();
-		}
-		return null;
-	}
+			JSONArray jsonArray = new JSONArray(Prefs.with(context).getString(SP_ENGAGEMENTS_ATTACHED, EMPTY_JSON_ARRAY));
+			JSONArray jsonArrayNew = new JSONArray();
+			for (int i = 0; i < jsonArray.length(); i++) {
+				EngagementSPData engagementSPDataSaved = gson.fromJson(jsonArray.getJSONObject(i).toString(), EngagementSPData.class);
+				if(engagementSPDataSaved.getEngagementId() != engagementSPData.getEngagementId()){
+					jsonArrayNew.put(jsonArray.getInt(i));
+				} else{
+					jsonArrayNew.put(gson.toJson(engagementSPData));
+				}
+			}
+			Prefs.with(context).save(SP_ENGAGEMENTS_ATTACHED, jsonArrayNew.toString());
 
-	public void updateEngagementSPData(int engagementId, EngagementSPData engagementSPData){
-		try{
-			Prefs.with(context).save(String.valueOf(engagementId)+SP_ENGAGEMENT_DATA_SUFFIX,
-					gson.toJson(engagementSPData, EngagementSPData.class));
 		} catch (Exception e){
 			e.printStackTrace();
 		}

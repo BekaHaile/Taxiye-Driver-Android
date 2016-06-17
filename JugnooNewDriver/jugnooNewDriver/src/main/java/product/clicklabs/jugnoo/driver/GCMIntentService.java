@@ -466,17 +466,16 @@ public class GCMIntentService extends IntentService {
 								stopRing(false);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if (ignoreRideRequest == 1) {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
+								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, true);
@@ -485,10 +484,9 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 
-								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
+								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, false);

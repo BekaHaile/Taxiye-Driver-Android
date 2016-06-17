@@ -122,5 +122,8 @@ public interface Constants {
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
 
     String KEY_FARE = "fare";
+    String KEY_BEARING = "bearing";
+    String KEY_DEVICE_TOKEN = "device_token";
+    String KEY_LOCATION_ACCURACY = "location_accuracy";
 
 }

@@ -744,7 +744,6 @@ public class GpsDistanceCalculator {
 	}
 	public static synchronized int getDriverScreenModeSP(Context context) {
 		int state = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE_METERING, DriverScreenMode.D_IN_RIDE.getOrdinal());
-		Log.i(TAG, "getDriverScreenModeSP state="+state);
 		return state;
 	}
 
