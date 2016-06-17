@@ -235,7 +235,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onClick(View v) {
 				linearLayoutSignUpIn.setVisibility(View.GONE);
-				linearLayoutAutoDriverConfirmation.setVisibility(View.VISIBLE);
+				linearLayoutAutoDriverConfirmation.setVisibility(View.GONE);
 				getCityAsync();
 			}
 		});

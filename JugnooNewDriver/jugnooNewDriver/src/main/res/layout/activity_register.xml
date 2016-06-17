@@ -41,14 +41,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:background="@drawable/spalsh_new_background_gradient"
         android:orientation="vertical"
         android:splitMotionEvents="false">
 
+
+        <ImageView
+            android:id="@+id/imageViewJugnooLogo"
+            android:layout_width="300px"
+            android:layout_height="240px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80px"
+            android:background="@drawable/jugnoo_white_logo"
+            android:tag="mwar"
+            android:visibility="visible"/>
+
+
         <LinearLayout
             android:id="@+id/etLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="670px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:background="@drawable/background_white_rounded_orange_bordered"
             android:layout_marginTop="40px"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -56,9 +70,9 @@
 
 
             <RelativeLayout
-                android:layout_width="650px"
+                android:layout_width="630px"
                 android:layout_height="120px"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 >
 
                 <ImageView
@@ -66,6 +80,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_width="40px"
                     android:layout_height="40px"
+                    android:layout_marginTop="22px"
                     android:layout_marginRight="48px"
                     android:background="@drawable/ic_email"/>
 
@@ -73,13 +88,13 @@
                 <EditText
                     android:id="@+id/nameEt"
                     android:layout_width="525px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90px"
                     android:layout_toRightOf="@+id/imageViewName"
                     android:background="@drawable/transparent"
+                    android:textColorHint="@color/grey_black_light"
                     android:capitalize="words"
-                    android:layout_marginBottom="10px"
                     android:hint="@string/name"
-                    android:paddingLeft="20px"
+                    android:paddingLeft="15px"
                     android:paddingRight="20px"
                     android:singleLine="true"
                     android:textColor="@color/black"
@@ -99,9 +114,9 @@
 
 
             <RelativeLayout
-                android:layout_width="650px"
+                android:layout_width="630px"
                 android:layout_height="120px"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 >
 
                 <ImageView
@@ -109,6 +124,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_width="40px"
                     android:layout_height="40px"
+                    android:layout_marginTop="22px"
                     android:layout_marginRight="48px"
                     android:background="@drawable/phone_icon"/>
 
@@ -116,13 +132,13 @@
                 <EditText
                     android:id="@+id/phoneNoEt"
                     android:layout_width="525px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90px"
                     android:layout_toRightOf="@+id/imageViewPhone"
                     android:background="@drawable/transparent"
                     android:hint="@string/phone_number"
+                    android:textColorHint="@color/grey_black_light"
                     android:inputType="phone"
-                    android:layout_marginBottom="10px"
-                    android:paddingLeft="20px"
+                    android:paddingLeft="15px"
                     android:maxLength="14"
                     android:paddingRight="20px"
                     android:singleLine="true"
@@ -143,9 +159,9 @@
 
 
             <RelativeLayout
-                android:layout_width="650px"
+                android:layout_width="630px"
                 android:layout_height="120px"
-                android:gravity="bottom"
+                android:gravity="center_vertical"
                 >
 
                 <ImageView
@@ -153,24 +169,48 @@
                     android:layout_alignParentLeft="true"
                     android:layout_width="40px"
                     android:layout_height="40px"
+                    android:layout_marginTop="22px"
                     android:layout_marginRight="48px"
                     android:background="@drawable/auto_icon_front_new"/>
 
 
-                <EditText
+                <!--<EditText-->
+                    <!--android:id="@+id/autoNumEt"-->
+                    <!--android:layout_width="525px"-->
+                    <!--android:layout_height="90px"-->
+                    <!--android:layout_toRightOf="@+id/imageViewAutoNum"-->
+                    <!--android:background="@drawable/transparent"-->
+                    <!--android:capitalize="words"-->
+                    <!--android:hint="@string/auto_number"-->
+                    <!--android:paddingLeft="20px"-->
+                    <!--android:paddingRight="20px"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="34px"/>-->
+
+                <Spinner
                     android:id="@+id/autoNumEt"
                     android:layout_width="525px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="90px"
                     android:layout_toRightOf="@+id/imageViewAutoNum"
                     android:background="@drawable/transparent"
                     android:capitalize="words"
                     android:hint="@string/auto_number"
-                    android:paddingLeft="20px"
+                    android:paddingLeft="0px"
                     android:paddingRight="20px"
-                    android:layout_marginBottom="10px"
+                    android:dropDownSelector="@drawable/arrow_down"
                     android:singleLine="true"
+                    android:spinnerMode="dropdown"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
+
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_width="32px"
+                    android:layout_height="20px"
+                    android:layout_marginTop="32px"
+                    android:layout_marginRight="90px"
+                    android:background="@drawable/arrow_down"/>
 
                 <ImageView
                     android:id="@+id/imageViewAutoNumLine"
@@ -186,17 +226,17 @@
 
 
             <RelativeLayout
-                android:layout_width="650px"
-                android:layout_height="120px"
-                android:gravity="bottom">
+                android:layout_width="630px"
+                android:layout_height="110px"
+                android:gravity="center_vertical">
 
                 <ImageView
                     android:id="@+id/imageViewCity"
                     android:layout_alignParentLeft="true"
                     android:layout_width="40px"
                     android:layout_height="40px"
-                    android:layout_alignParentBottom="true"
                     android:layout_marginRight="48px"
+                    android:layout_marginTop="22px"
                     android:background="@drawable/home_shape"/>
 
 
@@ -209,7 +249,6 @@
                     android:capitalize="words"
                     android:hint="@string/auto_number"
                     android:paddingLeft="0px"
-                    android:layout_alignParentBottom="true"
                     android:paddingRight="20px"
                     android:dropDownSelector="@drawable/arrow_down"
                     android:singleLine="true"
@@ -221,115 +260,119 @@
                     android:layout_alignParentRight="true"
                     android:layout_width="32px"
                     android:layout_height="20px"
+                    android:layout_marginTop="32px"
                     android:layout_marginRight="90px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="25px"
                     android:background="@drawable/arrow_down"/>
 
-                <ImageView
-                    android:id="@+id/imageViewCityLine"
-                    android:layout_width="525px"
-                    android:layout_height="2px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginLeft="72px"
-                    android:background="@color/black"/>
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewCityLine"-->
+                    <!--android:layout_width="525px"-->
+                    <!--android:layout_height="2px"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginLeft="72px"-->
+                    <!--android:background="@color/black"/>-->
 
 
             </RelativeLayout>
 
 
-            <LinearLayout
-                android:layout_width="650px"
-                android:layout_height="200px"
-                android:layout_marginTop="64px"
-                android:background="@drawable/white_bg_rounded"
-                android:orientation="vertical">
+            <!--<LinearLayout-->
+                <!--android:layout_width="650px"-->
+                <!--android:layout_height="200px"-->
+                <!--android:layout_marginTop="64px"-->
+                <!--android:background="@drawable/background_white_rounded_black_border"-->
+                <!--android:orientation="vertical">-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:layout_marginTop="25px"-->
+                    <!--android:orientation="horizontal">-->
 
-                    <ImageView
-                        android:layout_width="175px"
-                        android:layout_height="2px"
-                        android:layout_alignParentLeft="true"
-                        android:background="@color/black"/>
+                    <!--<ImageView-->
+                        <!--android:layout_width="175px"-->
+                        <!--android:layout_height="2px"-->
+                        <!--android:layout_alignParentLeft="true"-->
+                        <!--android:background="@color/white"/>-->
 
-                    <TextView
-                        android:id="@+id/autoType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/vehicle_status"
-                        android:layout_marginLeft="20px"
-                        android:layout_marginRight="20px"
-                        android:textColor="@color/grey_dark_more"
-                        android:textSize="36px"/>
+                    <!--<TextView-->
+                        <!--android:id="@+id/autoType"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="@string/vehicle_status"-->
+                        <!--android:layout_marginLeft="20px"-->
+                        <!--android:layout_marginRight="20px"-->
+                        <!--android:textColor="@color/grey_dark_more"-->
+                        <!--android:textSize="36px"/>-->
 
-                    <ImageView
-                        android:layout_width="175px"
-                        android:layout_height="2px"
-                        android:layout_alignParentLeft="true"
-                        android:background="@color/black"/>
+                    <!--<ImageView-->
+                        <!--android:layout_width="175px"-->
+                        <!--android:layout_height="2px"-->
+                        <!--android:layout_alignParentLeft="true"-->
+                        <!--android:background="@color/white"/>-->
 
-                </LinearLayout>
+                <!--</LinearLayout>-->
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="48px">
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:layout_marginTop="48px">-->
 
-                    <RelativeLayout
-                        android:id="@+id/isRentedRelative"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/isRentedRelative"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:layout_height="wrap_content">-->
 
-                        <CheckBox
-                            android:id="@+id/isRentedCheck"
-                            android:layout_width="50px"
-                            android:layout_height="50px"/>
+                        <!--<ImageView-->
+                            <!--android:id="@+id/isRentedCheck"-->
+                            <!--android:background="@drawable/radio_select"-->
+                            <!--android:layout_width="40px"-->
+                            <!--android:layout_height="40px"/>-->
 
-                        <TextView
-                            android:id="@+id/isRentedText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32px"
-                            android:layout_toRightOf="@+id/isRentedCheck"
-                            android:text="@string/owner"
-                            android:textColor="@color/grey_dark_more"
-                            android:textSize="36px"/>
+                        <!--<TextView-->
+                            <!--android:id="@+id/isRentedText"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="24px"-->
+                            <!--android:layout_toRightOf="@+id/isRentedCheck"-->
+                            <!--android:text="@string/owner"-->
+                            <!--android:textColor="@color/grey_dark_more"-->
+                            <!--android:textSize="36px"/>-->
 
-                    </RelativeLayout>
+                    <!--</RelativeLayout>-->
 
-                    <RelativeLayout
-                        android:id="@+id/isOwnedRelative"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="120px"
-                        android:layout_toRightOf="@+id/isRentedRelative">
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/isOwnedRelative"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_marginLeft="120px"-->
+                        <!--android:layout_toRightOf="@+id/isRentedRelative">-->
 
-                        <CheckBox
-                            android:id="@+id/isOwnedCheck"
-                            android:layout_width="50px"
-                            android:layout_height="50px"/>
+                        <!--<ImageView-->
+                            <!--android:id="@+id/isOwnedCheck"-->
+                            <!--android:layout_width="50px"-->
+                            <!--android:layout_height="50px"-->
+                            <!--android:background="@drawable/option_unchecked"/>-->
 
-                        <TextView
-                            android:id="@+id/isOwnedText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32px"
-                            android:layout_toRightOf="@+id/isOwnedCheck"
-                            android:text="@string/rented"
-                            android:textColor="@color/grey_dark_more"
-                            android:textSize="36px"/>
+                        <!--<TextView-->
+                            <!--android:id="@+id/isOwnedText"-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_marginLeft="32px"-->
+                            <!--android:layout_toRightOf="@+id/isOwnedCheck"-->
+                            <!--android:text="@string/rented"-->
+                            <!--android:textColor="@color/grey_dark_more"-->
+                            <!--android:textSize="36px"/>-->
 
-                    </RelativeLayout>
+                    <!--</RelativeLayout>-->
 
-                </RelativeLayout>
+                <!--</RelativeLayout>-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
         </LinearLayout>
 
@@ -339,8 +382,8 @@
             android:layout_height="99px"
             android:layout_marginTop="45px"
             android:text="@string/verify_me"
-            android:background="@drawable/new_orange_btn_selector_rounded"
-            android:textColor="@drawable/white_color_selector"
+            android:background="@drawable/background_white_rounded_orange_bordered"
+            android:textColor="@color/new_orange"
             android:textSize="@dimen/button_text_size"/>
 
         <TextView

@@ -18,7 +18,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -57,15 +59,17 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	Button backBtn;
 	TextView title;
 
-	EditText nameEt, autoNumEt, phoneNoEt;
+	EditText nameEt, phoneNoEt;
 	Button signUpBtn;
-	Spinner selectCitySp;
-	CheckBox isRentedCheck, isOwnedCheck;
+	Spinner selectCitySp, autoNumEt;
+//	ImageView isRentedCheck, isOwnedCheck;
 	LinearLayout relative;
+//	RelativeLayout isOwnedRelative, isRentedRelative;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "";
 	Integer cityposition;
 	boolean sendToOtpScreen = false;
+//	boolean isRented = false, isOwned = false;
 
 	public static JSONObject multipleCaseJSON;
 
@@ -99,6 +103,9 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
 
+//		isOwnedRelative = (RelativeLayout) findViewById(R.id.isOwnedRelative);
+//		isRentedRelative = (RelativeLayout) findViewById(R.id.isRentedRelative);
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		title = (TextView) findViewById(R.id.title);
@@ -108,10 +115,10 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		autoNumEt = (EditText) findViewById(R.id.autoNumEt);
-		autoNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		isRentedCheck = (CheckBox) findViewById(R.id.isRentedCheck);
-		isOwnedCheck = (CheckBox) findViewById(R.id.isOwnedCheck);
+		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
+//		autoNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
+//		isRentedCheck = (ImageView) findViewById(R.id.isRentedCheck);
+//		isOwnedCheck = (ImageView) findViewById(R.id.isOwnedCheck);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
 
 		signUpBtn = (Button) findViewById(R.id.signUpBtn);
@@ -136,15 +143,15 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		});
 
 
-		autoNumEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				autoNumEt.setError(null);
-			}
-		});
-
-		autoNumEt.setLongClickable(false);
+//		autoNumEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//
+//			@Override
+//			public void onFocusChange(View v, boolean hasFocus) {
+//				autoNumEt.setError(null);
+//			}
+//		});
+//
+//		autoNumEt.setLongClickable(false);
 
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -154,7 +161,26 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			}
 		});
 
-
+//		isOwnedRelative.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				isOwned= true;
+//				isRented =false;
+//				isOwnedCheck.setImageResource(R.drawable.radio_select);
+//				isRentedCheck.setImageResource(R.drawable.radio_unslelcet);
+//
+//			}
+//		});
+//
+//		isRentedRelative.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				isOwned= false;
+//				isRented =true;
+//				isOwnedCheck.setImageResource(R.drawable.radio_unslelcet);
+//				isRentedCheck.setImageResource(R.drawable.radio_select);
+//			}
+//		});
 
 
 		signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,16 +192,16 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
-				String autoNum = autoNumEt.getText().toString().trim();
+//				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
 				} else {
-					if ("".equalsIgnoreCase(autoNum)) {
-						autoNumEt.requestFocus();
-						autoNumEt.setError("Please enter auto number");
+					if ("".equalsIgnoreCase(" ")) {
+//						autoNumEt.requestFocus();
+//						autoNumEt.setError("Please enter auto number");
 					} else {
 						if ("".equalsIgnoreCase(phoneNo)) {
 							phoneNoEt.requestFocus();
@@ -202,7 +228,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 								} else {
 									phoneNo = "+91" + phoneNo;
 									if (isPhoneValid(phoneNo)) {
-										sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
+										sendSignupValues(RegisterScreen.this, name, phoneNo, password);
 										FlurryEventLogger.emailSignupClicked(emailId);
 									} else {
 										phoneNoEt.requestFocus();
@@ -229,7 +255,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			if (getIntent().hasExtra("back_from_otp")) {
 				nameEt.setText(OTPConfirmScreen.emailRegisterData.name);
 				phoneNoEt.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-				autoNumEt.setText(OTPConfirmScreen.emailRegisterData.autoNum);
+//				autoNumEt.setText(OTPConfirmScreen.emailRegisterData.autoNum);
 				selectCitySp.setSelection(cityposition);
 			}
 			nameEt.setSelection(nameEt.getText().length());
@@ -259,6 +285,39 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				cityposition = position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
+
+
+
+
+//		autoNumEt.setOnItemSelectedListener(this);
+
+		// Spinner Drop down elements
+		List<String> categories = new ArrayList<String>();
+		categories.add("Owned");
+		categories.add("Rented");
+
+		// Creating adapter for spinner
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		// Drop down layout style - list view with radio button
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		// attaching data adapter to spinner
+		autoNumEt.setAdapter(dataAdapter);
+
+		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
 			}
 
 			@Override
@@ -306,8 +365,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 //	Retrofit
 
-	public void sendSignupValues(final Activity activity, final String name,
-								  final String phoneNo, final String autoNum, final String city) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -322,7 +380,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
-			params.put("auto_num", autoNum);
+//			params.put("auto_num", autoNum);
 			params.put("city", city);
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
