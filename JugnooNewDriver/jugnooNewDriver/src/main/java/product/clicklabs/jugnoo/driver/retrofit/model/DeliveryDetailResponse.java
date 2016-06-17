@@ -70,34 +70,34 @@ public class DeliveryDetailResponse {
 		private Integer totalTime;
 		@SerializedName("ride_distance")
 		@Expose
-		private Integer rideDistance;
+		private String rideDistance;
 		@SerializedName("return_distance")
 		@Expose
-		private Integer returnDistance;
+		private String returnDistance;
 		@SerializedName("no_of_deliveries")
 		@Expose
 		private Integer noOfDeliveries;
 		@SerializedName("ride_fare")
 		@Expose
-		private Integer rideFare;
+		private String rideFare;
 		@SerializedName("delivery_fare")
 		@Expose
-		private Integer deliveryFare;
+		private String deliveryFare;
 		@SerializedName("return_subsidy")
 		@Expose
-		private Integer returnSubsidy;
+		private String returnSubsidy;
 		@SerializedName("jugnoo_cut")
 		@Expose
-		private Integer jugnooCut;
+		private String jugnooCut;
 		@SerializedName("paid_in_cash")
 		@Expose
-		private Integer paidInCash;
+		private String paidInCash;
 		@SerializedName("total_fare")
 		@Expose
-		private Integer totalFare;
+		private String totalFare;
 		@SerializedName("account_balance")
 		@Expose
-		private Integer accountBalance;
+		private String accountBalance;
 		@SerializedName("from")
 		@Expose
 		private String from;
@@ -164,7 +164,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The rideDistance
 		 */
-		public Integer getRideDistance() {
+		public String getRideDistance() {
 			return rideDistance;
 		}
 
@@ -173,7 +173,7 @@ public class DeliveryDetailResponse {
 		 * @param rideDistance
 		 * The ride_distance
 		 */
-		public void setRideDistance(Integer rideDistance) {
+		public void setRideDistance(String rideDistance) {
 			this.rideDistance = rideDistance;
 		}
 
@@ -182,7 +182,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The returnDistance
 		 */
-		public Integer getReturnDistance() {
+		public String getReturnDistance() {
 			return returnDistance;
 		}
 
@@ -191,7 +191,7 @@ public class DeliveryDetailResponse {
 		 * @param returnDistance
 		 * The return_distance
 		 */
-		public void setReturnDistance(Integer returnDistance) {
+		public void setReturnDistance(String returnDistance) {
 			this.returnDistance = returnDistance;
 		}
 
@@ -209,7 +209,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The rideFare
 		 */
-		public Integer getRideFare() {
+		public String getRideFare() {
 			return rideFare;
 		}
 
@@ -218,7 +218,7 @@ public class DeliveryDetailResponse {
 		 * @param rideFare
 		 * The ride_fare
 		 */
-		public void setRideFare(Integer rideFare) {
+		public void setRideFare(String rideFare) {
 			this.rideFare = rideFare;
 		}
 
@@ -227,7 +227,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The deliveryFare
 		 */
-		public Integer getDeliveryFare() {
+		public String getDeliveryFare() {
 			return deliveryFare;
 		}
 
@@ -236,7 +236,7 @@ public class DeliveryDetailResponse {
 		 * @param deliveryFare
 		 * The delivery_fare
 		 */
-		public void setDeliveryFare(Integer deliveryFare) {
+		public void setDeliveryFare(String deliveryFare) {
 			this.deliveryFare = deliveryFare;
 		}
 
@@ -245,7 +245,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The returnSubsidy
 		 */
-		public Integer getReturnSubsidy() {
+		public String getReturnSubsidy() {
 			return returnSubsidy;
 		}
 
@@ -254,7 +254,7 @@ public class DeliveryDetailResponse {
 		 * @param returnSubsidy
 		 * The return_subsidy
 		 */
-		public void setReturnSubsidy(Integer returnSubsidy) {
+		public void setReturnSubsidy(String returnSubsidy) {
 			this.returnSubsidy = returnSubsidy;
 		}
 
@@ -263,7 +263,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The jugnooCut
 		 */
-		public Integer getJugnooCut() {
+		public String getJugnooCut() {
 			return jugnooCut;
 		}
 
@@ -272,7 +272,7 @@ public class DeliveryDetailResponse {
 		 * @param jugnooCut
 		 * The jugnoo_cut
 		 */
-		public void setJugnooCut(Integer jugnooCut) {
+		public void setJugnooCut(String jugnooCut) {
 			this.jugnooCut = jugnooCut;
 		}
 
@@ -281,7 +281,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The paidInCash
 		 */
-		public Integer getPaidInCash() {
+		public String getPaidInCash() {
 			return paidInCash;
 		}
 
@@ -290,7 +290,7 @@ public class DeliveryDetailResponse {
 		 * @param paidInCash
 		 * The paid_in_cash
 		 */
-		public void setPaidInCash(Integer paidInCash) {
+		public void setPaidInCash(String paidInCash) {
 			this.paidInCash = paidInCash;
 		}
 
@@ -299,7 +299,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The totalFare
 		 */
-		public Integer getTotalFare() {
+		public String getTotalFare() {
 			return totalFare;
 		}
 
@@ -308,7 +308,7 @@ public class DeliveryDetailResponse {
 		 * @param totalFare
 		 * The total_fare
 		 */
-		public void setTotalFare(Integer totalFare) {
+		public void setTotalFare(String totalFare) {
 			this.totalFare = totalFare;
 		}
 
@@ -317,7 +317,7 @@ public class DeliveryDetailResponse {
 		 * @return
 		 * The accountBalance
 		 */
-		public Integer getAccountBalance() {
+		public String getAccountBalance() {
 			return accountBalance;
 		}
 
@@ -326,7 +326,7 @@ public class DeliveryDetailResponse {
 		 * @param accountBalance
 		 * The account_balance
 		 */
-		public void setAccountBalance(Integer accountBalance) {
+		public void setAccountBalance(String accountBalance) {
 			this.accountBalance = accountBalance;
 		}
 

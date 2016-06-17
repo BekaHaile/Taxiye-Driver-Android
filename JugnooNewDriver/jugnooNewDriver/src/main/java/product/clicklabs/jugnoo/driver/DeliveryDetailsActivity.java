@@ -172,7 +172,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 
 		getDeliveryDetails();
 
-		update();
+//		update();
 
 
 	}
@@ -180,7 +180,7 @@ public class DeliveryDetailsActivity extends BaseActivity {
 	public void update() {
 		try {
 			if (deliveryDetailResponse != null) {
-				idValue.setText(getResources().getString(R.string.delivery_id) + ": "
+				idValue.setText(getResources().getString(R.string.ride_id) + ": "
 						+ deliveryDetailResponse.getDetails().getRideId());
 				dateTimeValue.setText(DateOperations.convertDate(DateOperations.
 						utcToLocal(deliveryDetailResponse.getDetails().getTime())));
@@ -322,7 +322,15 @@ public class DeliveryDetailsActivity extends BaseActivity {
 											update();
 										} else {
 											DialogPopup.alertPopup(DeliveryDetailsActivity.this, "", message);
+											performBackPressed();
 										}
+									} else {
+										DialogPopup.alertPopupWithListener(DeliveryDetailsActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												performBackPressed();
+											}
+										});
 									}
 								} catch (Exception exception) {
 									exception.printStackTrace();
