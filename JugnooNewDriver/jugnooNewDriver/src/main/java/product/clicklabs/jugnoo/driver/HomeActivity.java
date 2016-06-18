@@ -2268,8 +2268,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						drawHeatMapData(heatMapResponseGlobal);
 					}
 
-					showAllRideRequestsOnMap();
-
 					try {
 						if (timer != null) {
 							etaTimerText.setText(" ");
@@ -2556,8 +2554,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					cancelMapAnimateAndUpdateRideDataTimer();
 
 			}
-			driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
-					EngagementStatus.REQUESTED.getOrdinal()));
+			showAllRideRequestsOnMap();
 
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
@@ -2980,9 +2977,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			runnableRefresh = new Runnable() {
 				@Override
 				public void run() {
-					if (DriverScreenMode.D_INITIAL == driverScreenMode || DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-						DriverRequestListAdapter.this.notifyDataSetChanged();
-					}
+					DriverRequestListAdapter.this.notifyDataSetChanged();
 					handlerRefresh.postDelayed(runnableRefresh, 1000);
 				}
 			};
