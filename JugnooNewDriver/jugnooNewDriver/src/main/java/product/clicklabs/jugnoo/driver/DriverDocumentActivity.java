@@ -9,11 +9,11 @@ import android.widget.RelativeLayout;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 
-public class DriverDocumentActivity extends FragmentActivity{
+public class DriverDocumentActivity extends FragmentActivity {
 
 
 	RelativeLayout relative;
-	
+
 	Button backBtn, submitButton;
 
 	RelativeLayout relativeLayoutRides;
@@ -24,7 +24,7 @@ public class DriverDocumentActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_driver_documents);
-		
+
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(DriverDocumentActivity.this, relative, 1134, 720, false);
 
@@ -51,14 +51,14 @@ public class DriverDocumentActivity extends FragmentActivity{
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 		super.onBackPressed();
 	}
-	
-	
+
+
 	@Override
 	protected void onDestroy() {
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 		super.onDestroy();
 	}
-	
-	
+
+
 }

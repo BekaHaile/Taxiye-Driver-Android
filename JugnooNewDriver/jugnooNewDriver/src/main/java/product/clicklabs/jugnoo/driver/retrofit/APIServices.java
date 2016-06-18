@@ -76,7 +76,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/verify_otp")
-	void verifyOtpUsingSignupFields(@Field("email") String email,
+	void verifyOtpUsingSignupFields(@Field("phone_no") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
 									@Field("device_type") String deviceType,

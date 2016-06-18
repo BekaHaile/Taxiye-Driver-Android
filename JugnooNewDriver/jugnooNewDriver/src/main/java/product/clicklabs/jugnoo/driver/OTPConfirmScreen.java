@@ -114,7 +114,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 
-		if(!"".equalsIgnoreCase(emailRegisterData.phoneNo)){
+		if (!"".equalsIgnoreCase(emailRegisterData.phoneNo)) {
 			phoneNoEt.setHint(emailRegisterData.phoneNo);
 			phoneNoEt.setEnabled(false);
 			generateOTP(emailRegisterData.phoneNo);
@@ -153,7 +153,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			public void onClick(View v) {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
-                    sendSignupValues(OTPConfirmScreen.this, otpCode);
+					sendSignupValues(OTPConfirmScreen.this, otpCode);
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
@@ -289,7 +289,6 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	}
 
 
-
 	//	Retrofit
 	public void sendSignupValues(final Activity activity, String otp) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -304,7 +303,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			}
 
 
-			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
+			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.phoneNo, emailRegisterData.password,
 					Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 
@@ -496,10 +495,10 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		@Override
 		public void onFinish() {
 			linearLayoutWaiting.setVisibility(View.GONE);
-			if("".equalsIgnoreCase(knowlarityMissedCallNumber)){
+			if ("".equalsIgnoreCase(knowlarityMissedCallNumber)) {
 				btnOtpViaCall.setVisibility(View.GONE);
 				textViewOr.setVisibility(View.GONE);
-			}else {
+			} else {
 				btnOtpViaCall.setVisibility(View.VISIBLE);
 				textViewOr.setVisibility(View.VISIBLE);
 			}
@@ -537,8 +536,6 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	}
 
 }
-
-
 
 
 class EmailRegisterData {

@@ -75,6 +75,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	UpdateDriverEarnings updateDriverEarnings;
 
 	public DocumentListFragment() {
+
 	}
 
 
