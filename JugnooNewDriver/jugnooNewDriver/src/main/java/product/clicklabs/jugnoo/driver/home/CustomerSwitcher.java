@@ -128,11 +128,12 @@ public class CustomerSwitcher {
 
 				textViewCustomerName.setText(customerInfo.getName());
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-					if (customerInfo.getDropLatLng() != null
-							&& customerInfo.getIsDelivery() != 1) {
+					if (customerInfo.getIsDelivery() != 1
+							&& customerInfo.getDropLatLng() != null) {
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 								callbackGetAddress).execute();
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
@@ -143,13 +144,12 @@ public class CustomerSwitcher {
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					activity.buttonDriverNavigationSetVisibility(View.GONE);
+					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								callbackGetAddress).execute();
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
-						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					}
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1) {
@@ -205,7 +205,6 @@ public class CustomerSwitcher {
 		public void onPost(String address) {
 			Data.getCurrentCustomerInfo().setAddress(address);
 			textViewCustomerPickupAddress.setText(address);
-			activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 		}
 	};
 

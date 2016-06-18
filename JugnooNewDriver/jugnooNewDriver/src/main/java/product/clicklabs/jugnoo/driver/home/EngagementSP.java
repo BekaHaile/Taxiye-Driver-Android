@@ -71,6 +71,8 @@ public class EngagementSP {
 				} else{
 					Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_ARRIVED.getOrdinal());
 				}
+			} else {
+				removeCustomer(customerInfo.getEngagementId());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
