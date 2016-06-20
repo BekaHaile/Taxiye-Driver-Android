@@ -75,7 +75,7 @@ public interface APIServices {
 						 Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/verify_otp")
+	@POST("/verify_otp_for_driver")
 	void verifyOtpUsingSignupFields(@Field("phone_no") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
@@ -380,7 +380,7 @@ public interface APIServices {
 
 
 	@FormUrlEncoded
-	@POST("/make_driver_from_app")
+	@POST("/fetch_required_docs")
 	void docRequest(@Field("access_token") String accessToken,
 					Callback<DocRequirementResponse> callback);
 

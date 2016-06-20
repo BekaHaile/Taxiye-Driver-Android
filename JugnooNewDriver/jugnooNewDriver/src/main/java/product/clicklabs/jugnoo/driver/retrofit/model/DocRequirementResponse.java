@@ -10,38 +10,15 @@ import java.util.List;
 
 public class DocRequirementResponse {
 
-	@SerializedName("log")
-	@Expose
-	private String log;
 	@SerializedName("flag")
 	@Expose
 	private Integer flag;
 	@SerializedName("data")
 	@Expose
 	private List<DocumentData> data = new ArrayList<DocumentData>();
-	@SerializedName("id")
+	@SerializedName("user_phone_no")
 	@Expose
-	private Integer id;
-	@SerializedName("user_email")
-	@Expose
-	private String userEmail;
-	@SerializedName("doc_url")
-	@Expose
-	private String docUrl;
-
-	/**
-	 * @return The log
-	 */
-	public String getLog() {
-		return log;
-	}
-
-	/**
-	 * @param log The log
-	 */
-	public void setLog(String log) {
-		this.log = log;
-	}
+	private String userPhoneNo;
 
 	/**
 	 * @return The flag
@@ -71,46 +48,19 @@ public class DocRequirementResponse {
 		this.data = data;
 	}
 
+
 	/**
-	 * @return The id
+	 * @return The userPhoneNo
 	 */
-	public Integer getId() {
-		return id;
+	public String getuserPhoneNo() {
+		return userPhoneNo;
 	}
 
 	/**
-	 * @param id The id
+	 * @param userPhoneNo The user_email
 	 */
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return The userEmail
-	 */
-	public String getUserEmail() {
-		return userEmail;
-	}
-
-	/**
-	 * @param userEmail The user_email
-	 */
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
-	/**
-	 * @return The docUrl
-	 */
-	public String getDocUrl() {
-		return docUrl;
-	}
-
-	/**
-	 * @param docUrl The doc_url
-	 */
-	public void setDocUrl(String docUrl) {
-		this.docUrl = docUrl;
+	public void setuserPhoneNo(String userPhoneNo) {
+		this.userPhoneNo = userPhoneNo;
 	}
 
 
@@ -128,6 +78,9 @@ public class DocRequirementResponse {
 		@SerializedName("doc_status")
 		@Expose
 		private String docStatus;
+		@SerializedName("doc_url")
+		@Expose
+		private String docUrl;
 
 		/**
 		 * @return The docType
@@ -187,6 +140,20 @@ public class DocRequirementResponse {
 		 */
 		public void setDocStatus(String docStatus) {
 			this.docStatus = docStatus;
+		}
+
+		/**
+		 * @return The docUrl
+		 */
+		public String getDocUrl() {
+			return docUrl;
+		}
+
+		/**
+		 * @param docUrl The doc_url
+		 */
+		public void setDocUrl(String docUrl) {
+			this.docUrl = docUrl;
 		}
 
 	}

@@ -69,7 +69,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 
 	ArrayList<DocInfo> docs = new ArrayList<>();
-	String userEmail, docUrl;
+	String userPhoneNo, docUrl;
 	int index = 0;
 
 	UpdateDriverEarnings updateDriverEarnings;
@@ -208,6 +208,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
 			}
 
+			if(!"".equalsIgnoreCase(docInfo.url)){
+				Picasso.with(getActivity()).load(docInfo.url)
+						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+						.into(holder.setCapturedImage);
+			}
+
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -240,12 +247,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 							DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 							DocInfo docInfo = new DocInfo(data.getDocType(), data.getDocTypeNum(), data.getDocRequirement(),
-									data.getDocStatus());
+									data.getDocStatus(), data.getDocUrl());
 							docs.add(docInfo);
 						}
-						userEmail = docRequirementResponse.getUserEmail();
-						docUrl = docRequirementResponse.getDocUrl();
-						RestClient.setupRestClient(docUrl);
+						userPhoneNo = docRequirementResponse.getuserPhoneNo();
 
 					}
 				} catch (Exception exception) {
@@ -386,7 +391,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 					docs.get(index).setFile(new File(image.getFileThumbnail()));
 					driverDocumentListAdapter.notifyDataSetChanged();
-					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userEmail);
+					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo);
 
 
 				}
@@ -399,11 +404,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userEmail) {
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo) {
 		progressBar.setVisibility(View.VISIBLE);
 		HashMap<String, String> params = new HashMap<String, String>();
 
-		params.put("user_email", userEmail);
+		params.put("user_email", userPhoneNo);
 		params.put("doc_type", String.valueOf(docNumType));
 
 		TypedFile typedFile;

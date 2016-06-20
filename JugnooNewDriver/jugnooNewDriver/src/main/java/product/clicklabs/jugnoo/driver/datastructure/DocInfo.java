@@ -8,15 +8,17 @@ public class DocInfo {
 	public Integer docTypeNum;
 	public String docRequirement;
 	public String status;
+	public String url;
 	private File file;
 
 	public DocInfo(String docType, Integer docTypeNum, String docRequirement,
-				   String status) {
+				   String status, String url) {
 		this.docType = docType;
 		this.docTypeNum = docTypeNum;
 		this.docRequirement = docRequirement;
 		this.status = status;
 		this.file = null;
+		this.url = url;
 	}
 
 	public File getFile() {
