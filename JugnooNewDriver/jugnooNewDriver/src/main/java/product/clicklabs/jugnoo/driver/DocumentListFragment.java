@@ -59,6 +59,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	ProgressBar progressBar;
 	TextView textViewInfoDisplay;
 	ListView listView;
+	String accessToken;
 
 
 	protected ImageChooserManager imageChooserManager;
@@ -72,7 +73,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	String userPhoneNo, docUrl;
 	int index = 0;
 
-	UpdateDriverEarnings updateDriverEarnings;
 
 	public DocumentListFragment() {
 
@@ -95,7 +95,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		driverDocumentListAdapter = new DriverDocumentListAdapter();
 		listView.setAdapter(driverDocumentListAdapter);
 
+		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
+
 		progressBar.setVisibility(View.GONE);
+
+		accessToken = getArguments().getString("access_token");
 		getDocsAsync(getActivity());
 
 		return rootView;
@@ -132,6 +136,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	class DriverDocumentListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
+		ViewHolderDriverDoc holder;
 		//ViewHolderDriverDoc holder;
 
 		public DriverDocumentListAdapter() {
@@ -155,8 +160,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolderDriverDoc holder = new ViewHolderDriverDoc();
 			if (convertView == null) {
+				holder = new ViewHolderDriverDoc();
 				convertView = mInflater.inflate(R.layout.list_item_documents, null);
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
@@ -229,41 +234,67 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void getDocsAsync(final Activity activity) {
-		progressBar.setVisibility(View.VISIBLE);
-		RestClient.getApiServices().docRequest(Data.userData.accessToken, new Callback<DocRequirementResponse>() {
-			@Override
-			public void success(DocRequirementResponse docRequirementResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
-						}
-					} else {
+		try {
+			progressBar.setVisibility(View.VISIBLE);
+			RestClient.getApiServices().docRequest(accessToken, new Callback<DocRequirementResponse>() {
+				@Override
+				public void success(DocRequirementResponse docRequirementResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							}
+						} else {
 
-						for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
-							DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
-							DocInfo docInfo = new DocInfo(data.getDocType(), data.getDocTypeNum(), data.getDocRequirement(),
-									data.getDocStatus(), data.getDocUrl());
-							docs.add(docInfo);
-						}
-						userPhoneNo = docRequirementResponse.getuserPhoneNo();
+							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
+								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
+								DocInfo docInfo = new DocInfo(data.getDocType(), data.getDocTypeNum(), data.getDocRequirement(),
+										data.getDocStatus(), data.getDocUrl());
+								docs.add(docInfo);
+							}
+							updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
+							userPhoneNo = docRequirementResponse.getuserPhoneNo();
 
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
+					progressBar.setVisibility(View.GONE);
 				}
-				progressBar.setVisibility(View.GONE);
-			}
 
-			@Override
-			public void failure(RetrofitError error) {
-				Log.i("DocError", error.toString());
+				@Override
+				public void failure(RetrofitError error) {
+					Log.i("DocError", error.toString());
+					updateListData(activity.getResources().getString(R.string.error_occured_tap_to_retry), true);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void updateListData(String message, boolean errorOccurred) {
+		if (errorOccurred) {
+			textViewInfoDisplay.setText(message);
+			textViewInfoDisplay.setVisibility(View.VISIBLE);
+
+			docs.clear();
+			driverDocumentListAdapter.notifyDataSetChanged();
+		} else {
+			if (docs.size() == 0) {
+				textViewInfoDisplay.setText(message);
+				textViewInfoDisplay.setVisibility(View.VISIBLE);
+			} else {
+				textViewInfoDisplay.setVisibility(View.GONE);
 			}
-		});
+			driverDocumentListAdapter.notifyDataSetChanged();
+		}
 	}
 
 	public void uploadfile(final Activity activity, int index) {

@@ -7,9 +7,10 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 
 
-public class DriverDocumentActivity extends FragmentActivity {
+public class DriverDocumentActivity extends BaseFragmentActivity {
 
 
 	RelativeLayout relative;
@@ -17,6 +18,7 @@ public class DriverDocumentActivity extends FragmentActivity {
 	Button backBtn, submitButton;
 
 	RelativeLayout relativeLayoutRides;
+	String accessToken;
 
 	DocumentListFragment documentListFragment;
 
@@ -32,6 +34,10 @@ public class DriverDocumentActivity extends FragmentActivity {
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		documentListFragment = new DocumentListFragment();
+
+		Bundle bundle = new Bundle();
+		bundle.putString("access_token",getIntent().getExtras().getString("access_token"));
+		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())

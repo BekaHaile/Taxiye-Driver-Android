@@ -16,7 +16,7 @@ public class DocRequirementResponse {
 	@SerializedName("data")
 	@Expose
 	private List<DocumentData> data = new ArrayList<DocumentData>();
-	@SerializedName("user_phone_no")
+	@SerializedName("phone_no")
 	@Expose
 	private String userPhoneNo;
 
@@ -81,7 +81,9 @@ public class DocRequirementResponse {
 		@SerializedName("doc_url")
 		@Expose
 		private String docUrl;
-
+		@SerializedName("reason")
+		@Expose
+		private String reason;
 		/**
 		 * @return The docType
 		 */
