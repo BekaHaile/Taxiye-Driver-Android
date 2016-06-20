@@ -18,7 +18,6 @@ public class SPLabels {
             START_TIME = "start_time",
     		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
-            ENGAGEMENT_ID = "engagement_id",
     DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
 

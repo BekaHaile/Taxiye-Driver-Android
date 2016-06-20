@@ -462,7 +462,7 @@ public class JSONParser implements Constants {
 					}
 
 					try {
-						Log.writePathLogToFile(Data.getCurrentEngagementId() + "accept", "JSONPARSER  = " + jObject1);
+						MyApplication.getInstance().writePathLogToFile("accept", "JSONPARSER  = " + jObject1);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

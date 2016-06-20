@@ -196,12 +196,12 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
 									performBackPressed();
 									if (HomeActivity.appInterruptHandler != null) {
-										HomeActivity.appInterruptHandler.handleCancelRideSuccess();
+										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
 									}
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									try {
 										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-												Data.dEngagementId, Data.getCustomerInfo(engagementId).phoneNumber);
+												engagementId, Data.getCustomerInfo(engagementId).phoneNumber);
 									} catch (Exception e) {
 										e.printStackTrace();
 									}

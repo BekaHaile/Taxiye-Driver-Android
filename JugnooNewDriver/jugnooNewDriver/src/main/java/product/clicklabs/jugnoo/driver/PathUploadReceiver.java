@@ -112,7 +112,8 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                     HashMap<String, String> nameValuePairs = new HashMap<>();
                                     nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 
-                                    ArrayList<EngagementSPData> engagementSPDatas = MyApplication.getInstance().getEngagementSP().getAttachedEngagementsData();
+                                    ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication
+                                            .getInstance().getEngagementSP().getEngagementSPDatasArray();
                                     JSONArray jsonArray = new JSONArray();
                                     for(EngagementSPData engagementSPData : engagementSPDatas) {
                                         try {

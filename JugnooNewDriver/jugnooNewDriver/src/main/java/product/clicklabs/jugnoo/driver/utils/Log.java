@@ -134,23 +134,17 @@ public class Log {
 	
 	
 	
-	public static void writePathLogToFile(final String filePrefix, final String response) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					File gpxfile = getPathLogFile(filePrefix);
-					if(gpxfile != null){
-						FileWriter writer = new FileWriter(gpxfile, true);
-						writer.append("\n" + DateOperations.getCurrentTime() + " - "+ response);
-						writer.flush();
-						writer.close();
-					}
-				} catch (Exception e1) {
-//					e1.printStackTrace();
-				}
+	public static void writePathLogToFile(String filePrefix, String response) {
+		try {
+			File gpxfile = getPathLogFile(filePrefix);
+			if (gpxfile != null) {
+				FileWriter writer = new FileWriter(gpxfile, true);
+				writer.append("\n" + DateOperations.getCurrentTime() + " - " + response);
+				writer.flush();
+				writer.close();
 			}
-		}).start();
+		} catch (Exception e1) {
+		}
 	}
 	
 	public static void deleteFolder(File folder) {

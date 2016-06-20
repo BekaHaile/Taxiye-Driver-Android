@@ -124,7 +124,8 @@ public class DriverLocationDispatcher {
 	private void checkForMarkArrived(Context context, Location location, String accessToken){
 		try{
 			String driverArrivedDistance = Prefs.with(context).getString(SPLabels.DRIVER_ARRIVED_DISTANCE, "100");
-			ArrayList<EngagementSPData> engagementSPDatas = MyApplication.getInstance().getEngagementSP().getAttachedEngagementsData();
+			ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication.getInstance()
+					.getEngagementSP().getEngagementSPDatasArray();
 			for(EngagementSPData engagementSPData : engagementSPDatas){
 				try {
 					if(engagementSPData.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {

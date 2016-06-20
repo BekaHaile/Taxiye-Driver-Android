@@ -3197,18 +3197,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 			params.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
 
-			if(customerInfo.getIsPooled() == 1 || customerInfo.getIsDelivery() == 1){
-				if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
-						|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0){
-					Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
-				}
-				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
-			}
-			else{
+			if(Data.getAssignedCustomerInfosListForEngagedStatus() == null
+					|| Data.getAssignedCustomerInfosListForEngagedStatus().size() == 0){
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
-				params.put(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
 			}
-
+			params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 
 			params.put(KEY_LATITUDE, "" + Data.latitude);
 			params.put(KEY_LONGITUDE, "" + Data.longitude);
@@ -3414,7 +3407,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal());
-								nudgeRequestCancel(String.valueOf(customerInfo.getUserId()));
+								nudgeRequestCancel(customerInfo);
 								new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 							}
 						}
@@ -3438,11 +3431,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	private void nudgeRequestCancel(String customerId){
+	private void nudgeRequestCancel(CustomerInfo customerInfo){
 		try{
 			JSONObject map = new JSONObject();
-			map.put(Constants.KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-			map.put(Constants.KEY_CUSTOMER_ID, customerId);
+			map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+			map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
 			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_REQUEST_CANCEL, map);
 		} catch(Exception e){
 			e.printStackTrace();
@@ -3480,7 +3473,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis());
-									Log.writePathLogToFile(GpsDistanceCalculator.getEngagementIdFromSP(activity) + "m", "arrived sucessful");
+									Log.writePathLogToFile(customerInfo.getEngagementId() + "m", "arrived sucessful");
 
 									driverScreenMode = DriverScreenMode.D_START_RIDE;
 									Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
@@ -3537,7 +3530,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			customerRideDataGlobal.setStartRideTime(System.currentTimeMillis());
 			customerRideDataGlobal.setDistance(-1);
 
-			MeteringService.gpsInstance(this).saveEngagementIdToSP(this, Data.getCurrentEngagementId());
 			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
 			MeteringService.gpsInstance(this).stop();
 			Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
@@ -3597,7 +3589,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								try {
 									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-											Data.dEngagementId, customerInfo.getPhoneNumber());
+											String.valueOf(customerInfo.getEngagementId()), customerInfo.getPhoneNumber());
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -3864,7 +3856,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					initializeStartRideVariables();
-					nudgeRideEnd(dropLatitude, dropLongitude, params);
+					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 				}
 			} catch (Exception exception) {
@@ -3895,13 +3887,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	private void nudgeRideEnd(double dropLatitude, double dropLongitude, HashMap<String, String> params){
+	private void nudgeRideEnd(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, HashMap<String, String> params){
 		try{
 			JSONObject map = new JSONObject();
 			map.put(KEY_LATITUDE, dropLatitude);
 			map.put(KEY_LONGITUDE, dropLongitude);
-			map.put(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-			map.put(KEY_CUSTOMER_ID, String.valueOf(Data.getCurrentCustomerInfo().userId));
+			map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+			map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.userId));
 			map.put("params", params.toString());
 			NudgeClient.trackEvent(activity, NUDGE_RIDE_END, map);
 		} catch(Exception e){
@@ -4112,7 +4104,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					customerInfo.getTotalHaversineDistance(customerRideDataGlobal.getHaversineDistance(), HomeActivity.this));
 
 			initializeStartRideVariables();
-			nudgeRideEnd(dropLatitude, dropLongitude, params);
+			nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5179,7 +5171,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 						try {
 							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-									Data.dEngagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+									engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -5530,7 +5522,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void failure(RetrofitError error) {
 					Log.e("request fail", error.toString());
-					manualPatchPushAckAPI(activity);
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							manualPatchPushAckAPI(activity);
+						}
+					}, 10000);
 				}
 			});
 		}
@@ -5669,7 +5666,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void handleCancelRideSuccess() {
+	public void handleCancelRideSuccess(final String engagementId) {
 		runOnUiThread(new Runnable() {
 						  @Override
 						  public void run() {
@@ -5678,8 +5675,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							  }
 							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
-							  reduceRideRequest(Data.getCurrentEngagementId(), EngagementStatus.ACCEPTED.getOrdinal());
-							  reduceRideRequest(Data.getCurrentEngagementId(), EngagementStatus.ARRIVED.getOrdinal());
+							  reduceRideRequest(engagementId, EngagementStatus.ACCEPTED.getOrdinal());
+							  reduceRideRequest(engagementId, EngagementStatus.ARRIVED.getOrdinal());
 						  }
 					  }
 		);
@@ -6110,10 +6107,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void setDeliveryMarkers(){
 		try {
-			if(Data.getCurrentCustomerInfo().getIsDelivery() == 1
-					&& Data.getCurrentCustomerInfo().getDeliveryInfos() != null
-					&& Data.getCurrentCustomerInfo().getDeliveryInfos().size() > 0){
-				final String engagementId = Data.getCurrentEngagementId();
+			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			if(customerInfo.getIsDelivery() == 1
+					&& customerInfo.getDeliveryInfos() != null
+					&& customerInfo.getDeliveryInfos().size() > 0){
+				final String engagementId = String.valueOf(customerInfo.getEngagementId());
 				ArrayList<LatLng> latLngs = new ArrayList<>();
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				HashMap<LatLng,Integer> counterMap = new HashMap<>();
@@ -6124,11 +6122,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					latLngs.add(driverLatLng);
 				} catch (Exception e) {}
 
-				latLngs.add(Data.getCurrentCustomerInfo().getRequestlLatLng());
-				builder.include(Data.getCurrentCustomerInfo().getRequestlLatLng());
+				latLngs.add(customerInfo.getRequestlLatLng());
+				builder.include(customerInfo.getRequestlLatLng());
 
-				for(int i=0; i<Data.getCurrentCustomerInfo().getDeliveryInfos().size(); i++){
-					DeliveryInfo deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(i);
+				for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
+					DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
 					LatLng latLng = deliveryInfo.getLatLng();
 					if(Utils.compareDouble(latLng.latitude, 0) != 0
 							&& Utils.compareDouble(latLng.longitude, 0) != 0) {

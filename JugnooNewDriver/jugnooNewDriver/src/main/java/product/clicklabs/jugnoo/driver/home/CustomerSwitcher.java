@@ -89,16 +89,17 @@ public class CustomerSwitcher {
 			@Override
 			public void onClick(View v) {
 				String callPhoneNumber = "";
-				if (Data.getCurrentCustomerInfo() != null) {
-					callPhoneNumber = Data.getCurrentCustomerInfo().phoneNumber;
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if (customerInfo != null) {
+					callPhoneNumber = customerInfo.phoneNumber;
 				}
 				if (!"".equalsIgnoreCase(callPhoneNumber)) {
 					Utils.openCallIntent(activity, callPhoneNumber);
 					try {
 						JSONObject map = new JSONObject();
 						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
-						map.put(Constants.KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-						map.put(Constants.KEY_CUSTOMER_ID, Data.getCurrentCustomerInfo().userId);
+						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
 						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
 					} catch (Exception e) {
 						e.printStackTrace();

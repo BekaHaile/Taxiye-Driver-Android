@@ -28,10 +28,12 @@ public class EngagementSP {
 
 	private Context context;
 	private Gson gson;
+	private List<EngagementSPData> engagementSPDatas;
 
 	public EngagementSP(Context context){
 		this.context = context;
 		this.gson = new Gson();
+		getEngagementSPDatasArray();
 	}
 
 	public void addCustomer(CustomerInfo customerInfo){
@@ -39,7 +41,7 @@ public class EngagementSP {
 			if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 					|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
 					|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-				List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+				engagementSPDatas = getEngagementSPDatasFromPrefs();
 
 				boolean anyCustomerInRide = false;
 				for(EngagementSPData engagementSPData : engagementSPDatas){
@@ -81,7 +83,7 @@ public class EngagementSP {
 
 	public void removeCustomer(int engagementId){
 		try {
-			List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+			engagementSPDatas = getEngagementSPDatasFromPrefs();
 			engagementSPDatas.remove(new EngagementSPData(engagementId));
 			saveEngagementSPDatasToPrefs(engagementSPDatas);
 
@@ -94,13 +96,9 @@ public class EngagementSP {
 	}
 
 
-	public ArrayList<EngagementSPData> getAttachedEngagementsData(){
-		return (ArrayList<EngagementSPData>) getEngagementSPDatasFromPrefs();
-	}
-
 	public void updateEngagementSPData(EngagementSPData engagementSPData){
 		try{
-			List<EngagementSPData> engagementSPDatas = getEngagementSPDatasFromPrefs();
+			engagementSPDatas = getEngagementSPDatasFromPrefs();
 			if(engagementSPDatas.contains(engagementSPData)){
 				engagementSPDatas.set(engagementSPDatas.indexOf(engagementSPData), engagementSPData);
 			}
@@ -136,6 +134,13 @@ public class EngagementSP {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+
+	public List<EngagementSPData> getEngagementSPDatasArray(){
+		if(engagementSPDatas == null){
+			engagementSPDatas = getEngagementSPDatasFromPrefs();
+		}
+		return engagementSPDatas;
 	}
 
 }
