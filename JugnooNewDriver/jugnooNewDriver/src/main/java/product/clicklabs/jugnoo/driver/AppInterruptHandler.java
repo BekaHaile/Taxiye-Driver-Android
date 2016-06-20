@@ -36,7 +36,7 @@ public interface AppInterruptHandler {
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
 
 	void handleCancelRideSuccess();
-	void handleCancelRideFailure();
+	void handleCancelRideFailure(String message);
 
 	void markArrivedInterrupt(LatLng latLng, int engagementId);
 

@@ -127,7 +127,6 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
-import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
@@ -360,6 +359,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private RelativeLayout relativeLayoutContainer;
 
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
+
+	private final double FIX_ZOOM_DIAGONAL = 408;
 
 
 	@Override
@@ -3473,20 +3474,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
-							int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
-							if (jObj.has("flag")) {
-								flag = jObj.getInt("flag");
-							}
-
+							int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-								if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-									String error = jObj.getString("error");
-									DialogPopup.alertPopup(activity, "", error);
-								} else if (ApiResponseFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-									String message = jObj.getString("message");
-									callAndHandleStateRestoreAPI();
-									DialogPopup.alertPopup(activity, "", message);
-								} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 
 									Database2.getInstance(activity).insertRideData("0.0", "0.0", "" + System.currentTimeMillis());
 									Log.writePathLogToFile(GpsDistanceCalculator.getEngagementIdFromSP(activity) + "m", "arrived sucessful");
@@ -3496,7 +3487,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 									switchDriverScreen(driverScreenMode);
 								} else {
-									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+									DialogPopup.alertPopup(activity, "", message);
+									callAndHandleStateRestoreAPI();
 								}
 							}
 						} catch (Exception exception) {
@@ -3578,31 +3570,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-
-							String errorMessage = jObj.getString("error");
-
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
-							} else {
-								DialogPopup.alertPopup(activity, "", errorMessage);
-							}
-						} else {
-
-							try {
-								new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
-										Data.dEngagementId, customerInfo.getPhoneNumber());
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-
-							int flag = ApiResponseFlags.RIDE_STARTED.getOrdinal();
-
-							if (jObj.has("flag")) {
-								flag = jObj.getInt("flag");
-							}
-
-
+						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_STARTED.getOrdinal());
+						String message = JSONParser.getServerMessage(jObj);
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 							if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
 								double dropLatitude = 0, dropLongitude = 0;
 								try {
@@ -3625,37 +3595,44 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									Data.deliveryReturnOptionList = JSONParser.parseDeliveryReturnOptions(jObj);
 								}
 
+								try {
+									new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
+											Data.dEngagementId, customerInfo.getPhoneNumber());
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+
+								if (map != null) {
+									map.clear();
+								}
+
+								initializeStartRideVariables();
+
+								HomeActivity.this.driverAtPickupLatLng = driverAtPickupLatLng;
+
+								driverScreenMode = DriverScreenMode.D_IN_RIDE;
+								Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
+								saveCustomerRideDataInSP(customerInfo);
+
+								switchDriverScreen(driverScreenMode);
+
+								try {
+									JSONObject map = new JSONObject();
+									map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
+									map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
+									map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+									map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
+									NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								new DriverTimeoutCheck().clearCount(activity);
+								Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, customerInfo.getPhoneNumber());
+							} else {
+								DialogPopup.alertPopup(activity, "", message);
+								callAndHandleStateRestoreAPI();
 							}
-
-
-							if (map != null) {
-								map.clear();
-							}
-
-							initializeStartRideVariables();
-
-							HomeActivity.this.driverAtPickupLatLng = driverAtPickupLatLng;
-
-							driverScreenMode = DriverScreenMode.D_IN_RIDE;
-							Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
-							saveCustomerRideDataInSP(customerInfo);
-
-							switchDriverScreen(driverScreenMode);
-
-							try {
-								JSONObject map = new JSONObject();
-								map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
-								map.put(KEY_LONGITUDE, driverAtPickupLatLng.longitude);
-								map.put(KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
-								map.put(KEY_CUSTOMER_ID, String.valueOf(customerInfo.getUserId()));
-								NudgeClient.trackEvent(activity, NUDGE_RIDE_START, map);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-
 						}
-						new DriverTimeoutCheck().clearCount(activity);
-						Prefs.with(HomeActivity.this).save(SPLabels.CUSTOMER_PHONE_NUMBER, customerInfo.getPhoneNumber());
 					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
@@ -4596,7 +4573,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											LatLngBounds.Builder builder = new LatLngBounds.Builder();
 											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
 											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder),
+											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication
+															.getInstance().getMapLatLngBoundsCreator()
+															.createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
 													(int) (660f * ASSL.Xscale()), (int) (660f * ASSL.Xscale()),
 													(int) (minRatio * 50)), MAP_ANIMATION_TIME, null);
 											mapAnimatedToCustomerPath = true;
@@ -5707,10 +5686,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	@Override
-	public void handleCancelRideFailure() {
+	public void handleCancelRideFailure(final String message) {
 		runOnUiThread(new Runnable() {
 						  @Override
 						  public void run() {
+							  DialogPopup.alertPopup(HomeActivity.this, "", message);
 							  callAndHandleStateRestoreAPI();
 						  }
 					  }
@@ -6169,7 +6149,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				}
 
-				map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
+								.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
 						(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
 						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
@@ -6318,7 +6299,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 
-			map.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(),
+			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
+							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
 					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
 					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 

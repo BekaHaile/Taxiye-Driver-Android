@@ -26,7 +26,6 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -191,45 +190,41 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
-
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
-								} else {
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-							} else {
-								try {
-									int flag = jObj.getInt("flag");
-									if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-										String log = jObj.getString("log");
-										DialogPopup.alertPopup(activity, "", "" + log);
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
+									performBackPressed();
+									if (HomeActivity.appInterruptHandler != null) {
+										HomeActivity.appInterruptHandler.handleCancelRideSuccess();
 									}
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
+									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+									try {
+										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
+												Data.dEngagementId, Data.getCustomerInfo(engagementId).phoneNumber);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									nudgeCancelRide(reason);
 
+								} else{
+									performBackPressed();
+									if (HomeActivity.appInterruptHandler != null) {
+										HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
+									}
+								}
+							} else{
 								performBackPressed();
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.handleCancelRideSuccess();
+									HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
 								}
 							}
-
-							new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-
-						try {
-							new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-									Data.dEngagementId, Data.getCustomerInfo(engagementId).phoneNumber);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-							nudgeCancelRide(reason);
-
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							performBackPressed();
+							if (HomeActivity.appInterruptHandler != null) {
+								HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_error));
+							}
 						}
 					}
 
@@ -238,7 +233,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						DialogPopup.dismissLoadingDialog();
 						performBackPressed();
 						if (HomeActivity.appInterruptHandler != null) {
-							HomeActivity.appInterruptHandler.handleCancelRideFailure();
+							HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_not_responding));
 						}
 					}
 				});

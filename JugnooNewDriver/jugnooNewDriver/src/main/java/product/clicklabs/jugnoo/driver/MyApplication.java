@@ -15,6 +15,7 @@ import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
+import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 
 
 public class MyApplication extends Application {
@@ -25,6 +26,9 @@ public class MyApplication extends Application {
 
 	private EngagementSP engagementSP;
 
+	private MapLatLngBoundsCreator mapLatLngBoundsCreator;
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -33,7 +37,6 @@ public class MyApplication extends Application {
 		AnalyticsTrackers.initialize(this);
 		AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
 
-		engagementSP = new EngagementSP(this);
 	}
 
 	public static synchronized MyApplication getInstance() {
@@ -116,6 +119,18 @@ public class MyApplication extends Application {
 	}
 
 	public EngagementSP getEngagementSP() {
+		if(engagementSP == null){
+			engagementSP = new EngagementSP(this);
+		}
 		return engagementSP;
 	}
+
+
+	public MapLatLngBoundsCreator getMapLatLngBoundsCreator() {
+		if(mapLatLngBoundsCreator == null){
+			mapLatLngBoundsCreator = new MapLatLngBoundsCreator();
+		}
+		return mapLatLngBoundsCreator;
+	}
+
 }
