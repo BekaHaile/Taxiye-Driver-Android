@@ -72,6 +72,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	ArrayList<DocInfo> docs = new ArrayList<>();
 	String userPhoneNo, docUrl;
 	int index = 0;
+	int coloum = 0;
+
 
 
 	public DocumentListFragment() {
@@ -130,7 +132,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		TextView docType, docRequirement, docStatus;
 		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative;
-		ImageView setCapturedImage;
+		ImageView setCapturedImage, setCapturedImage2;
 		int id;
 	}
 
@@ -171,6 +173,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
 				holder.docStatus.setTypeface(Data.latoRegular(getActivity()));
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
+				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 
 
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
@@ -186,6 +189,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				holder.relative.setTag(holder);
 				holder.addImageLayout.setTag(holder);
+				holder.addImageLayout2.setTag(holder);
 
 				holder.relative.setLayoutParams(new ListView.LayoutParams(720, LayoutParams.WRAP_CONTENT));
 				ASSL.DoMagic(holder.relative);
@@ -201,7 +205,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			holder.id = position;
 
 			holder.docType.setText(docInfo.docType);
-			holder.docRequirement.setText(docInfo.docRequirement);
+			holder.docRequirement.setText(""+docInfo.docRequirement);
 			holder.docStatus.setText(docInfo.status);
 
 			if (docInfo.getFile() != null) {
@@ -213,11 +217,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
 			}
 
-			if(!"".equalsIgnoreCase(docInfo.url)){
-				Picasso.with(getActivity()).load(docInfo.url)
+			if (docInfo.getFile1() != null) {
+				Picasso.with(getActivity()).load(docInfo.getFile1())
+						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+						.into(holder.setCapturedImage2);
+			} else {
+				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
+			}
+
+			if (docInfo.url.size() > 0) {
+				Picasso.with(getActivity()).load(docInfo.url.get(0))
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
+				if (docInfo.url.size() > 1) {
+					Picasso.with(getActivity()).load(docInfo.url.get(1))
+							.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+							//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+							.into(holder.setCapturedImage2);
+				}
 			}
 
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +244,16 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				public void onClick(View v) {
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 					uploadfile(getActivity(), holder.id);
+					coloum = 0;
+				}
+			});
+
+			holder.addImageLayout2.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					uploadfile(getActivity(), holder.id);
+					coloum = 1;
 				}
 			});
 
@@ -252,11 +281,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
-								DocInfo docInfo = new DocInfo(data.getDocType(), data.getDocTypeNum(), data.getDocRequirement(),
+								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
 										data.getDocStatus(), data.getDocUrl());
 								docs.add(docInfo);
 							}
-							updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
+							updateListData("hello", false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
 
 						}
@@ -420,7 +449,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 					File f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
 
-					docs.get(index).setFile(new File(image.getFileThumbnail()));
+					if(coloum == 0){
+						docs.get(index).setFile(new File(image.getFileThumbnail()));
+					} else {
+						docs.get(index).setFile1(new File(image.getFileThumbnail()));
+					}
 					driverDocumentListAdapter.notifyDataSetChanged();
 					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo);
 
@@ -439,8 +472,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		progressBar.setVisibility(View.VISIBLE);
 		HashMap<String, String> params = new HashMap<String, String>();
 
-		params.put("user_email", userPhoneNo);
-		params.put("doc_type", String.valueOf(docNumType));
+		params.put("access_token", accessToken);
+		params.put("doc_type_num", String.valueOf(docNumType));
 
 		TypedFile typedFile;
 		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
@@ -458,14 +491,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 
-							if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
-							} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
+								docs.get(index).status = jObj.getString("status");
+								driverDocumentListAdapter.notifyDataSetChanged();
+							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
-							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
-
-							} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
-
 							} else {
 								DialogPopup.alertPopup(activity, "", message);
 							}

@@ -385,7 +385,7 @@ public interface APIServices {
 					Callback<DocRequirementResponse> callback);
 
 	@Multipart
-	@POST("/upload_docs_from_app")
+	@POST("/upload_document")
 	void uploadImageToServer(@Part("image") TypedFile image,
 							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
@@ -394,4 +394,9 @@ public interface APIServices {
 	@POST("/get_all_cities")
 	void getCityRetro(@Field("password") String password,
 					  Callback<CityResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/verify_document_status")
+	void docSubmission(@Field("access_token") String accessToken,
+					Callback<DocRequirementResponse> callback);
 }

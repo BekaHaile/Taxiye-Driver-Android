@@ -1,13 +1,29 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedFile;
 
 
 public class DriverDocumentActivity extends BaseFragmentActivity {
@@ -36,13 +52,21 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		documentListFragment = new DocumentListFragment();
 
 		Bundle bundle = new Bundle();
-		bundle.putString("access_token",getIntent().getExtras().getString("access_token"));
+		accessToken = getIntent().getExtras().getString("access_token");
+		bundle.putString("access_token",accessToken);
 		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.fragment, documentListFragment, DocumentListFragment.class.getName())
 				.addToBackStack(DocumentListFragment.class.getName())
 				.commit();
+
+		submitButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				docSubmission();
+			}
+		});
 	}
 
 	@Override
@@ -65,6 +89,58 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		System.gc();
 		super.onDestroy();
 	}
+
+
+	private void docSubmission() {
+		DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+
+		RestClient.getApiServices().docSubmission(accessToken, new Callback<DocRequirementResponse>() {
+			@Override
+			public void success(DocRequirementResponse docRequirementResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+
+					if (!SplashNewActivity.checkIfUpdate(jObj, DriverDocumentActivity.this)) {
+						int flag = jObj.getInt("flag");
+						String message = JSONParser.getServerMessage(jObj);
+
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
+
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										startActivity(new Intent(DriverDocumentActivity.this, SplashNewActivity.class));
+										finish();
+									}
+								});
+							} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+								DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+							} else {
+								DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+							}
+							DialogPopup.dismissLoadingDialog();
+						}
+					} else {
+						DialogPopup.dismissLoadingDialog();
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					DialogPopup.alertPopup(DriverDocumentActivity.this, "", Data.SERVER_ERROR_MSG);
+					DialogPopup.dismissLoadingDialog();
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.dismissLoadingDialog();
+			}
+		});
+	}
+
 
 
 }

@@ -66,37 +66,24 @@ public class DocRequirementResponse {
 
 	public class DocumentData {
 
-		@SerializedName("doc_type_text")
-		@Expose
-		private String docType;
 		@SerializedName("doc_type_num")
 		@Expose
 		private Integer docTypeNum;
+		@SerializedName("doc_type_text")
+		@Expose
+		private String docTypeText;
 		@SerializedName("doc_requirement")
 		@Expose
-		private String docRequirement;
+		private Integer docRequirement;
 		@SerializedName("doc_status")
 		@Expose
 		private String docStatus;
 		@SerializedName("doc_url")
 		@Expose
-		private String docUrl;
+		private ArrayList<String> docUrl = new ArrayList<String>();
 		@SerializedName("reason")
 		@Expose
 		private String reason;
-		/**
-		 * @return The docType
-		 */
-		public String getDocType() {
-			return docType;
-		}
-
-		/**
-		 * @param docType The doc_type
-		 */
-		public void setDocType(String docType) {
-			this.docType = docType;
-		}
 
 		/**
 		 *
@@ -117,45 +104,93 @@ public class DocRequirementResponse {
 		}
 
 		/**
-		 * @return The docRequirement
+		 *
+		 * @return
+		 * The docTypeText
 		 */
-		public String getDocRequirement() {
+		public String getDocTypeText() {
+			return docTypeText;
+		}
+
+		/**
+		 *
+		 * @param docTypeText
+		 * The doc_type_text
+		 */
+		public void setDocTypeText(String docTypeText) {
+			this.docTypeText = docTypeText;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The docRequirement
+		 */
+		public Integer getDocRequirement() {
 			return docRequirement;
 		}
 
 		/**
-		 * @param docRequirement The doc_requirement
+		 *
+		 * @param docRequirement
+		 * The doc_requirement
 		 */
-		public void setDocRequirement(String docRequirement) {
+		public void setDocRequirement(Integer docRequirement) {
 			this.docRequirement = docRequirement;
 		}
 
 		/**
-		 * @return The docStatus
+		 *
+		 * @return
+		 * The docStatus
 		 */
 		public String getDocStatus() {
 			return docStatus;
 		}
 
 		/**
-		 * @param docStatus The doc_status
+		 *
+		 * @param docStatus
+		 * The doc_status
 		 */
 		public void setDocStatus(String docStatus) {
 			this.docStatus = docStatus;
 		}
 
 		/**
-		 * @return The docUrl
+		 *
+		 * @return
+		 * The docUrl
 		 */
-		public String getDocUrl() {
+		public ArrayList<String> getDocUrl() {
 			return docUrl;
 		}
 
 		/**
-		 * @param docUrl The doc_url
+		 *
+		 * @param docUrl
+		 * The doc_url
 		 */
-		public void setDocUrl(String docUrl) {
+		public void setDocUrl(ArrayList<String> docUrl) {
 			this.docUrl = docUrl;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The reason
+		 */
+		public String getReason() {
+			return reason;
+		}
+
+		/**
+		 *
+		 * @param reason
+		 * The reason
+		 */
+		public void setReason(String reason) {
+			this.reason = reason;
 		}
 
 	}

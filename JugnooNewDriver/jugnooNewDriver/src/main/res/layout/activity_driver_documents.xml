@@ -15,7 +15,7 @@
             android:layout_height="96px"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@color/grey_black_light">
+            android:background="@color/menu_black">
 
             <TextView
                 android:id="@+id/textViewTitle"
@@ -53,7 +53,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="15px"
-            android:background="@drawable/blue_btn_selector"
+            android:background="@drawable/orange_btn_selector"
             android:text="@string/Submit"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>
