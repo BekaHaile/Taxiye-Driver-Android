@@ -441,23 +441,25 @@ public class JSONParser implements Constants {
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
 							}
 
-							parsePoolFare(jObjCustomer, customerInfo);
-
-							Data.addCustomerInfo(customerInfo);
-
 							try {
 								if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
 									double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
 									double dropLongitude = jObjCustomer.getDouble(KEY_OP_DROP_LONGITUDE);
 									if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-										(Data.getCustomerInfo(engagementId)).dropLatLng = null;
+										customerInfo.setDropLatLng(null);
 									} else {
-										(Data.getCustomerInfo(engagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+										customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 									}
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
+
+							parsePoolFare(jObjCustomer, customerInfo);
+
+							Data.addCustomerInfo(customerInfo);
+
+
 						}
 					}
 

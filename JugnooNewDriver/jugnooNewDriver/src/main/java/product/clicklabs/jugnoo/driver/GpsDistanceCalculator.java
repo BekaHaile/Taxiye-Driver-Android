@@ -343,7 +343,7 @@ public class GpsDistanceCalculator {
 					calculateWaitTime(speedMPS);
 					addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
-						Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+						MyApplication.getInstance().insertRideDataToEngagements("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
 						MyApplication.getInstance().writePathLogToFile("m", "first time lastLatLng =" + lastLatLng);
 					}
 				} else {
@@ -434,7 +434,7 @@ public class GpsDistanceCalculator {
 
 					lastLocationTime = System.currentTimeMillis();
 
-					Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+					MyApplication.getInstance().insertRideDataToEngagements("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
 
 					MyApplication.getInstance().writePathLogToFile("m",
 							DateOperations.getTimeStampFromMillis(currentLocation.getTime()) + ","

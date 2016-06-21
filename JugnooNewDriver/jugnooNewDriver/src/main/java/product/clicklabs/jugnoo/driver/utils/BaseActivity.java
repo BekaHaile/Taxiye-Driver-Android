@@ -48,13 +48,17 @@ public class BaseActivity extends Activity {
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
 					|| this instanceof RequestDuplicateRegistrationActivity)) {
-			startActivity(new Intent(this, SplashNewActivity.class));
-			finish();
-			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			sendToSplash();
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public void sendToSplash(){
+		startActivity(new Intent(this, SplashNewActivity.class));
+		finish();
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
 

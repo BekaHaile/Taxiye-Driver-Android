@@ -151,4 +151,14 @@ public class MyApplication extends Application {
 		}).start();
 	}
 
+	public void insertRideDataToEngagements(String lat, String lng, String t) {
+		try {
+			for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
+				Database2.getInstance(this).insertRideData(lat, lng, t, engagementSPData.getEngagementId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

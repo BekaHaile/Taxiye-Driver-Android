@@ -22,7 +22,7 @@ public interface AppInterruptHandler {
 
 	public void onChangeStatePushReceived(int flag, String engagementId);
 	
-	public void onCashAddedToWalletByCustomer(int userId, double balance);
+	public void onCashAddedToWalletByCustomer(int engagementId, int userId, double balance);
 
 	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
 	

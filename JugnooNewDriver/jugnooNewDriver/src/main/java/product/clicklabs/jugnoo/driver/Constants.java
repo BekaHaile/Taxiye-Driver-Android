@@ -125,5 +125,6 @@ public interface Constants {
     String KEY_BEARING = "bearing";
     String KEY_DEVICE_TOKEN = "device_token";
     String KEY_LOCATION_ACCURACY = "location_accuracy";
+    String KEY_KILL_APP = "kill_app";
 
 }

@@ -11,9 +11,6 @@ public class EngagementSPData {
 	@SerializedName("engagementId")
 	@Expose
 	private int engagementId;
-	@SerializedName("pathStartId")
-	@Expose
-	private int pathStartId;
 	@SerializedName("status")
 	@Expose
 	private int status;
@@ -31,11 +28,9 @@ public class EngagementSPData {
 	private int referenceId;
 
 
-
-	public EngagementSPData(int engagementId, int pathStartId, int status, double pickupLatitude, double pickupLongitude,
+	public EngagementSPData(int engagementId, int status, double pickupLatitude, double pickupLongitude,
 							int customerId, int referenceId) {
 		this.engagementId = engagementId;
-		this.pathStartId = pathStartId;
 		this.status = status;
 		this.pickupLatitude = pickupLatitude;
 		this.pickupLongitude = pickupLongitude;
@@ -45,14 +40,6 @@ public class EngagementSPData {
 
 	public EngagementSPData(int engagementId){
 		this.engagementId = engagementId;
-	}
-
-	public int getPathStartId() {
-		return pathStartId;
-	}
-
-	public void setPathStartId(int pathStartId) {
-		this.pathStartId = pathStartId;
 	}
 
 	public int getStatus() {

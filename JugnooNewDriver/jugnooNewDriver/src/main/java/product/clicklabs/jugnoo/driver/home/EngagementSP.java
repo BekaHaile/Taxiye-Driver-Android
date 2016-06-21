@@ -10,7 +10,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -52,12 +51,8 @@ public class EngagementSP {
 				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
 					anyCustomerInRide = true;
 				}
-				int pathStartId = Integer.MAX_VALUE;
-				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
-					pathStartId = Database2.getInstance(context).getCurrentPathItemsLastId();
-				}
 
-				EngagementSPData engagementSPData = new EngagementSPData(customerInfo.getEngagementId(), pathStartId, customerInfo.getStatus(),
+				EngagementSPData engagementSPData = new EngagementSPData(customerInfo.getEngagementId(), customerInfo.getStatus(),
 						customerInfo.getRequestlLatLng().latitude, customerInfo.getRequestlLatLng().longitude,
 						customerInfo.getUserId(), customerInfo.getReferenceId());
 

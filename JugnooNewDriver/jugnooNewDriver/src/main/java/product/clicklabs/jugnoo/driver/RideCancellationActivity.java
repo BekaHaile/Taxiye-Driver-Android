@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -123,6 +124,13 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		setCancellationOptions();
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		if(intent.hasExtra(Constants.KEY_KILL_APP)){
+			finish();
+		}
+	}
 
 	private void setCancellationOptions() {
 		try {
@@ -201,7 +209,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									try {
 										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-												engagementId, Data.getCustomerInfo(engagementId).phoneNumber);
+												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
@@ -250,7 +258,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			JSONObject map = new JSONObject();
 			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
 			map.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).userId));
+			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
 			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
 		} catch(Exception e){
 			e.printStackTrace();

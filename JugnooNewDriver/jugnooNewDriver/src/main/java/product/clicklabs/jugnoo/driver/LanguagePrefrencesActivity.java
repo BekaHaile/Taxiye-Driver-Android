@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -63,8 +61,6 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		setContentView(R.layout.activity_language);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
-//		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//		ASSL.DoMagic(main);
 
 		new ASSL(LanguagePrefrencesActivity.this, relative, 1134, 720, false);
 

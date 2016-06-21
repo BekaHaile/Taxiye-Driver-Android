@@ -523,9 +523,10 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
 								int userId = jObj.getInt("user_id");
+								int engagementId = jObj.optInt(Constants.KEY_ENGAGEMENT_ID, 0);
 								double balance = jObj.getDouble("balance");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
+									HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(engagementId, userId, balance);
 								}
 							} else if (PushFlags.UPDATE_HEAT_MAP.getOrdinal() == flag) {
 								if (HomeActivity.appInterruptHandler != null) {

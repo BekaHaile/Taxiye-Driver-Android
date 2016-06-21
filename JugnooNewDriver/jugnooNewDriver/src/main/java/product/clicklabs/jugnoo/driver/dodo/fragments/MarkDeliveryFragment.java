@@ -24,6 +24,7 @@ import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -58,8 +59,10 @@ public class MarkDeliveryFragment extends Fragment {
 	private HomeActivity activity;
 	private DeliveryInfo deliveryInfo;
 	private int deliveryInfoId;
+	private int engagementId;
 
-	public MarkDeliveryFragment(int deliveryInfoId){
+	public MarkDeliveryFragment(int engagementId, int deliveryInfoId){
+		this.engagementId = engagementId;
 		this.deliveryInfoId = deliveryInfoId;
 	}
 
@@ -147,7 +150,8 @@ public class MarkDeliveryFragment extends Fragment {
 		btnReturned.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openDeliveryReturnFragment(activity, activity.getRelativeLayoutContainer(), deliveryInfo.getId());
+				activity.getTransactionUtils().openDeliveryReturnFragment(activity, activity.getRelativeLayoutContainer(),
+						engagementId, deliveryInfo.getId());
 			}
 		});
 
@@ -192,8 +196,9 @@ public class MarkDeliveryFragment extends Fragment {
 
 
 		try{
-			deliveryInfo = Data.getCurrentCustomerInfo().getDeliveryInfos().get(Data.getCurrentCustomerInfo()
-					.getDeliveryInfos().indexOf(new DeliveryInfo(deliveryInfoId)));
+			CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+			deliveryInfo = customerInfo.getDeliveryInfos().get(customerInfo.getDeliveryInfos()
+					.indexOf(new DeliveryInfo(deliveryInfoId)));
 
 			textViewOrderId.setText(activity.getResources().getString(R.string.delivery_id)+": "+deliveryInfo.getId());
 			textViewAmount.setText(activity.getResources().getString(R.string.rupee)
@@ -251,17 +256,19 @@ public class MarkDeliveryFragment extends Fragment {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 
+				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+
 				HashMap<String, String> params = new HashMap<>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
-				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(Data.getCurrentCustomerInfo().getEngagementId()));
-				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(Data.getCurrentCustomerInfo().getReferenceId()));
+				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
 
-				final double distance = activity.getCurrentDeliveryDistance();
-				final long deliveryTime = activity.getCurrentDeliveryTime();
-				final long waitTime = activity.getCurrentDeliveryWaitTime();
+				final double distance = activity.getCurrentDeliveryDistance(customerInfo);
+				final long deliveryTime = activity.getCurrentDeliveryTime(customerInfo);
+				final long waitTime = activity.getCurrentDeliveryWaitTime(customerInfo);
 
 				params.put(Constants.KEY_DISTANCE, String.valueOf(distance));
 				params.put(Constants.KEY_RIDE_TIME, String.valueOf(deliveryTime/1000l));

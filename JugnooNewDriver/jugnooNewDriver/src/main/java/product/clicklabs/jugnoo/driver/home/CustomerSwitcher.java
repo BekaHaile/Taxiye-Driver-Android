@@ -124,7 +124,7 @@ public class CustomerSwitcher {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(engagementId == customerInfo.getEngagementId()) {
-				Utils.setDrawableColor(relativeLayoutCall, Data.getCurrentCustomerInfo().getColor(),
+				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
 						activity.getResources().getColor(R.color.new_orange));
 
 				textViewCustomerName.setText(customerInfo.getName());
@@ -133,7 +133,8 @@ public class CustomerSwitcher {
 							&& customerInfo.getDropLatLng() != null) {
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-								callbackGetAddress).execute();
+								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+										textViewCustomerPickupAddress)).execute();
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
@@ -148,7 +149,8 @@ public class CustomerSwitcher {
 					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
-								callbackGetAddress).execute();
+								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+										textViewCustomerPickupAddress)).execute();
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
@@ -196,18 +198,30 @@ public class CustomerSwitcher {
 	}
 
 
-	private ApiGoogleGeocodeAddress.Callback callbackGetAddress = new ApiGoogleGeocodeAddress.Callback() {
+	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback{
+
+		private int engagementId;
+		private TextView textView;
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView){
+			this.engagementId = engagementId;
+			this.textView = textView;
+		}
+
 		@Override
 		public void onPre() {
-			textViewCustomerPickupAddress.setText("");
+			textView.setText("");
 		}
 
 		@Override
 		public void onPost(String address) {
-			Data.getCurrentCustomerInfo().setAddress(address);
-			textViewCustomerPickupAddress.setText(address);
+			try {
+				Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
+				textView.setText(address);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	};
+	}
 
 
 	public void updateList(){
