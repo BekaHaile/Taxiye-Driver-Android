@@ -22,6 +22,8 @@ import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -368,6 +370,11 @@ public interface APIServices {
 	@POST("/fetch_all_driver_apps")
 	void fetchAlldriverApps(@FieldMap Map<String, String> params,
 								  Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/acknowledge_request")
+	Response sendmFileToServer(@Part("image") TypedFile image,
+							   @FieldMap Map<String, String> params);
 
 
 }

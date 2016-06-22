@@ -118,5 +118,5 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
-
+	String MIME_TYPE = "application/octet-stream";
 }
