@@ -41,7 +41,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -50,6 +53,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
@@ -616,7 +621,7 @@ public class Utils {
 
 	public static void openNavigationIntent(Context context, LatLng latLng){
 		try {
-			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude+","+latLng.longitude);
+			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude + "," + latLng.longitude);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			context.startActivity(mapIntent);
@@ -675,4 +680,29 @@ public class Utils {
 		return resultBitmap;
 	}
 
+
+	public static byte[] gzipCompress(String string) throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
+		GZIPOutputStream gos = new GZIPOutputStream(os);
+		gos.write(string.getBytes());
+		gos.close();
+		byte[] compressed = os.toByteArray();
+		os.close();
+		return compressed;
+	}
+
+	public static String gzipDecompress(byte[] compressed) throws IOException {
+		final int BUFFER_SIZE = 32;
+		ByteArrayInputStream is = new ByteArrayInputStream(compressed);
+		GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
+		StringBuilder string = new StringBuilder();
+		byte[] data = new byte[BUFFER_SIZE];
+		int bytesRead;
+		while ((bytesRead = gis.read(data)) != -1) {
+			string.append(new String(data, 0, bytesRead));
+		}
+		gis.close();
+		is.close();
+		return string.toString();
+	}
 }

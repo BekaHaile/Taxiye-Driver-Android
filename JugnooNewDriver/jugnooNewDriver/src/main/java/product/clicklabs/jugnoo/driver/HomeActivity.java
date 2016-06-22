@@ -5190,10 +5190,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-						intent.putExtra(KEY_KILL_APP, 1);
-						startActivity(intent);
+						try {
+							Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+							intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+							intent.putExtra(KEY_KILL_APP, 1);
+							startActivity(intent);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 
 					}
 					callAndHandleStateRestoreAPI();

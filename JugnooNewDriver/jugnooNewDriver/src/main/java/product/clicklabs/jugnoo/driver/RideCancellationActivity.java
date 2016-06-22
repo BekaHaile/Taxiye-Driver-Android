@@ -165,7 +165,11 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	public void onDestroy() {
 		RideCancellationActivity.activityCloser = null;
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
@@ -203,18 +207,17 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
 									performBackPressed();
-									if (HomeActivity.appInterruptHandler != null) {
-										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
-									}
-									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									try {
 										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
 												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
+									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									nudgeCancelRide(reason);
-
+									if (HomeActivity.appInterruptHandler != null) {
+										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
+									}
 								} else{
 									performBackPressed();
 									if (HomeActivity.appInterruptHandler != null) {
