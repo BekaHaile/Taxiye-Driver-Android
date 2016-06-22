@@ -57,6 +57,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	ImageView imageViewYellowLoadingBar;
 	LinearLayout layoutResendOtp, btnReGenerateOtp, btnOtpViaCall, linearLayoutWaiting;
 	String knowlarityMissedCallNumber = "";
+	String phoneNumberToVerify = "";
 
 	boolean loginDataFetched = false;
 
@@ -75,6 +76,16 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+	}
+
+	protected void onNewIntent(Intent intent) {
+
+		if (intent.hasExtra("message")) {
+			retrieveOTPFromSMS(intent);
+		} else if (intent.hasExtra("otp")) {
+//			retrieveOTPFromPush(intent);
+		}
+		super.onNewIntent(intent);
 	}
 
 	@Override
@@ -114,17 +125,31 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 
-		if (!"".equalsIgnoreCase(emailRegisterData.phoneNo)) {
-			phoneNoEt.setHint(emailRegisterData.phoneNo);
-			phoneNoEt.setEnabled(false);
-			generateOTP(emailRegisterData.phoneNo);
-			try {
-				textViewCounter.setText("0:30");
-				customCountDownTimer.start();
-			} catch (Exception e) {
-				e.printStackTrace();
-				linearLayoutWaiting.setVisibility(View.GONE);
+
+		try {
+			phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
+			if (!"".equalsIgnoreCase(emailRegisterData.phoneNo)) {
+				phoneNoEt.setHint(emailRegisterData.phoneNo);
+				phoneNoEt.setEnabled(false);
+				generateOTP(emailRegisterData.phoneNo);
+			} else if(!"".equalsIgnoreCase(phoneNumberToVerify)){
+				phoneNoEt.setHint(phoneNumberToVerify);
+				phoneNoEt.setEnabled(false);
+				try {
+					textViewCounter.setText("0:30");
+					customCountDownTimer.start();
+				} catch (Exception e) {
+					e.printStackTrace();
+					linearLayoutWaiting.setVisibility(View.GONE);
+				}
+				layoutResendOtp.setVisibility(View.GONE);
+				editTextOTP.setEnabled(true);
+				linearLayoutWaiting.setVisibility(View.VISIBLE);
+				knowlarityMissedCallNumber = getIntent().getStringExtra(Constants.KNOWLARITY_NO);
+				Prefs.with(OTPConfirmScreen.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 
@@ -153,7 +178,12 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			public void onClick(View v) {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
-					sendSignupValues(OTPConfirmScreen.this, otpCode);
+
+					if("".equalsIgnoreCase(phoneNumberToVerify)) {
+						sendSignupValues(OTPConfirmScreen.this, otpCode);
+					} else{
+						sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode);
+					}
 					FlurryEventLogger.otpConfirmClick(otpCode);
 				} else {
 					editTextOTP.requestFocus();
@@ -358,6 +388,66 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	}
 
+	public void sendSignupValuesToEdit(final Activity activity, final String phoneNo, String otp) {
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+			HashMap<String, String> params = new HashMap<>();
+
+			params.put("client_id", Data.CLIENT_ID);
+			params.put("access_token", Data.userData.accessToken);
+			params.put("is_access_token_new", "1");
+			params.put("phone_no", phoneNo);
+			params.put("verification_token", otp);
+
+			Log.i("params", ">"+params);
+
+			RestClient.getApiServices().verifyMyContactNumber(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					Log.i("Server response", "response = " + response);
+					try {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj = new JSONObject(responseStr);
+						int flag = jObj.getInt("flag");
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+								String error = jObj.getString("error");
+								DialogPopup.dialogBanner(activity, error);
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								String message = jObj.getString("message");
+								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										performBackPressed();
+										Data.userData.phoneNo = phoneNo;
+									}
+								});
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+					}
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					Log.e("request fail", error.toString());
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+		} else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+	}
+
+
 
 //	Retrofit
 
@@ -382,6 +472,15 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 							String message = JSONParser.getServerMessage(jObj);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+								try {
+									textViewCounter.setText("0:30");
+									customCountDownTimer.start();
+								} catch (Exception e) {
+									e.printStackTrace();
+									linearLayoutWaiting.setVisibility(View.GONE);
+								}
+
 								DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
 								layoutResendOtp.setVisibility(View.GONE);
 								editTextOTP.setEnabled(true);

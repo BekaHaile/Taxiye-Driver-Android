@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -32,21 +34,31 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 //public class PhoneEditOTPConfirmScreen extends BaseActivity implements LocationUpdate {
-
+//
+//
+//
+//	TextView textViewCounter, textViewOr;
+//	EditText editTextOTP, phoneNoEt;
+//	Button buttonVerify, backBtn;
+//
+//	ImageView imageViewYellowLoadingBar;
+//	LinearLayout layoutResendOtp, btnReGenerateOtp, btnOtpViaCall, linearLayoutWaiting;
+//	String knowlarityMissedCallNumber = "";
+//
+//
 //	ImageView imageViewBack;
 //	TextView textViewTitle;
 //
 //	TextView otpHelpText, textViewOTPNotReceived, textViewChangePhone;
-//	EditText editTextOTP;
-//	Button buttonVerify;
 //
-//	RelativeLayout relativeLayoutOTPThroughCall, relativeLayoutChangePhone;
 //
 //	LinearLayout relative;
 //
@@ -77,21 +89,22 @@ import retrofit.mime.TypedByteArray;
 //		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 //		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 //		textViewTitle.setTypeface(Data.latoRegular(this));
-
+//
 //		otpHelpText = (TextView) findViewById(R.id.otpHelpText);
 //		otpHelpText.setTypeface(Data.latoRegular(this));
-//		editTextOTP = (EditText) findViewById(R.id.editTextOTP);
+//
+//		editTextOTP = (EditText) findViewById(R.id.otpEt);
 //		editTextOTP.setTypeface(Data.latoRegular(this));
 //		editTextOTP.setHint(getStringText(R.string.enter_otp));
-
-//		buttonVerify = (Button) findViewById(R.id.buttonVerify);
+//
+//		buttonVerify = (Button) findViewById(R.id.verifyOtp);
 //		buttonVerify.setTypeface(Data.latoRegular(this));
-
+//
 //		relativeLayoutOTPThroughCall = (RelativeLayout) findViewById(R.id.relativeLayoutOTPThroughCall);
 //		relativeLayoutChangePhone = (RelativeLayout) findViewById(R.id.relativeLayoutChangePhone);
 //		relativeLayoutOTPThroughCall.setVisibility(View.GONE);
 //		relativeLayoutChangePhone.setVisibility(View.GONE);
-
+//
 //		textViewOTPNotReceived = (TextView) findViewById(R.id.textViewOTPNotReceived);
 //		textViewOTPNotReceived.setTypeface(Data.latoRegular(this));
 //		textViewOTPNotReceived.setText(getStringText(R.string.not_recived_otp));
@@ -270,6 +283,78 @@ import retrofit.mime.TypedByteArray;
 //	public void onLocationChanged(Location location, int priority) {
 //		Data.latitude = location.getLatitude();
 //		Data.longitude = location.getLongitude();
+//	}
+//
+//
+//	CustomCountDownTimer customCountDownTimer = new CustomCountDownTimer(30000, 5);
+//
+//	class CustomCountDownTimer extends CountDownTimer {
+//
+//		private final long mMillisInFuture;
+//
+//		public CustomCountDownTimer(long millisInFuture, long countDownInterval) {
+//			super(millisInFuture, countDownInterval);
+//			mMillisInFuture = millisInFuture;
+//		}
+//
+//		@Override
+//		public void onTick(long millisUntilFinished) {
+//			double percent = (((double) millisUntilFinished) * 100.0) / mMillisInFuture;
+//
+//			double widthToSet = percent * ((double) (ASSL.Xscale() * 530)) / 100.0;
+//
+//			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imageViewYellowLoadingBar.getLayoutParams();
+//			params.width = (int) widthToSet;
+//			imageViewYellowLoadingBar.setLayoutParams(params);
+//
+//
+//			long seconds = (long) Math.ceil(((double) millisUntilFinished) / 1000.0d);
+//			String text = seconds < 10 ? "0:0" + seconds : "0:" + seconds;
+//			textViewCounter.setText(text);
+//		}
+//
+//		@Override
+//		public void onFinish() {
+//			linearLayoutWaiting.setVisibility(View.GONE);
+//			if ("".equalsIgnoreCase(knowlarityMissedCallNumber)) {
+//				btnOtpViaCall.setVisibility(View.GONE);
+//				textViewOr.setVisibility(View.GONE);
+//			} else {
+//				btnOtpViaCall.setVisibility(View.VISIBLE);
+//				textViewOr.setVisibility(View.VISIBLE);
+//			}
+//			layoutResendOtp.setVisibility(View.VISIBLE);
+//		}
+//	}
+//
+//
+//	private void retrieveOTPFromSMS(Intent intent) {
+//		try {
+//			String otp = "";
+//			if (intent.hasExtra("message")) {
+//				String message = intent.getStringExtra("message");
+//
+//				if (message.toLowerCase().contains("paytm")) {
+//					otp = message.split("\\ ")[0];
+//				} else {
+//					String[] arr = message.split("and\\ it\\ is\\ valid\\ till\\ ");
+//					String[] arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ");
+//					otp = arr2[1];
+//					otp = otp.replaceAll("\\ ", "");
+//				}
+//			}
+//			if (Utils.checkIfOnlyDigits(otp)) {
+//				if (!"".equalsIgnoreCase(otp)) {
+//					if (Boolean.parseBoolean(Prefs.with(PhoneEditOTPConfirmScreen.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+//						editTextOTP.setText(otp);
+//						editTextOTP.setSelection(editTextOTP.getText().length());
+//						buttonVerify.performClick();
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 //	}
 //
 //}

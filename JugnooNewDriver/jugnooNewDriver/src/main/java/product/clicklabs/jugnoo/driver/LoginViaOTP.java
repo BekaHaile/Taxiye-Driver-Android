@@ -360,6 +360,7 @@ public class LoginViaOTP extends BaseActivity {
 				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", "+91" + phoneNo);
+				params.put("login_type","1");
 				Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
 				Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 

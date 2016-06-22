@@ -98,7 +98,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		listView.setAdapter(driverDocumentListAdapter);
 
 		textViewInfoDisplay = (TextView) rootView.findViewById(R.id.textViewInfoDisplay);
-
+		textViewInfoDisplay.setText(getResources().getString(R.string.no_doc_available));
 		progressBar.setVisibility(View.GONE);
 
 		accessToken = getArguments().getString("access_token");

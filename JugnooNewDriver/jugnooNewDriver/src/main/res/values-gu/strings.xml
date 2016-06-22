@@ -519,6 +519,7 @@
     <string name="rented">Rented</string>
     <string name="auto_driver_confirmation">Are you an auto driver?</string>
     <string name="auto_status_confirmation">Do you have an auto ?</string>
+    <string name="no_doc_available">No Documents Available</string>
 
 
     <string-array name="CountryCodes" >
