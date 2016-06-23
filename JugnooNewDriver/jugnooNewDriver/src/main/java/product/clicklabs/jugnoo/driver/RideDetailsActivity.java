@@ -36,6 +36,7 @@ public class RideDetailsActivity extends BaseActivity {
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
 
+
 	public static RideInfo openedRideInfo;
 
 	@Override

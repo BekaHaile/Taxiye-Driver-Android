@@ -579,6 +579,10 @@
 	<string name="present_near_delivery_location">इस डिलीवरी ऑर्डर को चिन्हित करने के लिए आपको डिलीवरी स्थान पर होना अनिवार्य है </string>
 	<string name="success">सफल हुआ </string>
 	<string name="outstanding_amount">बकाया समायोजित किया गया </string>
+	<string name="delivery_fare">Delivery Fare</string>
+	<string name="return_subsidy">Return Subsidy</string>
+	<string name="return_distance">Return Distance</string>
+	<string name="delivery_details">DELIVERY DETAILS</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

@@ -606,6 +606,10 @@
     <string name="present_near_delivery_location">இந்த ஆடர் ஒப்படைக்க பட்டது என்று உறுதி செய்வதற்கு, நீங்கள் ஒப்படைக்க வேண்டிய இடத்திற்கு அருகில் இருக்க வேண்டும் </string>"
     <string name="success">வெற்றி</string>
     <string name="outstanding_amount">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
