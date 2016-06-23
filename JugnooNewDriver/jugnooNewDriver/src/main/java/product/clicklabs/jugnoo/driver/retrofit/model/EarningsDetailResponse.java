@@ -102,9 +102,21 @@ public class EarningsDetailResponse {
 		@SerializedName("rides")
 		@Expose
 		private Integer rides;
+		@SerializedName("rides_amount")
+		@Expose
+		private String ridesAmount;
 		@SerializedName("referrals")
 		@Expose
 		private Integer referrals;
+		@SerializedName("referral_amount")
+		@Expose
+		private Integer referralAmount;
+		@SerializedName("delivery_count")
+		@Expose
+		private Integer deliveryCount;
+		@SerializedName("delivery_charges")
+		@Expose
+		private Integer deliveryCharges;
 		@SerializedName("date")
 		@Expose
 		private String date;
@@ -148,6 +160,24 @@ public class EarningsDetailResponse {
 		/**
 		 *
 		 * @return
+		 * The ridesAmount
+		 */
+		public String getRidesAmount() {
+			return ridesAmount;
+		}
+
+		/**
+		 *
+		 * @param ridesAmount
+		 * The rides_amount
+		 */
+		public void setRidesAmount(String ridesAmount) {
+			this.ridesAmount = ridesAmount;
+		}
+
+		/**
+		 *
+		 * @return
 		 * The referrals
 		 */
 		public Integer getReferrals() {
@@ -161,6 +191,60 @@ public class EarningsDetailResponse {
 		 */
 		public void setReferrals(Integer referrals) {
 			this.referrals = referrals;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The referralAmount
+		 */
+		public Integer getReferralAmount() {
+			return referralAmount;
+		}
+
+		/**
+		 *
+		 * @param referralAmount
+		 * The referral_amount
+		 */
+		public void setReferralAmount(Integer referralAmount) {
+			this.referralAmount = referralAmount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCount
+		 */
+		public Integer getDeliveryCount() {
+			return deliveryCount;
+		}
+
+		/**
+		 *
+		 * @param deliveryCount
+		 * The delivery_count
+		 */
+		public void setDeliveryCount(Integer deliveryCount) {
+			this.deliveryCount = deliveryCount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCharges
+		 */
+		public Integer getDeliveryCharges() {
+			return deliveryCharges;
+		}
+
+		/**
+		 *
+		 * @param deliveryCharges
+		 * The delivery_charges
+		 */
+		public void setDeliveryCharges(Integer deliveryCharges) {
+			this.deliveryCharges = deliveryCharges;
 		}
 
 		/**
@@ -191,9 +275,21 @@ public class EarningsDetailResponse {
 		@SerializedName("rides")
 		@Expose
 		private Integer rides;
+		@SerializedName("rides_amount")
+		@Expose
+		private String ridesAmount;
 		@SerializedName("referrals")
 		@Expose
 		private Integer referrals;
+		@SerializedName("referral_amount")
+		@Expose
+		private Integer referralAmount;
+		@SerializedName("delivery_count")
+		@Expose
+		private Integer deliveryCount;
+		@SerializedName("delivery_charges")
+		@Expose
+		private Integer deliveryCharges;
 		@SerializedName("start_date")
 		@Expose
 		private String startDate;
@@ -240,6 +336,24 @@ public class EarningsDetailResponse {
 		/**
 		 *
 		 * @return
+		 * The ridesAmount
+		 */
+		public String getRidesAmount() {
+			return ridesAmount;
+		}
+
+		/**
+		 *
+		 * @param ridesAmount
+		 * The rides_amount
+		 */
+		public void setRidesAmount(String ridesAmount) {
+			this.ridesAmount = ridesAmount;
+		}
+
+		/**
+		 *
+		 * @return
 		 * The referrals
 		 */
 		public Integer getReferrals() {
@@ -253,6 +367,60 @@ public class EarningsDetailResponse {
 		 */
 		public void setReferrals(Integer referrals) {
 			this.referrals = referrals;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The referralAmount
+		 */
+		public Integer getReferralAmount() {
+			return referralAmount;
+		}
+
+		/**
+		 *
+		 * @param referralAmount
+		 * The referral_amount
+		 */
+		public void setReferralAmount(Integer referralAmount) {
+			this.referralAmount = referralAmount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCount
+		 */
+		public Integer getDeliveryCount() {
+			return deliveryCount;
+		}
+
+		/**
+		 *
+		 * @param deliveryCount
+		 * The delivery_count
+		 */
+		public void setDeliveryCount(Integer deliveryCount) {
+			this.deliveryCount = deliveryCount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCharges
+		 */
+		public Integer getDeliveryCharges() {
+			return deliveryCharges;
+		}
+
+		/**
+		 *
+		 * @param deliveryCharges
+		 * The delivery_charges
+		 */
+		public void setDeliveryCharges(Integer deliveryCharges) {
+			this.deliveryCharges = deliveryCharges;
 		}
 
 		/**
@@ -301,9 +469,21 @@ public class EarningsDetailResponse {
 		@SerializedName("rides")
 		@Expose
 		private Integer rides;
+		@SerializedName("rides_amount")
+		@Expose
+		private Integer ridesAmount;
 		@SerializedName("referrals")
 		@Expose
 		private Integer referrals;
+		@SerializedName("referral_amount")
+		@Expose
+		private Integer referralAmount;
+		@SerializedName("delivery_count")
+		@Expose
+		private Integer deliveryCount;
+		@SerializedName("delivery_charges")
+		@Expose
+		private Integer deliveryCharges;
 		@SerializedName("start_date")
 		@Expose
 		private String startDate;
@@ -350,6 +530,24 @@ public class EarningsDetailResponse {
 		/**
 		 *
 		 * @return
+		 * The ridesAmount
+		 */
+		public Integer getRidesAmount() {
+			return ridesAmount;
+		}
+
+		/**
+		 *
+		 * @param ridesAmount
+		 * The rides_amount
+		 */
+		public void setRidesAmount(Integer ridesAmount) {
+			this.ridesAmount = ridesAmount;
+		}
+
+		/**
+		 *
+		 * @return
 		 * The referrals
 		 */
 		public Integer getReferrals() {
@@ -363,6 +561,60 @@ public class EarningsDetailResponse {
 		 */
 		public void setReferrals(Integer referrals) {
 			this.referrals = referrals;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The referralAmount
+		 */
+		public Integer getReferralAmount() {
+			return referralAmount;
+		}
+
+		/**
+		 *
+		 * @param referralAmount
+		 * The referral_amount
+		 */
+		public void setReferralAmount(Integer referralAmount) {
+			this.referralAmount = referralAmount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCount
+		 */
+		public Integer getDeliveryCount() {
+			return deliveryCount;
+		}
+
+		/**
+		 *
+		 * @param deliveryCount
+		 * The delivery_count
+		 */
+		public void setDeliveryCount(Integer deliveryCount) {
+			this.deliveryCount = deliveryCount;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The deliveryCharges
+		 */
+		public Integer getDeliveryCharges() {
+			return deliveryCharges;
+		}
+
+		/**
+		 *
+		 * @param deliveryCharges
+		 * The delivery_charges
+		 */
+		public void setDeliveryCharges(Integer deliveryCharges) {
+			this.deliveryCharges = deliveryCharges;
 		}
 
 		/**
@@ -402,6 +654,7 @@ public class EarningsDetailResponse {
 		}
 
 	}
-
 }
+
+
 
