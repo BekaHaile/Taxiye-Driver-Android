@@ -1410,7 +1410,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				FlurryEventLogger.event(RIDE_CANCELLED);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -2785,11 +2784,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		}
 
-		if(!currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
-			currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
-			onCreate(new Bundle());
-		}
-
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
 		long timediff = System.currentTimeMillis() - fetchHeatMapTime;
@@ -2803,6 +2797,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		new BlockedAppsUninstallIntent().uninstallBlockedApps(this);
 
+		if(!currentPreferredLang.equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))){
+			currentPreferredLang = Prefs.with(HomeActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+			ActivityCompat.finishAffinity(this);
+			sentToSplash();
+		}
 	}
 
 
@@ -2862,7 +2861,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						|| driverScreenMode == DriverScreenMode.D_START_RIDE
 						|| driverScreenMode == DriverScreenMode.D_ARRIVED) {
 					Intent intent = new Intent(Intent.ACTION_MAIN);
-					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					intent.addCategory(Intent.CATEGORY_HOME);
 					startActivity(intent);
 				} else {
@@ -2881,6 +2880,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onDestroy() {
 		try {
+			cancelCustomerPathUpdateTimer();
+			cancelMapAnimateAndUpdateRideDataTimer();
+
 			GCMIntentService.clearNotifications(HomeActivity.this);
 			GCMIntentService.stopRing(true);
 
@@ -2893,9 +2895,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			appInterruptHandler = null;
 
 			Database2.getInstance(this).close();
-
-			cancelCustomerPathUpdateTimer();
-			cancelMapAnimateAndUpdateRideDataTimer();
 
 			System.gc();
 		} catch (Exception e) {
@@ -6191,7 +6190,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				throw new Exception();
 			}
 		} catch (Exception e){
-			e.printStackTrace();
 			setEndRideButtonState(true);
 		}
 	}

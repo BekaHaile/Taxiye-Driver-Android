@@ -32,13 +32,17 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null) {
-			startActivity(new Intent(this, SplashNewActivity.class));
-			finish();
-			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+			sentToSplash();
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	public void sentToSplash(){
+		startActivity(new Intent(this, SplashNewActivity.class));
+		finish();
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 	}
 
 

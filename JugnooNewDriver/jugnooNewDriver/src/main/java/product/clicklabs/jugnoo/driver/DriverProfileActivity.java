@@ -74,20 +74,6 @@ public class DriverProfileActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		try {
-			String type = getIntent().getStringExtra("type");
-			if(type.equalsIgnoreCase("accept")){
-				Intent intent = new Intent(DriverProfileActivity.this, HomeActivity.class);
-				intent.putExtras(getIntent().getExtras());
-//				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				startActivity(intent);
-				finish();
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 		setContentView(R.layout.activity_profile_screen);
 
 		relative = (LinearLayout) findViewById(R.id.activity_profile_screen);

@@ -2,14 +2,11 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -121,18 +118,13 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 	public void performBackPressed() {
 		finish();
-		Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
-		LanguagePrefrencesActivity.this.startActivity(intent);
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
 	@Override
 	public void onBackPressed() {
 		finish();
-		Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
-		LanguagePrefrencesActivity.this.startActivity(intent);
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		super.onBackPressed();
 	}
 
 
@@ -220,9 +212,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 						updateLanguage();
 						conf = getResources().getConfiguration();
 						setPreferredLanguage();
-						Intent intent = new Intent(LanguagePrefrencesActivity.this, HomeActivity.class);
-						LanguagePrefrencesActivity.this.startActivity(intent);
-						LanguagePrefrencesActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+						finish();
+						overridePendingTransition(R.anim.left_in, R.anim.left_out);
 					}
 				});
 			} catch (Exception e) {
