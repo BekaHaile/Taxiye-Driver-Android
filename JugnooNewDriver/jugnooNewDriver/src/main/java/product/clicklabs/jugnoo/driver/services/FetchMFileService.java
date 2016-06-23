@@ -48,7 +48,7 @@ public class FetchMFileService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 
-		fileID = intent.getStringExtra(Constants.KEY_ENGAGEMENT_ID) + "m";
+		fileID = intent.getStringExtra("file_id") + "m";
 		try {
 			sendMFileToServer(product.clicklabs.jugnoo.driver.utils.Log.getPathLogFile(fileID, false));
 		} catch (Exception e) {

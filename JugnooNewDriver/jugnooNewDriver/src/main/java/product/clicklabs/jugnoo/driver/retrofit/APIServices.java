@@ -21,8 +21,10 @@ import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
+import retrofit.http.PartMap;
 import retrofit.mime.TypedFile;
 
 /**
@@ -371,10 +373,10 @@ public interface APIServices {
 	void fetchAlldriverApps(@FieldMap Map<String, String> params,
 								  Callback<RegisterScreenResponse> callback);
 
-	@FormUrlEncoded
+	@Multipart
 	@POST("/acknowledge_request")
 	Response sendmFileToServer(@Part("image") TypedFile image,
-							   @FieldMap Map<String, String> params);
+							   @PartMap Map<String, String> params);
 
 
 }

@@ -111,6 +111,7 @@ import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -864,8 +865,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
+//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//					FlurryEventLogger.event(CALL_US);
+					Intent intent1 = new Intent(Intent.ACTION_SYNC, null, HomeActivity.this, FetchMFileService.class);
+//					intent1.putExtra("access_token", Database2.getInstance(HomeActivity.this).getDLDAccessToken());
+					intent1.putExtra("file_id", "22601852");
+					startService(intent1);
 				}
 			});
 

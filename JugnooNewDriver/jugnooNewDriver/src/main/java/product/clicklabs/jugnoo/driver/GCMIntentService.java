@@ -584,7 +584,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
 								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
-								intent1.putExtra("file_id", jObj.getString("file_id"));
+								intent1.putExtra("file_id", jObj.getString("engagement_id"));
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
