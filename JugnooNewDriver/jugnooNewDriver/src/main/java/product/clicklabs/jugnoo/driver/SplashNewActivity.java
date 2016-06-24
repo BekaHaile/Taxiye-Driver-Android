@@ -158,7 +158,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
+//		Fabric.with(this, new Crashlytics());
 		
 
 		bundleHomePush = getIntent().getExtras();

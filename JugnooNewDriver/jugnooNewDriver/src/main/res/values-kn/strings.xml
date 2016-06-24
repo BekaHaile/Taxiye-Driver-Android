@@ -545,6 +545,10 @@
     <string name="present_near_delivery_location">ನೀವು ಡೆಲಿವರಿಯ ಸ್ಥಳದಲ್ಲಿದ್ದಾರೆ ಮಾತ್ರ ಆರ್ಡರ್ ಡೆಲಿವರಿ ಯಾಗುತ್ತದೆ </string>
     <string name="success">ಯಶಸ್ವಿಯಾಗಿದೆ </string>
     <string name="outstanding_amount">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
 
 
     <string-array name="CountryCodes" >

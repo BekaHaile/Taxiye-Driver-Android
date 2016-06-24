@@ -130,7 +130,7 @@ public class GCMIntentService extends IntentService {
 
 			Intent notificationIntent = new Intent(context, HomeActivity.class);
 
-			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -183,7 +183,7 @@ public class GCMIntentService extends IntentService {
 				notificationIntent.setClass(context, HomeActivity.class);
 			}
 
-			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -210,14 +210,14 @@ public class GCMIntentService extends IntentService {
 				Intent intentAcc = new Intent(context, HomeActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
-				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intentAcc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
 				Intent intentCanc = new Intent(context, HomeActivity.class);
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
-				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intentCanc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 

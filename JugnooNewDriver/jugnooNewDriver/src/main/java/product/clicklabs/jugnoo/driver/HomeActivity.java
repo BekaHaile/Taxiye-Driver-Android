@@ -1419,7 +1419,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				FlurryEventLogger.event(RIDE_CANCELLED);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -2853,6 +2852,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onDestroy() {
 		try {
+			cancelCustomerPathUpdateTimer();
+			cancelMapAnimateAndUpdateRideDataTimer();
+
 			GCMIntentService.clearNotifications(HomeActivity.this);
 			GCMIntentService.stopRing(true);
 
@@ -2865,9 +2867,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			appInterruptHandler = null;
 
 			Database2.getInstance(this).close();
-
-			cancelCustomerPathUpdateTimer();
-			cancelMapAnimateAndUpdateRideDataTimer();
 
 			System.gc();
 		} catch (Exception e) {

@@ -398,6 +398,12 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 						RideDetailsActivity.openedRideInfo = rides.get(holder.id);
 						getActivity().startActivity(new Intent(getActivity(), RideDetailsActivity.class));
 						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					} else if(rides.get(holder.id).type.equalsIgnoreCase("delivery") && (!"Delivery Cancelled".equalsIgnoreCase(rideInfo.statusString))){
+						Intent intent = new Intent(getActivity(), DeliveryDetailsActivity.class);
+						intent.putExtra("delivery_id", rides.get(holder.id).id);
+						getActivity().startActivity(intent);
+						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//
 					}
 				}
 			});

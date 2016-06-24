@@ -189,6 +189,11 @@
             android:name=".InvoiceDetailsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".DeliveryDetailsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"></activity>
+
 
         <receiver
             android:name="com.google.android.gms.analytics.AnalyticsReceiver"
