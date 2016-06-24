@@ -6368,25 +6368,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						&& customerInfo.getIsDelivery() != 1
 						&& customerInfo.getDropLatLng() != null){
 					latLng = customerInfo.getDropLatLng();
-					if(i == 0 && customerInfo.getIsPooled() == 1){
-						textViewRideInstructionsInRide.setVisibility(View.VISIBLE);
-						textViewRideInstructionsInRide.setText(getResources().getString(R.string.please_drop_customer,
-								customerInfo.getName()));
-					}
 				} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
 					latLng = customerInfo.getRequestlLatLng();
-					if(i == 0 && customerInfo.getIsPooled() == 1){
+				}
+
+				if(i == 0 && customerInfo.getIsPooled() == 1){
+					String text = "";
+					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+						text = getResources().getString(R.string.please_drop_customer,
+								customerInfo.getName());
+					} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()){
+						text = getResources().getString(R.string.please_reach_customer_location,
+								customerInfo.getName());
+					} else if(customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
+						text = getResources().getString(R.string.please_start_customer_ride,
+								customerInfo.getName());
+					}
+
+					if(Data.getCurrentState() == DriverScreenMode.D_IN_RIDE){
+						textViewRideInstructionsInRide.setVisibility(View.VISIBLE);
+						textViewRideInstructionsInRide.setText(text);
+					} else {
 						textViewRideInstructions.setVisibility(View.VISIBLE);
-						if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.please_reach_customer_location,
-									customerInfo.getName()));
-						} else if(customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.please_start_customer_ride,
-									customerInfo.getName()));
-						}
+						textViewRideInstructions.setText(text);
 					}
 				}
+
 
 				if(latLng != null
 						&& Utils.compareDouble(latLng.latitude, 0) != 0
