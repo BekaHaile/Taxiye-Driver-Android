@@ -4,42 +4,54 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="wrap_content"
-    android:background="@drawable/list_white_selector"
     android:splitMotionEvents="false">
 
     <LinearLayout
         android:id="@+id/rideHistoryItem"
         android:layout_width="fill_parent"
-        android:layout_height="300px"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15px"
+        android:background="@drawable/background_white"
         android:orientation="vertical"
-        android:background="@drawable/box_background_image">
+        android:padding="12px">
 
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="64px"
-            android:gravity="bottom">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24px"
+            android:gravity="center_horizontal">
 
             <TextView
                 android:id="@+id/docType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="24px"
                 android:text="@string/Document_type"
                 android:textColor="@color/black"
-                android:layout_marginLeft="18px"
-                android:textSize="32px"
+                android:textSize="36px"
                 />
 
             <TextView
                 android:id="@+id/docRequirement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/docType"
+                android:layout_marginBottom="24px"
+                android:layout_marginTop="32px"
                 android:text="@string/Requirement"
                 android:textColor="@color/black"
-                android:layout_marginRight="24px"
-                android:layout_alignParentRight="true"
-                android:textSize="20px"
+                android:textSize="24px"
                 />
+
+            <ImageView
+                android:id="@+id/imageViewUploadDoc"
+                android:layout_width="90px"
+                android:layout_height="90px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20px"
+                android:background="@drawable/upload_doc_img"
+                android:visibility="visible"/>
 
         </RelativeLayout>
 
@@ -48,21 +60,27 @@
             android:layout_height="2px"
             android:layout_gravity="bottom"
             android:layout_marginLeft="20px"
-            android:background="@color/grey_dark_less"/>
+            android:background="@color/grey_dark_less"
+            android:visibility="gone"/>
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutImageStatus"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_vertical">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="24px"
+            android:layout_marginTop="12px"
+            android:visibility="visible">
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
                 android:layout_width="160px"
                 android:layout_height="160px"
-                android:layout_marginTop="28px"
-                android:layout_marginLeft="30px"
-                android:background="@drawable/add_image_box"
-                android:orientation="vertical">
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="12px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="vertical"
+                android:padding="3px">
 
                 <ImageView
                     android:id="@+id/image_icon"
@@ -74,14 +92,14 @@
 
                 <TextView
                     android:id="@+id/addImage2"
-                    android:layout_below="@+id/image_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_image"
-                    android:textColor="@color/black"
+                    android:layout_below="@+id/image_icon"
                     android:layout_marginLeft="28px"
                     android:layout_marginTop="12px"
-                    android:textSize="20px" />
+                    android:text="@string/add_image"
+                    android:textColor="@color/black"
+                    android:textSize="20px"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage"
@@ -93,13 +111,14 @@
 
             <RelativeLayout
                 android:id="@+id/addImageLayout2"
-                android:layout_toRightOf="@+id/addImageLayout"
                 android:layout_width="160px"
                 android:layout_height="160px"
-                android:layout_marginTop="28px"
                 android:layout_marginLeft="30px"
-                android:background="@drawable/add_image_box"
-                android:orientation="vertical">
+                android:layout_marginTop="12px"
+                android:layout_toRightOf="@+id/addImageLayout"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="vertical"
+                android:padding="3px">
 
                 <ImageView
                     android:id="@+id/image_icon2"
@@ -113,12 +132,12 @@
                     android:id="@+id/addImage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/add_image"
                     android:layout_below="@+id/image_icon2"
-                    android:textColor="@color/black"
                     android:layout_marginLeft="28px"
                     android:layout_marginTop="12px"
-                    android:textSize="20px" />
+                    android:text="@string/add_image"
+                    android:textColor="@color/black"
+                    android:textSize="20px"/>
 
                 <ImageView
                     android:id="@+id/setCapturedImage2"
@@ -127,16 +146,33 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/docStatus"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="120px"
                 android:layout_height="wrap_content"
-                android:text="@string/status"
-                android:textColor="@color/black"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="28px"
-                android:layout_marginTop="90px"
-                android:textSize="32px" />
+                android:layout_centerVertical="true"
+                android:layout_marginRight="28px">
+
+                <ImageView
+                    android:id="@+id/imageViewDocStatus"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/doc_uploaded"/>
+
+                <TextView
+                    android:id="@+id/docStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/imageViewDocStatus"
+                    android:text="@string/status"
+                    android:layout_marginTop="10px"
+                    android:textColor="@color/black"
+                    android:textSize="20px"/>
+
+            </RelativeLayout>
 
 
         </RelativeLayout>

@@ -14,11 +14,13 @@ import java.io.File;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -47,6 +49,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		new ASSL(DriverDocumentActivity.this, relative, 1134, 720, false);
 
 		submitButton = (Button) findViewById(R.id.submitButton);
+		backBtn = (Button) findViewById(R.id.backBtn);
 
 		relativeLayoutRides = (RelativeLayout) findViewById(R.id.relativeLayoutRides);
 		documentListFragment = new DocumentListFragment();
@@ -67,6 +70,13 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 				docSubmission();
 			}
 		});
+		backBtn.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				performbackPressed();
+			}
+		});
 	}
 
 	@Override
@@ -77,6 +87,8 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
+		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
+		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 		super.onBackPressed();
@@ -90,6 +102,12 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		super.onDestroy();
 	}
 
+	public void performbackPressed() {
+		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
+		startActivity(intent);
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+	}
 
 	private void docSubmission() {
 		DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));

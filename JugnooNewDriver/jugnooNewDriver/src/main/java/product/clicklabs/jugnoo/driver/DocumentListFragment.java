@@ -73,6 +73,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	String userPhoneNo, docUrl;
 	int index = 0;
 	int coloum = 0;
+	boolean isExpended = false;
 
 
 
@@ -131,8 +132,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus;
 		RelativeLayout addImageLayout, addImageLayout2;
-		RelativeLayout relative;
-		ImageView setCapturedImage, setCapturedImage2;
+		RelativeLayout relative, relativeLayoutImageStatus;
+		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus;
 		int id;
 	}
 
@@ -174,20 +175,24 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setTypeface(Data.latoRegular(getActivity()));
 				holder.setCapturedImage = (ImageView) convertView.findViewById(R.id.setCapturedImage);
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
-
+				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
 
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
 
 				holder.addImageLayout.setTag(holder);
+
+				holder.imageViewUploadDoc =  (ImageView) convertView.findViewById(R.id.imageViewUploadDoc);
 
 				holder.addImageLayout2 = (RelativeLayout) convertView.findViewById(R.id.addImageLayout2);
 
 				holder.addImageLayout2.setTag(holder);
 
 
+				holder.relativeLayoutImageStatus = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutImageStatus);
 				holder.relative = (RelativeLayout) convertView.findViewById(R.id.relative);
 
 				holder.relative.setTag(holder);
+				holder.imageViewUploadDoc.setTag(holder);
 				holder.addImageLayout.setTag(holder);
 				holder.addImageLayout2.setTag(holder);
 
@@ -205,39 +210,108 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			holder.id = position;
 
 			holder.docType.setText(docInfo.docType);
-			holder.docRequirement.setText(""+docInfo.docRequirement);
+			if(docInfo.docRequirement == 1) {
+				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+			}else {
+				holder.docRequirement.setText(getResources().getString(R.string.optional));
+			}
 			holder.docStatus.setText(docInfo.status);
 
+			if(docInfo.status.equalsIgnoreCase("uploaded")){
+				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
+				holder.docStatus.setText(getResources().getString(R.string.uploaded));
+				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
+			} else if(docInfo.status.equalsIgnoreCase("2")){
+				holder.docStatus.setText(getResources().getString(R.string.rejected));
+				holder.imageViewDocStatus.setImageResource(R.drawable.doc_rejected);
+				holder.docStatus.setTextColor(getResources().getColor(R.color.red_delivery));
+			} else if(docInfo.status.equalsIgnoreCase("3")){
+				holder.docStatus.setText(getResources().getString(R.string.verified));
+				holder.imageViewDocStatus.setImageResource(R.drawable.doc_verified);
+				holder.docStatus.setTextColor(getResources().getColor(R.color.green_delivery));
+			} else if(docInfo.status.equalsIgnoreCase("1")){
+				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
+				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
+				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
+			}
+
 			if (docInfo.getFile() != null) {
+				docInfo.isExpended = true;
 				Picasso.with(getActivity()).load(docInfo.getFile())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
+				if(!docInfo.status.equalsIgnoreCase("2")){
+					holder.addImageLayout.setEnabled(false);
+				}else {
+					holder.addImageLayout.setEnabled(true);
+				}
 			} else {
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
 			}
 
 			if (docInfo.getFile1() != null) {
+				docInfo.isExpended = true;
 				Picasso.with(getActivity()).load(docInfo.getFile1())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
+				if(!docInfo.status.equalsIgnoreCase("2")){
+					holder.addImageLayout2.setEnabled(false);
+				}else {
+					holder.addImageLayout2.setEnabled(true);
+				}
 			} else {
 				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
 			}
 
 			if (docInfo.url.size() > 0) {
-				Picasso.with(getActivity()).load(docInfo.url.get(0))
-						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
-						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-						.into(holder.setCapturedImage);
-				if (docInfo.url.size() > 1) {
-					Picasso.with(getActivity()).load(docInfo.url.get(1))
+				try {
+					docInfo.isExpended = true;
+					Picasso.with(getActivity()).load(docInfo.url.get(0))
 							.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 							//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-							.into(holder.setCapturedImage2);
+							.into(holder.setCapturedImage);
+					if(!docInfo.status.equalsIgnoreCase("2")){
+						holder.addImageLayout.setEnabled(false);
+					}else {
+						holder.addImageLayout.setEnabled(true);
+					}
+					if (docInfo.url.size() > 1) {
+						Picasso.with(getActivity()).load(docInfo.url.get(1))
+								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+								.into(holder.setCapturedImage2);
+						if(!docInfo.status.equalsIgnoreCase("2")){
+							holder.addImageLayout2.setEnabled(false);
+						}else {
+							holder.addImageLayout2.setEnabled(true);
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
+
+			if(docInfo.isExpended){
+				holder.relativeLayoutImageStatus.setVisibility(View.VISIBLE);
+				holder.imageViewUploadDoc.setVisibility(View.GONE);
+				holder.docRequirement.setVisibility(View.GONE);
+			} else {
+				holder.relativeLayoutImageStatus.setVisibility(View.GONE);
+				holder.imageViewUploadDoc.setVisibility(View.VISIBLE);
+				holder.docRequirement.setVisibility(View.VISIBLE);
+			}
+
+			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					uploadfile(getActivity(), holder.id);
+					coloum = 0;
+
+				}
+			});
 
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -245,6 +319,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 					uploadfile(getActivity(), holder.id);
 					coloum = 0;
+
 				}
 			});
 
@@ -454,6 +529,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					} else {
 						docs.get(index).setFile1(new File(image.getFileThumbnail()));
 					}
+					docs.get(index).isExpended = true;
 					driverDocumentListAdapter.notifyDataSetChanged();
 					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo);
 
@@ -469,7 +545,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo) {
-		progressBar.setVisibility(View.VISIBLE);
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		HashMap<String, String> params = new HashMap<String, String>();
 
 		params.put("access_token", accessToken);
@@ -510,7 +586,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					DialogPopup.dismissLoadingDialog();
 				}
-				progressBar.setVisibility(View.GONE);
+				DialogPopup.dismissLoadingDialog();
 			}
 
 			@Override

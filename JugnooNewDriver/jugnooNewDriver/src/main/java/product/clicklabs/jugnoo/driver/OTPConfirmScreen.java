@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
@@ -179,7 +180,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
 
-					if("".equalsIgnoreCase(phoneNumberToVerify)) {
+					if(phoneNumberToVerify == null) {
 						sendSignupValues(OTPConfirmScreen.this, otpCode);
 					} else{
 						sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode);
@@ -389,60 +390,64 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	}
 
 	public void sendSignupValuesToEdit(final Activity activity, final String phoneNo, String otp) {
-		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-			HashMap<String, String> params = new HashMap<>();
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<>();
 
-			params.put("client_id", Data.CLIENT_ID);
-			params.put("access_token", Data.userData.accessToken);
-			params.put("is_access_token_new", "1");
-			params.put("phone_no", phoneNo);
-			params.put("verification_token", otp);
+				params.put("client_id", Data.CLIENT_ID);
+				params.put("access_token", Data.userData.accessToken);
+				params.put("is_access_token_new", "1");
+				params.put("phone_no", phoneNo);
+				params.put("verification_token", otp);
 
-			Log.i("params", ">"+params);
+				Log.i("params", ">"+params);
 
-			RestClient.getApiServices().verifyMyContactNumber(params, new Callback<RegisterScreenResponse>() {
-				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					Log.i("Server response", "response = " + response);
-					try {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj = new JSONObject(responseStr);
-						int flag = jObj.getInt("flag");
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
-							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								String error = jObj.getString("error");
-								DialogPopup.dialogBanner(activity, error);
-							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								String message = jObj.getString("message");
-								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										performBackPressed();
-										Data.userData.phoneNo = phoneNo;
-									}
-								});
-							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+				RestClient.getApiServices().verifyMyContactNumber(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						Log.i("Server response", "response = " + response);
+						try {
+							String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+									String error = jObj.getString("error");
+									DialogPopup.dialogBanner(activity, error);
+								} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									String message = jObj.getString("message");
+									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											performBackPressed();
+											Data.userData.phoneNo = phoneNo;
+										}
+									});
+								} else {
+									DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								}
 							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
 					}
-					DialogPopup.dismissLoadingDialog();
-				}
 
-				@Override
-				public void failure(RetrofitError error) {
-					Log.e("request fail", error.toString());
-					DialogPopup.dismissLoadingDialog();
-					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-				}
-			});
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
 
-		} else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
 		}
 
 	}

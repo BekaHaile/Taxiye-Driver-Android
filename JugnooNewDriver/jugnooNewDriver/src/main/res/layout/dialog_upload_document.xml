@@ -4,6 +4,7 @@
              android:layout_width="720px"
              android:layout_height="1134px"
              android:orientation="vertical"
+             android:background="@color/black_translucent"
              android:splitMotionEvents="false"
     >
 
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="30px"
-        android:background="@drawable/dialog_background_color"
+        android:background="@drawable/background_white_rounded_orange_bordered"
         android:splitMotionEvents="false"
         >
 
@@ -37,8 +38,8 @@
                 android:layout_marginTop="20px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
-                android:text="Add Image"
-                android:textColor="@color/grey_dark_more"
+                android:text="@string/upload"
+                android:textColor="@color/black"
                 android:textSize="40px"
                 android:visibility="visible"
 
@@ -47,11 +48,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="2px"
                 android:layout_gravity="bottom"
-                android:background="@color/grey_dark_less"/>
+                android:background="@color/new_orange"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="52px"
+                android:layout_marginBottom="52px"
                 android:layout_gravity="center">
 
                 <LinearLayout
@@ -66,7 +69,7 @@
                         android:layout_height="90px"
                         android:layout_gravity="center"
                         android:layout_marginTop="24px"
-                        android:background="@drawable/image_gallery"/>
+                        android:background="@drawable/doc_gallery"/>
 
                     <TextView
                         android:id="@+id/image_gallery_text"
@@ -87,7 +90,7 @@
                     android:id="@+id/LayoutCamera"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="180px"
+                    android:layout_marginLeft="228px"
                     android:orientation="vertical">
 
                     <ImageView
@@ -96,7 +99,7 @@
                         android:layout_height="90px"
                         android:layout_marginTop="24px"
                         android:layout_toRightOf="@+id/image_gallery"
-                        android:background="@drawable/image_camera"/>
+                        android:background="@drawable/doc_camera"/>
 
                     <TextView
                         android:id="@+id/image_camera_text"
@@ -115,24 +118,19 @@
 
             </RelativeLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_gravity="bottom"
-                android:background="@color/grey_dark_less"/>
-
 
             <Button
                 android:id="@+id/btnCancel"
-                android:layout_width="match_parent"
+                android:layout_width="320px"
                 android:layout_height="83px"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
-                android:background="@drawable/white_bg"
+                android:background="@drawable/new_orange_btn_selector_rounded"
                 android:singleLine="true"
                 android:text="@string/cancel"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/button_text_size"
+                android:layout_marginBottom="20px"
                 />
 
 

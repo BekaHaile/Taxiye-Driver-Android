@@ -9,6 +9,7 @@ public class DocInfo {
 	public Integer docTypeNum;
 	public Integer docRequirement;
 	public String status;
+	public boolean isExpended;
 	public ArrayList<String> url;
 	private File file, file1;
 
@@ -20,6 +21,7 @@ public class DocInfo {
 		this.status = status;
 		this.file = null;
 		this.file1 = null;
+		this.isExpended = false;
 		this.url = url;
 	}
 
