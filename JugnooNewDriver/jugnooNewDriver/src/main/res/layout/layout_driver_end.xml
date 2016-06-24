@@ -256,7 +256,7 @@
                 android:id="@+id/relativeLayoutDeliveryOver"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_marginTop="40px"
                 >
 
@@ -294,6 +294,17 @@
                     />
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textViewEndRideCustomerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customer Name"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text_size_42"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                />
 
             <!-- customer amount layout -->
             <LinearLayout

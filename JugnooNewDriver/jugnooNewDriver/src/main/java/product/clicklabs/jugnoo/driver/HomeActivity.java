@@ -269,6 +269,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
 
 	RelativeLayout relativeLayoutDeliveryOver;
+	TextView textViewDeliveryIsOver, textViewEndRideCustomerName;
 	LinearLayout linearLayoutEndDelivery;
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
@@ -696,7 +697,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewScroll = (TextView) findViewById(R.id.textViewScroll);
 
 			relativeLayoutDeliveryOver = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOver);
-			((TextView)findViewById(R.id.textViewDeliveryIsOver)).setTypeface(Fonts.mavenRegular(this));
+			textViewDeliveryIsOver = (TextView)findViewById(R.id.textViewDeliveryIsOver);
+			textViewDeliveryIsOver.setTypeface(Fonts.mavenRegular(this));
+			textViewEndRideCustomerName = (TextView) findViewById(R.id.textViewEndRideCustomerName);
+			textViewEndRideCustomerName.setTypeface(Fonts.mavenRegular(this));
 			linearLayoutEndDelivery = (LinearLayout) findViewById(R.id.linearLayoutEndDelivery);
 			((TextView)findViewById(R.id.textViewOrdersDelivered)).setTypeface(Fonts.mavenRegular(this));
 			((TextView)findViewById(R.id.textViewOrdersReturned)).setTypeface(Fonts.mavenRegular(this));
@@ -705,6 +709,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewOrdersReturnedValue = (TextView) findViewById(R.id.textViewOrdersReturnedValue);
 			textViewOrdersReturnedValue.setTypeface(Fonts.mavenRegular(this));
 			relativeLayoutDeliveryOver.setVisibility(View.GONE);
+			textViewEndRideCustomerName.setVisibility(View.GONE);
 			linearLayoutEndDelivery.setVisibility(View.GONE);
 
 
@@ -2157,6 +2162,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								+ Utils.getDecimalFormatForMoney().format(endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
 						linearLayoutEndDelivery.setVisibility(View.VISIBLE);
+						textViewEndRideCustomerName.setVisibility(View.GONE);
+						textViewDeliveryIsOver.setText(getResources().getString(R.string.delivery_is_over));
 
 						int totalDelivered = 0;
 						int totalUndelivered = 0;
@@ -2170,13 +2177,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						textViewOrdersDeliveredValue.setText(String.valueOf(totalDelivered));
 						textViewOrdersReturnedValue.setText(String.valueOf(totalUndelivered));
 						textViewRateYourCustomer.setText(getResources().getString(R.string.rate_your_vendor));
-					} else{
+					}
+					else if(customerInfo.getIsPooled() == 1){
+						jugnooRideOverText.setText(getResources().getString(R.string.total_fare));
+						takeFareText.setText(getResources().getText(R.string.rupee) + " "
+								+ Utils.getDecimalFormatForMoney().format(endRideData.toPay));
+						relativeLayoutDeliveryOver.setVisibility(View.VISIBLE);
+						linearLayoutEndDelivery.setVisibility(View.GONE);
+						textViewEndRideCustomerName.setVisibility(View.VISIBLE);
+						textViewEndRideCustomerName.setText(customerInfo.getName());
+						textViewDeliveryIsOver.setText(getResources().getString(R.string.reached_destination));
+
+						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
+					}
+					else{
 						jugnooRideOverText.setText(getResources().getString(R.string.jugnoo_ride_over));
 						takeFareText.setText(getResources().getString(R.string.take_cash)+" "
 								+getResources().getText(R.string.rupee)+" "
 								+Utils.getDecimalFormatForMoney().format(endRideData.toPay));
 						relativeLayoutDeliveryOver.setVisibility(View.GONE);
 						linearLayoutEndDelivery.setVisibility(View.GONE);
+						textViewEndRideCustomerName.setVisibility(View.GONE);
 						textViewRateYourCustomer.setText(getResources().getString(R.string.Rate_Your_Customer));
 					}
 
@@ -6041,10 +6062,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private void setTextViewRideInstructions(){
 		try {
-			textViewRideInstructions.setVisibility(View.GONE);
-			textViewRideInstructionsInRide.setVisibility(View.GONE);
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(customerInfo.getIsDelivery() == 1) {
+				textViewRideInstructions.setVisibility(View.GONE);
+				textViewRideInstructionsInRide.setVisibility(View.GONE);
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
@@ -6065,6 +6086,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					textViewRideInstructionsInRide.setText(getResources().getString(R.string.all_orders_have_been_delivered));
 				}
+			} else if(customerInfo.getIsPooled() != 1){
+				textViewRideInstructions.setVisibility(View.GONE);
+				textViewRideInstructionsInRide.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6283,9 +6307,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			ArrayList<LatLng> latLngs = new ArrayList<>();
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			HashMap<LatLng,Integer> counterMap = new HashMap<>();
-
+			LatLng driverLatLng = null;
 			try {
-				LatLng driverLatLng = null;
 				if(myLocation != null){
 					driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 				} else if(Utils.compareDouble(Data.latitude, 0) != 0 && Utils.compareDouble(Data.longitude, 0) != 0){
@@ -6297,16 +6320,72 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			} catch (Exception e) {}
 
-			for(int i=0; i<Data.getAssignedCustomerInfosListForEngagedStatus().size(); i++){
-				CustomerInfo customerInfo = Data.getAssignedCustomerInfosListForEngagedStatus().get(i);
+			ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+			final LatLng driverLatLngFinal = driverLatLng;
+			Collections.sort(customerInfos, new Comparator<CustomerInfo>() {
+
+				@Override
+				public int compare(CustomerInfo lhs, CustomerInfo rhs) {
+					try {
+						LatLng lhsLatLng = null;
+						if(lhs.getStatus() == EngagementStatus.STARTED.getOrdinal()
+								&& lhs.getIsDelivery() != 1
+								&& lhs.getDropLatLng() != null){
+							lhsLatLng = lhs.getDropLatLng();
+						} else if(lhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+								|| lhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
+							lhsLatLng = lhs.getRequestlLatLng();
+						}
+						LatLng rhsLatLng = null;
+						if(rhs.getStatus() == EngagementStatus.STARTED.getOrdinal()
+								&& rhs.getIsDelivery() != 1
+								&& rhs.getDropLatLng() != null){
+							rhsLatLng = rhs.getDropLatLng();
+						} else if(rhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+								|| rhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
+							rhsLatLng = rhs.getRequestlLatLng();
+						}
+
+						if (driverLatLngFinal != null && lhsLatLng != null && rhsLatLng != null) {
+							double distanceLhs = MapUtils.distance(driverLatLngFinal, lhsLatLng);
+							double distanceRhs = MapUtils.distance(driverLatLngFinal, rhsLatLng);
+							return (int) (distanceLhs - distanceRhs);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
+
+
+			textViewRideInstructions.setVisibility(View.GONE);
+			textViewRideInstructionsInRide.setVisibility(View.GONE);
+			for(int i=0; i<customerInfos.size(); i++){
+				CustomerInfo customerInfo = customerInfos.get(i);
 				LatLng latLng = null;
 				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
 						&& customerInfo.getIsDelivery() != 1
 						&& customerInfo.getDropLatLng() != null){
 					latLng = customerInfo.getDropLatLng();
+					if(i == 0 && customerInfo.getIsPooled() == 1){
+						textViewRideInstructionsInRide.setVisibility(View.VISIBLE);
+						textViewRideInstructionsInRide.setText(getResources().getString(R.string.please_drop_customer,
+								customerInfo.getName()));
+					}
 				} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
 					latLng = customerInfo.getRequestlLatLng();
+					if(i == 0 && customerInfo.getIsPooled() == 1){
+						textViewRideInstructions.setVisibility(View.VISIBLE);
+						if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()){
+							textViewRideInstructions.setText(getResources().getString(R.string.please_reach_customer_location,
+									customerInfo.getName()));
+						} else if(customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
+							textViewRideInstructions.setText(getResources().getString(R.string.please_start_customer_ride,
+									customerInfo.getName()));
+						}
+					}
 				}
 
 				if(latLng != null
