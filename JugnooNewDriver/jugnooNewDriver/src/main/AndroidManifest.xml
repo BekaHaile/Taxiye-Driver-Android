@@ -342,10 +342,6 @@
             android:name="com.nudgespot.notification.ReceiverActivity"
             android:theme="@android:style/Theme.NoDisplay"></activity>
 
-        <service
-            android:name=".pubnub.PubnubService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>
