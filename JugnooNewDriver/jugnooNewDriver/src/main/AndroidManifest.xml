@@ -258,6 +258,10 @@
             android:enabled="true"
             android:exported="true"></service>
         <service
+            android:name=".services.FetchMFileService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".MeteringService"
             android:enabled="true"
             android:exported="true"></service>

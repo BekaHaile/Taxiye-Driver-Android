@@ -124,4 +124,5 @@ public interface Constants {
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
 
+	String MIME_TYPE = "application/octet-stream";
 }

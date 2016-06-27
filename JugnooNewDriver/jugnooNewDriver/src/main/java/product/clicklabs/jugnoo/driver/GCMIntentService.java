@@ -45,6 +45,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
+import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
@@ -578,6 +579,12 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.SEND_DRIVER_CONTACTS.getOrdinal() == flag) {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, ContactsUploadService.class);
 								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								startService(intent1);
+
+							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
+								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								intent1.putExtra("file_id", jObj.getString("engagement_id"));
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
