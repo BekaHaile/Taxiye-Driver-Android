@@ -567,9 +567,6 @@
 	<string name="deliver_order_number">डिलीवरी ऑर्डर नंबर %s</string>
 	<string name="all_orders_have_been_delivered">सभी ऑर्डर डिलीवर्ड कर दिए गये हैं </string>
 	<string name="to_no_colon">को</string>
-	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
-	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
-	<string name="s_no">S No.</string>
 	<string name="order_no">Order No.</string>
 	<string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 	<string name="details">Details</string>

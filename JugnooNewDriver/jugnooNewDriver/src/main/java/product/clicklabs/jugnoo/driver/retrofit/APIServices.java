@@ -374,8 +374,8 @@ public interface APIServices {
 								  Callback<RegisterScreenResponse> callback);
 
 	@Multipart
-	@POST("/acknowledge_request")
-	Response sendmFileToServer(@Part("image") TypedFile image,
+	@POST("/upload_m_file")
+	Response sendmFileToServer(@Part("mFile") TypedFile image,
 							   @PartMap Map<String, String> params);
 
 

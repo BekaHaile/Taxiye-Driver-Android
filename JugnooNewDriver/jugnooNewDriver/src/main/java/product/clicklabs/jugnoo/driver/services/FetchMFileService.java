@@ -39,7 +39,7 @@ import retrofit.mime.TypedFile;
 
 public class FetchMFileService extends IntentService {
 
-	String fileID;
+	String fileID, engagementId;
 
 	public FetchMFileService() {
 		super(FetchMFileService.class.getName());
@@ -48,9 +48,13 @@ public class FetchMFileService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 
-		fileID = intent.getStringExtra("file_id") + "m";
+		engagementId = intent.getStringExtra("file_id");
+		fileID = engagementId + "m";
 		try {
-			sendMFileToServer(product.clicklabs.jugnoo.driver.utils.Log.getPathLogFile(fileID, false));
+			File mfile = product.clicklabs.jugnoo.driver.utils.Log.getPathLogFile(fileID, false);
+			if(mfile != null) {
+				sendMFileToServer(engagementId, mfile);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -58,12 +62,14 @@ public class FetchMFileService extends IntentService {
 	}
 
 
-	public void sendMFileToServer(final File mfile) {
+	public void sendMFileToServer(final String engagementId, final File mfile) {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {
 					HashMap<String, String> params = new HashMap<String, String>();
+
+					params.put("engagement_id",engagementId);
 					TypedFile typedFile;
 					typedFile = new TypedFile(Constants.MIME_TYPE, mfile);
 
