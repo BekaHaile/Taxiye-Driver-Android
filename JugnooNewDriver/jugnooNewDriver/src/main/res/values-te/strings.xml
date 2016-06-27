@@ -586,6 +586,9 @@
     <string name="uploaded">UPLOADED</string>
     <string name="rejected">REJECTED</string>
     <string name="verified">VERIFIED</string>
+    <string name="owned">Owned</string>
+    <string name="auto">Auto</string>
+    <string name="rejection_reason">Rejection Reason</string>
 
 
     <string-array name="CountryCodes" >

@@ -22,6 +22,9 @@ public class CityResponse implements Serializable {
 	@SerializedName("cities")
 	@Expose
 	private List<City> cities = new ArrayList<City>();
+	@SerializedName("vehicle_types")
+	@Expose
+	private List<VehicleType> vehicleTypes = new ArrayList<VehicleType>();
 
 	/**
 	 * @return The flag
@@ -54,6 +57,24 @@ public class CityResponse implements Serializable {
 	 */
 	public void setCities(List<City> cities) {
 		this.cities = cities;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The vehicleTypes
+	 */
+	public List<VehicleType> getVehicleTypes() {
+		return vehicleTypes;
+	}
+
+	/**
+	 *
+	 * @param vehicleTypes
+	 * The vehicle_types
+	 */
+	public void setVehicleTypes(List<VehicleType> vehicleTypes) {
+		this.vehicleTypes = vehicleTypes;
 	}
 
 	public class City implements Serializable{
@@ -99,6 +120,53 @@ public class CityResponse implements Serializable {
 		 */
 		public void setCityName(String cityName) {
 			this.cityName = cityName;
+		}
+
+	}
+
+	public class VehicleType implements Serializable {
+
+		@SerializedName("vehicle_name")
+		@Expose
+		private String vehicleName;
+		@SerializedName("vehicle_type")
+		@Expose
+		private Integer vehicleType;
+
+		/**
+		 *
+		 * @return
+		 * The vehicleName
+		 */
+		public String getVehicleName() {
+			return vehicleName;
+		}
+
+		/**
+		 *
+		 * @param vehicleName
+		 * The vehicle_name
+		 */
+		public void setVehicleName(String vehicleName) {
+			this.vehicleName = vehicleName;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The vehicleType
+		 */
+		public Integer getVehicleType() {
+			return vehicleType;
+		}
+
+		/**
+		 *
+		 * @param vehicleType
+		 * The vehicle_type
+		 */
+		public void setVehicleType(Integer vehicleType) {
+			this.vehicleType = vehicleType;
 		}
 
 	}

@@ -32,6 +32,19 @@
                 />
 
             <TextView
+                android:id="@+id/docRejectionReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/docType"
+                android:layout_marginTop="32px"
+                android:layout_marginLeft="18px"
+                android:text="@string/Requirement"
+                android:textColor="@color/red_status"
+                android:textSize="24px"
+                android:visibility="gone"
+                />
+
+            <TextView
                 android:id="@+id/docRequirement"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -70,7 +83,7 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="24px"
             android:layout_marginTop="12px"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
@@ -88,7 +101,7 @@
                     android:layout_height="60px"
                     android:layout_marginLeft="50px"
                     android:layout_marginTop="24px"
-                    android:background="@drawable/add_image"/>
+                    android:background="@drawable/image_icon"/>
 
                 <TextView
                     android:id="@+id/addImage2"
@@ -98,7 +111,7 @@
                     android:layout_marginLeft="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
-                    android:textColor="@color/black"
+                    android:textColor="@color/new_orange"
                     android:textSize="20px"/>
 
                 <ImageView
@@ -126,7 +139,7 @@
                     android:layout_height="60px"
                     android:layout_marginLeft="50px"
                     android:layout_marginTop="24px"
-                    android:background="@drawable/add_image"/>
+                    android:background="@drawable/image_icon"/>
 
                 <TextView
                     android:id="@+id/addImage"
@@ -136,7 +149,7 @@
                     android:layout_marginLeft="28px"
                     android:layout_marginTop="12px"
                     android:text="@string/add_image"
-                    android:textColor="@color/black"
+                    android:textColor="@color/new_orange"
                     android:textSize="20px"/>
 
                 <ImageView
@@ -167,7 +180,7 @@
                     android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:layout_below="@+id/imageViewDocStatus"
-                    android:text="@string/status"
+                    android:text="@string/uploaded"
                     android:layout_marginTop="10px"
                     android:textColor="@color/black"
                     android:textSize="20px"/>

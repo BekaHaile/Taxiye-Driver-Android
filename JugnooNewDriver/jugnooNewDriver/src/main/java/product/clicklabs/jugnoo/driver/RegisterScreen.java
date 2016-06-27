@@ -61,13 +61,14 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 	EditText nameEt, phoneNoEt;
 	Button signUpBtn;
-	Spinner selectCitySp, autoNumEt;
+	Spinner selectCitySp, autoNumEt, VehicleType;
 //	ImageView isRentedCheck, isOwnedCheck;
 	LinearLayout relative;
 //	RelativeLayout isOwnedRelative, isRentedRelative;
 
-	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "";
-	Integer cityposition;
+	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
+	Integer cityposition, vehiclePosition;
+	CityResponse res;
 	boolean sendToOtpScreen = false;
 //	boolean isRented = false, isOwned = false;
 
@@ -116,6 +117,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
+		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 //		autoNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
 //		isRentedCheck = (ImageView) findViewById(R.id.isRentedCheck);
 //		isOwnedCheck = (ImageView) findViewById(R.id.isOwnedCheck);
@@ -264,7 +266,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		}
 
 		try{
-			CityResponse res =  (CityResponse)getIntent().getSerializableExtra("cityResponse");
+			res =  (CityResponse)getIntent().getSerializableExtra("cityResponse");
 			selectCitySp.setAdapter(new CityArrayAdapter(this, R.layout.spinner_layout, res.getCities()));
 		} catch(Exception e){
 			e.printStackTrace();
@@ -302,8 +304,12 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		// Spinner Drop down elements
 		List<String> categories = new ArrayList<String>();
-		categories.add("Owned");
-		categories.add("Rented");
+		categories.add(getResources().getString(R.string.owned));
+		categories.add(getResources().getString(R.string.rented));
+
+		List<String> vehicleTypes = new ArrayList<String>();
+		vehicleTypes.add(getResources().getString(R.string.auto));
+		vehicleTypes.add("cab");
 
 		// Creating adapter for spinner
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
@@ -317,7 +323,27 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				 vehicleStatus = parent.getItemAtPosition(position).toString();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
+
+
+		// Drop down layout style - list view with radio button
+
+		VehicleType.setAdapter(new VehicyleArrayAdapter(this, R.layout.spinner_layout, res.getVehicleTypes()));
+
+		VehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
+				vehiclePosition = position;
 			}
 
 			@Override
@@ -381,10 +407,11 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
 //			params.put("auto_num", autoNum);
-			params.put("city", city);
+			params.put("city", String.valueOf(cityposition));
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
-
+			params.put("vehicle_type",""+vehiclePosition);
+			params.put("vehicle_status",vehicleStatus);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
 			params.put("app_version", "" + Data.appVersion);
@@ -572,6 +599,42 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
 			textViewCity.setText(data.get(position).getCityName());
+			return convertView;
+		}
+
+	}
+
+
+	public class VehicyleArrayAdapter extends ArrayAdapter<CityResponse.VehicleType> {
+		private LayoutInflater inflater;
+		private List<CityResponse.VehicleType> dataVehicle;
+		public VehicyleArrayAdapter(Context context, int resource, List<CityResponse.VehicleType> objects) {
+			super(context, resource, objects);
+			dataVehicle = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return dataVehicle.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(dataVehicle.get(position).getVehicleName());
 			return convertView;
 		}
 

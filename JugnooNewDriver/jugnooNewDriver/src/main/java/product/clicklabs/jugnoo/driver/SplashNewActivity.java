@@ -1501,6 +1501,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 
 	private void getCityAsync(){
+		DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 		RestClient.getApiServices().getCityRetro("auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
@@ -1518,14 +1519,16 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						finish();
 						overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					}
+					DialogPopup.dismissLoadingDialog();
 				} catch (Exception exception) {
 					exception.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
 				}
 			}
 
 			@Override
 			public void failure(RetrofitError error) {
-
+				DialogPopup.dismissLoadingDialog();
 			}
 		});
 	}

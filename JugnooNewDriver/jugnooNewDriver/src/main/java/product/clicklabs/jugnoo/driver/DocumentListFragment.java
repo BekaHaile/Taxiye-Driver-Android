@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -73,8 +74,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	String userPhoneNo, docUrl;
 	int index = 0;
 	int coloum = 0;
+	int rejectionId;
 	boolean isExpended = false;
-
 
 
 	public DocumentListFragment() {
@@ -181,7 +182,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				holder.addImageLayout.setTag(holder);
 
-				holder.imageViewUploadDoc =  (ImageView) convertView.findViewById(R.id.imageViewUploadDoc);
+				holder.imageViewUploadDoc = (ImageView) convertView.findViewById(R.id.imageViewUploadDoc);
 
 				holder.addImageLayout2 = (RelativeLayout) convertView.findViewById(R.id.addImageLayout2);
 
@@ -205,31 +206,31 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder = (ViewHolderDriverDoc) convertView.getTag();
 			}
 
-			DocInfo docInfo = docs.get(position);
+			final DocInfo docInfo = docs.get(position);
 
 			holder.id = position;
 
 			holder.docType.setText(docInfo.docType);
-			if(docInfo.docRequirement == 1) {
+			if (docInfo.docRequirement == 1) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
-			}else {
+			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
 			}
 			holder.docStatus.setText(docInfo.status);
 
-			if(docInfo.status.equalsIgnoreCase("uploaded")){
+			if (docInfo.status.equalsIgnoreCase("uploaded")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
 				holder.docStatus.setText(getResources().getString(R.string.uploaded));
 				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
-			} else if(docInfo.status.equalsIgnoreCase("2")){
+			} else if (docInfo.status.equalsIgnoreCase("2")) {
 				holder.docStatus.setText(getResources().getString(R.string.rejected));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_rejected);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.red_delivery));
-			} else if(docInfo.status.equalsIgnoreCase("3")){
+			} else if (docInfo.status.equalsIgnoreCase("3")) {
 				holder.docStatus.setText(getResources().getString(R.string.verified));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_verified);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.green_delivery));
-			} else if(docInfo.status.equalsIgnoreCase("1")){
+			} else if (docInfo.status.equalsIgnoreCase("1")) {
 				holder.docStatus.setText(getResources().getString(R.string.approval_pending));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_wating);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
@@ -241,9 +242,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
-				if(!docInfo.status.equalsIgnoreCase("2")){
+				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout.setEnabled(false);
-				}else {
+				} else {
 					holder.addImageLayout.setEnabled(true);
 				}
 			} else {
@@ -256,35 +257,39 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
-				if(!docInfo.status.equalsIgnoreCase("2")){
+				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout2.setEnabled(false);
-				}else {
+				} else {
 					holder.addImageLayout2.setEnabled(true);
 				}
 			} else {
 				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
 			}
 
-			if (docInfo.url.size() > 0) {
+			if (docInfo.url.size() > 0 || docInfo.status.equalsIgnoreCase("2")) {
 				try {
 					docInfo.isExpended = true;
-					Picasso.with(getActivity()).load(docInfo.url.get(0))
-							.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
-							//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
-							.into(holder.setCapturedImage);
-					if(!docInfo.status.equalsIgnoreCase("2")){
+
+					if (docInfo.url.size() > 0) {
+						Picasso.with(getActivity()).load(docInfo.url.get(0))
+								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+								.into(holder.setCapturedImage);
+					}
+					if (!docInfo.status.equalsIgnoreCase("2")) {
 						holder.addImageLayout.setEnabled(false);
-					}else {
+					} else {
 						holder.addImageLayout.setEnabled(true);
+						holder.setCapturedImage.setImageResource(R.drawable.reload_image);
 					}
 					if (docInfo.url.size() > 1) {
 						Picasso.with(getActivity()).load(docInfo.url.get(1))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage2);
-						if(!docInfo.status.equalsIgnoreCase("2")){
+						if (!docInfo.status.equalsIgnoreCase("2")) {
 							holder.addImageLayout2.setEnabled(false);
-						}else {
+						} else {
 							holder.addImageLayout2.setEnabled(true);
 						}
 					}
@@ -293,7 +298,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			}
 
-			if(docInfo.isExpended){
+			if (docInfo.isExpended) {
 				holder.relativeLayoutImageStatus.setVisibility(View.VISIBLE);
 				holder.imageViewUploadDoc.setVisibility(View.GONE);
 				holder.docRequirement.setVisibility(View.GONE);
@@ -316,19 +321,50 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					uploadfile(getActivity(), holder.id);
-					coloum = 0;
-
+					try {
+						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+						rejectionId = holder.id;
+						if (docInfo.status.equalsIgnoreCase("2")) {
+							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+									new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											uploadfile(getActivity(), rejectionId);
+											coloum = 0;
+										}
+									});
+						} else {
+							uploadfile(getActivity(), holder.id);
+							coloum = 0;
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 			});
 
 			holder.addImageLayout2.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
-					uploadfile(getActivity(), holder.id);
-					coloum = 1;
+					try {
+						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+						rejectionId = holder.id;
+						if (docInfo.status.equalsIgnoreCase("2")) {
+							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+									new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											uploadfile(getActivity(), rejectionId);
+											coloum = 1;
+										}
+									});
+						} else {
+							uploadfile(getActivity(), holder.id);
+							coloum = 1;
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
+					}
 				}
 			});
 
@@ -357,7 +393,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl());
+										data.getDocStatus(), data.getDocUrl(), data.getReason());
 								docs.add(docInfo);
 							}
 							updateListData("hello", false);
@@ -523,15 +559,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 //					selected_photo.setImageBitmap(bitmap);
 
 					File f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
-
-					if(coloum == 0){
-						docs.get(index).setFile(new File(image.getFileThumbnail()));
-					} else {
-						docs.get(index).setFile1(new File(image.getFileThumbnail()));
-					}
 					docs.get(index).isExpended = true;
 					driverDocumentListAdapter.notifyDataSetChanged();
-					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo);
+					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo, image);
 
 
 				}
@@ -544,7 +574,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo) {
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo, final ChosenImage image) {
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		HashMap<String, String> params = new HashMap<String, String>();
 
@@ -570,11 +600,21 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
 								docs.get(index).status = jObj.getString("status");
+								if (coloum == 0) {
+									docs.get(index).setFile(new File(image.getFileThumbnail()));
+								} else {
+									docs.get(index).setFile1(new File(image.getFileThumbnail()));
+								}
 								driverDocumentListAdapter.notifyDataSetChanged();
+
 							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
+								docs.get(index).isExpended = false;
+								driverDocumentListAdapter.notifyDataSetChanged();
 							} else {
 								DialogPopup.alertPopup(activity, "", message);
+								docs.get(index).isExpended = false;
+								driverDocumentListAdapter.notifyDataSetChanged();
 							}
 							DialogPopup.dismissLoadingDialog();
 						}
@@ -585,13 +625,17 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					exception.printStackTrace();
 					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 					DialogPopup.dismissLoadingDialog();
+					docs.get(index).isExpended = false;
+					driverDocumentListAdapter.notifyDataSetChanged();
 				}
 				DialogPopup.dismissLoadingDialog();
 			}
 
 			@Override
 			public void failure(RetrofitError error) {
-
+				DialogPopup.dismissLoadingDialog();
+				docs.get(index).isExpended = false;
+				driverDocumentListAdapter.notifyDataSetChanged();
 			}
 		});
 	}
