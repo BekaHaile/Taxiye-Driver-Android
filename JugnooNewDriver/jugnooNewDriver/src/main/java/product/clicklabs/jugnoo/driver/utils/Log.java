@@ -118,16 +118,17 @@ public class Log {
 		return null;
 	}
 	
-	public static File getPathLogFile(final String filePrefix){
+	public static File getPathLogFile(final String filePrefix, boolean createNew){
 		try {
 			String fileName = getPathLogFolder() + "/" + filePrefix + ".txt";
 			File gpxfile = new File(fileName);
-			if (!gpxfile.exists()) {
+			if (!gpxfile.exists() && createNew) {
 				gpxfile.createNewFile();
 			}
+			Log.i("gotcha",gpxfile.toString());
 			return gpxfile;
 		} catch (Exception e) {
-//			e.printStackTrace();
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -136,7 +137,7 @@ public class Log {
 	
 	public static void writePathLogToFile(String filePrefix, String response) {
 		try {
-			File gpxfile = getPathLogFile(filePrefix);
+			File gpxfile = getPathLogFile(filePrefix, true);
 			if (gpxfile != null) {
 				FileWriter writer = new FileWriter(gpxfile, true);
 				writer.append("\n" + DateOperations.getCurrentTime() + " - " + response);

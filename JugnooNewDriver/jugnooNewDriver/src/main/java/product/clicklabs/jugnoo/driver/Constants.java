@@ -127,4 +127,5 @@ public interface Constants {
     String KEY_LOCATION_ACCURACY = "location_accuracy";
     String KEY_KILL_APP = "kill_app";
 
+	String MIME_TYPE = "application/octet-stream";
 }

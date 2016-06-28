@@ -51,9 +51,7 @@ import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
-import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -75,6 +73,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+
+//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
 public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
 
@@ -158,7 +158,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		Fabric.with(this, new Crashlytics());
+		Fabric.with(this, new Crashlytics());
 		
 
 		bundleHomePush = getIntent().getExtras();

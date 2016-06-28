@@ -258,6 +258,10 @@
             android:enabled="true"
             android:exported="true"></service>
         <service
+            android:name=".services.FetchMFileService"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".MeteringService"
             android:enabled="true"
             android:exported="true"></service>
@@ -342,10 +346,6 @@
             android:name="com.nudgespot.notification.ReceiverActivity"
             android:theme="@android:style/Theme.NoDisplay"></activity>
 
-        <service
-            android:name=".pubnub.PubnubService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>
