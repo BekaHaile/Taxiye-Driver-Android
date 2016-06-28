@@ -580,10 +580,10 @@
     <string name="present_near_delivery_location">ఈ ఆర్డర్ ను డెలివరీ చేసినట్టుగా మార్చడానికి మీరు డెలివరీ నగర సమీపంలో తప్పక ఉండాలి.</string>
     <string name="success">విజయవంతం </string>
     <string name="outstanding_amount">బాకీ మొత్తం సర్దుబాటు చేయబడింది</string>
-    <string name="delivery_fare">Delivery Fare</string>
-    <string name="return_subsidy">Return Subsidy</string>
-    <string name="return_distance">Return Distance</string>
-    <string name="delivery_details">DELIVERY DETAILS</string>
+    <string name="delivery_fare">డెలివరీ ఫేర్</string>
+    <string name="return_subsidy">రిటర్న్ సబ్సిడీ</string>
+    <string name="return_distance">రిటర్న్ దూరం</string>
+    <string name="delivery_details">డెలివరీ వివరాలు</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
