@@ -237,24 +237,25 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 				holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
 
 
-				holder.relative.setOnClickListener(new View.OnClickListener() {
+//				holder.relative.setOnClickListener(new View.OnClickListener() {
+//
+//					@Override
+//					public void onClick(View v) {
+//						holder = (ViewHolderDriverRides) v.getTag();
+//						Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
+//						intent.putExtra("invoice_id", invoiceInfo.id);
+//						getActivity().startActivity(intent);
+//						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//						try {
+//							JSONObject map = new JSONObject();
+//							map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
+//							NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
+//						} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+//				}
+//			});
 
-					@Override
-					public void onClick(View v) {
-						holder = (ViewHolderDriverRides) v.getTag();
-						Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
-						intent.putExtra("invoice_id", invoiceInfo.id);
-						getActivity().startActivity(intent);
-						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
-						try {
-							JSONObject map = new JSONObject();
-							map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
-							NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
-						} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
 			} catch (Resources.NotFoundException e) {
 				e.printStackTrace();
 			}

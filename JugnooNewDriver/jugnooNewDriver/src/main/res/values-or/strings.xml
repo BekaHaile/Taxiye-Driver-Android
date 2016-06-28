@@ -500,7 +500,6 @@
     <string name="Return">ଫେରାଇବା.</string>
     <string name="amnt_credited">ରାଶି ଆସିଯାଇଛି.</string>
     <string name="delivery_id">ଡେଲିଭେରି ଆଇଡି.</string>
-    <string name="cash_collected">Cash Collected</string>
 
     <string name="delivery_completed">ଡେଲିଭରି ସଂପୁର୍ଣ ହେଲା</string>
     <string name="delivery_cancelled">ଡେଲିଭରି କ୍ୟାନ୍-ସଲ୍</string>
@@ -515,11 +514,21 @@
     <string name="to_no_colon">କୁ</string>
     <string name="no_deliveries_pending">କୌଣସି ଡେଲିଭରି ପେଣ୍ଡିଂଗ୍ ନାହିଁ</string>
     <string name="no_deliveries_completed">ଡେଲିଭରି ପୁରଣ ହୋଇ ନାହିଁ</string>
-    <string name="s_no">S No.</string>
-    <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
-    <string name="details">Details</string>
-    <string name="success">Success</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
+
+    <string name="cash_collected">ରାଶି ଆଦାୟ ହୋଇସାରିଛି.</string>
+    <string name="s_no">କ୍ରମାଂକ</string>
+    <string name="order_no">ଅର୍ଡର୍ ନମ୍ବର୍</string>
+    <string name="details">ବିବରଣି</string>
+    <string name="present_near_delivery_location">ଏହି ଅର୍ଡର୍ ଟି ପହନ୍ଚାଇବା ପାଇଂ ଆପନଂ କୁ ନିଶ୍ଚିତ ରୁପେ ଡେଲିଭରି ସ୍ଥାନ କୁ ଯିବାକୁ ପଡିବ</string>
+    <string name="success">ସଫଳ</string>
+    <string name="outstanding_amount">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
+    <string name="delivery_fare">ଡେଲିଭରି ଫେୟାର୍</string>
+    <string name="return_subsidy">ରିଟର୍ଣ ସବ୍ସିଡି</string>
+    <string name="return_distance">ରିଟର୍ଣ ଦୁରତା</string>
+    <string name="delivery_details">ଡେଲିଭେରି  ବିବରଣି</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

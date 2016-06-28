@@ -174,13 +174,6 @@ public class LoginViaOTP extends BaseActivity {
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					phoneNoEt.setEnabled(false);
 					generateOTP(phoneNo);
-					try {
-						textViewCounter.setText("0:30");
-						customCountDownTimer.start();
-					} catch (Exception e) {
-						e.printStackTrace();
-						linearLayoutWaiting.setVisibility(View.GONE);
-					}
 				} else {
 					phoneNoEt.requestFocus();
 					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
@@ -198,13 +191,6 @@ public class LoginViaOTP extends BaseActivity {
 					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 				} else if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
-					try {
-						textViewCounter.setText("0:30");
-						customCountDownTimer.start();
-					} catch (Exception e) {
-						e.printStackTrace();
-						linearLayoutWaiting.setVisibility(View.GONE);
-					}
 				} else {
 					phoneNoEt.requestFocus();
 					phoneNoEt.setError(getResources().getString(R.string.valid_phone_number));
@@ -383,6 +369,13 @@ public class LoginViaOTP extends BaseActivity {
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
 								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "");
 								Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "true");
+								try {
+									textViewCounter.setText("0:30");
+									customCountDownTimer.start();
+								} catch (Exception e) {
+									e.printStackTrace();
+									linearLayoutWaiting.setVisibility(View.GONE);
+								}
 							} else {
 								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
 							}
@@ -439,13 +432,11 @@ public class LoginViaOTP extends BaseActivity {
 		public void onFinish() {
 			linearLayoutWaiting.setVisibility(View.GONE);
 			if("".equalsIgnoreCase(knowlarityMissedCallNumber)){
-				btnOtpViaCall.setVisibility(View.GONE);
-				textViewOr.setVisibility(View.GONE);
+				layoutResendOtp.setVisibility(View.GONE);
 			}else {
-				btnOtpViaCall.setVisibility(View.VISIBLE);
-				textViewOr.setVisibility(View.VISIBLE);
+				layoutResendOtp.setVisibility(View.VISIBLE);
 			}
-			layoutResendOtp.setVisibility(View.VISIBLE);
+			btnReGenerateOtp.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -668,6 +659,7 @@ public class LoginViaOTP extends BaseActivity {
 				Prefs.with(LoginViaOTP.this).save(SPLabels.SELECTED_LANGUAGE, item);
 				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
 					selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+					customCountDownTimer.cancel();
 					onCreate(new Bundle());
 				}
 			}

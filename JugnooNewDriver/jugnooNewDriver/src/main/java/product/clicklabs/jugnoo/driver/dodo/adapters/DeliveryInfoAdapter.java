@@ -47,7 +47,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
         try {
             DeliveryInfo deliveryInfo = getItem(position);
 
-            holder.textViewOrderIdValue.setText(String.valueOf(position + 1));
+            holder.textViewOrderIdValue.setText(String.valueOf(deliveryInfo.getIndex() + 1));
             holder.textViewCustomerNameValue.setText(deliveryInfo.getCustomerName());
             holder.textViewCustomerDeliveryAddressValue.setText(deliveryInfo.getDeliveryAddress());
 

@@ -36,6 +36,7 @@ public class RideDetailsActivity extends BaseActivity {
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
 
+
 	public static RideInfo openedRideInfo;
 
 	@Override
@@ -215,7 +216,7 @@ public class RideDetailsActivity extends BaseActivity {
 				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to)+"Jugnoo");
+				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
 			} else {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));

@@ -1,10 +1,17 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -37,8 +44,6 @@ public class CustomerInfo {
 	private String address, startTime;
 	private double fareFactor;
 	private int isPooled;
-
-	private CustomerRideData customerRideData = new CustomerRideData();
 
 	private int isDelivery;
 	private ArrayList<DeliveryInfo> deliveryInfos;
@@ -310,10 +315,6 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 	}
 
-	public CustomerRideData getCustomerRideData() {
-		return customerRideData;
-	}
-
 	public double getPoolFare() {
 		return poolFare;
 	}
@@ -388,4 +389,62 @@ public class CustomerInfo {
 	public void setVendorMessage(String vendorMessage) {
 		this.vendorMessage = vendorMessage;
 	}
+
+
+	public double getTotalDistance(double distance, Context context){
+		try {
+			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+			if(jObj.has(String.valueOf(getEngagementId()))) {
+				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+				return distance - Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return distance;
+	}
+
+	public double getTotalHaversineDistance(double haversineDistance, Context context){
+		try {
+			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+			if(jObj.has(String.valueOf(getEngagementId()))) {
+				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+				return haversineDistance - Double.parseDouble(jc.optString(Constants.KEY_HAVERSINE_DISTANCE, "0"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return haversineDistance;
+	}
+
+
+
+	public long getElapsedRideTime(Context context){
+		long startTime = System.currentTimeMillis();
+		try {
+			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+			if(jObj.has(String.valueOf(getEngagementId()))) {
+				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+				startTime = Long.parseLong(jc.optString(Constants.KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis())));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return System.currentTimeMillis() - startTime;
+	}
+
+
+	public long getTotalWaitTime(long waitTime, Context context){
+		try {
+			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+			if(jObj.has(String.valueOf(getEngagementId()))) {
+				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+				return waitTime - Long.parseLong(jc.optString(Constants.KEY_WAIT_TIME, "0"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return waitTime;
+	}
+
 }

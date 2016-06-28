@@ -555,10 +555,6 @@
     <string name="Return">రిటర్న్</string>
     <string name="amnt_credited">డబ్బులు మీ ఖాతా లో జమ చేయబడినవి </string>
     <string name="delivery_id">డెలివరీ ఐడి</string>
-    <string name="cash_collected">Cash Collected</string>
-    <string name="s_no">S No.</string>
-    <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 
     <string name="delivery_completed">డెలివరీ పూర్తయింది</string>
     <string name="delivery_cancelled">డెలివరీ కాన్సిల్</string>
@@ -573,9 +569,21 @@
     <string name="to_no_colon">కు </string>
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
-    <string name="details">Details</string>
-    <string name="success">Success</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
 
+    <string name="cash_collected">తీసుకున్న డబ్బు </string>
+    <string name="s_no">క్ర.సం.</string>
+    <string name="order_no">ఆర్డర్ నెం</string>
+    <string name="details">వివరాలు</string>
+    <string name="present_near_delivery_location">ఈ ఆర్డర్ ను డెలివరీ చేసినట్టుగా మార్చడానికి మీరు డెలివరీ నగర సమీపంలో తప్పక ఉండాలి.</string>
+    <string name="success">విజయవంతం </string>
+    <string name="outstanding_amount">బాకీ మొత్తం సర్దుబాటు చేయబడింది</string>
+    <string name="delivery_fare">డెలివరీ ఫేర్</string>
+    <string name="return_subsidy">రిటర్న్ సబ్సిడీ</string>
+    <string name="return_distance">రిటర్న్ దూరం</string>
+    <string name="delivery_details">డెలివరీ వివరాలు</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

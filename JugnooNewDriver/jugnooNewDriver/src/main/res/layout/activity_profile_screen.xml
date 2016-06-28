@@ -74,7 +74,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="350px"
-        android:background="@drawable/profile_pic_bg_image"
+        android:background="@drawable/profile_background"
         android:id="@+id/driverDetailsRL">
 
         <RelativeLayout

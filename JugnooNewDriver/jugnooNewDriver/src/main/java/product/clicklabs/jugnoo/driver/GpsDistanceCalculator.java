@@ -45,6 +45,7 @@ public class GpsDistanceCalculator {
 	public static final double MAX_SPEED_THRESHOLD = 15; //in meters per second
 	public static final double MAX_ACCURACY = 200;
 	public static final long WAITING_WINDOW_TIME_MILLIS = 5000;
+	public final double DISTANCE_RESET_TOLERANCE = 100; // in meters
 
 
 	public double totalDistance;
@@ -736,7 +737,7 @@ public class GpsDistanceCalculator {
 		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
 				"updateDistanceInCaseOfReset func distance from server:"+distance
 						+" & totalDistance:"+totalDistance);
-		if(distance > totalDistance){
+		if(distance > totalDistance + DISTANCE_RESET_TOLERANCE){
 			totalDistance = totalDistance + distance;
 			saveTotalDistanceToSP(context, totalDistance);
 			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
