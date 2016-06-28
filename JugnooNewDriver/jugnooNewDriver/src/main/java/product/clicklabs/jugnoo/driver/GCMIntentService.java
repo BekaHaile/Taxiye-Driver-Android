@@ -403,7 +403,7 @@ public class GCMIntentService extends IntentService {
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this);
-										flurryEventForRequestPush(engagementId);
+										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 											startTimeoutAlarm(this);
@@ -417,7 +417,7 @@ public class GCMIntentService extends IntentService {
 									} else {
 										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
 										startRing(this);
-										flurryEventForRequestPush(engagementId);
+										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 											startTimeoutAlarm(this);
@@ -1067,12 +1067,11 @@ public class GCMIntentService extends IntentService {
 
 
 
-	private void flurryEventForRequestPush(String engagementId) {
-		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-		if (DriverScreenMode.D_INITIAL.getOrdinal() != mode
-				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
-				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
-			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
+	private void flurryEventForRequestPush(String engagementId, int driverScreenMode) {
+		if (DriverScreenMode.D_INITIAL.getOrdinal() != driverScreenMode
+				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != driverScreenMode
+				&& DriverScreenMode.D_RIDE_END.getOrdinal() != driverScreenMode) {
+			FlurryEventLogger.logStartRing(this, driverScreenMode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
 		}
 	}
 

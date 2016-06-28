@@ -111,7 +111,6 @@ import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -2292,8 +2291,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						startService(new Intent(this, DriverLocationUpdateService.class));
 					}
 
-					cancelCustomerPathUpdateTimer();
-
 					if (map != null) {
 						map.clear();
 						drawHeatMapData(heatMapResponseGlobal);
@@ -2317,7 +2314,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					try {
 
@@ -2361,7 +2357,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
-					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
 
@@ -2399,7 +2394,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 					setEtaTimerVisibility(customerInfo);
-					startCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					setTextViewRideInstructions();
 					updateCustomers();
@@ -2453,7 +2447,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 
-					startCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					setTextViewRideInstructions();
 					updateCustomers();
@@ -2500,7 +2493,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						linearLayoutRideValues.setVisibility(View.VISIBLE);
 					}
 
-					startCustomerPathUpdateTimer();
 					driverEndRideBtn.setText(getResources().getString(R.string.end_ride));
 
 					try {
@@ -2544,7 +2536,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 
-					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 
 					break;
@@ -2567,7 +2558,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
-					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
 
@@ -2579,7 +2569,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 
-					cancelCustomerPathUpdateTimer();
 					cancelMapAnimateAndUpdateRideDataTimer();
 
 			}
@@ -2874,7 +2863,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onDestroy() {
 		try {
-			cancelCustomerPathUpdateTimer();
 			cancelMapAnimateAndUpdateRideDataTimer();
 
 			GCMIntentService.clearNotifications(HomeActivity.this);
@@ -4504,123 +4492,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	//Driver's timer
-	Timer timerCustomerPathUpdater;
-	TimerTask timerTaskCustomerPathUpdater;
-
-
-	public void startCustomerPathUpdateTimer() {
-
-		cancelCustomerPathUpdateTimer();
-
-		try {
-			timerCustomerPathUpdater = new Timer();
-
-			timerTaskCustomerPathUpdater = new TimerTask() {
-
-				@Override
-				public void run() {
-					if (myLocation != null) {
-						if ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) && (Data.getCurrentCustomerInfo() != null)) {
-							//TODO getCustomerPathAndDisplay(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().requestlLatLng);
-						}
-						else if ((DriverScreenMode.D_IN_RIDE == driverScreenMode) && (Data.getCurrentCustomerInfo() != null)) {
-							if (( Data.getCurrentCustomerInfo()).dropLatLng != null) {
-								//TODO getCustomerPathAndDisplay(Data.getCurrentCustomerInfo().requestlLatLng, ( Data.getCurrentCustomerInfo()).dropLatLng);
-							}
-						}
-					}
-				}
-			};
-			timerCustomerPathUpdater.scheduleAtFixedRate(timerTaskCustomerPathUpdater, 1000, 15000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void cancelCustomerPathUpdateTimer() {
-		try {
-			if (timerTaskCustomerPathUpdater != null) {
-				timerTaskCustomerPathUpdater.cancel();
-				timerTaskCustomerPathUpdater = null;
-			}
-
-			if (timerCustomerPathUpdater != null) {
-				timerCustomerPathUpdater.cancel();
-				timerCustomerPathUpdater.purge();
-				timerCustomerPathUpdater = null;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	public boolean toShowPathToCustomer() {
-		boolean inRide = false;
-		if ((DriverScreenMode.D_IN_RIDE == driverScreenMode)
-				&& (Data.getCurrentCustomerInfo() != null)) {
-			if (( Data.getCurrentCustomerInfo()).dropLatLng != null) {
-				inRide = true;
-			}
-		}
-		return ((DriverScreenMode.D_ARRIVED == driverScreenMode || driverScreenMode == DriverScreenMode.D_START_RIDE) || inRide ||
-				(Data.getCurrentCustomerInfo() != null && driverScreenMode == DriverScreenMode.D_IN_RIDE));
-	}
-
-	public void getCustomerPathAndDisplay(final LatLng sourceLatLng, final LatLng customerLatLng) {
-		try {
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext()) && sourceLatLng != null && customerLatLng != null) {
-
-				Response response = RestClient.getGoogleApiServices().getDirections(sourceLatLng.latitude + "," + sourceLatLng.longitude,
-						customerLatLng.latitude + "," + customerLatLng.longitude, false, "driving", false);
-				String result = new String(((TypedByteArray) response.getBody()).getBytes());
-
-				if (result != null) {
-					final List<LatLng> list = MapUtils.getLatLngListFromPath(result);
-					if (list.size() > 0) {
-						runOnUiThread(new Runnable() {
-
-							@Override
-							public void run() {
-								try {
-									if (toShowPathToCustomer()) {
-										if (pathToCustomerPolyline != null) {
-											pathToCustomerPolyline.remove();
-										}
-										addCustomerPickupMarker(map, Data.getCurrentCustomerInfo(), customerLatLng);
-
-										PolylineOptions polylineOptions = new PolylineOptions();
-										polylineOptions.width(ASSL.Xscale() * 5).color(D_TO_C_MAP_PATH_COLOR).geodesic(true);
-										for (int z = 0; z < list.size(); z++) {
-											polylineOptions.add(list.get(z));
-										}
-										pathToCustomerPolyline = map.addPolyline(polylineOptions);
-
-										if (myLocation != null && !mapAnimatedToCustomerPath) {
-											LatLngBounds.Builder builder = new LatLngBounds.Builder();
-											builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())).include(customerLatLng);
-											float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-											map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication
-															.getInstance().getMapLatLngBoundsCreator()
-															.createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
-													(int) (660f * ASSL.Xscale()), (int) (660f * ASSL.Xscale()),
-													(int) (minRatio * 50)), MAP_ANIMATION_TIME, null);
-											mapAnimatedToCustomerPath = true;
-										}
-									}
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						});
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	public Marker addCustomerPickupMarker(GoogleMap map, CustomerInfo customerInfo, LatLng latLng) {
 		MarkerOptions markerOptions = new MarkerOptions();
@@ -4659,7 +4530,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					try {
-						updateInRideData(Data.getCurrentCustomerInfo());
+//						TODO stopped this one updateInRideData(Data.getCurrentCustomerInfo());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

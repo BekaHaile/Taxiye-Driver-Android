@@ -22,15 +22,12 @@ import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 public class PathUploadReceiver extends BroadcastReceiver {
-
-    private final String TAG = PathUploadReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -129,7 +126,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                     Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
                                     String result = new String(((TypedByteArray)response.getBody()).getBytes());
-                                    Log.e(TAG, "result="+result);
                                         try{
                                             JSONObject jObj = new JSONObject(result);
                                             if(jObj.has(Constants.KEY_FLAG)){
@@ -138,8 +134,8 @@ public class PathUploadReceiver extends BroadcastReceiver {
                                                     ArrayList<Long> rowIds = new ArrayList<Long>();
                                                     for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                                         rowIds.add(currentPathItem.id);
-                                                        FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     }
+                                                    FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
                                                     if(HomeActivity.appInterruptHandler != null){
                                                         HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
