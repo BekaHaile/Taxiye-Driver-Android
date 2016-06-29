@@ -128,4 +128,5 @@ public interface Constants {
     String KEY_KILL_APP = "kill_app";
 
 	String MIME_TYPE = "application/octet-stream";
+    String KEY_LINK = "link";
 }
