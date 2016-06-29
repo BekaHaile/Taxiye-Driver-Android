@@ -1,14 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -18,29 +10,19 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.adapters.DriverLeaderboardAdapter;
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboardData;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardAreaMode;
 import product.clicklabs.jugnoo.driver.datastructure.LeaderboardMode;
 import product.clicklabs.jugnoo.driver.fragments.ShareLeaderboardFragment;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
-public class DriverLeaderboardActivity extends FragmentActivity implements FlurryEventNames {
+public class DriverLeaderboardActivity extends BaseFragmentActivity implements FlurryEventNames {
 
 	LinearLayout linearLayoutRoot, linearLayoutContainer;
 

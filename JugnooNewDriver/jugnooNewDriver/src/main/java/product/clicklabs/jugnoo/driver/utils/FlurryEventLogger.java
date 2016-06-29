@@ -35,7 +35,7 @@ public class FlurryEventLogger {
 		params.put("response_time", String.valueOf(respTime));
 		params.put("event", event);
 		try{
-//			FlurryAgent.init(context, Data.FLURRY_KEY);
+			FlurryAgent.init(context, Data.FLURRY_KEY);
 			FlurryAgent.onStartSession(context, Data.FLURRY_KEY);
 			FlurryAgent.logEvent("Api response log", params);
 			FlurryAgent.onEndSession(context);

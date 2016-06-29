@@ -22,15 +22,6 @@
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
 
-        <!--<TextView-->
-        <!--android:id="@+id/title"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerInParent="true"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/login"-->
-        <!--android:textColor="@color/white"-->
-        <!--android:textSize="40px"/>-->
 
         <LinearLayout
             android:id="@+id/selectLanguageLl"
@@ -124,6 +115,7 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
+                    android:maxLength="10"
                     android:background="@drawable/background_white"
                     android:hint="@string/phone_number"
                     android:inputType="number"
@@ -140,6 +132,7 @@
                 android:layout_marginTop="72px"
                 android:background="@drawable/background_grey_rounded_orange_bordered"
                 android:orientation="horizontal"
+
                 android:padding="2px">
 
                 <ImageView
@@ -256,39 +249,93 @@
             android:layout_marginTop="72px"
             android:gravity="center_horizontal"
             android:splitMotionEvents="false"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:visibility="gone">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btnReGenerateOtp"
-                android:layout_width="648px"
-                android:layout_height="90px"
-                android:background="@drawable/orange_btn_selector"
-                android:text="@string/resend_OTP"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                android:visibility="visible"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginRight="104px">
+
+                <ImageView
+                    android:id="@+id/imgBtnReGenerateOtp"
+                    android:layout_width="90px"
+                    android:layout_height="90px"
+                    android:background="@drawable/resend_otp"
+                    android:text="@string/resend_OTP"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/textViewbtnReGenerateOtp"
+                    android:layout_width="175px"
+                    android:layout_height="wrap_content"
+                    android:text="@string/resend_OTP"
+                    android:gravity="center"
+                    android:textColor="@color/new_orange"
+                    android:textSize="32px"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewOr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32px"
                 android:textSize="32px"
+                android:layout_gravity="center_vertical"
                 android:text="@string/or"/>
 
-            <Button
+
+            <LinearLayout
                 android:id="@+id/btnOtpViaCall"
-                android:layout_width="648px"
-                android:layout_height="90px"
-                android:layout_marginTop="32px"
-                android:background="@drawable/orange_btn_selector"
-                android:text="@string/give_misscall_to_verify"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="@dimen/button_text_size"
-                android:visibility="visible"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="104px">
+
+                <ImageView
+                    android:id="@+id/imgBtnOtpViaCall"
+                    android:layout_width="90px"
+                    android:layout_height="90px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/miss_call_icon"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    android:visibility="visible"/>
+
+                <TextView
+                    android:id="@+id/textViewBtnOtpViaCall"
+                    android:layout_width="180px"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@color/new_orange"
+                    android:text="@string/give_misscall_to_verify"
+                    android:textSize="30px"
+                    android:visibility="visible"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="648px"
+            android:layout_height="90px"
+            android:layout_marginTop="84px"
+            android:layout_marginBottom="28px"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/orange_btn_selector"
+            android:text="@string/login"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
@@ -319,18 +366,7 @@
             android:layout_marginTop="15px"
             android:background="@drawable/triangle_1"/>
        
-        <Button
-            android:id="@+id/btnLogin"
-            android:layout_width="412px"
-            android:layout_height="90px"
-            android:layout_marginTop="15px"
-            android:layout_marginBottom="28px"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/login"
-            android:textColor="@drawable/white_color_selector"
-            android:textSize="@dimen/button_text_size"
-            android:visibility="visible"/>
+
 
         </LinearLayout>
 

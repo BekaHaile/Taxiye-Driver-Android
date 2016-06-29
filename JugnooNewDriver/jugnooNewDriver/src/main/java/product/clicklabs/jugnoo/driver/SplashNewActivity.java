@@ -26,8 +26,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -35,10 +33,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -49,16 +45,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
-import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -73,12 +66,15 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.PendingApiHit;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+
+//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
 public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
 
@@ -164,49 +160,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		super.onCreate(savedInstanceState);
 		Fabric.with(this, new Crashlytics());
 		
-//		SharedPreferences preferences = getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-//		String languageSelected = preferences.getString(Data.LANGUAGE_SELECTED, "default");
-//		if(!"default".equalsIgnoreCase(languageSelected)){
-//			Locale locale = new Locale(languageSelected); 
-//		    Locale.setDefault(locale);
-//		    Configuration config = new Configuration();
-//		    config.locale = locale;
-//		    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-//		}
-
-//		String languageToLoad = "ta";
-//		Locale locale = new Locale(languageToLoad);
-//		Locale.setDefault(locale);
-//
-//		Configuration config = new Configuration();
-//		config.locale = locale;
-//		getBaseContext().getResources().updateConfiguration(config,
-//				getBaseContext().getResources().getDisplayMetrics());
 
 		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
 		
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-
-//		Locale locale = new Locale("en");
-//	    Locale.setDefault(locale);
-//	    Configuration config = new Configuration();
-//	    config.locale = locale;
-//	    getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-
-//        String language = Locale.getDefault().getLanguage()       ;//---> en
-//        String iso3Language = Locale.getDefault().getISO3Language()   ;//---> eng
-//        String country = Locale.getDefault().getCountry()        ;//---> US
-//        String iso3Country = Locale.getDefault().getISO3Country()    ;//---> USA
-//        String displayCountry = Locale.getDefault().getDisplayCountry(); //---> United States
-//        String displayName = Locale.getDefault().getDisplayName() ;   //---> English (United States)
-//        String toString = Locale.getDefault().toString()    ;      //---> en_US
-//        String displayLanguage = Locale.getDefault().getDisplayLanguage();//---> English
-//
-//        String localeInfo = language + " " + iso3Language + " " + country + " " + iso3Country + " " + displayCountry + " " + displayName + " " + toString + " " + displayLanguage;
-//
-//        Log.e("Locale info", "="+localeInfo);
 
 
 		setContentView(R.layout.activity_splash_new);
@@ -519,7 +478,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						ArrayList<PendingAPICall> pendingAPICalls = Database2.getInstance(context).getAllPendingAPICalls();
 						for(PendingAPICall pendingAPICall : pendingAPICalls){
 							Log.e(TAG, "pendingApiCall="+pendingAPICall);
-							startAPI(context, pendingAPICall);
+							new PendingApiHit().startAPI(context, pendingAPICall);
 						}
 						
 						int pendingApisCount = Database2.getInstance(context).getAllPendingAPICallsCount();
@@ -562,31 +521,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
     		e.printStackTrace();
     	}
     }
-    
-	public void startAPI(Context context, PendingAPICall pendingAPICall) {
-		try {
-			if (AppStatus.getInstance(context).isOnline(context)) {
-				Response response = null;
-				if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().endRideSync(pendingAPICall.nameValuePairs);
-				}
-				else if(PendingCall.MARK_DELIVERED.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().markDeliveredSync(pendingAPICall.nameValuePairs);
-				}
-				else if(PendingCall.UPLOAD_RIDE_DATA.getPath().equalsIgnoreCase(pendingAPICall.url)){
-					response = RestClient.getApiServices().uploadRideDataSync(pendingAPICall.nameValuePairs);
-				}
-				Log.e(TAG, "response="+response);
-				if(response != null){
-					Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-					Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	
 	class ShowAnimListener implements AnimationListener{
 		

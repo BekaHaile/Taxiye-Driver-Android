@@ -96,7 +96,9 @@ public interface FlurryEventNames {
 			NUDGE_SUPER_DRIVER_DAILY = "super_driver_daily",
 			NUDGE_SUPER_DRIVER_WEEKLY = "super_driver_weekly",
 			NUDGE_MENU_CLICK = "menu_click",
-			NUDGE_NOTIFICATION_CLICK = "notification_click"
+			NUDGE_NOTIFICATION_CLICK = "notification_click",
+			NUDGE_NOTIFICATION ="notification",
+			NUDGE_HINTS= "hints"
 					;
 
 

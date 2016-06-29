@@ -10,13 +10,12 @@ import android.os.Handler;
 import android.provider.Settings;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 
-import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -38,12 +37,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			LOCATION_LNG = "location_lng";
 	
 	public int priority;
-	
-	private Handler checkLocationUpdateStartedHandler;
-	private Runnable checkLocationUpdateStartedRunnable;
-	
-	private static final long CHECK_LOCATION_INTERVAL = 20000, LAST_LOCATON_TIME_THRESHOLD = 2 * 60000;
-	
+
 	public LocationFetcher(LocationUpdate locationUpdate, long requestInterval, int priority){
 			this.locationUpdate = locationUpdate;
 			this.context = (Context) locationUpdate;
@@ -64,7 +58,6 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		else{																						// google play services not working
 			Log.e("Google Play Service Error ","="+resp);
 		}
-		startCheckingLocationUpdates();
 	}
 	
 	public synchronized void destroyWaitAndConnect(){
@@ -228,7 +221,6 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}catch(Exception e){
 			Log.e("e", "=" + e.toString());
 		}
-		stopCheckingLocationUpdates();
 	}
 
 
@@ -282,47 +274,5 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 			e.printStackTrace();
 		}
 	}
-
-	
-	
-	private synchronized void startCheckingLocationUpdates(){
-		checkLocationUpdateStartedHandler = new Handler();
-		checkLocationUpdateStartedRunnable = new Runnable() {
-			@Override
-			public void run() {
-				FlurryEventLogger.locationLog(LocationFetcher.this.location);
-				if(LocationFetcher.this.location == null){
-					destroyWaitAndConnect();
-					FlurryEventLogger.locationRestart("null location");
-				}
-				else{
-					long timeSinceLastLocationFix = System.currentTimeMillis() - LocationFetcher.this.location.getTime();
-					if(timeSinceLastLocationFix > LAST_LOCATON_TIME_THRESHOLD){
-						destroyWaitAndConnect();
-						FlurryEventLogger.locationRestart("old location");
-					}
-					else{
-						checkLocationUpdateStartedHandler.postDelayed(checkLocationUpdateStartedRunnable, CHECK_LOCATION_INTERVAL);
-					}
-				}
-			}
-		};
-		checkLocationUpdateStartedHandler.postDelayed(checkLocationUpdateStartedRunnable, CHECK_LOCATION_INTERVAL);
-	}
-	
-	public synchronized void stopCheckingLocationUpdates(){
-		try{
-			if(checkLocationUpdateStartedHandler != null && checkLocationUpdateStartedRunnable != null){
-				checkLocationUpdateStartedHandler.removeCallbacks(checkLocationUpdateStartedRunnable);
-			}
-		} catch(Exception e){
-			e.printStackTrace();
-		} finally{
-			checkLocationUpdateStartedHandler = null;
-			checkLocationUpdateStartedRunnable = null;
-		}
-	}
-	
-	
 
 }

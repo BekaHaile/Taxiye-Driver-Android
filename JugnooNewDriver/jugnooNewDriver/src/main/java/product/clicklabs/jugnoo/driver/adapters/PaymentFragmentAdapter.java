@@ -28,15 +28,15 @@ public class PaymentFragmentAdapter extends FragmentPagerAdapter {
 		Fragment fragment = null;
 		switch(position){
 			case 0:
-				fragment = new DriverRidesFragment();
+				fragment = new EarningsFragment();
 				break;
 
 			case 1:
-				fragment = new InvoiceHistoryFragment();
+				fragment = new DriverRidesFragment();
 				break;
 
 			case 2:
-				fragment = new EarningsFragment();
+				fragment = new InvoiceHistoryFragment();
 				break;
 		}
 
@@ -52,11 +52,11 @@ public class PaymentFragmentAdapter extends FragmentPagerAdapter {
 	public CharSequence getPageTitle(int position) {
 		switch (position) {
 			case 0:
-				return context.getResources().getString(R.string.Transactions);
-			case 1:
-				return context.getResources().getString(R.string.Invoices);
-			case 2:
 				return context.getResources().getString(R.string.Earnings);
+			case 1:
+				return context.getResources().getString(R.string.Transactions);
+			case 2:
+				return context.getResources().getString(R.string.Invoices);
 		}
 
 		return null;

@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -12,13 +11,13 @@ import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
-import product.clicklabs.jugnoo.driver.datastructure.BusinessType;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
-public class RideDetailsActivity extends Activity {
+public class RideDetailsActivity extends BaseActivity {
 
 	LinearLayout relative;
 
@@ -36,6 +35,7 @@ public class RideDetailsActivity extends Activity {
 
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
+
 
 	public static RideInfo openedRideInfo;
 
@@ -216,7 +216,7 @@ public class RideDetailsActivity extends Activity {
 				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
 				textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to)+"Jugnoo");
+				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
 			} else {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
 				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
@@ -226,12 +226,7 @@ public class RideDetailsActivity extends Activity {
 			textViewFromValue.setText(openedRideInfo.fromLocation);
 			textViewToValue.setText(openedRideInfo.toLocation);
 
-
-			if (BusinessType.AUTOS.getOrdinal() == openedRideInfo.businessId) {
-				imageViewRequestType.setImageResource(R.drawable.request_autos);
-			} else if (BusinessType.FATAFAT.getOrdinal() == openedRideInfo.businessId) {
-				imageViewRequestType.setImageResource(R.drawable.request_fatafat);
-			}
+			imageViewRequestType.setImageResource(R.drawable.request_autos);
 
 		} else {
 			performBackPressed();

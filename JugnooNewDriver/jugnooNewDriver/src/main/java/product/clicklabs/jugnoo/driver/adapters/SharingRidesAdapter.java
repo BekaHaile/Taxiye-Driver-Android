@@ -64,7 +64,7 @@ public class SharingRidesAdapter extends RecyclerView.Adapter<SharingRidesAdapte
 		else{
 			sharingRideViewHolder.buttonRideComplete.setVisibility(View.VISIBLE);
 			sharingRideViewHolder.textRideStatus.setVisibility(View.GONE);
-			sharingRideViewHolder.relative.setBackgroundResource(R.drawable.list_white_normal);
+			sharingRideViewHolder.relative.setBackgroundResource(R.drawable.bg_white);
 		}
 
 		sharingRideViewHolder.textViewRideID.setText(context.getResources().getString(R.string.ride_id)+": "+srd.sharingEngagementId);

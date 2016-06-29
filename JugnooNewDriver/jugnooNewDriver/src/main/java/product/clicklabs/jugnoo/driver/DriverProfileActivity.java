@@ -3,7 +3,6 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +23,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -73,20 +73,6 @@ public class DriverProfileActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		try {
-			String type = getIntent().getStringExtra("type");
-			if(type.equalsIgnoreCase("accept")){
-				Intent intent = new Intent(DriverProfileActivity.this, HomeActivity.class);
-				intent.putExtras(getIntent().getExtras());
-//				intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				startActivity(intent);
-				finish();
-				return;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 
 		setContentView(R.layout.activity_profile_screen);
 

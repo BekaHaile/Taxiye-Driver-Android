@@ -45,20 +45,6 @@ public enum ApiResponseFlags {
 	NO_SUCH_USER(155),
 	
 	
-	STATION_ASSIGNED(170),
-	NO_STATION_ASSIGNED(171),
-	NO_STATION_AVAILABLE(172),
-	PERFECT_RIDE_ACCEPTED(178),
-
-	
-	COMPLETE_INVENTORY(200),
-	ORDER_PLACED(201),
-	NO_ORDERS_FOR_USER(202),
-	ORDERS_FOR_USER(203),
-
-
-
-
 
 
 	//new authentication server flags
@@ -85,7 +71,7 @@ public enum ApiResponseFlags {
 
 	private int ordinal;
 
-	private ApiResponseFlags(int ordinal) {
+	ApiResponseFlags(int ordinal) {
 		this.ordinal = ordinal;
 	}
 

@@ -1,6 +1,6 @@
 package product.clicklabs.jugnoo.driver.utils;
 
-import android.app.Fragment;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentActivity;
 
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 /**
@@ -15,16 +18,33 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
  */
 public class BaseFragmentActivity extends FragmentActivity {
 
-	private Resources resourcesEng, resources;
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		updateLanguage();
-
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		checkIfUserDataNull();
+	}
+
+	public boolean checkIfUserDataNull() {
+		if (Data.userData == null) {
+			sentToSplash();
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public void sentToSplash(){
+		startActivity(new Intent(this, SplashNewActivity.class));
+		finish();
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
+
 
 	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");

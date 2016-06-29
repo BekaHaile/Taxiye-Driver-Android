@@ -21,11 +21,12 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.DriverRideRequest;
-import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.UserData;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryReturnOption;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -49,17 +50,7 @@ public class Data {
                                 DEBUG_PASSWORD_TEST = "4343";
 	
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
-	public static final String SP_ACCESS_TOKEN_KEY = "access_token", SP_IS_ACCESS_TOKEN_NEW = "is_access_token_new",
-			
-			SP_TOTAL_DISTANCE = "total_distance",
-			SP_RIDE_START_TIME = "ride_start_time", 
-			SP_LAST_LATITUDE = "last_latitude",
-			SP_LAST_LONGITUDE = "last_longitude",
-			SP_LAST_LOCATION_TIME = "last_location_time"
-			;
-	
-	
-	
+	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
 	
 	
@@ -67,19 +58,7 @@ public class Data {
 	
 	
 	
-	public static final String LANGUAGE_SELECTED = "language_selected";
-	
-	
-	public static String D_ARRIVED = "D_ARRIVED", D_START_RIDE = "D_START_RIDE", D_IN_RIDE = "D_IN_RIDE";
-	public static String P_RIDE_END = "P_RIDE_END", P_IN_RIDE = "P_IN_RIDE", P_REQUEST_FINAL = "P_REQUEST_FINAL", 
-			P_ASSIGNING = "P_ASSIGNING";
-	
-	
-	public static LatLng startRidePreviousLatLng;
-	public static long startRidePreviousLocationTime = System.currentTimeMillis();
-	
-	
-	
+
 	
 
 	
@@ -153,17 +132,11 @@ public class Data {
 	
 	public static final String GOOGLE_PROJECT_ID = "506849624961";
 
-	public static final String MAPS_BROWSER_KEY = "AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY";
-	
-	public static final String FACEBOOK_APP_ID = "782131025144439";
-	
-	
+
 	
 	public static double latitude, longitude;
 	
-	public static int termsAgreed = 0;  // 0: not agreed,  1: agreed
-	
-	
+
 	
 	
 	
@@ -180,37 +153,24 @@ public class Data {
 	
 	
 	
-	public static String cEngagementId = "", cDriverId = "", cSessionId = "";
-
 	public static ArrayList<CancelOption> cancelOptionsList;
+	public static ArrayList<DeliveryReturnOption> deliveryReturnOptionList;
 
-	public static String dEngagementId = "", dCustomerId = "", currentPreferredLang="";
-	public static LatLng dCustLatLng;
-	public static DriverRideRequest openedDriverRideRequest;
+	public static String dEngagementId = "";
+
+	private static ArrayList<CustomerInfo> assignedCustomerInfos = new ArrayList<>();
 	
-	public static ArrayList<DriverRideRequest> driverRideRequests = new ArrayList<DriverRideRequest>();
+
+
 	
-	public static CustomerInfo assignedCustomerInfo;
-	
-	public static boolean driversRefreshedFirstTime = false;
-	
-	
-	public static double totalDistance = 0, totalFare = 0;
-	public static String waitTime = "", rideTime = "";
-	
-	
-	public static LatLng pickupLatLng, nextPickupLatLng;
+	public static LatLng nextPickupLatLng;
 	public static String nextCustomerName;
 
-	public static String fbAccessToken = "", fbId = "", fbFirstName = "", fbLastName = "", fbUserName = "", fbUserEmail = "";
-	
-	
+
 	
 	public static FareStructure fareStructure;
 
-	public static EndRideData endRideData;
-
-    public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+    public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<>();
 
 	public static JSONArray blockAppPackageNameList;
 	
@@ -220,10 +180,7 @@ public class Data {
 		try{
 			userData = null;
 			deviceToken = ""; country = ""; deviceName = ""; appVersion = 0; osVersion = "";
-			cEngagementId = ""; cDriverId = "";
-			pickupLatLng = null;
-			fbAccessToken = ""; fbId = ""; fbFirstName = ""; fbLastName = ""; fbUserName = ""; fbUserEmail = "";
-			
+
 			SharedPreferences pref = context.getSharedPreferences(Data.SHARED_PREF_NAME, 0);
 			Editor editor = pref.edit();
 			editor.clear();
@@ -319,5 +276,189 @@ public class Data {
 
 
 
+
+
+
+	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForStatus(int status){
+		if(assignedCustomerInfos != null) {
+			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+				if (customerInfo.getStatus() == status) {
+					customerInfos.add(customerInfo);
+				}
+			}
+			return customerInfos;
+		} else{
+			return null;
+		}
+	}
+
+	public static ArrayList<CustomerInfo> getAssignedCustomerInfosListForEngagedStatus(){
+		if(assignedCustomerInfos != null) {
+			ArrayList<CustomerInfo> customerInfos = new ArrayList<>();
+			for (CustomerInfo customerInfo : assignedCustomerInfos) {
+				if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()
+						|| customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+					customerInfos.add(customerInfo);
+				}
+			}
+			return customerInfos;
+		} else{
+			return null;
+		}
+	}
+
+	public static void clearAssignedCustomerInfosListForStatus(int status){
+		if(assignedCustomerInfos != null) {
+			for(int i=0; i<assignedCustomerInfos.size(); i++){
+				if(assignedCustomerInfos.get(i).getStatus() == status){
+					assignedCustomerInfos.remove(i);
+					i--;
+				}
+			}
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
+		}
+	}
+
+	public static void clearAssignedCustomerInfosListForStatusWithDelivery(int status, int isDelivery){
+		if(assignedCustomerInfos != null) {
+			for(int i=0; i<assignedCustomerInfos.size(); i++){
+				if(assignedCustomerInfos.get(i).getStatus() == status
+						&& assignedCustomerInfos.get(i).getIsDelivery() == isDelivery){
+					assignedCustomerInfos.remove(i);
+					i--;
+				}
+			}
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
+		}
+	}
+
+	public static CustomerInfo getCustomerInfo(String engagementId){
+		try {
+			int index = assignedCustomerInfos.indexOf(new CustomerInfo(Integer.parseInt(engagementId)));
+			if(index > -1){
+				return assignedCustomerInfos.get(index);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void addCustomerInfo(CustomerInfo customerInfo){
+		if(assignedCustomerInfos != null) {
+			if (assignedCustomerInfos.contains(customerInfo)) {
+				int index = assignedCustomerInfos.indexOf(customerInfo);
+				assignedCustomerInfos.remove(index);
+				assignedCustomerInfos.add(index, customerInfo);
+			} else {
+				assignedCustomerInfos.add(customerInfo);
+			}
+			if(HomeActivity.appInterruptHandler != null){
+				HomeActivity.appInterruptHandler.updateCustomers();
+			}
+		}
+	}
+
+	public static boolean removeCustomerInfo(int engagementId, int status){
+		if(assignedCustomerInfos != null) {
+			int index = assignedCustomerInfos.indexOf(new CustomerInfo(engagementId));
+			if (index > -1) {
+				if(assignedCustomerInfos.get(index).getStatus() == status) {
+					assignedCustomerInfos.remove(index);
+					if (HomeActivity.appInterruptHandler != null) {
+						HomeActivity.appInterruptHandler.updateCustomers();
+					}
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static void setCustomerState(String engagementId, DriverScreenMode driverScreenMode){
+		CustomerInfo customerInfo = getCustomerInfo(engagementId);
+		if(customerInfo != null){
+			customerInfo.setStatus(getEngagementStatusFromDriverScreenMode(driverScreenMode).getOrdinal());
+		}
+	}
+
+
+	public static DriverScreenMode getCurrentState(){
+		CustomerInfo currentCustomerInfo = getCurrentCustomerInfo();
+		if(currentCustomerInfo == null){
+			if(getAssignedCustomerInfosListForEngagedStatus() != null
+					&& getAssignedCustomerInfosListForEngagedStatus().size() > 0){
+				currentCustomerInfo = getAssignedCustomerInfosListForEngagedStatus().get(0);
+				setCurrentEngagementId(String.valueOf(currentCustomerInfo.getEngagementId()));
+				return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
+			}
+		} else{
+			return getDriverScreenModeFromEngagementStatus(currentCustomerInfo.getStatus());
+		}
+		return DriverScreenMode.D_INITIAL;
+	}
+
+	public static CustomerInfo getCurrentCustomerInfo(){
+		return getCustomerInfo(Data.getCurrentEngagementId());
+	}
+
+	public static String getCurrentEngagementId(){
+		return Data.dEngagementId;
+	}
+
+	public static void setCurrentEngagementId(String engagementId){
+		Data.dEngagementId = engagementId;
+	}
+
+
+
+	public static EngagementStatus getEngagementStatusFromDriverScreenMode(DriverScreenMode driverScreenMode){
+		switch(driverScreenMode){
+			case D_ARRIVED:
+				return EngagementStatus.ACCEPTED;
+
+			case D_START_RIDE:
+				return EngagementStatus.ARRIVED;
+
+			case D_IN_RIDE:
+				return EngagementStatus.STARTED;
+
+			case D_RIDE_END:
+				return EngagementStatus.ENDED;
+
+			case D_BEFORE_END_OPTIONS:
+				return EngagementStatus.STARTED;
+
+			case D_REQUEST_ACCEPT:
+				return EngagementStatus.REQUESTED;
+
+			default:
+				return EngagementStatus.REQUESTED;
+		}
+	}
+
+	public static DriverScreenMode getDriverScreenModeFromEngagementStatus(int status){
+		if(EngagementStatus.ACCEPTED.getOrdinal() == status){
+			return DriverScreenMode.D_ARRIVED;
+		}
+		else if(EngagementStatus.ARRIVED.getOrdinal() == status){
+			return DriverScreenMode.D_START_RIDE;
+		}
+		else if(EngagementStatus.STARTED.getOrdinal() == status){
+			return DriverScreenMode.D_IN_RIDE;
+		}
+		else if(EngagementStatus.ENDED.getOrdinal() == status){
+			return DriverScreenMode.D_RIDE_END;
+		}
+		else{
+			return DriverScreenMode.D_INITIAL;
+		}
+	}
 
 }

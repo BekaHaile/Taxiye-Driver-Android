@@ -1,0 +1,81 @@
+<LinearLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/layout_top_bar"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:splitMotionEvents="false"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="80px"
+            android:layout_marginTop="32px"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:id="@+id/imageViewHorizontal3"
+                android:layout_centerVertical="true"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/textViewReturnReasons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:padding="10px"
+                android:gravity="center"
+                android:text="@string/return_reasons"
+                android:textColor="@color/black"
+                android:textSize="40px"
+
+                />
+
+            <!--<ImageView-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/textViewReturnReasons"-->
+                <!--android:id="@+id/imageViewHorizontal4"-->
+                <!--android:background="@color/black"/>-->
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewReturnOptions"
+            android:layout_width="match_parent"
+            android:layout_height="720px"
+            android:layout_marginTop="30px"
+            android:fadeScrollbars="true"
+            android:scrollbars="vertical"
+            />
+
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="250px"
+            android:layout_height="100px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
+            android:background="@drawable/new_orange_btn_selector_rounded"
+            android:text="@string/submit"
+            android:textColor="@drawable/white_color_selector"
+            android:textSize="@dimen/button_text_size"/>
+
+    </LinearLayout>
+
+</LinearLayout>

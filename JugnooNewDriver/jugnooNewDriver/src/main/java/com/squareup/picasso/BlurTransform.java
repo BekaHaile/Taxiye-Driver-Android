@@ -5,8 +5,9 @@ package com.squareup.picasso;
  */
 
 import android.graphics.Bitmap;
-import android.util.Log;
- 
+
+import product.clicklabs.jugnoo.driver.utils.Log;
+
 public class BlurTransform implements Transformation {
 	@Override
 	public Bitmap transform(Bitmap source) {

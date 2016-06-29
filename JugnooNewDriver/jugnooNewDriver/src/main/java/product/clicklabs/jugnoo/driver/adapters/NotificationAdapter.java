@@ -27,35 +27,35 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
  */
 public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private static final int TYPE_FOOTER = 2;
-    private static final int TYPE_ITEM = 1;
-    private Activity activity;
-    private int rowLayout;
-    NotificationInboxResponse.NotificationData notification;
-    private ArrayList<NotificationInboxResponse.NotificationData> notificationList = new ArrayList<>();
-    private Callback callback;
-    private int totalNotifications;
+	private static final int TYPE_FOOTER = 2;
+	private static final int TYPE_ITEM = 1;
+	private Activity activity;
+	private int rowLayout;
+	NotificationInboxResponse.NotificationData notification;
+	private ArrayList<NotificationInboxResponse.NotificationData> notificationList = new ArrayList<>();
+	private Callback callback;
+	private int totalNotifications;
 
-    public NotificationAdapter(ArrayList<NotificationInboxResponse.NotificationData> notificationList, Activity activity, int rowLayout, int totalNotifications, Callback callback) {
-        this.notificationList = notificationList;
-        this.activity = activity;
-        this.rowLayout = rowLayout;
-        this.totalNotifications = totalNotifications;
-        this.callback = callback;
-    }
+	public NotificationAdapter(ArrayList<NotificationInboxResponse.NotificationData> notificationList, Activity activity, int rowLayout, int totalNotifications, Callback callback) {
+		this.notificationList = notificationList;
+		this.activity = activity;
+		this.rowLayout = rowLayout;
+		this.totalNotifications = totalNotifications;
+		this.callback = callback;
+	}
 
-    public void notifyList(int totalNotifications, ArrayList<NotificationInboxResponse.NotificationData> notificationList, boolean refresh){
-        this.totalNotifications = totalNotifications;
-        if(refresh){
-            this.notificationList.clear();
-        }
-        this.notificationList.addAll(notificationList);
-        this.notifyDataSetChanged();
-    }
+	public void notifyList(int totalNotifications, ArrayList<NotificationInboxResponse.NotificationData> notificationList, boolean refresh) {
+		this.totalNotifications = totalNotifications;
+		if (refresh) {
+			this.notificationList.clear();
+		}
+		this.notificationList.addAll(notificationList);
+		this.notifyDataSetChanged();
+	}
 
-    public int getListSize(){
-        return notificationList.size();
-    }
+	public int getListSize() {
+		return notificationList.size();
+	}
 
 
 	@Override
@@ -79,9 +79,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		}
 	}
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewholder, int position) {
-		if(viewholder instanceof ViewHolder) {
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder viewholder, int position) {
+		if (viewholder instanceof ViewHolder) {
 			ViewHolder holder = (ViewHolder) viewholder;
 			NotificationInboxResponse.NotificationData notification = notificationList.get(position);
 
@@ -95,24 +95,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 			try {
 				if (notification.getNotificationImage().equalsIgnoreCase("")) {
 					holder.linearLayoutNotificationImage.setVisibility(View.GONE);
-					if (notification.isExpanded()) {
-						holder.textViewTitle.setSingleLine(false);
-						holder.textViewDescription.setSingleLine(false);
-					} else {
-						holder.textViewTitle.setSingleLine(true);
-						holder.textViewDescription.setSingleLine(true);
-					}
-				} else {
-					if (notification.isExpanded()) {
-						holder.linearLayoutNotificationImage.setVisibility(View.VISIBLE);
-						holder.textViewTitle.setSingleLine(false);
-						holder.textViewDescription.setSingleLine(false);
-					} else {
-						holder.linearLayoutNotificationImage.setVisibility(View.GONE);
-						holder.textViewTitle.setSingleLine(true);
-						holder.textViewDescription.setSingleLine(true);
-					}
 
+				} else {
+					holder.linearLayoutNotificationImage.setVisibility(View.VISIBLE);
 					//Picasso.with(activity).load(notification.getNotificationImage()).into(holder.notificationImage);
 					//Picasso.with(activity).load(notification.getNotificationImage()).transform(new CircleTransform()).into(holder.notificationImage);
 					Picasso.with(activity).load(notification.getNotificationImage())
@@ -121,6 +106,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                        .transform(new RoundedCornersTransformation(10, 0, RoundedCornersTransformation.CornerType.TOP))
 							.into(holder.imageViewNotification);
 				}
+				holder.textViewTitle.setSingleLine(false);
+				holder.textViewDescription.setSingleLine(false);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -130,14 +118,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 				public void onClick(View v) {
 					try {
 						int position = (int) v.getTag();
-						notificationList.get(position).setExpanded(!notificationList.get(position).isExpanded());
 						notifyItemChanged(position);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			});
-		}else if(viewholder instanceof ViewFooterHolder){
+		} else if (viewholder instanceof ViewFooterHolder) {
 			ViewFooterHolder holder = (ViewFooterHolder) viewholder;
 			holder.relativeLayoutShowMore.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -152,13 +139,12 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 	@Override
 	public int getItemCount() {
-		if(notificationList == null || notificationList.size() == 0){
+		if (notificationList == null || notificationList.size() == 0) {
 			return 0;
-		}
-		else{
-			if(totalNotifications > notificationList.size()){
+		} else {
+			if (totalNotifications > notificationList.size()) {
 				return notificationList.size() + 1;
-			} else{
+			} else {
 				return notificationList.size();
 			}
 		}
@@ -181,12 +167,13 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		public LinearLayout linearRoot, linearLayoutText, linearLayoutNotificationImage;
 		public ImageView imageViewNotification;
 		public TextView textViewTitle, textViewTime, textViewDescription;
+
 		public ViewHolder(View itemView, Activity activity) {
 			super(itemView);
 			linearRoot = (LinearLayout) itemView.findViewById(R.id.linearRoot);
 			linearLayoutText = (LinearLayout) itemView.findViewById(R.id.linearLayoutText);
 			linearLayoutNotificationImage = (LinearLayout) itemView.findViewById(R.id.linearLayoutNotificationImage);
-			imageViewNotification = (ImageView)itemView.findViewById(R.id.imageViewNotification);
+			imageViewNotification = (ImageView) itemView.findViewById(R.id.imageViewNotification);
 			textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
 			textViewTitle.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 			textViewTitle.setSingleLine(true);
@@ -201,15 +188,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 	public class ViewFooterHolder extends RecyclerView.ViewHolder {
 		public RelativeLayout relativeLayoutShowMore;
 		public TextView textViewShowMore;
+
 		public ViewFooterHolder(View convertView, Activity context) {
 			super(convertView);
 			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
-			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore); textViewShowMore.setTypeface(Data.latoRegular(context));
+			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
+			textViewShowMore.setTypeface(Data.latoRegular(context));
 			textViewShowMore.setText(context.getResources().getString(R.string.show_more));
 		}
 	}
 
-    public interface Callback{
-        void onShowMoreClick();
-    }
+	public interface Callback {
+		void onShowMoreClick();
+	}
 }

@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
@@ -10,7 +11,6 @@ import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
@@ -22,7 +22,11 @@ import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
+import retrofit.http.Part;
+import retrofit.http.PartMap;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -62,6 +66,12 @@ public interface APIServices {
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/get_information")
+	void getHelpSectionNew(@Field("section") int section,
+						   @Field("locale") String locale,
+						Callback<BookingHistoryResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/send_otp_via_call")
 	void initiateOTPCall(@Field("phone_no") String phoneNo,
 						 Callback<BookingHistoryResponse> callback);
@@ -93,17 +103,6 @@ public interface APIServices {
 	@POST("/logout_driver")
 	void logoutRetro(@FieldMap Map<String, String> params,
 					 Callback<RegisterScreenResponse> callback);
-
-
-	@FormUrlEncoded
-	@POST("/get_nearest_station")
-	void fetchStationDataAPIRetro(@FieldMap Map<String, String> params,
-								  Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
-	@POST("/mark_delivered")
-	void fatafatEndRideAPIRetro(@FieldMap Map<String, String> params,
-								Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/mark_delivered")
@@ -175,16 +174,6 @@ public interface APIServices {
 							  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/start_end_wait")
-	void startEndWaitRetro(@FieldMap Map<String, String> params,
-						   Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
-	@POST("/acknowledge_stationing")
-	void acknowledgeStationDataReadRetro(@FieldMap Map<String, String> params,
-										 Callback<RegisterScreenResponse> callback);
-
-	@FormUrlEncoded
 	@POST("/change_availability")
 	Response switchJugnooOnThroughServerRetro(@FieldMap Map<String, String> params);
 
@@ -192,9 +181,6 @@ public interface APIServices {
 	@POST("/toggle_sharing_mode")
 	Response toggleSharingMode(@FieldMap Map<String, String> params);
 
-	@FormUrlEncoded
-	@POST("/acknowledge_port_change")
-	Response sendChangePortAckToServerRetro(@Field("access_token") String accessToken);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_heartbeat")
@@ -357,6 +343,13 @@ public interface APIServices {
 									   Callback<EarningsDetailResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/delivery_details")
+	void deliveryDetails(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						 @Field("ride_id") String rideId,
+						Callback<DeliveryDetailResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/fetch_pushes_for_user")
 	void notificationInbox(@FieldMap Map<String, String> params,
 						   Callback<NotificationInboxResponse> callback);
@@ -372,9 +365,32 @@ public interface APIServices {
 						   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/mark_delivered")
+	void markDelivered(@FieldMap Map<String, String> params,
+						Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cancel_delivery")
+	void cancelDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	void endDelivery(@FieldMap Map<String, String> params,
+					   Callback<RegisterScreenResponse> callback);
+	@FormUrlEncoded
+	@POST("/end_delivery")
+	Response endDelivery(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/fetch_all_driver_apps")
 	void fetchAlldriverApps(@FieldMap Map<String, String> params,
 								  Callback<RegisterScreenResponse> callback);
+
+	@Multipart
+	@POST("/upload_m_file")
+	Response sendmFileToServer(@Part("mFile") TypedFile image,
+							   @PartMap Map<String, String> params);
 
 
 }

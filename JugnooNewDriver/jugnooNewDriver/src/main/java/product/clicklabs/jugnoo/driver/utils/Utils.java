@@ -11,6 +11,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,15 +36,12 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.RideCancellationActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 
@@ -414,6 +413,7 @@ public class Utils {
 		PackageManager pm = context.getPackageManager();
 		List<ApplicationInfo> applications = pm.getInstalledApplications(flags);
 		for (ApplicationInfo appInfo : applications) {
+			Log.i("app_List",appInfo.packageName );
 			if (!appInfo.packageName.contains("com.gcs.telerickshaw")) {
 				telerickshawDriver = (appInfo.packageName.contains("com.telerickshaw") || appInfo.packageName.contains("telerickshaw"));
 				if (telerickshawDriver) {
@@ -591,6 +591,27 @@ public class Utils {
 
 		return String.valueOf(callLogs);
 
+	}
+
+	public static void deleteGpsData(Context context) {
+		/* Cold start */
+		Bundle bundle = new Bundle();
+		bundle.putBoolean("all", true);
+		LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+		locationManager.sendExtraCommand(LocationManager.GPS_PROVIDER, "delete_aiding_data", null);
+		locationManager.sendExtraCommand("gps", "force_xtra_injection", bundle);
+		locationManager.sendExtraCommand("gps", "force_time_injection", bundle);
+	}
+
+	public static void openNavigationIntent(Context context, LatLng latLng){
+		try {
+			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude+","+latLng.longitude);
+			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+			mapIntent.setPackage("com.google.android.apps.maps");
+			context.startActivity(mapIntent);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

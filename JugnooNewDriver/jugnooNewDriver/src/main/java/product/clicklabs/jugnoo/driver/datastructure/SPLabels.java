@@ -94,4 +94,6 @@ public class SPLabels {
     public static final String DRIVER_LOGIN_TIME = "driver_login_time";
 
 
+
+    public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
 }

@@ -31,7 +31,7 @@ public enum EngagementStatus {
 	
 	private int ordinal;
 
-	private EngagementStatus(int ordinal) {
+	EngagementStatus(int ordinal) {
 		this.ordinal = ordinal;
 	}
 

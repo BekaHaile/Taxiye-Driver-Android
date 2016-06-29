@@ -21,7 +21,6 @@ public class CouponInfo {
     public LatLng droplLatLng;
     public boolean couponApplied;
 
-	
 	public CouponInfo(String title, String subtitle, String description,
 			double discountPrecent, double maximumDiscountValue, double cappedFare, double cappedFareMaximum,
                       int couponType, int benefitType, double dropLatitude, double dropLongitude, double dropRadius){
@@ -65,5 +64,5 @@ public class CouponInfo {
 		return status+","+title+", "+discountPrecent+", "+maximumDiscountValue
 				+", "+cappedFare+", "+cappedFareMaximum+", "+couponType+", "+benefitType+", "+droplLatLng+", "+dropRadius;
 	}
-	
+
 }

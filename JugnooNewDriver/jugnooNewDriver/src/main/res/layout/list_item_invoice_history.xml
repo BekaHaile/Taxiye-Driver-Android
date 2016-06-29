@@ -27,45 +27,64 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/textViewInvoiceId"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
-                android:layout_marginTop="12px"
-                android:singleLine="true"
-                android:text="Invoice ID: 1111"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="30px"/>
+                android:layout_marginTop="32px">
 
-            <TextView
-                android:id="@+id/textViewStatusString"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15px"
-                android:layout_marginTop="12px"
-                android:layout_below="@+id/textViewInvoiceId"
-                android:singleLine="true"
-                android:text="@string/status"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="30px"/>
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:id="@+id/statusImage"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:src="@drawable/green_tick"
+                        android:layout_centerVertical="true"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/textViewStatusString"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/statusImage"
+                        android:singleLine="true"
+                        android:layout_marginLeft="10px"
+                        android:text="@string/outstanding_amount"
+                        android:textColor="@color/bg_grey_opaque"
+                        android:textSize="34px"/>
+
+                </RelativeLayout>
+
 
                 <TextView
-                android:id="@+id/textViewInvoiceFare"
-                android:layout_width="290px"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:padding="10px"
-                android:singleLine="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="12px"
-                android:layout_marginRight="20px"
-                android:text="@string/rupee_zero_zero"
-                android:textColor="@color/new_orange"
-                android:background="@drawable/background_white_rounded_orange_bordered"
-                android:textSize="55px"/>
+                    android:id="@+id/textViewInvoiceId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/relativeLayoutStatus"
+                    android:layout_marginTop="16px"
+                    android:singleLine="true"
+                    android:text="Invoice ID: 1111"
+                    android:textColor="@color/bg_grey_opaque"
+                    android:textSize="34px"/>
+
+
+                <TextView
+                    android:id="@+id/textViewInvoiceFare"
+                    android:layout_width="264px"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20px"
+                    android:background="@drawable/background_white_rounded_orange_bordered"
+                    android:gravity="center"
+                    android:padding="10px"
+                    android:singleLine="true"
+                    android:text="@string/rupee_zero_zero"
+                    android:textColor="@color/new_orange"
+                    android:textSize="48px"/>
 
             </RelativeLayout>
 
@@ -86,30 +105,21 @@
                     android:singleLine="true"
                     android:text="@string/generated_on"
                     android:textColor="@color/black"
-                    android:textSize="28px"
+                    android:textSize="34px"
                     />
 
-                <!--<ImageView-->
-                <!--android:id="@+id/imageViewTimeFrom"-->
-                <!--android:layout_width="30px"-->
-                <!--android:layout_height="30px"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="15px"-->
-                <!--android:layout_toRightOf="@+id/dateTimeTextFrom"-->
-                <!--android:src="@drawable/date_orange_icon"-->
-                <!--android:tag="mwar"/>-->
 
                 <TextView
                     android:id="@+id/dateTimeValueGenerated"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5px"
+                    android:layout_marginLeft="10px"
                     android:layout_toRightOf="@+id/dateTimeTextGenerated"
                     android:singleLine="true"
                     android:text="23 June, 2014"
                     android:textColor="@color/new_orange"
-                    android:textSize="28px"
+                    android:textSize="34px"
                     />
 
             </RelativeLayout>
@@ -135,7 +145,7 @@
                         android:singleLine="true"
                         android:text="@string/from"
                         android:textColor="@color/black"
-                        android:textSize="28px"
+                        android:textSize="34px"
                         />
 
                     <!--<ImageView-->
@@ -158,7 +168,7 @@
                         android:singleLine="true"
                         android:text="23 June, 2014"
                         android:textColor="@color/new_orange"
-                        android:textSize="28px"
+                        android:textSize="34px"
                         />
 
                 </RelativeLayout>
@@ -168,6 +178,7 @@
                     android:id="@+id/dateTimeRlTo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="24px"
                     android:layout_toRightOf="@+id/dateTimeRlFrom"
                     android:splitMotionEvents="false">
 
@@ -180,7 +191,7 @@
                         android:singleLine="true"
                         android:text="@string/to"
                         android:textColor="@color/black"
-                        android:textSize="28px"
+                        android:textSize="34px"
                         />
 
                     <!--<ImageView-->
@@ -203,7 +214,7 @@
                         android:singleLine="true"
                         android:text="23 June, 2014"
                         android:textColor="@color/new_orange"
-                        android:textSize="28px"
+                        android:textSize="34px"
                         />
 
                 </RelativeLayout>
