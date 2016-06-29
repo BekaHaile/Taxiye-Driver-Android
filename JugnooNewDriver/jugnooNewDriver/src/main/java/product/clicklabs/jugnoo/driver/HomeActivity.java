@@ -6119,7 +6119,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				.snippet("")
 				.anchor(0.5f, 0.9f)
 				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.getTextBitmap(this, assl, text, 18)));
+						.getTextBitmap(this, assl, text, 20)));
 		map.addMarker(markerOptions);
 	}
 
@@ -6285,7 +6285,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
 							&& customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null){
-						addDropPinMarker(map, latLng, String.valueOf(i + 1));
+						addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "");
 					} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
 						addCustomerPickupMarker(map, customerInfo, latLng);
