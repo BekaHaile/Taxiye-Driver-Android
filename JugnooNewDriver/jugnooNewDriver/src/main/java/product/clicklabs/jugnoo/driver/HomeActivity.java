@@ -1290,22 +1290,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void afterTextChanged(Editable s) {
-					if (s.length() > 0) {
-						if (textViewMeterFareRupee.getVisibility() == View.GONE) {
-							textViewMeterFareRupee.setVisibility(View.VISIBLE);
+					try {
+						if (s.length() > 0) {
+							if (textViewMeterFareRupee.getVisibility() == View.GONE) {
+								textViewMeterFareRupee.setVisibility(View.VISIBLE);
+							}
+						} else {
+							if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
+								textViewMeterFareRupee.setVisibility(View.GONE);
+							}
 						}
-					} else {
-						if (textViewMeterFareRupee.getVisibility() == View.VISIBLE) {
-							textViewMeterFareRupee.setVisibility(View.GONE);
+						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
+								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
+								customerInfo.getElapsedRideTime(HomeActivity.this),
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this)));
+						if (!fare.equalsIgnoreCase(s.toString())) {
+							fareFetchedFromJugnoo = 0;
 						}
-					}
-					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-					String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
-							customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
-							customerInfo.getElapsedRideTime(HomeActivity.this),
-							customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this)));
-					if (!fare.equalsIgnoreCase(s.toString())) {
-						fareFetchedFromJugnoo = 0;
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			});

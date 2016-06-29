@@ -520,13 +520,13 @@
     <string name="present_near_delivery_location">ઓર્ડર ને ડીલીવરી માર્ક કરવા માટે ડીલીવરી જગ્યાની નજીક હાજર હોવા જરૂરી છે</string>
     <string name="success">સફળ થઉં</string>
     <string name="outstanding_amount">બાદ બાકી થઇ ગયું </string>
-    <string name="delivery_fare">Delivery Fare</string>
-    <string name="return_subsidy">Return Subsidy</string>
-    <string name="return_distance">Return Distance</string>
-    <string name="delivery_details">DELIVERY DETAILS</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
+    <string name="delivery_fare">ડિલિવરી નું ભાડું</string>
+    <string name="return_subsidy">પાછી આવાની સબસિડી</string>
+    <string name="return_distance">પાછું આવાનું અંતર</string>
+    <string name="delivery_details">ડિલિવરી વિગતો</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

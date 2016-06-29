@@ -525,13 +525,13 @@
     <string name="present_near_delivery_location">ଏହି ଅର୍ଡର୍ ଟି ପହନ୍ଚାଇବା ପାଇଂ ଆପନଂ କୁ ନିଶ୍ଚିତ ରୁପେ ଡେଲିଭରି ସ୍ଥାନ କୁ ଯିବାକୁ ପଡିବ</string>
     <string name="success">ସଫଳ</string>
     <string name="outstanding_amount">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
-    <string name="delivery_fare">Delivery Fare</string>
-    <string name="return_subsidy">Return Subsidy</string>
-    <string name="return_distance">Return Distance</string>
-    <string name="delivery_details">DELIVERY DETAILS</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
+    <string name="delivery_fare">ଡେଲିଭରି ଫେୟାର୍</string>
+    <string name="return_subsidy">ରିଟର୍ଣ ସବ୍ସିଡି</string>
+    <string name="return_distance">ରିଟର୍ଣ ଦୁରତା</string>
+    <string name="delivery_details">ଡେଲିଭେରି  ବିବରଣି</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

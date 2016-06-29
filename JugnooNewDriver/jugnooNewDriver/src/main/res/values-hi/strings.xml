@@ -554,7 +554,6 @@
 	<string name="Return">वापसी</string>
 	<string name="delivery_id">डिलीवरी आइडी</string>
 
-
 	<string name="delivery_completed">डिलीवरी पूर्ण हुआ </string>
 	<string name="delivery_cancelled">डिलीवरी रद्द हो गयी</string>
 	<string name="cancelled">रद्द हो गयी / गया</string>
@@ -568,9 +567,6 @@
 	<string name="to_no_colon">को</string>
 	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
 	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
-	<string name="Messages">Messages</string>
-	<string name="Hints">Hints</string>
-	<string name="tricks">Tricks To Earn</string>
 
 	<string name="cash_collected">नगद कलेक्ट किया </string>
 	<string name="s_no">सीरियल नंबर </string>
@@ -579,13 +575,17 @@
 	<string name="present_near_delivery_location">इस डिलीवरी ऑर्डर को चिन्हित करने के लिए आपको डिलीवरी स्थान पर होना अनिवार्य है </string>
 	<string name="success">सफल हुआ </string>
 	<string name="outstanding_amount">बकाया समायोजित किया गया </string>
-	<string name="delivery_fare">Delivery Fare</string>
-	<string name="return_subsidy">Return Subsidy</string>
-	<string name="return_distance">Return Distance</string>
-	<string name="delivery_details">DELIVERY DETAILS</string>
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
+
+	<string name="delivery_fare">डिलीवरी किराया</string>
+	<string name="return_subsidy">रिटर्न सब्सिडी </string>
+	<string name="return_distance">वापसी दूरी</string>
+	<string name="delivery_details">डिलीवरी विवरण</string>
+	<string name="Messages">Messages</string>
+	<string name="Hints">Hints</string>
+	<string name="tricks">Tricks To Earn</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
