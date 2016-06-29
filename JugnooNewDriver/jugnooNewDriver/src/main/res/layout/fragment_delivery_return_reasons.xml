@@ -25,7 +25,7 @@
             android:gravity="center">
 
             <ImageView
-                android:layout_width="140px"
+                android:layout_width="match_parent"
                 android:layout_height="2px"
                 android:id="@+id/imageViewHorizontal3"
                 android:layout_centerVertical="true"
@@ -36,25 +36,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/imageViewHorizontal3"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"
+                android:padding="10px"
                 android:gravity="center"
                 android:text="@string/return_reasons"
-                android:lineSpacingExtra="10px"
-                android:maxHeight="800px"
-                android:paddingLeft="20px"
-                android:paddingRight="20px"
                 android:textColor="@color/black"
                 android:textSize="40px"
 
                 />
 
-            <ImageView
-                android:layout_width="140px"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/textViewReturnReasons"
-                android:id="@+id/imageViewHorizontal4"
-                android:background="@color/black"/>
+            <!--<ImageView-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="2px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_toRightOf="@+id/textViewReturnReasons"-->
+                <!--android:id="@+id/imageViewHorizontal4"-->
+                <!--android:background="@color/black"/>-->
 
         </RelativeLayout>
 

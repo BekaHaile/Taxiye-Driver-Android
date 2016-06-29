@@ -49,7 +49,7 @@
            android:orientation="vertical"
            android:gravity="center_horizontal">
 
-           <TextView
+           <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                android:id="@+id/textViewCompleted"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
