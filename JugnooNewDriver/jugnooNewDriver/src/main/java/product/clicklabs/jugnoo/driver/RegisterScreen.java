@@ -431,7 +431,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			Log.i("register_using_email params", params.toString());
 
-			RestClient.getApiServices().registerUsingEmail(params, new Callback<RegisterScreenResponse>() {
+			RestClient.getApiServices().oneTimeRegisteration(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					try {

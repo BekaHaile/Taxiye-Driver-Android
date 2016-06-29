@@ -399,4 +399,9 @@ public interface APIServices {
 	@POST("/verify_document_status")
 	void docSubmission(@Field("access_token") String accessToken,
 					Callback<DocRequirementResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/register_a_driver")
+	void oneTimeRegisteration(@FieldMap Map<String, String> params,
+							Callback<RegisterScreenResponse> callback);
 }
