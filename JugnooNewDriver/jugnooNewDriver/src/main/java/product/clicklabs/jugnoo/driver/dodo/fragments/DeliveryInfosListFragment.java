@@ -190,6 +190,11 @@ public class DeliveryInfosListFragment extends Fragment {
 		super.onHiddenChanged(hidden);
 		try {
 			if (!hidden) {
+				if(deliveryStatusOpened == DeliveryStatus.PENDING
+						&& deliveryInfos.size() == 1
+						&& deliveryInfos.get(0).getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+					deliveryStatusOpened = DeliveryStatus.COMPLETED;
+				}
 				updateList(deliveryStatusOpened);
             }
 		} catch (Exception e) {

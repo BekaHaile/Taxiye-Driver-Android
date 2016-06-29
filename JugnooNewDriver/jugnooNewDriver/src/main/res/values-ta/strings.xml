@@ -542,7 +542,6 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="ride_complete">சவாரி வெற்றிகரமாக முடிந்தது </string>
     <string name="no_not_verified">Phone Number not verified</string>
-    <string name="to_no_colon">To</string>
     <string name="resend_OTP">ஒ டி பீ -ஐ மீண்டும் அனுப்பவும்</string>
     <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">எங்களுக்கு மிஸ்ட் கால் கொடுங்கள் நாங்கள் உங்கள் அடையாளத்தைச் சரிபார்கிறோம்</string>
@@ -579,9 +578,6 @@
     <string name="Return">திரும்ப</string>
     <string name="amnt_credited">வந்த தொகை</string>
     <string name="delivery_id">விநியோக ஐடி</string>
-    <string name="no_deliveries_pending">No deliveries pending</string>
-    <string name="no_deliveries_completed">No deliveries completed</string>
-    <string name="cash_collected">Cash Collected</string>
 
 
     <string name="delivery_completed">ஒப்படைப்பு  நிறைவு</string>
@@ -594,11 +590,8 @@
     <string name="start_the_delivery">சவாரி தொடங்க</string>
     <string name="deliver_order_number">ஒப்படைப்பு ஆடர் என். %s </string>
     <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
-    <string name="s_no">S No.</string>
     <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
     <string name="details">Details</string>
-    <string name="success">Success</string>
     <string name="vehicle_status">Vehicle Status</string>
     <string name="rented">Rented</string>
     <string name="auto_driver_confirmation">Are you an auto driver?</string>
@@ -613,6 +606,24 @@
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
+
+
+    <string name="to_no_colon">செய்ய</string>
+    <string name="no_deliveries_pending">ஒப்படைப்புகள் எதுவும் நிலுவையில் இல்லை</string>
+    <string name="no_deliveries_completed">எந்த ஒப்படைப்புகளும் முடியவில்லை </string>
+    <string name="cash_collected">பணம் சேகரிக்கப்பட்டது </string>
+    <string name="s_no">வரிசை எண்</string>
+
+    <string name="present_near_delivery_location">இந்த ஆடர் ஒப்படைக்க பட்டது என்று உறுதி செய்வதற்கு, நீங்கள் ஒப்படைக்க வேண்டிய இடத்திற்கு அருகில் இருக்க வேண்டும் </string>"
+    <string name="success">வெற்றி</string>
+    <string name="outstanding_amount">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

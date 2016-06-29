@@ -115,6 +115,7 @@
                     android:layout_marginLeft="10px"
                     android:layout_marginRight="2px"
                     android:layout_marginTop="2px"
+                    android:maxLength="10"
                     android:background="@drawable/background_white"
                     android:hint="@string/phone_number"
                     android:inputType="number"

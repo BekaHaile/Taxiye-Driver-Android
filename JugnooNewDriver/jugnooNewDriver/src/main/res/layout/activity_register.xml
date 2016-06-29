@@ -3,8 +3,8 @@
               xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="720px"
               android:layout_height="1134px"
+              android:background="@drawable/splash_new_background"
               android:orientation="vertical"
-              android:background="@drawable/spalsh_new_background_gradient"
               android:splitMotionEvents="false">
 
     <RelativeLayout

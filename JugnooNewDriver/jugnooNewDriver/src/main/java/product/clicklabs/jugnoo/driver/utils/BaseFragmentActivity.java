@@ -43,6 +43,12 @@ public class BaseFragmentActivity extends FragmentActivity {
 		}
 	}
 
+	public void sentToSplash(){
+		startActivity(new Intent(this, SplashNewActivity.class));
+		finish();
+		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+	}
+
 
 	public void updateLanguage(){
 		String item = Prefs.with(this).getString(SPLabels.SELECTED_LANGUAGE,"");

@@ -1,11 +1,9 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
-import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +26,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -38,9 +37,12 @@ public class EarningsFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 
-	private TextView textViewTodayValue, textViewWeekValue, textViewMonthRides, textViewWeekValueReferral,
-			textViewMonthValue, textViewTodayRides, textViewMonthValueReferral, textViewWeekRides, textViewTodayValueReferral,
-			dateTimeValueFromWeek, dateTimeValueToWeek, dateTimeValueFromMonth, dateTimeValueToMonth;
+	private TextView textViewTodayValue, textViewWeekValue, textViewMonthRidesNumber, textViewWeekReferralNumber,
+			textViewMonthValue, textViewTodayRidesNumber, textViewMonthReferralNumber, textViewWeekRidesNumber, textViewTodayReferralNumber,
+			dateTimeValueFromWeek, dateTimeValueToWeek, dateTimeValueFromMonth, dateTimeValueToMonth, textViewTodayDeliveriesNumber,
+			textViewTodayRidesValue, textViewTodayReferralValue, textViewTodayDeliveriesValue, textViewWeekDeliveriesNumber,
+			textViewWeekRidesValue, textViewWeekReferralValue, textViewWeekDeliveriesValue, textViewMonthDeliveriesNumber, textViewMonthRidesValue
+			,textViewMonthReferralValue, textViewMonthDeliveriesValue;
 
 	private View rootView;
 	private FragmentActivity activity;
@@ -80,10 +82,23 @@ public class EarningsFragment extends Fragment {
 		((TextView) rootView.findViewById(R.id.textViewToday)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 		((TextView) rootView.findViewById(R.id.textViewMonth)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 		((TextView) rootView.findViewById(R.id.textViewWeek)).setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+
 		((TextView) rootView.findViewById(R.id.dateTimeTextToWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.dateTimeTextFromWeek)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.dateTimeTextFrom)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 		((TextView) rootView.findViewById(R.id.dateTimeTextTo)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+
+		((TextView) rootView.findViewById(R.id.textViewTodayRidesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewTodayReferralText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewTodayDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+
+		((TextView) rootView.findViewById(R.id.textViewWeekRidesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewWeekReferralText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewWeekDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+
+		((TextView) rootView.findViewById(R.id.textViewMonthRidesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewMonthReferralText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
+		((TextView) rootView.findViewById(R.id.textViewMonthDeliveriesText)).setTypeface(Data.latoRegular(activity), Typeface.NORMAL);
 
 
 		textViewTodayValue = (TextView) rootView.findViewById(R.id.textViewTodayValue);
@@ -92,22 +107,57 @@ public class EarningsFragment extends Fragment {
 		textViewMonthValue.setTypeface(Data.latoRegular(activity));
 		textViewWeekValue = (TextView) rootView.findViewById(R.id.textViewWeekValue);
 		textViewWeekValue.setTypeface(Data.latoRegular(activity));
-		textViewTodayRides = (TextView) rootView.findViewById(R.id.textViewTodayRides);
-		textViewTodayRides.setTypeface(Data.latoRegular(activity));
-		textViewTodayValueReferral = (TextView) rootView.findViewById(R.id.textViewTodayValueReferral);
-		textViewTodayValueReferral.setTypeface(Data.latoRegular(activity));
-		textViewWeekRides = (TextView) rootView.findViewById(R.id.textViewWeekRides);
-		textViewWeekRides.setTypeface(Data.latoRegular(activity));
-		textViewWeekValueReferral = (TextView) rootView.findViewById(R.id.textViewWeekValueReferral);
-		textViewWeekValueReferral.setTypeface(Data.latoRegular(activity));
-		textViewMonthRides = (TextView) rootView.findViewById(R.id.textViewMonthRides);
-		textViewMonthRides.setTypeface(Data.latoRegular(activity));
-		textViewMonthValueReferral = (TextView) rootView.findViewById(R.id.textViewMonthValueReferral);
-		textViewMonthValueReferral.setTypeface(Data.latoRegular(activity));
+
+		textViewTodayRidesNumber = (TextView) rootView.findViewById(R.id.textViewTodayRidesNumber);
+		textViewTodayRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayRidesValue = (TextView) rootView.findViewById(R.id.textViewTodayRidesValue);
+		textViewTodayRidesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewTodayReferralNumber = (TextView) rootView.findViewById(R.id.textViewTodayReferralNumber);
+		textViewTodayReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayReferralValue = (TextView) rootView.findViewById(R.id.textViewTodayReferralValue);
+		textViewTodayReferralValue.setTypeface(Data.latoRegular(activity));
+
+		textViewTodayDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewTodayDeliveriesNumber);
+		textViewTodayDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewTodayDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewTodayDeliveriesValue);
+		textViewTodayDeliveriesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewWeekRidesNumber = (TextView) rootView.findViewById(R.id.textViewWeekRidesNumber);
+		textViewWeekRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekRidesValue = (TextView) rootView.findViewById(R.id.textViewWeekRidesValue);
+		textViewWeekRidesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewWeekReferralNumber = (TextView) rootView.findViewById(R.id.textViewWeekReferralNumber);
+		textViewWeekReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekReferralValue = (TextView) rootView.findViewById(R.id.textViewWeekReferralValue);
+		textViewWeekReferralValue.setTypeface(Data.latoRegular(activity));
+
+		textViewWeekDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewWeekDeliveriesNumber);
+		textViewWeekDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewWeekDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewWeekDeliveriesValue);
+		textViewWeekDeliveriesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewMonthRidesNumber = (TextView) rootView.findViewById(R.id.textViewMonthRidesNumber);
+		textViewMonthRidesNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthRidesValue = (TextView) rootView.findViewById(R.id.textViewMonthRidesValue);
+		textViewMonthRidesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewMonthDeliveriesNumber = (TextView) rootView.findViewById(R.id.textViewMonthDeliveriesNumber);
+		textViewMonthDeliveriesNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthDeliveriesValue = (TextView) rootView.findViewById(R.id.textViewMonthDeliveriesValue);
+		textViewMonthDeliveriesValue.setTypeface(Data.latoRegular(activity));
+
+		textViewMonthReferralNumber = (TextView) rootView.findViewById(R.id.textViewMonthReferralNumber);
+		textViewMonthReferralNumber.setTypeface(Data.latoRegular(activity));
+		textViewMonthReferralValue = (TextView) rootView.findViewById(R.id.textViewMonthReferralValue);
+		textViewMonthReferralValue.setTypeface(Data.latoRegular(activity));
+
 		dateTimeValueFromWeek = (TextView) rootView.findViewById(R.id.dateTimeValueFromWeek);
 		dateTimeValueFromWeek.setTypeface(Data.latoRegular(activity));
 		dateTimeValueToWeek = (TextView) rootView.findViewById(R.id.dateTimeValueToWeek);
 		dateTimeValueToWeek.setTypeface(Data.latoRegular(activity));
+
 		dateTimeValueFromMonth = (TextView) rootView.findViewById(R.id.dateTimeValueFromMonth);
 		dateTimeValueFromMonth.setTypeface(Data.latoRegular(activity));
 		dateTimeValueToMonth = (TextView) rootView.findViewById(R.id.dateTimeValueToMonth);
@@ -133,12 +183,37 @@ public class EarningsFragment extends Fragment {
 				textViewTodayValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getDaily().getEarnings());
 				textViewWeekValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getWeekly().getEarnings());
 				textViewMonthValue.setText(getResources().getString(R.string.rupee) + earningsDetailResponse.getMonthly().getEarnings());
-				textViewTodayRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getDaily().getRides());
-				textViewTodayValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getDaily().getReferrals());
-				textViewWeekRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getWeekly().getRides());
-				textViewWeekValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getWeekly().getReferrals());
-				textViewMonthRides.setText(getResources().getString(R.string.rides)+": "+earningsDetailResponse.getMonthly().getRides());
-				textViewMonthValueReferral.setText(getResources().getString(R.string.referral)+": "+earningsDetailResponse.getMonthly().getReferrals());
+
+
+				textViewTodayRidesNumber.setText(""+earningsDetailResponse.getDaily().getRides());
+				textViewTodayRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getRidesAmount());
+
+				textViewTodayReferralNumber.setText(""+earningsDetailResponse.getDaily().getReferrals());
+				textViewTodayReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getReferralAmount());
+
+				textViewTodayDeliveriesNumber.setText(""+earningsDetailResponse.getDaily().getDeliveryCount());
+				textViewTodayDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getDaily().getDeliveryCharges());
+
+
+				textViewWeekRidesNumber.setText(""+earningsDetailResponse.getWeekly().getRides());
+				textViewWeekRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getRidesAmount());
+
+				textViewWeekReferralNumber.setText(""+earningsDetailResponse.getWeekly().getReferrals());
+				textViewWeekReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getReferralAmount());
+
+				textViewWeekDeliveriesNumber.setText(""+earningsDetailResponse.getWeekly().getDeliveryCount());
+				textViewWeekDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getWeekly().getDeliveryCharges());
+
+				textViewMonthRidesNumber.setText(""+earningsDetailResponse.getMonthly().getRides());
+				textViewMonthRidesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getRidesAmount());
+
+				textViewMonthDeliveriesNumber.setText(""+earningsDetailResponse.getMonthly().getDeliveryCount());
+				textViewMonthDeliveriesValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getDeliveryCharges());
+
+				textViewMonthReferralNumber.setText(""+earningsDetailResponse.getMonthly().getReferrals());
+				textViewMonthReferralValue.setText(getResources().getString(R.string.rupee)+earningsDetailResponse.getMonthly().getReferralAmount());
+
+
 				dateTimeValueFromWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getStartDate()));
 				dateTimeValueToWeek.setText(DateOperations.reverseDate(earningsDetailResponse.getWeekly().getEndDate()));
 				dateTimeValueFromMonth.setText(DateOperations.reverseDate(earningsDetailResponse.getMonthly().getStartDate()));

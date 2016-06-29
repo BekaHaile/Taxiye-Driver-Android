@@ -499,9 +499,6 @@
     <string name="deliver">എത്തിക്കണം</string>
     <string name="Return">മടക്കം</string>
     <string name="amnt_credited">ക്രെഡിറ്റ്‌ ചെയ്ത തുക</string>
-    <string name="s_no">S No.</string>
-    <string name="order_no">Order No.</string>
-    <string name="present_near_delivery_location">You must be present near the delivery location to mark this order delivered.</string>
 
     <string name="delivery_id">ഡെലിവറി ഐഡി</string>
     <string name="delivery_completed">ഡെലിവറി പൂർത്തിയായത്</string>
@@ -518,8 +515,6 @@
     <string name="no_deliveries_pending">ഡെലിവറികൾ എല്ലാം പൂർത്തിയായി</string>
     <string name="no_deliveries_completed">ഡെലിവറികൾ ഒന്നും പൂർത്തിയായില്ല</string>
     <string name="cash_collected">ക്യാഷ് ശേഖരിച്ചു</string>
-    <string name="details">Details</string>
-    <string name="success">Success</string>
     <string name="vehicle_status">Vehicle Status</string>
     <string name="rented">Rented</string>
     <string name="auto_driver_confirmation">Are you an auto driver?</string>
@@ -534,6 +529,20 @@
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
+
+    <string name="s_no">S.No.</string>
+    <string name="order_no">ഓർഡർ നമ്പർ</string>
+    <string name="details">വിവരങ്ങൾ</string>
+    <string name="present_near_delivery_location">ഈ ഓർഡർ ഡെലിവറി ചെയ്തു എന്ന്  അടയാളപ്പെടുത്താൻ താങ്കൾ ഡെലിവറി സ്ഥലത്തിനടുത്ത് ഉണ്ടായിരിക്കണം.</string>
+    <string name="success">കഴിഞ്ഞു</string>
+    <string name="outstanding_amount">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

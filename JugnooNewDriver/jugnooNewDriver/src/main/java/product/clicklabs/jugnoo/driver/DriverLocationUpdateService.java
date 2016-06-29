@@ -167,7 +167,7 @@ public class DriverLocationUpdateService extends Service {
     public void onTaskRemoved(Intent rootIntent) {
     	try {
     		String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
-			android.util.Log.i("driverLocation","");
+			Log.i("driverLocation","");
     		if(Database2.YES.equalsIgnoreCase(driverServiceRun)) {
 				Log.i("driverLocation", driverServiceRun);
 				Log.i("driverLocation", driverServiceRun + " " + driverServiceRun);

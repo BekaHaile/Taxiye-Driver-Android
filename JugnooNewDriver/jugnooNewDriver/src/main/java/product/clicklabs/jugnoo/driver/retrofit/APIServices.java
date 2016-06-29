@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 import java.util.Map;
 
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -67,6 +68,12 @@ public interface APIServices {
 	@FormUrlEncoded
 	@POST("/get_information")
 	void getHelpSection(@Field("section") int section,
+						Callback<BookingHistoryResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/get_information")
+	void getHelpSectionNew(@Field("section") int section,
+						   @Field("locale") String locale,
 						Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
@@ -341,6 +348,13 @@ public interface APIServices {
 									   Callback<EarningsDetailResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/delivery_details")
+	void deliveryDetails(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						 @Field("ride_id") String rideId,
+						Callback<DeliveryDetailResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/fetch_pushes_for_user")
 	void notificationInbox(@FieldMap Map<String, String> params,
 						   Callback<NotificationInboxResponse> callback);
@@ -377,6 +391,11 @@ public interface APIServices {
 	@POST("/fetch_all_driver_apps")
 	void fetchAlldriverApps(@FieldMap Map<String, String> params,
 								  Callback<RegisterScreenResponse> callback);
+
+	@Multipart
+	@POST("/upload_m_file")
+	Response sendmFileToServer(@Part("mFile") TypedFile image,
+							   @PartMap Map<String, String> params);
 
 
 	@FormUrlEncoded

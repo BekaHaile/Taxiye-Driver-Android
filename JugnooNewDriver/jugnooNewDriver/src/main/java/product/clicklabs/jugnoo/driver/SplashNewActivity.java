@@ -56,7 +56,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
-//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -80,6 +79,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+
+//import product.clicklabs.jugnoo.driver.pubnub.PubnubService;
 
 public class SplashNewActivity extends BaseActivity implements LocationUpdate, FlurryEventNames{
 

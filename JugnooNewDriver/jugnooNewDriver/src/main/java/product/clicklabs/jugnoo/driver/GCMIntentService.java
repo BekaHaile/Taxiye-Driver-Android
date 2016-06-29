@@ -45,6 +45,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
+import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
@@ -130,7 +131,7 @@ public class GCMIntentService extends IntentService {
 
 			Intent notificationIntent = new Intent(context, HomeActivity.class);
 
-			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -183,7 +184,7 @@ public class GCMIntentService extends IntentService {
 				notificationIntent.setClass(context, HomeActivity.class);
 			}
 
-			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
@@ -210,14 +211,14 @@ public class GCMIntentService extends IntentService {
 				Intent intentAcc = new Intent(context, HomeActivity.class);
 				intentAcc.putExtra("type", "accept");
 				intentAcc.putExtra("engagement_id", engagementId);
-				intentAcc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intentAcc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAcc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
 
 				Intent intentCanc = new Intent(context, HomeActivity.class);
 				intentCanc.putExtra("type", "cancel");
 				intentCanc.putExtra("engagement_id", engagementId);
-				intentCanc.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				intentCanc.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				PendingIntent pendingIntentCancel = PendingIntent.getActivity(context, 2, intentCanc, PendingIntent.FLAG_UPDATE_CURRENT);
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
@@ -580,6 +581,12 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
 								startService(intent1);
 
+							} else if (PushFlags.SEND_M_FILE.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
+								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								intent1.putExtra("file_id", jObj.getString("engagement_id"));
+								startService(intent1);
+
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
 								Intent synIntent = new Intent(this, SyncMessageService.class);
 								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
@@ -837,7 +844,6 @@ public class GCMIntentService extends IntentService {
 					ringStopTimer.cancel();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 	}

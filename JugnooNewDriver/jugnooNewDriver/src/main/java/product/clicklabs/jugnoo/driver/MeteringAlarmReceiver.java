@@ -47,7 +47,7 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 							ActivityCompat.finishAffinity(HomeActivity.activity);
 							Intent i = new Intent(context, SplashNewActivity.class);
 							i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-							i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 							i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 							context.startActivity(i);
 						}

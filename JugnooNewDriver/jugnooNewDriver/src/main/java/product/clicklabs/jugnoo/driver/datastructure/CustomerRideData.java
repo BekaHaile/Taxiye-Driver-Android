@@ -1,5 +1,9 @@
 package product.clicklabs.jugnoo.driver.datastructure;
 
+import android.content.Context;
+
+import product.clicklabs.jugnoo.driver.GpsDistanceCalculator;
+
 /**
  * Created by shankar on 5/30/16.
  */
@@ -10,18 +14,17 @@ public class CustomerRideData {
 	private long waitTime = 0;
 	public CustomerRideData(){}
 
-	public double getDistance() {
+	public double getDistance(Context context) {
+		double spDistance = GpsDistanceCalculator.getTotalDistanceFromSP(context);
+		if(spDistance > distance){
+			distance = spDistance;
+		}
 		return distance;
 	}
 
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
-
-	public double getTotalDistance(double totalDistance) {
-		return totalDistance - distance;
-	}
-
 
 
 
@@ -34,9 +37,6 @@ public class CustomerRideData {
 		this.haversineDistance = haversineDistance;
 	}
 
-	public double getTotalHaversineDistance(double totalHaversineDistance) {
-		return totalHaversineDistance - haversineDistance;
-	}
 
 
 
@@ -44,10 +44,6 @@ public class CustomerRideData {
 
 	public long getStartRideTime() {
 		return startRideTime;
-	}
-
-	public long getElapsedRideTime() {
-		return System.currentTimeMillis() - startRideTime;
 	}
 
 	public void setStartRideTime(long startRideTime) {
@@ -65,19 +61,6 @@ public class CustomerRideData {
 
 	public void setWaitTime(long waitTime) {
 		this.waitTime = waitTime;
-	}
-
-	public long getTotalWaitTime(long totalWaitTime) {
-		return totalWaitTime - waitTime;
-	}
-
-
-
-	public void setValues(CustomerRideData customerRideData){
-		setDistance(customerRideData.getDistance());
-		setHaversineDistance(customerRideData.getHaversineDistance());
-		setStartRideTime(System.currentTimeMillis());
-		setWaitTime(customerRideData.getWaitTime());
 	}
 
 }

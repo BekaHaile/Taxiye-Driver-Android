@@ -241,6 +241,10 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
+
+		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
+		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
+
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
 		Log.i("timeOut", timeoutMessage);
@@ -250,8 +254,12 @@ public class JSONParser implements Constants {
 		saveAccessToken(context, accessToken);
 		String blockedAppPackageMessage = userData.optString("blocked_app_package_message", "");
 
+
 		double driverArrivalDistance = userData.optDouble("driver_arrival_distance", 100);
 
+		Prefs.with(context).save(Constants.SHOW_NOTIFICATION_TIPS, userData.optInt("show_notification_tips", 0));
+		Prefs.with(context).save(Constants.NOTIFICATION_TIPS_TEXT, userData.optString("notification_tips_text", "Tips To Earn"));
+		Prefs.with(context).save(Constants.NOTIFICATION_MSG_TEXT, userData.optString("notification_message_text", "Messages"));
 
 		if (autosAvailable == 1
 				|| mealsAvailable == 1
@@ -433,19 +441,6 @@ public class JSONParser implements Constants {
 									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage);
 
 							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
-
-							JSONObject jObj = new JSONObject(Prefs.with(context).getString(SP_CUSTOMER_RIDE_DATAS_OBJECT, EMPTY_OBJECT));
-							if(jObj.has(engagementId)) {
-								JSONObject jc = jObj.getJSONObject(engagementId);
-								customerInfo.getCustomerRideData()
-										.setDistance(Double.parseDouble(jc.optString(KEY_DISTANCE, "0")));
-								customerInfo.getCustomerRideData()
-										.setHaversineDistance(Double.parseDouble(jc.optString(KEY_HAVERSINE_DISTANCE, "0")));
-								customerInfo.getCustomerRideData()
-										.setStartRideTime(Long.parseLong(jc.optString(KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis()))));
-								customerInfo.getCustomerRideData()
-										.setWaitTime(Long.parseLong(jc.optString(KEY_WAIT_TIME, "0")));
-							}
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -696,7 +691,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""));
+						jDelivery.optString(KEY_CANCEL_REASON, ""), i);
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {

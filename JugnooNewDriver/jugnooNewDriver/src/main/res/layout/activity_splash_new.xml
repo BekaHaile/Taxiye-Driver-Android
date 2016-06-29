@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
     android:layout_height="1134px"
-    android:background="@drawable/spalsh_new_background_gradient"
+    android:background="@drawable/splash_new_background"
     android:orientation="vertical"
     android:splitMotionEvents="false">
 
@@ -28,7 +28,7 @@
         <RelativeLayout
             android:id="@+id/jugnooTextImgRl"
             android:layout_width="390px"
-            android:layout_height="190px"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="340px"
             android:tag="mwar">
@@ -43,7 +43,8 @@
                 android:id="@+id/jugnooTextImg2"
                 android:layout_width="90px"
                 android:layout_height="90px"
-                android:src="@drawable/transparent"/>
+                android:src="@drawable/transparent"
+                />
 
         </RelativeLayout>
 
@@ -184,4 +185,5 @@
 
 
     </RelativeLayout>
+
 </LinearLayout>
