@@ -151,7 +151,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout menuLayout;
 
 
-	ImageView profileImg, seprator;
+	ImageView profileImg;
 	TextView userName, ratingValue;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
@@ -305,9 +305,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static DriverScreenMode driverScreenMode;
 
 
-	Marker rideStartPositionMarker;
-	Polyline pathToCustomerPolyline = null;
-
 	static AppInterruptHandler appInterruptHandler;
 
 	static Activity activity;
@@ -329,7 +326,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static AppMode appMode;
 
 	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
-	public static final int D_TO_C_MAP_PATH_COLOR = Color.BLUE;
 
 	public static final long DRIVER_START_RIDE_CHECK_METERS = 600; //in meters
 
@@ -347,7 +343,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public ASSL assl;
 	private String currentPreferredLang = "";
-	private LatLng driverAtPickupLatLng;
 
 	private CustomerInfo openedCustomerInfo;
 	private CustomerInfo getOpenedCustomerInfo(){
@@ -401,7 +396,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			profileImg = (ImageView) findViewById(R.id.profileImg);
-			seprator = (ImageView) findViewById(R.id.seprator);
 			userName = (TextView) findViewById(R.id.userName);
 			ratingValue = (TextView) findViewById(R.id.ratingValue);
 			userName.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -1240,8 +1234,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									DialogPopup.alertPopup(HomeActivity.this, "", Data.CHECK_INTERNET_MSG);
 								}
 							}
-						} else if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
-
+						} else {
 							int rating = (int) ratingBarFeedback.getRating();
 							rating = Math.abs(rating);
 							if (0 == rating) {
@@ -1264,15 +1257,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewSkipBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (DriverScreenMode.D_RIDE_END == driverScreenMode) {
-						saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
-						MeteringService.clearNotifications(HomeActivity.this);
-						Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
-						driverScreenMode = DriverScreenMode.D_INITIAL;
-						switchDriverScreen(driverScreenMode);
-						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
-						perfectRideStateRestore();
-					}
+					saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
+					MeteringService.clearNotifications(HomeActivity.this);
+					Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
+					driverScreenMode = DriverScreenMode.D_INITIAL;
+					switchDriverScreen(driverScreenMode);
+					FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+					perfectRideStateRestore();
 				}
 			});
 
@@ -2232,8 +2223,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 
-//					TODO to check if other things are working as expected by stopping this
-// 					Database2.getInstance(this).deleteAllCurrentPathItems();
 				} else {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
 					switchDriverScreen(driverScreenMode);
@@ -2472,6 +2461,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						setAttachedCustomerMarkers();
+						addStartMarker();
 					}
 
 					long waitTime = customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
@@ -2611,11 +2601,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		lastGPSLocation = null;
 		lastFusedLocation = null;
 		distanceUpdateFromService = false;
-
-		if (rideStartPositionMarker != null) {
-			rideStartPositionMarker.remove();
-			rideStartPositionMarker = null;
-		}
 
 		if (DriverScreenMode.D_ARRIVED == driverScreenMode
 				|| DriverScreenMode.D_IN_RIDE == driverScreenMode) {
@@ -2930,41 +2915,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public synchronized void displayOldPath() {
 
 		try {
-			ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsSaved();
-
-			LatLng firstLatLng = null;
-
-			PolylineOptions polylineOptions = new PolylineOptions();
-			polylineOptions.width(ASSL.Xscale() * 5);
-			polylineOptions.color(MAP_PATH_COLOR);
-			polylineOptions.geodesic(true);
-
-			for (CurrentPathItem currentPathItem : currentPathItemsArr) {
-				if (1 != currentPathItem.googlePath) {
-					polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
-					if (firstLatLng == null) {
-						firstLatLng = currentPathItem.sLatLng;
+			if (Color.TRANSPARENT != MAP_PATH_COLOR) {
+				ArrayList<CurrentPathItem> currentPathItemsArr = Database2.getInstance(HomeActivity.this).getCurrentPathItemsSaved();
+				PolylineOptions polylineOptions = new PolylineOptions();
+				polylineOptions.width(ASSL.Xscale() * 5);
+				polylineOptions.color(MAP_PATH_COLOR);
+				polylineOptions.geodesic(true);
+				for (CurrentPathItem currentPathItem : currentPathItemsArr) {
+					if (1 != currentPathItem.googlePath) {
+						polylineOptions.add(currentPathItem.sLatLng, currentPathItem.dLatLng);
 					}
 				}
-			}
-
-
-			if (Color.TRANSPARENT != MAP_PATH_COLOR) {
 				map.addPolyline(polylineOptions);
-			}
-
-
-			if (firstLatLng == null && driverAtPickupLatLng != null) {
-				firstLatLng = driverAtPickupLatLng;
-			}
-
-			if (firstLatLng != null) {
-				MarkerOptions markerOptions = new MarkerOptions();
-				markerOptions.snippet("");
-				markerOptions.title(getResources().getString(R.string.start_ride_loc));
-				markerOptions.position(firstLatLng);
-				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
-				rideStartPositionMarker = map.addMarker(markerOptions);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3621,7 +3583,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								initializeStartRideVariables();
 
-								HomeActivity.this.driverAtPickupLatLng = driverAtPickupLatLng;
+								if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
+										|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
+									Prefs.with(activity).save(Constants.SP_START_LATITUDE,
+											String.valueOf(driverAtPickupLatLng.latitude));
+									Prefs.with(activity).save(Constants.SP_START_LONGITUDE,
+											String.valueOf(driverAtPickupLatLng.longitude));
+								}
 
 								driverScreenMode = DriverScreenMode.D_IN_RIDE;
 								Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
@@ -5528,9 +5496,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
 								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this));
-						if (rideStartPositionMarker == null) {
-							displayOldPath();
-						}
 					}
 				}
 			});
@@ -6320,6 +6285,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 							}
 						}).execute();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void addStartMarker(){
+		try {
+			double latitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LATITUDE, "0"));
+			double longitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
+			if(Utils.compareDouble(latitude, 0) != 0 && Utils.compareDouble(longitude, 0) != 0){
+				MarkerOptions markerOptions = new MarkerOptions();
+				markerOptions.snippet("");
+				markerOptions.title(getResources().getString(R.string.start_ride_loc));
+				markerOptions.position(new LatLng(latitude, longitude));
+				markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(HomeActivity.this, assl)));
+				map.addMarker(markerOptions);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

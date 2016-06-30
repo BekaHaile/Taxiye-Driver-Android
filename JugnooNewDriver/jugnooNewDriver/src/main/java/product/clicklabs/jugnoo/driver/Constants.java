@@ -129,4 +129,7 @@ public interface Constants {
 
 	String MIME_TYPE = "application/octet-stream";
     String KEY_LINK = "link";
+
+    String SP_START_LATITUDE = "sp_start_latitude";
+    String SP_START_LONGITUDE = "sp_start_longitude";
 }
