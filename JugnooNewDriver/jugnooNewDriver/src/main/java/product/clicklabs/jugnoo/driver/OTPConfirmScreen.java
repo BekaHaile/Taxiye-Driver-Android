@@ -62,7 +62,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	boolean loginDataFetched = false;
 
-	public static boolean intentFromRegister = true;
+	public static boolean intentFromRegister = false;
 	public static EmailRegisterData emailRegisterData;
 
 
@@ -126,13 +126,17 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 
+		phoneNumberToVerify = null;
 
 		try {
 			phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
-			if (!"".equalsIgnoreCase(emailRegisterData.phoneNo)) {
-				phoneNoEt.setHint(emailRegisterData.phoneNo);
-				phoneNoEt.setEnabled(false);
-				generateOTP(emailRegisterData.phoneNo);
+			if (!(emailRegisterData == null)) {
+				if(!(emailRegisterData.phoneNo == null)) {
+					phoneNoEt.setHint(emailRegisterData.phoneNo);
+					phoneNoEt.setEnabled(false);
+					intentFromRegister=true;
+					generateOTP(emailRegisterData.phoneNo);
+				}
 			} else if(!"".equalsIgnoreCase(phoneNumberToVerify)){
 				phoneNoEt.setHint(phoneNumberToVerify);
 				phoneNoEt.setEnabled(false);
@@ -262,7 +266,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 		try {
-			phoneNoEt.setText(emailRegisterData.phoneNo);
+			if(emailRegisterData != null) {
+				phoneNoEt.setText(emailRegisterData.phoneNo);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -290,8 +296,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		checkIfRegisterDataNull(this);
+		if(phoneNumberToVerify==null) {
+			checkIfRegisterDataNull(this);
+		}
 	}
 
 	@Override
@@ -549,6 +556,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		if (intentFromRegister) {
 			Intent intent = new Intent(OTPConfirmScreen.this, RegisterScreen.class);
 			intent.putExtra("back_from_otp", true);
+			startActivity(intent);
+		} else if (phoneNumberToVerify!= null){
+			Intent intent = new Intent(OTPConfirmScreen.this, EditDriverProfile.class);
 			startActivity(intent);
 		} else {
 			Intent intent = new Intent(OTPConfirmScreen.this, LoginViaOTP.class);

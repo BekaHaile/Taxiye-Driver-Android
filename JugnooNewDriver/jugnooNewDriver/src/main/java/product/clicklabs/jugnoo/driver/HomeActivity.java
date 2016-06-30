@@ -203,7 +203,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	//Driver initial layout
 	RelativeLayout driverInitialLayout;
 	ListView driverRideRequestsList;
-	Button driverInitialMyLocationBtn;
+	Button driverInitialMyLocationBtn, driverInformationBtn;
 	TextView jugnooOffText;
 
 	DriverRequestListAdapter driverRequestListAdapter;
@@ -516,6 +516,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverInitialLayout = (RelativeLayout) findViewById(R.id.driverInitialLayout);
 			driverRideRequestsList = (ListView) findViewById(R.id.driverRideRequestsList);
 			driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
+			driverInformationBtn = (Button) findViewById(R.id.driverInformationBtn);
 			jugnooOffText = (TextView) findViewById(R.id.jugnooOffText);
 			jugnooOffText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 			jugnooOffText.setVisibility(View.GONE);
@@ -1264,6 +1265,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
 						perfectRideStateRestore();
 					}
+				}
+			});
+
+			driverInformationBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
+					intent.putExtra("trick_page", 1);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
 
