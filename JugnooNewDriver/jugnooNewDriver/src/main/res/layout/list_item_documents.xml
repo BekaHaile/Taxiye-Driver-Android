@@ -63,8 +63,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20px"
-                android:background="@drawable/upload_doc_img"
-                android:visibility="visible"/>
+                android:background="@drawable/upload_doc_img"/>
 
         </RelativeLayout>
 
@@ -73,7 +72,8 @@
             android:layout_height="2px"
             android:layout_gravity="bottom"
             android:layout_marginLeft="20px"
-            android:background="@color/grey_dark_less"
+            android:layout_marginTop="5px"
+            android:background="@color/menu_black"
             android:visibility="gone"/>
 
         <RelativeLayout
@@ -182,7 +182,7 @@
                     android:layout_below="@+id/imageViewDocStatus"
                     android:text="@string/uploaded"
                     android:layout_marginTop="10px"
-                    android:textColor="@color/black"
+                    android:textColor="@color/new_orange"
                     android:textSize="20px"/>
 
             </RelativeLayout>

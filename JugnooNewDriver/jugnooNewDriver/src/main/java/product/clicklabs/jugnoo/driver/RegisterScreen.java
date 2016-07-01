@@ -286,7 +286,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				cityposition = position;
+				cityposition = res.getCities().get(position).getCityId();
 			}
 
 			@Override
@@ -343,7 +343,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				String item = parent.getItemAtPosition(position).toString();
-				vehiclePosition = position;
+				vehiclePosition = res.getVehicleTypes().get(position).getVehicleType();
 			}
 
 			@Override

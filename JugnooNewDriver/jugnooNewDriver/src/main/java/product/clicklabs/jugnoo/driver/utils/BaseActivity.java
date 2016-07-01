@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
+import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
@@ -45,6 +46,7 @@ public class BaseActivity extends Activity {
 		if (Data.userData == null
 				&& !(this instanceof SplashNewActivity
 					|| this instanceof LoginViaOTP
+					|| this instanceof MultipleAccountsActivity
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
 					|| this instanceof RequestDuplicateRegistrationActivity)) {
