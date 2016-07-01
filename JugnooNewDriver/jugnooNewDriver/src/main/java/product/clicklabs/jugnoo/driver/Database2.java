@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +22,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -88,12 +91,13 @@ public class Database2 {                                                        
 	private static final String API_REQUEST_PARAMS = "api_request_params";
 
 
-	private static final String TABLE_RIDE_DATA = "table_ride_data1";
+	private static final String TABLE_RIDE_DATA = "table_ride_data2";
 	private static final String RIDE_DATA_I = "i";
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
 	private static final String RIDE_DATA_ENGAGEMENT_ID = "engagementId";
+	private static final String RIDE_DATA_ACC_DISTANCE = "accDistance";
 
 
 	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
@@ -227,7 +231,8 @@ public class Database2 {                                                        
 				+ RIDE_DATA_LAT + " TEXT, "
 				+ RIDE_DATA_LNG + " TEXT, "
 				+ RIDE_DATA_T + " TEXT, "
-				+ RIDE_DATA_ENGAGEMENT_ID + " INTEGER"
+				+ RIDE_DATA_ENGAGEMENT_ID + " INTEGER, "
+				+ RIDE_DATA_ACC_DISTANCE + " REAL"
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
@@ -847,11 +852,11 @@ public class Database2 {                                                        
 
 	public String getRideData(int engagementId) {
 		String rideDataStr = "";
-		String template = "i,lat,long,t";
+		String template = "i,lat,long,t,accDist";
 		String newLine = "\n";
 		boolean hasValues = false;
 		try {
-			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T};
+			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T, Database2.RIDE_DATA_ACC_DISTANCE};
 			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
 					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId, null, null, null, null);
 
@@ -859,13 +864,15 @@ public class Database2 {                                                        
 			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
 			int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 			int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+			int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
 
 			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 				try {
 					RideData rideData = new RideData(cursor.getInt(i0),
 							Double.parseDouble(cursor.getString(i1)),
 							Double.parseDouble(cursor.getString(i2)),
-							Long.parseLong(cursor.getString(i3)));
+							Long.parseLong(cursor.getString(i3)),
+							cursor.getDouble(i4));
 
 					rideDataStr = rideDataStr + rideData.toString() + newLine;
 					hasValues = true;
@@ -885,11 +892,30 @@ public class Database2 {                                                        
 
 	public void insertRideData(String lat, String lng, String t, int engagementId) {
 		try {
+			double accDistance = 0;
+			try {
+				RideData rideDataLast = getLastRideData();
+				if(rideDataLast != null){
+					double latitude = Double.parseDouble(lat);
+					double longitude = Double.parseDouble(lng);
+					if(Utils.compareDouble(rideDataLast.lat, 0) != 0
+							&& Utils.compareDouble(rideDataLast.lng, 0) != 0
+							&& Utils.compareDouble(latitude, 0) != 0
+							&& Utils.compareDouble(longitude, 0) != 0){
+						accDistance = MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+								new LatLng(latitude, longitude));
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RIDE_DATA_LAT, lat);
 			contentValues.put(Database2.RIDE_DATA_LNG, lng);
 			contentValues.put(Database2.RIDE_DATA_T, t);
 			contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
+			contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
 			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -905,6 +931,25 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public RideData getLastRideData(){
+		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
+				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT 1", null);
+		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
+		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
+		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
+		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
+		if(cursor.moveToFirst()){
+			RideData rideData = new RideData(cursor.getInt(i0),
+					Double.parseDouble(cursor.getString(i1)),
+					Double.parseDouble(cursor.getString(i2)),
+					Long.parseLong(cursor.getString(i3)),
+					cursor.getDouble(i4));
+			return rideData;
+		}
+		return null;
 	}
 
 
