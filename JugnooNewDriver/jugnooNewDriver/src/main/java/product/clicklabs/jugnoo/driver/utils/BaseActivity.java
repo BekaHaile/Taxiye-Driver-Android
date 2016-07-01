@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
+import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RegisterScreen;
@@ -47,7 +49,10 @@ public class BaseActivity extends Activity {
 					|| this instanceof LoginViaOTP
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
-					|| this instanceof RequestDuplicateRegistrationActivity)) {
+					|| this instanceof RequestDuplicateRegistrationActivity
+					|| this instanceof MultipleAccountsActivity
+					|| this instanceof ChangePhoneBeforeOTPActivity
+		)) {
 			sendToSplash();
 			return true;
 		} else {
