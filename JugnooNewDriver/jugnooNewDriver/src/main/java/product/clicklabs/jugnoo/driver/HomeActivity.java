@@ -4113,6 +4113,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void driverUploadPathDataFileAsync(final Activity activity, int engagementId, double totalHaversineDistance) {
 		try {
 			String rideDataStr = Database2.getInstance(activity).getRideData(engagementId);
+			Log.writePathLogToFile(String.valueOf(engagementId)+"log", rideDataStr);
 			if (!"".equalsIgnoreCase(rideDataStr)) {
 				totalHaversineDistance = totalHaversineDistance / 1000;
 				rideDataStr = rideDataStr + "\n" + totalHaversineDistance;

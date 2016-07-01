@@ -902,7 +902,7 @@ public class Database2 {                                                        
 							&& Utils.compareDouble(rideDataLast.lng, 0) != 0
 							&& Utils.compareDouble(latitude, 0) != 0
 							&& Utils.compareDouble(longitude, 0) != 0){
-						accDistance = MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+						accDistance = rideDataLast.accDistance + MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
 								new LatLng(latitude, longitude));
 					}
 				}
