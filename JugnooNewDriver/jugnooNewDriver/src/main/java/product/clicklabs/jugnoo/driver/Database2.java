@@ -894,16 +894,27 @@ public class Database2 {                                                        
 		try {
 			double accDistance = 0;
 			try {
-				RideData rideDataLast = getLastRideData();
-				if(rideDataLast != null){
-					double latitude = Double.parseDouble(lat);
-					double longitude = Double.parseDouble(lng);
-					if(Utils.compareDouble(rideDataLast.lat, 0) != 0
-							&& Utils.compareDouble(rideDataLast.lng, 0) != 0
-							&& Utils.compareDouble(latitude, 0) != 0
-							&& Utils.compareDouble(longitude, 0) != 0){
-						accDistance = rideDataLast.accDistance + MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
-								new LatLng(latitude, longitude));
+				double latitude = Double.parseDouble(lat);
+				double longitude = Double.parseDouble(lng);
+				if(Utils.compareDouble(latitude, 0) != 0
+						&& Utils.compareDouble(longitude, 0) != 0) {
+					RideData rideDataLast = getLastRideData(engagementId, 1);
+					if (rideDataLast != null) {
+						if (Utils.compareDouble(rideDataLast.lat, 0) != 0
+								&& Utils.compareDouble(rideDataLast.lng, 0) != 0) {
+							accDistance = rideDataLast.accDistance + MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+									new LatLng(latitude, longitude));
+						} else if(Utils.compareDouble(rideDataLast.lat, 0) == 0
+								&& Utils.compareDouble(rideDataLast.lng, 0) == 0){
+							rideDataLast = getLastRideData(engagementId, 2);
+							if(rideDataLast != null) {
+								if (Utils.compareDouble(rideDataLast.lat, 0) != 0
+										&& Utils.compareDouble(rideDataLast.lng, 0) != 0) {
+									accDistance = MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+											new LatLng(latitude, longitude));
+								}
+							}
+						}
 					}
 				}
 			} catch (Exception e) {
@@ -933,15 +944,19 @@ public class Database2 {                                                        
 		}
 	}
 
-	public RideData getLastRideData(){
+	public RideData getLastRideData(int engagementId, int limit){
 		Cursor cursor = database.rawQuery("SELECT * FROM "+TABLE_RIDE_DATA
-				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT 1", null);
+				+" WHERE "+RIDE_DATA_ENGAGEMENT_ID+"="+engagementId
+				+" ORDER BY "+RIDE_DATA_I+" DESC LIMIT "+limit, null);
 		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
 		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
 		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
 		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
 		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
 		if(cursor.moveToFirst()){
+			if(limit == 2){
+				cursor.moveToLast();
+			}
 			RideData rideData = new RideData(cursor.getInt(i0),
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
