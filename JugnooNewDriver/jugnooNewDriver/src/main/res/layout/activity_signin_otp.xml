@@ -31,7 +31,7 @@
             android:layout_marginRight="5px"
             android:layout_marginTop="3px"
             android:background="@drawable/background_white_rounded_orange_bordered"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <ImageView

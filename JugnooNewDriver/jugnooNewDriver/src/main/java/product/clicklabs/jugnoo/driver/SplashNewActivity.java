@@ -26,6 +26,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -33,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -41,11 +44,13 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
@@ -88,13 +93,18 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	LinearLayout relative, linearLayoutAutoStatus, linearLayoutAutoDriverConfirmation, linearLayoutSignUpIn;
 	TextView textViewConfirmationText,textViewStatusText;
-	
+
+	List<String> categories = new ArrayList<>();
 	ImageView imageViewJugnooLogo;
 	
-	RelativeLayout jugnooTextImgRl;
+	RelativeLayout jugnooTextImgRl, selectLanguageLl;
 	ImageView jugnooTextImg, jugnooTextImg2;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
+
+	Spinner spinner;
+	String selectedLanguage;
+	int languagePrefStatus;
 	Configuration conf;
 
 	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo;
@@ -166,8 +176,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 //		Fabric.with(this, new Crashlytics());
-		
 
+		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 		initializeServerURL(this);
 		
@@ -206,6 +216,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		textViewConfirmationText = (TextView) findViewById(R.id.textViewConfirmationText);
 		textViewStatusText = (TextView) findViewById(R.id.textViewConfirmationText);
+		selectLanguageLl = (RelativeLayout) findViewById(R.id.selectLanguageLl);
+		spinner = (Spinner) findViewById(R.id.language_spinner);
 
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		progressBar1.setVisibility(View.GONE);
@@ -732,6 +744,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		}
 		else{
+			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
 			buttonRegister.setVisibility(View.VISIBLE);
 		}
@@ -1533,4 +1546,93 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 	}
+
+	public void showLanguagePreference() {
+
+		if (languagePrefStatus == 1) {
+			selectLanguageLl.setVisibility(View.VISIBLE);
+		} else {
+			selectLanguageLl.setVisibility(View.GONE);
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter);
+
+		if (!selectedLanguage.equalsIgnoreCase("")) {
+			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
+			spinner.setSelection(spinnerPosition);
+		}
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
+
+				Prefs.with(SplashNewActivity.this).save(SPLabels.SELECTED_LANGUAGE, item);
+				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
+					selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+					onCreate(new Bundle());
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+	}
+
+	public void fetchLanguageList() {
+		try {
+			if (AppStatus.getInstance(SplashNewActivity.this).isOnline(SplashNewActivity.this)) {
+				DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<>();
+				params.put("device_model_name", android.os.Build.MODEL);
+				params.put("android_version", android.os.Build.VERSION.RELEASE);
+
+				RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						DialogPopup.dismissLoadingDialog();
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							String message = JSONParser.getServerMessage(jObj);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								languagePrefStatus = jObj.getInt("locale_preference_enabled");
+								JSONArray jArray = jObj.getJSONArray("locales");
+								if (jArray != null) {
+									categories.clear();
+									for (int i = 0; i < jArray.length(); i++) {
+										categories.add(jArray.get(i).toString());
+									}
+								}
+								showLanguagePreference();
+
+							} else {
+								DialogPopup.alertPopup(SplashNewActivity.this, "", message);
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+						}
+
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
