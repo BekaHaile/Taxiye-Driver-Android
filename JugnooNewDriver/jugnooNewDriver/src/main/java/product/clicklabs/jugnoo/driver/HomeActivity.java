@@ -3670,7 +3670,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							   int flagDistanceTravelled, final CustomerInfo customerInfo) {
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
-		double totalDistanceFromLog =Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		double totalDistanceFromLogInMeter =Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 		double totalDistance = customerInfo
 				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
@@ -3948,12 +3949,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
+			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
 			finalDistance = 0;
-			if(totalDistance < totalDistanceFromLog){
+			if(totalDistance < totalDistanceFromLogFile){
 				long ridetimeInSec = rideTimeInMillis/60L;
-				Double speed = totalDistanceFromLog/ridetimeInSec;
+				Double speed = totalDistanceFromLogFile/ridetimeInSec;
 				if (speed < 15){
-					finalDistance = totalDistanceFromLog;
+					finalDistance = totalDistanceFromLogFile;
 				}
 			} else {
 				finalDistance = totalDistance;
