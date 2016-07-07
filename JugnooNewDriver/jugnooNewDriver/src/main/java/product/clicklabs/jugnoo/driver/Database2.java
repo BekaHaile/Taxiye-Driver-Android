@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -93,6 +94,11 @@ public class Database2 {                                                        
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
+
+
+	private static final String TABLE_RING_DATA = "table_ring_data";
+	private static final String RING_DATA_ENGAGEMENT = "ring_data_engagement";
+	private static final String RING_DATA_TIME = "ring_data_time";
 
 
 	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
@@ -220,6 +226,10 @@ public class Database2 {                                                        
 				+ API_REQUEST_PARAMS + " TEXT"
 				+ ");");
 
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RING_DATA + " ("
+				+ RING_DATA_ENGAGEMENT + " TEXT, "
+				+ RING_DATA_TIME + " TEXT"
+				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RIDE_DATA + " ("
 				+ RIDE_DATA_I + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -897,6 +907,62 @@ public class Database2 {                                                        
 		try {
 			database.delete(Database2.TABLE_RIDE_DATA, null, null);
 			database.execSQL("DROP TABLE " + Database2.TABLE_RIDE_DATA);
+			createAllTables(database);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public String getRingData() {
+		String ringDataStr = "";
+		String template = "engagement,time";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
+			Cursor cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
+			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					RingData ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
+
+					ringDataStr = ringDataStr + ringData.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				ringDataStr = template + newLine + ringDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ringDataStr;
+	}
+
+
+	public void insertRingData(String engagement, String time) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagement);
+			contentValues.put(Database2.RING_DATA_TIME, time);
+			database.insert(Database2.TABLE_RING_DATA, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deleteRingData() {
+		try {
+			database.delete(Database2.TABLE_RING_DATA, null, null);
+			database.execSQL("DROP TABLE " + Database2.TABLE_RING_DATA);
 			createAllTables(database);
 		} catch (Exception e) {
 			e.printStackTrace();

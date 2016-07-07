@@ -404,7 +404,7 @@ public class GCMIntentService extends IntentService {
 												isPooled, isDelivery, totalDeliveries, estimatedFare, userName);
 										Data.addCustomerInfo(customerInfo);
 
-										startRing(this);
+										startRing(this, engagementId);
 										flurryEventForRequestPush(engagementId);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -418,7 +418,7 @@ public class GCMIntentService extends IntentService {
 										Log.e("referenceId", "=" + referenceId);
 									} else {
 										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
-										startRing(this);
+										startRing(this, engagementId);
 										flurryEventForRequestPush(engagementId);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -661,7 +661,7 @@ public class GCMIntentService extends IntentService {
 		pendingIntent.cancel();
 	}
 
-	public static void startRing(Context context) {
+	public static void startRing(Context context, String engagementId) {
 		try {
 
 			stopRing(true);
