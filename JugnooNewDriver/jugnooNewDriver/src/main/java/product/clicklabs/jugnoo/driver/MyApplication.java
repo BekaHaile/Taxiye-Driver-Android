@@ -5,6 +5,8 @@ package product.clicklabs.jugnoo.driver;
  */
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -13,11 +15,14 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 
 
 public class MyApplication extends Application {
@@ -38,6 +43,8 @@ public class MyApplication extends Application {
 
 		AnalyticsTrackers.initialize(this);
 		AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+
+		initializeServerURLAndRestClient(this);
 
 	}
 
@@ -159,6 +166,48 @@ public class MyApplication extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	public void initializeServerURLAndRestClient(Context context){
+		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
+
+		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, Data.DEFAULT_SERVER_URL);
+
+		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
+
+		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
+			Data.SERVER_URL = Data.TRIAL_SERVER_URL;
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
+			Data.SERVER_URL = Data.DEV_SERVER_URL;
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			Data.SERVER_URL = Data.LIVE_SERVER_URL;
+			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
+		}
+		else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
+			Data.SERVER_URL = Data.DEV_1_SERVER_URL;
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.DEV_2_SERVER_URL)){
+			Data.SERVER_URL = Data.DEV_2_SERVER_URL;
+			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
+		}
+		else if(link.equalsIgnoreCase(Data.DEV_3_SERVER_URL)){
+			Data.SERVER_URL = Data.DEV_3_SERVER_URL;
+			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
+		}
+		else{
+			Data.SERVER_URL = CUSTOM_URL;
+			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
+		}
+		Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
+		RestClient.setupRestClient(Data.SERVER_URL);
+		DriverLocationUpdateService.updateServerData(context);
 	}
 
 }

@@ -111,47 +111,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		FlurryAgent.onEndSession(this);
 	}
 	
-	
-	public static void initializeServerURL(Context context){
-		SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
-		String link = preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL);
 
-		String CUSTOM_URL = Prefs.with(context).getString(SPLabels.CUSTOM_SERVER_URL, Data.DEFAULT_SERVER_URL);
-
-		Data.SERVER_URL = Data.DEFAULT_SERVER_URL;
-		
-		if(link.equalsIgnoreCase(Data.TRIAL_SERVER_URL)){
-			Data.SERVER_URL = Data.TRIAL_SERVER_URL;
-			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
-		}
-		else if(link.equalsIgnoreCase(Data.DEV_SERVER_URL)){
-			Data.SERVER_URL = Data.DEV_SERVER_URL;
-			Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
-		}
-		else if(link.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			Data.SERVER_URL = Data.LIVE_SERVER_URL;
-			Data.FLURRY_KEY = Data.STATIC_FLURRY_KEY;
-		}
-        else if(link.equalsIgnoreCase(Data.DEV_1_SERVER_URL)){
-            Data.SERVER_URL = Data.DEV_1_SERVER_URL;
-            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
-        }
-        else if(link.equalsIgnoreCase(Data.DEV_2_SERVER_URL)){
-            Data.SERVER_URL = Data.DEV_2_SERVER_URL;
-            Data.FLURRY_KEY = "STATIC_FLURRY_KEY";
-        }
-        else if(link.equalsIgnoreCase(Data.DEV_3_SERVER_URL)){
-            Data.SERVER_URL = Data.DEV_3_SERVER_URL;
-            Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
-        }
-		else{
-			Data.SERVER_URL = CUSTOM_URL;
-			Data.FLURRY_KEY ="STATIC_FLURRY_KEY";
-		}
-		Log.e("Data.SERVER_URL", "=" + Data.SERVER_URL);
-		RestClient.setupRestClient(Data.SERVER_URL);
-		DriverLocationUpdateService.updateServerData(context);
-	}
 
 	Bundle bundleHomePush= new Bundle();
 	
@@ -162,8 +122,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		
 
 		bundleHomePush = getIntent().getExtras();
-		initializeServerURL(this);
-		
+
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
 
@@ -1037,7 +996,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_1_SERVER_URL);
                                                 editor.commit();
 
-                                                initializeServerURL(activity);
+                                                MyApplication.getInstance().initializeServerURLAndRestClient(activity);
                                             }
                                         },
                                         new View.OnClickListener() {
@@ -1048,7 +1007,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_2_SERVER_URL);
                                                 editor.commit();
 
-                                                initializeServerURL(activity);
+												MyApplication.getInstance().initializeServerURLAndRestClient(activity);
                                             }
                                         },
                                         new View.OnClickListener() {
@@ -1059,7 +1018,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
                                                 editor.putString(Data.SP_SERVER_LINK, Data.DEV_3_SERVER_URL);
                                                 editor.commit();
 
-                                                initializeServerURL(activity);
+												MyApplication.getInstance().initializeServerURLAndRestClient(activity);
                                             }
                                         }, true, false);
 
@@ -1184,8 +1143,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							SharedPreferences.Editor editor = preferences.edit();
 							editor.putString(Data.SP_SERVER_LINK, Data.LIVE_SERVER_URL);
 							editor.commit();
-							
-							initializeServerURL(activity);
+
+							MyApplication.getInstance().initializeServerURLAndRestClient(activity);
 							
 							dialog.dismiss();
 						}
@@ -1199,7 +1158,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							editor.putString(Data.SP_SERVER_LINK, Data.DEV_SERVER_URL);
 							editor.commit();
 
-							initializeServerURL(activity);
+							MyApplication.getInstance().initializeServerURLAndRestClient(activity);
 
 							dialog.dismiss();
 						}
@@ -1285,7 +1244,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						editor.putString(Data.SP_SERVER_LINK, code);
 						editor.commit();
 
-						initializeServerURL(activity);
+						MyApplication.getInstance().initializeServerURLAndRestClient(activity);
 						dialog.dismiss();
 					}
 				}
