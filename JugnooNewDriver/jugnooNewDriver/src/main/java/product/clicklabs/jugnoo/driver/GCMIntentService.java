@@ -440,7 +440,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
 
@@ -452,7 +452,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
@@ -464,7 +464,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
@@ -664,7 +664,7 @@ public class GCMIntentService extends IntentService {
 	public static void startRing(Context context, String engagementId) {
 		try {
 
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -704,6 +704,7 @@ public class GCMIntentService extends IntentService {
 				}
 			});
 			mediaPlayer.start();
+			Database2.getInstance(context).insertRingData(engagementId, String.valueOf(System.currentTimeMillis()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -712,7 +713,7 @@ public class GCMIntentService extends IntentService {
 
 	public static void startRingCustom(Context context, String file) {
 		try {
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -755,9 +756,9 @@ public class GCMIntentService extends IntentService {
 
 	public static CountDownTimer ringStopTimer;
 
-	public static void startRingWithStopHandler(Context context) {
+	public static void startRingWithStopHandler(final Context context) {
 		try {
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -803,7 +804,7 @@ public class GCMIntentService extends IntentService {
 
 				@Override
 				public void onFinish() {
-					stopRing(true);
+					stopRing(true, context);
 				}
 			};
 			ringStopTimer.start();
@@ -815,7 +816,7 @@ public class GCMIntentService extends IntentService {
 	}
 
 
-	public static void stopRing(boolean manual) {
+	public static void stopRing(boolean manual, Context context) {
 		boolean stopRing;
 		if (HomeActivity.appInterruptHandler != null) {
 			if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
@@ -843,6 +844,8 @@ public class GCMIntentService extends IntentService {
 				if (ringStopTimer != null) {
 					ringStopTimer.cancel();
 				}
+				long timeDiff = System.currentTimeMillis() - Database2.getInstance(context).getRingData().time;
+				Database2.getInstance(context).updateRingData(String.valueOf(Database2.getInstance(context).getRingData().engagement), String.valueOf(timeDiff));
 			} catch (Exception e) {
 			}
 		}
@@ -943,7 +946,7 @@ public class GCMIntentService extends IntentService {
 								HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 							}
 							clearNotifications(context);
-							stopRing(true);
+							stopRing(true, context);
 						}
 					}
 					Log.i("RequestTimeoutTimerTask", "onFinish");

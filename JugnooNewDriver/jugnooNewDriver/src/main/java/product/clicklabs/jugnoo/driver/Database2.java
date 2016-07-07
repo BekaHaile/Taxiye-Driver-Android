@@ -914,8 +914,9 @@ public class Database2 {                                                        
 	}
 
 
-	public String getRingData() {
+	public RingData getRingData() {
 		String ringDataStr = "";
+		RingData ringData = null;
 		String template = "engagement,time";
 		String newLine = "\n";
 		boolean hasValues = false;
@@ -928,22 +929,17 @@ public class Database2 {                                                        
 
 			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 				try {
-					RingData ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
-
-					ringDataStr = ringDataStr + ringData.toString() + newLine;
+					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
 					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			if (hasValues) {
-				ringDataStr = template + newLine + ringDataStr;
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return ringDataStr;
+		return ringData;
 	}
 
 
@@ -953,6 +949,18 @@ public class Database2 {                                                        
 			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagement);
 			contentValues.put(Database2.RING_DATA_TIME, time);
 			database.insert(Database2.TABLE_RING_DATA, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void updateRingData(String engagementId, String time) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
+			contentValues.put(Database2.RING_DATA_TIME, time);
+			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

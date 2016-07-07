@@ -354,7 +354,7 @@ public class JSONParser implements Constants {
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
 
-				fillDriverRideRequests(jObject1);
+				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
 
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
@@ -522,7 +522,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	public void fillDriverRideRequests(JSONObject jObject1) {
+	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {
 
 		try {
 			Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
@@ -587,7 +587,7 @@ public class JSONParser implements Constants {
 
 
 			if (jActiveRequests.length() == 0) {
-				GCMIntentService.stopRing(true);
+				GCMIntentService.stopRing(true, context);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

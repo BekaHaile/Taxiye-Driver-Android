@@ -1579,7 +1579,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			else {
 				if (Utils.getBatteryPercentage(this) >= 20) {
 					GCMIntentService.clearNotifications(HomeActivity.this);
-					GCMIntentService.stopRing(true);
+					GCMIntentService.stopRing(true, activity);
 					driverAcceptRideAsync(HomeActivity.this, customerInfo);
 				} else {
 					DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_text));
@@ -1600,7 +1600,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					public void onSuccess(String engagementId) {
 						Data.removeCustomerInfo(Integer.parseInt(engagementId), EngagementStatus.REQUESTED.getOrdinal());
 						GCMIntentService.clearNotifications(getApplicationContext());
-						GCMIntentService.stopRing(true);
+						GCMIntentService.stopRing(true, getApplicationContext());
 						try {
 							if (perfectRideMarker != null) {
 								perfectRideMarker.remove();
@@ -1617,7 +1617,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String.valueOf(customerInfo.referenceId));
 			} else {
 				GCMIntentService.clearNotifications(HomeActivity.this);
-				GCMIntentService.stopRing(true);
+				GCMIntentService.stopRing(true, getApplicationContext());
 				driverRejectRequestAsync(HomeActivity.this, customerInfo);
 			}
 		} catch (Exception e) {
@@ -1894,7 +1894,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 								GCMIntentService.clearNotifications(HomeActivity.this);
-								GCMIntentService.stopRing(true);
+								GCMIntentService.stopRing(true, HomeActivity.this);
 
 								if (map != null) {
 									map.clear();
@@ -1918,7 +1918,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (Data.getAssignedCustomerInfosListForStatus(
 								EngagementStatus.REQUESTED.getOrdinal()).size() == 0) {
 							GCMIntentService.clearNotifications(HomeActivity.this);
-							GCMIntentService.stopRing(true);
+							GCMIntentService.stopRing(true, HomeActivity.this);
 						}
 
 						showAllRideRequestsOnMap();
@@ -2526,7 +2526,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 					GCMIntentService.clearNotifications(getApplicationContext());
-					GCMIntentService.stopRing(true);
+					GCMIntentService.stopRing(true, HomeActivity.this);
 
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
@@ -2889,7 +2889,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			cancelMapAnimateAndUpdateRideDataTimer();
 
 			GCMIntentService.clearNotifications(HomeActivity.this);
-			GCMIntentService.stopRing(true);
+			GCMIntentService.stopRing(true, HomeActivity.this);
 
 			MeteringService.clearNotifications(HomeActivity.this);
 
@@ -3271,7 +3271,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					acceptRideSucess(jsonString,
 							String.valueOf(customerInfo.getEngagementId()),
 							String.valueOf(customerInfo.getUserId()));
-					GCMIntentService.stopRing(true);
+					GCMIntentService.stopRing(true, activity);
 				}
 
 				@Override
@@ -5594,7 +5594,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						DialogPopup.alertPopupWithListener(HomeActivity.this, "", getResources().getString(R.string.customer_pickup_text), new View.OnClickListener() {
 							@Override
 							public void onClick(View v) {
-								GCMIntentService.stopRing(true);
+								GCMIntentService.stopRing(true, HomeActivity.this);
 								Database2.getInstance(HomeActivity.this).updateDriverManualPatchPushReceived(Database2.NO);
 								manualPatchPushAckAPI(HomeActivity.this);
 							}
@@ -5889,7 +5889,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}.start();
 			dialog.show();
-			GCMIntentService.stopRing(true);
+			GCMIntentService.stopRing(true, activity);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
