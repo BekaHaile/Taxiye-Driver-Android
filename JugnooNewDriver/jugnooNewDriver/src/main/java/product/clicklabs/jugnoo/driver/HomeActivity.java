@@ -867,8 +867,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
+//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//					FlurryEventLogger.event(CALL_US);
+					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
 				}
 			});
 
@@ -4413,7 +4414,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							jObj = new JSONObject(jsonString);
 							int flag = jObj.optInt("flag", ApiResponseFlags.HEATMAP_DATA.getOrdinal());
 							String message = JSONParser.getServerMessage(jObj);
-							Log.i("fetchHeatmapData", ">message="+message);
+							Log.i("fetchHeatmapData", ">message=" + message);
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 								if (ApiResponseFlags.HEATMAP_DATA.getOrdinal() == flag) {
 									heatMapResponseGlobal = heatMapResponse;

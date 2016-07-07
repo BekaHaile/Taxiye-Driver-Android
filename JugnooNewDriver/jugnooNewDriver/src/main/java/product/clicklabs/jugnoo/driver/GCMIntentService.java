@@ -40,6 +40,8 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
+import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -681,10 +683,9 @@ public class GCMIntentService extends IntentService {
 				vibrator.vibrate(pattern, 1);
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}else{
 				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}
@@ -704,7 +705,7 @@ public class GCMIntentService extends IntentService {
 				}
 			});
 			mediaPlayer.start();
-			Database2.getInstance(context).insertRingData(engagementId, String.valueOf(System.currentTimeMillis()));
+			Database2.getInstance(context).insertRingData(Integer.parseInt(engagementId), String.valueOf(System.currentTimeMillis()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -844,8 +845,9 @@ public class GCMIntentService extends IntentService {
 				if (ringStopTimer != null) {
 					ringStopTimer.cancel();
 				}
-				long timeDiff = System.currentTimeMillis() - Database2.getInstance(context).getRingData().time;
-				Database2.getInstance(context).updateRingData(String.valueOf(Database2.getInstance(context).getRingData().engagement), String.valueOf(timeDiff));
+				RingData ringData = Database2.getInstance(context).getRingData("1");
+				long timeDiff = System.currentTimeMillis() - ringData.time;
+				Database2.getInstance(context).updateRingData(ringData.engagement, String.valueOf(timeDiff));
 			} catch (Exception e) {
 			}
 		}

@@ -227,7 +227,7 @@ public class Database2 {                                                        
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RING_DATA + " ("
-				+ RING_DATA_ENGAGEMENT + " TEXT, "
+				+ RING_DATA_ENGAGEMENT + " INTEGER, "
 				+ RING_DATA_TIME + " TEXT"
 				+ ");");
 
@@ -914,23 +914,21 @@ public class Database2 {                                                        
 	}
 
 
-	public RingData getRingData() {
-		String ringDataStr = "";
+	public RingData getRingData(String limit) {
 		RingData ringData = null;
 		String template = "engagement,time";
-		String newLine = "\n";
-		boolean hasValues = false;
 		try {
 			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
-			Cursor cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
+
+			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
+					+ " ORDER BY " + RING_DATA_ENGAGEMENT +" DESC LIMIT "+limit, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
 			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
 
-			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+			if (cursor.moveToFirst()) {
 				try {
 					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
-					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -943,24 +941,63 @@ public class Database2 {                                                        
 	}
 
 
-	public void insertRingData(String engagement, String time) {
+
+	public String getRingCompleteData() {
+		String ringDataStr = "";
+		RingData ringData = null;
+		String template = "engagement,time";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
+			Cursor cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
+
+//			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
+//					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC" , null);
+
+			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
+			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
+					ringDataStr = ringDataStr + ringData.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				ringDataStr = template + newLine + ringDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ringDataStr;
+	}
+
+
+
+	public void insertRingData(int engagementId, String time) {
 		try {
 			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagement);
+			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
 			contentValues.put(Database2.RING_DATA_TIME, time);
 			database.insert(Database2.TABLE_RING_DATA, null, contentValues);
 		} catch (Exception e) {
+
 			e.printStackTrace();
 		}
 	}
 
 
-	public void updateRingData(String engagementId, String time) {
+	public void updateRingData(int engagementId, String time) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
 			contentValues.put(Database2.RING_DATA_TIME, time);
-			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
+			database.update(Database2.TABLE_RING_DATA, contentValues, RING_DATA_ENGAGEMENT + "="+engagementId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
