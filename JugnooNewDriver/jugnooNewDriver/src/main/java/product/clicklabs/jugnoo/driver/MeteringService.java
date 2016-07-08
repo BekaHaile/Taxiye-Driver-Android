@@ -49,6 +49,7 @@ public class MeteringService extends Service {
     	cancelAlarm();
         gpsInstance(this).start();
         startUploadPathAlarm();
+		startUploadInRideDataAlarm();
     }
     
     
@@ -76,12 +77,10 @@ public class MeteringService extends Service {
     public static final int UPLOAD_PATH_PI_REQUEST_CODE = 112;
     public static final String UPOLOAD_PATH = "product.clicklabs.jugnoo.driver.UPOLOAD_PATH";
     public static final long ALARM_REPEAT_INTERVAL = 15000;
-
-
     public void startUploadPathAlarm() {
         // check task is scheduled or not
         boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
-            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH).putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this)),
+            new Intent(this, PathUploadReceiver.class).setAction(UPOLOAD_PATH),
             PendingIntent.FLAG_NO_CREATE) != null);
 
         if (alarmUp) {
@@ -90,19 +89,18 @@ public class MeteringService extends Service {
 
         Intent intent = new Intent(this, PathUploadReceiver.class);
         intent.setAction(UPOLOAD_PATH);
-        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), ALARM_REPEAT_INTERVAL, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
+				ALARM_REPEAT_INTERVAL, pendingIntent);
 
     }
 
     public void cancelUploadPathAlarm() {
         Intent intent = new Intent(this, PathUploadReceiver.class);
         intent.setAction(UPOLOAD_PATH);
-        intent.putExtra("engagement_id", gpsInstance(this).getEngagementIdFromSP(this));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
@@ -113,6 +111,40 @@ public class MeteringService extends Service {
 
 
 
+
+
+
+
+	public static final int UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE = 114;
+	public static final String UPLOAD_IN_RIDE_DATA = "product.clicklabs.jugnoo.driver.UPLOAD_IN_RIDE_DATA";
+	public static final long UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL = 60000;
+	public void startUploadInRideDataAlarm() {
+		boolean alarmUp = (PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
+				new Intent(this, UploadInRideDataReceiver.class).setAction(UPLOAD_IN_RIDE_DATA),
+				PendingIntent.FLAG_NO_CREATE) != null);
+		if (alarmUp) {
+			cancelUploadInRideDataAlarm();
+		}
+
+		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
+		intent.setAction(UPLOAD_IN_RIDE_DATA);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(),
+				UPLOAD_IN_RIDE_DATA_ALARM_REPEAT_INTERVAL, pendingIntent);
+	}
+
+	public void cancelUploadInRideDataAlarm() {
+		Intent intent = new Intent(this, UploadInRideDataReceiver.class);
+		intent.setAction(UPLOAD_IN_RIDE_DATA);
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(this, UPLOAD_IN_RIDE_DATA_PI_REQUEST_CODE,
+				intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		AlarmManager alarmManager = (AlarmManager) this.getSystemService(Activity.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
+		pendingIntent.cancel();
+	}
 
 
 
@@ -138,6 +170,7 @@ public class MeteringService extends Service {
 				gpsInstance(this).stop();
 				Database2.getInstance(this).deleteAllCurrentPathItems();
 				cancelUploadPathAlarm();
+				cancelUploadInRideDataAlarm();
     		}
     		else{
 				Intent restartService = new Intent(getApplicationContext(), this.getClass());
@@ -181,9 +214,7 @@ public class MeteringService extends Service {
 											   Location lastFusedLocation, double totalHaversineDistance, boolean fromGPS) {
 					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 							DriverScreenMode.D_INITIAL.getOrdinal());
-					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-							|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-							|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)) {
+					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS) {
 							String message = context.getResources().getString(R.string.total_distance)
 									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000)

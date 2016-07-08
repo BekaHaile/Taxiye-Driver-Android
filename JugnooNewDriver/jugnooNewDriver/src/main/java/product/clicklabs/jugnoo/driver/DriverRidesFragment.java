@@ -436,7 +436,7 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 										}
 
 									} else {
-
+										rides.clear();
 										for (int i = 0; i < newBookingHistoryRespose.getBookingData().size(); i++) {
 											NewBookingHistoryRespose.BookingDatum data = newBookingHistoryRespose.getBookingData().get(i);
 											RideInfo rideInfo = null;

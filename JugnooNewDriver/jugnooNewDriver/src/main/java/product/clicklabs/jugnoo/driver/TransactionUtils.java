@@ -13,19 +13,19 @@ import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
  */
 public class TransactionUtils {
 
-	public void openDeliveryInfoListFragment(FragmentActivity activity, View container, DeliveryStatus deliveryStatus) {
+	public void openDeliveryInfoListFragment(FragmentActivity activity, View container, int engagementId, DeliveryStatus deliveryStatus) {
 			activity.getSupportFragmentManager().beginTransaction()
-					.replace(container.getId(), new DeliveryInfosListFragment(deliveryStatus),
+					.replace(container.getId(), new DeliveryInfosListFragment(engagementId, deliveryStatus),
 							DeliveryInfosListFragment.class.getName())
 					.addToBackStack(DeliveryInfosListFragment.class.getName())
 					.commitAllowingStateLoss();
 	}
 
-	public void openDeliveryReturnFragment(FragmentActivity activity, View container, int id) {
+	public void openDeliveryReturnFragment(FragmentActivity activity, View container, int engagementId, int id) {
 		if(!checkIfFragmentAdded(activity, DeliveryReturnFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new DeliveryReturnFragment(id),
+					.add(container.getId(), new DeliveryReturnFragment(engagementId, id),
 							DeliveryReturnFragment.class.getName())
 					.addToBackStack(DeliveryReturnFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
@@ -34,11 +34,11 @@ public class TransactionUtils {
 		}
 	}
 
-	public void openMarkDeliveryFragment(FragmentActivity activity, View container, int id) {
+	public void openMarkDeliveryFragment(FragmentActivity activity, View container, int engagementId, int id) {
 		if(!checkIfFragmentAdded(activity, MarkDeliveryFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new MarkDeliveryFragment(id),
+					.add(container.getId(), new MarkDeliveryFragment(engagementId, id),
 							MarkDeliveryFragment.class.getName())
 					.addToBackStack(MarkDeliveryFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()

@@ -62,7 +62,6 @@ public interface Constants {
 	String NOTIFICATION_TIPS_TEXT = "notification_tips_text";
 
     String KEY_IS_POOLED = "is_pooled";
-    String SP_POOL_RIDES_CONNECTED_COUNT = "sp_pool_rides_connected_count";
     String KEY_FARE_FACTOR = "fare_factor";
     String KEY_LUGGAGE_CHARGES = "luggage_charges";
     String KEY_CONVENIENCE_CHARGE = "convenience_charge";
@@ -91,9 +90,7 @@ public interface Constants {
     String KEY_WALLET_BALANCE = "wallet_balance";
     String KEY_DISTANCE = "distance";
     String KEY_RIDE_PATH_DATA = "ride_path_data";
-    String KEY_POOL_DISTANCE= "pool_distance";
     String KEY_POOL_FARE ="pool_fare";
-    String KEY_POOL_TIME ="pool_time";
 
     String SP_CUSTOMER_RIDE_DATAS_OBJECT = "sp_customer_ride_datas_object";
     String KEY_HAVERSINE_DISTANCE = "haversine_distance";
@@ -124,5 +121,15 @@ public interface Constants {
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
 
+    String KEY_FARE = "fare";
+    String KEY_BEARING = "bearing";
+    String KEY_DEVICE_TOKEN = "device_token";
+    String KEY_LOCATION_ACCURACY = "location_accuracy";
+    String KEY_KILL_APP = "kill_app";
+
 	String MIME_TYPE = "application/octet-stream";
+    String KEY_LINK = "link";
+
+    String SP_START_LATITUDE = "sp_start_latitude";
+    String SP_START_LONGITUDE = "sp_start_longitude";
 }

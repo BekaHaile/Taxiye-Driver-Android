@@ -77,7 +77,6 @@ public class CustomerSwitcher {
 			public void onClick(int position, CustomerInfo customerInfo) {
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 				activity.switchDriverScreen(HomeActivity.driverScreenMode);
-				setCustomerData();
 			}
 
 		});
@@ -90,16 +89,17 @@ public class CustomerSwitcher {
 			@Override
 			public void onClick(View v) {
 				String callPhoneNumber = "";
-				if (Data.getCurrentCustomerInfo() != null) {
-					callPhoneNumber = Data.getCurrentCustomerInfo().phoneNumber;
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if (customerInfo != null) {
+					callPhoneNumber = customerInfo.phoneNumber;
 				}
 				if (!"".equalsIgnoreCase(callPhoneNumber)) {
 					Utils.openCallIntent(activity, callPhoneNumber);
 					try {
 						JSONObject map = new JSONObject();
 						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
-						map.put(Constants.KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-						map.put(Constants.KEY_CUSTOMER_ID, Data.getCurrentCustomerInfo().userId);
+						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
 						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -120,50 +120,61 @@ public class CustomerSwitcher {
 	}
 
 
-	public void setCustomerData() {
+	public void setCustomerData(int engagementId) {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-			textViewCustomerName.setText(customerInfo.getName());
-			if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
-				if(customerInfo.getDropLatLng() != null
-						&& customerInfo.getIsDelivery() != 1){
-					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-							callbackGetAddress).execute();
-				} else{
-					textViewCustomerPickupAddress.setVisibility(View.GONE);
-					activity.updateNavigationButton("");
-				}
-				updateDistanceOnLocationChanged();
-				textViewDeliveryCount.setVisibility(View.GONE);
-				linearLayoutDeliveryFare.setVisibility(View.GONE);
+			if(engagementId == customerInfo.getEngagementId()) {
+				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
+						activity.getResources().getColor(R.color.new_orange));
 
-			} else {
-				textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-				if(customerInfo.getAddress().equalsIgnoreCase("")){
-					new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
-							callbackGetAddress).execute();
-				} else{
-					activity.updateNavigationButton(customerInfo.getAddress());
-				}
-				updateDistanceOnLocationChanged();
-				if(customerInfo.getIsDelivery() == 1){
-					textViewDeliveryCount.setVisibility(View.VISIBLE);
-					textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
-							+ " " + customerInfo.getTotalDeliveries());
-					linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-					textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
-							+ ": " + activity.getResources().getString(R.string.rupee)
-							+" "+customerInfo.getEstimatedFare());
-				} else{
+				textViewCustomerName.setText(customerInfo.getName());
+				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+					if (customerInfo.getIsDelivery() != 1
+							&& customerInfo.getDropLatLng() != null) {
+						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
+								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+										textViewCustomerPickupAddress)).execute();
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					} else {
+						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						activity.buttonDriverNavigationSetVisibility(View.GONE);
+					}
+					updateDistanceOnLocationChanged();
 					textViewDeliveryCount.setVisibility(View.GONE);
 					linearLayoutDeliveryFare.setVisibility(View.GONE);
+
+				} else {
+					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					if (customerInfo.getAddress().equalsIgnoreCase("")) {
+						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
+								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+										textViewCustomerPickupAddress)).execute();
+					} else {
+						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
+					}
+					updateDistanceOnLocationChanged();
+					if (customerInfo.getIsDelivery() == 1) {
+						textViewDeliveryCount.setVisibility(View.VISIBLE);
+						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
+								+ " " + customerInfo.getTotalDeliveries());
+						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
+						textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
+								+ ": " + activity.getResources().getString(R.string.rupee)
+								+ " " + customerInfo.getEstimatedFare());
+					} else {
+						textViewDeliveryCount.setVisibility(View.GONE);
+						linearLayoutDeliveryFare.setVisibility(View.GONE);
+					}
 				}
 			}
-			if(Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1){
+			if (Data.getAssignedCustomerInfosListForEngagedStatus().size() == 1) {
 				recyclerViewCustomersLinked.setVisibility(View.GONE);
-			} else{
+				textViewCustomerName.setVisibility(View.VISIBLE);
+			} else {
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
+				textViewCustomerName.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,25 +197,31 @@ public class CustomerSwitcher {
 		}
 	}
 
-	public void textViewCustomerPickupAddressSetText(String address){
-		try{
-			textViewCustomerPickupAddress.setText(address);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
 
-	private ApiGoogleGeocodeAddress.Callback callbackGetAddress = new ApiGoogleGeocodeAddress.Callback() {
+	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback{
+
+		private int engagementId;
+		private TextView textView;
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView){
+			this.engagementId = engagementId;
+			this.textView = textView;
+		}
+
 		@Override
 		public void onPre() {
-			textViewCustomerPickupAddress.setText("");
+			textView.setText("");
 		}
 
 		@Override
 		public void onPost(String address) {
-			activity.updateNavigationButton(address);
+			try {
+				Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
+				textView.setText(address);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-	};
+	}
 
 
 	public void updateList(){

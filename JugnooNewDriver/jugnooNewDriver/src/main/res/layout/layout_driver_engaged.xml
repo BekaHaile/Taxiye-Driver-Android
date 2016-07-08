@@ -215,7 +215,7 @@
                 android:layout_width="410px"
                 android:layout_height="99px"
                 android:layout_marginLeft="25px"
-                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:background="@drawable/new_orange_btn_normal_rounded"
                 android:text="@string/arrived"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>
@@ -282,7 +282,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
 
                     <RelativeLayout
@@ -290,7 +290,6 @@
                         android:layout_width="0px"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:splitMotionEvents="false">
 
                         <TextView
@@ -302,19 +301,23 @@
                             android:singleLine="true"
                             android:text="@string/distance"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"
+
+                            />
 
                         <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                             android:id="@+id/driverIRDistanceValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/driverIRDistanceText"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5px"
                             android:gravity="center"
                             android:text="4.7 Kms"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
                     </RelativeLayout>
 
 
@@ -323,13 +326,14 @@
                         android:layout_width="0px"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:splitMotionEvents="false">
 
                         <ImageView
                             android:layout_width="2px"
                             android:layout_height="90px"
-                            android:background="@color/bg_grey_opaque"/>
+                            android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
+                            />
 
                         <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                             android:id="@+id/driverRideTimeText"
@@ -339,19 +343,21 @@
                             android:gravity="center"
                             android:text="Ride Time"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"/>
 
                         <product.clicklabs.jugnoo.driver.utils.PausableChronometer
                             android:id="@+id/rideTimeChronometer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/driverRideTimeText"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5px"
                             android:gravity="center"
                             android:text=""
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
                     </RelativeLayout>
 
 
@@ -360,14 +366,15 @@
                         android:layout_width="0px"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:splitMotionEvents="false"
                         android:visibility="visible">
 
                         <ImageView
                             android:layout_width="2px"
                             android:layout_height="90px"
-                            android:background="@color/bg_grey_opaque"/>
+                            android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
+                            />
 
                         <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                             android:id="@+id/driverWaitText"
@@ -378,19 +385,20 @@
                             android:text="@string/wait_time"
                             android:textColor="@color/bg_grey_opaque"
                             android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"
                             />
 
                         <TextView
                             android:id="@+id/driverWaitValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/driverWaitText"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5px"
                             android:gravity="center"
                             android:text="4 min"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"/>
 
                     </RelativeLayout>
 
@@ -400,7 +408,6 @@
                         android:layout_width="0px"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:splitMotionEvents="false"
                         android:visibility="visible"
                         >
@@ -409,6 +416,7 @@
                             android:layout_width="2px"
                             android:layout_height="90px"
                             android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
                             />
 
                         <TextView
@@ -420,20 +428,22 @@
                             android:singleLine="true"
                             android:text="@string/fare"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"/>
 
                         <TextView
                             android:id="@+id/driverIRFareValue"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/driverIRFareText"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginTop="5px"
                             android:gravity="center"
                             android:singleLine="true"
                             android:text="Rs 10.00"
                             android:textColor="@color/bg_grey_opaque"
-                            android:textSize="@dimen/end_ride_details_text_size"/>
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
                     </RelativeLayout>
                 </LinearLayout>
 

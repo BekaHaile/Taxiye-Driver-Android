@@ -13,7 +13,11 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.home.EngagementSP;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.utils.AnalyticsTrackers;
+import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 
 
 public class MyApplication extends Application {
@@ -22,6 +26,11 @@ public class MyApplication extends Application {
 
 	private static MyApplication mInstance;
 
+	private EngagementSP engagementSP;
+
+	private MapLatLngBoundsCreator mapLatLngBoundsCreator;
+
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -29,6 +38,7 @@ public class MyApplication extends Application {
 
 		AnalyticsTrackers.initialize(this);
 		AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
+
 	}
 
 	public static synchronized MyApplication getInstance() {
@@ -108,6 +118,47 @@ public class MyApplication extends Application {
 		}
 		// Build and send an Event.
 		t.send(eventBuilder.build());
+	}
+
+	public EngagementSP getEngagementSP() {
+		if(engagementSP == null){
+			engagementSP = new EngagementSP(this);
+		}
+		return engagementSP;
+	}
+
+
+	public MapLatLngBoundsCreator getMapLatLngBoundsCreator() {
+		if(mapLatLngBoundsCreator == null){
+			mapLatLngBoundsCreator = new MapLatLngBoundsCreator();
+		}
+		return mapLatLngBoundsCreator;
+	}
+
+
+	public void writePathLogToFile(final String suffix, final String text){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					for(EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()){
+						Log.writePathLogToFile(engagementSPData.getEngagementId() + suffix, text);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void insertRideDataToEngagements(String lat, String lng, String t) {
+		try {
+			for (EngagementSPData engagementSPData : getEngagementSP().getEngagementSPDatasArray()) {
+				Database2.getInstance(this).insertRideData(lat, lng, t, engagementSPData.getEngagementId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -32,14 +32,14 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	public boolean checkIfUserDataNull() {
 		if (Data.userData == null) {
-			sentToSplash();
+			sendToSplash();
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	public void sentToSplash(){
+	public void sendToSplash(){
 		startActivity(new Intent(this, SplashNewActivity.class));
 		finish();
 		overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

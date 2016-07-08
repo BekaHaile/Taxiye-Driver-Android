@@ -18,7 +18,6 @@ public class SPLabels {
             START_TIME = "start_time",
     		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
-            ENGAGEMENT_ID = "engagement_id",
     DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
 
@@ -45,12 +44,6 @@ public class SPLabels {
 	public static final String CUSTOM_SERVER_URL = "customServer";
 
 	public static final String DRIVER_SCREEN_MODE = "driverScreenMode";
-	public static final String DRIVER_ACCESS_TOKEN = "driverAccessToken";
-	public static final String DRIVER_ENGAGEMENT_ID = "driverEngagementId";
-	public static final String DRIVER_CUSTOMER_ID = "driverCustomerId";
-	public static final String DRIVER_REFERENCE_ID = "driverReferenceId";
-    public static final String DRIVER_C_PICKUP_LATITUDE = "driverCPickupLatitude";
-    public static final String DRIVER_C_PICKUP_LONGITUDE = "driverCPickupLongitude";
     public static final String DRIVER_ARRIVED_DISTANCE = "driverArrivedDistance";
     public static final String NOTIFICATION_UNREAD_COUNT = "notification_unread_count";
     public static final String DOWNLOADED_FILE_ID = "downloadFileId";

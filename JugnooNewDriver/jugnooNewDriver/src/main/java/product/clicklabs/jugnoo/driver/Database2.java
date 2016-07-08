@@ -88,11 +88,12 @@ public class Database2 {                                                        
 	private static final String API_REQUEST_PARAMS = "api_request_params";
 
 
-	private static final String TABLE_RIDE_DATA = "table_ride_data";
+	private static final String TABLE_RIDE_DATA = "table_ride_data1";
 	private static final String RIDE_DATA_I = "i";
 	private static final String RIDE_DATA_LAT = "lat";
 	private static final String RIDE_DATA_LNG = "lng";
 	private static final String RIDE_DATA_T = "t";
+	private static final String RIDE_DATA_ENGAGEMENT_ID = "engagementId";
 
 
 	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
@@ -225,7 +226,8 @@ public class Database2 {                                                        
 				+ RIDE_DATA_I + " INTEGER PRIMARY KEY AUTOINCREMENT, "
 				+ RIDE_DATA_LAT + " TEXT, "
 				+ RIDE_DATA_LNG + " TEXT, "
-				+ RIDE_DATA_T + " TEXT"
+				+ RIDE_DATA_T + " TEXT, "
+				+ RIDE_DATA_ENGAGEMENT_ID + " INTEGER"
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PENALITY_COUNT + " ("
@@ -843,14 +845,15 @@ public class Database2 {                                                        
 	}
 
 
-	public String getRideData() {
+	public String getRideData(int engagementId) {
 		String rideDataStr = "";
 		String template = "i,lat,long,t";
 		String newLine = "\n";
 		boolean hasValues = false;
 		try {
 			String[] columns = new String[]{Database2.RIDE_DATA_I, Database2.RIDE_DATA_LAT, Database2.RIDE_DATA_LNG, Database2.RIDE_DATA_T};
-			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns, null, null, null, null, null);
+			Cursor cursor = database.query(Database2.TABLE_RIDE_DATA, columns,
+					RIDE_DATA_ENGAGEMENT_ID+"="+engagementId, null, null, null, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
 			int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
@@ -880,12 +883,13 @@ public class Database2 {                                                        
 		return rideDataStr;
 	}
 
-	public void insertRideData(String lat, String lng, String t) {
+	public void insertRideData(String lat, String lng, String t, int engagementId) {
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RIDE_DATA_LAT, lat);
 			contentValues.put(Database2.RIDE_DATA_LNG, lng);
 			contentValues.put(Database2.RIDE_DATA_T, t);
+			contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
 			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -902,6 +906,10 @@ public class Database2 {                                                        
 			e.printStackTrace();
 		}
 	}
+
+
+
+
 
 
 	public int getPenalityData(String timediff) {
@@ -1200,6 +1208,11 @@ public class Database2 {                                                        
 			e.printStackTrace();
 		}
 	}
+
+
+
+
+
 
 
 	public int getGpsState() {

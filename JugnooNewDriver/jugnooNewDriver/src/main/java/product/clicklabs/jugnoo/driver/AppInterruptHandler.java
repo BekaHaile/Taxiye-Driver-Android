@@ -22,7 +22,7 @@ public interface AppInterruptHandler {
 
 	public void onChangeStatePushReceived(int flag, String engagementId);
 	
-	public void onCashAddedToWalletByCustomer(int userId, double balance);
+	public void onCashAddedToWalletByCustomer(int engagementId, int userId, double balance);
 
 	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
 	
@@ -35,10 +35,10 @@ public interface AppInterruptHandler {
 
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
 
-	void handleCancelRideSuccess();
-	void handleCancelRideFailure();
+	void handleCancelRideSuccess(String engagementId);
+	void handleCancelRideFailure(String message);
 
-	void markArrivedInterrupt(LatLng latLng);
+	void markArrivedInterrupt(LatLng latLng, int engagementId);
 
 	void driverTimeoutDialogPopup(long timeoutInterwal);
 

@@ -42,11 +42,13 @@ public class DeliveryInfosListFragment extends Fragment {
 
 	private ArrayList<DeliveryInfo> deliveryInfos = new ArrayList<>();
 	private DeliveryStatus deliveryStatusOpened = DeliveryStatus.PENDING;
+	private int engagementId;
 
 	private View rootView;
 	private HomeActivity activity;
 
-	public DeliveryInfosListFragment(DeliveryStatus deliveryStatus) {
+	public DeliveryInfosListFragment(int engagementId, DeliveryStatus deliveryStatus) {
+		this.engagementId = engagementId;
 		deliveryStatusOpened = deliveryStatus;
 	}
 
@@ -113,7 +115,7 @@ public class DeliveryInfosListFragment extends Fragment {
 					@Override
 					public void onClick(int position, DeliveryInfo deliveryInfo) {
 						activity.getTransactionUtils().openMarkDeliveryFragment(activity,
-								activity.getRelativeLayoutContainer(), deliveryInfo.getId());
+								activity.getRelativeLayoutContainer(), engagementId, deliveryInfo.getId());
 					}
 				});
 
@@ -129,7 +131,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		updateList(deliveryStatusOpened);
 
 		try {
-			String message = Data.getCurrentCustomerInfo().getVendorMessage();
+			String message = Data.getCustomerInfo(String.valueOf(engagementId)).getVendorMessage();
 			textViewMerchantMessage.setVisibility(View.GONE);
 			if(!"".equalsIgnoreCase(message)){
 				textViewMerchantMessage.setVisibility(View.VISIBLE);
@@ -147,7 +149,7 @@ public class DeliveryInfosListFragment extends Fragment {
 	private void updateList(DeliveryStatus deliveryStatus){
 		try {
 			deliveryInfos.clear();
-			for(DeliveryInfo deliveryInfo : Data.getCurrentCustomerInfo().getDeliveryInfos()){
+			for(DeliveryInfo deliveryInfo : Data.getCustomerInfo(String.valueOf(engagementId)).getDeliveryInfos()){
 				if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
 						&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
 					deliveryInfos.add(deliveryInfo);

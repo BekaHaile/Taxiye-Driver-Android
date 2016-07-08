@@ -17,18 +17,17 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
+import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
 public class PathUploadReceiver extends BroadcastReceiver {
-
-    private final String TAG = PathUploadReceiver.class.getSimpleName();
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -104,33 +103,43 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
                                 String accessToken = Database2.getInstance(context).getDLDAccessToken();
                                 String locations = locationDataArr.toString();
-                                String engagementId = MeteringService.gpsInstance(context).getEngagementIdFromSP(context);
                                 String serverUrl = Database2.getInstance(context).getDLDServerUrl();
                                 long responseTime = System.currentTimeMillis();
-                                if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(engagementId)) && (!"".equalsIgnoreCase(serverUrl))){
+                                if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(serverUrl))){
                                     HashMap<String, String> nameValuePairs = new HashMap<>();
-                                    nameValuePairs.put("access_token", accessToken);
-                                    nameValuePairs.put("engagement_id", engagementId);
+                                    nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+
+                                    ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication
+                                            .getInstance().getEngagementSP().getEngagementSPDatasArray();
+                                    JSONArray jsonArray = new JSONArray();
+                                    for(EngagementSPData engagementSPData : engagementSPDatas) {
+                                        try {
+                                            if (engagementSPData.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+                                                jsonArray.put(engagementSPData.getEngagementId());
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    nameValuePairs.put("engagement_ids", jsonArray.toString());
                                     nameValuePairs.put("locations", locations);
 
                                     Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
                                     String result = new String(((TypedByteArray)response.getBody()).getBytes());
-                                    Log.e(TAG, "result="+result);
                                         try{
-                                            //flag = 136
                                             JSONObject jObj = new JSONObject(result);
-                                            if(jObj.has("flag")){
-                                                int flag = jObj.getInt("flag");
+                                            if(jObj.has(Constants.KEY_FLAG)){
+                                                int flag = jObj.getInt(Constants.KEY_FLAG);
                                                 if(ApiResponseFlags.RIDE_PATH_RECEIVED.getOrdinal() == flag){
                                                     ArrayList<Long> rowIds = new ArrayList<Long>();
                                                     for(CurrentPathItem currentPathItem : validCurrentPathItems){
                                                         rowIds.add(currentPathItem.id);
-                                                        FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     }
+                                                    FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
                                                     Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
-//                                                    if(HomeActivity.appInterruptHandler != null){
-//                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
-//                                                    }
+                                                    if(HomeActivity.appInterruptHandler != null){
+                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
+                                                    }
                                                 }
                                             }
                                         } catch(Exception e){
@@ -170,7 +179,6 @@ public class PathUploadReceiver extends BroadcastReceiver {
     public void cancelUploadPathAlarm(Context context) {
         Intent intent = new Intent(context, PathUploadReceiver.class);
         intent.setAction(MeteringService.UPOLOAD_PATH);
-        intent.putExtra("engagement_id", MeteringService.gpsInstance(context).getEngagementIdFromSP(context));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, MeteringService.UPLOAD_PATH_PI_REQUEST_CODE,
             intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Activity.ALARM_SERVICE);

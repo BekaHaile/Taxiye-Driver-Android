@@ -10,6 +10,16 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -21,6 +31,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.maps.model.LatLng;
@@ -30,7 +41,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -39,6 +53,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
@@ -605,7 +621,7 @@ public class Utils {
 
 	public static void openNavigationIntent(Context context, LatLng latLng){
 		try {
-			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude+","+latLng.longitude);
+			Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latLng.latitude + "," + latLng.longitude);
 			Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
 			mapIntent.setPackage("com.google.android.apps.maps");
 			context.startActivity(mapIntent);
@@ -614,4 +630,79 @@ public class Utils {
 		}
 	}
 
+
+	public static void setDrawableColor(View view, String color, int defaultColor){
+		try {
+			int intColor = defaultColor;
+			if (color != null && (color.length() == 7 || color.length() == 9)) {
+				intColor = Color.parseColor(color);
+			}
+			Drawable background = view.getBackground();
+			if (background instanceof ShapeDrawable) {
+				((ShapeDrawable) background).getPaint().setColor(intColor);
+			} else if (background instanceof GradientDrawable) {
+				((GradientDrawable) background).setColor(intColor);
+			} else if (background instanceof ColorDrawable) {
+				((ColorDrawable) background).setColor(intColor);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void setTextColor(View view, String color, int defaultColor){
+		try {
+			int intColor = defaultColor;
+			if (color != null && (color.length() == 7 || color.length() == 9)) {
+				intColor = Color.parseColor(color);
+			}
+			if(view instanceof TextView) {
+				((TextView) view).setTextColor(intColor);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Bitmap setBitmapColor(Bitmap sourceBitmap, String color, int defaultColor){
+		int intColor = defaultColor;
+		if (color != null && (color.length() == 7 || color.length() == 9)) {
+			intColor = Color.parseColor(color);
+		}
+		Bitmap resultBitmap = Bitmap.createBitmap(sourceBitmap, 0, 0,
+				sourceBitmap.getWidth() - 1, sourceBitmap.getHeight() - 1);
+		Paint p = new Paint();
+		ColorFilter filter = new LightingColorFilter(intColor, 1);
+		p.setColorFilter(filter);
+
+		Canvas canvas = new Canvas(resultBitmap);
+		canvas.drawBitmap(resultBitmap, 0, 0, p);
+		return resultBitmap;
+	}
+
+
+	public static byte[] gzipCompress(String string) throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
+		GZIPOutputStream gos = new GZIPOutputStream(os);
+		gos.write(string.getBytes());
+		gos.close();
+		byte[] compressed = os.toByteArray();
+		os.close();
+		return compressed;
+	}
+
+	public static String gzipDecompress(byte[] compressed) throws IOException {
+		final int BUFFER_SIZE = 32;
+		ByteArrayInputStream is = new ByteArrayInputStream(compressed);
+		GZIPInputStream gis = new GZIPInputStream(is, BUFFER_SIZE);
+		StringBuilder string = new StringBuilder();
+		byte[] data = new byte[BUFFER_SIZE];
+		int bytesRead;
+		while ((bytesRead = gis.read(data)) != -1) {
+			string.append(new String(data, 0, bytesRead));
+		}
+		gis.close();
+		is.close();
+		return string.toString();
+	}
 }

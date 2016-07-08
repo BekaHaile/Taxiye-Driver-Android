@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
@@ -26,7 +27,6 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
-import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -124,6 +124,13 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 		setCancellationOptions();
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		if(intent.hasExtra(Constants.KEY_KILL_APP)){
+			finish();
+		}
+	}
 
 	private void setCancellationOptions() {
 		try {
@@ -158,7 +165,11 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 	public void onDestroy() {
 		RideCancellationActivity.activityCloser = null;
 		super.onDestroy();
-		ASSL.closeActivity(relative);
+		try {
+			ASSL.closeActivity(relative);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		System.gc();
 	}
 
@@ -191,45 +202,40 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 							JSONObject jObj;
 							jObj = new JSONObject(jsonString);
-
-							if (!jObj.isNull("error")) {
-								String errorMessage = jObj.getString("error");
-								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-									HomeActivity.logoutUser(activity);
-								} else {
-									DialogPopup.alertPopup(activity, "", errorMessage);
-								}
-							} else {
-								try {
-									int flag = jObj.getInt("flag");
-									if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
-										String log = jObj.getString("log");
-										DialogPopup.alertPopup(activity, "", "" + log);
+							int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal());
+							String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (ApiResponseFlags.RIDE_CANCELLED_BY_DRIVER.getOrdinal() == flag) {
+									performBackPressed();
+									try {
+										new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
+												engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+									} catch (Exception e) {
+										e.printStackTrace();
 									}
-								} catch (Exception e) {
-									e.printStackTrace();
+									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
+									nudgeCancelRide(reason);
+									if (HomeActivity.appInterruptHandler != null) {
+										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
+									}
+								} else{
+									performBackPressed();
+									if (HomeActivity.appInterruptHandler != null) {
+										HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
+									}
 								}
-
+							} else{
 								performBackPressed();
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.handleCancelRideSuccess();
+									HomeActivity.appInterruptHandler.handleCancelRideFailure(message);
 								}
 							}
-
-							new DriverTimeoutCheck().timeoutBuffer(activity, 2);
-
-						try {
-							new ApiSendCallLogs().sendCallLogs(RideCancellationActivity.this, Data.userData.accessToken,
-									Data.dEngagementId, Data.getCustomerInfo(engagementId).phoneNumber);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-
-							nudgeCancelRide(reason);
-
 						} catch (Exception exception) {
 							exception.printStackTrace();
-							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							performBackPressed();
+							if (HomeActivity.appInterruptHandler != null) {
+								HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_error));
+							}
 						}
 					}
 
@@ -238,7 +244,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 						DialogPopup.dismissLoadingDialog();
 						performBackPressed();
 						if (HomeActivity.appInterruptHandler != null) {
-							HomeActivity.appInterruptHandler.handleCancelRideFailure();
+							HomeActivity.appInterruptHandler.handleCancelRideFailure(activity.getResources().getString(R.string.server_not_responding));
 						}
 					}
 				});
@@ -255,7 +261,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 			JSONObject map = new JSONObject();
 			map.put(Constants.KEY_CANCELLATION_REASON, reasons);
 			map.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
-			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).userId));
+			map.put(Constants.KEY_CUSTOMER_ID, String.valueOf(Data.getCustomerInfo(engagementId).getUserId()));
 			NudgeClient.trackEvent(this, FlurryEventNames.NUDGE_CANCEL_RIDE, map);
 		} catch(Exception e){
 			e.printStackTrace();

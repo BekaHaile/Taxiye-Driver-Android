@@ -545,6 +545,9 @@
     <string name="present_near_delivery_location">ನೀವು ಡೆಲಿವರಿಯ ಸ್ಥಳದಲ್ಲಿದ್ದಾರೆ ಮಾತ್ರ ಆರ್ಡರ್ ಡೆಲಿವರಿ ಯಾಗುತ್ತದೆ </string>
     <string name="success">ಯಶಸ್ವಿಯಾಗಿದೆ </string>
     <string name="outstanding_amount">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="please_reach_customer_location">Please reach %s\'s location</string>
+    <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="delivery_fare">ಡೆಲಿವರಿ ಶುಲ್ಕ </string>
     <string name="return_subsidy">ರಿಟರ್ನ್ ಸಬ್ಸಿಡಿ</string>
     <string name="return_distance">ಹಿಂದಿರುಗಿಸಿದ ದೂರ </string>

@@ -523,6 +523,9 @@
     <string name="present_near_delivery_location">আপোনাৰ অৰ্দাৰ ডেলিভাৰ মাৰ্ক কৰিবলৈ আপুনি ডেলিভাৰি লকেচনৰ কাষত থাকিব লাগিব ।</string>
     <string name="success">সফল</string>
     <string name="outstanding_amount">আগৰ বাকি এদজাষ্ট কৰা হল</string>
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="please_reach_customer_location">Please reach %s\'s location</string>
+    <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="delivery_fare">ডেলিভাৰিৰ ভাড়া</string>
     <string name="return_subsidy">ৰিটাৰ্ণ  সাবচিদি</string>
     <string name="return_distance">ৰিটাৰ্ণ দূৰত্ব</string>
