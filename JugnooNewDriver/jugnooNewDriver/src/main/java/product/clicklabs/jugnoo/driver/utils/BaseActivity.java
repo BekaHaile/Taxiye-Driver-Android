@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.Locale;
 
+import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
@@ -49,7 +50,10 @@ public class BaseActivity extends Activity {
 					|| this instanceof MultipleAccountsActivity
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
-					|| this instanceof RequestDuplicateRegistrationActivity)) {
+					|| this instanceof RequestDuplicateRegistrationActivity
+					|| this instanceof MultipleAccountsActivity
+					|| this instanceof ChangePhoneBeforeOTPActivity
+		)) {
 			startActivity(new Intent(this, SplashNewActivity.class));
 			finish();
 			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
