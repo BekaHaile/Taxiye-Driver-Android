@@ -641,7 +641,7 @@ public class LoginViaOTP extends BaseActivity {
 	public void showLanguagePreference() {
 
 		if (languagePrefStatus == 1) {
-			selectLanguageLl.setVisibility(View.VISIBLE);
+			selectLanguageLl.setVisibility(View.GONE);
 		} else {
 			selectLanguageLl.setVisibility(View.GONE);
 		}

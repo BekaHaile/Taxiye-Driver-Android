@@ -543,6 +543,7 @@
     <string name="return_subsidy">ରିଟର୍ଣ ସବ୍ସିଡି</string>
     <string name="return_distance">ରିଟର୍ଣ ଦୁରତା</string>
     <string name="delivery_details">ଡେଲିଭେରି  ବିବରଣି</string>
+    <string name="uploading">Uploading</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

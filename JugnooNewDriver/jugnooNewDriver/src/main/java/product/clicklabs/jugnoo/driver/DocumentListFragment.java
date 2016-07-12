@@ -216,7 +216,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
 			}
-			holder.docStatus.setText(docInfo.status);
+			holder.docStatus.setText(getResources().getString(R.string.uploading));
 
 			if (docInfo.status.equalsIgnoreCase("uploaded")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);

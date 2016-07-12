@@ -3452,11 +3452,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						JSONObject jObj = new JSONObject(jsonString);
 						int flag = jObj.optInt(KEY_FLAG, ApiResponseFlags.RIDE_ACCEPTED.getOrdinal());
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 							if (ApiResponseFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 								String log = jObj.getString("log");
 								DialogPopup.alertPopup(activity, "", "" + log);
-							} else{
+							} else {
 								if (map != null) {
 									map.clear();
 									drawHeatMapData(heatMapResponseGlobal);
@@ -3479,6 +3479,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
+			reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal());
 
 
 		} else {
