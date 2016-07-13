@@ -1,334 +1,356 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:padding="18px">
+              android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/topRl"
         android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:layout_marginTop="32px"
-        android:gravity="center">
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:id="@+id/imageViewHorizontal3"
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
             android:layout_centerVertical="true"
-            android:background="@color/black"/>
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
 
         <TextView
-            android:id="@+id/textViewBeforeRide"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/white"
-            android:padding="10px"
+            android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/before_ride"
-            android:textColor="@color/black"
-            android:textSize="40px"
-
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="120px"
-        android:background="@drawable/background_grey_rounded_orange_bordered_4px">
-
-        <TextView
-            android:id="@+id/textViewPickupCharges"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/pickup_charges"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20px"
-            android:textSize="34px"
-
-            />
-
-        <TextView
-            android:id="@+id/textViewPickupChargesValues"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20px"
-            android:text="00"
-            android:textColor="@color/black"
-            android:textSize="34px"
-
-            />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:id="@+id/imageViewHorizontal2"
-            android:layout_centerVertical="true"
-            android:background="@color/black"/>
-
-        <TextView
-            android:id="@+id/textViewInRide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/white"
-            android:padding="10px"
-            android:gravity="center"
-            android:text="@string/in_ride_rate"
-            android:textColor="@color/black"
-            android:textSize="40px"
-
-            />
-
+            android:text="@string/rate_card"
+            android:textColor="@color/white"
+            android:textSize="44px"/>
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="230px"
-        android:background="@drawable/background_grey_rounded_orange_bordered_4px"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="116px"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewBaseFare"
-                android:layout_width="85px"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="70px"
-                android:text="@string/base_fare"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-            <ImageView
-                android:layout_width="2px"
-                android:layout_height="84px"
-                android:layout_marginLeft="70px"
-                android:layout_marginRight="42px"
-                android:id="@+id/imageViewHorizontal5"
-                android:layout_gravity="center_vertical"
-                android:background="@color/grey_dark_less"/>
-
-            <TextView
-                android:id="@+id/textViewDistancePKm"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:text="@string/distance_per_km"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-            <ImageView
-                android:layout_width="2px"
-                android:layout_height="84px"
-                android:layout_marginLeft="45px"
-                android:layout_marginRight="45px"
-                android:id="@+id/imageViewHorizontal4"
-                android:layout_gravity="center_vertical"
-                android:background="@color/grey_dark_less"/>
-
-            <TextView
-                android:id="@+id/textViewTimePKm"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:text="@string/time_per_min"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="670px"
-            android:layout_height="2px"
-            android:id="@+id/imageViewHorizontal6"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/grey_dark_less"/>
-
-        <RelativeLayout
-            android:layout_width="672px"
-            android:layout_height="108px"
-            android:layout_gravity="center"
-            android:background="@color/white">
-
-            <TextView
-                android:id="@+id/textViewBaseFareValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="80px"
-                android:text="00"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-            <TextView
-                android:id="@+id/textViewDistancePKmValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="00"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-
-            <TextView
-                android:id="@+id/textViewTimePKmValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="70px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="00"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-        </RelativeLayout>
-
-    </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="100px"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:id="@+id/imageViewHorizontal1"
-            android:layout_centerVertical="true"
-            android:background="@color/black"/>
-
-        <TextView
-            android:id="@+id/textViewReferral"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:background="@color/white"
-            android:padding="10px"
-            android:gravity="center"
-            android:text="@string/referral_rate"
-            android:textColor="@color/black"
-            android:textSize="40px"
-
-            />
-
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="230px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/background_grey_rounded_orange_bordered_4px">
+        android:padding="18px">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="116px"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/textViewDtoC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="30px"
-                android:text="@string/driver_to_customer"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-            <ImageView
-                android:layout_width="2px"
-                android:layout_height="84px"
-                android:layout_marginLeft="30px"
-                android:layout_marginRight="42px"
-                android:id="@+id/imageViewHorizontal7"
-                android:layout_gravity="center_vertical"
-                android:background="@color/grey_dark_less"/>
-
-            <TextView
-                android:id="@+id/textViewDtoD"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:text="@string/driver_to_driver"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
-
-
-
-        </LinearLayout>
-
-        <ImageView
-            android:layout_width="670px"
-            android:layout_height="2px"
-            android:id="@+id/imageViewHorizontal6"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/grey_dark_less"/>
 
         <RelativeLayout
-            android:layout_width="672px"
-            android:layout_height="108px"
-            android:layout_gravity="center"
-            android:background="@color/white">
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:layout_marginTop="8px"
+            android:gravity="center">
 
-            <TextView
-                android:id="@+id/textViewBaseFareValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/imageViewHorizontal3"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="80px"
-                android:text="00"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+                android:background="@color/black"/>
 
             <TextView
-                android:id="@+id/textViewDistancePKmValue"
+                android:id="@+id/textViewBeforeRide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="00"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/before_ride"
                 android:textColor="@color/black"
-                android:textSize="34px"/>
+                android:textSize="40px"
 
-
-            <TextView
-                android:id="@+id/textViewTimePKmValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="70px"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:text="00"
-                android:textColor="@color/black"
-                android:textSize="34px"/>
+                />
 
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="120px"
+            android:background="@drawable/background_grey_rounded_orange_bordered_4px">
+
+            <TextView
+                android:id="@+id/textViewPickupCharges"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20px"
+                android:text="@string/pickup_charges"
+                android:textColor="@color/black"
+                android:textSize="34px"
+
+                />
+
+            <TextView
+                android:id="@+id/textViewPickupChargesValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20px"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="34px"
+
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal2"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerVertical="true"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/textViewInRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/in_ride_rate"
+                android:textColor="@color/black"
+                android:textSize="40px"
+
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230px"
+            android:background="@drawable/background_grey_rounded_orange_bordered_4px"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="116px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewBaseFare"
+                    android:layout_width="85px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="70px"
+                    android:gravity="center"
+                    android:text="@string/base_fare"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal5"
+                    android:layout_width="2px"
+                    android:layout_height="84px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="70px"
+                    android:layout_marginRight="42px"
+                    android:background="@color/grey_dark_less"/>
+
+                <TextView
+                    android:id="@+id/textViewDistancePKm"
+                    android:layout_width="140px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="@string/distance_per_km"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal4"
+                    android:layout_width="2px"
+                    android:layout_height="84px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="45px"
+                    android:layout_marginRight="45px"
+                    android:background="@color/grey_dark_less"/>
+
+                <TextView
+                    android:id="@+id/textViewTimePKm"
+                    android:layout_width="140px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="@string/time_per_min"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal6"
+                android:layout_width="670px"
+                android:layout_height="2px"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/grey_dark_less"/>
+
+            <RelativeLayout
+                android:layout_width="672px"
+                android:layout_height="108px"
+                android:layout_gravity="center"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textViewBaseFareValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="80px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewDistancePKmValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+
+                <TextView
+                    android:id="@+id/textViewTimePKmValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="70px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imageViewHorizontal1"
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_centerVertical="true"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/textViewReferral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/referral_rate"
+                android:textColor="@color/black"
+                android:textSize="40px"
+
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230px"
+            android:background="@drawable/background_grey_rounded_orange_bordered_4px"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="116px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewDtoC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30px"
+                    android:gravity="center"
+                    android:text="@string/driver_to_customer"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal7"
+                    android:layout_width="2px"
+                    android:layout_height="84px"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="30px"
+                    android:layout_marginRight="57px"
+                    android:background="@color/grey_dark_less"/>
+
+                <TextView
+                    android:id="@+id/textViewDtoD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:text="@string/driver_to_driver"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="670px"
+                android:layout_height="2px"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/grey_dark_less"/>
+
+            <RelativeLayout
+                android:layout_width="672px"
+                android:layout_height="108px"
+                android:layout_gravity="center"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textViewDtoCValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="140px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewDtoDValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="140px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
