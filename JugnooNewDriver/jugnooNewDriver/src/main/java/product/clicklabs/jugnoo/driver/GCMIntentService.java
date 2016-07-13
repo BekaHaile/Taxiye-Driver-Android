@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
@@ -168,7 +169,7 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId) {
+	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId, int referenceId, String userId, int perfectRide) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -223,12 +224,28 @@ public class GCMIntentService extends IntentService {
 				builder.addAction(R.drawable.cross_30_px, "Cancel", pendingIntentCancel);
 
 			} else {
-				Intent intentAccKill = new Intent(context, SplashNewActivity.class);
-				intentAccKill.putExtra("type", "accept");
-				intentAccKill.putExtra("engagement_id", engagementId);
-				intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-				PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
-				builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+
+				if(perfectRide == 1) {
+					Intent intentAccKill = new Intent(context, SplashNewActivity.class);
+					intentAccKill.putExtra("type", "accept");
+					intentAccKill.putExtra("engagement_id", engagementId);
+					intentAccKill.putExtra("referrence_id", referenceId);
+					intentAccKill.putExtra("user_id", userId);
+					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					PendingIntent pendingIntentAccept = PendingIntent.getActivity(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+					builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+				} else {
+					Intent intentAccKill = new Intent(context, ApiAcceptRideServices.class);
+					intentAccKill.putExtra("type", "accept");
+					intentAccKill.putExtra("engagement_id", engagementId);
+					intentAccKill.putExtra("referrence_id", referenceId);
+					intentAccKill.putExtra("user_id", userId);
+					Log.i("accceptRideGCM Logs", ""+ engagementId + " " + userId + " " + referenceId);
+					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+					PendingIntent pendingIntentAccept = PendingIntent.getService(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
+					builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
+				}
+
 
 				Intent intentCancKill = new Intent(context, SplashNewActivity.class);
 				intentCancKill.putExtra("type", "cancel");
@@ -368,6 +385,7 @@ public class GCMIntentService extends IntentService {
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 									String userName = jObj.optString(Constants.KEY_NAME, "");
+									int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 
 									String startTimeLocal = DateOperations.utcToLocal(startTime);
 									String endTime = jObj.optString(Constants.KEY_END_TIME, "");
@@ -395,7 +413,6 @@ public class GCMIntentService extends IntentService {
 									startTime = DateOperations.getDelayMillisAfterCurrentTime(requestTimeOutMillis);
 
 									if (HomeActivity.appInterruptHandler != null) {
-										int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
@@ -410,12 +427,12 @@ public class GCMIntentService extends IntentService {
 										}
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId, referenceId, userId, perfectRide);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId, referenceId, userId, perfectRide);
 										startRing(this);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 

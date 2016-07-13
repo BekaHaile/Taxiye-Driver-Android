@@ -147,6 +147,10 @@ public interface APIServices {
 							   Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/accept_a_request")
+	Response driverAcceptRideSync(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/end_ride")
 	void autoEndRideAPIRetro(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
