@@ -564,6 +564,20 @@
     <string name="return_distance">ಹಿಂದಿರುಗಿಸಿದ ದೂರ </string>
     <string name="delivery_details">ಡೆಲಿವರಿ ವಿವರಗಳು</string>
     <string name="uploading">Uploading</string>
+    <string name="auto_number">Auto number</string>
+    <string name="Choose_one">Choose one:</string>
+    <string name="is_rented">I have a rented auto.</string>
+    <string name="is_owned">I own my auto.</string>
+
+    <string name="Documents">Documents</string>
+    <string name="Document_type">Document type</string>
+    <string name="Requirement">Requirement</string>
+    <string name="add_image">ADD IMAGE</string>
+    <string name="Submit">Submit</string>
+    <string name="owner">Owner</string>
+    <string name="approval_pending">APPROVAL PENDING</string>
+
+
 
 
     <string-array name="CountryCodes" >

@@ -197,7 +197,7 @@ public interface APIServices {
 	Response sendRequestAckToServerRetro(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
-	@POST("/login_using_email")
+	@POST("/driver/login")
 	void sendLoginValuesRetro(@FieldMap Map<String, String> params,
 							  Callback<RegisterScreenResponse> callback);
 

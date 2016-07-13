@@ -558,10 +558,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
 //					selected_photo.setImageBitmap(bitmap);
 
-					File f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
-					docs.get(index).isExpended = true;
-					driverDocumentListAdapter.notifyDataSetChanged();
-					uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo, image);
+					File f = null;
+					if(bitmap != null) {
+						f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
+						docs.get(index).isExpended = true;
+						driverDocumentListAdapter.notifyDataSetChanged();
+						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo, image);
+					}
 
 
 				}

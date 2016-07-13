@@ -554,7 +554,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	public void performBackPressed() {
 		if (intentFromRegister) {
-			Intent intent = new Intent(OTPConfirmScreen.this, RegisterScreen.class);
+			Intent intent = new Intent(OTPConfirmScreen.this, SplashNewActivity.class);
 			intent.putExtra("back_from_otp", true);
 			startActivity(intent);
 		} else if (phoneNumberToVerify!= null){
