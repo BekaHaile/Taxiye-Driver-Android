@@ -775,12 +775,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				String text = jupdatePopupInfo.getString("text");
 				int currentVersion = jupdatePopupInfo.getInt("cur_version");
 				int isForce = jupdatePopupInfo.getInt("is_force");
+				String link = jupdatePopupInfo.optString(Constants.KEY_LINK, "");
 				
 				if(Data.appVersion >= currentVersion){
 					return false;
 				}
 				else{
-					SplashNewActivity.appUpdatePopup(title, text, isForce, activity);
+					SplashNewActivity.appUpdatePopup(title, text, isForce, activity, link);
 					if(isForce == 1){
 						return true;
 					}
@@ -802,7 +803,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	/**
 	 * Displays appUpdatePopup dialog
 	 */
-	public static void appUpdatePopup(String title, String message, final int isForced, final Activity activity) {
+	public static void appUpdatePopup(String title, String message, final int isForced, final Activity activity,
+									  final String link) {
 		try {
 
 			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
@@ -849,7 +851,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					loginDataFetched = false;
 					dialog.dismiss();
 					Intent intent = new Intent(Intent.ACTION_VIEW);
-					intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
+					if("".equalsIgnoreCase(link)) {
+						intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
+					} else {
+						intent.setData(Uri.parse(link));
+					}
 					activity.startActivity(intent);
 					activity.finish();
 				}

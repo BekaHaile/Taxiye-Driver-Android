@@ -353,9 +353,7 @@ public class GCMIntentService extends IntentService {
 									entertainRequest = true;
 								}
 								else if(0 == perfectRide && 0 == isPooled
-										&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode
-										|| DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() == driverScreenMode
-										|| DriverScreenMode.D_RIDE_END.getOrdinal() == driverScreenMode)
+										&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
 									entertainRequest = true;
 								}
@@ -405,7 +403,7 @@ public class GCMIntentService extends IntentService {
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this);
-										flurryEventForRequestPush(engagementId);
+										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 											startTimeoutAlarm(this);
@@ -419,7 +417,7 @@ public class GCMIntentService extends IntentService {
 									} else {
 										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId);
 										startRing(this);
-										flurryEventForRequestPush(engagementId);
+										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
 											startTimeoutAlarm(this);
@@ -467,17 +465,16 @@ public class GCMIntentService extends IntentService {
 								stopRing(false);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
-								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
 								if (ignoreRideRequest == 1) {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
 
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
+								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, true);
@@ -486,10 +483,9 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 
-								Prefs.with(this).save(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
+								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
 									notificationManagerResume(this, logMessage, false);
@@ -528,9 +524,10 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.UPDATE_CUSTOMER_BALANCE.getOrdinal() == flag) {
 								int userId = jObj.getInt("user_id");
+								int engagementId = jObj.optInt(Constants.KEY_ENGAGEMENT_ID, 0);
 								double balance = jObj.getDouble("balance");
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(userId, balance);
+									HomeActivity.appInterruptHandler.onCashAddedToWalletByCustomer(engagementId, userId, balance);
 								}
 							} else if (PushFlags.UPDATE_HEAT_MAP.getOrdinal() == flag) {
 								if (HomeActivity.appInterruptHandler != null) {
@@ -1070,12 +1067,11 @@ public class GCMIntentService extends IntentService {
 
 
 
-	private void flurryEventForRequestPush(String engagementId) {
-		int mode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE, DriverScreenMode.D_INITIAL.getOrdinal());
-		if (DriverScreenMode.D_INITIAL.getOrdinal() != mode
-				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != mode
-				&& DriverScreenMode.D_RIDE_END.getOrdinal() != mode) {
-			FlurryEventLogger.logStartRing(this, mode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
+	private void flurryEventForRequestPush(String engagementId, int driverScreenMode) {
+		if (DriverScreenMode.D_INITIAL.getOrdinal() != driverScreenMode
+				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != driverScreenMode
+				&& DriverScreenMode.D_RIDE_END.getOrdinal() != driverScreenMode) {
+			FlurryEventLogger.logStartRing(this, driverScreenMode, Utils.getAppVersion(this), engagementId, FlurryEventNames.START_RING_INITIATED);
 		}
 	}
 

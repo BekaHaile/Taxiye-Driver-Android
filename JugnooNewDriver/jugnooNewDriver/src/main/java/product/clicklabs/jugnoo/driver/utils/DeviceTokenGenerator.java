@@ -6,7 +6,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.iid.InstanceID;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.SplashLogin;
@@ -67,7 +66,6 @@ public class DeviceTokenGenerator {
 					} catch (Exception e) {
 						e.printStackTrace();
 					} finally {
-
 						deviceTokenReceiver.deviceTokenReceived(regId);
 					}
 				}

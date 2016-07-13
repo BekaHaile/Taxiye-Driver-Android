@@ -39,7 +39,7 @@
             android:layout_width="410px"
             android:layout_height="99px"
             android:layout_marginLeft="25px"
-            android:background="@drawable/new_orange_btn_selector_rounded"
+            android:background="@drawable/new_orange_btn_normal_rounded"
             android:text="@string/accept_ride"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"/>

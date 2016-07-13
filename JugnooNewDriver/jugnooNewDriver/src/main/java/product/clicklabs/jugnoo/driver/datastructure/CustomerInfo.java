@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -36,9 +35,6 @@ public class CustomerInfo {
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
 	public int waitingChargesApplicable;
-	public double poolFare;
-	public long poolTime;
-	public double poolDistance;
 
 	private int status;
 	private String address, startTime;
@@ -50,6 +46,9 @@ public class CustomerInfo {
 	private int totalDeliveries;
 	private double estimatedFare;
 	private String vendorMessage;
+
+	private String color;
+	private PoolFare poolFare;
 
 
 
@@ -315,37 +314,6 @@ public class CustomerInfo {
 		this.isPooled = isPooled;
 	}
 
-	public double getPoolFare() {
-		return poolFare;
-	}
-
-	public void setPoolFare(double poolFare) {
-		this.poolFare = poolFare;
-	}
-
-	public long getPoolTime() {
-		return poolTime;
-	}
-
-	public void setPoolTime(long poolTime) {
-		this.poolTime = poolTime;
-	}
-
-	public double getPoolDistance() {
-		return poolDistance;
-	}
-
-	public void setPoolDistance(double poolDistance) {
-		this.poolDistance = poolDistance;
-	}
-
-
-	public void setCustomerFareValues(double poolFare, long poolTime, double poolDistance){
-		this.poolFare = poolFare;
-		this.poolTime = poolTime;
-		this.poolDistance = poolDistance;
-	}
-
 	public int getIsDelivery() {
 		return isDelivery;
 	}
@@ -390,16 +358,19 @@ public class CustomerInfo {
 		this.vendorMessage = vendorMessage;
 	}
 
-
 	public double getTotalDistance(double distance, Context context){
-		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if(jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				return distance - Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
+		if(getIsPooled() == 1 && getPoolFare() != null){
+			return getPoolFare().getDistance();
+		} else {
+			try {
+				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+				if (jObj.has(String.valueOf(getEngagementId()))) {
+					JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+					return distance - Double.parseDouble(jc.optString(Constants.KEY_DISTANCE, "0"));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		return distance;
 	}
@@ -411,40 +382,59 @@ public class CustomerInfo {
 				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
 				return haversineDistance - Double.parseDouble(jc.optString(Constants.KEY_HAVERSINE_DISTANCE, "0"));
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return haversineDistance;
 	}
 
-
-
 	public long getElapsedRideTime(Context context){
 		long startTime = System.currentTimeMillis();
-		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if(jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				startTime = Long.parseLong(jc.optString(Constants.KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis())));
+		if(getIsPooled() == 1 && getPoolFare() != null){
+			return getPoolFare().getRideTime();
+		} else {
+			try {
+				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+				if (jObj.has(String.valueOf(getEngagementId()))) {
+					JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+					startTime = Long.parseLong(jc.optString(Constants.KEY_RIDE_TIME, String.valueOf(System.currentTimeMillis())));
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
 		}
 		return System.currentTimeMillis() - startTime;
 	}
 
 
-	public long getTotalWaitTime(long waitTime, Context context){
+	public long getTotalWaitTime(long waitTime, Context context) {
 		try {
 			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if(jObj.has(String.valueOf(getEngagementId()))) {
+			if (jObj.has(String.valueOf(getEngagementId()))) {
 				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
 				return waitTime - Long.parseLong(jc.optString(Constants.KEY_WAIT_TIME, "0"));
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return waitTime;
 	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public PoolFare getPoolFare() {
+		return poolFare;
+	}
+
+	public void setPoolFare(PoolFare poolFare) {
+		this.poolFare = poolFare;
+	}
+
 
 }

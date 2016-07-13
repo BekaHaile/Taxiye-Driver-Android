@@ -27,7 +27,6 @@ import product.clicklabs.jugnoo.driver.datastructure.LatLngPair;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -68,7 +67,6 @@ public class GpsDistanceCalculator {
 
 	private ArrayList<LatLngPair> deltaLatLngPairs = new ArrayList<LatLngPair>();
 	private ArrayList<DirectionsAsyncTask> directionsAsyncTasks = new ArrayList<DirectionsAsyncTask>();
-
 
 
 
@@ -126,20 +124,7 @@ public class GpsDistanceCalculator {
 		GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 				getWaitTimeFromSP(context), lastGPSLocation,
 				lastFusedLocation, totalHaversineDistance, true);
-		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at start =" + totalDistance);
-	}
-
-	public void resume() {
-		if (isMeteringStateActive(context)) {
-			connectGPSListener(context);
-		}
-	}
-
-	public void pause() {
-		if (isMeteringStateActive(context)) {
-			saveData(context, lastGPSLocation, lastLocationTime);
-			disconnectGPSListener();
-		}
+		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at start =" + totalDistance);
 	}
 
 
@@ -167,7 +152,7 @@ public class GpsDistanceCalculator {
 		instance.speedCounter = 0;
 		instance.lastWaitWindowTime = System.currentTimeMillis();
 
-		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "totalDistance at stop =" + totalDistance);
+		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at stop =" + totalDistance);
 	}
 
 
@@ -358,8 +343,8 @@ public class GpsDistanceCalculator {
 					calculateWaitTime(speedMPS);
 					addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
-						Database2.getInstance(context).insertRideData("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
-						Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "first time lastLatLng =" + lastLatLng);
+						MyApplication.getInstance().insertRideDataToEngagements("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
+						MyApplication.getInstance().writePathLogToFile("m", "first time lastLatLng =" + lastLatLng);
 					}
 				} else {
 					lastLocationTime = System.currentTimeMillis();
@@ -369,7 +354,7 @@ public class GpsDistanceCalculator {
 			} else {
 				reconnectGPSHandler();
 			}
-			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "speedMPS=" + speedMPS + " currentLatLng =" + currentLatLng);
+			MyApplication.getInstance().writePathLogToFile("m", "speedMPS=" + speedMPS + " currentLatLng =" + currentLatLng);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -449,9 +434,9 @@ public class GpsDistanceCalculator {
 
 					lastLocationTime = System.currentTimeMillis();
 
-					Database2.getInstance(context).insertRideData("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
+					MyApplication.getInstance().insertRideDataToEngagements("" + currentLatLng.latitude, "" + currentLatLng.longitude, "" + System.currentTimeMillis());
 
-					Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+					MyApplication.getInstance().writePathLogToFile("m",
 							DateOperations.getTimeStampFromMillis(currentLocation.getTime()) + ","
 									+ currentLatLng.latitude + ","
 									+ currentLatLng.longitude + ","
@@ -586,7 +571,7 @@ public class GpsDistanceCalculator {
 
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(polylineOptions);
 				}
-				Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "gapi case successful");
+				MyApplication.getInstance().writePathLogToFile("m", "gapi case successful");
 			} else {
 				throw new Exception();
 			}
@@ -604,7 +589,7 @@ public class GpsDistanceCalculator {
 				}
 
 			}
-			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m", "gapi case unsuccessful");
+			MyApplication.getInstance().writePathLogToFile("m", "gapi case unsuccessful");
 		}
 	}
 
@@ -734,30 +719,23 @@ public class GpsDistanceCalculator {
 	}
 
 	public void updateDistanceInCaseOfReset(double distance){
-		Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
-				"updateDistanceInCaseOfReset func distance from server:"+distance
-						+" & totalDistance:"+totalDistance);
+		MyApplication.getInstance().writePathLogToFile("m",
+				"updateDistanceInCaseOfReset func distance from server:" + distance
+						+ " & totalDistance:" + totalDistance);
 		if(distance > totalDistance + DISTANCE_RESET_TOLERANCE){
 			totalDistance = totalDistance + distance;
 			saveTotalDistanceToSP(context, totalDistance);
-			Log.writePathLogToFile(getEngagementIdFromSP(context) + "m",
+			MyApplication.getInstance().writePathLogToFile("m",
 					"updateDistanceInCaseOfReset func totalDistance updated:"+ totalDistance);
 		}
 	}
 
-	public static synchronized void saveEngagementIdToSP(Context context, String engagementId) {
-		Prefs.with(context).save(SPLabels.ENGAGEMENT_ID, engagementId);
-	}
 	public static synchronized void saveDriverScreenModeMetering(Context context, DriverScreenMode driverScreenMode) {
 		Prefs.with(context).save(SPLabels.DRIVER_SCREEN_MODE_METERING, driverScreenMode.getOrdinal());
 	}
 
-	public static synchronized String getEngagementIdFromSP(Context context) {
-		return Prefs.with(context).getString(SPLabels.ENGAGEMENT_ID, "0");
-	}
 	public static synchronized int getDriverScreenModeSP(Context context) {
 		int state = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE_METERING, DriverScreenMode.D_IN_RIDE.getOrdinal());
-		Log.i(TAG, "getDriverScreenModeSP state="+state);
 		return state;
 	}
 
@@ -785,5 +763,6 @@ public class GpsDistanceCalculator {
 			gsmLocation = location;
 		}
 	};
+	
 
 }

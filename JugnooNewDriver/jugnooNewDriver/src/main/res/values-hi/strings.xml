@@ -575,6 +575,9 @@
 	<string name="present_near_delivery_location">इस डिलीवरी ऑर्डर को चिन्हित करने के लिए आपको डिलीवरी स्थान पर होना अनिवार्य है </string>
 	<string name="success">सफल हुआ </string>
 	<string name="outstanding_amount">बकाया समायोजित किया गया </string>
+	<string name="please_drop_customer">Please drop %s</string>
+	<string name="please_reach_customer_location">Please reach %s\'s location</string>
+	<string name="please_start_customer_ride">Please start %s\'s ride</string>
 
 	<string name="delivery_fare">डिलीवरी किराया</string>
 	<string name="return_subsidy">रिटर्न सब्सिडी </string>

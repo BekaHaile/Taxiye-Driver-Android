@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
 import product.clicklabs.jugnoo.driver.datastructure.PaymentMode;
+import product.clicklabs.jugnoo.driver.datastructure.PoolFare;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -422,10 +423,6 @@ public class JSONParser implements Constants {
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);
 							int waitingChargesApplicable = jObjCustomer.optInt("waiting_charges_applicable", 0);
 
-							double poolDistance = jObjCustomer.optDouble(KEY_POOL_DISTANCE, 0);
-							double poolFare =jObjCustomer.optDouble(KEY_POOL_FARE, 0);
-							long poolTime = jObjCustomer.optInt(KEY_POOL_TIME, 0);
-
 							int cachedApiEnabled = jObjCustomer.optInt(KEY_CACHED_API_ENABLED, 0);
 							int isPooled = jObjCustomer.optInt(KEY_IS_POOLED, 0);
 
@@ -440,32 +437,34 @@ public class JSONParser implements Constants {
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage);
 
-							customerInfo.setCustomerFareValues(poolFare, poolTime, poolDistance);
-
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
 							}
-
-							Data.addCustomerInfo(customerInfo);
 
 							try {
 								if (jObjCustomer.has(KEY_OP_DROP_LATITUDE) && jObjCustomer.has(KEY_OP_DROP_LONGITUDE)) {
 									double dropLatitude = jObjCustomer.getDouble(KEY_OP_DROP_LATITUDE);
 									double dropLongitude = jObjCustomer.getDouble(KEY_OP_DROP_LONGITUDE);
 									if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
-										(Data.getCustomerInfo(engagementId)).dropLatLng = null;
+										customerInfo.setDropLatLng(null);
 									} else {
-										(Data.getCustomerInfo(engagementId)).dropLatLng = new LatLng(dropLatitude, dropLongitude);
+										customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 									}
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
+
+							parsePoolFare(jObjCustomer, customerInfo);
+
+							Data.addCustomerInfo(customerInfo);
+
+
 						}
 					}
 
 					try {
-						Log.writePathLogToFile(Data.getCurrentEngagementId() + "accept", "JSONPARSER  = " + jObject1);
+						MyApplication.getInstance().writePathLogToFile("accept", "JSONPARSER  = " + jObject1);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -711,6 +710,22 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 		return deliveryReturnOptions;
+	}
+
+
+	public static void parsePoolFare(JSONObject jObjCustomer, CustomerInfo customerInfo){
+		try {
+			if(jObjCustomer.has(KEY_POOL_FARE)){
+				JSONObject jPoolFare = jObjCustomer.optJSONObject(KEY_POOL_FARE);
+				double distance = jPoolFare.optDouble(KEY_DISTANCE) * 1000d;
+				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
+				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
+				double fare = jPoolFare.optDouble(KEY_FARE);
+				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

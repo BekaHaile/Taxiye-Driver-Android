@@ -60,8 +60,6 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		setContentView(R.layout.activity_language);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
-//		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-//		ASSL.DoMagic(main);
 
 		new ASSL(LanguagePrefrencesActivity.this, relative, 1134, 720, false);
 

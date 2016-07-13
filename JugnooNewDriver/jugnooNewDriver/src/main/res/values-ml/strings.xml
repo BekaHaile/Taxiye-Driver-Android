@@ -529,6 +529,9 @@
     <string name="return_subsidy">Return Subsidy</string>
     <string name="return_distance">Return Distance</string>
     <string name="delivery_details">DELIVERY DETAILS</string>
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="please_reach_customer_location">Please reach %s\'s location</string>
+    <string name="please_start_customer_ride">Please start %s\'s ride</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

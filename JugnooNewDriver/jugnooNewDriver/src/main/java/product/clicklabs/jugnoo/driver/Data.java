@@ -313,6 +313,7 @@ public class Data {
 		if(assignedCustomerInfos != null) {
 			for(int i=0; i<assignedCustomerInfos.size(); i++){
 				if(assignedCustomerInfos.get(i).getStatus() == status){
+					MyApplication.getInstance().getEngagementSP().removeCustomer(assignedCustomerInfos.get(i).getEngagementId());
 					assignedCustomerInfos.remove(i);
 					i--;
 				}
@@ -328,6 +329,7 @@ public class Data {
 			for(int i=0; i<assignedCustomerInfos.size(); i++){
 				if(assignedCustomerInfos.get(i).getStatus() == status
 						&& assignedCustomerInfos.get(i).getIsDelivery() == isDelivery){
+					MyApplication.getInstance().getEngagementSP().removeCustomer(assignedCustomerInfos.get(i).getEngagementId());
 					assignedCustomerInfos.remove(i);
 					i--;
 				}
@@ -362,6 +364,7 @@ public class Data {
 			if(HomeActivity.appInterruptHandler != null){
 				HomeActivity.appInterruptHandler.updateCustomers();
 			}
+			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
 	}
 
@@ -374,6 +377,7 @@ public class Data {
 					if (HomeActivity.appInterruptHandler != null) {
 						HomeActivity.appInterruptHandler.updateCustomers();
 					}
+					MyApplication.getInstance().getEngagementSP().removeCustomer(engagementId);
 					return true;
 				}
 			}
@@ -385,6 +389,7 @@ public class Data {
 		CustomerInfo customerInfo = getCustomerInfo(engagementId);
 		if(customerInfo != null){
 			customerInfo.setStatus(getEngagementStatusFromDriverScreenMode(driverScreenMode).getOrdinal());
+			MyApplication.getInstance().getEngagementSP().addCustomer(customerInfo);
 		}
 	}
 
