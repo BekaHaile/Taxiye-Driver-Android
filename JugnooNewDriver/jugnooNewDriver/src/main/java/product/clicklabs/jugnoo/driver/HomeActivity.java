@@ -599,7 +599,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverWaitRl.setVisibility(View.GONE);
 
 			driverIRFareRl = (RelativeLayout) findViewById(R.id.driverIRFareRl);
-			driverIRFareRl.setVisibility(View.VISIBLE);
+			driverIRFareRl.setVisibility(View.GONE);
 
 			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
 			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -2504,7 +2504,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1){
 						driverIRFareRl.setVisibility(View.GONE);
 					} else{
-						driverIRFareRl.setVisibility(View.VISIBLE);
+						driverIRFareRl.setVisibility(View.GONE);
 					}
 					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
