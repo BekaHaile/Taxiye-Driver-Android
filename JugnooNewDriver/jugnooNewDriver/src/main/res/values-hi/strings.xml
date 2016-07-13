@@ -583,6 +583,12 @@
 	<string name="Messages">Messages</string>
 	<string name="Hints">Hints</string>
 	<string name="tricks">Tricks To Earn</string>
+	<string name="before_ride">BEFORE RIDE</string>
+	<string name="in_ride_rate">IN RIDE</string>
+	<string name="referral_rate">REFERRAL</string>
+	<string name="pickup_charges">Pickup Charges (per Km)</string>
+	<string name="base_fare">Base Fare</string>
+	<string name="time_per_min">Time (per min)</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

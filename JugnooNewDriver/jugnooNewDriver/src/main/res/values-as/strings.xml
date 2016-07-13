@@ -527,6 +527,12 @@
     <string name="return_subsidy">ৰিটাৰ্ণ  সাবচিদি</string>
     <string name="return_distance">ৰিটাৰ্ণ দূৰত্ব</string>
     <string name="delivery_details">ডেলিভাৰি বিৱৰন</string>
+    <string name="before_ride">BEFORE RIDE</string>
+    <string name="in_ride_rate">IN RIDE</string>
+    <string name="referral_rate">REFERRAL</string>
+    <string name="pickup_charges">Pickup Charges (per Km)</string>
+    <string name="base_fare">Base Fare</string>
+    <string name="time_per_min">Time (per min)</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
