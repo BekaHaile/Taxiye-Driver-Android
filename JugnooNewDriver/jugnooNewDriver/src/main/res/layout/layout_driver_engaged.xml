@@ -263,13 +263,13 @@
                     android:id="@+id/textViewRideInstructionsInRide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10px"
+                    android:layout_marginBottom="0px"
                     android:gravity="center"
                     android:padding="15px"
                     android:text="hello"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/text_size_30"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     />
 
 
@@ -277,7 +277,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayoutRideValues"
                     android:layout_width="match_parent"
-                    android:layout_height="150px"
+                    android:layout_height="145px"
                     android:layout_marginBottom="-14px"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -450,8 +450,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="28px"
-                    android:layout_marginBottom="28px"
+                    android:layout_marginTop="18px"
+                    android:layout_marginBottom="18px"
                     >
 
                     <Button
