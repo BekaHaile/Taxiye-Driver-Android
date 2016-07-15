@@ -1578,7 +1578,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String.valueOf(customerInfo.engagementId),
 						String.valueOf(customerInfo.referenceId),
 						myLocation.getLatitude(),
-						myLocation.getLongitude());
+						myLocation.getLongitude(), 1);
 			}
 			else {
 				if (Utils.getBatteryPercentage(this) >= 20) {

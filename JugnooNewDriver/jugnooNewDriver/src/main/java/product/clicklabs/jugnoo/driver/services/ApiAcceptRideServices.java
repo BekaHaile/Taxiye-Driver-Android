@@ -66,7 +66,6 @@ public class ApiAcceptRideServices extends IntentService {
 					params.put("device_name", Utils.getDeviceName());
 					params.put("imei", DeviceUniqueID.getUniqueId(ApiAcceptRideServices.this));
 					params.put("app_version", "" + Utils.getAppVersion(ApiAcceptRideServices.this));
-					params.put("is_accepting_perfect_ride", "1");
 
 					if (!"".equalsIgnoreCase(String.valueOf(referenceId))) {
 						params.put("reference_id", String.valueOf(referenceId));
