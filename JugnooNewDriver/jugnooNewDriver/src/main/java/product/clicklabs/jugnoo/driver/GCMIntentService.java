@@ -169,7 +169,9 @@ public class GCMIntentService extends IntentService {
 
 
 	@SuppressWarnings("deprecation")
-	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId, int referenceId, String userId, int perfectRide) {
+	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId,
+													   int referenceId, String userId, int perfectRide,
+													   int isPooled, int isDelivery) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -239,6 +241,8 @@ public class GCMIntentService extends IntentService {
 					intentAccKill.putExtra("type", "accept");
 					intentAccKill.putExtra("engagement_id", engagementId);
 					intentAccKill.putExtra("referrence_id", referenceId);
+					intentAccKill.putExtra(Constants.KEY_IS_POOLED, isPooled);
+					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY, isDelivery);
 					intentAccKill.putExtra("user_id", userId);
 					Log.i("accceptRideGCM Logs", ""+ engagementId + " " + userId + " " + referenceId);
 					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -427,12 +431,16 @@ public class GCMIntentService extends IntentService {
 										}
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId, referenceId, userId, perfectRide);
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+												referenceId, userId, perfectRide,
+												isPooled, isDelivery);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId, referenceId, userId, perfectRide);
+										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+												referenceId, userId, perfectRide,
+												isPooled, isDelivery);
 										startRing(this);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 

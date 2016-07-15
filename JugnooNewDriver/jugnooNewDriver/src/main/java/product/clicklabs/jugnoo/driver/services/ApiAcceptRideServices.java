@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.location.Location;
 import org.json.JSONObject;
 import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -36,9 +38,12 @@ public class ApiAcceptRideServices extends IntentService {
 			String engagementId = intent.getStringExtra("engagement_id");
 			String customerId = intent.getStringExtra("user_id");
 			int referenceId = intent.getIntExtra("referrence_id", 0);
+			int isPooled = intent.getIntExtra(Constants.KEY_IS_POOLED, 0);
+			int isDelivery = intent.getIntExtra(Constants.KEY_IS_DELIVERY, 0);
 			Log.i("accceptRide Logs",""+location+" "+accessToken+" "+engagementId+" "+customerId+" "+referenceId);
 			if (!"".equalsIgnoreCase(accessToken)) {
-				acceptRide(accessToken, customerId, engagementId, referenceId, location.getLatitude(), location.getLongitude());
+				acceptRide(accessToken, customerId, engagementId, referenceId, location.getLatitude(), location.getLongitude(),
+						isPooled, isDelivery);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,7 +52,8 @@ public class ApiAcceptRideServices extends IntentService {
 	}
 
 	public void acceptRide(String accessToken, final String customerId, final String engagementId,
-						   final int referenceId, final double latitude, final double longitude) {
+						   final int referenceId, final double latitude, final double longitude,
+						   final int isPooled, final int isDelivery) {
 		try {
 			if (AppStatus.getInstance(ApiAcceptRideServices.this).isOnline(ApiAcceptRideServices.this)) {
 				if (Utils.getBatteryPercentage(ApiAcceptRideServices.this) >= 20) {
@@ -57,22 +63,22 @@ public class ApiAcceptRideServices extends IntentService {
 
 					HashMap<String, String> params = new HashMap<String, String>();
 
-					params.put("access_token", accessToken);
-					params.put("customer_id", customerId);
-					params.put("engagement_id", engagementId);
-					params.put("latitude", String.valueOf(latitude));
-					params.put("longitude", String.valueOf(longitude));
+					params.put(Constants.KEY_ACCESS_TOKEN, accessToken);
+					params.put(Constants.KEY_CUSTOMER_ID, customerId);
+					params.put(Constants.KEY_ENGAGEMENT_ID, engagementId);
+					params.put(Constants.KEY_LATITUDE, String.valueOf(latitude));
+					params.put(Constants.KEY_LONGITUDE, String.valueOf(longitude));
 
-					params.put("device_name", Utils.getDeviceName());
-					params.put("imei", DeviceUniqueID.getUniqueId(ApiAcceptRideServices.this));
-					params.put("app_version", "" + Utils.getAppVersion(ApiAcceptRideServices.this));
+					params.put(Constants.KEY_DEVICE_NAME, Utils.getDeviceName());
+					params.put(Constants.KEY_IMEI, DeviceUniqueID.getUniqueId(ApiAcceptRideServices.this));
+					params.put(Constants.KEY_APP_VERSION, "" + Utils.getAppVersion(ApiAcceptRideServices.this));
 
-					if (!"".equalsIgnoreCase(String.valueOf(referenceId))) {
-						params.put("reference_id", String.valueOf(referenceId));
-					}
+					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(referenceId));
+					params.put(Constants.KEY_IS_POOLED, String.valueOf(isPooled));
+					params.put(Constants.KEY_IS_DELIVERY, String.valueOf(isDelivery));
+
 					Log.i("request", String.valueOf(params));
 					Response response = RestClient.getApiServices().driverAcceptRideSync(params);
-					Log.i("acceptRideResp", String.valueOf(response));
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						Log.i("acceptRideRespString", jsonString);
