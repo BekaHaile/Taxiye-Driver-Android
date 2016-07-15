@@ -75,7 +75,7 @@
 
             <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewCall"
-                android:layout_width="150px"
+                android:layout_width="130px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="75px"
