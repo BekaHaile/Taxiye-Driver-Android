@@ -512,17 +512,17 @@
     <string name="all_orders_have_been_delivered">সকলো অৰ্দাৰ ডেলিভাৰ হৈ গল</string>
     <string name="no_deliveries_pending">কনো ডেলিভাৰি পেনদিং নাই</string>
     <string name="no_deliveries_completed">কনো ডেলিভাৰি সমাপ্ত হোৱা নাই</string>
-    <string name="vehicle_status">Vehicle Status</string>
-    <string name="rented">Rented</string>
+    <string name="vehicle_status">গাড়ীৰ অবস্থা</string>
+    <string name="rented">ভাড়াত</string>
     <string name="auto_driver_confirmation">Are you an auto driver?</string>
     <string name="auto_status_confirmation">Do you have an auto ?</string>
-    <string name="no_doc_available">No Documents Available</string>
-    <string name="upload">Upload</string>
+    <string name="no_doc_available">একো কাগজপত্ৰ নাই</string>
+    <string name="upload">আপলোড</string>
     <string name="mandatory">Mandatory</string>
-    <string name="optional">Optional</string>
-    <string name="uploaded">UPLOADED</string>
-    <string name="rejected">REJECTED</string>
-    <string name="verified">VERIFIED</string>
+    <string name="optional">অপস্নেল</string>
+    <string name="uploaded">আপলোড কৰা হল</string>
+    <string name="rejected">নাকচ কৰা হল</string>
+    <string name="verified">ভেৰিফাইদ</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>
@@ -541,20 +541,20 @@
     <string name="return_subsidy">ৰিটাৰ্ণ  সাবচিদি</string>
     <string name="return_distance">ৰিটাৰ্ণ দূৰত্ব</string>
     <string name="delivery_details">ডেলিভাৰি বিৱৰন</string>
-    <string name="uploading">Uploading</string>
+    <string name="uploading">আপলোড</string>
 
-    <string name="auto_number">Auto number</string>
-    <string name="Choose_one">Choose one:</string>
+    <string name="auto_number">অটৰ নম্বৰ</string>
+    <string name="Choose_one">পছন্দ</string>
     <string name="is_rented">I have a rented auto.</string>
     <string name="is_owned">I own my auto.</string>
 
-    <string name="Documents">Documents</string>
-    <string name="Document_type">Document type</string>
-    <string name="Requirement">Requirement</string>
-    <string name="add_image">ADD IMAGE</string>
-    <string name="Submit">Submit</string>
-    <string name="owner">Owner</string>
-    <string name="approval_pending">APPROVAL PENDING</string>
+    <string name="Documents">নথিপত্ৰ</string>
+    <string name="Document_type">নথিপত্ৰ টাইপ</string>
+    <string name="Requirement">প্রয়োজনীয়তা</string>
+    <string name="add_image">এদ ইমেজ</string>
+    <string name="Submit">জমা</string>
+    <string name="owner">মালিক</string>
+    <string name="approval_pending">অনুমোদন পেন্দিং</string>
 
 
     <string-array name="CountryCodes" >

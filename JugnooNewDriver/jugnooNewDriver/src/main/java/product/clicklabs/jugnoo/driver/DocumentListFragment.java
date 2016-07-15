@@ -281,6 +281,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					} else {
 						holder.addImageLayout.setEnabled(true);
 						holder.setCapturedImage.setImageResource(R.drawable.reload_image);
+						docInfo.setFile(null);
+						docInfo.setFile1(null);
 					}
 					if (docInfo.url.size() > 1) {
 						Picasso.with(getActivity()).load(docInfo.url.get(1))
@@ -297,6 +299,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					e.printStackTrace();
 				}
 			}
+
 
 			if (docInfo.isExpended) {
 				holder.relativeLayoutImageStatus.setVisibility(View.VISIBLE);
@@ -396,7 +399,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										data.getDocStatus(), data.getDocUrl(), data.getReason());
 								docs.add(docInfo);
 							}
-							updateListData("hello", false);
+							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
 							userPhoneNo = docRequirementResponse.getuserPhoneNo();
 
 						}

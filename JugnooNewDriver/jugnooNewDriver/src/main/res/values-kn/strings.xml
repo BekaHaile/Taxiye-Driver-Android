@@ -522,23 +522,10 @@
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
-    <string name="vehicle_status">Vehicle Status</string>
-    <string name="rented">Rented</string>
-    <string name="auto_driver_confirmation">Are you an auto driver?</string>
-    <string name="auto_status_confirmation">Do you have an auto ?</string>
-    <string name="no_doc_available">No Documents Available</string>
-    <string name="upload">Upload</string>
     <string name="mandatory">Mandatory</string>
-    <string name="optional">Optional</string>
-    <string name="uploaded">UPLOADED</string>
-    <string name="rejected">REJECTED</string>
-    <string name="verified">VERIFIED</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
 
     <string name="cancelled">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="address">ವಿಳಾಸ</string>
@@ -564,18 +551,33 @@
     <string name="return_distance">ಹಿಂದಿರುಗಿಸಿದ ದೂರ </string>
     <string name="delivery_details">ಡೆಲಿವರಿ ವಿವರಗಳು</string>
     <string name="uploading">Uploading</string>
-    <string name="auto_number">Auto number</string>
-    <string name="Choose_one">Choose one:</string>
-    <string name="is_rented">I have a rented auto.</string>
-    <string name="is_owned">I own my auto.</string>
 
-    <string name="Documents">Documents</string>
-    <string name="Document_type">Document type</string>
-    <string name="Requirement">Requirement</string>
-    <string name="add_image">ADD IMAGE</string>
-    <string name="Submit">Submit</string>
-    <string name="owner">Owner</string>
-    <string name="approval_pending">APPROVAL PENDING</string>
+
+    <string name="vehicle_status">ವಾಹನದ ಸ್ಥಿತಿ </string>
+    <string name="rented">ಬಾಡಿಗೆಗೆ</string>
+    <string name="auto_driver_confirmation">ನೀವು ಆಟೋ ಚಾಲಕರಾಗಿದ್ದೀರಾ?   </string>
+    <string name="auto_status_confirmation">ನಿಮ್ಮ ಸ್ವಂತ ಆಟೋ ಹೊಂದಿದ್ದೀರಾ ? </string>
+    <string name="no_doc_available">ಯಾವುದೇ ಡಾಕ್ಯುಮೆಂಟ್ಸ್ ಇರುವುದಿಲ್ಲ </string>
+    <string name="upload">ಅಪ್ಲೋಡ್</string>
+    <string name="optional">ಐಚ್ಛಿಕ(ಒಪ್ಷನಲ್)</string>
+    <string name="uploaded">ಉಪ್ಲೊಡೆಡ್ </string>
+    <string name="rejected">ತಿರಸ್ಕರಿಸಿದೆ </string>
+    <string name="verified">ಪರಿಶೀಲಿಸಿದೆ </string>
+    <string name="Hints">ಸುಳಿವು</string>
+    <string name="tricks">ತಂತ್ರಗಳು </string>
+    <string name="Messages">ಸಂದೇಶಗಳು</string>
+
+    <string name="auto_number">ಆಟೋ ಸಂಖ್ಯೆ</string>
+    <string name="Choose_one">ಒಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
+    <string name="is_rented">ನನ್ನದು ಬಾಡಿಗೆ ಆಟೋ</string>
+    <string name="is_owned">ನನ್ನದು ಸ್ವಂಥ ಆಟೋ  </string>
+    <string name="Documents">ದಾಖಲೆಗಳು</string>
+    <string name="Document_type"> ದಾಖಲೆ ಪ್ರಕಾರ</string>
+    <string name="Requirement">ಅವಶ್ಯಕತೆ</string>
+    <string name="add_image">ಫೋಟೋ ಸೇರಿಸಬಹುದು</string>
+    <string name="Submit">ಸಲ್ಲಿಸಿ</string>
+    <string name="owner">ಮಾಲೀಕರು</string>
+    <string name="approval_pending">ಅನುಮೋದನೆಗೆ ಬಾಕಿ</string>
 
 
 

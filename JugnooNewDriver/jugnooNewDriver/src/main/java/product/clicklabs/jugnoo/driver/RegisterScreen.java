@@ -25,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -104,8 +105,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
 
-//		isOwnedRelative = (RelativeLayout) findViewById(R.id.isOwnedRelative);
-//		isRentedRelative = (RelativeLayout) findViewById(R.id.isRentedRelative);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -118,9 +117,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
-//		autoNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
-//		isRentedCheck = (ImageView) findViewById(R.id.isRentedCheck);
-//		isOwnedCheck = (ImageView) findViewById(R.id.isOwnedCheck);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
 
 		signUpBtn = (Button) findViewById(R.id.signUpBtn);
@@ -144,17 +140,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			}
 		});
 
-
-//		autoNumEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//
-//			@Override
-//			public void onFocusChange(View v, boolean hasFocus) {
-//				autoNumEt.setError(null);
-//			}
-//		});
-//
-//		autoNumEt.setLongClickable(false);
-
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -162,27 +147,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				phoneNoEt.setError(null);
 			}
 		});
-
-//		isOwnedRelative.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				isOwned= true;
-//				isRented =false;
-//				isOwnedCheck.setImageResource(R.drawable.radio_select);
-//				isRentedCheck.setImageResource(R.drawable.radio_unslelcet);
-//
-//			}
-//		});
-//
-//		isRentedRelative.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				isOwned= false;
-//				isRented =true;
-//				isOwnedCheck.setImageResource(R.drawable.radio_unslelcet);
-//				isRentedCheck.setImageResource(R.drawable.radio_select);
-//			}
-//		});
 
 
 		signUpBtn.setOnClickListener(new View.OnClickListener() {
@@ -230,8 +194,13 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 								} else {
 									phoneNo = "+91" + phoneNo;
 									if (isPhoneValid(phoneNo)) {
-										sendSignupValues(RegisterScreen.this, name, phoneNo, password);
-										FlurryEventLogger.emailSignupClicked(emailId);
+										if(!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))){
+											sendSignupValues(RegisterScreen.this, name, phoneNo, password);
+											FlurryEventLogger.emailSignupClicked(emailId);
+										}else {
+											DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Status ");
+										}
+
 									} else {
 										phoneNoEt.requestFocus();
 										phoneNoEt.setError("Please enter valid phone number");
@@ -298,44 +267,34 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 
 
-
-
-//		autoNumEt.setOnItemSelectedListener(this);
-
 		// Spinner Drop down elements
 		List<String> categories = new ArrayList<String>();
+		categories.add(getResources().getString(R.string.vehicle_status));
 		categories.add(getResources().getString(R.string.owned));
 		categories.add(getResources().getString(R.string.rented));
 
-		List<String> vehicleTypes = new ArrayList<String>();
-		vehicleTypes.add(getResources().getString(R.string.auto));
-		vehicleTypes.add("cab");
 
-		// Creating adapter for spinner
 		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
 
-		// Drop down layout style - list view with radio button
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		// attaching data adapter to spinner
 		autoNumEt.setAdapter(dataAdapter);
 
 		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 				 vehicleStatus = parent.getItemAtPosition(position).toString();
+				Log.i("YES", "YES");
+
 			}
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
+				Log.i("NO", "NO");
 			}
 		});
 
 
-
-
-		// Drop down layout style - list view with radio button
 
 		VehicleType.setAdapter(new VehicyleArrayAdapter(this, R.layout.spinner_layout, res.getVehicleTypes()));
 
@@ -351,10 +310,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			}
 		});
-
-
-
-
 	}
 
 
@@ -457,7 +412,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									RegisterScreen.this.password = password;
 									RegisterScreen.this.accessToken = data.getAccessToken();
 
-
 									sendToOtpScreen = true;
 								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
 									RegisterScreen.this.name = name;
@@ -466,6 +420,9 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									RegisterScreen.this.password = password;
 									RegisterScreen.this.accessToken = "";
 									parseDataSendToMultipleAccountsScreen(activity, jObj);
+								} else if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
+									performBackPressed();
+
 								} else {
 									DialogPopup.alertPopup(activity, "", message);
 								}
