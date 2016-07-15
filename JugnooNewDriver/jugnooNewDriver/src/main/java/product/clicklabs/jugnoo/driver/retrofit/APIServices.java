@@ -392,5 +392,9 @@ public interface APIServices {
 	Response sendmFileToServer(@Part("mFile") TypedFile image,
 							   @PartMap Map<String, String> params);
 
+	@FormUrlEncoded
+	@POST("/get_rate_card_details")
+	void rateCardDetail(@Field("access_token") String accessToken,
+					   Callback<InvoiceDetailResponse> callback);
 
 }

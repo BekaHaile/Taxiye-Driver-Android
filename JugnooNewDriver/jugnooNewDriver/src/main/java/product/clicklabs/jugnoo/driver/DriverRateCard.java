@@ -26,11 +26,14 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -42,15 +45,10 @@ import retrofit.mime.TypedByteArray;
 public class DriverRateCard extends BaseActivity {
 
 	LinearLayout relative;
-
 	Button backBtn;
 	TextView title;
-	ScrollView scrollView;
-	LinearLayout mainLinear, enterAmountLL;
-	TextView textViewScroll;
-	double amount;
-	EditText editTextCashAmount, editTextPhone;
-	Button btnConfirm, btnRupee500, btnRupee200, btnRupee100;
+	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue,
+			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue;
 
 	@Override
 	protected void onStart() {
@@ -70,44 +68,40 @@ public class DriverRateCard extends BaseActivity {
 		super.onResume();
 	}
 
-	String engagementId = "";
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_driver_paytm_recharge);
-
-		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
-			engagementId = getIntent().getStringExtra(Constants.KEY_ENGAGEMENT_ID);
-		}
+		setContentView(R.layout.activity_rate_card);
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(DriverRateCard.this, relative, 1134, 720, false);
 
-		enterAmountLL = (LinearLayout) findViewById(R.id.enterAmountLL);
-		scrollView = (ScrollView) findViewById(R.id.scrollView);
-		mainLinear = (LinearLayout) findViewById(R.id.mainLinear);
-		textViewScroll = (TextView) findViewById(R.id.textViewScroll);
+		textViewPickupChargesValues = (TextView) findViewById(R.id.textViewPickupChargesValues);
+		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(this));
+		textViewBaseFareValue = (TextView) findViewById(R.id.textViewBaseFareValue);
+		textViewBaseFareValue.setTypeface(Fonts.mavenRegular(this));
+		textViewDistancePKmValue = (TextView) findViewById(R.id.textViewDistancePKmValue);
+		textViewDistancePKmValue.setTypeface(Fonts.mavenRegular(this));
+		textViewTimePKmValue = (TextView) findViewById(R.id.textViewTimePKmValue);
+		textViewTimePKmValue.setTypeface(Fonts.mavenRegular(this));
+		textViewDtoCValue = (TextView) findViewById(R.id.textViewDtoCValue);
+		textViewDtoCValue.setTypeface(Fonts.mavenRegular(this));
+		textViewDtoDValue = (TextView) findViewById(R.id.textViewDtoDValue);
+		textViewDtoDValue.setTypeface(Fonts.mavenRegular(this));
+
+		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewDistancePKm)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewTimePKm)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewDtoC)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewDtoD)).setTypeface(Fonts.mavenRegular(this));
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-
-		editTextCashAmount = (EditText) findViewById(R.id.editTextCashAmount);
-		editTextCashAmount.setTypeface(Data.latoRegular(this));
-		editTextCashAmount.setHint(getStringText(R.string.enter_amount));
-		editTextPhone = (EditText) findViewById(R.id.editTextPhone);
-		editTextPhone.setTypeface(Data.latoRegular(this));
-		editTextPhone.setHint(getStringText(R.string.enter_phone_number));
-
-		btnConfirm = (Button) findViewById(R.id.btnConfirm);
-		btnConfirm.setTypeface(Data.latoRegular(this));
-		btnRupee500 = (Button) findViewById(R.id.btnRupee500);
-		btnRupee500.setTypeface(Data.latoRegular(this));
-		btnRupee200 = (Button) findViewById(R.id.btnRupee200);
-		btnRupee200.setTypeface(Data.latoRegular(this));
-		btnRupee100 = (Button) findViewById(R.id.btnRupee100);
-		btnRupee100.setTypeface(Data.latoRegular(this));
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -117,94 +111,9 @@ public class DriverRateCard extends BaseActivity {
 			}
 		});
 
-
-
-
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
-		btnConfirm.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-
-				if (validAmount() && validPhoneNo()) {
-					confirmRechargePopup(DriverRateCard.this);
-				}
-
-			}
-		});
-
-		editTextCashAmount.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				int result = actionId & EditorInfo.IME_MASK_ACTION;
-				switch (result) {
-					case EditorInfo.IME_ACTION_DONE:
-						btnConfirm.performClick();
-						break;
-
-					case EditorInfo.IME_ACTION_NEXT:
-						btnConfirm.performClick();
-						break;
-
-					default:
-				}
-				return true;
-			}
-		});
-
-
-		editTextCashAmount.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				btnConfirm.requestFocus();
-				return true;
-			}
-		});
-		editTextPhone.setOnEditorActionListener(new OnEditorActionListener() {
-
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				editTextCashAmount.requestFocus();
-				return true;
-			}
-		});
-
-		editTextCashAmount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) {
-					editTextCashAmount.setError(null);
-					scrollView.scrollTo(0, btnConfirm.getBottom());
-				}
-			}
-		});
-
-		editTextPhone.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if (!hasFocus) {
-					editTextPhone.setError(null);
-				}
-			}
-		});
-
-		relative.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				editTextCashAmount.setError(null);
-				editTextPhone.setError(null);
-
-			}
-		});
-
+		getRateCardDetails(this);
 
 	}
-
 
 	public void performBackPressed() {
 		finish();
@@ -226,169 +135,59 @@ public class DriverRateCard extends BaseActivity {
 	}
 
 
-	boolean validAmount() {
-		try {
-			String amountStr = editTextCashAmount.getText().toString().trim();
-			if ("".equalsIgnoreCase(amountStr)) {
-				editTextCashAmount.requestFocus();
-				editTextCashAmount.setError(getResources().getString(R.string.enter_some_amount));
-			} else {
-				amount = Double.parseDouble(editTextCashAmount.getText().toString().trim());
-				if (AppStatus.getInstance(DriverRateCard.this).isOnline(DriverRateCard.this)) {
-					if (amount > 1000) {
-						editTextCashAmount.requestFocus();
-						editTextCashAmount.setError(getResources().getString(R.string.enter_less_amount));
-					} else if (amount <= 0) {
-						editTextCashAmount.requestFocus();
-						editTextCashAmount.setError(getResources().getString(R.string.enter_some_amount));
-					} else {
-						return true;
-
-					}
-				} else {
-					DialogPopup.alertPopup(DriverRateCard.this, "", Data.CHECK_INTERNET_MSG);
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-
-			editTextCashAmount.requestFocus();
-			editTextCashAmount.setError(getResources().getString(R.string.enter_valid_amount));
-			Utils.showSoftKeyboard(DriverRateCard.this, editTextCashAmount);
-		}
-		return false;
-	}
-
-	boolean validPhoneNo() {
-		if (editTextPhone.isEnabled()) {
-			String phoneChanged = editTextPhone.getText().toString().trim();
-			if ("".equalsIgnoreCase(phoneChanged)) {
-				editTextPhone.requestFocus();
-				editTextPhone.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
-			} else {
-				phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
-				if (Utils.validPhoneNumber(phoneChanged)) {
-					return true;
-				} else {
-					editTextPhone.requestFocus();
-					editTextPhone.setError(getResources().getString(R.string.valid_phone_number));
-				}
-			}
-		} else {
-			editTextPhone.requestFocus();
-			editTextPhone.setEnabled(true);
-			editTextPhone.setSelection(editTextPhone.getText().length());
-			Utils.showSoftKeyboard(DriverRateCard.this, editTextPhone);
-		}
-
-		return false;
-	}
-
-
-	void confirmRechargePopup(final Activity activity) {
-		try {
-			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
-			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
-			dialog.setContentView(R.layout.dialog_custom_two_buttons);
-
-			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
-			new ASSL(activity, frameLayout, 1134, 720, true);
-
-			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
-			layoutParams.dimAmount = 0.6f;
-			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(false);
-			dialog.setCanceledOnTouchOutside(false);
-
-
-			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
-			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
-			textMessage.setTypeface(Data.latoRegular(activity));
-
-			textMessage.setText(getResources().getString(R.string.recharge_amount_for_customer, editTextCashAmount.getText() , editTextPhone.getText()));
-
-
-			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity));
-			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
-			btnCancel.setTypeface(Data.latoRegular(activity));
-
-			btnOk.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					addCustomerCashAPI(DriverRateCard.this, "" + amount);
-					dialog.dismiss();
-
-				}
-
-
-			});
-
-
-			btnCancel.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					dialog.dismiss();
-
-				}
-
-			});
-
-			dialog.show();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 //	Retrofit
 
 
-	public void addCustomerCashAPI(final Activity activity, final String amount) {
-		if (AppStatus.getInstance(activity).isOnline(activity)) {
-			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+	public void updateData(InvoiceDetailResponse invoiceDetailResponse) {
 
-//			RequestParams params = new RequestParams();
+		if (invoiceDetailResponse != null) {
 
-			HashMap<String, String> params = new HashMap<String, String>();
+			textViewPickupChargesValues.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getReferralAmount());
+			textViewBaseFareValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
+			textViewDistancePKmValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions());
+			textViewTimePKmValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy());
+			textViewDtoCValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo());
+			textViewDtoDValue.setText(getResources().getString(R.string.rupee)
+					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
+		} else {
+			performBackPressed();
+		}
 
-			params.put("access_token", Data.userData.accessToken);
-			params.put("receiver_phone", String.valueOf(editTextPhone.getText()));
-			params.put("amount", amount);
+	}
 
-			RestClient.getApiServices().addCustomerCashRetro(params, new Callback<RegisterScreenResponse>() {
+	private void getRateCardDetails(final Activity activity) {
+		try {
+			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<InvoiceDetailResponse>() {
 				@Override
-				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-					Log.i("Server response", "response = " + response);
-					DialogPopup.dismissLoadingDialog();
+				public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj = new JSONObject(jsonString);
-						String message = JSONParser.getServerMessage(jObj);
-						int flag = jObj.getInt("flag");
-						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-							DialogPopup.alertPopup(activity, "", message);
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							}
 						} else {
-							DialogPopup.alertPopup(activity, "", message);
+							updateData(invoiceDetailResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
-						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-
 					}
 				}
-
 				@Override
 				public void failure(RetrofitError error) {
-					DialogPopup.dismissLoadingDialog();
-					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
-
+					Log.i("error", String.valueOf(error));
 				}
 			});
-
-
-		} else {
-			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
