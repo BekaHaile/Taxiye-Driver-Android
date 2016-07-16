@@ -195,8 +195,16 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									phoneNo = "+91" + phoneNo;
 									if (isPhoneValid(phoneNo)) {
 										if(!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))){
-											sendSignupValues(RegisterScreen.this, name, phoneNo, password);
-											FlurryEventLogger.emailSignupClicked(emailId);
+											if(cityposition != 0) {
+												if(vehiclePosition !=0 ) {
+													sendSignupValues(RegisterScreen.this, name, phoneNo, password);
+													FlurryEventLogger.emailSignupClicked(emailId);
+												}else {
+													DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Type ");
+												}
+											}else {
+												DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid City ");
+											}
 										}else {
 											DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Status ");
 										}
