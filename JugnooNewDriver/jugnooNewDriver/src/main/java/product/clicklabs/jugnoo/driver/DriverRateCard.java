@@ -11,7 +11,9 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -27,6 +29,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -44,11 +47,13 @@ import retrofit.mime.TypedByteArray;
 
 public class DriverRateCard extends BaseActivity {
 
-	LinearLayout relative;
+	LinearLayout relative, linearLayoutDriverReferral;
+	RelativeLayout relativeLayoutDriverReferralHeading;
 	Button backBtn;
 	TextView title;
 	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue,
-			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue;
+			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD;
+	ImageView imageViewHorizontal7;
 
 	@Override
 	protected void onStart() {
@@ -72,10 +77,11 @@ public class DriverRateCard extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_rate_card);
-
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(DriverRateCard.this, relative, 1134, 720, false);
 
+		linearLayoutDriverReferral = (LinearLayout) findViewById(R.id.linearLayoutDriverReferral);
+		relativeLayoutDriverReferralHeading = (RelativeLayout) findViewById(R.id.relativeLayoutDriverReferralHeading);
 		textViewPickupChargesValues = (TextView) findViewById(R.id.textViewPickupChargesValues);
 		textViewPickupChargesValues.setTypeface(Fonts.mavenRegular(this));
 		textViewBaseFareValue = (TextView) findViewById(R.id.textViewBaseFareValue);
@@ -89,6 +95,11 @@ public class DriverRateCard extends BaseActivity {
 		textViewDtoDValue = (TextView) findViewById(R.id.textViewDtoDValue);
 		textViewDtoDValue.setTypeface(Fonts.mavenRegular(this));
 
+		textViewDtoC = (TextView) findViewById(R.id.textViewDtoC);
+		textViewDtoC.setTypeface(Fonts.mavenRegular(this));
+		textViewDtoD = (TextView) findViewById(R.id.textViewDtoD);
+		textViewDtoD.setTypeface(Fonts.mavenRegular(this));
+
 		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(this));
@@ -96,15 +107,13 @@ public class DriverRateCard extends BaseActivity {
 		((TextView) findViewById(R.id.textViewTimePKm)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(this));
-		((TextView) findViewById(R.id.textViewDtoC)).setTypeface(Fonts.mavenRegular(this));
-		((TextView) findViewById(R.id.textViewDtoD)).setTypeface(Fonts.mavenRegular(this));
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
@@ -112,7 +121,6 @@ public class DriverRateCard extends BaseActivity {
 		});
 
 		getRateCardDetails(this);
-
 	}
 
 	public void performBackPressed() {
@@ -138,22 +146,41 @@ public class DriverRateCard extends BaseActivity {
 //	Retrofit
 
 
-	public void updateData(InvoiceDetailResponse invoiceDetailResponse) {
+	public void updateData(RateCardResponse rateCardResponse) {
 
-		if (invoiceDetailResponse != null) {
+		if (rateCardResponse != null) {
 
 			textViewPickupChargesValues.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getReferralAmount());
+					+ rateCardResponse.getRates().getPickupCharges());
 			textViewBaseFareValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
+					+ rateCardResponse.getRates().getBaseFare());
 			textViewDistancePKmValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions());
+					+ rateCardResponse.getRates().getFarePerKm());
 			textViewTimePKmValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy());
-			textViewDtoCValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo());
-			textViewDtoDValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
+					+ rateCardResponse.getRates().getFarePerMin());
+
+			double dToCReferral = rateCardResponse.getRates().getDriverToCustomerReferral();
+			double dToDReferral = rateCardResponse.getRates().getDriverToDriverReferral();
+
+			if(dToCReferral == 0 && dToDReferral ==0){
+				linearLayoutDriverReferral.setVisibility(View.GONE);
+				relativeLayoutDriverReferralHeading.setVisibility(View.GONE);
+			} else if(dToCReferral > 0 && dToDReferral ==0){
+				textViewDtoD.setVisibility(View.GONE);
+				textViewDtoDValue.setVisibility(View.GONE);
+				imageViewHorizontal7.setVisibility(View.GONE);
+				textViewDtoCValue.setText(getResources().getString(R.string.rupee)+ dToCReferral);
+			} else if(dToCReferral == 0 && dToDReferral >0){
+				textViewDtoCValue.setVisibility(View.GONE);
+				textViewDtoC.setVisibility(View.GONE);
+				imageViewHorizontal7.setVisibility(View.GONE);
+				textViewDtoDValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
+			} else if(dToCReferral > 0 && dToDReferral > 0){
+				textViewDtoCValue.setText(getResources().getString(R.string.rupee) + dToCReferral);
+				textViewDtoDValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
+			}
+
+
 		} else {
 			performBackPressed();
 		}
@@ -162,9 +189,9 @@ public class DriverRateCard extends BaseActivity {
 
 	private void getRateCardDetails(final Activity activity) {
 		try {
-			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<InvoiceDetailResponse>() {
+			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<RateCardResponse>() {
 				@Override
-				public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
+				public void success(RateCardResponse rateCardResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;
@@ -175,7 +202,7 @@ public class DriverRateCard extends BaseActivity {
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
-							updateData(invoiceDetailResponse);
+							updateData(rateCardResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();

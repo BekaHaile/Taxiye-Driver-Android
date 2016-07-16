@@ -34,6 +34,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:orientation="vertical"
         android:padding="18px">
 
@@ -91,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20px"
+                android:layout_marginRight="24px"
                 android:text="00"
                 android:textColor="@color/black"
                 android:textSize="34px"
@@ -142,10 +143,10 @@
 
                 <TextView
                     android:id="@+id/textViewBaseFare"
-                    android:layout_width="85px"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="70px"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/base_fare"
                     android:textColor="@color/black"
@@ -156,14 +157,13 @@
                     android:layout_width="2px"
                     android:layout_height="84px"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="70px"
-                    android:layout_marginRight="42px"
                     android:background="@color/grey_dark_less"/>
 
                 <TextView
                     android:id="@+id/textViewDistancePKm"
-                    android:layout_width="140px"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:text="@string/distance_per_km"
@@ -175,14 +175,13 @@
                     android:layout_width="2px"
                     android:layout_height="84px"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="45px"
-                    android:layout_marginRight="45px"
                     android:background="@color/grey_dark_less"/>
 
                 <TextView
                     android:id="@+id/textViewTimePKm"
-                    android:layout_width="140px"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:text="@string/time_per_min"
@@ -200,7 +199,7 @@
 
             <RelativeLayout
                 android:layout_width="672px"
-                android:layout_height="108px"
+                android:layout_height="106px"
                 android:layout_gravity="center"
                 android:background="@color/white">
 
@@ -241,6 +240,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutDriverReferralHeading"
             android:layout_width="match_parent"
             android:layout_height="100px"
             android:gravity="center">
@@ -272,6 +272,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="230px"
+            android:id="@+id/linearLayoutDriverReferral"
             android:background="@drawable/background_grey_rounded_orange_bordered_4px"
             android:orientation="vertical">
 
@@ -283,10 +284,10 @@
 
                 <TextView
                     android:id="@+id/textViewDtoC"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="30px"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/driver_to_customer"
                     android:textColor="@color/black"
@@ -297,16 +298,15 @@
                     android:layout_width="2px"
                     android:layout_height="84px"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="57px"
                     android:background="@color/grey_dark_less"/>
 
                 <TextView
                     android:id="@+id/textViewDtoD"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
+                    android:layout_weight="1"
                     android:text="@string/driver_to_driver"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -320,36 +320,35 @@
                 android:layout_gravity="center_horizontal"
                 android:background="@color/grey_dark_less"/>
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="672px"
-                android:layout_height="108px"
+                android:layout_height="106px"
                 android:layout_gravity="center"
                 android:background="@color/white">
 
                 <TextView
                     android:id="@+id/textViewDtoCValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="140px"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="1"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
 
                 <TextView
                     android:id="@+id/textViewDtoDValue"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="140px"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="1"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
 
-
-            </RelativeLayout>
-
+            </LinearLayout>
 
         </LinearLayout>
 

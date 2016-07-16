@@ -15,6 +15,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -393,8 +394,8 @@ public interface APIServices {
 							   @PartMap Map<String, String> params);
 
 	@FormUrlEncoded
-	@POST("/get_rate_card_details")
+	@POST("/show_rate_card")
 	void rateCardDetail(@Field("access_token") String accessToken,
-					   Callback<InvoiceDetailResponse> callback);
+					   Callback<RateCardResponse> callback);
 
 }
