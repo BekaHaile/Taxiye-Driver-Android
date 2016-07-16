@@ -8,12 +8,12 @@
 
     <LinearLayout
         android:id="@+id/rideHistoryItem"
-        android:layout_width="fill_parent"
+        android:layout_width="690px"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="15px"
         android:background="@drawable/background_white"
-        android:orientation="vertical"
-        android:padding="12px">
+        android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
                 android:layout_marginBottom="24px"
                 android:layout_marginTop="32px"
                 android:text="@string/Requirement"
-                android:textColor="@color/black"
+                android:textColor="@color/grey_black_light"
                 android:textSize="24px"
                 />
 

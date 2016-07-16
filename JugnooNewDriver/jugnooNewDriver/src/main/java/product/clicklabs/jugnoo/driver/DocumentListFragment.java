@@ -65,6 +65,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	protected ImageChooserManager imageChooserManager;
 	private Bitmap bitmap;
+	private DriverDocumentActivity activity;
 	DriverDocumentListAdapter driverDocumentListAdapter;
 
 	RelativeLayout main;
@@ -90,8 +91,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 
 		main = (RelativeLayout) rootView.findViewById(R.id.main);
-		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-		ASSL.DoMagic(main);
+		activity = (DriverDocumentActivity) getActivity();
+		new ASSL(activity, main, 1134, 720, false);
+
+//		main.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+//		ASSL.DoMagic(main);
 
 		progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
 		listView = (ListView) rootView.findViewById(R.id.listView);
