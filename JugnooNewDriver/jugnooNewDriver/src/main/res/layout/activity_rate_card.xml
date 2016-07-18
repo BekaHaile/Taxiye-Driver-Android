@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:id="@+id/relative"
               android:orientation="vertical">
 
     <RelativeLayout
@@ -36,21 +36,21 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:orientation="vertical"
-        android:padding="18px">
+        android:padding="4px">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100px"
-            android:layout_marginTop="8px"
+            android:background="@color/sliding_bottom_bg_color"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/imageViewHorizontal3"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:background="@color/black"/>
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
 
             <TextView
                 android:id="@+id/textViewBeforeRide"
@@ -58,11 +58,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@color/white"
                 android:gravity="center"
                 android:padding="10px"
                 android:text="@string/before_ride"
-                android:textColor="@color/black"
+                android:textColor="@color/new_orange"
                 android:textSize="40px"
 
                 />
@@ -71,47 +70,70 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="120px"
-            android:background="@drawable/background_grey_rounded_orange_bordered_4px">
+            android:layout_height="180px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/textViewPickupCharges"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="20px"
                 android:text="@string/pickup_charges"
                 android:textColor="@color/black"
-                android:textSize="34px"
+                android:textSize="34px"/>
 
-                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPickupCharges"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewPickupChargesCondStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewPickupCharges"
+                    android:layout_marginTop="5px"
+                    android:text="*"
+                    android:textColor="@color/new_orange"
+                    android:textSize="24px"/>
+
+                <TextView
+                    android:id="@+id/textViewPickupChargesCond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5px"
+                    android:text="@string/applicable_after"
+                    android:textColor="@color/grey_black_light"
+                    android:textSize="24px"/>
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textViewPickupChargesValues"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="24px"
                 android:text="00"
                 android:textColor="@color/black"
-                android:textSize="34px"
-
-                />
+                android:textSize="34px"/>
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="100px"
+            android:background="@color/sliding_bottom_bg_color"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/imageViewHorizontal2"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:background="@color/black"/>
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
 
             <TextView
                 android:id="@+id/textViewInRide"
@@ -119,11 +141,10 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@color/white"
                 android:gravity="center"
                 android:padding="10px"
                 android:text="@string/in_ride_rate"
-                android:textColor="@color/black"
+                android:textColor="@color/new_orange"
                 android:textSize="40px"
 
                 />
@@ -133,7 +154,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="230px"
-            android:background="@drawable/background_grey_rounded_orange_bordered_4px"
             android:orientation="vertical">
 
             <LinearLayout
@@ -154,17 +174,17 @@
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal5"
-                    android:layout_width="2px"
-                    android:layout_height="84px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/grey_dark_less"/>
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
 
                 <TextView
                     android:id="@+id/textViewDistancePKm"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/distance_per_km"
                     android:textColor="@color/black"
@@ -172,17 +192,17 @@
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal4"
-                    android:layout_width="2px"
-                    android:layout_height="84px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/grey_dark_less"/>
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
 
                 <TextView
                     android:id="@+id/textViewTimePKm"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/time_per_min"
                     android:textColor="@color/black"
@@ -190,12 +210,12 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/imageViewHorizontal6"
-                android:layout_width="670px"
-                android:layout_height="2px"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/grey_dark_less"/>
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal6"-->
+            <!--android:layout_width="670px"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@color/grey_dark_less"/>-->
 
             <RelativeLayout
                 android:layout_width="672px"
@@ -243,14 +263,15 @@
             android:id="@+id/relativeLayoutDriverReferralHeading"
             android:layout_width="match_parent"
             android:layout_height="100px"
+            android:background="@color/sliding_bottom_bg_color"
             android:gravity="center">
 
-            <ImageView
-                android:id="@+id/imageViewHorizontal1"
-                android:layout_width="match_parent"
-                android:layout_height="2px"
-                android:layout_centerVertical="true"
-                android:background="@color/black"/>
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
 
             <TextView
                 android:id="@+id/textViewReferral"
@@ -258,28 +279,26 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:background="@color/white"
                 android:gravity="center"
                 android:padding="10px"
                 android:text="@string/referral_rate"
-                android:textColor="@color/black"
+                android:textColor="@color/new_orange"
                 android:textSize="40px"
-
                 />
 
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayoutDriverReferral"
             android:layout_width="match_parent"
             android:layout_height="230px"
-            android:id="@+id/linearLayoutDriverReferral"
-            android:background="@drawable/background_grey_rounded_orange_bordered_4px"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="116px"
+                android:layout_height="100px"
                 android:orientation="horizontal">
 
                 <TextView
@@ -295,18 +314,18 @@
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal7"
-                    android:layout_width="2px"
-                    android:layout_height="84px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/grey_dark_less"/>
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
 
                 <TextView
                     android:id="@+id/textViewDtoD"
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="@string/driver_to_driver"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -314,15 +333,15 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="670px"
-                android:layout_height="2px"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/grey_dark_less"/>
+            <!--<ImageView-->
+            <!--android:layout_width="670px"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@color/grey_dark_less"/>-->
 
             <LinearLayout
-                android:layout_width="672px"
-                android:layout_height="106px"
+                android:layout_width="match_parent"
+                android:layout_height="100px"
                 android:layout_gravity="center"
                 android:background="@color/white">
 
@@ -331,8 +350,8 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -342,8 +361,8 @@
                     android:layout_width="0px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:gravity="center"
                     android:layout_weight="1"
+                    android:gravity="center"
                     android:text="00"
                     android:textColor="@color/black"
                     android:textSize="34px"/>
@@ -351,6 +370,37 @@
             </LinearLayout>
 
         </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDriverReferralSingle"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textViewDriverReferral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pickup_charges"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+
+            <TextView
+                android:id="@+id/textViewDriverReferralValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

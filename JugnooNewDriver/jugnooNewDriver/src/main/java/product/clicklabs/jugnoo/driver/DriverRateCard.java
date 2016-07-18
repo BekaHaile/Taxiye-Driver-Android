@@ -48,11 +48,12 @@ import retrofit.mime.TypedByteArray;
 public class DriverRateCard extends BaseActivity {
 
 	LinearLayout relative, linearLayoutDriverReferral;
-	RelativeLayout relativeLayoutDriverReferralHeading;
+	RelativeLayout relativeLayoutDriverReferralHeading, relativeLayoutDriverReferralSingle;
 	Button backBtn;
 	TextView title;
-	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue,
-			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD;
+	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue, textViewPickupChargesCond,
+			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
+			textViewDriverReferralValue;
 	ImageView imageViewHorizontal7;
 
 	@Override
@@ -100,6 +101,14 @@ public class DriverRateCard extends BaseActivity {
 		textViewDtoD = (TextView) findViewById(R.id.textViewDtoD);
 		textViewDtoD.setTypeface(Fonts.mavenRegular(this));
 
+		textViewPickupChargesCond = (TextView) findViewById(R.id.textViewPickupChargesCond);
+		textViewPickupChargesCond.setTypeface(Fonts.mavenRegular(this));
+
+		textViewDriverReferral= (TextView) findViewById(R.id.textViewDriverReferral);
+		textViewDriverReferral.setTypeface(Fonts.mavenRegular(this));
+		textViewDriverReferralValue= (TextView) findViewById(R.id.textViewDriverReferralValue);
+		textViewDriverReferralValue.setTypeface(Fonts.mavenRegular(this));
+
 		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(this));
@@ -111,6 +120,7 @@ public class DriverRateCard extends BaseActivity {
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		relativeLayoutDriverReferralSingle = (RelativeLayout) findViewById(R.id.relativeLayoutDriverReferralSingle);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
@@ -152,6 +162,9 @@ public class DriverRateCard extends BaseActivity {
 
 			textViewPickupChargesValues.setText(getResources().getString(R.string.rupee)
 					+ rateCardResponse.getRates().getPickupCharges());
+			textViewPickupChargesCond.setText(getResources().getString(R.string.applicable_after,
+					rateCardResponse.getRates().getPickupChargesThreshold()));
+
 			textViewBaseFareValue.setText(getResources().getString(R.string.rupee)
 					+ rateCardResponse.getRates().getBaseFare());
 			textViewDistancePKmValue.setText(getResources().getString(R.string.rupee)
@@ -166,16 +179,17 @@ public class DriverRateCard extends BaseActivity {
 				linearLayoutDriverReferral.setVisibility(View.GONE);
 				relativeLayoutDriverReferralHeading.setVisibility(View.GONE);
 			} else if(dToCReferral > 0 && dToDReferral ==0){
-				textViewDtoD.setVisibility(View.GONE);
-				textViewDtoDValue.setVisibility(View.GONE);
-				imageViewHorizontal7.setVisibility(View.GONE);
-				textViewDtoCValue.setText(getResources().getString(R.string.rupee)+ dToCReferral);
+				linearLayoutDriverReferral.setVisibility(View.GONE);
+				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
+				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_customer));
+				textViewDriverReferralValue.setText(getResources().getString(R.string.rupee)+ dToCReferral);
 			} else if(dToCReferral == 0 && dToDReferral >0){
-				textViewDtoCValue.setVisibility(View.GONE);
-				textViewDtoC.setVisibility(View.GONE);
-				imageViewHorizontal7.setVisibility(View.GONE);
-				textViewDtoDValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
+				linearLayoutDriverReferral.setVisibility(View.GONE);
+				relativeLayoutDriverReferralSingle.setVisibility(View.VISIBLE);
+				textViewDriverReferral.setText(getResources().getString(R.string.driver_to_driver));
+				textViewDriverReferralValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
 			} else if(dToCReferral > 0 && dToDReferral > 0){
+				linearLayoutDriverReferral.setVisibility(View.VISIBLE);
 				textViewDtoCValue.setText(getResources().getString(R.string.rupee) + dToCReferral);
 				textViewDtoDValue.setText(getResources().getString(R.string.rupee)+ dToDReferral);
 			}

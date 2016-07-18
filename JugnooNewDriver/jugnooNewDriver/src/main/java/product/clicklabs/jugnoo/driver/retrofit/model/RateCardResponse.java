@@ -80,6 +80,9 @@ public class RateCardResponse {
 		@SerializedName("pickup_charges")
 		@Expose
 		private Double pickupCharges;
+		@SerializedName("pickup_charges_threshold")
+		@Expose
+		private Double pickupChargesThreshold;
 		@SerializedName("base_fare")
 		@Expose
 		private Double baseFare;
@@ -112,6 +115,24 @@ public class RateCardResponse {
 		 */
 		public void setPickupCharges(Double pickupCharges) {
 			this.pickupCharges = pickupCharges;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The pickupChargesThreshold
+		 */
+		public Double getPickupChargesThreshold() {
+			return pickupChargesThreshold;
+		}
+
+		/**
+		 *
+		 * @param pickupChargesThreshold
+		 * The pickup_charges_threshold
+		 */
+		public void setPickupChargesThreshold(Double pickupChargesThreshold) {
+			this.pickupChargesThreshold = pickupChargesThreshold;
 		}
 
 		/**
