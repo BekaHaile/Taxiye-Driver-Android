@@ -85,6 +85,9 @@ public class SPLabels {
 
     public static final String DRIVER_LOGIN_PHONE_NUMBER = "driver_login_phone_number";
     public static final String DRIVER_LOGIN_TIME = "driver_login_time";
+    public static final String CLEAR_APP_CACHE_TIME = "clear_app_cache_time";
+
+
 
 
 

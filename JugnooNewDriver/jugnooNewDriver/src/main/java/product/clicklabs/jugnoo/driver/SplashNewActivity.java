@@ -672,6 +672,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
 										Utils.deleteMFile();
+										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 									}
 									else{

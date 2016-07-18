@@ -715,11 +715,44 @@ public class Utils {
 			for (int i = 0; i < children.length; i++) {
 				File file = new File(dir, children[i]);
 				long diff = new Date().getTime() - file.lastModified();
-				if (diff > 30 * 24 * 60 * 60 * 1000) {
+				if (diff > 30L * 24L * 60L * 60L * 1000L) {
 					file.delete();
 				}
 			}
 		}
+	}
+
+
+	public static void clearApplicationData(Context context) {
+
+		if((System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.CLEAR_APP_CACHE_TIME, 0)) > (7L * 24L * 60L * 60L * 1000L) ) {
+			Prefs.with(context).save(SPLabels.CLEAR_APP_CACHE_TIME, System.currentTimeMillis());
+			File cache = context.getCacheDir();
+			File appDir = new File(cache.getParent());
+			if (appDir.exists()) {
+				String[] children = appDir.list();
+				for (String s : children) {
+					if (!s.equals("lib")) {
+						deleteAppData(new File(appDir, s));
+						Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean deleteAppData(File dir) {
+		if (dir != null && dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+
+		return dir.delete();
 	}
 
 }
