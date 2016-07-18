@@ -250,6 +250,10 @@
             android:name=".DriverTimeoutIntentService"
             android:enabled="true"></service>
         <service
+            android:name=".services.ApiAcceptRideServices"
+            android:enabled="true"
+            android:exported="true"></service>
+        <service
             android:name=".ContactsUploadService"
             android:enabled="true"
             android:exported="true"></service>

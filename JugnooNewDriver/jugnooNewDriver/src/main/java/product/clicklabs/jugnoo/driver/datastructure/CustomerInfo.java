@@ -22,7 +22,8 @@ public class CustomerInfo {
 	
 	public int engagementId;
 	public int userId, referenceId;
-	public String name, phoneNumber;
+	public String phoneNumber;
+	private String name;
 	public LatLng requestlLatLng;
 	private int cachedApiEnabled;
 
@@ -211,6 +212,9 @@ public class CustomerInfo {
 	}
 
 	public String getName() {
+		if(name == null){
+			return "Customer";
+		}
 		return name;
 	}
 

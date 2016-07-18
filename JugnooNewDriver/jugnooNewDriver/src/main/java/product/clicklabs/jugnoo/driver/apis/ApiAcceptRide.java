@@ -42,7 +42,7 @@ public class ApiAcceptRide {
 	}
 
 	public void acceptRide(String accessToken, final String customerId, final String engagementId,
-						   final String referenceId, final double latitude, final double longitude){
+						   final String referenceId, final double latitude, final double longitude, final int perfectRide){
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				if (Utils.getBatteryPercentage(activity) >= 20) {
@@ -62,7 +62,7 @@ public class ApiAcceptRide {
 					params.put("device_name", Utils.getDeviceName());
 					params.put("imei", DeviceUniqueID.getUniqueId(activity));
 					params.put("app_version", "" + Utils.getAppVersion(activity));
-					params.put("is_accepting_perfect_ride", "1");
+					params.put("is_accepting_perfect_ride", String.valueOf(perfectRide));
 
 					if (!"".equalsIgnoreCase(referenceId)) {
 						params.put("reference_id", referenceId);

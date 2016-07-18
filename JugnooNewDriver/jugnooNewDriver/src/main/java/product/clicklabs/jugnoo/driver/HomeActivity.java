@@ -599,7 +599,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverWaitRl.setVisibility(View.GONE);
 
 			driverIRFareRl = (RelativeLayout) findViewById(R.id.driverIRFareRl);
-			driverIRFareRl.setVisibility(View.VISIBLE);
+			driverIRFareRl.setVisibility(View.GONE);
 
 			driverEndRideBtn = (Button) findViewById(R.id.driverEndRideBtn);
 			driverEndRideBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -1116,7 +1116,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					updateWalletBalance();
+					updateWalletBalance(Data.getCurrentCustomerInfo());
 				}
 			});
 
@@ -1578,7 +1578,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String.valueOf(customerInfo.engagementId),
 						String.valueOf(customerInfo.referenceId),
 						myLocation.getLatitude(),
-						myLocation.getLongitude());
+						myLocation.getLongitude(), 1);
 			}
 			else {
 				if (Utils.getBatteryPercentage(this) >= 20) {
@@ -2504,7 +2504,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1){
 						driverIRFareRl.setVisibility(View.GONE);
 					} else{
-						driverIRFareRl.setVisibility(View.VISIBLE);
+						driverIRFareRl.setVisibility(View.GONE);
 					}
 					setMakeDeliveryButtonVisibility();
 					setDeliveryMarkers();
@@ -5804,8 +5804,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	private CallbackEndRideWalletUpdate callbackEndRideWalletUpdate;
+	private CallbackEndRideWalletUpdate getCallbackUpdateWalletBalance(CustomerInfo customerInfo){
+		if(callbackEndRideWalletUpdate == null){
+			callbackEndRideWalletUpdate = new CallbackEndRideWalletUpdate(customerInfo);
+		}
+		callbackEndRideWalletUpdate.setCustomerInfo(customerInfo);
+		return callbackEndRideWalletUpdate;
+	}
+	private class CallbackEndRideWalletUpdate implements Callback<RegisterScreenResponse>{
 
-	Callback<RegisterScreenResponse> callbackUpdateWalletBalance = new Callback<RegisterScreenResponse>() {
+		private CustomerInfo customerInfo;
+		public CallbackEndRideWalletUpdate(CustomerInfo customerInfo){
+			this.customerInfo = customerInfo;
+		}
+
+		public void setCustomerInfo(CustomerInfo customerInfo) {
+			this.customerInfo = customerInfo;
+		}
+
 		@Override
 		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 			String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -5816,7 +5833,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int flag = jObj.getInt(KEY_FLAG);
 					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 						stopWalletUpdateTimeout();
-						CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 						if (customerInfo != null && walletBalanceUpdatePopup) {
 							if (jObj.getString(KEY_WALLET_BALANCE) != null) {
 								double newBalance = Double.parseDouble(jObj.getString(KEY_WALLET_BALANCE));
@@ -5837,7 +5853,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		@Override
 		public void failure(RetrofitError error) {
-			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if (customerInfo != null && walletBalanceUpdatePopup) {
 				stopWalletUpdateTimeout();
 				endRidePopup(HomeActivity.this, customerInfo);
@@ -5845,23 +5860,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				FlurryEventLogger.event(RIDE_ENDED);
 			}
 		}
-	};
+	}
 
 	long walletUpdateCallTime;
-	public void updateWalletBalance() {
+	public void updateWalletBalance(CustomerInfo customerInfo) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
 				Log.i("params", "=" + params);
 
 				walletUpdateCallTime = System.currentTimeMillis();
 				DialogPopup.showLoadingDialog(HomeActivity.this, "Loading...");
-				RestClient.getApiServices().updateWalletBalance(params, callbackUpdateWalletBalance);
+				RestClient.getApiServices().updateWalletBalance(params, getCallbackUpdateWalletBalance(customerInfo));
 				walletBalanceUpdatePopup = true;
-				startWalletUpdateTimeout();
-
+				startWalletUpdateTimeout(customerInfo);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5871,12 +5886,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	private synchronized void startWalletUpdateTimeout(){
+	private synchronized void startWalletUpdateTimeout(final CustomerInfo customerInfo){
 		checkwalletUpdateTimeoutHandler = new Handler();
 		checkwalletUpdateTimeoutRunnable = new Runnable() {
 			@Override
 			public void run() {
-			callbackUpdateWalletBalance.failure(null);
+				getCallbackUpdateWalletBalance(customerInfo).failure(null);
 			}
 		};
 		checkwalletUpdateTimeoutHandler.postDelayed(checkwalletUpdateTimeoutRunnable, Data.userData.walletUpdateTimeout);
