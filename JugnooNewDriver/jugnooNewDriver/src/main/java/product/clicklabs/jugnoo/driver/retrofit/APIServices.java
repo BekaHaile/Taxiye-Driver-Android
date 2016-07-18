@@ -392,5 +392,10 @@ public interface APIServices {
 	Response sendmFileToServer(@Part("mFile") TypedFile image,
 							   @PartMap Map<String, String> params);
 
+	@FormUrlEncoded
+	@POST("/upload_ring_count_data")
+	void sendRingCountData(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
+
 
 }

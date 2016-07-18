@@ -123,6 +123,8 @@ public interface Constants {
     String KEY_VENDOR_MESSAGE = "vendor_message";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
+    String KEY_RING_COUNT = "ring_count";
 
-	String MIME_TYPE = "application/octet-stream";
+
+    String MIME_TYPE = "application/octet-stream";
 }

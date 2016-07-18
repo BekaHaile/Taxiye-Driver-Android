@@ -82,6 +82,7 @@ import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.apis.ApiRejectRequest;
 import product.clicklabs.jugnoo.driver.apis.ApiSendCallLogs;
+import product.clicklabs.jugnoo.driver.apis.ApiSendRingCountData;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.AppMode;
 import product.clicklabs.jugnoo.driver.datastructure.BenefitType;
@@ -1149,6 +1150,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 
+			apiSendRingCountData();
+
+
 			reviewSubmitBtn.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -1636,6 +1640,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
             }).fetchDriverAppAsync(Data.userData.accessToken, appList);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void apiSendRingCountData(){
+		if(System.currentTimeMillis() - Prefs.with(HomeActivity.this).getLong(SPLabels.SEND_RING_COUNT_FREQUENCY,0) > 24L * 60L * 60L * 1000L) {
+			new ApiSendRingCountData(this, new ApiSendRingCountData.Callback() {
+				@Override
+				public void onSuccess() {
+					Database2.getInstance(activity).deleteRingData();
+					Prefs.with(activity).save(SPLabels.SEND_RING_COUNT_FREQUENCY, System.currentTimeMillis());
+				}
+			}).ringCountData();
 		}
 	}
 
@@ -6361,5 +6377,42 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		return deliveryTime;
 	}
+
+//	public void ringCountData() {
+//		try {
+//			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+//
+//				String ringCountData = Database2.getInstance(HomeActivity.this).getRingCompleteData();
+//				HashMap<String, String> params = new HashMap<String, String>();
+//				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+//				params.put(KEY_RING_COUNT, ringCountData);
+//
+//				Log.i("params", "=" + params);
+//
+//				RestClient.getApiServices().sendRingCountData(params, new Callback<RegisterScreenResponse>() {
+//					@Override
+//					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+//						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+//						try {
+//							JSONObject jObj = new JSONObject(responseStr);
+//							int flag = jObj.getInt(KEY_FLAG);
+//							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+//								Database2.getInstance(HomeActivity.this).deleteRingData();
+//								Prefs.with(HomeActivity.this).save(SPLabels.SEND_RING_COUNT_FREQUENCY, System.currentTimeMillis());
+//							}
+//						} catch (Exception exception) {
+//							exception.printStackTrace();
+//						}
+//					}
+//					@Override
+//					public void failure(RetrofitError error) {
+//						Log.e("request fail", error.toString());
+//					}
+//				});
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 }
