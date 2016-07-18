@@ -25,6 +25,7 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.CallLog;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -705,4 +707,19 @@ public class Utils {
 		is.close();
 		return string.toString();
 	}
+
+	public static void deleteMFile() {
+		File dir = new File(Environment.getExternalStorageDirectory() + "/JugnooData");
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				File file = new File(dir, children[i]);
+				long diff = new Date().getTime() - file.lastModified();
+				if (diff > 30 * 24 * 60 * 60 * 1000) {
+					file.delete();
+				}
+			}
+		}
+	}
+
 }
