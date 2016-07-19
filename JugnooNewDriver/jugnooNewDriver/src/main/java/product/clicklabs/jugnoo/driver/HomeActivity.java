@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -554,6 +555,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
+//			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
+
 
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
@@ -1056,39 +1059,47 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
-						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
-								new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										if (myLocation != null) {
-											LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-											CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-											double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
+					try {
+						if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
+							DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
+									new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											if (myLocation != null) {
+												try {
+													LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 
-											if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
-												buildAlertMessageNoGps();
-												GCMIntentService.clearNotifications(activity);
-												driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
-												FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+													if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
+														buildAlertMessageNoGps();
+														GCMIntentService.clearNotifications(activity);
+														driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
+														FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+													} else {
+														DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+													}
+												} catch (Resources.NotFoundException e) {
+													e.printStackTrace();
+												}
 											} else {
-												DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+												Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 											}
-										} else {
-											Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 										}
-									}
-								},
-								new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
-									}
-								}, false, false);
-						FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
-					}
-					else{
-						DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
+									},
+									new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
+										}
+									}, false, false);
+							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
+						}
+						else{
+							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
 					}
 
 				}
@@ -1354,6 +1365,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
+//			distanceReset2.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+//				}
+//			});
 
 
 			try {
@@ -3952,10 +3969,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
 			finalDistance = 0;
 			if(totalDistance < totalDistanceFromLogFile){
-				long ridetimeInSec = rideTimeInMillis/60L;
+				long ridetimeInSec = rideTimeInMillis/1000L;
 				Double speed = totalDistanceFromLogFile/ridetimeInSec;
-				if (speed < 15){
+				if (speed <=15){
 					finalDistance = totalDistanceFromLogFile;
+					customerRideDataGlobal.setDistance(finalDistance);
 				}
 			} else {
 				finalDistance = totalDistance;

@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -196,8 +197,12 @@ public class NotificationTipsFragment extends Fragment {
 
 					@Override
 					public void failure(RetrofitError error) {
-						progressBar.setVisibility(View.GONE);
-						openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+						try {
+							progressBar.setVisibility(View.GONE);
+							openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+						} catch (Resources.NotFoundException e) {
+							e.printStackTrace();
+						}
 
 					}
 				});
