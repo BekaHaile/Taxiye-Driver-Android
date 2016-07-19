@@ -3966,14 +3966,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
-			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+//			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+			double totalDistanceFromLogInMeters = totalDistanceFromLog * 1000;
 			finalDistance = 0;
-			if(totalDistance < totalDistanceFromLogFile){
-				long ridetimeInSec = rideTimeInMillis/1000L;
-				Double speed = totalDistanceFromLogFile/ridetimeInSec;
-				if (speed <=15){
-					finalDistance = totalDistanceFromLogFile;
+			if (totalDistance < totalDistanceFromLogInMeters) {
+				long ridetimeInSec = rideTimeInMillis / 1000L;
+				Double speed = totalDistanceFromLogInMeters / ridetimeInSec;
+				if (speed <= 15) {
+					finalDistance = totalDistanceFromLogInMeters;
 					customerRideDataGlobal.setDistance(finalDistance);
+				} else {
+					finalDistance = totalDistance;
 				}
 			} else {
 				finalDistance = totalDistance;
@@ -4146,7 +4149,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void driverUploadPathDataFileAsync(final Activity activity, int engagementId, double totalHaversineDistance) {
 		try {
 			String rideDataStr = Database2.getInstance(activity).getRideData(engagementId);
-			Log.writePathLogToFile(String.valueOf(engagementId)+"log", rideDataStr);
 			if (!"".equalsIgnoreCase(rideDataStr)) {
 				totalHaversineDistance = totalHaversineDistance / 1000;
 				rideDataStr = rideDataStr + "\n" + totalHaversineDistance;
