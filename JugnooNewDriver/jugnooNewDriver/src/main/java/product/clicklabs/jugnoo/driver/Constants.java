@@ -100,6 +100,7 @@ public interface Constants {
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
+    String KEY_DISTANCE_TRAVELLED_LOG = "distance_travelled_log";
     String KEY_IS_CACHED = "is_cached";
     String KEY_PR_DISTANCE = "pr_distance";
     String KEY_DELIVERY_DATA = "delivery_data";

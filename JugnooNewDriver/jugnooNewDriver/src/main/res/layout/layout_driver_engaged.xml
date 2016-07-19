@@ -494,6 +494,17 @@
         android:tag="mwar"
         />
 
+    <!--<Button-->
+        <!--android:id="@+id/distanceReset2"-->
+        <!--android:layout_width="80px"-->
+        <!--android:layout_height="80px"-->
+        <!--android:layout_above="@+id/linearLayoutStartEnd"-->
+        <!--android:layout_marginBottom="20px"-->
+        <!--android:layout_marginLeft="160px"-->
+        <!--android:background="@drawable/new_my_loc_button"-->
+        <!--android:tag="mwar"-->
+        <!--/>-->
+
     <Button
         android:id="@+id/buttonDriverNavigation"
         android:layout_width="240px"

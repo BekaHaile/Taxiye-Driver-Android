@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -554,6 +555,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
+//			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
+
 
 			//Start ride layout
 			driverStartRideMainRl = (RelativeLayout) findViewById(R.id.driverStartRideMainRl);
@@ -1056,39 +1059,47 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
-						DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
-								new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										if (myLocation != null) {
-											LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-											CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-											double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
+					try {
+						if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
+							DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
+									new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											if (myLocation != null) {
+												try {
+													LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
 
-											if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
-												buildAlertMessageNoGps();
-												GCMIntentService.clearNotifications(activity);
-												driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
-												FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+													if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
+														buildAlertMessageNoGps();
+														GCMIntentService.clearNotifications(activity);
+														driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
+														FlurryEventLogger.event(CONFIRMING_ARRIVE_YES);
+													} else {
+														DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+													}
+												} catch (Resources.NotFoundException e) {
+													e.printStackTrace();
+												}
 											} else {
-												DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
+												Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 											}
-										} else {
-											Toast.makeText(activity, getResources().getString(R.string.waiting_for_location), Toast.LENGTH_SHORT).show();
 										}
-									}
-								},
-								new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
-									}
-								}, false, false);
-						FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
-					}
-					else{
-						DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
+									},
+									new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
+										}
+									}, false, false);
+							FlurryEventLogger.event(ARRIVED_ON_THE_PICK_UP_LOCATION);
+						}
+						else{
+							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
 					}
 
 				}
@@ -1354,6 +1365,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
+//			distanceReset2.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+//				}
+//			});
 
 
 			try {
@@ -3668,8 +3685,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	//TODO End ride
 	public void autoEndRideAPI(final Activity activity, LatLng lastAccurateLatLng, final double dropLatitude, final double dropLongitude,
 							   int flagDistanceTravelled, final CustomerInfo customerInfo) {
-		DialogPopup.showLoadingDialog(activity,  getResources().getString(R.string.loading));
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
+		double totalDistanceFromLogInMeter =Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 		double totalDistance = customerInfo
 				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
@@ -3719,6 +3738,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_LATITUDE, String.valueOf(dropLatitude));
 		params.put(KEY_LONGITUDE, String.valueOf(dropLongitude));
 		params.put(KEY_DISTANCE_TRAVELLED, decimalFormat.format(totalDistanceInKm));
+		params.put(KEY_DISTANCE_TRAVELLED_LOG, decimalFormat.format(totalDistanceFromLog));
+
 		params.put(KEY_WAIT_TIME, waitTime);
 		params.put(KEY_RIDE_TIME, rideTime);
 		params.put(KEY_RIDE_TIME_SECONDS, rideTimeSecondsStr);
@@ -3764,27 +3785,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
 			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded, totalDistanceFromLogInMeter);
 		} else {
 			if(customerInfo.getIsDelivery() == 1) {
 				RestClient.getApiServices().endDelivery(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url));
+						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter));
 			} else{
 				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url));
+						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter));
 			}
 		}
 	}
 
 	private class CallbackEndRide<RegisterScreenResponse> implements Callback<RegisterScreenResponse>{
 		private CustomerInfo customerInfo;
-		private double totalHaversineDistanceInKm, dropLatitude, dropLongitude;
+		private double totalHaversineDistanceInKm, dropLatitude, dropLongitude, totalDistanceFromLogInMeter;
 		private HashMap<String, String> params;
 		private long eoRideTimeInMillis, eoWaitTimeInMillis;
 		private String url;
 
 		public CallbackEndRide(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude, double dropLongitude, HashMap<String, String> params,
-							   long eoRideTimeInMillis, long eoWaitTimeInMillis, String url) {
+							   long eoRideTimeInMillis, long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter) {
 			this.customerInfo = customerInfo;
 			this.totalHaversineDistanceInKm = totalHaversineDistanceInKm;
 			this.dropLatitude = dropLatitude;
@@ -3792,6 +3813,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			this.params = params;
 			this.eoRideTimeInMillis = eoRideTimeInMillis;
 			this.eoWaitTimeInMillis = eoWaitTimeInMillis;
+			this.totalDistanceFromLogInMeter = totalDistanceFromLogInMeter;
 			this.url = url;
 		}
 
@@ -3863,7 +3885,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Log.e("error", "=" + error);
 			if(customerInfo.getIsDelivery() != 1) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded);
+						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded, totalDistanceFromLogInMeter);
 			} else{
 				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
@@ -3937,14 +3959,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void endRideOffline(Activity activity, String url, HashMap<String, String> params, long rideTimeInMillis, long waitTimeInMillis,
-							   CustomerInfo customerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded) {
+							   CustomerInfo customerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded, double totalDistanceFromLogInMeter) {
 		try {
 
-			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay;
+			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
-
+//			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+			finalDistance = 0;
+			if (totalDistance < totalDistanceFromLogInMeter) {
+				long ridetimeInSec = rideTimeInMillis / 1000L;
+				Double speed = totalDistanceFromLogInMeter / ridetimeInSec;
+				if (speed <= 15) {
+					finalDistance = totalDistanceFromLogInMeter;
+					customerRideDataGlobal.setDistance(finalDistance);
+				} else {
+					finalDistance = totalDistance;
+				}
+			} else {
+				finalDistance = totalDistance;
+			}
 			Log.e("offline =============", "============");
 			Log.i("rideTime", "=" + rideTime);
 
@@ -3952,7 +3987,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (customerInfo != null && 1 == customerInfo.meterFareApplicable) {
 					totalFare = enteredMeterFare;
 				} else {
-					totalFare = getTotalFare(customerInfo, totalDistance,
+					totalFare = getTotalFare(customerInfo, finalDistance,
 							rideTimeInMillis, waitTimeInMillis);
 				}
 			} catch (Exception e) {
