@@ -151,6 +151,10 @@ public class Database2 {                                                        
 	private static final String GPS_STATE = "gps_state";
 
 
+	private static final String TABLE_CUSTOMER_RIDE_DATA = "table_customer_ride_data";
+	private static final String CUSTOMER_START_RIDE_TIME = "customer_start_ride_time";
+	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
+
 
 	/**
 	 * Creates and opens database for the application use
@@ -279,6 +283,14 @@ public class Database2 {                                                        
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_GPS_STATE + " ("
 				+ GPS_STATE + " INTEGER" + ");");
+
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_RIDE_DATA + " ("
+				+ CUSTOMER_RIDE_ENGAGEMENT_ID + " INTEGER, "
+				+ CUSTOMER_START_RIDE_TIME + " TEXT"
+				+ ");");
+
+		Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA created");
 
 
 	}
@@ -1492,6 +1504,40 @@ public class Database2 {                                                        
 			e.printStackTrace();
 		}
 
+	}
+
+
+	public void insertCustomerRideData(int engagementId, long rideStartTime) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.CUSTOMER_RIDE_ENGAGEMENT_ID, engagementId);
+			contentValues.put(Database2.CUSTOMER_START_RIDE_TIME, rideStartTime);
+			database.insert(Database2.TABLE_CUSTOMER_RIDE_DATA, null, contentValues);
+			Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA values inserted engagementId="+engagementId+", rideStartTime="+rideStartTime);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public long getCustomerElapsedRideTime(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_CUSTOMER_RIDE_DATA
+				+ " WHERE " + CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		int i0 = cursor.getColumnIndex(Database2.CUSTOMER_START_RIDE_TIME);
+		if(cursor.moveToFirst()){
+			Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA getCustomerElapsedRideTime elapsed="+(System.currentTimeMillis() - Long.parseLong(cursor.getString(i0))));
+			return System.currentTimeMillis() - Long.parseLong(cursor.getString(i0));
+		}
+		return 0;
+	}
+
+
+	public void deleteCustomerRideDataForEngagement(int engagementId) {
+		try {
+			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
