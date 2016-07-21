@@ -5903,9 +5903,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							String pickupTime = jObj.optString(KEY_PICKUP_TIME, "");
 							if(!"".equalsIgnoreCase(pickupTime)){
 								long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
+								long pickupTimeMillis = DateOperations.getMilliseconds(DateOperations.utcToLocalTZ(pickupTime));
 								if(rideTimeInMillisFromDB <= 0){
 									Database2.getInstance(HomeActivity.this).insertCustomerRideData(customerInfo.getEngagementId(),
-											DateOperations.getMilliseconds(DateOperations.utcToLocal(pickupTime)));
+											pickupTimeMillis);
 								}
 							}
 						} catch (Exception e) {
