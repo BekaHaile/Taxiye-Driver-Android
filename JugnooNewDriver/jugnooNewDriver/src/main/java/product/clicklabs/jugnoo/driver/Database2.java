@@ -290,9 +290,6 @@ public class Database2 {                                                        
 				+ CUSTOMER_START_RIDE_TIME + " TEXT"
 				+ ");");
 
-		Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA created");
-
-
 	}
 
 	public static Database2 getInstance(Context context) {
@@ -979,6 +976,29 @@ public class Database2 {                                                        
 		return null;
 	}
 
+	public long getFirstRideDataTime(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RIDE_DATA
+				+ " WHERE " + RIDE_DATA_ENGAGEMENT_ID + "=" + engagementId
+				+ " AND " + RIDE_DATA_LAT + "='0.0' AND " + RIDE_DATA_LNG + "='0.0'", null);
+		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
+		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+		if(cursor.moveToFirst()){
+			Cursor cursor1 = database.rawQuery("SELECT * FROM " + TABLE_RIDE_DATA
+					+ " WHERE "
+					+ RIDE_DATA_I + ">" + cursor.getInt(i0)
+					+ " AND "
+					+ RIDE_DATA_ENGAGEMENT_ID + "=" + engagementId
+					, null);
+			int i31 = cursor1.getColumnIndex(Database2.RIDE_DATA_T);
+			if(cursor1.moveToFirst()){
+				return System.currentTimeMillis() - Long.parseLong(cursor1.getString(i31));
+			} else{
+				return System.currentTimeMillis() - Long.parseLong(cursor.getString(i3));
+			}
+		}
+		return 0;
+	}
+
 
 
 
@@ -1513,7 +1533,6 @@ public class Database2 {                                                        
 			contentValues.put(Database2.CUSTOMER_RIDE_ENGAGEMENT_ID, engagementId);
 			contentValues.put(Database2.CUSTOMER_START_RIDE_TIME, rideStartTime);
 			database.insert(Database2.TABLE_CUSTOMER_RIDE_DATA, null, contentValues);
-			Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA values inserted engagementId="+engagementId+", rideStartTime="+rideStartTime);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1525,7 +1544,6 @@ public class Database2 {                                                        
 				+ " WHERE " + CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
 		int i0 = cursor.getColumnIndex(Database2.CUSTOMER_START_RIDE_TIME);
 		if(cursor.moveToFirst()){
-			Log.e(Database2.class.getSimpleName(), "TABLE_CUSTOMER_RIDE_DATA getCustomerElapsedRideTime elapsed="+(System.currentTimeMillis() - Long.parseLong(cursor.getString(i0))));
 			return System.currentTimeMillis() - Long.parseLong(cursor.getString(i0));
 		}
 		return 0;

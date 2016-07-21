@@ -359,6 +359,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private final double FIX_ZOOM_DIAGONAL = 408;
 
+	Button distanceReset2;
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -555,7 +557,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
-//			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
+			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
 
 
 			//Start ride layout
@@ -1365,13 +1367,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
-//			distanceReset2.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
-//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
-//				}
-//			});
+			distanceReset2.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
+				}
+			});
 
 
 			try {
@@ -3567,6 +3569,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String message = JSONParser.getServerMessage(jObj);
 						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 							if (ApiResponseFlags.RIDE_STARTED.getOrdinal() == flag) {
+
+								Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
+
 								double dropLatitude = 0, dropLongitude = 0;
 								try {
 									if (jObj.has(KEY_OP_DROP_LATITUDE) && jObj.has(KEY_OP_DROP_LONGITUDE)) {
@@ -3614,8 +3619,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								saveCustomerRideDataInSP(customerInfo);
 
 								switchDriverScreen(driverScreenMode);
-
-								Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
 
 								try {
 									JSONObject map = new JSONObject();
@@ -3983,11 +3986,32 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			finalDistance = 0;
 
-			if(rideTimeInMillisFromDB > rideTimeInMillis
-					&& rideTimeInMillisFromDB < 360l * 60l * 1000l){
+			long rideTimeFromLogDB = Database2.getInstance(activity).getFirstRideDataTime(customerInfo.getEngagementId());
+
+			Toast.makeText(activity,
+					"ride_time = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeInMillis) / 1000d))
+					+ "\nride_time_db = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeInMillisFromDB) / 1000d))
+							+ "\nride_time_log = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeFromLogDB) / 1000d)),
+					Toast.LENGTH_LONG
+			).show();
+
+			long MAX_RIDE_TIME_LIMIT = 360l * 60l * 1000l;
+			long ONE_SEC = 1000;
+
+			if (rideTimeInMillisFromDB > rideTimeInMillis
+					&& rideTimeInMillisFromDB < MAX_RIDE_TIME_LIMIT) {
 				rideTimeInMillis = rideTimeInMillisFromDB;
-				rideTime = decimalFormatNoDecimal.format(Math.round(((double)rideTimeInMillis) / 60000.0d));
+				rideTime = decimalFormatNoDecimal.format(Math.round(((double) rideTimeInMillis) / 60000.0d));
 			}
+			else if (rideTimeInMillisFromDB < ONE_SEC
+					&& rideTimeFromLogDB > rideTimeInMillis
+					&& rideTimeFromLogDB < MAX_RIDE_TIME_LIMIT) {
+				rideTimeInMillis = rideTimeFromLogDB;
+				rideTime = decimalFormatNoDecimal.format(Math.round(((double) rideTimeInMillis) / 60000.0d));
+				params.put(KEY_RIDE_TIME_SECONDS_DB, decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeFromLogDB) / 1000d)));
+			}
+
+
 
 			if (totalDistance < totalDistanceFromLogInMeter
 					&& totalDistanceFromLogInMeter - totalDistance < 40d * 1000d) {
@@ -5875,6 +5899,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject jObj = new JSONObject(responseStr);
 					int flag = jObj.getInt(KEY_FLAG);
 					if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+						try {
+							String pickupTime = jObj.optString(KEY_PICKUP_TIME, "");
+							if(!"".equalsIgnoreCase(pickupTime)){
+								long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
+								if(rideTimeInMillisFromDB <= 0){
+									Database2.getInstance(HomeActivity.this).insertCustomerRideData(customerInfo.getEngagementId(),
+											DateOperations.getMilliseconds(DateOperations.utcToLocal(pickupTime)));
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+
 						stopWalletUpdateTimeout();
 						if (customerInfo != null && walletBalanceUpdatePopup) {
 							if (jObj.getString(KEY_WALLET_BALANCE) != null) {
