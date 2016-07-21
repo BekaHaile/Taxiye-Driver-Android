@@ -359,7 +359,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private final double FIX_ZOOM_DIAGONAL = 408;
 
-	Button distanceReset2;
+//	Button distanceReset2;
 
 
 	@Override
@@ -557,7 +557,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
-			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
+//			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
 
 
 			//Start ride layout
@@ -1367,13 +1367,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
-			distanceReset2.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
-					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
-				}
-			});
+//			distanceReset2.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
+//				}
+//			});
 
 
 			try {
@@ -3988,13 +3988,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			long rideTimeFromLogDB = Database2.getInstance(activity).getFirstRideDataTime(customerInfo.getEngagementId());
 
-			Toast.makeText(activity,
-					"ride_time = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeInMillis) / 1000d))
-					+ "\nride_time_db = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeInMillisFromDB) / 1000d))
-							+ "\nride_time_log = " + decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeFromLogDB) / 1000d)),
-					Toast.LENGTH_LONG
-			).show();
-
 			long MAX_RIDE_TIME_LIMIT = 360l * 60l * 1000l;
 			long ONE_SEC = 1000;
 
@@ -5905,6 +5898,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
 								long pickupTimeMillis = DateOperations.getMilliseconds(DateOperations.utcToLocalTZ(pickupTime));
 								if(rideTimeInMillisFromDB <= 0){
+									Database2.getInstance(HomeActivity.this).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
 									Database2.getInstance(HomeActivity.this).insertCustomerRideData(customerInfo.getEngagementId(),
 											pickupTimeMillis);
 								}

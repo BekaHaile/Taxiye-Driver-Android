@@ -155,10 +155,10 @@ public class GpsDistanceCalculator {
 		MyApplication.getInstance().writePathLogToFile("m", "totalDistance at stop =" + totalDistance);
 	}
 
-	public void distanceReset(){
-		saveTotalDistanceToSP(context, -1);
-		instance.totalDistance = -1;
-	}
+//	public void distanceReset(){
+//		saveTotalDistanceToSP(context, -1);
+//		instance.totalDistance = -1;
+//	}
 
 
 	private static int METERING_PI_REQUEST_CODE = 112;
