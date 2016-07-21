@@ -1369,6 +1369,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //				@Override
 //				public void onClick(View v) {
 //					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
 //				}
 //			});
 
@@ -3614,6 +3615,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								switchDriverScreen(driverScreenMode);
 
+								Database2.getInstance(activity).insertCustomerRideData(customerInfo.getEngagementId(), System.currentTimeMillis());
+
 								try {
 									JSONObject map = new JSONObject();
 									map.put(KEY_LATITUDE, driverAtPickupLatLng.latitude);
@@ -3697,6 +3700,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		double Average_endRideMinute = totalDistanceInKm * 2;
 
 		long rideTimeInMillis = customerInfo.getElapsedRideTime(HomeActivity.this);
+		long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
 
 		long customerWaitTimeMillis = customerInfo
 				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
@@ -3720,8 +3724,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		double rideTimeSeconds = Math.ceil(((double) rideTimeInMillis) / 1000d);
 		String rideTimeSecondsStr = decimalFormatNoDecimal.format(rideTimeSeconds);
-		double waitTimeSeconds = Math.ceil(((double)customerWaitTimeMillis) / 1000d);
+		double waitTimeSeconds = Math.ceil(((double) customerWaitTimeMillis) / 1000d);
 		String waitTimeSecondsStr = decimalFormatNoDecimal.format(waitTimeSeconds);
+
+		String rideTimeInSecFromDBStr = decimalFormatNoDecimal.format(Math.ceil(((double) rideTimeInMillisFromDB) / 1000d));
 
 		final long eoRideTimeInMillis = rideTimeInMillis;
 		final long eoWaitTimeInMillis = customerWaitTimeMillis;
@@ -3744,6 +3750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put(KEY_RIDE_TIME, rideTime);
 		params.put(KEY_RIDE_TIME_SECONDS, rideTimeSecondsStr);
 		params.put(KEY_WAIT_TIME_SECONDS, waitTimeSecondsStr);
+		params.put(KEY_RIDE_TIME_SECONDS_DB, rideTimeInSecFromDBStr);
 		params.put(KEY_IS_CACHED, "0");
 		params.put("flag_distance_travelled", "" + flagDistanceTravelled);
 		params.put("last_accurate_latitude", "" + lastAccurateLatLng.latitude);
@@ -3785,14 +3792,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		if (customerInfo.getCachedApiEnabled() == 1 && customerInfo.getIsDelivery() != 1) {
 			endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded, totalDistanceFromLogInMeter);
+					customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
+					totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 		} else {
 			if(customerInfo.getIsDelivery() == 1) {
 				RestClient.getApiServices().endDelivery(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter));
+						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			} else{
 				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
-						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter));
+						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			}
 		}
 	}
@@ -3803,9 +3811,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		private HashMap<String, String> params;
 		private long eoRideTimeInMillis, eoWaitTimeInMillis;
 		private String url;
+		private long rideTimeInMillisFromDB;
 
 		public CallbackEndRide(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude, double dropLongitude, HashMap<String, String> params,
-							   long eoRideTimeInMillis, long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter) {
+							   long eoRideTimeInMillis, long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter,
+							   long rideTimeInMillisFromDB) {
 			this.customerInfo = customerInfo;
 			this.totalHaversineDistanceInKm = totalHaversineDistanceInKm;
 			this.dropLatitude = dropLatitude;
@@ -3815,6 +3825,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			this.eoWaitTimeInMillis = eoWaitTimeInMillis;
 			this.totalDistanceFromLogInMeter = totalDistanceFromLogInMeter;
 			this.url = url;
+			this.rideTimeInMillisFromDB = rideTimeInMillisFromDB;
 		}
 
 		@Override
@@ -3864,6 +3875,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 					switchDriverScreen(driverScreenMode);
 
+					Database2.getInstance(activity).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
+
 
 					initializeStartRideVariables();
 					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
@@ -3885,7 +3898,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Log.e("error", "=" + error);
 			if(customerInfo.getIsDelivery() != 1) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
-						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded, totalDistanceFromLogInMeter);
+						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
+						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 			} else{
 				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
@@ -3959,18 +3973,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void endRideOffline(Activity activity, String url, HashMap<String, String> params, long rideTimeInMillis, long waitTimeInMillis,
-							   CustomerInfo customerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare, int luggageCountAdded, double totalDistanceFromLogInMeter) {
+							   CustomerInfo customerInfo, final double dropLatitude, final double dropLongitude, double enteredMeterFare,
+							   int luggageCountAdded, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB) {
 		try {
 
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
-//			double totalDistanceFromLogFile = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
 			finalDistance = 0;
-			if (totalDistance < totalDistanceFromLogInMeter) {
+
+			if(rideTimeInMillisFromDB > rideTimeInMillis
+					&& rideTimeInMillisFromDB < 360l * 60l * 1000l){
+				rideTimeInMillis = rideTimeInMillisFromDB;
+				rideTime = decimalFormatNoDecimal.format(Math.round(((double)rideTimeInMillis) / 60000.0d));
+			}
+
+			if (totalDistance < totalDistanceFromLogInMeter
+					&& totalDistanceFromLogInMeter - totalDistance < 40d * 1000d) {
 				long ridetimeInSec = rideTimeInMillis / 1000L;
-				Double speed = totalDistanceFromLogInMeter / ridetimeInSec;
+				double speed = totalDistanceFromLogInMeter / ((double)ridetimeInSec);
 				if (speed <= 15) {
 					finalDistance = totalDistanceFromLogInMeter;
 					customerRideDataGlobal.setDistance(finalDistance);
@@ -4008,7 +4030,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "Data.fareStructure = " + Data.fareStructure);
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "rideTime = " + rideTime);
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "waitTime = " + waitTime);
-				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalDistance = " + totalDistance);
+				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalDistance = " + finalDistance);
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "totalFare = " + totalFare);
 				Log.writePathLogToFile(customerInfo.getEngagementId() + "endRide", "assignedCustomerInfo = " + customerInfo);
 			} catch (Exception e) {
@@ -4113,6 +4135,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverScreenMode = DriverScreenMode.D_RIDE_END;
 			Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 			switchDriverScreen(driverScreenMode);
+
+			Database2.getInstance(activity).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
 
 
 			params.put("is_cached", "1");

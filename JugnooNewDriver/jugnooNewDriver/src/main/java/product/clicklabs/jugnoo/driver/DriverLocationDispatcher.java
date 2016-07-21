@@ -147,6 +147,9 @@ public class DriverLocationDispatcher {
 								RestClient.getApiServices().driverMarkArriveSync(nameValuePairs);
 								engagementSPData.setStatus(EngagementStatus.ARRIVED.getOrdinal());
 								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementSPData);
+
+								Database2.getInstance(context).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), engagementSPData.getEngagementId());
+								Log.writePathLogToFile(engagementSPData.getEngagementId() + "m", "arrived sucessful");
 							}
 							break;
 						}
