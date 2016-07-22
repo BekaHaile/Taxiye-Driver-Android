@@ -537,8 +537,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if ((requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
-			imageChooserManager.submit(requestCode, data);
+		try {
+			if ((requestCode == ChooserType.REQUEST_PICK_PICTURE || requestCode == ChooserType.REQUEST_CAPTURE_PICTURE)) {
+				imageChooserManager.submit(requestCode, data);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

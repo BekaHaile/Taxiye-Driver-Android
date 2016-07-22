@@ -1631,6 +1631,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
 						}
 					});
+				} else {
+					if(categories != null) {
+						showLanguagePreference();
+					}
 				}
 			}
 		} catch (Exception e) {
