@@ -1643,8 +1643,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
-	public void apiSendRingCountData(){
-		if(System.currentTimeMillis() - Prefs.with(HomeActivity.this).getLong(SPLabels.SEND_RING_COUNT_FREQUENCY,0) > 24L * 60L * 60L * 1000L) {
+	public void apiSendRingCountData() {
+		long ringFrequency = Prefs.with(HomeActivity.this).getLong(SPLabels.RING_COUNT_FREQUENCY, 0);
+		if (ringFrequency > 0
+				&& System.currentTimeMillis() - Prefs.with(HomeActivity.this).getLong(SPLabels.SEND_RING_COUNT_FREQUENCY, 0) > ringFrequency) {
 			new ApiSendRingCountData(this, new ApiSendRingCountData.Callback() {
 				@Override
 				public void onSuccess() {

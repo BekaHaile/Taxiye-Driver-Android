@@ -224,6 +224,7 @@ public class JSONParser implements Constants {
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
+		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
 		Prefs.with(context).save(SPLabels.MAX_TIMEOUT_RELIEF, userData.optLong("timeout_relief", 30000));
 		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer", 120000));

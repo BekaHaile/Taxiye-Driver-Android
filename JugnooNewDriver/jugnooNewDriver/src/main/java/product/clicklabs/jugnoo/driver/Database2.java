@@ -921,7 +921,7 @@ public class Database2 {                                                        
 			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
 
 			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
-					+ " ORDER BY " + RING_DATA_ENGAGEMENT +" DESC LIMIT "+limit, null);
+					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC LIMIT " + limit, null);
 
 			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
 			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
@@ -961,7 +961,13 @@ public class Database2 {                                                        
 			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 				try {
 					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
-					ringDataStr = ringDataStr + ringData.toString() + newLine;
+					if(ringData.time > 130000){
+						ringData = new RingData(cursor.getInt(i0),1);
+						ringDataStr = ringDataStr + ringData.toString() + newLine;
+					} else{
+						ringDataStr = ringDataStr + ringData.toString() + newLine;
+					}
+
 					hasValues = true;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -997,7 +1003,7 @@ public class Database2 {                                                        
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
 			contentValues.put(Database2.RING_DATA_TIME, time);
-			database.update(Database2.TABLE_RING_DATA, contentValues, RING_DATA_ENGAGEMENT + "="+engagementId, null);
+			database.update(Database2.TABLE_RING_DATA, contentValues, RING_DATA_ENGAGEMENT + "=" + engagementId, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
