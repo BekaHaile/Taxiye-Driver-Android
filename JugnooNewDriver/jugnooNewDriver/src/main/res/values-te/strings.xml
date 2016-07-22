@@ -569,7 +569,7 @@
     <string name="to_no_colon">కు </string>
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
-    <string name="mandatory">Mandatory</string>
+    <string name="mandatory">తప్పనిసరి</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>

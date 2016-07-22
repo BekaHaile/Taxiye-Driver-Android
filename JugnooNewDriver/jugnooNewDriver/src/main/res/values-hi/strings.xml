@@ -567,7 +567,7 @@
 	<string name="to_no_colon">को</string>
 	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
 	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
-	<string name="mandatory">Mandatory</string>
+	<string name="mandatory">अनिवार्य</string>
 	<string name="owned">Owned</string>
 	<string name="auto">ऑटो</string>
 	<string name="rejection_reason">Rejection Reason</string>

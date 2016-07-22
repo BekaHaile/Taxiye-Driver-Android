@@ -522,7 +522,7 @@
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
-    <string name="mandatory">Mandatory</string>
+    <string name="mandatory">ಕಡ್ಡಾಯ</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
     <string name="rejection_reason">Rejection Reason</string>

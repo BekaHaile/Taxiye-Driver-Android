@@ -736,14 +736,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					}
 				});
 
-
-
 			}
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		}
 		else{
+
 			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
 			buttonRegister.setVisibility(View.VISIBLE);
@@ -1588,47 +1587,51 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	public void fetchLanguageList() {
 		try {
 			if (AppStatus.getInstance(SplashNewActivity.this).isOnline(SplashNewActivity.this)) {
+				if(categories.size() == 0) {
 				DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
 				params.put("device_model_name", android.os.Build.MODEL);
 				params.put("android_version", android.os.Build.VERSION.RELEASE);
 
-				RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						DialogPopup.dismissLoadingDialog();
-						try {
-							JSONObject jObj = new JSONObject(responseStr);
-							String message = JSONParser.getServerMessage(jObj);
-							int flag = jObj.getInt("flag");
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								languagePrefStatus = jObj.getInt("locale_preference_enabled");
-								JSONArray jArray = jObj.getJSONArray("locales");
-								if (jArray != null) {
-									categories.clear();
-									for (int i = 0; i < jArray.length(); i++) {
-										categories.add(jArray.get(i).toString());
-									}
-								}
-								showLanguagePreference();
 
-							} else {
-								DialogPopup.alertPopup(SplashNewActivity.this, "", message);
+
+					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+						@Override
+						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+							String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+							DialogPopup.dismissLoadingDialog();
+							try {
+								JSONObject jObj = new JSONObject(responseStr);
+								String message = JSONParser.getServerMessage(jObj);
+								int flag = jObj.getInt("flag");
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									languagePrefStatus = jObj.getInt("locale_preference_enabled");
+									JSONArray jArray = jObj.getJSONArray("locales");
+									if (jArray != null) {
+										categories.clear();
+										for (int i = 0; i < jArray.length(); i++) {
+											categories.add(jArray.get(i).toString());
+										}
+									}
+									showLanguagePreference();
+
+								} else {
+									DialogPopup.alertPopup(SplashNewActivity.this, "", message);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
 							}
-						} catch (Exception e) {
-							e.printStackTrace();
-							DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+
 						}
 
-					}
-
-					@Override
-					public void failure(RetrofitError error) {
-						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
-					}
-				});
+						@Override
+						public void failure(RetrofitError error) {
+							DialogPopup.dismissLoadingDialog();
+							DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+						}
+					});
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

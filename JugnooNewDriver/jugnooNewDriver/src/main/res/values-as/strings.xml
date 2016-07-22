@@ -518,7 +518,7 @@
     <string name="auto_status_confirmation">Do you have an auto ?</string>
     <string name="no_doc_available">একো কাগজপত্ৰ নাই</string>
     <string name="upload">আপলোড</string>
-    <string name="mandatory">Mandatory</string>
+    <string name="mandatory">கட்டாய</string>
     <string name="optional">অপস্নেল</string>
     <string name="uploaded">আপলোড কৰা হল</string>
     <string name="rejected">নাকচ কৰা হল</string>
