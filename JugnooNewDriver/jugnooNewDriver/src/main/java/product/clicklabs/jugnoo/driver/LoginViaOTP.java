@@ -62,7 +62,7 @@ public class LoginViaOTP extends BaseActivity {
 	Button backBtn, btnGenerateOtp, loginViaOtp, btnLogin;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter, textViewOr;
-	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+	String selectedLanguage = "";
 	int languagePrefStatus;
 	Configuration conf;
 	String knowlarityMissedCallNumber = "";
@@ -147,6 +147,7 @@ public class LoginViaOTP extends BaseActivity {
 		textViewOr = (TextView) findViewById(R.id.textViewOr);
 		textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 

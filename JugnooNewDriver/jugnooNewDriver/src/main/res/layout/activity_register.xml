@@ -93,6 +93,7 @@
                     android:background="@drawable/transparent"
                     android:capitalize="words"
                     android:hint="@string/name"
+                    android:inputType="text"
                     android:paddingLeft="15px"
                     android:paddingRight="20px"
                     android:singleLine="true"
