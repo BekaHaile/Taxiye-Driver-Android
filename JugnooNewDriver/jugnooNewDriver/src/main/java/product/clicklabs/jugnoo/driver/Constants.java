@@ -123,6 +123,7 @@ public interface Constants {
     String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
+    String KEY_RING_COUNT = "ring_count";
 
     String KEY_FARE = "fare";
     String KEY_BEARING = "bearing";

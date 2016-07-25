@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -91,7 +92,7 @@ public class NotificationTipsFragment extends Fragment {
 		webview.setWebChromeClient(new WebChromeClient());
 		webview.getSettings().setDomStorageEnabled(true);
 		webview.getSettings().setDatabaseEnabled(true);
-
+		webview.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
 		//enable Javascript
 		webview.getSettings().setJavaScriptEnabled(true);

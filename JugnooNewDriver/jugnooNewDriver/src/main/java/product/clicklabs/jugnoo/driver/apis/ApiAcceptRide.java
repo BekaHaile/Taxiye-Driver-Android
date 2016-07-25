@@ -47,7 +47,7 @@ public class ApiAcceptRide {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				if (Utils.getBatteryPercentage(activity) >= 20) {
 					GCMIntentService.clearNotifications(activity);
-					GCMIntentService.stopRing(true);
+					GCMIntentService.stopRing(true, activity);
 
 					DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 

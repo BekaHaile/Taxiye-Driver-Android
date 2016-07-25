@@ -424,6 +424,12 @@ public interface APIServices {
 					  Callback<CityResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/upload_ring_count_data")
+	void sendRingCountData(@FieldMap Map<String, String> params,
+						   Callback<RegisterScreenResponse> callback);
+
+
+	@FormUrlEncoded
 	@POST("/verify_document_status")
 	void docSubmission(@Field("access_token") String accessToken,
 					Callback<DocRequirementResponse> callback);

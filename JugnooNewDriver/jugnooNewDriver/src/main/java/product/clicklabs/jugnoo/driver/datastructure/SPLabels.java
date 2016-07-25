@@ -85,8 +85,13 @@ public class SPLabels {
 
     public static final String DRIVER_LOGIN_PHONE_NUMBER = "driver_login_phone_number";
     public static final String DRIVER_LOGIN_TIME = "driver_login_time";
+	public static final String SEND_RING_COUNT_FREQUENCY = "send_ring_count_frequency";
+	public static final String RING_COUNT_FREQUENCY = "ring_count_frequency";
 
 
 
-    public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
+
+
+
+	public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
 }
