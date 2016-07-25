@@ -639,7 +639,6 @@
     <string name="owner">உரிமையாளர்</string>
     <string name="approval_pending">ஒப்புதல் நிலுவையில்</string>
 
-    <string name="applicable_after">Applicable after %1$d Kmz</string>
 
     <string name="rejection_reason">நிராகரித்தல் காரணம்</string>
     <string name="mandatory">கட்டாய</string>
@@ -652,6 +651,7 @@
     <string name="driver_to_customer">டிரைவர் குறிக்கின்ற வாடிக்கையாளர்</string>
     <string name="driver_to_driver">டிரைவர் குறிக்கின்ற டிரைவர்</string>
     <string name="rate_card">விலை அட்டை</string>
+    <string name="applicable_after">Applicable after %1$s Kms</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

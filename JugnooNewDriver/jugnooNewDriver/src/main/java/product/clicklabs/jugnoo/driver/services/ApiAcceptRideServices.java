@@ -58,7 +58,7 @@ public class ApiAcceptRideServices extends IntentService {
 			if (AppStatus.getInstance(ApiAcceptRideServices.this).isOnline(ApiAcceptRideServices.this)) {
 				if (Utils.getBatteryPercentage(ApiAcceptRideServices.this) >= 20) {
 					GCMIntentService.clearNotifications(ApiAcceptRideServices.this);
-					GCMIntentService.stopRing(true);
+					GCMIntentService.stopRing(true, ApiAcceptRideServices.this);
 
 
 					HashMap<String, String> params = new HashMap<String, String>();

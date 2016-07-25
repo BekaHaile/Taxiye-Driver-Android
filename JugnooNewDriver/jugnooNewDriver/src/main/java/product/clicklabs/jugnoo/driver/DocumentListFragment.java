@@ -47,6 +47,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UpdateDriverEarnings;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -570,7 +571,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 //					selected_photo.setImageBitmap(bitmap);
 
 					File f = null;
-					if(bitmap != null) {
+					if (bitmap != null) {
 						f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
@@ -589,69 +590,77 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo, final ChosenImage image) {
-		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-		HashMap<String, String> params = new HashMap<String, String>();
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
 
-		params.put("access_token", accessToken);
-		params.put("doc_type_num", String.valueOf(docNumType));
+				params.put("access_token", accessToken);
+				params.put("doc_type_num", String.valueOf(docNumType));
 
-		TypedFile typedFile;
-		typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-		RestClient.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
-			@Override
-			public void success(DocRequirementResponse docRequirementResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
+				TypedFile typedFile;
+				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
+				RestClient.getApiServices().uploadImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
+					@Override
+					public void success(DocRequirementResponse docRequirementResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
 
-					if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
-						int flag = jObj.getInt("flag");
-						String message = JSONParser.getServerMessage(jObj);
+							if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+								int flag = jObj.getInt("flag");
+								String message = JSONParser.getServerMessage(jObj);
 
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", message);
-								docs.get(index).status = jObj.getString("status");
-								if (coloum == 0) {
-									docs.get(index).setFile(new File(image.getFileThumbnail()));
-								} else {
-									docs.get(index).setFile1(new File(image.getFileThumbnail()));
+									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).status = jObj.getString("status");
+										if (coloum == 0) {
+											docs.get(index).setFile(new File(image.getFileThumbnail()));
+										} else {
+											docs.get(index).setFile1(new File(image.getFileThumbnail()));
+										}
+										driverDocumentListAdapter.notifyDataSetChanged();
+
+									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									} else {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									}
+									DialogPopup.dismissLoadingDialog();
 								}
-								driverDocumentListAdapter.notifyDataSetChanged();
-
-							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", message);
-								docs.get(index).isExpended = false;
-								driverDocumentListAdapter.notifyDataSetChanged();
 							} else {
-								DialogPopup.alertPopup(activity, "", message);
-								docs.get(index).isExpended = false;
-								driverDocumentListAdapter.notifyDataSetChanged();
+								DialogPopup.dismissLoadingDialog();
 							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							DialogPopup.dismissLoadingDialog();
+							docs.get(index).isExpended = false;
+							driverDocumentListAdapter.notifyDataSetChanged();
 						}
-					} else {
 						DialogPopup.dismissLoadingDialog();
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
-					DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
-					DialogPopup.dismissLoadingDialog();
-					docs.get(index).isExpended = false;
-					driverDocumentListAdapter.notifyDataSetChanged();
-				}
-				DialogPopup.dismissLoadingDialog();
-			}
 
-			@Override
-			public void failure(RetrofitError error) {
-				DialogPopup.dismissLoadingDialog();
-				docs.get(index).isExpended = false;
-				driverDocumentListAdapter.notifyDataSetChanged();
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						docs.get(index).isExpended = false;
+						driverDocumentListAdapter.notifyDataSetChanged();
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
 			}
-		});
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,

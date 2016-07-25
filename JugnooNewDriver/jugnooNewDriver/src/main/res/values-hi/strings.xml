@@ -612,7 +612,6 @@
 	<string name="Submit">जमा करें</string>
 	<string name="owner">मालिक</string>
 	<string name="approval_pending">स्वीकृति लंबित</string>
-	<string name="applicable_after">Applicable after %1$d Kmz</string>
 
 
 	<string name="rejection_reason">अस्वीकृति करने का  कारण</string>
@@ -626,6 +625,7 @@
 	<string name="driver_to_customer">ड्राइवर टू कस्टमर</string>
 	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
 	<string name="rate_card">रेट कार्ड</string>
+	<string name="applicable_after">Applicable after %1$s Kms</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

@@ -7,12 +7,14 @@ import android.content.res.Resources;
 import android.database.DataSetObserver;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -564,6 +566,10 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
 			textViewCity.setText(data.get(position).getCityName());
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
 			return convertView;
 		}
 
@@ -600,6 +606,12 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
 			textViewCity.setText(dataVehicle.get(position).getVehicleName());
+
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
+
 			return convertView;
 		}
 

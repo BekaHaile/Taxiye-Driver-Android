@@ -515,14 +515,11 @@
     <string name="auto_status_confirmation">Do you have an auto ?</string>
     <string name="no_doc_available">કોઈ દસ્તાવેજો ઉપલબ્ધ નથી </string>
     <string name="upload">Upload</string>
-    <string name="mandatory">Mandatory</string>
     <string name="optional">વૈકલ્પિક</string>
     <string name="uploaded">અપલોડેડ </string>
     <string name="rejected">ફગાવી</string>
     <string name="verified">ચકાસણી</string>
-    <string name="owned">Owned</string>
     <string name="auto">Auto</string>
-    <string name="rejection_reason">Rejection Reason</string>
     <string name="Messages">Messages</string>
     <string name="Hints">Hints</string>
     <string name="tricks">Tricks To Earn</string>
@@ -555,16 +552,21 @@
     <string name="Submit">સબમિટ</string>
     <string name="owner">માલિક</string>
     <string name="approval_pending">મંજૂરી બાકી</string>
-    <string name="before_ride">BEFORE RIDE</string>
-    <string name="in_ride_rate">IN RIDE</string>
-    <string name="referral_rate">REFERRAL</string>
-    <string name="pickup_charges">Pickup Charges (per Km)</string>
-    <string name="base_fare">Base Fare</string>
-    <string name="time_per_min">Time (per min)</string>
-    <string name="driver_to_customer">Driver to Customer</string>
-    <string name="driver_to_driver">Driver to Driver</string>
-    <string name="rate_card">Rate Card</string>
-    <string name="applicable_after">Applicable after %1$d Kmz</string>
+    <string name="applicable_after">Applicable after %1$s Kms</string>
+
+    <string name="rejection_reason">રદ કરવાનું કારણ</string>
+    <string name="mandatory">ફરજિયાત</string>
+    <string name="before_ride">રાઈડ પહેલાં</string>
+    <string name="in_ride_rate">રાઈડ માં</string>
+    <string name="referral_rate">રેફરલ</string>
+    <string name="pickup_charges">પિક અપ ખર્ચ(કી.મી દીઠ)</string>
+    <string name="base_fare">ઓછા માં ઓછું ભાડું </string>
+    <string name="time_per_min">સમય ( મિનિટ દીઠ )</string>
+    <string name="driver_to_customer">ડરાઇવર થી ગ્રાહક </string>
+    <string name="driver_to_driver">ડરાઇવર થી ડરાઇવર</string>
+    <string name="rate_card">ભાવ પત્રક</string>
+    <string name="owned">માલિકી</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

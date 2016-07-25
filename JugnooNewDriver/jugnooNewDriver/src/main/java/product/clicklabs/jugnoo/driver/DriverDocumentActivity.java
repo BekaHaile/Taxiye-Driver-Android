@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -110,53 +111,59 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	private void docSubmission() {
-		DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
+		if (AppStatus.getInstance(DriverDocumentActivity.this).isOnline(DriverDocumentActivity.this)) {
 
-		RestClient.getApiServices().docSubmission(accessToken, new Callback<DocRequirementResponse>() {
-			@Override
-			public void success(DocRequirementResponse docRequirementResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
+			DialogPopup.showLoadingDialog(DriverDocumentActivity.this, getResources().getString(R.string.loading));
 
-					if (!SplashNewActivity.checkIfUpdate(jObj, DriverDocumentActivity.this)) {
-						int flag = jObj.getInt("flag");
-						String message = JSONParser.getServerMessage(jObj);
+			RestClient.getApiServices().docSubmission(accessToken, new Callback<DocRequirementResponse>() {
+				@Override
+				public void success(DocRequirementResponse docRequirementResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
 
-						if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
+						if (!SplashNewActivity.checkIfUpdate(jObj, DriverDocumentActivity.this)) {
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
 
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										startActivity(new Intent(DriverDocumentActivity.this, SplashNewActivity.class));
-										finish();
-									}
-								});
-							} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
-								DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
-							} else {
-								DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
+
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											startActivity(new Intent(DriverDocumentActivity.this, SplashNewActivity.class));
+											finish();
+										}
+									});
+								} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
+									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+								} else {
+									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+								}
+								DialogPopup.dismissLoadingDialog();
 							}
+						} else {
 							DialogPopup.dismissLoadingDialog();
 						}
-					} else {
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(DriverDocumentActivity.this, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
-					DialogPopup.alertPopup(DriverDocumentActivity.this, "", Data.SERVER_ERROR_MSG);
 					DialogPopup.dismissLoadingDialog();
 				}
-				DialogPopup.dismissLoadingDialog();
-			}
 
-			@Override
-			public void failure(RetrofitError error) {
-				DialogPopup.dismissLoadingDialog();
-			}
-		});
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+				}
+			});
+		} else {
+			DialogPopup.alertPopup(DriverDocumentActivity.this, "", getResources().getString(R.string.check_internet_message));
+
+		}
 	}
 
 

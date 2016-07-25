@@ -16,7 +16,7 @@
         android:text="5."
         android:textColor="@color/black"
         android:gravity="center_vertical"
-        android:textSize="26px"
+        android:textSize="32px"
         android:padding="10px"
         />
 

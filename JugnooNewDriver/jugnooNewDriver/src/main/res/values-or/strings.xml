@@ -514,10 +514,7 @@
     <string name="to_no_colon">କୁ</string>
     <string name="no_deliveries_pending">କୌଣସି ଡେଲିଭରି ପେଣ୍ଡିଂଗ୍ ନାହିଁ</string>
     <string name="no_deliveries_completed">ଡେଲିଭରି ପୁରଣ ହୋଇ ନାହିଁ</string>
-    <string name="mandatory">Mandatory</string>
-    <string name="owned">Owned</string>
     <string name="auto">Auto</string>
-    <string name="rejection_reason">Rejection Reason</string>
 
     <string name="cash_collected">ରାଶି ଆଦାୟ ହୋଇସାରିଛି.</string>
     <string name="s_no">କ୍ରମାଂକ</string>
@@ -562,16 +559,21 @@
     <string name="owner">ମାଲିକ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
 
-    <string name="before_ride">BEFORE RIDE</string>
-    <string name="in_ride_rate">IN RIDE</string>
-    <string name="referral_rate">REFERRAL</string>
-    <string name="pickup_charges">Pickup Charges (per Km)</string>
-    <string name="base_fare">Base Fare</string>
-    <string name="time_per_min">Time (per min)</string>
-    <string name="driver_to_customer">Driver to Customer</string>
-    <string name="driver_to_driver">Driver to Driver</string>
-    <string name="rate_card">Rate Card</string>
-    <string name="applicable_after">Applicable after %1$d Kmz</string>
+    <string name="applicable_after">Applicable after %1$s Kms</string>
+
+    <string name="rejection_reason">ରିଜେକ୍ଟ କରିବାର କାରଣ</string>
+    <string name="mandatory">ବାଧ୍ୟତା ମୁଳକ</string>
+    <string name="before_ride">ରାଇଡ୍ ପୁର୍ବରୁ</string>
+    <string name="in_ride_rate">ରାଇଡ୍ ରେ</string>
+    <string name="referral_rate">ରେଫରାଲ୍</string>
+    <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ (କି.ମି ପ୍ରତି)</string>
+    <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
+    <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
+    <string name="driver_to_driver">ଡ୍ରାଇଭର୍ ଠାରୁ ଡ୍ରାଇଭର୍ କୁ</string>
+    <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
+    <string name="owned">ନିଜର</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

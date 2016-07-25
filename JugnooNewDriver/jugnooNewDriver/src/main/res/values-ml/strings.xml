@@ -515,10 +515,7 @@
     <string name="no_deliveries_pending">ഡെലിവറികൾ എല്ലാം പൂർത്തിയായി</string>
     <string name="no_deliveries_completed">ഡെലിവറികൾ ഒന്നും പൂർത്തിയായില്ല</string>
     <string name="cash_collected">ക്യാഷ് ശേഖരിച്ചു</string>
-    <string name="mandatory">Mandatory</string>
-    <string name="owned">Owned</string>
     <string name="auto">Auto</string>
-    <string name="rejection_reason">Rejection Reason</string>
 
     <string name="s_no">S.No.</string>
     <string name="order_no">ഓർഡർ നമ്പർ</string>
@@ -560,17 +557,20 @@
     <string name="Submit">സമർപ്പിക്കുക</string>
     <string name="owner">ഉടമ</string>
     <string name="approval_pending">അംഗീകാരം തീർച്ചപ്പെടുത്തിയില്ല</string>
+    <string name="applicable_after">Applicable after %1$s Kms</string>
 
-    <string name="before_ride">BEFORE RIDE</string>
-    <string name="in_ride_rate">IN RIDE</string>
-    <string name="referral_rate">REFERRAL</string>
-    <string name="pickup_charges">Pickup Charges (per Km)</string>
-    <string name="base_fare">Base Fare</string>
-    <string name="time_per_min">Time (per min)</string>
-    <string name="driver_to_customer">Driver to Customer</string>
-    <string name="driver_to_driver">Driver to Driver</string>
-    <string name="rate_card">Rate Card</string>
-    <string name="applicable_after">Applicable after %1$d Kmz</string>
+    <string name="rejection_reason">നിരസിക്കാനുള്ള കാരണം</string>
+    <string name="mandatory">നിർബന്ധമായി ചെയ്യേണ്ടത്</string>
+    <string name="before_ride">റൈഡിനു മുമ്പ് </string>
+    <string name="in_ride_rate">റൈഡിൽ</string>
+    <string name="referral_rate">റഫറൽ</string>
+    <string name="pickup_charges">പിക്കപ്പ് ചാർജ് ( കിലോമീറ്ററിന് ) </string>
+    <string name="base_fare">ബേസിക് യാത്രാചിലവ്</string>
+    <string name="time_per_min">സമയം ( മിനിറ്റിന് )</string>
+    <string name="driver_to_customer">ഡ്രൈവറിൽ നിന്നു കസ്റ്റമർലേക്ക് </string>
+    <string name="driver_to_driver">ഡ്രൈവറിൽ നിന്നു ഡ്രൈവറിലേക് </string>
+    <string name="rate_card">റേറ്റ് കാർഡ്</string>
+    <string name="owned">സ്വന്തം</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
