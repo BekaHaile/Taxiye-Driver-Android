@@ -363,9 +363,9 @@ public class CustomerInfo {
 	}
 
 	public double getTotalDistance(double distance, Context context){
-		if(getIsPooled() == 1 && getPoolFare() != null){
-			return getPoolFare().getDistance();
-		} else {
+//		if(getIsPooled() == 1 && getPoolFare() != null){
+//			return getPoolFare().getDistance();
+//		} else {
 			try {
 				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
 				if (jObj.has(String.valueOf(getEngagementId()))) {
@@ -375,7 +375,7 @@ public class CustomerInfo {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+//		}
 		return distance;
 	}
 
@@ -394,9 +394,9 @@ public class CustomerInfo {
 
 	public long getElapsedRideTime(Context context){
 		long startTime = System.currentTimeMillis();
-		if(getIsPooled() == 1 && getPoolFare() != null){
-			return getPoolFare().getRideTime();
-		} else {
+//		if(getIsPooled() == 1 && getPoolFare() != null){
+//			return getPoolFare().getRideTime();
+//		} else {
 			try {
 				JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
 				if (jObj.has(String.valueOf(getEngagementId()))) {
@@ -406,7 +406,7 @@ public class CustomerInfo {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+//		}
 		return System.currentTimeMillis() - startTime;
 	}
 

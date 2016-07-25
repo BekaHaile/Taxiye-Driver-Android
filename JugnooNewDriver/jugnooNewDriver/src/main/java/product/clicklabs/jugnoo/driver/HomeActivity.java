@@ -3660,11 +3660,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void startRideChronometer(CustomerInfo customerInfo){
-		if(customerInfo.getIsPooled() != 1) {
+//		if(customerInfo.getIsPooled() != 1) {
 			rideTimeChronometer.start();
-		} else{
-			rideTimeChronometer.stop();
-		}
+//		} else{
+//			rideTimeChronometer.stop();
+//		}
 	}
 
 	/**
@@ -3693,7 +3693,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							   int flagDistanceTravelled, final CustomerInfo customerInfo) {
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
-		double totalDistanceFromLogInMeter =Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		double totalDistanceFromLogInMeter = 0;
+		try {
+			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 		double totalDistance = customerInfo
 				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
