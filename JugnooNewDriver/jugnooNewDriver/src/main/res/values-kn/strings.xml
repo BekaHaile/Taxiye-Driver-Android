@@ -522,10 +522,8 @@
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
-    <string name="mandatory">ಕಡ್ಡಾಯ</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
-    <string name="rejection_reason">Rejection Reason</string>
 
     <string name="cancelled">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="address">ವಿಳಾಸ</string>
@@ -555,7 +553,6 @@
     <string name="delivery_details">ಡೆಲಿವರಿ ವಿವರಗಳು</string>
     <string name="uploading">Uploading</string>
 
-
     <string name="vehicle_status">ವಾಹನದ ಸ್ಥಿತಿ </string>
     <string name="rented">ಬಾಡಿಗೆಗೆ</string>
     <string name="auto_driver_confirmation">ನೀವು ಆಟೋ ಚಾಲಕರಾಗಿದ್ದೀರಾ?   </string>
@@ -582,7 +579,18 @@
     <string name="owner">ಮಾಲೀಕರು</string>
     <string name="approval_pending">ಅನುಮೋದನೆಗೆ ಬಾಕಿ</string>
 
-
+    <string name="applicable_after">Applicable after %1$d Kmz</string>
+    <string name="rejection_reason">ತಿರಸ್ಕಾರದ ಕಾರಣ </string>
+    <string name="mandatory">ಕಡ್ಡಾಯ</string>
+    <string name="before_ride">ಸವಾರಿಯ ಮೊದಲು </string>
+    <string name="in_ride_rate">ಸವಾರಿಯಲ್ಲಿ </string>
+    <string name="referral_rate">ರೆಫೆರಲ್</string>
+    <string name="pickup_charges">ಪಿಕ್ ಅಪ್ ಚಾರ್ಜ್(ಪ್ರತಿ km ಗೆ )</string>
+    <string name="base_fare">ಮೂಲ ದರ</string>
+    <string name="time_per_min">ಸಮಯ (ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
+    <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
+    <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
+    <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
 
 
     <string-array name="CountryCodes" >

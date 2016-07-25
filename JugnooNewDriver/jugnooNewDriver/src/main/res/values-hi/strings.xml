@@ -567,10 +567,8 @@
 	<string name="to_no_colon">को</string>
 	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
 	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
-	<string name="mandatory">अनिवार्य</string>
 	<string name="owned">Owned</string>
 	<string name="auto">ऑटो</string>
-	<string name="rejection_reason">Rejection Reason</string>
 
 	<string name="cash_collected">नगद कलेक्ट किया </string>
 	<string name="s_no">सीरियल नंबर </string>
@@ -588,8 +586,6 @@
 	<string name="return_distance">वापसी दूरी</string>
 	<string name="delivery_details">डिलीवरी विवरण</string>
 	<string name="uploading">Uploading</string>
-
-
 
 	<string name="vehicle_status">वाहन की स्थिति</string>
 	<string name="rented">किराए पर</string>
@@ -616,8 +612,20 @@
 	<string name="Submit">जमा करें</string>
 	<string name="owner">मालिक</string>
 	<string name="approval_pending">स्वीकृति लंबित</string>
+	<string name="applicable_after">Applicable after %1$d Kmz</string>
 
 
+	<string name="rejection_reason">अस्वीकृति करने का  कारण</string>
+	<string name="mandatory">अनिवार्य</string>
+	<string name="before_ride">सवारी से पहले</string>
+	<string name="in_ride_rate">सवारी में</string>
+	<string name="referral_rate">रेफरल</string>
+	<string name="pickup_charges">पिकप चार्जेज (प्रति किलोमीटर)</string>
+	<string name="base_fare">बेस किराया </string>
+	<string name="time_per_min">समय (प्रति मिनट)</string>
+	<string name="driver_to_customer">ड्राइवर टू कस्टमर</string>
+	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
+	<string name="rate_card">रेट कार्ड</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

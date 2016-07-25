@@ -562,6 +562,16 @@
     <string name="owner">ମାଲିକ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
 
+    <string name="before_ride">BEFORE RIDE</string>
+    <string name="in_ride_rate">IN RIDE</string>
+    <string name="referral_rate">REFERRAL</string>
+    <string name="pickup_charges">Pickup Charges (per Km)</string>
+    <string name="base_fare">Base Fare</string>
+    <string name="time_per_min">Time (per min)</string>
+    <string name="driver_to_customer">Driver to Customer</string>
+    <string name="driver_to_driver">Driver to Driver</string>
+    <string name="rate_card">Rate Card</string>
+    <string name="applicable_after">Applicable after %1$d Kmz</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

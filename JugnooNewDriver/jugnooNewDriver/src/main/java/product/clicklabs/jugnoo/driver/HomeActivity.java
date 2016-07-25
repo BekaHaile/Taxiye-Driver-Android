@@ -152,8 +152,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout menuLayout;
 
 
-	ImageView profileImg;
-	TextView userName, ratingValue;
+
+	ImageView profileImg, seprator;
+	TextView userName, ratingValue, textViewAutosOn;
 	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
 
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
@@ -171,8 +172,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl;
-	TextView callUsText, termsConditionText;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard;
+	TextView callUsText, termsConditionText, textViewRateCard;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -411,7 +412,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutContainer.setVisibility(View.GONE);
 
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
-			((TextView) findViewById(R.id.textViewAutosOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewAutosOn = (TextView) findViewById(R.id.textViewAutosOn);
+			textViewAutosOn.setTypeface(Data.latoRegular(getApplicationContext()));
 			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
@@ -465,6 +467,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+
+			relativeLayoutRateCard = (RelativeLayout) findViewById(R.id.relativeLayoutRateCard);
+			textViewRateCard = (TextView) findViewById(R.id.textViewRateCard);
+			textViewRateCard.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewRateCard.setText(getResources().getText(R.string.rate_card));
+
 
 			termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
 			termsConditionText = (TextView) findViewById(R.id.termsConditionText);
@@ -875,6 +884,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 					FlurryEventLogger.event(CALL_US);
+				}
+			});
+
+			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
 				}
 			});
 
@@ -1907,8 +1924,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (Data.userData != null) {
 						if (1 == Data.userData.autosAvailable) {
 							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_on));
+
 						} else {
 							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
 						}
 
 						if (1 == Data.userData.sharingAvailable) {

@@ -17,6 +17,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationAlarmResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NotificationInboxResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
@@ -401,6 +402,10 @@ public interface APIServices {
 	Response sendmFileToServer(@Part("mFile") TypedFile image,
 							   @PartMap Map<String, String> params);
 
+	@FormUrlEncoded
+	@POST("/show_rate_card")
+	void rateCardDetail(@Field("access_token") String accessToken,
+					   Callback<RateCardResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/fetch_required_docs")

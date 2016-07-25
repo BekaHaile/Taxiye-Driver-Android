@@ -342,7 +342,7 @@
 	<string name="can_not_calculated_distance">Sorry, we could not calculate your distance right now</string>
 	<string name="set">SET</string>
 	<string name="SUBMIT">SUBMIT</string>
-	<string name="super_driver">SUPER DRIVERS</string>
+	<string name="super_driver">Super Drivers</string>
 	<string name="sharing_rides">Sharing Rides</string>
 	<string name="sharing_on">Sharing ON</string>
 	<string name="SIGN_UP">SIGN UP</string>
@@ -434,14 +434,14 @@
 	<string name="number_of_first_rides">Number of First Rides Taken</string>
 	<string name="money_earned">Money Earned from Referrals</string>
 	<string name="data_effective_format">*Data effective from </string>
-	<string name="notifications">NOTIFICATION CENTER</string>
+	<string name="notifications">Notification Center</string>
 	<string name="click_for_direction">Click here for Directions</string>
 	<string name="time_left">Time left :</string>
 	<string name="enter_phone_no_to_reset_password">Enter your registered phone number for resetting your password.</string>
 	<string name="customer_phone_number">Customer Phone Number</string>
 	<string name="recharge_amount">Amount to be Recharged</string>
 	<string name="enter_amount">Enter Amount</string>
-	<string name="paytm_recharge">PAYTM RECHARGE</string>
+	<string name="paytm_recharge">Paytm Recharge</string>
 	<string name="Confirm">Confirm</string>
 	<string name="Paytm_recharge">Paytm Recharge</string>
 	<string name="phone_number_or_email">Phone No. or Email</string>
@@ -527,8 +527,8 @@
 	<string name="select_destination">Please select atleast one Destination</string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="fatafat_on">Fatafat On</string>
-	<string name="Notifications">NOTIFICATIONS</string>
-	<string name="PAYMENTS">PAYMENTS</string>
+	<string name="Notifications">Notifications</string>
+	<string name="PAYMENTS">Payments</string>
 	<string name="enter_customer_phone_no">Enter Customer Phone No.</string>
 	<string name="invoice_detail">INVOICE DETAILS</string>
 	<string name="generated_on">Generated On:</string>
@@ -619,6 +619,17 @@
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
 	<string name="uploading">Uploading</string>
+	<string name="before_ride">BEFORE RIDE</string>
+	<string name="in_ride_rate">IN RIDE</string>
+	<string name="referral_rate">REFERRAL</string>
+	<string name="pickup_charges">Pickup Charges (per Km)</string>
+	<string name="base_fare">Base Fare</string>
+	<string name="distance_per_km">Distance\n(Per Km)</string>
+	<string name="time_per_min">Time\n(per min)</string>
+	<string name="driver_to_customer">Driver to Customer</string>
+	<string name="driver_to_driver">Driver to Driver</string>
+	<string name="rate_card">Rate Card</string>
+	<string name="applicable_after">Applicable after %1$s Kms</string>
 
 
 	<string-array name="CountryCodes" >

@@ -569,10 +569,8 @@
     <string name="to_no_colon">కు </string>
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
-    <string name="mandatory">తప్పనిసరి</string>
     <string name="owned">Owned</string>
     <string name="auto">Auto</string>
-    <string name="rejection_reason">Rejection Reason</string>
 
     <string name="cash_collected">తీసుకున్న డబ్బు </string>
     <string name="s_no">క్ర.సం.</string>
@@ -618,6 +616,18 @@
     <string name="approval_pending">అనుమతి వాయిదా</string>
 
 
+    <string name="applicable_after">Applicable after %1$d Kmz</string>
+    <string name="rejection_reason">రిజెక్షన్ కారణము</string>
+    <string name="mandatory">తప్పనిసరి</string>
+    <string name="before_ride">రైడ్ ముందు</string>
+    <string name="in_ride_rate">రైడ్</string>
+    <string name="referral_rate">నివేదన</string>
+    <string name="pickup_charges">పికప్ ఛార్జీలు (కి.మీ.లలో ప్రతి)</string>
+    <string name="base_fare">బేస్ ఫేర్</string>
+    <string name="time_per_min">సమయం (కనీసం ప్రతి)</string>
+    <string name="driver_to_customer">కస్టమర్ డ్రైవర్</string>
+    <string name="driver_to_driver">డ్రైవర్ డ్రైవర్</string>
+    <string name="rate_card">రేటు కార్డ్</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
