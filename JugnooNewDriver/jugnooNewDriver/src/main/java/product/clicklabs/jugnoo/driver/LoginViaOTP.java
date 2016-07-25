@@ -62,7 +62,7 @@ public class LoginViaOTP extends BaseActivity {
 	Button backBtn, btnGenerateOtp, loginViaOtp, btnLogin;
 	ImageView imageViewYellowLoadingBar;
 	TextView textViewCounter, textViewOr;
-	String selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+	String selectedLanguage = "";
 	int languagePrefStatus;
 	Configuration conf;
 	String knowlarityMissedCallNumber = "";
@@ -147,6 +147,7 @@ public class LoginViaOTP extends BaseActivity {
 		textViewOr = (TextView) findViewById(R.id.textViewOr);
 		textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -346,6 +347,7 @@ public class LoginViaOTP extends BaseActivity {
 				DialogPopup.showLoadingDialog(LoginViaOTP.this, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", "+91" + phoneNo);
+				params.put("login_type","1");
 				Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
 				Prefs.with(LoginViaOTP.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 
@@ -589,6 +591,10 @@ public class LoginViaOTP extends BaseActivity {
 									finish();
 									overridePendingTransition(R.anim.right_in, R.anim.right_out);
 								}
+							} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+								Intent intent = new Intent(LoginViaOTP.this, DriverDocumentActivity.class);
+								intent.putExtra("access_token",jObj.getString("access_token"));
+								startActivity(intent);
 							} else {
 								DialogPopup.alertPopup(activity, "", message);
 							}
@@ -636,7 +642,7 @@ public class LoginViaOTP extends BaseActivity {
 	public void showLanguagePreference() {
 
 		if (languagePrefStatus == 1) {
-			selectLanguageLl.setVisibility(View.VISIBLE);
+			selectLanguageLl.setVisibility(View.GONE);
 		} else {
 			selectLanguageLl.setVisibility(View.GONE);
 		}
@@ -672,19 +678,19 @@ public class LoginViaOTP extends BaseActivity {
 	}
 
 
-	public void sendIntentToOtpScreen() {
-		DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", otpErrorMsg, new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				OTPConfirmScreen.intentFromRegister = false;
-				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
-				startActivity(new Intent(LoginViaOTP.this, OTPConfirmScreen.class));
-				finish();
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			}
-		});
-	}
+//	public void sendIntentToOtpScreen() {
+//		DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", otpErrorMsg, new View.OnClickListener() {
+//
+//			@Override
+//			public void onClick(View v) {
+//				OTPConfirmScreen.intentFromRegister = false;
+//				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
+//				startActivity(new Intent(LoginViaOTP.this, OTPConfirmScreen.class));
+//				finish();
+//				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//			}
+//		});
+//	}
 
 	@Override
 	public void onBackPressed() {

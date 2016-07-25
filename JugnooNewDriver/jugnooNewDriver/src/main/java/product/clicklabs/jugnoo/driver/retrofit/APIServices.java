@@ -5,6 +5,8 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -22,10 +24,13 @@ import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
+import retrofit.http.Query;
+import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
 
 /**
@@ -77,8 +82,8 @@ public interface APIServices {
 						 Callback<BookingHistoryResponse> callback);
 
 	@FormUrlEncoded
-	@POST("/verify_otp")
-	void verifyOtpUsingSignupFields(@Field("email") String email,
+	@POST("/verify_otp_for_driver")
+	void verifyOtpUsingSignupFields(@Field("phone_no") String email,
 									@Field("password") String password,
 									@Field("device_token") String deviceToken,
 									@Field("device_type") String deviceType,
@@ -196,7 +201,7 @@ public interface APIServices {
 	Response sendRequestAckToServerRetro(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
-	@POST("/login_using_email")
+	@POST("/driver/login")
 	void sendLoginValuesRetro(@FieldMap Map<String, String> params,
 							  Callback<RegisterScreenResponse> callback);
 
@@ -397,4 +402,29 @@ public interface APIServices {
 							   @PartMap Map<String, String> params);
 
 
+	@FormUrlEncoded
+	@POST("/fetch_required_docs")
+	void docRequest(@Field("access_token") String accessToken,
+					Callback<DocRequirementResponse> callback);
+
+	@Multipart
+	@POST("/upload_document")
+	void uploadImageToServer(@Part("image") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
+
+	@FormUrlEncoded
+	@POST("/get_all_cities")
+	void getCityRetro(@Field("password") String password,
+					  Callback<CityResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/verify_document_status")
+	void docSubmission(@Field("access_token") String accessToken,
+					Callback<DocRequirementResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/register_a_driver")
+	void oneTimeRegisteration(@FieldMap Map<String, String> params,
+							Callback<RegisterScreenResponse> callback);
 }

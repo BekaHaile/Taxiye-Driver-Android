@@ -569,9 +569,10 @@
     <string name="to_no_colon">కు </string>
     <string name="no_deliveries_pending">దేలివేరిలు ఏమి మిగిలి లేవు </string>
     <string name="no_deliveries_completed">దేలివేరిలు ఏమి పూర్తి కాలేవు</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
+    <string name="mandatory">తప్పనిసరి</string>
+    <string name="owned">Owned</string>
+    <string name="auto">Auto</string>
+    <string name="rejection_reason">Rejection Reason</string>
 
     <string name="cash_collected">తీసుకున్న డబ్బు </string>
     <string name="s_no">క్ర.సం.</string>
@@ -587,6 +588,36 @@
     <string name="return_subsidy">రిటర్న్ సబ్సిడీ</string>
     <string name="return_distance">రిటర్న్ దూరం</string>
     <string name="delivery_details">డెలివరీ వివరాలు</string>
+    <string name="uploading">Uploading</string>
+
+
+    <string name="vehicle_status">వాహనం స్థితి</string>
+    <string name="rented">అద్దెకు</string>
+    <string name="auto_driver_confirmation">మీరు ఒక ఆటో డ్రైవరా ?</string>
+    <string name="auto_status_confirmation">మీరు ఒక ఆటో ఉందా ?</string>
+    <string name="no_doc_available">పత్రాలు అందుబాటులో లేవు</string>
+    <string name="upload">అప్లోడ్</string>
+    <string name="optional">ఆప్షనల్</string>
+    <string name="uploaded">అప్లోడ్ అయింది</string>
+    <string name="rejected">తిరస్కరించబడింది</string>
+    <string name="verified">తనిఖీ చేయబడింది</string>
+    <string name="Hints">సూచనలు</string>
+    <string name="tricks">మాయలు</string>
+    <string name="Messages">సందేశాలు</string>
+
+    <string name="auto_number">ఆటో నంబర్</string>
+    <string name="Choose_one">ఎంచుకోండి</string>
+    <string name="is_rented">నేను ఆటో అధికి ఉంది.</string>
+    <string name="is_owned">నా వద్ద సొంత ఆటో ఉంది.</string>
+    <string name="Documents">పత్రాలు</string>
+    <string name="Document_type">పత్రాల రకము</string>
+    <string name="Requirement">అవసరాలు</string>
+    <string name="add_image">చిత్రమును జోడించండి</string>
+    <string name="Submit">సబ్మిట</string>
+    <string name="owner">ఏజమాని</string>
+    <string name="approval_pending">అనుమతి వాయిదా</string>
+
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

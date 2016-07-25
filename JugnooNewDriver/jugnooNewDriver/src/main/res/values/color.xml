@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <color name="white">#FFFFFF</color>
-   <color name="white_dark">#AFAFAF</color>
+    <color name="new_transparent_white">#2eFFFFFF</color>
+
+    <color name="white_dark">#AFAFAF</color>
    <color name="white_dark1">#EFEFEF</color>
    
    
@@ -27,8 +29,8 @@
 
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
-   
-   
+    <color name="blue_status">#338ffc</color>
+
    
    
    

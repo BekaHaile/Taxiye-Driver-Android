@@ -1,19 +1,31 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.database.DataSetObserver;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 
@@ -21,10 +33,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.zip.Inflater;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.PreviousAccountInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -44,23 +59,27 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	
 	Button backBtn;
 	TextView title;
-	
-	EditText nameEt, emailIdEt, confirmEmailIdEt, phoneNoEt, passwordEt, confirmPasswordEt;
+
+	EditText nameEt, phoneNoEt;
 	Button signUpBtn;
-
+	Spinner selectCitySp, autoNumEt, VehicleType;
+//	ImageView isRentedCheck, isOwnedCheck;
 	LinearLayout relative;
-	
-	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "";
-	
+//	RelativeLayout isOwnedRelative, isRentedRelative;
+
+	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
+	Integer cityposition, vehiclePosition;
+	CityResponse res;
 	boolean sendToOtpScreen = false;
+//	boolean isRented = false, isOwned = false;
 
-    public static JSONObject multipleCaseJSON;
+	public static JSONObject multipleCaseJSON;
 
 
-	public void resetFlags(){
+	public void resetFlags() {
 		sendToOtpScreen = false;
 	}
-	
+
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
@@ -75,8 +94,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
-	
-	
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,20 +104,24 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
-		
-		backBtn = (Button) findViewById(R.id.backBtn); backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		title = (TextView) findViewById(R.id.title); title.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		nameEt = (EditText) findViewById(R.id.nameEt); nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		emailIdEt = (EditText) findViewById(R.id.emailIdEt); emailIdEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmEmailIdEt = (EditText) findViewById(R.id.confirmEmailIdEt); confirmEmailIdEt.setTypeface(Data.latoRegular(this));
-		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt); phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		passwordEt = (EditText) findViewById(R.id.passwordEt); passwordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		confirmPasswordEt = (EditText) findViewById(R.id.confirmPasswordEt); confirmPasswordEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		
-		signUpBtn = (Button) findViewById(R.id.signUpBtn); signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		
+		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		nameEt = (EditText) findViewById(R.id.nameEt);
+		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
+		VehicleType = (Spinner) findViewById(R.id.VehicleType);
+		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+
+		signUpBtn = (Button) findViewById(R.id.signUpBtn);
+		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -107,7 +130,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				performBackPressed();
 			}
 		});
-		
+
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -116,54 +139,18 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 			}
 		});
-		
-		
-		emailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				emailIdEt.setError(null);
-			}
-		});
-		confirmEmailIdEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				confirmEmailIdEt.setError(null);
-			}
-		});
-		emailIdEt.setLongClickable(false);
-		confirmEmailIdEt.setLongClickable(false);
-		
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
+
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				phoneNoEt.setError(null);
 			}
 		});
 
-		passwordEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				passwordEt.setError(null);
-			}
-		});
 
-		confirmPasswordEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				confirmPasswordEt.setError(null);
-			}
-		});
-		
-		
-		
-		
 		signUpBtn.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 
@@ -171,141 +158,97 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
-				String emailId = emailIdEt.getText().toString().trim();
-				String confirmEmail = confirmEmailIdEt.getText().toString().trim();
-
-
+//				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
-				String password = passwordEt.getText().toString().trim();
-				String confirmPassword = confirmPasswordEt.getText().toString().trim();
 
+				if ("".equalsIgnoreCase(name)) {
+					nameEt.requestFocus();
+					nameEt.setError("Please enter name");
+				} else {
+					if ("".equalsIgnoreCase(" ")) {
+//						autoNumEt.requestFocus();
+//						autoNumEt.setError("Please enter auto number");
+					} else {
+						if ("".equalsIgnoreCase(phoneNo)) {
+							phoneNoEt.requestFocus();
+							phoneNoEt.setError("Please enter phone number");
+						} else {
+							//TODO remove extra characters phoneNo
+							phoneNo = phoneNo.replace(" ", "");
+							phoneNo = phoneNo.replace("(", "");
+							phoneNo = phoneNo.replace("/", "");
+							phoneNo = phoneNo.replace(")", "");
+							phoneNo = phoneNo.replace("N", "");
+							phoneNo = phoneNo.replace(",", "");
+							phoneNo = phoneNo.replace("*", "");
+							phoneNo = phoneNo.replace(";", "");
+							phoneNo = phoneNo.replace("#", "");
+							phoneNo = phoneNo.replace("-", "");
+							phoneNo = phoneNo.replace(".", "");
 
-				try {
-					if ("".equalsIgnoreCase(name)) {
-                        nameEt.requestFocus();
-                        nameEt.setError(getResources().getString(R.string.enter_name));
-                    } else {
-                        if ("".equalsIgnoreCase(emailId)) {
-                            emailIdEt.requestFocus();
-                            emailIdEt.setError(getResources().getString(R.string.Pls_enter_email));
-                        } else {
-                            if ("".equalsIgnoreCase(confirmEmail)) {
-                                confirmEmailIdEt.requestFocus();
-                                confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_id));
-                            } else {
-                                if (emailId.equalsIgnoreCase(confirmEmail)) {
-                                    if ("".equalsIgnoreCase(phoneNo)) {
-                                        phoneNoEt.requestFocus();
-                                        phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
-                                    } else {
-                                        //TODO remove extra characters phoneNo
-                                        phoneNo = phoneNo.replace(" ", "");
-                                        phoneNo = phoneNo.replace("(", "");
-                                        phoneNo = phoneNo.replace("/", "");
-                                        phoneNo = phoneNo.replace(")", "");
-                                        phoneNo = phoneNo.replace("N", "");
-                                        phoneNo = phoneNo.replace(",", "");
-                                        phoneNo = phoneNo.replace("*", "");
-                                        phoneNo = phoneNo.replace(";", "");
-                                        phoneNo = phoneNo.replace("#", "");
-                                        phoneNo = phoneNo.replace("-", "");
-                                        phoneNo = phoneNo.replace(".", "");
+							if (phoneNo.length() >= 10) {
+								phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+								if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+									phoneNoEt.requestFocus();
+									phoneNoEt.setError("Please enter valid phone number");
+								} else {
+									phoneNo = "+91" + phoneNo;
+									if (isPhoneValid(phoneNo)) {
+										if(!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))){
+											if(cityposition != 0) {
+												if(vehiclePosition !=0 ) {
+													sendSignupValues(RegisterScreen.this, name, phoneNo, password);
+													FlurryEventLogger.emailSignupClicked(emailId);
+												}else {
+													DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Type ");
+												}
+											}else {
+												DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid City ");
+											}
+										}else {
+											DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Status ");
+										}
 
-                                        if (phoneNo.length() >= 10) {
-                                            phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
-                                            if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
-                                                phoneNoEt.requestFocus();
-                                                phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                            } else {
-                                                phoneNo = "+91" + phoneNo;
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
+									}
+								}
+							} else {
+								phoneNoEt.requestFocus();
+								phoneNoEt.setError("Please enter valid phone number");
+							}
+						}
 
-                                                if ("".equalsIgnoreCase(password)) {
-                                                    passwordEt.requestFocus();
-                                                    passwordEt.setError(getResources().getString(R.string.enter_password));
-                                                } else {
-                                                    if ("".equalsIgnoreCase(confirmPassword)) {
-                                                        confirmPasswordEt.requestFocus();
-                                                        confirmPasswordEt.setError(getResources().getString(R.string.confirm_password));
-                                                    } else {
-                                                        if (isEmailValid(emailId)) {
-                                                            if (isPhoneValid(phoneNo)) {
-                                                                if (password.equals(confirmPassword)) {
-                                                                    if (password.length() >= 6) {
-                                                                        sendSignupValues(RegisterScreen.this, name, emailId, phoneNo, password);
-                                                                        FlurryEventLogger.emailSignupClicked(emailId);
-                                                                    } else {
-                                                                        passwordEt.requestFocus();
-                                                                        passwordEt.setError(getResources().getString(R.string.password_atleast_6));
-                                                                    }
-                                                                } else {
-                                                                    passwordEt.requestFocus();
-                                                                    passwordEt.setError(getResources().getString(R.string.password_not_match));
-                                                                }
-                                                            } else {
-                                                                phoneNoEt.requestFocus();
-                                                                phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                                            }
-                                                        } else {
-                                                            emailIdEt.requestFocus();
-                                                            emailIdEt.setError(getResources().getString(R.string.valid_email));
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        } else {
-                                            phoneNoEt.requestFocus();
-                                            phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
-                                        }
-                                    }
-                                }
-                                else{
-                                    confirmEmailIdEt.requestFocus();
-                                    confirmEmailIdEt.setError(getResources().getString(R.string.confirm_email_text));
-                                }
-                            }
-                        }
-                    }
-				} catch (Resources.NotFoundException e) {
-					e.printStackTrace();
+					}
 				}
 			}
+
 		});
 
 
-		confirmPasswordEt.setOnEditorActionListener(new OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-				int result = actionId & EditorInfo.IME_MASK_ACTION;
-				switch (result) {
-					case EditorInfo.IME_ACTION_DONE:
-						signUpBtn.performClick();
-					break;
 
-					case EditorInfo.IME_ACTION_NEXT:
-					break;
-
-					default:
-				}
-				return true;
-			}
-		});
-		
-		
 
 		try {
-			if(getIntent().hasExtra("back_from_otp")) {
+			if (getIntent().hasExtra("back_from_otp")) {
 				nameEt.setText(OTPConfirmScreen.emailRegisterData.name);
-				emailIdEt.setText(OTPConfirmScreen.emailRegisterData.emailId);
 				phoneNoEt.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-				passwordEt.setText(OTPConfirmScreen.emailRegisterData.password);
-				confirmPasswordEt.setText(OTPConfirmScreen.emailRegisterData.password);
+//				autoNumEt.setText(OTPConfirmScreen.emailRegisterData.autoNum);
+				selectCitySp.setSelection(cityposition);
 			}
-            nameEt.setSelection(nameEt.getText().length());
+			nameEt.setSelection(nameEt.getText().length());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+		try{
+			res =  (CityResponse)getIntent().getSerializableExtra("cityResponse");
+			selectCitySp.setAdapter(new CityArrayAdapter(this, R.layout.spinner_layout, res.getCities()));
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -316,70 +259,109 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
 			}
 		});
-		
 
-		
-//		nameEt.setText("Test");
-//		lastNameEt.setText("Passenger84");
-//		emailIdEt.setText("passenger84@click-labs.com");
-//		phoneNoEt.setText("9999999999");
-//		passwordEt.setText("passenger");
-//		confirmPasswordEt.setText("passenger");
-		
-//		phoneNoEt.setText("+"+GetCountryZipCode());
-		
-//		Toast.makeText(getApplicationContext(), ""+GetCountryZipCode(), Toast.LENGTH_LONG).show();
-		
-		
+		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				cityposition = res.getCities().get(position).getCityId();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
+
+
+		// Spinner Drop down elements
+		List<String> categories = new ArrayList<String>();
+		categories.add(getResources().getString(R.string.vehicle_status));
+		categories.add(getResources().getString(R.string.owned));
+		categories.add(getResources().getString(R.string.rented));
+
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		autoNumEt.setAdapter(dataAdapter);
+
+		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				 vehicleStatus = parent.getItemAtPosition(position).toString();
+				Log.i("YES", "YES");
+
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				Log.i("NO", "NO");
+			}
+		});
+
+
+
+		VehicleType.setAdapter(new VehicyleArrayAdapter(this, R.layout.spinner_layout, res.getVehicleTypes()));
+
+		VehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				vehiclePosition = res.getVehicleTypes().get(position).getVehicleType();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
 	}
-	
 
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		
+
 		try {
-			if(Data.locationFetcher == null){
+			if (Data.locationFetcher == null) {
 				Data.locationFetcher = new LocationFetcher(this, 1000, 1);
 			}
 			Data.locationFetcher.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onPause() {
-		try{
-			if(Data.locationFetcher != null){
+		try {
+			if (Data.locationFetcher != null) {
 				Data.locationFetcher.destroy();
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		super.onPause();
-		
-		
+
+
 	}
-	
-	
-	
-	
+
 
 //	Retrofit
 
-	public void sendSignupValues(final Activity activity, final String name,
-								 final String emailId, final String phoneNo, final String password) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 //			RequestParams params = new RequestParams();
 
-			if(Data.locationFetcher != null){
+			if (Data.locationFetcher != null) {
 				Data.latitude = Data.locationFetcher.getLatitude();
 				Data.longitude = Data.locationFetcher.getLongitude();
 			}
@@ -387,11 +369,12 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
-			params.put("email", emailId);
-			params.put("password", password);
+//			params.put("auto_num", autoNum);
+			params.put("city", String.valueOf(cityposition));
 			params.put("latitude", "" + Data.latitude);
 			params.put("longitude", "" + Data.longitude);
-
+			params.put("vehicle_type",""+vehiclePosition);
+			params.put("vehicle_status",vehicleStatus);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
 			params.put("app_version", "" + Data.appVersion);
@@ -403,16 +386,15 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
 
-			if(Utils.isDeviceRooted()){
+			if (Utils.isDeviceRooted()) {
 				params.put("device_rooted", "1");
-			}
-			else{
+			} else {
 				params.put("device_rooted", "0");
 			}
 
 			Log.i("register_using_email params", params.toString());
 
-			RestClient.getApiServices().registerUsingEmail(params, new Callback<RegisterScreenResponse>() {
+			RestClient.getApiServices().oneTimeRegisteration(params, new Callback<RegisterScreenResponse>() {
 				@Override
 				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 					try {
@@ -438,7 +420,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									RegisterScreen.this.password = password;
 									RegisterScreen.this.accessToken = data.getAccessToken();
 
-
 									sendToOtpScreen = true;
 								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
 									RegisterScreen.this.name = name;
@@ -447,6 +428,9 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 									RegisterScreen.this.password = password;
 									RegisterScreen.this.accessToken = "";
 									parseDataSendToMultipleAccountsScreen(activity, jObj);
+								} else if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
+									performBackPressed();
+
 								} else {
 									DialogPopup.alertPopup(activity, "", message);
 								}
@@ -470,81 +454,77 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			});
 
 
-		}
-		else {
+		} else {
 			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 		}
 
 	}
-	
 
-	
+
 	public void sendIntentToOtpScreen() {
 		OTPConfirmScreen.intentFromRegister = true;
-		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
 		startActivity(new Intent(RegisterScreen.this, OTPConfirmScreen.class));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 
-    public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
-        OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken);
-        RegisterScreen.multipleCaseJSON = jObj;
-        if (Data.previousAccountInfoList == null) {
-            Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
-        }
-        Data.previousAccountInfoList.clear();
-        Data.previousAccountInfoList.addAll(JSONParser.parsePreviousAccounts(jObj));
-        startActivity(new Intent(activity, MultipleAccountsActivity.class));
-        finish();
-        overridePendingTransition(R.anim.right_in, R.anim.right_out);
-    }
-	
-	
+	public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
+		RegisterScreen.multipleCaseJSON = jObj;
+		if (Data.previousAccountInfoList == null) {
+			Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();
+		}
+		Data.previousAccountInfoList.clear();
+		Data.previousAccountInfoList.addAll(JSONParser.parsePreviousAccounts(jObj));
+		startActivity(new Intent(activity, MultipleAccountsActivity.class));
+		finish();
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
+
+
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
-		
-		if(hasFocus && sendToOtpScreen){
+
+		if (hasFocus && sendToOtpScreen) {
 			sendIntentToOtpScreen();
 		}
-		
+
 	}
-	
+
 	boolean isEmailValid(CharSequence email) {
 		return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
 	}
 
-	
+
 	boolean isPhoneValid(CharSequence phone) {
 		return android.util.Patterns.PHONE.matcher(phone).matches();
 	}
-	
-	
+
+
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
 		super.onBackPressed();
 	}
-	
-	
-	public void performBackPressed(){
+
+
+	public void performBackPressed() {
 		Intent intent = new Intent(RegisterScreen.this, SplashNewActivity.class);
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
-	
-	
-	
-	
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 	}
 
 
@@ -553,5 +533,76 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		Data.latitude = location.getLatitude();
 		Data.longitude = location.getLongitude();
 	}
-	
+
+	public class CityArrayAdapter extends ArrayAdapter<CityResponse.City> {
+		private LayoutInflater inflater;
+		private List<CityResponse.City> data;
+		public CityArrayAdapter(Context context, int resource, List<CityResponse.City> objects) {
+			super(context, resource, objects);
+			data = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return data.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(data.get(position).getCityName());
+			return convertView;
+		}
+
+	}
+
+
+	public class VehicyleArrayAdapter extends ArrayAdapter<CityResponse.VehicleType> {
+		private LayoutInflater inflater;
+		private List<CityResponse.VehicleType> dataVehicle;
+		public VehicyleArrayAdapter(Context context, int resource, List<CityResponse.VehicleType> objects) {
+			super(context, resource, objects);
+			dataVehicle = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return dataVehicle.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(dataVehicle.get(position).getVehicleName());
+			return convertView;
+		}
+
+	}
+
 }

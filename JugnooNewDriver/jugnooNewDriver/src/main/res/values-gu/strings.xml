@@ -509,6 +509,20 @@
     <string name="to_no_colon">માટે </string>
     <string name="no_deliveries_pending">કોઈ ડિલિવરી બાકી નથી </string>
     <string name="no_deliveries_completed">કોઈ ડિલિવરી પૂર્ણ નથી </string>
+    <string name="vehicle_status">વાહનની  સ્થિતિ</string>
+    <string name="rented">ભાડે</string>
+    <string name="auto_driver_confirmation">Are you an auto driver?</string>
+    <string name="auto_status_confirmation">Do you have an auto ?</string>
+    <string name="no_doc_available">કોઈ દસ્તાવેજો ઉપલબ્ધ નથી </string>
+    <string name="upload">Upload</string>
+    <string name="mandatory">Mandatory</string>
+    <string name="optional">વૈકલ્પિક</string>
+    <string name="uploaded">અપલોડેડ </string>
+    <string name="rejected">ફગાવી</string>
+    <string name="verified">ચકાસણી</string>
+    <string name="owned">Owned</string>
+    <string name="auto">Auto</string>
+    <string name="rejection_reason">Rejection Reason</string>
     <string name="Messages">Messages</string>
     <string name="Hints">Hints</string>
     <string name="tricks">Tricks To Earn</string>
@@ -527,6 +541,20 @@
     <string name="return_subsidy">પાછી આવાની સબસિડી</string>
     <string name="return_distance">પાછું આવાનું અંતર</string>
     <string name="delivery_details">ડિલિવરી વિગતો</string>
+    <string name="uploading">અપલોડ</string>
+
+    <string name="auto_number">ઓટો નંબર</string>
+    <string name="Choose_one">એક પસંદ કરો:</string>
+    <string name="is_rented">I have a rented auto.</string>
+    <string name="is_owned">I own my auto.</string>
+
+    <string name="Documents">દસ્તાવેજો</string>
+    <string name="Document_type">દસ્તાવેજ પ્રકાર</string>
+    <string name="Requirement">જરૂરિયાત</string>
+    <string name="add_image">છબી ઉમેરો</string>
+    <string name="Submit">સબમિટ</string>
+    <string name="owner">માલિક</string>
+    <string name="approval_pending">મંજૂરી બાકી</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

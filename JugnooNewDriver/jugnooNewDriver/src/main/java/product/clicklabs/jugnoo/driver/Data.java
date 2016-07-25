@@ -103,8 +103,6 @@ public class Data {
 
 	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
-	
-
 
 
 

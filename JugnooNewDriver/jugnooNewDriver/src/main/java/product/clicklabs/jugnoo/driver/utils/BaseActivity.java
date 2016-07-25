@@ -47,6 +47,7 @@ public class BaseActivity extends Activity {
 		if (Data.userData == null
 				&& !(this instanceof SplashNewActivity
 					|| this instanceof LoginViaOTP
+					|| this instanceof MultipleAccountsActivity
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
 					|| this instanceof RequestDuplicateRegistrationActivity

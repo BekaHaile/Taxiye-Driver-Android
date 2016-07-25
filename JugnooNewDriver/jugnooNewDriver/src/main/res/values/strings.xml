@@ -185,6 +185,16 @@
 	<string name="profile">PROFILE</string>
 	<string name="Duty_Hours">Duty Hours:</string>
 	<string name="call_us">Call Us</string>
+	<string name="auto_number">Auto number</string>
+	<string name="Choose_one">Choose one:</string>
+	<string name="is_rented">I have a rented auto.</string>
+	<string name="is_owned">I own my auto.</string>
+
+	<string name="Documents">Documents</string>
+	<string name="Document_type">Document type</string>
+	<string name="Requirement">Requirement</string>
+	<string name="add_image">ADD IMAGE</string>
+	<string name="Submit">Submit</string>
 
 
 	<string name="check_all">Check All</string>
@@ -323,7 +333,7 @@
 	<string name="rate">Rate: </string>
 	<string name="ride_in_progress_cant_logout">Ride in progress. You can logout only after the ride ends.</string>
 	<string name="rate_applied">Rate Applied</string>
-	<string name="register">REGISTER</string>
+	<string name="register">Register</string>
 	<string name="request_registration">REQUEST REGISTRATION</string>
 	<string name="reg_info">Registration Information</string>
 	<string name="ride_details">RIDE DETAILS</string>
@@ -584,6 +594,22 @@
 	<string name="Hints">Hints</string>
 	<string name="tricks">Tricks To Earn</string>
 	<string name="success">Success</string>
+	<string name="vehicle_status">Vehicle Status</string>
+	<string name="owner">Owner</string>
+	<string name="rented">Rented</string>
+	<string name="auto_driver_confirmation">Are you an auto driver?</string>
+	<string name="auto_status_confirmation">Do you have an auto ?</string>
+	<string name="no_doc_available">No Documents Available</string>
+	<string name="upload">Upload</string>
+	<string name="mandatory">Mandatory</string>
+	<string name="optional">Optional</string>
+	<string name="uploaded">UPLOADED</string>
+	<string name="rejected">REJECTED</string>
+	<string name="verified">VERIFIED</string>
+	<string name="approval_pending">APPROVAL PENDING</string>
+	<string name="owned">Owned</string>
+	<string name="auto">Auto</string>
+	<string name="rejection_reason">Rejection Reason</string>
 	<string name="outstanding_amount">Outstanding Adjusted</string>
 	<string name="delivery_fare">Delivery Fare</string>
 	<string name="return_subsidy">Return Subsidy</string>
@@ -592,6 +618,7 @@
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
+	<string name="uploading">Uploading</string>
 
 
 	<string-array name="CountryCodes" >
