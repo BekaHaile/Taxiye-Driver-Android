@@ -566,6 +566,8 @@
     <string name="driver_to_driver">ડરાઇવર થી ડરાઇવર</string>
     <string name="rate_card">ભાવ પત્રક</string>
     <string name="owned">માલિકી</string>
+    <string name="distance_per_km">અંતર\n( મિનિટ દીઠ )</string>
+
 
 
     <string-array name="CountryCodes" >

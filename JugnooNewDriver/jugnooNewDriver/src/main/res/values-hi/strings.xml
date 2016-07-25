@@ -626,6 +626,8 @@
 	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
 	<string name="rate_card">रेट कार्ड</string>
 	<string name="applicable_after">Applicable after %1$s Kms</string>
+	<string name="distance_per_km">दूरी\n(प्रति मिनट)</string>
+
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

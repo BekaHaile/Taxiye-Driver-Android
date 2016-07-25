@@ -628,6 +628,8 @@
     <string name="driver_to_driver">డ్రైవర్ డ్రైవర్</string>
     <string name="rate_card">రేటు కార్డ్</string>
     <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="distance_per_km">దూరం\n(కనీసం ప్రతి)</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

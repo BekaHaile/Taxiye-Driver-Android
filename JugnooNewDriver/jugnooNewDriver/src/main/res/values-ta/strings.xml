@@ -652,6 +652,8 @@
     <string name="driver_to_driver">டிரைவர் குறிக்கின்ற டிரைவர்</string>
     <string name="rate_card">விலை அட்டை</string>
     <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="distance_per_km">தூரம்\n(நிமிடம் ஒன்றுக்கு)</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

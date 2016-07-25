@@ -574,6 +574,8 @@
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="owned">ନିଜର</string>
 
+    <string name="distance_per_km">ଦୁରତା\n(ମିନିଟ୍ ପ୍ରତି)</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
