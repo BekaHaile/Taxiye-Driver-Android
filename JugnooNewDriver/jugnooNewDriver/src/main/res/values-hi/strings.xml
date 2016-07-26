@@ -586,6 +586,11 @@
 	<string name="Messages">Messages</string>
 	<string name="Hints">Hints</string>
 	<string name="tricks">Tricks To Earn</string>
+	<string name="self_audit">Self Audit</string>
+	<string name="front">Front</string>
+	<string name="add_photo">+ Add Photo</string>
+	<string name="left">Left</string>
+	<string name="right">Right</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

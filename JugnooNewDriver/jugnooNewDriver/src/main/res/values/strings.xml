@@ -592,6 +592,11 @@
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
+	<string name="self_audit">Self Audit</string>
+	<string name="front">Front</string>
+	<string name="add_photo">+ Add Photo</string>
+	<string name="left">Left</string>
+	<string name="right">Right</string>
 
 
 	<string-array name="CountryCodes" >
