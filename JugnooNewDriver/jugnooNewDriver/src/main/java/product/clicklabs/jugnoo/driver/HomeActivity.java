@@ -359,7 +359,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private final double FIX_ZOOM_DIAGONAL = 408;
 
-	Button distanceReset2;
+//	Button distanceReset2;
 
 
 	@Override
@@ -557,7 +557,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverPassengerCallText.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverEngagedMyLocationBtn = (Button) findViewById(R.id.driverEngagedMyLocationBtn);
 
-			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
+//			distanceReset2 = (Button) findViewById(R.id.distanceReset2);
 
 
 			//Start ride layout
@@ -1367,13 +1367,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 
-			distanceReset2.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
-					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
-				}
-			});
+//			distanceReset2.setOnClickListener(new OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					MeteringService.gpsInstance(HomeActivity.this).distanceReset();
+//					Data.getCurrentCustomerInfo().resetStartRideTime(HomeActivity.this);
+//				}
+//			});
 
 
 			try {

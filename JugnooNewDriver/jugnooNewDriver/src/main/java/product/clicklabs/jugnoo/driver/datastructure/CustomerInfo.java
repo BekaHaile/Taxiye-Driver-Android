@@ -415,19 +415,19 @@ public class CustomerInfo {
 		return System.currentTimeMillis() - startTime;
 	}
 
-	public void resetStartRideTime(Context context) {
-		try {
-			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
-			if (jObj.has(String.valueOf(getEngagementId()))) {
-				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
-				jc.put(Constants.KEY_RIDE_TIME, System.currentTimeMillis());
-				jObj.put(String.valueOf(getEngagementId()), jc);
-				Prefs.with(context).save(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void resetStartRideTime(Context context) {
+//		try {
+//			JSONObject jObj = new JSONObject(Prefs.with(context).getString(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, Constants.EMPTY_OBJECT));
+//			if (jObj.has(String.valueOf(getEngagementId()))) {
+//				JSONObject jc = jObj.getJSONObject(String.valueOf(getEngagementId()));
+//				jc.put(Constants.KEY_RIDE_TIME, System.currentTimeMillis());
+//				jObj.put(String.valueOf(getEngagementId()), jc);
+//				Prefs.with(context).save(Constants.SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 
 	public long getTotalWaitTime(long waitTime, Context context) {
