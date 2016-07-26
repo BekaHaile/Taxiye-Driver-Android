@@ -249,7 +249,7 @@
 
 	<string name="jugnoo_cash">Jugnoo Cash</string>
 	<string name="jugnoo">Jugnoo</string>
-	<string name="jugnoo_off">Jugnoo अब बंद है।</string>
+	<string name="jugnoo_off">Jugnoo बंद है।</string>
 	<string name="jugnoo_cut">Jugnoo कटौती</string>
 
 	<string name="loading">लोड हो रहा है ...</string>
@@ -627,6 +627,8 @@
 	<string name="rate_card">रेट कार्ड</string>
 	<string name="applicable_after">Applicable after %1$s Kms</string>
 	<string name="distance_per_km">दूरी\n(प्रति मिनट)</string>
+	<string name="per_km">(प्रति मिनट)</string>
+	<string name="delivery_off">Delivery OFF</string>
 
 
 	<string-array name="CountryCodes" >

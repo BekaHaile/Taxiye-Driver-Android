@@ -114,8 +114,11 @@ public class DriverRateCard extends BaseActivity {
 		((TextView) findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewDistancePKm)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewTimePKm)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewPKm)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewPm)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(this));
+
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);

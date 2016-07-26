@@ -572,6 +572,8 @@
     <string name="rate_card">റേറ്റ് കാർഡ്</string>
     <string name="owned">സ്വന്തം</string>
     <string name="distance_per_km">അകലം\n( മിനിറ്റിന് )</string>
+    <string name="per_km">(മിനിറ്റിന്)</string>
+    <string name="delivery_off">Delivery OFF</string>
 
 
     <string-array name="CountryCodes" >

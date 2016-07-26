@@ -629,6 +629,8 @@
     <string name="rate_card">రేటు కార్డ్</string>
     <string name="applicable_after">Applicable after %1$s Kms</string>
     <string name="distance_per_km">దూరం\n(కనీసం ప్రతి)</string>
+    <string name="per_km">(కనీసం ప్రతి)</string>
+    <string name="delivery_off">Delivery OFF</string>
 
 
     <string-array name="CountryCodes" >

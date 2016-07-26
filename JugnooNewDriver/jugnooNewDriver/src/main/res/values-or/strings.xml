@@ -575,6 +575,8 @@
     <string name="owned">ନିଜର</string>
 
     <string name="distance_per_km">ଦୁରତା\n(ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="per_km">(ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="delivery_off">Delivery OFF</string>
 
 
     <string-array name="CountryCodes" >

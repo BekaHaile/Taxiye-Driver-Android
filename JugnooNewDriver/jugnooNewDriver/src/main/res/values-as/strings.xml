@@ -571,8 +571,8 @@
     <string name="rate_card"> ভাড়াৰ কার্ড</string>
     <string name="owned">নিজোৰ</string>
     <string name="distance_per_km">দূৰত্ব\n( প্ৰতি মি:)</string>
-
-
+    <string name="per_km">( প্ৰতি মি:)</string>
+    <string name="delivery_off">Delivery OFF</string>
 
 
     <string-array name="CountryCodes" >

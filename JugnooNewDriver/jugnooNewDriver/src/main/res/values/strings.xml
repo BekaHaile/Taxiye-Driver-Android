@@ -265,7 +265,7 @@
 
 	<string name="jugnoo_cash">Jugnoo Cash</string>
 	<string name="jugnoo">Jugnoo</string>
-	<string name="jugnoo_off">Jugnoo is OFF now.</string>
+	<string name="jugnoo_off">Jugnoo OFF.</string>
 	<string name="jugnoo_cut">Jugnoo Cut</string>
 
 	<string name="loading">Loading ...</string>
@@ -630,6 +630,8 @@
 	<string name="driver_to_driver">Driver to Driver</string>
 	<string name="rate_card">Rate Card</string>
 	<string name="applicable_after">Applicable after %1$s Kms</string>
+	<string name="per_km">(Per Km)</string>
+	<string name="delivery_off">Delivery OFF</string>
 
 
 	<string-array name="CountryCodes" >

@@ -260,7 +260,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewEndRideLuggageCount;
 
 	LinearLayout endRideInfoRl;
-	TextView jugnooRideOverText, takeFareText;
+	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn;
 
 	Button reviewSubmitBtn;
 	RelativeLayout relativeLayoutRateCustomer;
@@ -422,7 +422,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
 			relativeLayoutDeliveryOn = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOn);
-			((TextView) findViewById(R.id.textViewDeliveryOn)).setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
+			textViewDeliveryOn.setTypeface(Data.latoRegular(getApplicationContext()));
 			imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
 
 
@@ -883,9 +884,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-//					FlurryEventLogger.event(CALL_US);
-					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					FlurryEventLogger.event(CALL_US);
+//					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
 				}
 			});
 
@@ -1958,8 +1959,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 						if (1 == Data.userData.getDeliveryAvailable()) {
 							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+							textViewDeliveryOn.setText(getResources().getString(R.string.delivery_on));
+
 						} else {
 							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+							textViewDeliveryOn.setText(getResources().getString(R.string.delivery_off));
+
 						}
 
 						if (!checkIfDriverOnline()) {
