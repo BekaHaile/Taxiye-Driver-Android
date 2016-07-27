@@ -2,8 +2,8 @@ package product.clicklabs.jugnoo.driver.datastructure;
 
 public class FareStructure {
 	public double fixedFare;
-	public double thresholdDistance;
-	public double farePerKm;
+	public double thresholdDistance, farePerKmThresholdDistance;
+	public double farePerKm, farePerKmBeforeThreshold, farePerKmAfterThreshold;
 	public double farePerMin;
 	public double freeMinutes;
 	public double farePerWaitingMin;
@@ -14,7 +14,9 @@ public class FareStructure {
 	public double luggageFare;
 	public double convenienceCharge, convenienceChargeWaiver;
 	
-	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes, double farePerWaitingMin, double freeWaitingMinutes){
+	public FareStructure(double fixedFare, double thresholdDistance, double farePerKm, double farePerMin, double freeMinutes,
+						 double farePerWaitingMin, double freeWaitingMinutes, double farePerKmThresholdDistance, double farePerKmAfterThreshold,
+						 double farePerKmBeforeThreshold){
 		this.fixedFare = fixedFare;
 		this.thresholdDistance = thresholdDistance;
 		this.farePerKm = farePerKm;
@@ -26,6 +28,9 @@ public class FareStructure {
 		this.luggageFare = 0;
 		this.convenienceCharge = 0;
 		this.convenienceChargeWaiver = 0;
+		this.farePerKmThresholdDistance = farePerKmThresholdDistance;
+		this.farePerKmAfterThreshold = farePerKmAfterThreshold;
+		this.farePerKmBeforeThreshold =farePerKmBeforeThreshold;
 	}
 	
 	public double calculateFare(double totalDistanceInKm, double totalTimeInMin, double totalWaitTimeInMin){
@@ -44,8 +49,25 @@ public class FareStructure {
 //		Log.i("farePerWaitingMin", String.valueOf(farePerWaitingMin));
 //		Log.i("fareWaitTimeInMin", String.valueOf(totalWaitTimeInMin));
 //		Log.i("fareOfWaitTime", String.valueOf(fareOfWaitTime));
-		
-		double fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKm));
+		double fareOfDistance =0;
+		double fare = 0;
+
+
+		if (farePerKmThresholdDistance > 0) {
+			if (totalDistanceInKm < thresholdDistance) {
+				fareOfDistance = 0;
+			} else if (totalDistanceInKm < farePerKmThresholdDistance) {
+				fareOfDistance = (totalDistanceInKm - thresholdDistance) * farePerKmBeforeThreshold;
+			} else {
+				fareOfDistance = ((farePerKmThresholdDistance - thresholdDistance) * farePerKmBeforeThreshold)
+						+ ((totalDistanceInKm - farePerKmThresholdDistance) * farePerKmAfterThreshold);
+			}
+
+			fare = fareOfRideTime + fareOfWaitTime + fixedFare + fareOfDistance;
+
+		} else {
+			fare = fareOfRideTime + fareOfWaitTime + fixedFare + ((totalDistanceInKm <= thresholdDistance) ? (0) : ((totalDistanceInKm - thresholdDistance) * farePerKmAfterThreshold));
+		}
 		fare = fare * fareFactor;
 
 		fare = fare + getEffectiveConvenienceCharge();
