@@ -527,6 +527,7 @@
     <string name="return_subsidy">પાછી આવાની સબસિડી</string>
     <string name="return_distance">પાછું આવાનું અંતર</string>
     <string name="delivery_details">ડિલિવરી વિગતો</string>
+    <string name="Yesterday">Yesterday</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

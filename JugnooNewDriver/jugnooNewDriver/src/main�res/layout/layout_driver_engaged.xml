@@ -1,0 +1,524 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/driverEngagedLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/top_bar_height"
+    android:splitMotionEvents="false"
+    android:visibility="visible">
+
+    <!-- customer info layout -->
+    <RelativeLayout
+        android:id="@+id/inRideCustomerInfoRl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/driverPassengerInfoRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:splitMotionEvents="false"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white_translucent">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerViewCustomersLinked"
+                    android:layout_width="720px"
+                    android:layout_height="80px"
+                    >
+                </android.support.v7.widget.RecyclerView>
+
+                <include layout="@layout/layout_customer_info"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/customerInfoLine"
+                android:layout_width="match_parent"
+                android:layout_height="6px"
+                android:layout_below="@+id/inRideCustomerInfoRl"
+                android:background="@drawable/shadow_down"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/perfectRidePassengerInfoRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_translucent"
+            android:orientation="vertical"
+            android:splitMotionEvents="false"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="108px"
+                android:layout_marginTop="20px"
+                android:background="@drawable/perfect_ride_call_bakgrnd">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="100px"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/driverPerfectRidePassengerName"
+                        android:layout_width="380px"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/bg_grey_opaque"
+                        android:textSize="42px"/>
+
+                    <TextView
+                        android:id="@+id/textViewPerfectRideWating"
+                        android:layout_width="450px"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10px"
+                        android:gravity="center_vertical"
+                        android:text="@string/customer_waiting"
+                        android:textColor="@color/bg_grey_opaque"
+                        android:textSize="32px"
+                        android:visibility="visible"/>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="30px"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/perfectRidePassengerCallRl"
+                        android:layout_width="78px"
+                        android:layout_height="78px"
+                        android:background="@drawable/round_call_button">
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/customerInfoLine2"
+                android:layout_width="match_parent"
+                android:layout_height="6px"
+                android:layout_below="@+id/inRideCustomerInfoRl"
+                android:background="@drawable/shadow_down"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/etaTimerRLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/inRideCustomerInfoRl"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/menu_black_btn_normal_rounded">
+
+        <TextView
+            android:id="@+id/ETATimerText"
+            android:layout_width="270px"
+            android:layout_height="100px"
+            android:gravity="center"
+            android:tag="mwar"
+            android:text="00:00"
+            android:textColor="@color/white"
+            android:textSize="72px"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/imageViewETASeprator"
+            android:layout_width="2px"
+            android:layout_height="90px"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="5px"
+            android:layout_toRightOf="@+id/ETATimerText"
+            android:background="@color/white"/>
+
+        <ImageView
+            android:id="@+id/imageViewETASmily"
+            android:layout_width="85px"
+            android:layout_height="85px"
+            android:layout_marginLeft="25px"
+            android:layout_marginRight="25px"
+            android:layout_marginTop="5px"
+            android:layout_toRightOf="@+id/ETATimerText"
+            android:src="@drawable/superhappy_face"/>
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutStartEnd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/textViewRideInstructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10px"
+            android:background="@color/white"
+            android:gravity="center"
+            android:padding="15px"
+            android:text="hello"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/text_size_30"
+            android:visibility="gone"
+            />
+
+
+        <!-- start ride layout-->
+        <RelativeLayout
+            android:id="@+id/driverStartRideMainRl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15px"
+            android:splitMotionEvents="false"
+            android:visibility="gone">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                android:id="@+id/driverStartRideBtn"
+                android:layout_width="410px"
+                android:layout_height="99px"
+                android:layout_marginLeft="25px"
+                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:text="@string/start_ride"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                android:id="@+id/buttonMarkArrived"
+                android:layout_width="410px"
+                android:layout_height="99px"
+                android:layout_marginLeft="25px"
+                android:background="@drawable/new_orange_btn_normal_rounded"
+                android:text="@string/arrived"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                android:id="@+id/driverCancelRideBtn"
+                android:layout_width="240px"
+                android:layout_height="99px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15px"
+                android:background="@drawable/new_menu_black_btn_selector_rounded"
+                android:text="@string/cancel"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="32px"/>
+
+
+        </RelativeLayout>
+
+        <!-- in ride layout -->
+        <LinearLayout
+            android:id="@+id/driverInRideMainRl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical"
+            android:splitMotionEvents="false"
+            android:visibility="visible"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="6px"
+                android:background="@drawable/shadow_up"/>
+
+            <!-- in ride operations rl-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_translucent"
+                android:orientation="vertical"
+                android:splitMotionEvents="false"
+                android:visibility="visible"
+                >
+                <TextView
+                    android:id="@+id/textViewRideInstructionsInRide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="0px"
+                    android:gravity="center"
+                    android:padding="15px"
+                    android:text="hello"
+                    android:textColor="@color/text_color"
+                    android:textSize="@dimen/text_size_30"
+                    android:visibility="visible"
+                    />
+
+
+                <!-- reached distance km, time, fare layout -->
+                <LinearLayout
+                    android:id="@+id/linearLayoutRideValues"
+                    android:layout_width="match_parent"
+                    android:layout_height="145px"
+                    android:layout_marginBottom="-14px"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:splitMotionEvents="false"
+                    android:visibility="visible"
+                    >
+
+                    <RelativeLayout
+                        android:id="@+id/driverIRDistanceRl"
+                        android:layout_width="0px"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:splitMotionEvents="false">
+
+                        <TextView
+                            android:id="@+id/driverIRDistanceText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/distance"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"
+
+                            />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/driverIRDistanceValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="4.7 Kms"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/driverRideTimeRl"
+                        android:layout_width="0px"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:splitMotionEvents="false">
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="90px"
+                            android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/driverRideTimeText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="Ride Time"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"/>
+
+                        <product.clicklabs.jugnoo.driver.utils.PausableChronometer
+                            android:id="@+id/rideTimeChronometer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/driverWaitRl"
+                        android:layout_width="0px"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:splitMotionEvents="false"
+                        android:visibility="visible">
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="90px"
+                            android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/driverWaitText"
+                            android:layout_width="178px"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="@string/wait_time"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"
+                            />
+
+                        <TextView
+                            android:id="@+id/driverWaitValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:text="4 min"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"/>
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/driverIRFareRl"
+                        android:layout_width="0px"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:splitMotionEvents="false"
+                        android:visibility="gone"
+                        >
+
+                        <ImageView
+                            android:layout_width="2px"
+                            android:layout_height="90px"
+                            android:background="@color/bg_grey_opaque"
+                            android:layout_centerVertical="true"
+                            />
+
+                        <TextView
+                            android:id="@+id/driverIRFareText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/fare"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_marginTop="35px"/>
+
+                        <TextView
+                            android:id="@+id/driverIRFareValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="Rs 10.00"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="@dimen/end_ride_details_text_size"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginBottom="35px"
+                            />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18px"
+                    android:layout_marginBottom="18px"
+                    >
+
+                    <Button
+                        android:id="@+id/driverEndRideBtn"
+                        android:layout_width="400px"
+                        android:layout_height="90px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/menu_black_btn_selector"
+                        android:text="@string/end_ride"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                        android:id="@+id/buttonMakeDelivery"
+                        android:layout_width="400px"
+                        android:layout_height="90px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/menu_black_btn_selector"
+                        android:text="@string/make_delivery"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"
+                        android:visibility="visible"
+                        android:padding="6px"
+                        />
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/driverEngagedMyLocationBtn"
+        android:layout_width="80px"
+        android:layout_height="80px"
+        android:layout_above="@+id/linearLayoutStartEnd"
+        android:layout_marginBottom="20px"
+        android:layout_marginLeft="40px"
+        android:background="@drawable/new_my_loc_button"
+        android:tag="mwar"
+        />
+
+    <!--<Button-->
+        <!--android:id="@+id/distanceReset2"-->
+        <!--android:layout_width="80px"-->
+        <!--android:layout_height="80px"-->
+        <!--android:layout_above="@+id/linearLayoutStartEnd"-->
+        <!--android:layout_marginBottom="20px"-->
+        <!--android:layout_marginLeft="160px"-->
+        <!--android:background="@drawable/new_my_loc_button"-->
+        <!--android:tag="mwar"-->
+        <!--/>-->
+
+    <Button
+        android:id="@+id/buttonDriverNavigation"
+        android:layout_width="240px"
+        android:layout_height="120px"
+        android:layout_above="@+id/linearLayoutStartEnd"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="40px"
+        android:layout_marginRight="30px"
+        android:background="@drawable/new_orange_direction_btn_selector"
+        android:tag="mwar"
+        android:text="@string/click_for_direction"
+        android:textColor="@color/white"
+        android:textSize="28px"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

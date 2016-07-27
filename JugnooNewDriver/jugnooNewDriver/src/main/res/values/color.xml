@@ -19,8 +19,13 @@
  <color name="white_more_translucent">#66FFFFFF</color>
  <color name="white_light_grey">#FAFAFA</color>
  <color name="white_light_more_grey">#F3F3F3</color>
-   
-   <color name="black_translucent">#77000000</color>
+    <color name="new_orange_op_10">#10f6863c</color>
+
+    <color name="light_grey_op_77">#77f3f3f3</color>
+    <color name="light_grey_op_75">#75f3f3f3</color>
+
+
+    <color name="black_translucent">#77000000</color>
     <color name="black_translucent_level_2">#55000000</color>
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
