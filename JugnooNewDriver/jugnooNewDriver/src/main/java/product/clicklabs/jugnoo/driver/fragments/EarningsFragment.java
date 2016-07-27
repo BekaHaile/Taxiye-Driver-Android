@@ -42,7 +42,13 @@ public class EarningsFragment extends Fragment {
 			dateTimeValueFromWeek, dateTimeValueToWeek, dateTimeValueFromMonth, dateTimeValueToMonth, textViewTodayDeliveriesNumber,
 			textViewTodayRidesValue, textViewTodayReferralValue, textViewTodayDeliveriesValue, textViewWeekDeliveriesNumber,
 			textViewWeekRidesValue, textViewWeekReferralValue, textViewWeekDeliveriesValue, textViewMonthDeliveriesNumber, textViewMonthRidesValue
-			,textViewMonthReferralValue, textViewMonthDeliveriesValue;
+			,textViewMonthReferralValue, textViewMonthDeliveriesValue, textViewTodayDate, textViewYesterdayDate, textViewYesterdayValue
+			,textViewYesterdayRidesNumber, textViewYesterdayRidesValue, textViewYesterdayReferralNumber, textViewYesterdayReferralValue,
+			textViewYesterdayDeliveriesNumber,textViewYesterdayDeliveriesValue, textViewCurrentWeekDate, textViewWeekDate, textViewCurrentWeekValue,
+			textViewCurrentWeekRidesNumber, textViewCurrentWeekRidesValue, textViewCurrentWeekReferralNumber, textViewCurrentWeekReferralValue,
+			textViewCurrentWeekDeliveriesNumber, textViewCurrentWeekDeliveriesValue, textViewCurrentMonthDate, textViewMonthDate, textViewCurrentMonthValue,
+			textViewCurrentMonthRidesNumber, textViewCurrentMonthRidesValue, textViewCurrentMonthReferralNumber, textViewCurrentMonthReferralValue,
+			textViewCurrentMonthDeliveriesNumber, textViewCurrentMonthDeliveriesValue;
 
 	private View rootView;
 	private FragmentActivity activity;
@@ -65,7 +71,7 @@ public class EarningsFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_earnings, container, false);
+		rootView = inflater.inflate(R.layout.fragment_earnings_new, container, false);
 
 
 		activity = getActivity();
