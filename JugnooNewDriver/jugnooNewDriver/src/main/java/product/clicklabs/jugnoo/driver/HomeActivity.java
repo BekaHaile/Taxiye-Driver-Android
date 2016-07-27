@@ -3080,17 +3080,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			long timeDiff = DateOperations.getTimeDifference(DateOperations.getCurrentTime(), customerInfo.getStartTime());
 			long timeDiffInSec = timeDiff / 1000;
 			holder.textViewRequestTime.setText(""+timeDiffInSec + " "+getResources().getString(R.string.sec_left));
-			if (myLocation != null) {
+			double distance=0;
+			if(customerInfo.getDryDistance()>0){
 				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
-				double distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
+				distance = customerInfo.getDryDistance();
+			} else if (myLocation != null) {
+				holder.textViewRequestDistance.setVisibility(View.VISIBLE);
+				 distance = MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), customerInfo.getRequestlLatLng());
 				distance = distance * 1.5;
-				if (distance >= 1000) {
-					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
-				} else {
-					holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) +" "+getResources().getString(R.string.m_away));
-				}
 			} else {
 				holder.textViewRequestDistance.setVisibility(View.GONE);
+			}
+
+			if (distance >= 1000) {
+				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
+			} else {
+				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) +" "+getResources().getString(R.string.m_away));
 			}
 
 

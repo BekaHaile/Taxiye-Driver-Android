@@ -45,7 +45,7 @@ public class CustomerInfo {
 	private int isDelivery;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private int totalDeliveries;
-	private double estimatedFare;
+	private double estimatedFare, dryDistance;
 	private String vendorMessage;
 
 	private String color;
@@ -99,7 +99,7 @@ public class CustomerInfo {
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
-						int totalDeliveries, double estimatedFare, String userName){
+						int totalDeliveries, double estimatedFare, String userName, double dryDistance){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -113,9 +113,16 @@ public class CustomerInfo {
 		this.totalDeliveries = totalDeliveries;
 		this.estimatedFare = estimatedFare;
 		this.name = userName;
+		this.dryDistance =dryDistance;
 	}
 
+	public double getDryDistance() {
+		return dryDistance;
+	}
 
+	public void setDryDistance(double dryDistance) {
+		this.dryDistance = dryDistance;
+	}
 
 	@Override
 	public String toString() {
