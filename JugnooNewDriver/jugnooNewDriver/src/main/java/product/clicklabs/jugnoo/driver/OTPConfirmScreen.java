@@ -84,7 +84,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		if (intent.hasExtra("message")) {
 			retrieveOTPFromSMS(intent);
 		} else if (intent.hasExtra("otp")) {
-//			retrieveOTPFromPush(intent);
+			retrieveOTPFromPush(intent);
 		}
 		super.onNewIntent(intent);
 	}
@@ -639,6 +639,26 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 					otp = arr2[1];
 					otp = otp.replaceAll("\\ ", "");
 				}
+			}
+			if (Utils.checkIfOnlyDigits(otp)) {
+				if (!"".equalsIgnoreCase(otp)) {
+					if (Boolean.parseBoolean(Prefs.with(OTPConfirmScreen.this).getString(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false"))) {
+						editTextOTP.setText(otp);
+						editTextOTP.setSelection(editTextOTP.getText().length());
+						buttonVerify.performClick();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void retrieveOTPFromPush(Intent intent) {
+		try {
+			String otp = "";
+			if (intent.hasExtra("otp")) {
+				otp = intent.getStringExtra("otp");
 			}
 			if (Utils.checkIfOnlyDigits(otp)) {
 				if (!"".equalsIgnoreCase(otp)) {

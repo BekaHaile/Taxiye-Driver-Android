@@ -217,7 +217,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			holder.docType.setText(docInfo.docType);
 			if (docInfo.docRequirement == 1) {
-				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+				holder.docRequirement.setText(getResources().getString(R.string.mandatory)+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
 			}

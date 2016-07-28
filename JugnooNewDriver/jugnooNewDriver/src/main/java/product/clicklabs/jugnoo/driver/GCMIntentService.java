@@ -570,7 +570,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");
 								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
-									Intent otpConfirmScreen = new Intent(this, LoginViaOTP.class);
+									Intent otpConfirmScreen = new Intent(this, OTPConfirmScreen.class);
 									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 									otpConfirmScreen.putExtra("otp", otp);
 									startActivity(otpConfirmScreen);
