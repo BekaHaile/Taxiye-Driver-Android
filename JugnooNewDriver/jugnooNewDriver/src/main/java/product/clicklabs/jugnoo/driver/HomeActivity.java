@@ -2530,7 +2530,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setTextViewRideInstructions();
 
 
-					cancelTimerPathRerouting();
+					startTimerPathRerouting();
 
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
