@@ -614,6 +614,8 @@
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="Yesterday">Yesterday</string>
+    <string name="ride_money">Ride Money</string>
+    <string name="total_amount">Total Amount</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
