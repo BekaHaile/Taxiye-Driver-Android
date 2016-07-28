@@ -156,6 +156,12 @@ public class Database2 {                                                        
 	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
 
 
+	private static final String TABLE_POOL_DISCOUNT_FLAG = "table_pool_discount_flag";
+	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
+	private static final String POOL_RIDE_DISCOUNT_FLAG = "pool_ride_discount_flag";
+
+
+
 	/**
 	 * Creates and opens database for the application use
 	 *
@@ -288,6 +294,11 @@ public class Database2 {                                                        
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_RIDE_DATA + " ("
 				+ CUSTOMER_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ CUSTOMER_START_RIDE_TIME + " TEXT"
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_POOL_DISCOUNT_FLAG + " ("
+				+ POOL_RIDE_ENGAGEMENT_ID + " INTEGER, "
+				+ POOL_RIDE_DISCOUNT_FLAG + " INTEGER"
 				+ ");");
 
 	}
@@ -1558,5 +1569,47 @@ public class Database2 {                                                        
 		}
 	}
 
+
+	public void insertPoolDiscountFlag(int engagementId, int flag) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.POOL_RIDE_ENGAGEMENT_ID, engagementId);
+			contentValues.put(Database2.POOL_RIDE_DISCOUNT_FLAG, flag);
+			database.insert(Database2.TABLE_POOL_DISCOUNT_FLAG, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public int getPoolDiscountFlag(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_POOL_DISCOUNT_FLAG
+				+ " WHERE " + POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		int i0 = cursor.getColumnIndex(Database2.POOL_RIDE_DISCOUNT_FLAG);
+		if(cursor.moveToFirst()){
+			return Integer.parseInt(cursor.getString(i0));
+		}
+		return 0;
+	}
+
+
+	public void updatePoolDiscountFlag(int engagementId, int flag) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(POOL_RIDE_DISCOUNT_FLAG, flag);
+			database.update(TABLE_POOL_DISCOUNT_FLAG, contentValues, POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deletePoolDiscountFlag(int engagementId) {
+		try {
+			database.delete(Database2.TABLE_POOL_DISCOUNT_FLAG, POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

@@ -3615,6 +3615,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											String.valueOf(driverAtPickupLatLng.longitude));
 								}
 
+								ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
+
+								if(customerInfo.getIsPooled() ==1){
+									Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+									if(customerEnfagementInfos.size() >1){
+										for (int i = 0; i < customerEnfagementInfos.size(); i++) {
+											Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos.get(i).getEngagementId(), 1);
+										}
+									}
+								}
+
 								driverScreenMode = DriverScreenMode.D_IN_RIDE;
 								Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
 								saveCustomerRideDataInSP(customerInfo);
@@ -3889,6 +3900,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					initializeStartRideVariables();
 					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
+
+					if(customerInfo.getIsPooled() ==1){
+						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+					}
 
 				}
 			} catch (Exception exception) {
