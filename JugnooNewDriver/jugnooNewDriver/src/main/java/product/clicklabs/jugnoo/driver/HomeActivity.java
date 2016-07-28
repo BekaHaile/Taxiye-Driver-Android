@@ -61,7 +61,6 @@ import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -2327,7 +2326,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 					try {
 
 
@@ -2370,7 +2369,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
 
 					break;
@@ -2407,7 +2406,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 					setEtaTimerVisibility(customerInfo);
-					cancelMapAnimateAndUpdateRideDataTimer();
+					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
 
@@ -2460,7 +2459,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
 
@@ -2531,7 +2530,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setTextViewRideInstructions();
 
 
-					startMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -2550,7 +2549,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 
 					break;
 
@@ -2572,7 +2571,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
 
 					break;
@@ -2583,7 +2582,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 
-					cancelMapAnimateAndUpdateRideDataTimer();
+					cancelTimerPathRerouting();
 
 			}
 			showAllRideRequestsOnMap();
@@ -2872,7 +2871,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onDestroy() {
 		try {
-			cancelMapAnimateAndUpdateRideDataTimer();
+			cancelTimerPathRerouting();
 
 			GCMIntentService.clearNotifications(HomeActivity.this);
 			GCMIntentService.stopRing(true);
@@ -3141,9 +3140,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if (DriverScreenMode.D_INITIAL == driverScreenMode) {
 							holder = (ViewHolderDriverRequest) v.getTag();
 							CustomerInfo customerInfo = customerInfos.get(holder.id);
-							setOpenedCustomerInfo(customerInfo);
-							driverScreenMode = DriverScreenMode.D_REQUEST_ACCEPT;
-							switchDriverScreen(driverScreenMode);
 							map.animateCamera(CameraUpdateFactory.newLatLng(customerInfo.getRequestlLatLng()), MAP_ANIMATION_TIME, null);
 							FlurryEventLogger.event(RIDE_CHECKED);
 						}
@@ -4363,54 +4359,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void updateInRideData(CustomerInfo customerInfo) {
-		try {
-			if(customerInfo.getIsPooled() != 1) {
-				long responseTime = System.currentTimeMillis();
-				if (UserMode.DRIVER == userMode && DriverScreenMode.D_IN_RIDE == driverScreenMode) {
-					if (myLocation != null) {
-						double totalDistanceInKm = Math.abs(customerRideDataGlobal.getDistance(HomeActivity.this) / 1000.0);
-						long rideTimeSeconds = customerInfo.getElapsedRideTime(HomeActivity.this) / 1000;
-						double rideTimeMinutes = Math.ceil(rideTimeSeconds / 60);
-						int lastLogId = Integer.parseInt((Prefs.with(HomeActivity.this).getString(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0)));
-						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-						HashMap<String, String> params = new HashMap<String, String>();
-						params.put("access_token", Data.userData.accessToken);
-						params.put("engagement_id", String.valueOf(customerInfo.getEngagementId()));
-						params.put("current_latitude", "" + myLocation.getLatitude());
-						params.put("current_longitude", "" + myLocation.getLongitude());
-						params.put("distance_travelled", decimalFormat.format(totalDistanceInKm));
-						params.put("ride_time", decimalFormatNoDecimal.format(rideTimeMinutes));
-						params.put("wait_time", "0");
-						params.put("last_log_id", "" + lastLogId);
-
-						Log.i("update_in_ride_data nameValuePairs", "=" + nameValuePairs);
-
-						Response response = RestClient.getApiServices().updateInRideDataRetro(params);
-						if (response != null) {
-							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-							JSONObject jObj = new JSONObject(jsonString);
-							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
-							lastLogId = jObj.optInt("last_log_id", 0);
-							Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
-							if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
-								try {
-									double distance = jObj.getDouble("total_distance") * 1000;
-									MeteringService.gpsInstance(HomeActivity.this).updateDistanceInCaseOfReset(distance);
-									FlurryEventLogger.logResponseTime(HomeActivity.this, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_IN_RIDE_DATA_RESPONSE);
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						}
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 
 	public void fetchHeatMapData(final Activity activity) {
 		try {
@@ -4573,46 +4521,50 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	//Both driver and customer
-	Timer timerMapAnimateAndUpdateRideData;
-	TimerTask timerTaskMapAnimateAndUpdateRideData;
+	Timer timerPathRerouting;
+	TimerTask timerTaskPathRerouting;
 
 
-	public void startMapAnimateAndUpdateRideDataTimer() {
-		cancelMapAnimateAndUpdateRideDataTimer();
+	public void startTimerPathRerouting() {
+		cancelTimerPathRerouting();
 		try {
-			timerMapAnimateAndUpdateRideData = new Timer();
+			timerPathRerouting = new Timer();
 
-			timerTaskMapAnimateAndUpdateRideData = new TimerTask() {
+			timerTaskPathRerouting = new TimerTask() {
 
 				@Override
 				public void run() {
 					try {
-//						TODO stopped this one updateInRideData(Data.getCurrentCustomerInfo());
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								setAttachedCustomerMarkers();
+							}
+						});
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 			};
 
-			timerMapAnimateAndUpdateRideData.scheduleAtFixedRate(timerTaskMapAnimateAndUpdateRideData, 1000, 60000);
+			timerPathRerouting.scheduleAtFixedRate(timerTaskPathRerouting, 1000, 60000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public void cancelMapAnimateAndUpdateRideDataTimer() {
+	public void cancelTimerPathRerouting() {
 		try {
-			if (timerTaskMapAnimateAndUpdateRideData != null) {
-				timerTaskMapAnimateAndUpdateRideData.cancel();
-				timerTaskMapAnimateAndUpdateRideData = null;
+			if (timerTaskPathRerouting != null) {
+				timerTaskPathRerouting.cancel();
+				timerTaskPathRerouting = null;
 			}
 
-			if (timerMapAnimateAndUpdateRideData != null) {
-				timerMapAnimateAndUpdateRideData.cancel();
-				timerMapAnimateAndUpdateRideData.purge();
-				timerMapAnimateAndUpdateRideData = null;
+			if (timerPathRerouting != null) {
+				timerPathRerouting.cancel();
+				timerPathRerouting.purge();
+				timerPathRerouting = null;
 			}
 
 		} catch (Exception e) {
