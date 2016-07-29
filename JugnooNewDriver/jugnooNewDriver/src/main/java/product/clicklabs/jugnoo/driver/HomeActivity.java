@@ -91,6 +91,7 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
+import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -2368,6 +2369,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverEngagedLayout.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
+					ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+					if(customerInfo.getIsPooled() ==1){
+						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+						if(customerEnfagementInfos.size() >1){
+							for (int i = 0; i < customerEnfagementInfos.size(); i++) {
+								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos.get(i).getEngagementId(), 1);
+							}
+						}
+					}
+
 
 					cancelTimerPathRerouting();
 					Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_RIDE_REGION_REQUEST_STATUS, false);
@@ -2409,6 +2421,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
+
+					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+					if(customerInfo.getIsPooled() ==1){
+						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+						if(customerEnfagementInfos1.size() >1){
+							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
+								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
+							}
+						}
+					}
 
 					break;
 
@@ -2656,6 +2680,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void buttonDriverNavigationSetVisibility(int visibility){
 		buttonDriverNavigation.setVisibility(visibility);
+		if(driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_IN_RIDE)
+		buttonDriverNavigation.performClick();
 	}
 
 	@Override
@@ -2897,7 +2923,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis) {
 		if(customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null){
-			return customerInfo.getPoolFare().getFare();
+			return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
 		}
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
 
@@ -3230,6 +3256,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							String.valueOf(customerInfo.getEngagementId()),
 							String.valueOf(customerInfo.getUserId()));
 					GCMIntentService.stopRing(true);
+
 				}
 
 				@Override
@@ -3615,16 +3642,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 											String.valueOf(driverAtPickupLatLng.longitude));
 								}
 
-								ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
-
-								if(customerInfo.getIsPooled() ==1){
-									Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
-									if(customerEnfagementInfos.size() >1){
-										for (int i = 0; i < customerEnfagementInfos.size(); i++) {
-											Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos.get(i).getEngagementId(), 1);
-										}
-									}
-								}
 
 								driverScreenMode = DriverScreenMode.D_IN_RIDE;
 								Data.setCustomerState(String.valueOf(customerInfo.getEngagementId()), driverScreenMode);
@@ -3901,8 +3918,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					initializeStartRideVariables();
 					nudgeRideEnd(customerInfo, dropLatitude, dropLongitude, params);
 
-					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+					try {
+						if(customerInfo.getIsPooled() ==1){
+							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 				}
@@ -4175,7 +4196,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			switchDriverScreen(driverScreenMode);
 
 			Database2.getInstance(activity).deleteCustomerRideDataForEngagement(customerInfo.getEngagementId());
-
+			try {
+				if(customerInfo.getIsPooled() == 1){
+					Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			params.put("is_cached", "1");
 			params.put("paid_in_cash", String.valueOf(finalToPay));

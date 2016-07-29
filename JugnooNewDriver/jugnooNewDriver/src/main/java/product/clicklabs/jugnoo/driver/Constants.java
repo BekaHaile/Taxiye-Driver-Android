@@ -124,6 +124,8 @@ public interface Constants {
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
 
     String KEY_FARE = "fare";
+	String KEY_DISCOUNTED_FARE = "discounted_fare";
+	String KEY_DISCOUNT_ENABLED = "discount_enabled";
     String KEY_BEARING = "bearing";
     String KEY_DEVICE_TOKEN = "device_token";
     String KEY_LOCATION_ACCURACY = "location_accuracy";
@@ -131,6 +133,9 @@ public interface Constants {
 
 	String MIME_TYPE = "application/octet-stream";
     String KEY_LINK = "link";
+
+	String START_NAVIGATION_ACCEPT = "start_navigation_accept";
+	String START_NAVIGATION_START = "start_navigation_start";
 
     String SP_START_LATITUDE = "sp_start_latitude";
     String SP_START_LONGITUDE = "sp_start_longitude";

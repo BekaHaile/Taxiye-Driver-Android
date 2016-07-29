@@ -242,6 +242,10 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
+		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT, userData.optInt("start_navigation_accept", 0));
+		Prefs.with(context).save(Constants.START_NAVIGATION_START, userData.optInt("start_navigation_start", 0));
+
+
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
@@ -722,7 +726,9 @@ public class JSONParser implements Constants {
 				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
 				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare));
+				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
+				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED,0);
+				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
