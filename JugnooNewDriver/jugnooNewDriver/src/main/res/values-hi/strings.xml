@@ -514,7 +514,7 @@
 	<string name="enter_some_amount">कृपया कुछ राशि दर्ज करें</string>
 	<string name="enter_less_amount">कृपया कम राशि प्रवेश करें</string>
 	<string name="enter_valid_amount">कृपया वैध राशि दर्ज करें</string>
-	<string name="amnt_credited">राशि जमा की गयी </string>
+	<string name="amnt_credited">खाते में भुगतान करने के लिए </string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
 	<string name="no_not_verified">Phone Number not verified</string>
@@ -576,7 +576,7 @@
 	<string name="details">विवरण</string>
 	<string name="present_near_delivery_location">इस डिलीवरी ऑर्डर को चिन्हित करने के लिए आपको डिलीवरी स्थान पर होना अनिवार्य है </string>
 	<string name="success">सफल हुआ </string>
-	<string name="outstanding_amount">बकाया समायोजित किया गया </string>
+	<string name="outstanding_amount">पिछला चालान समायोजन </string>
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -630,9 +630,10 @@
 	<string name="per_km">(प्रति मिनट)</string>
 	<string name="delivery_off">Delivery OFF</string>
 
-	<string name="Yesterday">Yesterday</string>
-	<string name="ride_money">Ride Money</string>
-	<string name="total_amount">Total Amount</string>
+	<string name="Yesterday">कल</string>
+	<string name="ride_money">कुल सवारी राशि </string>
+	<string name="total_amount">अंतिम चालान राशि</string>
+	<string name="this_week">इस सप्ताह</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

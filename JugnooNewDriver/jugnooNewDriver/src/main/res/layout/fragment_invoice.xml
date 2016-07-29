@@ -517,9 +517,9 @@
             android:layout_marginRight="-4px"
             android:layout_marginTop="20px">
 
-            <TextView
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                 android:id="@+id/textViewTotalJugnooAmnt"
-                android:layout_width="wrap_content"
+                android:layout_width="550px"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"

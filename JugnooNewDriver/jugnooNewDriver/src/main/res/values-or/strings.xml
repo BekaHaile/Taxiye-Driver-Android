@@ -522,7 +522,7 @@
     <string name="details">ବିବରଣି</string>
     <string name="present_near_delivery_location">ଏହି ଅର୍ଡର୍ ଟି ପହନ୍ଚାଇବା ପାଇଂ ଆପନଂ କୁ ନିଶ୍ଚିତ ରୁପେ ଡେଲିଭରି ସ୍ଥାନ କୁ ଯିବାକୁ ପଡିବ</string>
     <string name="success">ସଫଳ</string>
-    <string name="outstanding_amount">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
+    <string name="outstanding_amount">ପଛ ଚାଲାଣ୍-ର ଆଡ୍-ଜଷ୍ଟ୍ ମେନ୍ଟ୍</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -559,7 +559,7 @@
     <string name="owner">ମାଲିକ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
 
-    <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="applicable_after">%1$s କି.ମି. ପରେ ଲାଗୁ</string>
 
     <string name="rejection_reason">ରିଜେକ୍ଟ କରିବାର କାରଣ</string>
     <string name="mandatory">ବାଧ୍ୟତା ମୁଳକ</string>
@@ -578,9 +578,10 @@
     <string name="per_km">(ମିନିଟ୍ ପ୍ରତି)</string>
     <string name="delivery_off">Delivery OFF</string>
 
-    <string name="Yesterday">Yesterday</string>
-    <string name="ride_money">Ride Money</string>
-    <string name="total_amount">Total Amount</string>
+    <string name="Yesterday">ଗତକାଲି</string>
+    <string name="ride_money">ସମୁଦାୟ ଭଡା ରାଶି</string>
+    <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
+    <string name="this_week">ଏଇ ସପ୍ତାହ</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

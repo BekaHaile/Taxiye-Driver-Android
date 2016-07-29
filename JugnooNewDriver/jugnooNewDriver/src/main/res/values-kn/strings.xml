@@ -518,7 +518,7 @@
     <string name="start_delivery_text">ನೀವು ಡೆಲಿವರಿ ಆರಂಭಿಸಲು ಬಯಸುವುದು  ಖಚಿತವೇ?</string>
     <string name="deliver">ತಲುಪಿದೆ </string>
     <string name="Return">ಹಿಂದಿರುಗಿಸಿ </string>
-    <string name="amnt_credited">ಹಣ  ಸಂದಾಯವಾಗಿದೆ  </string>
+    <string name="amnt_credited">ಖಾತೆಯಲ್ಲಿ ಪಾವತಿಸಲು  </string>
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
@@ -543,7 +543,7 @@
     <string name="details">ವಿವರಗಳು </string>
     <string name="present_near_delivery_location">ನೀವು ಡೆಲಿವರಿಯ ಸ್ಥಳದಲ್ಲಿದ್ದಾರೆ ಮಾತ್ರ ಆರ್ಡರ್ ಡೆಲಿವರಿ ಯಾಗುತ್ತದೆ </string>
     <string name="success">ಯಶಸ್ವಿಯಾಗಿದೆ </string>
-    <string name="outstanding_amount">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="outstanding_amount">ಹಿಂದಿನ ಸರಕುಪಟ್ಟಿ ಹೊಂದಾಣಿಕೆಗಳು</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -590,13 +590,15 @@
     <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
     <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
     <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
-    <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
     <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
     <string name="per_km">(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ)</string>
     <string name="delivery_off">Delivery OFF</string>
-    <string name="Yesterday">Yesterday</string>
-    <string name="ride_money">Ride Money</string>
-    <string name="total_amount">Total Amount</string>
+
+    <string name="Yesterday">ನಿನ್ನೆ</string>
+    <string name="ride_money">ಸವಾರಿಯ ಒಟ್ಟು ಮೊತ್ತ </string>
+    <string name="total_amount">ಅಂತಿಮ ಸರಕುಪಟ್ಟಿಯ ಮೊತ್ತ </string>
+    <string name="this_week">ಈ ವಾರ</string>
 
 
     <string-array name="CountryCodes" >

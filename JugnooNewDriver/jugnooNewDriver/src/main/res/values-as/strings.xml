@@ -556,7 +556,7 @@
     <string name="owner">মালিক</string>
     <string name="approval_pending">অনুমোদন পেন্দিং</string>
 
-    <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="applicable_after">%1$s কি: মি: পিছত প্রযোজ্য হব</string>
 
     <string name="rejection_reason">খাৰিজ হোৱা কাৰণ</string>
     <string name="mandatory">কার্যভাৰ</string>
@@ -574,9 +574,10 @@
     <string name="per_km">( প্ৰতি মি:)</string>
     <string name="delivery_off">Delivery OFF</string>
 
-    <string name="Yesterday">Yesterday</string>
-    <string name="ride_money">Ride Money</string>
-    <string name="total_amount">Total Amount</string>
+    <string name="Yesterday">যোৱা কালি</string>
+    <string name="ride_money">মুঠ ভাড়াৰ পৰিমাণ</string>
+    <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
+    <string name="this_week">এই সপ্তাহ</string>
 
     <string-array name="CountryCodes" >
 

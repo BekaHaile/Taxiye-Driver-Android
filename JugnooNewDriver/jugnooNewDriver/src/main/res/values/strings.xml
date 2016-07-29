@@ -465,7 +465,7 @@
 	<string name="Last_month">Last Month</string>
 	<string name="upcoming_invoice">Upcoming Invoice</string>
 	<string name="current_invoice">Current Invoice</string>
-	<string name="Outstanding_amnt">Outstanding Amount</string>
+	<string name="Outstanding_amnt">Previous invoice adjustments</string>
 	<string name="jugnoo_cmsn">Jugnoo Commission</string>
 	<string name="Manual_adjustment">Manual Adjustment</string>
 	<string name="referral_amount">Referral Amount</string>
@@ -473,7 +473,7 @@
 	<string name="paid_by_jugnoo">Paid By Jugnoo</string>
 	<string name="paid_by_customer">Paid In Cash</string>
 	<string name="paid_using_wallet">Paid Using Wallet</string>
-	<string name="acc_credited">Amount Credited</string>
+	<string name="acc_credited">Account Credited</string>
 	<string name="last_invoice">Last Invoice</string>
 	<string name="last_invoice_details">Last Payment On :</string>
 	<string name="last_payments">Last Payments</string>
@@ -519,7 +519,7 @@
 	<string name="order_id">Order Id</string>
 	<string name="thanks_for_feedback">Thank you for your valuable feedback</string>
 	<string name="total_amnt_till_now">Total Amount Till Now</string>
-	<string name="amnt_credited">Amount Credited</string>
+	<string name="amnt_credited">To Pay In Account</string>
 	<string name="invoice_date">Invoice Date</string>
 	<string name="invoice_id">Invoice Id</string>
 	<string name="total_distance">Total Distance</string>
@@ -610,7 +610,7 @@
 	<string name="owned">Owned</string>
 	<string name="auto">Auto</string>
 	<string name="rejection_reason">Rejection Reason</string>
-	<string name="outstanding_amount">Outstanding Adjusted</string>
+	<string name="outstanding_amount">Previous invoice adjustments</string>
 	<string name="delivery_fare">Delivery Fare</string>
 	<string name="return_subsidy">Return Subsidy</string>
 	<string name="return_distance">Return Distance</string>
@@ -633,9 +633,9 @@
 	<string name="per_km">(Per Km)</string>
 	<string name="delivery_off">Delivery OFF</string>
 	<string name="Yesterday">Yesterday</string>
+	<string name="ride_money">Total ride amount</string>
+	<string name="total_amount">Final invoice amount</string>
 	<string name="this_week">This Week</string>
-	<string name="ride_money">Ride Money</string>
-	<string name="total_amount">Total Amount</string>
 
 
 	<string-array name="CountryCodes" >

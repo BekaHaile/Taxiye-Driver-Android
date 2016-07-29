@@ -493,7 +493,7 @@
     <string name="start_delivery_text">શું તમે સાચે ડીલીવરી શરુ કરવા માંગો છો </string>
     <string name="deliver">ડીલીવરી થઇ ગયી છે </string>
     <string name="Return">પરત</string>
-    <string name="amnt_credited">રકમ જમા</string>
+    <string name="amnt_credited">એકાઉન્ટ ચૂકવવા માટે</string>
     <string name="delivery_id">ડીલીવરી આડી </string>
 
     <string name="delivery_completed">ડીલીવરી સંપૂર્ણ </string>
@@ -530,7 +530,7 @@
     <string name="details">વિગતો</string>
     <string name="present_near_delivery_location">ઓર્ડર ને ડીલીવરી માર્ક કરવા માટે ડીલીવરી જગ્યાની નજીક હાજર હોવા જરૂરી છે</string>
     <string name="success">સફળ થઉં</string>
-    <string name="outstanding_amount">બાદ બાકી થઇ ગયું </string>
+    <string name="outstanding_amount">અગાઉના  ભરતિયું ગોઠવણો</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -552,7 +552,7 @@
     <string name="Submit">સબમિટ</string>
     <string name="owner">માલિક</string>
     <string name="approval_pending">મંજૂરી બાકી</string>
-    <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="applicable_after">કિ.મી. પછી લાગુ %1$s Km</string>
 
     <string name="rejection_reason">રદ કરવાનું કારણ</string>
     <string name="mandatory">ફરજિયાત</string>
@@ -570,9 +570,10 @@
     <string name="per_km">(મિનિટ દીઠ)</string>
     <string name="delivery_off">Delivery OFF</string>
 
-    <string name="Yesterday">Yesterday</string>
-    <string name="ride_money">Ride Money</string>
-    <string name="total_amount">Total Amount</string>
+    <string name="Yesterday">ગઇકાલે</string>
+    <string name="ride_money">કુલ રાઈડ રકમ</string>
+    <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
+    <string name="this_week">આ અઠવાડિયે</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

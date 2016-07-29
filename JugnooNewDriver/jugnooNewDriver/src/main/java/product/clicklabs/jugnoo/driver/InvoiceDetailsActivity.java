@@ -207,7 +207,8 @@ public class InvoiceDetailsActivity extends BaseActivity {
 				textViewOutstandingAmntValue.setText(getResources().getString(R.string.NA));
 			}else {
 				textViewOutstandingAmntValue.setText("-"+getResources().getString(R.string.rupee)
-						+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
+						+ Utils.getDecimalFormatForMoney().
+						format(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount()));
 			}
 
 			textViewReferralValue.setText(getResources().getString(R.string.rupee)
@@ -215,7 +216,8 @@ public class InvoiceDetailsActivity extends BaseActivity {
 
 
 			textViewTotalAmntValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid()));
 
 //			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
 //					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
@@ -230,27 +232,36 @@ public class InvoiceDetailsActivity extends BaseActivity {
 				imageViewNegetive5.setVisibility(View.GONE);
 				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.black));
 				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
-						+ invoiceDetailResponse.getInvoiceDetails().getManualCharges());
+						+ Utils.getDecimalFormatForMoney().
+						format(invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
 			}
 
 
 			textViewPhoneDeductionValue.setText("-"+getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions()));
 			textViewCancelSubsidyValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy()));
 			textViewPaidByJugnooValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo()));
 			textViewPaidUsingCstmrValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet()));
 			textViewPaidByCstmrValue.setText("-"+getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer()));
 			textViewPaytmCashValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaytmCash());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaytmCash()));
 
 			textViewRideMoneyValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getRideMoney());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getRideMoney()));
 			textViewTotalJugnooAmntValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getTotalAmount());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getTotalAmount()));
 
 		} else {
 			performBackPressed();

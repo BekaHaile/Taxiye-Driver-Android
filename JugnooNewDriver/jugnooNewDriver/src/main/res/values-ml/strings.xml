@@ -498,7 +498,7 @@
     <string name="start_delivery_text">നിങ്ങൾക്ക് ഉറപ്പാണോ ഡെലിവറി ആരംഭിക്കണം എന്ന് ? </string>
     <string name="deliver">എത്തിക്കണം</string>
     <string name="Return">മടക്കം</string>
-    <string name="amnt_credited">ക്രെഡിറ്റ്‌ ചെയ്ത തുക</string>
+    <string name="amnt_credited">അക്കൗണ്ടിൽ അടയ്ക്കാൻ</string>
 
     <string name="delivery_id">ഡെലിവറി ഐഡി</string>
     <string name="delivery_completed">ഡെലിവറി പൂർത്തിയായത്</string>
@@ -522,7 +522,7 @@
     <string name="details">വിവരങ്ങൾ</string>
     <string name="present_near_delivery_location">ഈ ഓർഡർ ഡെലിവറി ചെയ്തു എന്ന്  അടയാളപ്പെടുത്താൻ താങ്കൾ ഡെലിവറി സ്ഥലത്തിനടുത്ത് ഉണ്ടായിരിക്കണം.</string>
     <string name="success">കഴിഞ്ഞു</string>
-    <string name="outstanding_amount">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
+    <string name="outstanding_amount">മുമ്പത്തെ ഇൻവോയ്സ് അഡ്ജസ്റ്റുമെന്റുകൾ</string>
     <string name="delivery_fare">ഡെലിവറിയുടെ ചിലവ്</string>
     <string name="return_subsidy">മടങ്ങി വരവിനുള്ള സബ്സിഡി</string>
     <string name="return_distance">റിട്ടേൺ ദൂരം</string>
@@ -557,7 +557,7 @@
     <string name="Submit">സമർപ്പിക്കുക</string>
     <string name="owner">ഉടമ</string>
     <string name="approval_pending">അംഗീകാരം തീർച്ചപ്പെടുത്തിയില്ല</string>
-    <string name="applicable_after">Applicable after %1$s Kms</string>
+    <string name="applicable_after">వర్తించే తర్వాత %1$s  కి.మీ</string>
 
     <string name="rejection_reason">നിരസിക്കാനുള്ള കാരണം</string>
     <string name="mandatory">നിർബന്ധമായി ചെയ്യേണ്ടത്</string>
@@ -575,9 +575,10 @@
     <string name="per_km">(മിനിറ്റിന്)</string>
     <string name="delivery_off">Delivery OFF</string>
 
-    <string name="Yesterday">Yesterday</string>
-    <string name="ride_money">Ride Money</string>
-    <string name="total_amount">Total Amount</string>
+    <string name="Yesterday">ഇന്നലെ</string>
+    <string name="ride_money">ആകെ റൈഡ് തുക</string>
+    <string name="total_amount">ഫൈനൽ ഇൻവോയ്സ് തുക</string>
+    <string name="this_week">ഈ ആഴ്ച</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
