@@ -575,6 +575,9 @@
     <string name="per_km">(മിനിറ്റിന്)</string>
     <string name="delivery_off">Delivery OFF</string>
 
+    <string name="Yesterday">Yesterday</string>
+    <string name="ride_money">Ride Money</string>
+    <string name="total_amount">Total Amount</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

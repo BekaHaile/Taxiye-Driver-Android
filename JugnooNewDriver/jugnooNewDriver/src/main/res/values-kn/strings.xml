@@ -594,6 +594,9 @@
     <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
     <string name="per_km">(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ)</string>
     <string name="delivery_off">Delivery OFF</string>
+    <string name="Yesterday">Yesterday</string>
+    <string name="ride_money">Ride Money</string>
+    <string name="total_amount">Total Amount</string>
 
 
     <string-array name="CountryCodes" >
