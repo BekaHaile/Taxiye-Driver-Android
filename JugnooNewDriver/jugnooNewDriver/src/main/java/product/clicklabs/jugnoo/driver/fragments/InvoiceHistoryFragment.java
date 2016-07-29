@@ -231,7 +231,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.exclamation_red);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.red_delivery));
 				}else if(invoiceInfo.statusString.equalsIgnoreCase("Outstanding Adjusted")){
-					holder.textViewStatusString.setText(getResources().getString(R.string.outstanding_amount));
+					holder.textViewStatusString.setText(getResources().getString(R.string.outstanding_amount1));
 					holder.statusImage.setImageResource(R.drawable.rupee_green);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}

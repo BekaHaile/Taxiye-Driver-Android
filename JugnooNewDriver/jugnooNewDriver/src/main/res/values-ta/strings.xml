@@ -660,6 +660,7 @@
     <string name="ride_money">மொத்த சவாரி தொகை</string>
     <string name="total_amount">இறுதி விலைப்பட்டியல் தொகை</string>
     <string name="this_week">இந்த வாரம்</string>
+    <string name="outstanding_amount1">Outstanding Adjusted</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -574,6 +574,7 @@
     <string name="ride_money">કુલ રાઈડ રકમ</string>
     <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
     <string name="this_week">આ અઠવાડિયે</string>
+    <string name="outstanding_amount1">Outstanding Adjusted</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

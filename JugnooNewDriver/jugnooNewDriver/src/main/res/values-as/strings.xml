@@ -578,6 +578,7 @@
     <string name="ride_money">মুঠ ভাড়াৰ পৰিমাণ</string>
     <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
     <string name="this_week">এই সপ্তাহ</string>
+    <string name="outstanding_amount1">Outstanding Adjusted</string>
 
     <string-array name="CountryCodes" >
 
