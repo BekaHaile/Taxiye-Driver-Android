@@ -2543,6 +2543,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 
+					ArrayList<CustomerInfo> customerEnfagementInfos2 = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+					if(customerInfo.getIsPooled() ==1){
+						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+						if(customerEnfagementInfos2.size() >1){
+							for (int i = 0; i < customerEnfagementInfos2.size(); i++) {
+								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos2.get(i).getEngagementId(), 1);
+							}
+						}
+					}
+
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();

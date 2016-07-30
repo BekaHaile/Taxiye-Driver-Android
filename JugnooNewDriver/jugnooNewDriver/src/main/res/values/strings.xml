@@ -8,9 +8,9 @@
 
 
 
-	 <!--<string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> &lt;!&ndash;Live&ndash;&gt;-->
+	 <string name="google_maps_api_key">AIzaSyA5eOUeuJ8jotmTZBCOBHRKCp-FLGDZ0KM</string> <!--Live-->
 	<!-- <string name="google_maps_api_key">AIzaSyBsdXoSFcTy5YAIJmpkoIeJ_7peuH1QOUo</string> Dev-->
-	<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> <!-- General-->
+	<!--<string name="google_maps_api_key">AIzaSyCgflGVCfOr4aSmmBisoGUe_671qRngy2s</string> &lt;!&ndash; General&ndash;&gt;-->
 
 
 
