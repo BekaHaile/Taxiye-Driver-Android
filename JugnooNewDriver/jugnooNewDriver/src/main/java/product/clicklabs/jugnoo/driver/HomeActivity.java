@@ -1569,7 +1569,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void acceptRequestFunc(CustomerInfo customerInfo) {
+	public void acceptRequestFunc(final CustomerInfo customerInfo) {
 		try {
 			if (1 != customerInfo.getIsPooled()
 					&& 1 != customerInfo.getIsDelivery()
@@ -2364,11 +2364,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					driverInitialLayout.setVisibility(View.GONE);
-					driverRequestAcceptLayout.setVisibility(View.VISIBLE);
-					driverEngagedLayout.setVisibility(View.GONE);
-					driverPassengerInfoRl.setVisibility(View.VISIBLE);
-
 					ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 					if(customerInfo.getIsPooled() ==1){
@@ -2379,6 +2374,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						}
 					}
+
+					driverInitialLayout.setVisibility(View.GONE);
+					driverRequestAcceptLayout.setVisibility(View.VISIBLE);
+					driverEngagedLayout.setVisibility(View.GONE);
+					driverPassengerInfoRl.setVisibility(View.VISIBLE);
+
+
 
 
 
@@ -2415,16 +2417,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
-					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
-							getResources().getColor(R.color.new_orange));
-
-					setEtaTimerVisibility(customerInfo);
-					startTimerPathRerouting();
-					setTextViewRideInstructions();
-					updateCustomers();
-
-
-
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 					if(customerInfo.getIsPooled() ==1){
@@ -2436,6 +2428,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 						}
 					}
+
+					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
+							getResources().getColor(R.color.new_orange));
+
+					setEtaTimerVisibility(customerInfo);
+					startTimerPathRerouting();
+					setTextViewRideInstructions();
+					updateCustomers();
+
 
 					break;
 
@@ -3257,6 +3258,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							String.valueOf(customerInfo.getEngagementId()),
 							String.valueOf(customerInfo.getUserId()));
 					GCMIntentService.stopRing(true);
+
+					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+
+					if(customerInfo.getIsPooled() ==1){
+						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+						if(customerEnfagementInfos1.size() >1){
+							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
+								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
+							}
+						}
+					}
 
 				}
 
