@@ -2420,17 +2420,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
-
-					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
-						if(customerEnfagementInfos.size() >1){
-							for (int i = 0; i < customerEnfagementInfos.size(); i++) {
-								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos.get(i).getEngagementId(), 1);
-							}
-						}
-					}
-
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.VISIBLE);
 					driverEngagedLayout.setVisibility(View.GONE);
@@ -2473,16 +2462,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
-					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+					try {
+						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
-					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
-						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
-						if(customerEnfagementInfos1.size() >1){
-							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
-								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
+						if(customerInfo.getIsPooled() ==1){
+							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+							if(customerEnfagementInfos1.size() >1){
+								for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
+									Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
+								}
 							}
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 					Utils.setDrawableColor(buttonMarkArrived, customerInfo.getColor(),
@@ -2543,15 +2536,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							getResources().getColor(R.color.new_orange));
 
 
-					ArrayList<CustomerInfo> customerEnfagementInfos2 = Data.getAssignedCustomerInfosListForEngagedStatus();
+					try {
+						ArrayList<CustomerInfo> customerEnfagementInfos2 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
-					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
-						if(customerEnfagementInfos2.size() >1){
-							for (int i = 0; i < customerEnfagementInfos2.size(); i++) {
-								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos2.get(i).getEngagementId(), 1);
+						if(customerInfo.getIsPooled() ==1){
+							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+							if(customerEnfagementInfos2.size() >1){
+								for (int i = 0; i < customerEnfagementInfos2.size(); i++) {
+									Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos2.get(i).getEngagementId(), 1);
+								}
 							}
 						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 
 					startTimerPathRerouting();
