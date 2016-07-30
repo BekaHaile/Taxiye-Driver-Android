@@ -559,7 +559,7 @@
     <string name="before_ride">રાઈડ પહેલાં</string>
     <string name="in_ride_rate">રાઈડ માં</string>
     <string name="referral_rate">રેફરલ</string>
-    <string name="pickup_charges">પિક અપ ખર્ચ(કી.મી દીઠ)</string>
+    <string name="pickup_charges">પિક અપ ખર્ચ</string>
     <string name="base_fare">ઓછા માં ઓછું ભાડું </string>
     <string name="time_per_min">સમય ( મિનિટ દીઠ )</string>
     <string name="driver_to_customer">ડરાઇવર થી ગ્રાહક </string>
@@ -575,6 +575,7 @@
     <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
     <string name="this_week">આ અઠવાડિયે</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

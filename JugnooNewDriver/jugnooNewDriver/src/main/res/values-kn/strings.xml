@@ -584,7 +584,7 @@
     <string name="before_ride">ಸವಾರಿಯ ಮೊದಲು </string>
     <string name="in_ride_rate">ಸವಾರಿಯಲ್ಲಿ </string>
     <string name="referral_rate">ರೆಫೆರಲ್</string>
-    <string name="pickup_charges">ಪಿಕ್ ಅಪ್ ಚಾರ್ಜ್(ಪ್ರತಿ km ಗೆ )</string>
+    <string name="pickup_charges">ಪಿಕ್ ಅಪ್ ಚಾರ್ಜ್</string>
     <string name="base_fare">ಮೂಲ ದರ</string>
     <string name="time_per_min">ಸಮಯ (ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
     <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
@@ -600,6 +600,7 @@
     <string name="total_amount">ಅಂತಿಮ ಸರಕುಪಟ್ಟಿಯ ಮೊತ್ತ </string>
     <string name="this_week">ಈ ವಾರ</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
 
     <string-array name="CountryCodes" >

@@ -645,7 +645,7 @@
     <string name="before_ride">சவாரி முன்</string>
     <string name="in_ride_rate">சவாரி</string>
     <string name="referral_rate">பரிந்துரை</string>
-    <string name="pickup_charges">அழைத்து கட்டணங்கள் (மீற்ற க்கான)</string>
+    <string name="pickup_charges">அழைத்து கட்டணங்கள் </string>
     <string name="base_fare">அடிப்படை கட்டணம்</string>
     <string name="time_per_min">நேரம் (நிமிடம் ஒன்றுக்கு)</string>
     <string name="driver_to_customer">டிரைவர் குறிக்கின்ற வாடிக்கையாளர்</string>
@@ -661,6 +661,7 @@
     <string name="total_amount">இறுதி விலைப்பட்டியல் தொகை</string>
     <string name="this_week">இந்த வாரம்</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

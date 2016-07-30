@@ -563,7 +563,7 @@
     <string name="before_ride">ৰাইদেৰ আগত</string>
     <string name="in_ride_rate">ইন ৰাইদে</string>
     <string name="referral_rate">ৰেফাৰেল</string>
-    <string name="pickup_charges">পিকঅপৰ মুল্য (প্ৰতি কি.মি)</string>
+    <string name="pickup_charges">পিকঅপৰ মুল্য</string>
     <string name="base_fare"> সর্বনিম্ন ভাড়া</string>
     <string name="time_per_min">সময় ( প্ৰতি মি:)</string>
     <string name="driver_to_customer">চালকৰ পৰা গ্ৰাহক</string>
@@ -579,6 +579,7 @@
     <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
     <string name="this_week">এই সপ্তাহ</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
 

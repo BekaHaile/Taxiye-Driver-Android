@@ -622,7 +622,7 @@
 	<string name="before_ride">BEFORE RIDE</string>
 	<string name="in_ride_rate">IN RIDE</string>
 	<string name="referral_rate">REFERRAL</string>
-	<string name="pickup_charges">Pickup Charges (per Km)</string>
+	<string name="pickup_charges">Pickup Charges</string>
 	<string name="base_fare">Base Fare</string>
 	<string name="distance_per_km">Distance\n(Per Km)</string>
 	<string name="time_per_min">Time\n(per min)</string>
@@ -630,13 +630,14 @@
 	<string name="driver_to_driver">Driver to Driver</string>
 	<string name="rate_card">Rate Card</string>
 	<string name="applicable_after">Applicable after %1$s Kms</string>
-	<string name="per_km">(Per Km)</string>
+	<string name="per_km">(per Km)</string>
 	<string name="delivery_off">Delivery OFF</string>
 	<string name="Yesterday">Yesterday</string>
 	<string name="ride_money">Total ride amount</string>
 	<string name="total_amount">Final invoice amount</string>
 	<string name="this_week">This Week</string>
 	<string name="outstanding_amount1">Outstanding Adjusted</string>
+	<string name="upload_again">Upload Again</string>
 
 
 	<string-array name="CountryCodes" >

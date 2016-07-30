@@ -621,7 +621,7 @@
     <string name="before_ride">రైడ్ ముందు</string>
     <string name="in_ride_rate">రైడ్</string>
     <string name="referral_rate">నివేదన</string>
-    <string name="pickup_charges">పికప్ ఛార్జీలు (కి.మీ.లలో ప్రతి)</string>
+    <string name="pickup_charges">పికప్ ఛార్జీలు </string>
     <string name="base_fare">బేస్ ఫేర్</string>
     <string name="time_per_min">సమయం (కనీసం ప్రతి)</string>
     <string name="driver_to_customer">కస్టమర్ డ్రైవర్</string>
@@ -637,6 +637,7 @@
     <string name="total_amount">ఫైనల్ ఇన్వాయిస్ మొత్తం</string>
     <string name="this_week">ఈ వారం</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -566,7 +566,7 @@
     <string name="before_ride">ରାଇଡ୍ ପୁର୍ବରୁ</string>
     <string name="in_ride_rate">ରାଇଡ୍ ରେ</string>
     <string name="referral_rate">ରେଫରାଲ୍</string>
-    <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ (କି.ମି ପ୍ରତି)</string>
+    <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ </string>
     <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
     <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
     <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
@@ -583,6 +583,7 @@
     <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

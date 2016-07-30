@@ -83,6 +83,15 @@
                 android:textColor="@color/black"
                 android:textSize="34px"/>
 
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewPickupChargesperkm"
+                android:layout_toRightOf="@+id/textViewPickupCharges"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/per_km"
+                android:textColor="@color/grey_dark_less"
+                android:textSize="34px"/>
+
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -206,7 +215,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/per_km"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey_dark_less"
                         android:textSize="34px"/>
 
                 </RelativeLayout>
@@ -246,7 +255,7 @@
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="@string/per_km"
-                        android:textColor="@color/black"
+                        android:textColor="@color/grey_dark_less"
                         android:textSize="34px"/>
 
                 </RelativeLayout>

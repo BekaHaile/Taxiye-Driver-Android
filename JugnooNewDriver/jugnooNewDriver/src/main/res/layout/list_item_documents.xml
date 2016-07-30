@@ -32,6 +32,19 @@
                 />
 
             <TextView
+                android:id="@+id/docRejected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/docType"
+                android:layout_marginTop="42px"
+                android:layout_marginLeft="12px"
+                android:text="@string/upload_again"
+                android:textColor="@color/red_status"
+                android:textSize="18px"
+                android:visibility="gone"
+                />
+
+            <TextView
                 android:id="@+id/docRejectionReason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

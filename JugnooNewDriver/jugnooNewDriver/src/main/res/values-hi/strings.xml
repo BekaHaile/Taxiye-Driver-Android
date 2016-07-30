@@ -619,7 +619,7 @@
 	<string name="before_ride">सवारी से पहले</string>
 	<string name="in_ride_rate">सवारी में</string>
 	<string name="referral_rate">रेफरल</string>
-	<string name="pickup_charges">पिकप चार्जेज (प्रति किलोमीटर)</string>
+	<string name="pickup_charges">पिकप चार्जेज</string>
 	<string name="base_fare">बेस किराया </string>
 	<string name="time_per_min">समय (प्रति मिनट)</string>
 	<string name="driver_to_customer">ड्राइवर टू कस्टमर</string>
@@ -635,6 +635,7 @@
 	<string name="total_amount">अंतिम चालान राशि</string>
 	<string name="this_week">इस सप्ताह</string>
 	<string name="outstanding_amount1">Outstanding Adjusted</string>
+	<string name="upload_again">Upload Again</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

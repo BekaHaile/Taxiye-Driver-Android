@@ -136,7 +136,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 
 	static class ViewHolderDriverDoc {
-		TextView docType, docRequirement, docStatus;
+		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative, relativeLayoutImageStatus;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus;
@@ -175,6 +175,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				holder.docType = (TextView) convertView.findViewById(R.id.docType);
 				holder.docType.setTypeface(Data.latoRegular(getActivity()));
+				holder.docRejected = (TextView) convertView.findViewById(R.id.docRejected);
+				holder.docRejected.setTypeface(Data.latoRegular(getActivity()));
+
 				holder.docRequirement = (TextView) convertView.findViewById(R.id.docRequirement);
 				holder.docRequirement.setTypeface(Data.latoRegular(getActivity()));
 				holder.docStatus = (TextView) convertView.findViewById(R.id.docStatus);
@@ -230,6 +233,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			} else if (docInfo.status.equalsIgnoreCase("2")) {
 				holder.docStatus.setText(getResources().getString(R.string.rejected));
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_rejected);
+				holder.docRejected.setVisibility(View.VISIBLE);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 			} else if (docInfo.status.equalsIgnoreCase("3")) {
 				holder.docStatus.setText(getResources().getString(R.string.verified));

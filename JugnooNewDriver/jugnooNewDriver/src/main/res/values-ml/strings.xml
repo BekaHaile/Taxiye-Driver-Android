@@ -564,7 +564,7 @@
     <string name="before_ride">റൈഡിനു മുമ്പ് </string>
     <string name="in_ride_rate">റൈഡിൽ</string>
     <string name="referral_rate">റഫറൽ</string>
-    <string name="pickup_charges">പിക്കപ്പ് ചാർജ് ( കിലോമീറ്ററിന് ) </string>
+    <string name="pickup_charges">പിക്കപ്പ് ചാർജ്  </string>
     <string name="base_fare">ബേസിക് യാത്രാചിലവ്</string>
     <string name="time_per_min">സമയം ( മിനിറ്റിന് )</string>
     <string name="driver_to_customer">ഡ്രൈവറിൽ നിന്നു കസ്റ്റമർലേക്ക് </string>
@@ -580,6 +580,7 @@
     <string name="total_amount">ഫൈനൽ ഇൻവോയ്സ് തുക</string>
     <string name="this_week">ഈ ആഴ്ച</string>
     <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
