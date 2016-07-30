@@ -216,7 +216,6 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									}
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									nudgeCancelRide(reason);
-									Prefs.with(RideCancellationActivity.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 0);
 
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);

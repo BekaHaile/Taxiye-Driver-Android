@@ -2425,12 +2425,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-					if((Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_ACCEPT,0)==1)
-							&& (Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_ACCEPT_FLAG,0)==0)) {
-//						buttonDriverNavigation.performClick();
-						Prefs.with(HomeActivity.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 1);
-					}
-
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 					if(customerInfo.getIsPooled() ==1){
@@ -3623,10 +3617,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 								}
 
-								if((Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_START,0)==1)&& customerInfo.getDropLatLng() != null) {
-//									buttonDriverNavigation.performClick();
-								}
-								Prefs.with(HomeActivity.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 0);
 
 								if (customerInfo.getIsDelivery() == 1) {
 									customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));

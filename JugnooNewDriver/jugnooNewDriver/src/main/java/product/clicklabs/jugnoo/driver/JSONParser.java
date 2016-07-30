@@ -244,7 +244,6 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT, userData.optInt("start_navigation_accept", 3));
 		Prefs.with(context).save(Constants.START_NAVIGATION_START, userData.optInt("start_navigation_start", 0));
-		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 0);
 
 
 

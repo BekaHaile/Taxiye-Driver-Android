@@ -136,7 +136,6 @@ public interface Constants {
 
 	String START_NAVIGATION_ACCEPT = "start_navigation_accept";
 	String START_NAVIGATION_START = "start_navigation_start";
-	String START_NAVIGATION_ACCEPT_FLAG = "start_navigation_accept_flag";
 
     String SP_START_LATITUDE = "sp_start_latitude";
     String SP_START_LONGITUDE = "sp_start_longitude";
