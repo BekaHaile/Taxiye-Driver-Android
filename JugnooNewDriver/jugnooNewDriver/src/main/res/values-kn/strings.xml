@@ -518,13 +518,12 @@
     <string name="start_delivery_text">ನೀವು ಡೆಲಿವರಿ ಆರಂಭಿಸಲು ಬಯಸುವುದು  ಖಚಿತವೇ?</string>
     <string name="deliver">ತಲುಪಿದೆ </string>
     <string name="Return">ಹಿಂದಿರುಗಿಸಿ </string>
-    <string name="amnt_credited">ಹಣ  ಸಂದಾಯವಾಗಿದೆ  </string>
+    <string name="amnt_credited">ಖಾತೆಯಲ್ಲಿ ಪಾವತಿಸಲು  </string>
     <string name="delivery_id">ಡೆಲಿವರಿ ID</string>
     <string name="delivery_completed">ಡೆಲಿವರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
     <string name="delivery_cancelled">ಡೆಲಿವರಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
+    <string name="owned">Owned</string>
+    <string name="auto">Auto</string>
 
     <string name="cancelled">ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ</string>
     <string name="address">ವಿಳಾಸ</string>
@@ -544,7 +543,7 @@
     <string name="details">ವಿವರಗಳು </string>
     <string name="present_near_delivery_location">ನೀವು ಡೆಲಿವರಿಯ ಸ್ಥಳದಲ್ಲಿದ್ದಾರೆ ಮಾತ್ರ ಆರ್ಡರ್ ಡೆಲಿವರಿ ಯಾಗುತ್ತದೆ </string>
     <string name="success">ಯಶಸ್ವಿಯಾಗಿದೆ </string>
-    <string name="outstanding_amount">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="outstanding_amount">ಹಿಂದಿನ ಸರಕುಪಟ್ಟಿ ಹೊಂದಾಣಿಕೆಗಳು</string>
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -552,6 +551,56 @@
     <string name="return_subsidy">ರಿಟರ್ನ್ ಸಬ್ಸಿಡಿ</string>
     <string name="return_distance">ಹಿಂದಿರುಗಿಸಿದ ದೂರ </string>
     <string name="delivery_details">ಡೆಲಿವರಿ ವಿವರಗಳು</string>
+    <string name="uploading">Uploading</string>
+
+    <string name="vehicle_status">ವಾಹನದ ಸ್ಥಿತಿ </string>
+    <string name="rented">ಬಾಡಿಗೆಗೆ</string>
+    <string name="auto_driver_confirmation">ನೀವು ಆಟೋ ಚಾಲಕರಾಗಿದ್ದೀರಾ?   </string>
+    <string name="auto_status_confirmation">ನಿಮ್ಮ ಸ್ವಂತ ಆಟೋ ಹೊಂದಿದ್ದೀರಾ ? </string>
+    <string name="no_doc_available">ಯಾವುದೇ ಡಾಕ್ಯುಮೆಂಟ್ಸ್ ಇರುವುದಿಲ್ಲ </string>
+    <string name="upload">ಅಪ್ಲೋಡ್</string>
+    <string name="optional">ಐಚ್ಛಿಕ(ಒಪ್ಷನಲ್)</string>
+    <string name="uploaded">ಉಪ್ಲೊಡೆಡ್ </string>
+    <string name="rejected">ತಿರಸ್ಕರಿಸಿದೆ </string>
+    <string name="verified">ಪರಿಶೀಲಿಸಿದೆ </string>
+    <string name="Hints">ಸುಳಿವು</string>
+    <string name="tricks">ತಂತ್ರಗಳು </string>
+    <string name="Messages">ಸಂದೇಶಗಳು</string>
+
+    <string name="auto_number">ಆಟೋ ಸಂಖ್ಯೆ</string>
+    <string name="Choose_one">ಒಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</string>
+    <string name="is_rented">ನನ್ನದು ಬಾಡಿಗೆ ಆಟೋ</string>
+    <string name="is_owned">ನನ್ನದು ಸ್ವಂಥ ಆಟೋ  </string>
+    <string name="Documents">ದಾಖಲೆಗಳು</string>
+    <string name="Document_type"> ದಾಖಲೆ ಪ್ರಕಾರ</string>
+    <string name="Requirement">ಅವಶ್ಯಕತೆ</string>
+    <string name="add_image">ಫೋಟೋ ಸೇರಿಸಬಹುದು</string>
+    <string name="Submit">ಸಲ್ಲಿಸಿ</string>
+    <string name="owner">ಮಾಲೀಕರು</string>
+    <string name="approval_pending">ಅನುಮೋದನೆಗೆ ಬಾಕಿ</string>
+
+    <string name="rejection_reason">ತಿರಸ್ಕಾರದ ಕಾರಣ </string>
+    <string name="mandatory">ಕಡ್ಡಾಯ</string>
+    <string name="before_ride">ಸವಾರಿಯ ಮೊದಲು </string>
+    <string name="in_ride_rate">ಸವಾರಿಯಲ್ಲಿ </string>
+    <string name="referral_rate">ರೆಫೆರಲ್</string>
+    <string name="pickup_charges">ಪಿಕ್ ಅಪ್ ಚಾರ್ಜ್</string>
+    <string name="base_fare">ಮೂಲ ದರ</string>
+    <string name="time_per_min">ಸಮಯ (ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
+    <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
+    <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
+    <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
+    <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
+    <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
+    <string name="per_km">(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ)</string>
+    <string name="delivery_off">Delivery OFF</string>
+
+    <string name="Yesterday">ನಿನ್ನೆ</string>
+    <string name="ride_money">ಸವಾರಿಯ ಒಟ್ಟು ಮೊತ್ತ </string>
+    <string name="total_amount">ಅಂತಿಮ ಸರಕುಪಟ್ಟಿಯ ಮೊತ್ತ </string>
+    <string name="this_week">ಈ ವಾರ</string>
+    <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
 
     <string-array name="CountryCodes" >

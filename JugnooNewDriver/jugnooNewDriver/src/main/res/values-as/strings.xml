@@ -512,6 +512,17 @@
     <string name="all_orders_have_been_delivered">সকলো অৰ্দাৰ ডেলিভাৰ হৈ গল</string>
     <string name="no_deliveries_pending">কনো ডেলিভাৰি পেনদিং নাই</string>
     <string name="no_deliveries_completed">কনো ডেলিভাৰি সমাপ্ত হোৱা নাই</string>
+    <string name="vehicle_status">গাড়ীৰ অবস্থা</string>
+    <string name="rented">ভাড়াত</string>
+    <string name="auto_driver_confirmation">Are you an auto driver?</string>
+    <string name="auto_status_confirmation">Do you have an auto ?</string>
+    <string name="no_doc_available">একো কাগজপত্ৰ নাই</string>
+    <string name="upload">আপলোড</string>
+    <string name="optional">অপস্নেল</string>
+    <string name="uploaded">আপলোড কৰা হল</string>
+    <string name="rejected">নাকচ কৰা হল</string>
+    <string name="verified">ভেৰিফাইদ</string>
+    <string name="auto">Auto</string>
     <string name="Messages">Messages</string>
     <string name="Hints">Hints</string>
     <string name="tricks">Tricks To Earn</string>
@@ -530,8 +541,48 @@
     <string name="return_subsidy">ৰিটাৰ্ণ  সাবচিদি</string>
     <string name="return_distance">ৰিটাৰ্ণ দূৰত্ব</string>
     <string name="delivery_details">ডেলিভাৰি বিৱৰন</string>
+    <string name="uploading">আপলোড</string>
+
+    <string name="auto_number">অটৰ নম্বৰ</string>
+    <string name="Choose_one">পছন্দ</string>
+    <string name="is_rented">I have a rented auto.</string>
+    <string name="is_owned">I own my auto.</string>
+
+    <string name="Documents">নথিপত্ৰ</string>
+    <string name="Document_type">নথিপত্ৰ টাইপ</string>
+    <string name="Requirement">প্রয়োজনীয়তা</string>
+    <string name="add_image">এদ ইমেজ</string>
+    <string name="Submit">জমা</string>
+    <string name="owner">মালিক</string>
+    <string name="approval_pending">অনুমোদন পেন্দিং</string>
+
+    <string name="applicable_after">%1$s কি: মি: পিছত প্রযোজ্য হব</string>
+
+    <string name="rejection_reason">খাৰিজ হোৱা কাৰণ</string>
+    <string name="mandatory">কার্যভাৰ</string>
+    <string name="before_ride">ৰাইদেৰ আগত</string>
+    <string name="in_ride_rate">ইন ৰাইদে</string>
+    <string name="referral_rate">ৰেফাৰেল</string>
+    <string name="pickup_charges">পিকঅপৰ মুল্য</string>
+    <string name="base_fare"> সর্বনিম্ন ভাড়া</string>
+    <string name="time_per_min">সময় ( প্ৰতি মি:)</string>
+    <string name="driver_to_customer">চালকৰ পৰা গ্ৰাহক</string>
+    <string name="driver_to_driver">চালকৰ পৰা চালক</string>
+    <string name="rate_card"> ভাড়াৰ কার্ড</string>
+    <string name="owned">নিজোৰ</string>
+    <string name="distance_per_km">দূৰত্ব\n( প্ৰতি মি:)</string>
+    <string name="per_km">( প্ৰতি মি:)</string>
+    <string name="delivery_off">Delivery OFF</string>
+
+    <string name="Yesterday">যোৱা কালি</string>
+    <string name="ride_money">মুঠ ভাড়াৰ পৰিমাণ</string>
+    <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
+    <string name="this_week">এই সপ্তাহ</string>
+    <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
+
         <item>93,AF</item>
         <item>355,AL</item>
         <item>213,DZ</item>

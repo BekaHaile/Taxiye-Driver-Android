@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
    <color name="white">#FFFFFF</color>
-   <color name="white_dark">#AFAFAF</color>
+    <color name="new_transparent_white">#2eFFFFFF</color>
+
+    <color name="white_dark">#AFAFAF</color>
    <color name="white_dark1">#EFEFEF</color>
    
    
@@ -19,16 +21,21 @@
  <color name="white_more_translucent">#66FFFFFF</color>
  <color name="white_light_grey">#FAFAFA</color>
  <color name="white_light_more_grey">#F3F3F3</color>
-   
-   <color name="black_translucent">#77000000</color>
+    <color name="new_orange_op_30">#30f6863c</color>
+
+    <color name="light_grey_op_77">#77f3f3f3</color>
+    <color name="light_grey_op_75">#75f3f3f3</color>
+
+
+    <color name="black_translucent">#77000000</color>
     <color name="black_translucent_level_2">#55000000</color>
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
 
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
-   
-   
+    <color name="blue_status">#338ffc</color>
+
    
    
    

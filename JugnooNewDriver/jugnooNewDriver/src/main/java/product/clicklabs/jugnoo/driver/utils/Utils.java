@@ -25,7 +25,9 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.CallLog;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -45,11 +47,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -506,6 +510,30 @@ public class Utils {
 		}
 	}
 
+	public static File getStorageDirectory(Context context) {
+		if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED))
+			return context.getExternalFilesDir(null);
+		else
+			return context.getFilesDir();
+	}
+
+	public static void saveImage(final Bitmap bitmap, final String saveToFile, Context context) {
+
+		File mImagefile = new File(Utils.getStorageDirectory(context), saveToFile);
+
+		if (mImagefile.exists()) {
+			mImagefile.delete();
+		}
+		try {
+			final FileOutputStream out = new FileOutputStream(mImagefile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+			out.flush();
+			out.close();
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public static void enableReceiver(Context context, Class classT, boolean enable){
 		try {
@@ -705,4 +733,52 @@ public class Utils {
 		is.close();
 		return string.toString();
 	}
+
+	public static void deleteMFile() {
+		File dir = new File(Environment.getExternalStorageDirectory() + "/JugnooData");
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				File file = new File(dir, children[i]);
+				long diff = new Date().getTime() - file.lastModified();
+				if (diff > 30L * 24L * 60L * 60L * 1000L) {
+					file.delete();
+				}
+			}
+		}
+	}
+
+
+	public static void clearApplicationData(Context context) {
+
+		if((System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.CLEAR_APP_CACHE_TIME, 0)) > (7L * 24L * 60L * 60L * 1000L) ) {
+			Prefs.with(context).save(SPLabels.CLEAR_APP_CACHE_TIME, System.currentTimeMillis());
+			File cache = context.getCacheDir();
+			File appDir = new File(cache.getParent());
+			if (appDir.exists()) {
+				String[] children = appDir.list();
+				for (String s : children) {
+					if (!s.equals("lib")) {
+						deleteAppData(new File(appDir, s));
+						Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
+					}
+				}
+			}
+		}
+	}
+
+	public static boolean deleteAppData(File dir) {
+		if (dir != null && dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+
+		return dir.delete();
+	}
+
 }

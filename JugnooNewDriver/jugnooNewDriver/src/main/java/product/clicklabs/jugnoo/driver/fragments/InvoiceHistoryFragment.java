@@ -35,6 +35,7 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -213,7 +214,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.dateTimeValueGenerated.setText(DateOperations.reverseDate(invoiceInfo.generatedTime));
 				}
 				if(invoiceInfo.id==0){
-					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + getResources().getString(R.string.NA));
+					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice) + ": " + getResources().getString(R.string.NA));
 				}else {
 					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + invoiceInfo.id);
 				}
@@ -230,31 +231,33 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.exclamation_red);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.red_delivery));
 				}else if(invoiceInfo.statusString.equalsIgnoreCase("Outstanding Adjusted")){
-					holder.textViewStatusString.setText(getResources().getString(R.string.outstanding_amount));
+					holder.textViewStatusString.setText(getResources().getString(R.string.outstanding_amount1));
 					holder.statusImage.setImageResource(R.drawable.rupee_green);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}
 				holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
 
 
-//				holder.relative.setOnClickListener(new View.OnClickListener() {
-//
-//					@Override
-//					public void onClick(View v) {
-//						holder = (ViewHolderDriverRides) v.getTag();
-//						Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
-//						intent.putExtra("invoice_id", invoiceInfo.id);
-//						getActivity().startActivity(intent);
-//						getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//						try {
-//							JSONObject map = new JSONObject();
-//							map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
-//							NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
-//						} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
+				if(Prefs.with(getActivity()).getInt(Constants.SHOW_INVOICE_DETAILS,0)==1) {
+					holder.relative.setOnClickListener(new View.OnClickListener() {
+
+						@Override
+						public void onClick(View v) {
+							holder = (ViewHolderDriverRides) v.getTag();
+							Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
+							intent.putExtra("invoice_id", invoiceInfo.id);
+							getActivity().startActivity(intent);
+							getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
+							try {
+								JSONObject map = new JSONObject();
+								map.put(Constants.KEY_INVOICE_ID, invoiceInfo.id);
+								NudgeClient.trackEvent(getActivity(), NUDGE_TAP_ON_INVOICE, map);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+				}
 
 			} catch (Resources.NotFoundException e) {
 				e.printStackTrace();

@@ -34,15 +34,15 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class ChangePhoneBeforeOTPActivity extends BaseActivity{
-	
+public class ChangePhoneBeforeOTPActivity extends BaseActivity {
+
 	ImageView imageViewBack;
 	TextView textViewTitle;
-	
+
 	TextView textViewChangePhoneNoHelp;
 	EditText editTextNewPhoneNumber;
 	Button buttonChangePhoneNumber;
-	
+
 	LinearLayout relative;
 
 	@Override
@@ -57,133 +57,128 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity{
 		super.onStop();
 		FlurryAgent.onEndSession(this);
 	}
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_change_phone_before_verify);
-		
+
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(ChangePhoneBeforeOTPActivity.this, relative, 1134, 720, false);
-		
+
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack);
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewTitle.setText(getStringText(R.string.change_phone_no));
-        textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp);
+		textViewChangePhoneNoHelp = (TextView) findViewById(R.id.textViewChangePhoneNoHelp);
 		textViewChangePhoneNoHelp.setTypeface(Data.latoRegular(this));
 		textViewChangePhoneNoHelp.setText(getStringText(R.string.enter_new_phone_number));
-        editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber);
+		editTextNewPhoneNumber = (EditText) findViewById(R.id.editTextNewPhoneNumber);
 		editTextNewPhoneNumber.setTypeface(Data.latoRegular(this));
 		editTextNewPhoneNumber.setHint(getStringText(R.string.enter_new_phone_no));
-        buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber);
+		buttonChangePhoneNumber = (Button) findViewById(R.id.buttonChangePhoneNumber);
 		buttonChangePhoneNumber.setTypeface(Data.latoRegular(this));
-		
+
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				performBackPressed();
 			}
 		});
 
-        editTextNewPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		editTextNewPhoneNumber.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                editTextNewPhoneNumber.setError(null);
-            }
-        });
-
-
-        buttonChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
-			
 			@Override
-			public void onClick(View v) {
-                String previousPhoneNumber = "", accessToken = "";
-                    previousPhoneNumber = OTPConfirmScreen.emailRegisterData.phoneNo;
-                    accessToken = OTPConfirmScreen.emailRegisterData.accessToken;
-
-                String phoneNoChanged = editTextNewPhoneNumber.getText().toString().trim();
-                if("".equalsIgnoreCase(phoneNoChanged)){
-                    editTextNewPhoneNumber.requestFocus();
-                    editTextNewPhoneNumber.setError(getStringText(R.string.Phone_number_not_empty));
-                }
-                else{
-                    phoneNoChanged = Utils.retrievePhoneNumberTenChars(phoneNoChanged);
-                    if(Utils.validPhoneNumber(phoneNoChanged)) {
-                        phoneNoChanged = "+91" + phoneNoChanged;
-                        if(previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)){
-                            editTextNewPhoneNumber.requestFocus();
-                            editTextNewPhoneNumber.setError(getStringText(R.string.change_phone_no_text));
-                        }
-                        else{
-                            updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
-
-						}
-                    }
-                    else{
-                        editTextNewPhoneNumber.requestFocus();
-                        editTextNewPhoneNumber.setError(getStringText(R.string.valid_phone_number));
-                    }
-                }
+			public void onFocusChange(View v, boolean hasFocus) {
+				editTextNewPhoneNumber.setError(null);
 			}
 		});
 
-        editTextNewPhoneNumber.setOnEditorActionListener(new OnEditorActionListener() {
 
-            @Override
-            public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
-                int result = actionId & EditorInfo.IME_MASK_ACTION;
-                switch (result) {
-                    case EditorInfo.IME_ACTION_DONE:
-                        buttonChangePhoneNumber.performClick();
-                        break;
+		buttonChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
 
-                    case EditorInfo.IME_ACTION_NEXT:
-                        break;
+			@Override
+			public void onClick(View v) {
+				String previousPhoneNumber = "", accessToken = "";
+				previousPhoneNumber = OTPConfirmScreen.emailRegisterData.phoneNo;
+				accessToken = OTPConfirmScreen.emailRegisterData.accessToken;
 
-                    default:
-                }
-                return true;
-            }
-        });
-		
-		
+				String phoneNoChanged = editTextNewPhoneNumber.getText().toString().trim();
+				if ("".equalsIgnoreCase(phoneNoChanged)) {
+					editTextNewPhoneNumber.requestFocus();
+					editTextNewPhoneNumber.setError(getStringText(R.string.Phone_number_not_empty));
+				} else {
+					phoneNoChanged = Utils.retrievePhoneNumberTenChars(phoneNoChanged);
+					if (Utils.validPhoneNumber(phoneNoChanged)) {
+						phoneNoChanged = "+91" + phoneNoChanged;
+						if (previousPhoneNumber.equalsIgnoreCase(phoneNoChanged)) {
+							editTextNewPhoneNumber.requestFocus();
+							editTextNewPhoneNumber.setError(getStringText(R.string.change_phone_no_text));
+						} else {
+							updateUserProfileAPI(ChangePhoneBeforeOTPActivity.this, phoneNoChanged, accessToken);
+
+						}
+					} else {
+						editTextNewPhoneNumber.requestFocus();
+						editTextNewPhoneNumber.setError(getStringText(R.string.valid_phone_number));
+					}
+				}
+			}
+		});
+
+		editTextNewPhoneNumber.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				int result = actionId & EditorInfo.IME_MASK_ACTION;
+				switch (result) {
+					case EditorInfo.IME_ACTION_DONE:
+						buttonChangePhoneNumber.performClick();
+						break;
+
+					case EditorInfo.IME_ACTION_NEXT:
+						break;
+
+					default:
+				}
+				return true;
+			}
+		});
+
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 	}
-	
-	
+
+
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 	}
 
 
-
 //    Retrofit
 
-    public void updateUserProfileAPI(final Activity activity, final String updatedField, String accessToken) {
-        if(AppStatus.getInstance(activity).isOnline(activity)) {
+	public void updateUserProfileAPI(final Activity activity, final String updatedField, String accessToken) {
+		if (AppStatus.getInstance(activity).isOnline(activity)) {
 
-            DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.updating));
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.updating));
 
 //            RequestParams params = new RequestParams();
 			HashMap<String, String> params = new HashMap<String, String>();
 
-            params.put("client_id", Data.CLIENT_ID);
-            params.put("login_type", Data.LOGIN_TYPE);
-            params.put("access_token", accessToken);
-            params.put("is_access_token_new", "1");
-            params.put("updated_phone_no", updatedField);
+			params.put("client_id", Data.CLIENT_ID);
+			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("access_token", accessToken);
+			params.put("is_access_token_new", "1");
+			params.put("updated_phone_no", updatedField);
 
 			RestClient.getApiServices().updateUserProfileAPIRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -194,15 +189,14 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity{
 						JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 						int flag = ApiResponseFlags.ACTION_COMPLETE.getOrdinal();
-						if(jObj.has("flag")){
+						if (jObj.has("flag")) {
 							flag = jObj.getInt("flag");
 						}
 						String message = JSONParser.getServerMessage(jObj);
-						if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
-							if(ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag){
+						if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+							if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", message);
-							}
-							else if(ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag){
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								OTPConfirmScreen.emailRegisterData.phoneNo = updatedField;
 								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 
@@ -211,12 +205,11 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity{
 										performBackPressed();
 									}
 								});
-							}
-							else{
+							} else {
 								DialogPopup.alertPopup(activity, "", message);
 							}
 						}
-					}  catch (Exception exception) {
+					} catch (Exception exception) {
 						exception.printStackTrace();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 						DialogPopup.dismissLoadingDialog();
@@ -231,36 +224,33 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity{
 			});
 
 
+		} else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
 
-        }
-        else {
-            DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
-        }
-
-    }
+	}
 
 
-	
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
 		super.onBackPressed();
 	}
-	
-	
-	public void performBackPressed(){
-        Intent intent = new Intent(ChangePhoneBeforeOTPActivity.this, OTPConfirmScreen.class);
-        startActivity(intent);
+
+
+	public void performBackPressed() {
+		Intent intent = new Intent(ChangePhoneBeforeOTPActivity.this, OTPConfirmScreen.class);
+		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
-	
-	
+
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-        ASSL.closeActivity(relative);
-        System.gc();
+		ASSL.closeActivity(relative);
+		System.gc();
 	}
-	
+
 }

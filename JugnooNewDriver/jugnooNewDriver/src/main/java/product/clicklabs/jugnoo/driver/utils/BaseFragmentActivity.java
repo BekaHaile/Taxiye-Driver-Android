@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.DriverDocumentActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
@@ -31,8 +32,11 @@ public class BaseFragmentActivity extends FragmentActivity {
 	}
 
 	public boolean checkIfUserDataNull() {
-		if (Data.userData == null) {
-			sendToSplash();
+		if (Data.userData == null
+				&& !(this instanceof DriverDocumentActivity)) {
+			startActivity(new Intent(this, SplashNewActivity.class));
+			finish();
+			overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 			return true;
 		} else {
 			return false;

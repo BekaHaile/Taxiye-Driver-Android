@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="720px"
+    android:layout_height="wrap_content"
+    android:splitMotionEvents="false">
+
+    <LinearLayout
+        android:id="@+id/rideHistoryItem"
+        android:layout_width="690px"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15px"
+        android:background="@drawable/background_white"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24px"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/docType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24px"
+                android:text="@string/Document_type"
+                android:textColor="@color/black"
+                android:textSize="36px"
+                />
+
+            <TextView
+                android:id="@+id/docRejected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/docType"
+                android:layout_marginTop="42px"
+                android:layout_marginLeft="12px"
+                android:text="@string/upload_again"
+                android:textColor="@color/red_status"
+                android:textSize="18px"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/docRejectionReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/docType"
+                android:layout_marginTop="32px"
+                android:layout_marginLeft="18px"
+                android:text="@string/Requirement"
+                android:textColor="@color/red_status"
+                android:textSize="24px"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/docRequirement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/docType"
+                android:layout_marginBottom="24px"
+                android:layout_marginTop="32px"
+                android:text="@string/Requirement"
+                android:textColor="@color/grey_black_light"
+                android:textSize="24px"
+                />
+
+            <ImageView
+                android:id="@+id/imageViewUploadDoc"
+                android:layout_width="90px"
+                android:layout_height="90px"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="20px"
+                android:background="@drawable/upload_doc_img"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="680px"
+            android:layout_height="2px"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20px"
+            android:layout_marginTop="5px"
+            android:background="@color/menu_black"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutImageStatus"
+            android:layout_width="match_parent"
+            android:layout_height="182px"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="24px"
+            android:layout_marginTop="12px"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/addImageLayout"
+                android:layout_width="160px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20px"
+                android:layout_marginTop="12px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:orientation="vertical"
+                android:padding="0px">
+
+                <ImageView
+                    android:id="@+id/image_icon"
+                    android:layout_width="60px"
+                    android:layout_height="60px"
+                    android:layout_marginLeft="50px"
+                    android:layout_marginTop="24px"
+                    android:background="@drawable/image_icon"/>
+
+                <TextView
+                    android:id="@+id/addImage2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginLeft="28px"
+                    android:layout_marginTop="12px"
+                    android:text="@string/add_image"
+                    android:textColor="@color/new_orange"
+                    android:textSize="20px"/>
+
+                <ImageView
+                    android:id="@+id/setCapturedImage"
+                    android:layout_width="160px"
+                    android:layout_height="160px"
+                    android:tag="mwar"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/addImageLayout2"
+                android:layout_width="160px"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30px"
+                android:layout_marginTop="12px"
+                android:layout_toRightOf="@+id/addImageLayout"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:tag="mwar">
+
+                <ImageView
+                    android:id="@+id/image_icon2"
+                    android:layout_width="60px"
+                    android:layout_height="60px"
+                    android:layout_marginLeft="50px"
+                    android:layout_marginTop="24px"
+                    android:visibility="visible"
+                    android:background="@drawable/image_icon"/>
+
+                <TextView
+                    android:id="@+id/addImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon2"
+                    android:layout_marginLeft="28px"
+                    android:layout_marginTop="12px"
+                    android:text="@string/add_image"
+                    android:visibility="visible"
+                    android:textColor="@color/new_orange"
+                    android:textSize="20px"/>
+
+                <ImageView
+                    android:id="@+id/setCapturedImage2"
+                    android:layout_width="160px"
+                    android:layout_height="160px"
+                    android:tag="mwar"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="120px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="28px">
+
+                <ImageView
+                    android:id="@+id/imageViewDocStatus"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/doc_uploaded"/>
+
+                <TextView
+                    android:id="@+id/docStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:layout_below="@+id/imageViewDocStatus"
+                    android:text="@string/uploaded"
+                    android:layout_marginTop="10px"
+                    android:textColor="@color/new_orange"
+                    android:textSize="20px"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

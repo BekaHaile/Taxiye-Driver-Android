@@ -120,8 +120,10 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
+    String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
+    String KEY_RING_COUNT = "ring_count";
 
     String KEY_FARE = "fare";
 	String KEY_DISCOUNTED_FARE = "discounted_fare";
@@ -141,4 +143,5 @@ public interface Constants {
     String SP_START_LONGITUDE = "sp_start_longitude";
     String KEY_PICKUP_TIME = "pickup_time";
     String KEY_DRY_DISTANCE = "dry_distance";
+    String SHOW_INVOICE_DETAILS = "show_invoice_details";
 }

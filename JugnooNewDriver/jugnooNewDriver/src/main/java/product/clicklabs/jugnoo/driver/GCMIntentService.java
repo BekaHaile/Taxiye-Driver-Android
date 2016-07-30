@@ -40,6 +40,8 @@ import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
+import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -424,7 +426,7 @@ public class GCMIntentService extends IntentService {
 												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance);
 										Data.addCustomerInfo(customerInfo);
 
-										startRing(this);
+										startRing(this, engagementId);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -442,7 +444,7 @@ public class GCMIntentService extends IntentService {
 										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
-										startRing(this);
+										startRing(this, engagementId);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -464,7 +466,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, false);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.RIDE_ACCEPTED_BY_OTHER_DRIVER.getOrdinal() == flag) {
 
@@ -476,7 +478,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onCancelRideRequest(engagementId, true);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.REQUEST_TIMEOUT.getOrdinal() == flag) {
 
@@ -488,7 +490,7 @@ public class GCMIntentService extends IntentService {
 									HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 								}
 								cancelUploadPathAlarm(this);
-								stopRing(false);
+								stopRing(false, this);
 
 							} else if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 								int ignoreRideRequest = jObj.optInt("update_penalty_ctr", 0);
@@ -568,7 +570,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");
 								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
-									Intent otpConfirmScreen = new Intent(this, LoginViaOTP.class);
+									Intent otpConfirmScreen = new Intent(this, OTPConfirmScreen.class);
 									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 									otpConfirmScreen.putExtra("otp", otp);
 									startActivity(otpConfirmScreen);
@@ -683,10 +685,10 @@ public class GCMIntentService extends IntentService {
 		pendingIntent.cancel();
 	}
 
-	public static void startRing(Context context) {
+	public static void startRing(Context context, String engagementId) {
 		try {
 
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -703,10 +705,9 @@ public class GCMIntentService extends IntentService {
 				vibrator.vibrate(pattern, 1);
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//				am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
-			am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-			mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}else{
 				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 			}
@@ -726,6 +727,7 @@ public class GCMIntentService extends IntentService {
 				}
 			});
 			mediaPlayer.start();
+			Database2.getInstance(context).insertRingData(Integer.parseInt(engagementId), String.valueOf(System.currentTimeMillis()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -734,7 +736,7 @@ public class GCMIntentService extends IntentService {
 
 	public static void startRingCustom(Context context, String file) {
 		try {
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -777,9 +779,9 @@ public class GCMIntentService extends IntentService {
 
 	public static CountDownTimer ringStopTimer;
 
-	public static void startRingWithStopHandler(Context context) {
+	public static void startRingWithStopHandler(final Context context) {
 		try {
-			stopRing(true);
+			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 			if (vibrator.hasVibrator()) {
 				long[] pattern = {0, 1350, 3900,
@@ -825,7 +827,7 @@ public class GCMIntentService extends IntentService {
 
 				@Override
 				public void onFinish() {
-					stopRing(true);
+					stopRing(true, context);
 				}
 			};
 			ringStopTimer.start();
@@ -837,7 +839,7 @@ public class GCMIntentService extends IntentService {
 	}
 
 
-	public static void stopRing(boolean manual) {
+	public static void stopRing(boolean manual, Context context) {
 		boolean stopRing;
 		if (HomeActivity.appInterruptHandler != null) {
 			if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
@@ -865,6 +867,9 @@ public class GCMIntentService extends IntentService {
 				if (ringStopTimer != null) {
 					ringStopTimer.cancel();
 				}
+				RingData ringData = Database2.getInstance(context).getRingData("1");
+				long timeDiff = System.currentTimeMillis() - ringData.time;
+				Database2.getInstance(context).updateRingData(ringData.engagement, String.valueOf(timeDiff));
 			} catch (Exception e) {
 			}
 		}
@@ -965,7 +970,7 @@ public class GCMIntentService extends IntentService {
 								HomeActivity.appInterruptHandler.onRideRequestTimeout(engagementId);
 							}
 							clearNotifications(context);
-							stopRing(true);
+							stopRing(true, context);
 						}
 					}
 					Log.i("RequestTimeoutTimerTask", "onFinish");

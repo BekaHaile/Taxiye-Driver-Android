@@ -26,6 +26,8 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -33,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
@@ -41,18 +44,26 @@ import com.flurry.android.FlurryAgent;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
+import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
+import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -80,17 +91,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 
-	LinearLayout relative;
-	
+	LinearLayout relative, linearLayoutAutoStatus, linearLayoutAutoDriverConfirmation, linearLayoutSignUpIn;
+	TextView textViewConfirmationText,textViewStatusText;
+
+	List<String> categories = new ArrayList<>();
 	ImageView imageViewJugnooLogo;
 	
-	RelativeLayout jugnooTextImgRl;
+	RelativeLayout jugnooTextImgRl, selectLanguageLl;
 	ImageView jugnooTextImg, jugnooTextImg2;
-	
+	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
+
+	Spinner spinner;
+	String selectedLanguage;
+	int languagePrefStatus;
 	Configuration conf;
 
-	Button buttonLogin, buttonRegister;
+	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo;
 	
 	static boolean loginDataFetched = false;
 	boolean loginFailed = false;
@@ -118,9 +135,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
-		
+//		Fabric.with(this, new Crashlytics());
 
+		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
 
 		FlurryAgent.init(this, Data.FLURRY_KEY);
@@ -146,8 +163,21 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		jugnooTextImg = (ImageView) findViewById(R.id.jugnooTextImg);
 		jugnooTextImg2 = (ImageView) findViewById(R.id.jugnooTextImg2);
 		jugnooTextImgRl.setVisibility(View.GONE);
-		
-		
+
+		linearLayoutAutoStatus = (LinearLayout) findViewById(R.id.linearLayoutAutoStatus);
+		linearLayoutAutoDriverConfirmation = (LinearLayout) findViewById(R.id.linearLayoutAutoDriverConfirmation);
+		linearLayoutSignUpIn = (LinearLayout) findViewById(R.id.linearLayoutSignUpIn);
+
+		buttonStatusYes = (Button) findViewById(R.id.buttonStatusYes);
+		buttonStatusNo = (Button) findViewById(R.id.buttonStatusNo);
+		buttonConfirmationYes = (Button) findViewById(R.id.buttonConfirmationYes);
+		buttonConfirmationNo = (Button) findViewById(R.id.buttonConfirmationNo);
+
+		textViewConfirmationText = (TextView) findViewById(R.id.textViewConfirmationText);
+		textViewStatusText = (TextView) findViewById(R.id.textViewConfirmationText);
+		selectLanguageLl = (RelativeLayout) findViewById(R.id.selectLanguageLl);
+		spinner = (Spinner) findViewById(R.id.language_spinner);
+
 		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
 		progressBar1.setVisibility(View.GONE);
 		
@@ -176,9 +206,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(SplashNewActivity.this, RegisterScreen.class));
-				finish();
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				linearLayoutSignUpIn.setVisibility(View.GONE);
+				linearLayoutAutoDriverConfirmation.setVisibility(View.GONE);
+				getCityAsync();
 			}
 		});
 		
@@ -202,7 +232,34 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		
+		buttonConfirmationYes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonConfirmationNo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonStatusYes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonStatusNo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
 		Data.generateKeyHash(SplashNewActivity.this);
 		
 		
@@ -251,29 +308,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-
-
-//		boolean installed = Utils.isAppInstalled(this, Data.GADDAR_JUGNOO_APP);
-//		if(installed){
-//			DialogPopup.alertPopup(this, "", Data.GADDAR_JUGNOO_APP + " installed: " + installed);
-//
-//		}
-//
-//		boolean installede = Utils.isAppInstalled(this, Data.UBER_APP);
-//		if(installede){
-//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " installed: " + installed);
-//
-//		}
-//
-//		boolean installedee = Utils.olaInstall(this);
-//		if(installedee){
-//			DialogPopup.alertPopup(this, "", Data.UBER_APP + " olaaaaaa: " + installed);
-//
-//		}
-
-//
-//		Intent intent = new Intent(this, PubnubService.class);
-//		startService(intent);
 
 	}
 
@@ -538,7 +572,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(activity);
 		final long responseTime = System.currentTimeMillis();
 		conf = getResources().getConfiguration();
-		if(!"".equalsIgnoreCase(accPair.first)){
+		if (!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -630,6 +664,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										Utils.deleteMFile();
+										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
 									}
 									else{
@@ -661,15 +697,16 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					}
 				});
 
-
-
 			}
 			else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		}
 		else{
+
+			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
+			buttonRegister.setVisibility(View.GONE);
 		}
 
 	}
@@ -785,19 +822,20 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			textHead.setVisibility(View.VISIBLE);
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textMessage.setText(message);
 			
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 			btnOk.setText(activity.getResources().getString(R.string.update));
 			
-			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
 			btnCancel.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
 					dialog.dismiss();
-					if(isForced == 1){
+					if (isForced == 1) {
 						activity.finish();
 					}
 				}
@@ -967,7 +1005,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				textMessage.setVisibility(View.GONE);
 				
 				
-				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm); btnConfirm.setTypeface(Data.latoRegular(activity));
+				final Button btnConfirm = (Button) dialog.findViewById(R.id.btnConfirm);
+				btnConfirm.setTypeface(Data.latoRegular(activity));
 				
 				btnConfirm.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -1052,10 +1091,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						switch (result) {
 							case EditorInfo.IME_ACTION_DONE:
 								btnConfirm.performClick();
-							break;
+								break;
 
 							case EditorInfo.IME_ACTION_NEXT:
-							break;
+								break;
 
 							default:
 						}
@@ -1065,7 +1104,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				
 
 				dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 					}
@@ -1079,7 +1118,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						dialog.dismiss();
 					}
 				});
-				
+
 				dialog.show();
 
 				dialog.show();
@@ -1129,7 +1168,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
 					btnOk.setText("LIVE");
 					
-					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral); btnNeutral.setTypeface(Data.latoRegular(activity));
+					Button btnNeutral = (Button) dialog.findViewById(R.id.btnNeutral);
+					btnNeutral.setTypeface(Data.latoRegular(activity));
 					btnNeutral.setText("DEV");
 					
 					Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel); btnCancel.setTypeface(Data.latoRegular(activity));
@@ -1187,7 +1227,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							dialog.dismiss();
 						}
 					});
-					
+
 					dialog.show();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1438,5 +1478,135 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		return false;
 	}
-	
+
+
+	private void getCityAsync(){
+		DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
+		RestClient.getApiServices().getCityRetro("auyq38yr9fsdjfw38", new Callback<CityResponse>() {
+			@Override
+			public void success(CityResponse cityResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					String message = JSONParser.getServerMessage(jObj);
+					if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == cityResponse.getFlag()) {
+						String errorMessage = jObj.getString("error");
+					} else {
+						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
+						intent.putExtra("cityResponse", cityResponse);
+						startActivity(intent);
+						finish();
+						overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					}
+					DialogPopup.dismissLoadingDialog();
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
+				}
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.dismissLoadingDialog();
+			}
+		});
+	}
+
+	public void showLanguagePreference() {
+
+		if (languagePrefStatus == 1) {
+			selectLanguageLl.setVisibility(View.VISIBLE);
+		} else {
+			selectLanguageLl.setVisibility(View.GONE);
+		}
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(dataAdapter);
+
+		if (!selectedLanguage.equalsIgnoreCase("")) {
+			int spinnerPosition = dataAdapter.getPosition(selectedLanguage);
+			spinner.setSelection(spinnerPosition);
+		}
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
+
+				Prefs.with(SplashNewActivity.this).save(SPLabels.SELECTED_LANGUAGE, item);
+				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
+					selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+					onCreate(new Bundle());
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+	}
+
+	public void fetchLanguageList() {
+		try {
+			if (AppStatus.getInstance(SplashNewActivity.this).isOnline(SplashNewActivity.this)) {
+				if(categories.size() == 0) {
+				DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<>();
+				params.put("device_model_name", android.os.Build.MODEL);
+				params.put("android_version", android.os.Build.VERSION.RELEASE);
+
+
+
+					RestClient.getApiServices().fetchLanguageList(params, new Callback<RegisterScreenResponse>() {
+						@Override
+						public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+							String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+							DialogPopup.dismissLoadingDialog();
+							try {
+								JSONObject jObj = new JSONObject(responseStr);
+								String message = JSONParser.getServerMessage(jObj);
+								int flag = jObj.getInt("flag");
+								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+									languagePrefStatus = jObj.getInt("locale_preference_enabled");
+									JSONArray jArray = jObj.getJSONArray("locales");
+									if (jArray != null) {
+										categories.clear();
+										for (int i = 0; i < jArray.length(); i++) {
+											categories.add(jArray.get(i).toString());
+										}
+									}
+									showLanguagePreference();
+
+								} else {
+									DialogPopup.alertPopup(SplashNewActivity.this, "", message);
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+							}
+
+						}
+
+						@Override
+						public void failure(RetrofitError error) {
+							DialogPopup.dismissLoadingDialog();
+							DialogPopup.alertPopup(SplashNewActivity.this, "", Data.SERVER_ERROR_MSG);
+						}
+					});
+				} else {
+					if(categories != null) {
+						showLanguagePreference();
+					}
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }
