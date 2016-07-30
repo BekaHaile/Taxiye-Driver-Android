@@ -386,6 +386,7 @@ public class GCMIntentService extends IntentService {
 									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
 									String startTime = jObj.getString("start_time");
 									String address = jObj.getString("address");
+									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 									String userName = jObj.optString(Constants.KEY_NAME, "");
@@ -420,7 +421,7 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, totalDeliveries, estimatedFare, userName);
+												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this);
@@ -496,7 +497,6 @@ public class GCMIntentService extends IntentService {
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
-
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
