@@ -497,7 +497,7 @@ public class GCMIntentService extends IntentService {
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
-
+								Prefs.with(GCMIntentService.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 0);
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));

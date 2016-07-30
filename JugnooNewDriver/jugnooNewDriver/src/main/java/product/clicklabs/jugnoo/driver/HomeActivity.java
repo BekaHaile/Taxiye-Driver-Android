@@ -2372,13 +2372,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					ArrayList<CustomerInfo> customerEnfagementInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
 						if(customerEnfagementInfos.size() >1){
 							for (int i = 0; i < customerEnfagementInfos.size(); i++) {
 								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos.get(i).getEngagementId(), 1);
 							}
 						}
 					}
+
 
 
 					cancelTimerPathRerouting();
@@ -2421,6 +2422,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
+
+
+
+					if((Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_ACCEPT,0)==1)
+							&& (Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_ACCEPT_FLAG,0)==0)) {
+//						buttonDriverNavigation.performClick();
+						Prefs.with(HomeActivity.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 1);
+					}
 
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
@@ -2680,8 +2689,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void buttonDriverNavigationSetVisibility(int visibility){
 		buttonDriverNavigation.setVisibility(visibility);
-		if(driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_IN_RIDE)
-		buttonDriverNavigation.performClick();
 	}
 
 	@Override
@@ -3615,6 +3622,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								} else {
 									customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 								}
+
+								if((Prefs.with(HomeActivity.this).getInt(Constants.START_NAVIGATION_START,0)==1)&& customerInfo.getDropLatLng() != null) {
+//									buttonDriverNavigation.performClick();
+								}
+								Prefs.with(HomeActivity.this).save(Constants.START_NAVIGATION_ACCEPT_FLAG, 0);
 
 								if (customerInfo.getIsDelivery() == 1) {
 									customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObj));
@@ -4665,6 +4677,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							GCMIntentService.clearNotifications(activity);
 
 							driverStartRideAsync(activity, driverAtPickupLatLng, customerInfo);
+
+
 							FlurryEventLogger.event(START_RIDE_CONFIRMED);
 						}
 						else{
