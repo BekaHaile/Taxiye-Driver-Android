@@ -144,4 +144,5 @@ public interface Constants {
     String KEY_PICKUP_TIME = "pickup_time";
     String KEY_DRY_DISTANCE = "dry_distance";
     String SHOW_INVOICE_DETAILS = "show_invoice_details";
+    String SHOW_EDIT_IMAGE_FLAG = "show_edit_image_flag";
 }

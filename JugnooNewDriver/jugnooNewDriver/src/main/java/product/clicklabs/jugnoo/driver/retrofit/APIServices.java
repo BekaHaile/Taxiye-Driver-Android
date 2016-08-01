@@ -100,6 +100,25 @@ public interface APIServices {
 									@Field("otp") String Otp,
 									Callback<BookingHistoryResponse> callback);
 
+
+	@FormUrlEncoded
+	@POST("/verify_otp")
+	void verifyOtpOldUsingSignupFields(@Field("email") String email,
+									@Field("password") String password,
+									@Field("device_token") String deviceToken,
+									@Field("device_type") String deviceType,
+									@Field("device_name") String deviceName,
+									@Field("app_version") int appVersion,
+									@Field("os_version") String osVersion,
+									@Field("country") String Country,
+									@Field("unique_device_id") String uniqueDeviceId,
+									@Field("latitude") double latitude,
+									@Field("longitude") double longitude,
+									@Field("client_id") String clientId,
+									@Field("login_type") String loginType,
+									@Field("otp") String Otp,
+									Callback<BookingHistoryResponse> callback);
+
 	@FormUrlEncoded
 	@POST("/register_using_email")
 	void registerUsingEmail(@FieldMap Map<String, String> params,

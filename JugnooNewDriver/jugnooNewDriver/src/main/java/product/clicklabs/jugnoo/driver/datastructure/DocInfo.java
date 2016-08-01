@@ -24,6 +24,14 @@ public class DocInfo {
 		this.file1 = null;
 		this.isExpended = false;
 		this.url = url;
+		if(this.url != null) {
+			if (this.url.size() == 0) {
+				this.url.add(null);
+				this.url.add(null);
+			} else if (this.url.size() == 1) {
+				this.url.add(null);
+			}
+		}
 	}
 
 	public File getFile() {

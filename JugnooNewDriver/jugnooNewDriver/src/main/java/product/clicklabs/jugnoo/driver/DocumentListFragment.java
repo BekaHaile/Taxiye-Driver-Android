@@ -50,6 +50,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -139,7 +140,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative, relativeLayoutImageStatus;
-		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus;
+		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
 		int id;
 	}
 
@@ -186,6 +187,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
 
+				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
+				holder.deleteImage1.setTag(holder);
+				holder.deleteImage2 = (ImageView) convertView.findViewById(R.id.deleteImage2);
+				holder.deleteImage2.setTag(holder);
+
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
 
 				holder.addImageLayout.setTag(holder);
@@ -214,11 +220,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder = (ViewHolderDriverDoc) convertView.getTag();
 			}
 
-			final DocInfo docInfo = docs.get(position);
+			DocInfo docInfo = docs.get(position);
 
 			holder.id = position;
 
 			holder.docType.setText(docInfo.docType);
+			boolean showEditImage = Prefs.with(getActivity()).getBoolean(Constants.SHOW_EDIT_IMAGE_FLAG, true);
+
 			if (docInfo.docRequirement == 1) {
 				holder.docRequirement.setText(getResources().getString(R.string.mandatory)+"*");
 			} else {
@@ -251,6 +259,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
+				holder.deleteImage1.setVisibility(View.VISIBLE);
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout.setEnabled(false);
 				} else {
@@ -266,6 +275,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
+				holder.deleteImage2.setVisibility(View.VISIBLE);
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout2.setEnabled(false);
 				} else {
@@ -275,15 +285,18 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
 			}
 
-			if (docInfo.url.size() > 0 || docInfo.status.equalsIgnoreCase("2")) {
+			if ( docInfo.status.equalsIgnoreCase("2") || docInfo.url.get(0) != null || docInfo.url.get(1) != null) {
 				try {
 					docInfo.isExpended = true;
 
-					if (docInfo.url.size() > 0) {
+					if (docInfo.url.get(0) != null) {
 						Picasso.with(getActivity()).load(docInfo.url.get(0))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage);
+						if(showEditImage) {
+							holder.deleteImage1.setVisibility(View.VISIBLE);
+						}
 					}
 					if (!docInfo.status.equalsIgnoreCase("2")) {
 						holder.addImageLayout.setEnabled(false);
@@ -293,11 +306,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						docInfo.setFile(null);
 						docInfo.setFile1(null);
 					}
-					if (docInfo.url.size() > 1) {
+					if (docInfo.url.get(1) != null) {
 						Picasso.with(getActivity()).load(docInfo.url.get(1))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage2);
+						if(showEditImage) {
+							holder.deleteImage2.setVisibility(View.VISIBLE);
+						}
 						if (!docInfo.status.equalsIgnoreCase("2")) {
 							holder.addImageLayout2.setEnabled(false);
 						} else {
@@ -330,14 +346,39 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			});
 
+			holder.deleteImage1.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					DocInfo docInfodeleteImage1 = docs.get(holder.id);
+					docInfodeleteImage1.setFile(null);
+					docInfodeleteImage1.url.set(0, null);
+					holder.addImageLayout.setEnabled(true);
+					driverDocumentListAdapter.notifyDataSetChanged();
+				}
+			});
+
+			holder.deleteImage2.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					DocInfo docInfodeleteImage2 = docs.get(holder.id);
+					docInfodeleteImage2.setFile1(null);
+					docInfodeleteImage2.url.set(1,null);
+					holder.addImageLayout2.setEnabled(true);
+					driverDocumentListAdapter.notifyDataSetChanged();
+				}
+			});
+
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					try {
 						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 						rejectionId = holder.id;
-						if (docInfo.status.equalsIgnoreCase("2")) {
-							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+						DocInfo docInfoImageLayout = docs.get(holder.id);
+						if (docInfoImageLayout.status.equalsIgnoreCase("2")) {
+							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfoImageLayout.reason,
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
@@ -361,8 +402,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					try {
 						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 						rejectionId = holder.id;
-						if (docInfo.status.equalsIgnoreCase("2")) {
-							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+						DocInfo docInfoImageLayout2 = docs.get(holder.id);
+						if (docInfoImageLayout2.status.equalsIgnoreCase("2")) {
+							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfoImageLayout2.reason,
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
@@ -623,6 +665,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										docs.get(index).status = jObj.getString("status");
 										if (coloum == 0) {
 											docs.get(index).setFile(new File(image.getFileThumbnail()));
+
 										} else {
 											docs.get(index).setFile1(new File(image.getFileThumbnail()));
 										}

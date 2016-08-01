@@ -264,7 +264,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 			}
 
 
-			RestClient.getApiServices().verifyOtpUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
+			RestClient.getApiServices().verifyOtpOldUsingSignupFields(emailRegisterData.emailId, emailRegisterData.password,
 					Data.deviceToken, Data.DEVICE_TYPE, Data.deviceName, Data.appVersion, Data.osVersion, Data.country,
 					Data.uniqueDeviceId, Data.latitude, Data.longitude, Data.CLIENT_ID, Data.LOGIN_TYPE, otp, new Callback<BookingHistoryResponse>() {
 
@@ -395,7 +395,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 
 	public void performBackPressed() {
 		if (intentFromRegister) {
-			Intent intent = new Intent(OldOTPConfirmScreen.this, RegisterScreen.class);
+			Intent intent = new Intent(OldOTPConfirmScreen.this, OldRegisterScreen.class);
 			intent.putExtra("back_from_otp", true);
 			startActivity(intent);
 		} else {
