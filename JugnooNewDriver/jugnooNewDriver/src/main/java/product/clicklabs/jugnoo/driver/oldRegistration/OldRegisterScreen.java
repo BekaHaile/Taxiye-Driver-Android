@@ -27,7 +27,6 @@ import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.LocationFetcher;
 import product.clicklabs.jugnoo.driver.LocationUpdate;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
-import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -304,11 +303,11 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 
 		try {
 			if(getIntent().hasExtra("back_from_otp")) {
-				nameEt.setText(OTPConfirmScreen.emailRegisterData.name);
-				emailIdEt.setText(OTPConfirmScreen.emailRegisterData.emailId);
-				phoneNoEt.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
-				passwordEt.setText(OTPConfirmScreen.emailRegisterData.password);
-				confirmPasswordEt.setText(OTPConfirmScreen.emailRegisterData.password);
+				nameEt.setText(OldOTPConfirmScreen.emailRegisterData.name);
+				emailIdEt.setText(OldOTPConfirmScreen.emailRegisterData.emailId);
+				phoneNoEt.setText(OldOTPConfirmScreen.emailRegisterData.phoneNo);
+				passwordEt.setText(OldOTPConfirmScreen.emailRegisterData.password);
+				confirmPasswordEt.setText(OldOTPConfirmScreen.emailRegisterData.password);
 			}
             nameEt.setSelection(nameEt.getText().length());
 		} catch (Exception e) {
@@ -489,16 +488,16 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
 
 	
 	public void sendIntentToOtpScreen() {
-		OTPConfirmScreen.intentFromRegister = true;
-		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
-		startActivity(new Intent(OldRegisterScreen.this, OTPConfirmScreen.class));
+		OldOTPConfirmScreen.intentFromRegister = true;
+		OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
+		startActivity(new Intent(OldRegisterScreen.this, OldOTPConfirmScreen.class));
 		finish();
 		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 
     public void parseDataSendToMultipleAccountsScreen(Activity activity, JSONObject jObj) {
-        OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
+        OldOTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken,"");
         OldRegisterScreen.multipleCaseJSON = jObj;
         if (Data.previousAccountInfoList == null) {
             Data.previousAccountInfoList = new ArrayList<PreviousAccountInfo>();

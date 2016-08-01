@@ -581,6 +581,7 @@
     <string name="this_week">ഈ ആഴ്ച</string>
     <string name="outstanding_amount1">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
     <string name="upload_again">Upload Again</string>
+    <string name="self_enroled">Self Enroled</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

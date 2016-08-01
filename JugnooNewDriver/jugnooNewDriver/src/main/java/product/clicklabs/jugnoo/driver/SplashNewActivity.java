@@ -61,6 +61,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -107,7 +108,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	int languagePrefStatus;
 	Configuration conf;
 
-	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo;
+	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo, buttonRegisterTookan;
 	
 	static boolean loginDataFetched = false;
 	boolean loginFailed = false;
@@ -186,9 +187,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		buttonRegisterTookan = (Button) findViewById(R.id.buttonRegisterTookan);
+		buttonRegisterTookan.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		
 		buttonLogin.setVisibility(View.GONE);
 		buttonRegister.setVisibility(View.GONE);
+		buttonRegisterTookan.setVisibility(View.GONE);
 		
 		
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +214,16 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				linearLayoutSignUpIn.setVisibility(View.GONE);
 				linearLayoutAutoDriverConfirmation.setVisibility(View.GONE);
 				getCityAsync();
+			}
+		});
+
+		buttonRegisterTookan.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(SplashNewActivity.this, OldRegisterScreen.class));
+				finish();
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
 		
@@ -575,6 +590,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		if (!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
+			buttonRegisterTookan.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -706,7 +722,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
-			buttonRegister.setVisibility(View.GONE);
+			buttonRegister.setVisibility(View.VISIBLE);
 		}
 
 	}
@@ -1070,7 +1086,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 							else if(DriverDebugOpenMode.REGISTER == flag){
 								if(Data.REGISTER_PASSWORD.equalsIgnoreCase(code)){
 									dialog.dismiss();
-									buttonRegister.setVisibility(View.VISIBLE);
+									buttonRegisterTookan.setVisibility(View.VISIBLE);
 								}
 								else{
 									etCode.requestFocus();
