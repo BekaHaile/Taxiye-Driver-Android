@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
@@ -677,15 +678,4 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 }
 
 
-class EmailRegisterData {
-	String name, emailId, phoneNo, password, accessToken, autoNum;
 
-	public EmailRegisterData(String name, String emailId, String phoneNo, String password, String accessToken, String autoNum) {
-		this.name = name;
-		this.emailId = emailId;
-		this.phoneNo = phoneNo;
-		this.password = password;
-		this.accessToken = accessToken;
-		this.autoNum = autoNum;
-	}
-}
