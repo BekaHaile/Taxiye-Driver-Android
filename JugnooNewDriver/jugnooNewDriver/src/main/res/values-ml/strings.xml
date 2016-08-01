@@ -579,7 +579,7 @@
     <string name="ride_money">ആകെ റൈഡ് തുക</string>
     <string name="total_amount">ഫൈനൽ ഇൻവോയ്സ് തുക</string>
     <string name="this_week">ഈ ആഴ്ച</string>
-    <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="outstanding_amount1">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
     <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >

@@ -2466,8 +2466,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 						if(customerInfo.getIsPooled() ==1){
-							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
-							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+							if(Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())!=1) {
+								Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+								Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+							}
 							if(customerEnfagementInfos1.size() >1){
 								for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
 									Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
@@ -2540,7 +2542,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						ArrayList<CustomerInfo> customerEnfagementInfos2 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 						if(customerInfo.getIsPooled() ==1){
-							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+							if(Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())!=1) {
+								Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+								Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+							}
 							if(customerEnfagementInfos2.size() >1){
 								for (int i = 0; i < customerEnfagementInfos2.size(); i++) {
 									Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos2.get(i).getEngagementId(), 1);
@@ -3326,8 +3331,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
 					if(customerInfo.getIsPooled() ==1){
-						Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
-						Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(),0);
+						if(Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())!=1) {
+							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
+							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
+						}
 						if(customerEnfagementInfos1.size() >1){
 							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
 								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);

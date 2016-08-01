@@ -582,7 +582,7 @@
     <string name="ride_money">ସମୁଦାୟ ଭଡା ରାଶି</string>
     <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
-    <string name="outstanding_amount1">Outstanding Adjusted</string>
+    <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
     <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
