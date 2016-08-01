@@ -2298,6 +2298,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
+					polylineOptionsCustomersPath = null;
 
 				} else {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
@@ -3191,7 +3192,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (distance >= 1000) {
 				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
 			} else {
-				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) +" "+getResources().getString(R.string.m_away));
+				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
 			}
 
 
@@ -3722,7 +3723,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								initializeStartRideVariables();
 
-								if(Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
+								if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
 										|| Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()).size() == 0) {
 									Prefs.with(activity).save(Constants.SP_START_LATITUDE,
 											String.valueOf(driverAtPickupLatLng.latitude));
@@ -6255,7 +6256,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				if(latLngs.size() > 1) {
-					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
+					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
 							new ApiGoogleDirectionWaypoints.Callback() {
 								@Override
 								public void onPre() {
@@ -6269,8 +6270,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 
 								@Override
-								public void polylineAdded(Polyline polyline) {
+								public void polylineOptionGenerated(PolylineOptions polylineOptions) {
+									polylineOptionsCustomersPath = polylineOptions;
+								}
 
+								@Override
+								public void onFinish() {
+									if(polylineOptionsCustomersPath != null){
+										map.addPolyline(polylineOptionsCustomersPath);
+									}
 								}
 							}).execute();
 				}
@@ -6340,6 +6348,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 		return deliveryTime;
 	}
+
 
 
 	private void setAttachedCustomerMarkers(){
@@ -6468,7 +6477,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 			if(latLngs.size() > 1) {
-				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path), map,
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
 						new ApiGoogleDirectionWaypoints.Callback() {
 							@Override
 							public void onPre() {
@@ -6481,8 +6490,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 
 							@Override
-							public void polylineAdded(Polyline polyline) {
+							public void polylineOptionGenerated(PolylineOptions polylineOptions) {
+								polylineOptionsCustomersPath = polylineOptions;
+							}
 
+							@Override
+							public void onFinish() {
+								if(polylineOptionsCustomersPath != null){
+									map.addPolyline(polylineOptionsCustomersPath);
+								}
 							}
 						}).execute();
 			}
@@ -6490,6 +6506,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
+	private PolylineOptions polylineOptionsCustomersPath = null;
 
 	private void addStartMarker(){
 		try {
