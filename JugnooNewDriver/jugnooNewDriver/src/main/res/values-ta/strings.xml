@@ -592,10 +592,8 @@
     <string name="all_orders_have_been_delivered">அணைத்து ஆடர்களும் ஒப்படைக்கபட்டன</string>
     <string name="order_no">Order No.</string>
     <string name="details">Details</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
-
+    <string name="owned">Owned</string>
+    <string name="auto">Auto</string>
 
     <string name="to_no_colon">செய்ய</string>
     <string name="no_deliveries_pending">ஒப்படைப்புகள் எதுவும் நிலுவையில் இல்லை</string>
@@ -613,6 +611,57 @@
     <string name="please_drop_customer">Please drop %s</string>
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
+    <string name="uploading">பதிவேற்ற</string>
+
+    <string name="vehicle_status">வாகன நிலை</string>
+    <string name="rented">வாடகைக்கு எடுக்கப்பட்ட</string>
+    <string name="auto_driver_confirmation">நீங்கள் ஒரு ஆட்டோ டிரைவர்?</string>
+    <string name="auto_status_confirmation">நீங்கள் ஒரு ஆட்டோ  வேண்டும்?</string>
+    <string name="no_doc_available">கிடைக்கும் ஆவணங்கள் எதுவும் இல்லை</string>
+    <string name="upload">பதிவேற்ற</string>
+    <string name="optional">விருப்ப</string>
+    <string name="uploaded">பதிவேற்றிய</string>
+    <string name="rejected">நிராகரிக்கப்பட்டது</string>
+    <string name="verified">சரிபார்க்கப்பட்டது</string>
+    <string name="Hints">குறிப்புகள்</string>
+    <string name="tricks">தந்திரங்களை</string>
+    <string name="Messages">செய்திகள்</string>
+
+    <string name="auto_number">வாகன எண்ணிக்கை</string>
+    <string name="Choose_one">ஒன்றை தேர்ந்தெடு</string>
+    <string name="is_rented">நான் ஒரு வாடகை ஆட்டோ வேண்டும்</string>
+    <string name="is_owned">நான் என் ஆட்டோ சொந்தமாக</string>
+    <string name="Documents">ஆவணங்கள்</string>
+    <string name="Document_type">ஆவண வகை</string>
+    <string name="Requirement">தேவை</string>
+    <string name="add_image">படத்தை சேர்க்க</string>
+    <string name="Submit">சமர்ப்பிக்கவும்</string>
+    <string name="owner">உரிமையாளர்</string>
+    <string name="approval_pending">ஒப்புதல் நிலுவையில்</string>
+
+
+    <string name="rejection_reason">நிராகரித்தல் காரணம்</string>
+    <string name="mandatory">கட்டாய</string>
+    <string name="before_ride">சவாரி முன்</string>
+    <string name="in_ride_rate">சவாரி</string>
+    <string name="referral_rate">பரிந்துரை</string>
+    <string name="pickup_charges">அழைத்து கட்டணங்கள் </string>
+    <string name="base_fare">அடிப்படை கட்டணம்</string>
+    <string name="time_per_min">நேரம் (நிமிடம் ஒன்றுக்கு)</string>
+    <string name="driver_to_customer">டிரைவர் குறிக்கின்ற வாடிக்கையாளர்</string>
+    <string name="driver_to_driver">டிரைவர் குறிக்கின்ற டிரைவர்</string>
+    <string name="rate_card">விலை அட்டை</string>
+    <string name="applicable_after">பொருந்தக்கூடிய பின்னர்  %1$s Kms</string>
+    <string name="distance_per_km">தூரம்\n(நிமிடம் ஒன்றுக்கு)</string>
+    <string name="per_km">(நிமிடம் ஒன்றுக்கு)</string>
+    <string name="delivery_off">Delivery OFF</string>
+
+    <string name="Yesterday">நேற்று</string>
+    <string name="ride_money">மொத்த சவாரி தொகை</string>
+    <string name="total_amount">இறுதி விலைப்பட்டியல் தொகை</string>
+    <string name="this_week">இந்த வாரம்</string>
+    <string name="outstanding_amount1">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
+    <string name="upload_again">Upload Again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

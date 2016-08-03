@@ -225,6 +225,7 @@ public class JSONParser implements Constants {
 		String referralDialogText = userData.optString("referral_dialog_text", "Please enter Customer Phone No.");
 		String referralDialogHintText = userData.optString("referral_dialog_hint_text", "Phone No.");
 
+		Prefs.with(context).save(SPLabels.RING_COUNT_FREQUENCY, userData.optLong("ring_count_frequency", 0));
 		Prefs.with(context).save(SPLabels.MAX_INGNORE_RIDEREQUEST_COUNT, userData.optInt("max_allowed_timeouts", 0));
 		Prefs.with(context).save(SPLabels.MAX_TIMEOUT_RELIEF, userData.optLong("timeout_relief", 30000));
 		Prefs.with(context).save(SPLabels.BUFFER_TIMEOUT_PERIOD, userData.optLong("timeout_counter_buffer", 120000));
@@ -242,9 +243,15 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
+		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT, userData.optInt("start_navigation_accept", 3));
+		Prefs.with(context).save(Constants.START_NAVIGATION_START, userData.optInt("start_navigation_start", 0));
+
+
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
+		Prefs.with(context).save(Constants.SHOW_INVOICE_DETAILS, userData.optInt("show_invoice_details", 0));
+
 
 		long remainigPenaltyPeriod = userData.optLong("remaining_penalty_period", 0);
 		String timeoutMessage = userData.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
@@ -355,7 +362,7 @@ public class JSONParser implements Constants {
 			} else {
 				int flag = jObject1.getInt(KEY_FLAG);
 
-				fillDriverRideRequests(jObject1);
+				fillDriverRideRequests(jObject1, context);
 				setPreferredLangString(jObject1, context);
 
 				Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.ACCEPTED.getOrdinal());
@@ -521,7 +528,7 @@ public class JSONParser implements Constants {
 	}
 
 
-	public void fillDriverRideRequests(JSONObject jObject1) {
+	public void fillDriverRideRequests(JSONObject jObject1,Context context ) {
 
 		try {
 			Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
@@ -535,6 +542,7 @@ public class JSONParser implements Constants {
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
+				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 
 				String startTime = jActiveRequest.getString("start_time");
 				String endTime = "";
@@ -578,7 +586,7 @@ public class JSONParser implements Constants {
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, estimatedFare, userName);
+						totalDeliveries, estimatedFare, userName, dryDistance);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
@@ -586,7 +594,7 @@ public class JSONParser implements Constants {
 
 
 			if (jActiveRequests.length() == 0) {
-				GCMIntentService.stopRing(true);
+				GCMIntentService.stopRing(true, context);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -721,7 +729,9 @@ public class JSONParser implements Constants {
 				long rideTime = jPoolFare.optLong(KEY_RIDE_TIME) * 60000l;
 				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare));
+				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
+				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED,0);
+				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -10,6 +10,17 @@
     >
 
     <Button
+        android:id="@+id/driverInformationBtn"
+        android:layout_width="80px"
+        android:layout_height="80px"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="60px"
+        android:layout_marginRight="36px"
+        android:background="@drawable/info_icon_black"
+        android:tag="mwar"/>
+
+    <Button
         android:id="@+id/driverInitialMyLocationBtn"
         android:layout_width="80px"
         android:layout_height="80px"

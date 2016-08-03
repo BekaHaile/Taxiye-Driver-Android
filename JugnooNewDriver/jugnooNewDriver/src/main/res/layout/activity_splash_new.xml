@@ -8,6 +8,56 @@
     android:orientation="vertical"
     android:splitMotionEvents="false">
 
+    <RelativeLayout
+        android:id="@+id/selectLanguageLl"
+        android:layout_width="320px"
+        android:layout_height="80px"
+        android:layout_marginLeft="360px"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5px"
+        android:layout_marginTop="25px"
+        android:background="@drawable/background_translucent_white_rounded_orange_bordered"
+        android:visibility="visible">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="6px"
+            android:visibility="gone"
+            android:background="@drawable/language_icon"/>
+
+        <ImageView
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="6px"
+            android:visibility="gone"
+            android:background="@color/new_orange"/>
+
+
+        <Spinner
+            android:id="@+id/language_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@color/transparent"
+            android:popupBackground="@drawable/background_white_rounded_orange_bordered"
+            android:textAlignment="center"/>
+
+
+        <ImageView
+            android:layout_width="30px"
+            android:layout_height="22px"
+            android:layout_marginRight="15px"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/white_arrow_down"/>
+
+
+
+    </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,7 +71,7 @@
             android:layout_height="270px"
             android:layout_centerHorizontal="true"
             android:background="@drawable/jugnoo_white_logo"
-            android:layout_marginTop="200px"
+            android:layout_marginTop="100px"
             android:tag="mwar"
             android:visibility="visible" />
 
@@ -30,19 +80,14 @@
             android:layout_width="390px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="340px"
-            android:tag="mwar"
-            >
-
+            android:layout_marginTop="240px"
+            android:tag="mwar">
 
             <ImageView
                 android:id="@+id/jugnooTextImg"
                 android:layout_width="379px"
                 android:layout_height="136px"
-                android:tag="mwar"
-
-                />
-
+                android:tag="mwar"/>
 
             <ImageView
                 android:id="@+id/jugnooTextImg2"
@@ -62,13 +107,14 @@
             />
 
         <LinearLayout
+            android:id="@+id/linearLayoutSignUpIn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="117px"
             android:orientation="vertical"
-            >
+            android:visibility="visible">
 
             <Button
                 android:id="@+id/buttonLogin"
@@ -91,6 +137,99 @@
                 android:visibility="gone"
                 />
 
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutAutoDriverConfirmation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="117px"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewConfirmationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_driver_confirmation"
+                android:textSize="44px"
+                android:textColor="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120px"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonConfirmationYes"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:text="@string/yes"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+                <Button
+                    android:id="@+id/buttonConfirmationNo"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:layout_marginLeft="48px"
+                    android:text="@string/no"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutAutoStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:gravity="center_horizontal"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="117px"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_status_confirmation"
+                android:textSize="44px"
+                android:textColor="@color/white"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="120px"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonStatusYes"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:text="@string/yes"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+                <Button
+                    android:id="@+id/buttonStatusNo"
+                    android:layout_width="280px"
+                    android:layout_height="90px"
+                    android:layout_marginLeft="48px"
+                    android:text="@string/no"
+                    android:textColor="@color/new_orange"
+                    android:background="@drawable/background_white_rounded_orange_bordered"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

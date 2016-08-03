@@ -111,7 +111,7 @@ public class MultipleAccountsActivity extends BaseActivity {
 	
 	
 	public void performBackPressed(){
-        Intent intent = new Intent(MultipleAccountsActivity.this, RegisterScreen.class);
+        Intent intent = new Intent(MultipleAccountsActivity.this, SplashNewActivity.class);
         intent.putExtra("back_from_otp", true);
         startActivity(intent);
 		finish();

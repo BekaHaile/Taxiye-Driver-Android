@@ -66,7 +66,8 @@ public enum ApiResponseFlags {
 	DISTANCE_RESET(555),
 
 
-	RESET_DEVICE_TOKEN(556)
+	RESET_DEVICE_TOKEN(556),
+	UPLOAD_DOCCUMENT(701)
 	;
 
 	private int ordinal;
