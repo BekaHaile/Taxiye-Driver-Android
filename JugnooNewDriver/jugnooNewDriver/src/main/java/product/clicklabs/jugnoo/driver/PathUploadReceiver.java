@@ -102,57 +102,59 @@ public class PathUploadReceiver extends BroadcastReceiver {
 
 
                                 String accessToken = Database2.getInstance(context).getDLDAccessToken();
-                                String locations = locationDataArr.toString();
                                 String serverUrl = Database2.getInstance(context).getDLDServerUrl();
                                 long responseTime = System.currentTimeMillis();
-                                if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(locations)) && (!"".equalsIgnoreCase(serverUrl))){
+                                if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(serverUrl))){
                                     HashMap<String, String> nameValuePairs = new HashMap<>();
                                     nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 
                                     ArrayList<EngagementSPData> engagementSPDatas = (ArrayList<EngagementSPData>) MyApplication
                                             .getInstance().getEngagementSP().getEngagementSPDatasArray();
-                                    JSONArray jsonArray = new JSONArray();
+                                    JSONArray engagementsJsonArray = new JSONArray();
                                     for(EngagementSPData engagementSPData : engagementSPDatas) {
                                         try {
                                             if (engagementSPData.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-                                                jsonArray.put(engagementSPData.getEngagementId());
+                                                engagementsJsonArray.put(engagementSPData.getEngagementId());
                                             }
                                         } catch (Exception e) {
                                             e.printStackTrace();
                                         }
                                     }
-                                    nameValuePairs.put("engagement_ids", jsonArray.toString());
-                                    nameValuePairs.put("locations", locations);
+                                    if(engagementsJsonArray.length() > 0){
+                                        if(locationDataArr.length() > 0){
+                                            nameValuePairs.put("engagement_ids", engagementsJsonArray.toString());
+                                            nameValuePairs.put("locations", locationDataArr.toString());
 
-                                    Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
-                                    String result = new String(((TypedByteArray)response.getBody()).getBytes());
-                                        try{
-                                            JSONObject jObj = new JSONObject(result);
-                                            if(jObj.has(Constants.KEY_FLAG)){
-                                                int flag = jObj.getInt(Constants.KEY_FLAG);
-                                                if(ApiResponseFlags.RIDE_PATH_RECEIVED.getOrdinal() == flag){
-                                                    ArrayList<Long> rowIds = new ArrayList<Long>();
-                                                    for(CurrentPathItem currentPathItem : validCurrentPathItems){
-                                                        rowIds.add(currentPathItem.id);
-                                                    }
-                                                    FlurryEventLogger.logResponseTime(context,System.currentTimeMillis()-responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
-                                                    Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
-                                                    if(HomeActivity.appInterruptHandler != null){
-                                                        HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
+                                            Response response = RestClient.getApiServices().logOngoingRidePath(nameValuePairs);
+                                            String result = new String(((TypedByteArray)response.getBody()).getBytes());
+                                            try{
+                                                JSONObject jObj = new JSONObject(result);
+                                                if(jObj.has(Constants.KEY_FLAG)){
+                                                    int flag = jObj.getInt(Constants.KEY_FLAG);
+                                                    if(ApiResponseFlags.RIDE_PATH_RECEIVED.getOrdinal() == flag){
+                                                        ArrayList<Long> rowIds = new ArrayList<Long>();
+                                                        for(CurrentPathItem currentPathItem : validCurrentPathItems){
+                                                            rowIds.add(currentPathItem.id);
+                                                        }
+                                                        FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.PATH_UPLOAD_RESPONSE);
+                                                        Database2.getInstance(context).updateCurrentPathItemAcknowledgedForArray(rowIds, 1);
+                                                        if(HomeActivity.appInterruptHandler != null){
+                                                            HomeActivity.appInterruptHandler.addPathNew(validCurrentPathItems);
+                                                        }
                                                     }
                                                 }
+                                            } catch(Exception e){
+                                                e.printStackTrace();
                                             }
-                                        } catch(Exception e){
-                                            e.printStackTrace();
                                         }
+
+                                    } else{
+                                        stopPathUploadAlarm(context);
+                                    }
                                 }
                             }
                             else{
-                                String meteringState = Database2.getInstance(context).getMetringState();
-                                if(!Database2.ON.equalsIgnoreCase(meteringState)){
-                                    Database2.getInstance(context).deleteAllCurrentPathItems();
-                                    cancelUploadPathAlarm(context);
-                                }
+                                stopPathUploadAlarm(context);
                             }
 
                             String meteringState = Database2.getInstance(context).getMetringState();
@@ -173,6 +175,18 @@ public class PathUploadReceiver extends BroadcastReceiver {
             }
         }
 
+    }
+
+    public void stopPathUploadAlarm(Context context){
+        try {
+            String meteringState = Database2.getInstance(context).getMetringState();
+            if(!Database2.ON.equalsIgnoreCase(meteringState)){
+				Database2.getInstance(context).deleteAllCurrentPathItems();
+				cancelUploadPathAlarm(context);
+			}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

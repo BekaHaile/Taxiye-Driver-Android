@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/addImage"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="720px"
+             android:layout_height="1134px"
+             android:orientation="vertical"
+             android:background="@color/black_translucent"
+             android:splitMotionEvents="false"
+    >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30px"
+        android:background="@drawable/background_white_rounded_orange_bordered"
+        android:splitMotionEvents="false"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10px"
+            android:splitMotionEvents="false"
+
+            >
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="20px"
+                android:layout_marginTop="20px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:text="@string/upload"
+                android:textColor="@color/black"
+                android:textSize="40px"
+                android:visibility="visible"
+
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:layout_gravity="bottom"
+                android:background="@color/new_orange"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="52px"
+                android:layout_marginBottom="52px"
+                android:layout_gravity="center">
+
+                <LinearLayout
+                    android:id="@+id/LAyoutGallery"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/image_gallery"
+                        android:layout_width="90px"
+                        android:layout_height="90px"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="24px"
+                        android:background="@drawable/doc_gallery"/>
+
+                    <TextView
+                        android:id="@+id/image_gallery_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_gallery"
+                        android:layout_marginBottom="20px"
+                        android:layout_marginLeft="16px"
+                        android:layout_marginTop="10px"
+                        android:text="Gallery"
+                        android:textColor="@color/grey_dark_more"
+                        android:textSize="20px"
+                        android:visibility="visible"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/LayoutCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="228px"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/image_camera"
+                        android:layout_width="90px"
+                        android:layout_height="90px"
+                        android:layout_marginTop="24px"
+                        android:layout_toRightOf="@+id/image_gallery"
+                        android:background="@drawable/doc_camera"/>
+
+                    <TextView
+                        android:id="@+id/image_camera_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_camera"
+                        android:layout_marginBottom="20px"
+                        android:layout_marginLeft="13px"
+                        android:layout_marginTop="10px"
+                        android:layout_toRightOf="@+id/image_gallery"
+                        android:text="Camera"
+                        android:textColor="@color/grey_dark_more"
+                        android:textSize="20px"
+                        android:visibility="visible"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <Button
+                android:id="@+id/btnCancel"
+                android:layout_width="320px"
+                android:layout_height="83px"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:singleLine="true"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                android:textSize="@dimen/button_text_size"
+                android:layout_marginBottom="20px"
+                />
+
+
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>

@@ -20,6 +20,7 @@ import product.clicklabs.jugnoo.driver.datastructure.GpsState;
 import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
+import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -100,6 +101,11 @@ public class Database2 {                                                        
 	private static final String RIDE_DATA_ACC_DISTANCE = "accDistance";
 
 
+	private static final String TABLE_RING_DATA = "table_ring_data";
+	private static final String RING_DATA_ENGAGEMENT = "ring_data_engagement";
+	private static final String RING_DATA_TIME = "ring_data_time";
+
+
 	private static final String TABLE_PENALITY_COUNT = "table_penality_count";
 	private static final String PENALITY_ID = "penality_id";
 	private static final String PENALITY_TIME = "penality_time";
@@ -154,6 +160,12 @@ public class Database2 {                                                        
 	private static final String TABLE_CUSTOMER_RIDE_DATA = "table_customer_ride_data";
 	private static final String CUSTOMER_START_RIDE_TIME = "customer_start_ride_time";
 	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
+
+
+	private static final String TABLE_POOL_DISCOUNT_FLAG = "table_pool_discount_flag";
+	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
+	private static final String POOL_RIDE_DISCOUNT_FLAG = "pool_ride_discount_flag";
+
 
 
 	/**
@@ -229,6 +241,10 @@ public class Database2 {                                                        
 				+ API_REQUEST_PARAMS + " TEXT"
 				+ ");");
 
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RING_DATA + " ("
+				+ RING_DATA_ENGAGEMENT + " INTEGER, "
+				+ RING_DATA_TIME + " TEXT"
+				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_RIDE_DATA + " ("
 				+ RIDE_DATA_I + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -288,6 +304,11 @@ public class Database2 {                                                        
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_RIDE_DATA + " ("
 				+ CUSTOMER_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ CUSTOMER_START_RIDE_TIME + " TEXT"
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_POOL_DISCOUNT_FLAG + " ("
+				+ POOL_RIDE_ENGAGEMENT_ID + " INTEGER, "
+				+ POOL_RIDE_DISCOUNT_FLAG + " INTEGER"
 				+ ");");
 
 	}
@@ -1004,6 +1025,113 @@ public class Database2 {                                                        
 
 
 
+	public RingData getRingData(String limit) {
+		RingData ringData = null;
+		String template = "engagement,time";
+		try {
+			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
+
+			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
+					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC LIMIT " + limit, null);
+
+			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
+			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
+
+			if (cursor.moveToFirst()) {
+				try {
+					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ringData;
+	}
+
+
+
+	public String getRingCompleteData() {
+		String ringDataStr = "";
+		RingData ringData = null;
+		String template = "engagement,time";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.RING_DATA_ENGAGEMENT, Database2.RING_DATA_TIME};
+			Cursor cursor = database.query(Database2.TABLE_RING_DATA, columns, null, null, null, null, null);
+
+//			Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RING_DATA
+//					+ " ORDER BY " + RING_DATA_ENGAGEMENT + " DESC" , null);
+
+			int i0 = cursor.getColumnIndex(Database2.RING_DATA_ENGAGEMENT);
+			int i1 = cursor.getColumnIndex(Database2.RING_DATA_TIME);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					ringData = new RingData(cursor.getInt(i0),cursor.getLong(i1));
+					if(ringData.time > 130000){
+						ringData = new RingData(cursor.getInt(i0),1);
+						ringDataStr = ringDataStr + ringData.toString() + newLine;
+					} else{
+						ringDataStr = ringDataStr + ringData.toString() + newLine;
+					}
+
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				ringDataStr = template + newLine + ringDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return ringDataStr;
+	}
+
+
+
+	public void insertRingData(int engagementId, String time) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
+			contentValues.put(Database2.RING_DATA_TIME, time);
+			database.insert(Database2.TABLE_RING_DATA, null, contentValues);
+		} catch (Exception e) {
+
+			e.printStackTrace();
+		}
+	}
+
+
+	public void updateRingData(int engagementId, String time) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.RING_DATA_ENGAGEMENT, engagementId);
+			contentValues.put(Database2.RING_DATA_TIME, time);
+			database.update(Database2.TABLE_RING_DATA, contentValues, RING_DATA_ENGAGEMENT + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deleteRingData() {
+		try {
+			database.delete(Database2.TABLE_RING_DATA, null, null);
+			database.execSQL("DROP TABLE " + Database2.TABLE_RING_DATA);
+			createAllTables(database);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	public int getPenalityData(String timediff) {
 		try {
 			int count;
@@ -1558,5 +1686,47 @@ public class Database2 {                                                        
 		}
 	}
 
+
+	public void insertPoolDiscountFlag(int engagementId, int flag) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.POOL_RIDE_ENGAGEMENT_ID, engagementId);
+			contentValues.put(Database2.POOL_RIDE_DISCOUNT_FLAG, flag);
+			database.insert(Database2.TABLE_POOL_DISCOUNT_FLAG, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public int getPoolDiscountFlag(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_POOL_DISCOUNT_FLAG
+				+ " WHERE " + POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		int i0 = cursor.getColumnIndex(Database2.POOL_RIDE_DISCOUNT_FLAG);
+		if(cursor.moveToFirst()){
+			return Integer.parseInt(cursor.getString(i0));
+		}
+		return 0;
+	}
+
+
+	public void updatePoolDiscountFlag(int engagementId, int flag) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(POOL_RIDE_DISCOUNT_FLAG, flag);
+			database.update(TABLE_POOL_DISCOUNT_FLAG, contentValues, POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deletePoolDiscountFlag(int engagementId) {
+		try {
+			database.delete(Database2.TABLE_POOL_DISCOUNT_FLAG, POOL_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

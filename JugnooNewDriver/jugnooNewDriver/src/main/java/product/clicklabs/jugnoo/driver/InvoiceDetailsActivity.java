@@ -36,7 +36,8 @@ public class InvoiceDetailsActivity extends BaseActivity {
 	TextView textViewCurrentInvoiceId, textViewJugnooCmsnValue, textViewReferralValue, textViewPaytmCashValue,
 			textViewTotalAmntValue, textViewOutstandingAmntValue, textViewManualAdjValue, textViewPhoneDeductionValue,
 			textViewCancelSubsidyValue, textViewPaidByJugnooValue, textViewPaidUsingCstmrValue, textViewPaidByCstmrValue,
-			textViewCurrentInvoiceGeneratedOn,textViewCurrentInvoiceStatus, dateTimeValueFrom, dateTimeValueTo, textViewTotalAmnt;
+			textViewCurrentInvoiceGeneratedOn,textViewCurrentInvoiceStatus, dateTimeValueFrom, dateTimeValueTo, textViewTotalAmnt,
+			textViewRideMoneyValue, textViewTotalJugnooAmntValue;
 
 	ImageView imageViewRequestType, imageViewNegetive5;
 
@@ -95,6 +96,8 @@ public class InvoiceDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.textViewJugnooCmsn)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewOutstandingAmnt)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		((TextView) findViewById(R.id.textViewPaytmCash)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		((TextView) findViewById(R.id.textViewRideMoney)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
+		((TextView) findViewById(R.id.textViewTotalJugnooAmnt)).setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 
 
 		textViewTotalAmnt = (TextView) findViewById(R.id.textViewTotalAmnt);
@@ -131,7 +134,10 @@ public class InvoiceDetailsActivity extends BaseActivity {
 		dateTimeValueTo.setTypeface(Data.latoRegular(this));
 		textViewPaytmCashValue = (TextView) findViewById(R.id.textViewPaytmCashValue);
 		textViewPaytmCashValue.setTypeface(Data.latoRegular(this));
-
+		textViewRideMoneyValue = (TextView) findViewById(R.id.textViewRideMoneyValue);
+		textViewRideMoneyValue.setTypeface(Data.latoRegular(this));
+		textViewTotalJugnooAmntValue = (TextView) findViewById(R.id.textViewTotalJugnooAmntValue);
+		textViewTotalJugnooAmntValue.setTypeface(Data.latoRegular(this));
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
 		imageViewNegetive5 = (ImageView) findViewById(R.id.imageViewNegetive5);
@@ -193,15 +199,16 @@ public class InvoiceDetailsActivity extends BaseActivity {
 			if(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision() ==null){
 				textViewJugnooCmsnValue.setText(getResources().getString(R.string.NA));
 			}else {
-				textViewJugnooCmsnValue.setText(getResources().getString(R.string.rupee)
+				textViewJugnooCmsnValue.setText("-"+getResources().getString(R.string.rupee)
 						+ Utils.getDecimalFormatForMoney().format(invoiceDetailResponse.getInvoiceDetails().getJugnooCommision()));
 			}
 
 			if(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount() ==null){
 				textViewOutstandingAmntValue.setText(getResources().getString(R.string.NA));
 			}else {
-				textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
-						+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
+				textViewOutstandingAmntValue.setText("-"+getResources().getString(R.string.rupee)
+						+ Utils.getDecimalFormatForMoney().
+						format(invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount()));
 			}
 
 			textViewReferralValue.setText(getResources().getString(R.string.rupee)
@@ -209,7 +216,8 @@ public class InvoiceDetailsActivity extends BaseActivity {
 
 
 			textViewTotalAmntValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getAmountToBePaid()));
 
 //			textViewOutstandingAmntValue.setText(getResources().getString(R.string.rupee)
 //					+ invoiceDetailResponse.getInvoiceDetails().getOutstandingAmount());
@@ -224,22 +232,36 @@ public class InvoiceDetailsActivity extends BaseActivity {
 				imageViewNegetive5.setVisibility(View.GONE);
 				textViewManualAdjValue.setTextColor(getResources().getColor(R.color.black));
 				textViewManualAdjValue.setText(getResources().getString(R.string.rupee)
-						+ invoiceDetailResponse.getInvoiceDetails().getManualCharges());
+						+ Utils.getDecimalFormatForMoney().
+						format(invoiceDetailResponse.getInvoiceDetails().getManualCharges()));
 			}
 
 
-			textViewPhoneDeductionValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions());
+			textViewPhoneDeductionValue.setText("-"+getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPhoneDeductions()));
 			textViewCancelSubsidyValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getCancelDistanceSubsidy()));
 			textViewPaidByJugnooValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidByJugnoo()));
 			textViewPaidUsingCstmrValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet());
-			textViewPaidByCstmrValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidUsingWallet()));
+			textViewPaidByCstmrValue.setText("-"+getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaidByCustomer()));
 			textViewPaytmCashValue.setText(getResources().getString(R.string.rupee)
-					+ invoiceDetailResponse.getInvoiceDetails().getPaytmCash());
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getPaytmCash()));
+
+			textViewRideMoneyValue.setText(getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getRideMoney()));
+			textViewTotalJugnooAmntValue.setText(getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().
+					format(invoiceDetailResponse.getInvoiceDetails().getTotalAmount()));
 
 		} else {
 			performBackPressed();

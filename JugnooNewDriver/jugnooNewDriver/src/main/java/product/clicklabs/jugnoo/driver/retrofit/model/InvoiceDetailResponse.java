@@ -70,52 +70,75 @@ public class InvoiceDetailResponse {
 		private String invoicingToDate;
 		@SerializedName("cancel_distance_subsidy")
 		@Expose
-		private Integer cancelDistanceSubsidy;
+		private Double cancelDistanceSubsidy;
 		@SerializedName("manual_charges")
 		@Expose
-		private Integer manualCharges;
+		private Double manualCharges;
 		@SerializedName("manual_charges_reason")
 		@Expose
 		private String manualChargesReason;
 		@SerializedName("phone_deductions")
 		@Expose
-		private Integer phoneDeductions;
+		private Double phoneDeductions;
 		@SerializedName("referral_amount")
 		@Expose
-		private Integer referralAmount;
+		private Double referralAmount;
 		@SerializedName("money_transacted")
 		@Expose
-		private Integer moneyTransacted;
+		private Double moneyTransacted;
 		@SerializedName("outstanding_amount")
 		@Expose
-		private Integer outstandingAmount;
+		private Double outstandingAmount;
 		@SerializedName("actual_fare")
 		@Expose
-		private Integer actualFare;
+		private Double actualFare;
 		@SerializedName("paid_by_customer")
 		@Expose
-		private Integer paidByCustomer;
+		private Double paidByCustomer;
 		@SerializedName("paid_by_jugnoo")
 		@Expose
-		private Integer paidByJugnoo;
+		private Double paidByJugnoo;
 		@SerializedName("paid_using_wallet")
 		@Expose
-		private Integer paidUsingWallet;
+		private Double paidUsingWallet;
 		@SerializedName("jugnoo_commision")
 		@Expose
 		private Double jugnooCommision;
 		@SerializedName("total_driver_earnings")
 		@Expose
-		private Integer totalDriverEarnings;
+		private Double totalDriverEarnings;
 		@SerializedName("money_transacted_to_driver")
 		@Expose
-		private Integer moneyTransactedToDriver;
+		private Double moneyTransactedToDriver;
 		@SerializedName("invoicing_date")
 		@Expose
 		private String invoiceDate;
 		@SerializedName("paytm_driver_transfer")
 		@Expose
-		private Integer paytmCash;
+		private Double paytmCash;
+		@SerializedName("ride_money")
+		@Expose
+		private Double rideMoney;
+		@SerializedName("total_amount")
+		@Expose
+		private Double totalAmount;
+
+
+		public Double getRideMoney() {
+			return rideMoney;
+		}
+
+		public void setRideMoney(Double rideMoney) {
+			this.rideMoney = rideMoney;
+		}
+
+		public Double getTotalAmount() {
+			return totalAmount;
+		}
+
+		public void setTotalAmount(Double totalAmount) {
+			this.totalAmount = totalAmount;
+		}
 
 		/**
 		 *
@@ -212,7 +235,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The cancelDistanceSubsidy
 		 */
-		public Integer getCancelDistanceSubsidy() {
+		public Double getCancelDistanceSubsidy() {
 			return cancelDistanceSubsidy;
 		}
 
@@ -221,7 +244,7 @@ public class InvoiceDetailResponse {
 		 * @param cancelDistanceSubsidy
 		 * The cancel_distance_subsidy
 		 */
-		public void setCancelDistanceSubsidy(Integer cancelDistanceSubsidy) {
+		public void setCancelDistanceSubsidy(Double cancelDistanceSubsidy) {
 			this.cancelDistanceSubsidy = cancelDistanceSubsidy;
 		}
 
@@ -230,7 +253,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The manualCharges
 		 */
-		public Integer getManualCharges() {
+		public Double getManualCharges() {
 			return manualCharges;
 		}
 
@@ -239,7 +262,7 @@ public class InvoiceDetailResponse {
 		 * @param manualCharges
 		 * The manual_charges
 		 */
-		public void setManualCharges(Integer manualCharges) {
+		public void setManualCharges(Double manualCharges) {
 			this.manualCharges = manualCharges;
 		}
 
@@ -266,7 +289,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The phoneDeductions
 		 */
-		public Integer getPhoneDeductions() {
+		public Double getPhoneDeductions() {
 			return phoneDeductions;
 		}
 
@@ -275,7 +298,7 @@ public class InvoiceDetailResponse {
 		 * @param phoneDeductions
 		 * The phone_deductions
 		 */
-		public void setPhoneDeductions(Integer phoneDeductions) {
+		public void setPhoneDeductions(Double phoneDeductions) {
 			this.phoneDeductions = phoneDeductions;
 		}
 
@@ -284,7 +307,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The referralAmount
 		 */
-		public Integer getReferralAmount() {
+		public Double getReferralAmount() {
 			return referralAmount;
 		}
 
@@ -293,7 +316,7 @@ public class InvoiceDetailResponse {
 		 * @param referralAmount
 		 * The referral_amount
 		 */
-		public void setReferralAmount(Integer referralAmount) {
+		public void setReferralAmount(Double referralAmount) {
 			this.referralAmount = referralAmount;
 		}
 
@@ -302,7 +325,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The moneyTransacted
 		 */
-		public Integer getMoneyTransacted() {
+		public Double getMoneyTransacted() {
 			return moneyTransacted;
 		}
 
@@ -311,7 +334,7 @@ public class InvoiceDetailResponse {
 		 * @param moneyTransacted
 		 * The money_transacted
 		 */
-		public void setMoneyTransacted(Integer moneyTransacted) {
+		public void setMoneyTransacted(Double moneyTransacted) {
 			this.moneyTransacted = moneyTransacted;
 		}
 
@@ -320,7 +343,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The outstandingAmount
 		 */
-		public Integer getOutstandingAmount() {
+		public Double getOutstandingAmount() {
 			return outstandingAmount;
 		}
 
@@ -329,7 +352,7 @@ public class InvoiceDetailResponse {
 		 * @param outstandingAmount
 		 * The outstanding_amount
 		 */
-		public void setOutstandingAmount(Integer outstandingAmount) {
+		public void setOutstandingAmount(Double outstandingAmount) {
 			this.outstandingAmount = outstandingAmount;
 		}
 
@@ -338,7 +361,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The actualFare
 		 */
-		public Integer getActualFare() {
+		public Double getActualFare() {
 			return actualFare;
 		}
 
@@ -347,7 +370,7 @@ public class InvoiceDetailResponse {
 		 * @param actualFare
 		 * The actual_fare
 		 */
-		public void setActualFare(Integer actualFare) {
+		public void setActualFare(Double actualFare) {
 			this.actualFare = actualFare;
 		}
 
@@ -356,7 +379,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The paidByCustomer
 		 */
-		public Integer getPaidByCustomer() {
+		public Double getPaidByCustomer() {
 			return paidByCustomer;
 		}
 
@@ -365,7 +388,7 @@ public class InvoiceDetailResponse {
 		 * @param paidByCustomer
 		 * The paid_by_customer
 		 */
-		public void setPaidByCustomer(Integer paidByCustomer) {
+		public void setPaidByCustomer(Double paidByCustomer) {
 			this.paidByCustomer = paidByCustomer;
 		}
 
@@ -374,7 +397,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The paidByJugnoo
 		 */
-		public Integer getPaidByJugnoo() {
+		public Double getPaidByJugnoo() {
 			return paidByJugnoo;
 		}
 
@@ -383,7 +406,7 @@ public class InvoiceDetailResponse {
 		 * @param paidByJugnoo
 		 * The paid_by_jugnoo
 		 */
-		public void setPaidByJugnoo(Integer paidByJugnoo) {
+		public void setPaidByJugnoo(Double paidByJugnoo) {
 			this.paidByJugnoo = paidByJugnoo;
 		}
 
@@ -392,7 +415,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The paidUsingWallet
 		 */
-		public Integer getPaidUsingWallet() {
+		public Double getPaidUsingWallet() {
 			return paidUsingWallet;
 		}
 
@@ -401,7 +424,7 @@ public class InvoiceDetailResponse {
 		 * @param paidUsingWallet
 		 * The paid_using_wallet
 		 */
-		public void setPaidUsingWallet(Integer paidUsingWallet) {
+		public void setPaidUsingWallet(Double paidUsingWallet) {
 			this.paidUsingWallet = paidUsingWallet;
 		}
 
@@ -428,7 +451,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The totalDriverEarnings
 		 */
-		public Integer getTotalDriverEarnings() {
+		public Double getTotalDriverEarnings() {
 			return totalDriverEarnings;
 		}
 
@@ -437,7 +460,7 @@ public class InvoiceDetailResponse {
 		 * @param totalDriverEarnings
 		 * The total_driver_earnings
 		 */
-		public void setTotalDriverEarnings(Integer totalDriverEarnings) {
+		public void setTotalDriverEarnings(Double totalDriverEarnings) {
 			this.totalDriverEarnings = totalDriverEarnings;
 		}
 
@@ -446,7 +469,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The moneyTransactedToDriver
 		 */
-		public Integer getMoneyTransactedToDriver() {
+		public Double getMoneyTransactedToDriver() {
 			return moneyTransactedToDriver;
 		}
 
@@ -455,7 +478,7 @@ public class InvoiceDetailResponse {
 		 * @param moneyTransactedToDriver
 		 * The money_transacted_to_driver
 		 */
-		public void setMoneyTransactedToDriver(Integer moneyTransactedToDriver) {
+		public void setMoneyTransactedToDriver(Double moneyTransactedToDriver) {
 			this.moneyTransactedToDriver = moneyTransactedToDriver;
 		}
 
@@ -464,7 +487,7 @@ public class InvoiceDetailResponse {
 		 * @return
 		 * The paytmCash
 		 */
-		public Integer getPaytmCash() {
+		public Double getPaytmCash() {
 			return paytmCash;
 		}
 
@@ -473,7 +496,7 @@ public class InvoiceDetailResponse {
 		 * @param paytmCash
 		 * The paytm_cash
 		 */
-		public void setPaytmCash(Integer paytmCash) {
+		public void setPaytmCash(Double paytmCash) {
 			this.paytmCash = paytmCash;
 		}
 

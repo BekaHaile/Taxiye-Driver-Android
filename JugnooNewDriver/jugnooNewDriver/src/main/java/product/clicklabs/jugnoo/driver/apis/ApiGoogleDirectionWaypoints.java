@@ -26,10 +26,9 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 	private String strOrigin = "", strDestination = "", strWaypoints = "";
 	private LatLng latLngInit;
 	private int pathColor;
-	private GoogleMap map;
 	private Callback callback;
 
-	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, GoogleMap map, Callback callback){
+	public ApiGoogleDirectionWaypoints(ArrayList<LatLng> latLngs, int pathColor, Callback callback){
 		latLngInit = latLngs.get(0);
 		Collections.sort(latLngs, new Comparator<LatLng>() {
 
@@ -60,7 +59,6 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 		}
 		strWaypoints = sb.toString();
 		this.pathColor = pathColor;
-		this.map = map;
 		this.callback = callback;
 	}
 
@@ -85,7 +83,6 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 	@Override
 	protected void onPostExecute(String s) {
 		super.onPostExecute(s);
-		Polyline polyline = null;
 		if(s != null) {
 			List<LatLng> list = MapUtils.getLatLngListFromPath(s);
 			if (list.size() > 0) {
@@ -96,21 +93,22 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 						for (int z = 0; z < list.size(); z++) {
 							polylineOptions.add(list.get(z));
 						}
-						polyline = map.addPolyline(polylineOptions);
+						callback.polylineOptionGenerated(polylineOptions);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		callback.polylineAdded(polyline);
+		callback.onFinish();
 	}
 
 
 	public interface Callback{
 		void onPre();
 		boolean showPath();
-		void polylineAdded(Polyline polyline);
+		void polylineOptionGenerated(PolylineOptions polylineOptions);
+		void onFinish();
 	}
 
 	//https://maps.googleapis.com/maps/api/directions/json?origin=30.7178599,76.8091295&destination=30.731916,76.747618&waypoints=via:30.759040%2C76.775368%7Cvia:%2030.720925%2C76.774135

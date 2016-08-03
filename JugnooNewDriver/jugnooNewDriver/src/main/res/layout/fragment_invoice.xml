@@ -176,6 +176,83 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/background_white_rounded_orange_bordered">
 
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutRideMoney"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageViewCurrentInv"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewRideMoney"
+                android:layout_width="480px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/ride_money"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewRideMoneyValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutJugnooCmsn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutManualAdj"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="20px">
+
+            <TextView
+                android:id="@+id/textViewJugnooCmsn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/jugnoo_cmsn"
+                android:textColor="@color/black"
+                android:textSize="26px"/>
+
+            <TextView
+                android:id="@+id/textViewJugnooCmsnValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/red_status"
+                android:textSize="26px"/>
+
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewNegetive2"-->
+                <!--android:layout_width="24px"-->
+                <!--android:layout_height="24px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="4px"-->
+                <!--android:layout_toRightOf="@+id/textViewJugnooCmsn"-->
+                <!--android:background="@drawable/subtract_icon"/>-->
+
+        </RelativeLayout>
+
+
         <RelativeLayout
             android:id="@+id/relativeLayoutPaidByCstmr"
             android:layout_width="match_parent"
@@ -193,7 +270,7 @@
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
                 android:text="@string/paid_by_customer"
                 android:textColor="@color/black"
-                android:textSize="30px"/>
+                android:textSize="26px"/>
 
             <TextView
                 android:id="@+id/textViewPaidByCstmrValue"
@@ -203,8 +280,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/share_activity_text_margin_right"
                 android:text="0"
-                android:textColor="@color/black"
-                android:textSize="30px"/>
+                android:textColor="@color/red_status"
+                android:textSize="26px"/>
 
         </RelativeLayout>
 
@@ -215,6 +292,7 @@
             android:layout_below="@+id/relativeLayoutPaidByCstmr"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
+            android:visibility="gone"
             android:layout_marginTop="20px">
 
             <TextView
@@ -247,6 +325,7 @@
             android:layout_below="@+id/relativeLayoutUsingCstmr"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
+            android:visibility="gone"
             android:layout_marginTop="20px">
 
             <TextView
@@ -279,6 +358,7 @@
             android:layout_below="@+id/relativeLayoutPaidByJugnoo"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
+            android:visibility="gone"
             android:layout_marginTop="20px">
 
             <TextView
@@ -301,48 +381,6 @@
                 android:text="0"
                 android:textColor="@color/black"
                 android:textSize="30px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutPhoneDeduction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutCancelSubsidy"
-            android:layout_marginLeft="-4px"
-            android:layout_marginRight="-4px"
-            android:layout_marginTop="20px">
-
-            <TextView
-                android:id="@+id/textViewPhoneDeduction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
-                android:text="@string/phone_deduction"
-                android:textColor="@color/black"
-                android:textSize="30px"/>
-
-            <TextView
-                android:id="@+id/textViewPhoneDeductionValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/share_activity_text_margin_right"
-                android:text="0"
-                android:textColor="@color/red_status"
-                android:textSize="30px"/>
-
-            <ImageView
-                android:id="@+id/imageViewNegetive3"
-                android:layout_width="28px"
-                android:layout_height="28px"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10px"
-                android:layout_marginTop="2px"
-                android:layout_toRightOf="@+id/textViewPhoneDeduction"
-                android:background="@drawable/subtract_icon"/>
 
         </RelativeLayout>
 
@@ -422,26 +460,26 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayoutJugnooCmsn"
+            android:id="@+id/relativeLayoutPhoneDeduction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutManualAdj"
+            android:layout_below="@+id/relativeLayoutCancelSubsidy"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
             android:layout_marginTop="20px">
 
             <TextView
-                android:id="@+id/textViewJugnooCmsn"
+                android:id="@+id/textViewPhoneDeduction"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
-                android:text="@string/jugnoo_cmsn"
+                android:text="@string/phone_deduction"
                 android:textColor="@color/black"
-                android:textSize="30px"/>
+                android:textSize="26px"/>
 
             <TextView
-                android:id="@+id/textViewJugnooCmsnValue"
+                android:id="@+id/textViewPhoneDeductionValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -449,19 +487,69 @@
                 android:layout_marginRight="@dimen/share_activity_text_margin_right"
                 android:text="0"
                 android:textColor="@color/red_status"
-                android:textSize="30px"/>
+                android:textSize="26px"/>
 
-            <ImageView
-                android:id="@+id/imageViewNegetive2"
-                android:layout_width="28px"
-                android:layout_height="28px"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10px"
-                android:layout_marginTop="2px"
-                android:layout_toRightOf="@+id/textViewJugnooCmsn"
-                android:background="@drawable/subtract_icon"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewNegetive3"-->
+                <!--android:layout_width="24px"-->
+                <!--android:layout_height="24px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="4px"-->
+                <!--android:layout_toRightOf="@+id/textViewPhoneDeduction"-->
+                <!--android:background="@drawable/subtract_icon"/>-->
 
         </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginTop="20px"
+            android:background="@color/new_orange"/>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTotalJugnooAmnt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutManualAdj"
+            android:layout_marginLeft="-4px"
+            android:layout_marginRight="-4px"
+            android:layout_marginTop="20px">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewTotalJugnooAmnt"
+                android:layout_width="550px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/share_activity_text_margin_left"
+                android:text="@string/total_amount"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textViewTotalJugnooAmntValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/share_activity_text_margin_right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="30px"/>
+
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewNegetive3"-->
+                <!--android:layout_width="28px"-->
+                <!--android:layout_height="28px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="2px"-->
+                <!--android:layout_toRightOf="@+id/textViewTotalJugnooAmnt"-->
+                <!--android:background="@drawable/subtract_icon"/>-->
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/relativeLayoutPaytmCash"
@@ -470,6 +558,7 @@
             android:layout_below="@+id/relativeLayoutJugnooCmsn"
             android:layout_marginLeft="-4px"
             android:layout_marginRight="-4px"
+            android:visibility="gone"
             android:layout_marginTop="20px">
 
             <TextView
@@ -536,15 +625,15 @@
                 android:textColor="@color/red_status"
                 android:textSize="30px"/>
 
-            <ImageView
-                android:id="@+id/imageViewNegetive1"
-                android:layout_width="28px"
-                android:layout_height="28px"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="10px"
-                android:layout_marginTop="2px"
-                android:layout_toRightOf="@+id/textViewOutstandingAmnt"
-                android:background="@drawable/subtract_icon"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/imageViewNegetive1"-->
+                <!--android:layout_width="28px"-->
+                <!--android:layout_height="28px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:layout_marginLeft="10px"-->
+                <!--android:layout_marginTop="2px"-->
+                <!--android:layout_toRightOf="@+id/textViewOutstandingAmnt"-->
+                <!--android:background="@drawable/subtract_icon"/>-->
 
         </RelativeLayout>
 

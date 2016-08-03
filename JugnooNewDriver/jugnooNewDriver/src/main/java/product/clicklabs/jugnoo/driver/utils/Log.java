@@ -125,7 +125,6 @@ public class Log {
 			if (!gpxfile.exists() && createNew) {
 				gpxfile.createNewFile();
 			}
-			Log.i("gotcha",gpxfile.toString());
 			return gpxfile;
 		} catch (Exception e) {
 			e.printStackTrace();

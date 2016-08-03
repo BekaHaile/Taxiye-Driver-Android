@@ -99,7 +99,7 @@
 	<string name="update">अपडेट</string>
 
 	<string name="driver_mode">ड्राइवर मोड</string>
-	<string name="jugnoo_on">Jugnoo ON</string>
+	<string name="jugnoo_on">Jugnoo ऑन है</string>
 	<string name="driver_type">राइवर प्ररूप</string>
 	<string name="ride_type"> राइड  टाइप</string>
 	<string name="invite_friends">मित्रों को आमंत्रित करें</string>
@@ -249,7 +249,7 @@
 
 	<string name="jugnoo_cash">Jugnoo Cash</string>
 	<string name="jugnoo">Jugnoo</string>
-	<string name="jugnoo_off">Jugnoo अब बंद है।</string>
+	<string name="jugnoo_off">Jugnoo बंद है</string>
 	<string name="jugnoo_cut">Jugnoo कटौती</string>
 
 	<string name="loading">लोड हो रहा है ...</string>
@@ -514,7 +514,7 @@
 	<string name="enter_some_amount">कृपया कुछ राशि दर्ज करें</string>
 	<string name="enter_less_amount">कृपया कम राशि प्रवेश करें</string>
 	<string name="enter_valid_amount">कृपया वैध राशि दर्ज करें</string>
-	<string name="amnt_credited">राशि जमा की गयी </string>
+	<string name="amnt_credited">खाते में भुगतान करने के लिए </string>
 	<string name="JUGNOO">JUGNOO</string>
 	<string name="ride_complete">सवारी पूरा</string>
 	<string name="no_not_verified">Phone Number not verified</string>
@@ -559,7 +559,7 @@
 	<string name="cancelled">रद्द हो गयी / गया</string>
 	<string name="address">पता</string>
 	<string name="delivered">पहुंचा दिया</string>
-	<string name="delivery_on">डिलिवरी पर</string>
+	<string name="delivery_on">डिलिवरी ऑन है</string>
 	<string name="delivery_is_over">डिलीवरी समाप्त हो गयी है </string>
 	<string name="start_the_delivery">सवारी शुरू</string>
 	<string name="deliver_order_number">डिलीवरी ऑर्डर नंबर %s</string>
@@ -567,6 +567,8 @@
 	<string name="to_no_colon">को</string>
 	<string name="no_deliveries_pending">कोई डिलीवरी लंबित नही है </string>
 	<string name="no_deliveries_completed">डिलीवरी पूर्ण नही हुआ </string>
+	<string name="owned">Owned</string>
+	<string name="auto">ऑटो</string>
 
 	<string name="cash_collected">नगद कलेक्ट किया </string>
 	<string name="s_no">सीरियल नंबर </string>
@@ -574,7 +576,7 @@
 	<string name="details">विवरण</string>
 	<string name="present_near_delivery_location">इस डिलीवरी ऑर्डर को चिन्हित करने के लिए आपको डिलीवरी स्थान पर होना अनिवार्य है </string>
 	<string name="success">सफल हुआ </string>
-	<string name="outstanding_amount">बकाया समायोजित किया गया </string>
+	<string name="outstanding_amount">पिछला चालान समायोजन </string>
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
@@ -583,9 +585,57 @@
 	<string name="return_subsidy">रिटर्न सब्सिडी </string>
 	<string name="return_distance">वापसी दूरी</string>
 	<string name="delivery_details">डिलीवरी विवरण</string>
-	<string name="Messages">Messages</string>
-	<string name="Hints">Hints</string>
-	<string name="tricks">Tricks To Earn</string>
+	<string name="uploading">Uploading</string>
+
+	<string name="vehicle_status">वाहन की स्थिति</string>
+	<string name="rented">किराए पर</string>
+	<string name="auto_driver_confirmation">क्या आप एक ऑटो ड्राइवर हैं?</string>
+	<string name="auto_status_confirmation">क्या आपके पास एक ऑटो है ?</string>
+	<string name="no_doc_available">कोई दस्तावेज उपलब्ध नही </string>
+	<string name="upload">अपलोड</string>
+	<string name="optional">वैकल्पिक</string>
+	<string name="uploaded">अपलोड किया गया </string>
+	<string name="rejected">अस्वीकृत</string>
+	<string name="verified">सत्यापित</string>
+	<string name="Hints">संकेत</string>
+	<string name="tricks">चालें</string>
+	<string name="Messages">संदेश</string>
+
+	<string name="auto_number">वाहन नंबर</string>
+	<string name="Choose_one">एक चुनो</string>
+	<string name="is_rented">मैनें किराए पर एक ऑटो किया है</string>
+	<string name="is_owned">मैं अपने ऑटो का मालिक हूँ</string>
+	<string name="Documents">दस्तावेज़</string>
+	<string name="Document_type">दस्तावेज़ का प्रकार</string>
+	<string name="Requirement">आवश्यकता</string>
+	<string name="add_image">छवि जोड़ें</string>
+	<string name="Submit">जमा करें</string>
+	<string name="owner">मालिक</string>
+	<string name="approval_pending">स्वीकृति लंबित</string>
+
+
+	<string name="rejection_reason">अस्वीकृति करने का  कारण</string>
+	<string name="mandatory">अनिवार्य</string>
+	<string name="before_ride">सवारी से पहले</string>
+	<string name="in_ride_rate">सवारी में</string>
+	<string name="referral_rate">रेफरल</string>
+	<string name="pickup_charges">पिकप चार्जेज</string>
+	<string name="base_fare">बेस किराया </string>
+	<string name="time_per_min">समय (प्रति मिनट)</string>
+	<string name="driver_to_customer">ड्राइवर टू कस्टमर</string>
+	<string name="driver_to_driver">ड्राइवर टू ड्राइवर</string>
+	<string name="rate_card">रेट कार्ड</string>
+	<string name="applicable_after"> %1$s कि.मी. के बाद लागू </string>
+	<string name="distance_per_km">दूरी\n(प्रति मिनट)</string>
+	<string name="per_km">(प्रति मिनट)</string>
+	<string name="delivery_off">डिलिवरी बंद है</string>
+
+	<string name="Yesterday">कल</string>
+	<string name="ride_money">कुल सवारी राशि </string>
+	<string name="total_amount">अंतिम चालान राशि</string>
+	<string name="this_week">इस सप्ताह</string>
+	<string name="outstanding_amount1">बकाया समायोजित किया गया</string>
+	<string name="upload_again">Upload Again</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

@@ -283,8 +283,9 @@ public class EditDriverProfile extends BaseActivity {
 								DialogPopup.dialogBanner(activity, message);
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								if (ProfileUpdateMode.PHONE.getOrdinal() == profileUpdateMode.getOrdinal()) {
-									Intent intent = new Intent(activity, PhoneEditOTPConfirmScreen.class);
+									Intent intent = new Intent(activity, OTPConfirmScreen.class);
 									intent.putExtra(Constants.PHONE_NO_VERIFY, updatedField);
+									intent.putExtra(Constants.KNOWLARITY_NO, jObj.optString("knowlarity_missed_call_number",""));
 									activity.startActivity(intent);
 									activity.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 									finish();

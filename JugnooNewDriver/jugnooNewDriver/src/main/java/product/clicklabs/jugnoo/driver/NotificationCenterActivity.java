@@ -103,6 +103,13 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 		tabs.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		tabs.setViewPager(viewPager);
 
+		try {
+			if(getIntent().getExtras().getInt("trick_page") ==1){
+				viewPager.setCurrentItem(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override

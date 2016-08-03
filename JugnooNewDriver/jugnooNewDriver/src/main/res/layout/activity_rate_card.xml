@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/rate_card"
+            android:textColor="@color/white"
+            android:textSize="44px"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="4px">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:background="@color/sliding_bottom_bg_color"
+            android:gravity="center">
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
+
+            <TextView
+                android:id="@+id/textViewBeforeRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/before_ride"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"
+
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical">
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewPickupCharges"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/pickup_charges"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewPickupChargesperkm"
+                android:layout_toRightOf="@+id/textViewPickupCharges"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/per_km"
+                android:textColor="@color/grey_dark_less"
+                android:textSize="34px"/>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPickupCharges"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewPickupChargesCondStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewPickupCharges"
+                    android:layout_marginTop="5px"
+                    android:text="*"
+                    android:textColor="@color/new_orange"
+                    android:textSize="24px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewPickupChargesCond"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5px"
+                    android:text="@string/applicable_after"
+                    android:textColor="@color/grey_black_light"
+                    android:textSize="24px"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewPickupChargesValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:background="@color/sliding_bottom_bg_color"
+            android:gravity="center">
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal2"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
+
+            <TextView
+                android:id="@+id/textViewInRide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/in_ride_rate"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"
+
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230px"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="116px"
+                android:orientation="horizontal">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewBaseFare"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/base_fare"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal5"
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
+
+                <RelativeLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewDistancePKm"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/distance"
+                        android:textColor="@color/black"
+                        android:textSize="34px"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewPKm"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewDistancePKm"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/per_km"
+                        android:textColor="@color/grey_dark_less"
+                        android:textSize="34px"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal4"
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
+
+                <RelativeLayout
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewTimePKm"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/time"
+                        android:textColor="@color/black"
+                        android:textSize="34px"/>
+
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewPm"
+                        android:layout_width="230px"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewTimePKm"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/per_km"
+                        android:textColor="@color/grey_dark_less"
+                        android:textSize="34px"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal6"-->
+            <!--android:layout_width="670px"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@color/grey_dark_less"/>-->
+
+            <RelativeLayout
+                android:layout_width="672px"
+                android:layout_height="106px"
+                android:layout_gravity="center"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textViewBaseFareValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="70px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewDistancePKmValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+
+                <TextView
+                    android:id="@+id/textViewTimePKmValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="70px"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDriverReferralHeading"
+            android:layout_width="match_parent"
+            android:layout_height="100px"
+            android:background="@color/sliding_bottom_bg_color"
+            android:gravity="center">
+
+            <!--<ImageView-->
+            <!--android:id="@+id/imageViewHorizontal1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:background="@color/black"/>-->
+
+            <TextView
+                android:id="@+id/textViewReferral"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:padding="10px"
+                android:text="@string/referral_rate"
+                android:textColor="@color/new_orange"
+                android:textSize="40px"
+                />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutDriverReferral"
+            android:layout_width="match_parent"
+            android:layout_height="230px"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100px"
+                android:orientation="horizontal">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewDtoC"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/driver_to_customer"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewHorizontal7"
+                    android:layout_width="12px"
+                    android:layout_height="12px"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/ring_orange_dark"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewDtoD"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/driver_to_driver"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+
+            </LinearLayout>
+
+            <!--<ImageView-->
+            <!--android:layout_width="670px"-->
+            <!--android:layout_height="2px"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@color/grey_dark_less"/>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100px"
+                android:layout_gravity="center"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textViewDtoCValue"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+                <TextView
+                    android:id="@+id/textViewDtoDValue"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="00"
+                    android:textColor="@color/black"
+                    android:textSize="34px"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutDriverReferralSingle"
+            android:layout_width="match_parent"
+            android:layout_height="180px"
+            android:layout_marginLeft="50px"
+            android:layout_marginRight="50px"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textViewDriverReferral"
+                android:layout_width="480px"
+                android:layout_height="wrap_content"
+                android:text="@string/pickup_charges"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+
+            <TextView
+                android:id="@+id/textViewDriverReferralValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="00"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

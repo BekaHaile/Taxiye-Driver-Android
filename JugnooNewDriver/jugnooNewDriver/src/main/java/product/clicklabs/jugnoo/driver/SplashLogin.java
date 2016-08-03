@@ -525,7 +525,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			@Override
 			public void onClick(View v) {
 				OTPConfirmScreen.intentFromRegister = false;
-				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken);
+				OTPConfirmScreen.emailRegisterData = new EmailRegisterData("", enteredEmail, phoneNoOfLoginAccount, "", accessToken,"");
 				startActivity(new Intent(SplashLogin.this, OTPConfirmScreen.class));
 				finish();
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);

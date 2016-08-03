@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -215,6 +216,7 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									}
 									new DriverTimeoutCheck().timeoutBuffer(activity, 2);
 									nudgeCancelRide(reason);
+
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
 									}

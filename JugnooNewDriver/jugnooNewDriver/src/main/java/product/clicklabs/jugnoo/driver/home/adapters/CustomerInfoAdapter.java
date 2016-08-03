@@ -71,7 +71,9 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void onClick(View v) {
                 try {
                     int position = (int) v.getTag();
-                    callback.onClick(position, getItem(position));
+                    if (!Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(getItem(position).getEngagementId()))) {
+                        callback.onClick(position, getItem(position));
+                    }
                     notifyList();
                 } catch (Exception e) {
                     e.printStackTrace();
