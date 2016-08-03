@@ -105,7 +105,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	Spinner spinner;
 	String selectedLanguage;
-	int languagePrefStatus;
+	int languagePrefStatus, registerViaTooken;
 	Configuration conf;
 
 	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo, buttonRegisterTookan;
@@ -1083,14 +1083,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									etCode.setError("Code not matched.");
 								}
 							}
-							else if(DriverDebugOpenMode.REGISTER == flag){
+							else if(DriverDebugOpenMode.REGISTER == flag && registerViaTooken ==1){
 								if(Data.REGISTER_PASSWORD.equalsIgnoreCase(code)){
 									dialog.dismiss();
 									buttonRegisterTookan.setVisibility(View.VISIBLE);
 								}
 								else{
 									etCode.requestFocus();
-									etCode.setError("Code not matched.");
+									etCode.setError("Code not matched or disabled.");
 								}
 							}
 						}
@@ -1589,6 +1589,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								int flag = jObj.getInt("flag");
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									languagePrefStatus = jObj.getInt("locale_preference_enabled");
+									registerViaTooken = jObj.getInt("registration_enabled");
 									JSONArray jArray = jObj.getJSONArray("locales");
 									if (jArray != null) {
 										categories.clear();

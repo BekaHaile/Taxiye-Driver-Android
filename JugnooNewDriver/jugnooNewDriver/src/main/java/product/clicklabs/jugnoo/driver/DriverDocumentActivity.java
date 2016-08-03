@@ -130,7 +130,9 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
 
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-									Prefs.with(DriverDocumentActivity.this).save(Constants.SHOW_EDIT_IMAGE_FLAG,false);
+//									Prefs.with(DriverDocumentActivity.this).save(Constants.SHOW_EDIT_IMAGE_FLAG,false);
+//									Prefs.with(DriverDocumentActivity.this).save(Constants.SHOW_EDIT_ON_REJECT, false);
+
 									DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {

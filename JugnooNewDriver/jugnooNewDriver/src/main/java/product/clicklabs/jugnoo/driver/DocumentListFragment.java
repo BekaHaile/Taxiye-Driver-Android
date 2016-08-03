@@ -224,13 +224,19 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 			holder.id = position;
 
-			holder.docType.setText(docInfo.docType);
-			boolean showEditImage = Prefs.with(getActivity()).getBoolean(Constants.SHOW_EDIT_IMAGE_FLAG, true);
+
+			if(docInfo.docCount<2){
+				holder.addImageLayout2.setVisibility(View.GONE);
+			}
+//			boolean showEditImage = Prefs.with(getActivity()).getBoolean(Constants.SHOW_EDIT_IMAGE_FLAG, true);
+//			boolean editOnReject = Prefs.with(getActivity()).getBoolean(Constants.SHOW_EDIT_ON_REJECT, true);
 
 			if (docInfo.docRequirement == 1) {
-				holder.docRequirement.setText(getResources().getString(R.string.mandatory)+"*");
+				holder.docRequirement.setText(getResources().getString(R.string.mandatory) + "*");
+				holder.docType.setText(docInfo.docType+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
+				holder.docType.setText(docInfo.docType);
 			}
 			holder.docStatus.setText(getResources().getString(R.string.uploading));
 
@@ -253,13 +259,29 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
 			}
 
+			if (docInfo.status.equalsIgnoreCase("3")) {
+				holder.addImageLayout.setEnabled(false);
+			}
+
+			if(docInfo.isEditable ==0){
+				holder.addImageLayout.setEnabled(false);
+				holder.addImageLayout.setEnabled(false);
+			}
+
 			if (docInfo.getFile() != null) {
 				docInfo.isExpended = true;
 				Picasso.with(getActivity()).load(docInfo.getFile())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
-				holder.deleteImage1.setVisibility(View.VISIBLE);
+
+				if(docInfo.isEditable ==1) {
+					holder.deleteImage1.setVisibility(View.VISIBLE);
+//					if(docInfo.status.equalsIgnoreCase("2")){
+//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
+//					}
+				}
+
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout.setEnabled(false);
 				} else {
@@ -275,7 +297,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
-				holder.deleteImage2.setVisibility(View.VISIBLE);
+				if(docInfo.isEditable ==1) {
+					holder.deleteImage2.setVisibility(View.VISIBLE);
+//					if(docInfo.status.equalsIgnoreCase("2")){
+//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
+//					}
+				}
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout2.setEnabled(false);
 				} else {
@@ -294,7 +321,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage);
-						if(showEditImage) {
+						if(docInfo.isEditable ==1) {
 							holder.deleteImage1.setVisibility(View.VISIBLE);
 						}
 					}
@@ -303,6 +330,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					} else {
 						holder.addImageLayout.setEnabled(true);
 						holder.setCapturedImage.setImageResource(R.drawable.reload_image);
+//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
 						docInfo.setFile(null);
 						docInfo.setFile1(null);
 					}
@@ -311,7 +339,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage2);
-						if(showEditImage) {
+						if(docInfo.isEditable ==1) {
 							holder.deleteImage2.setVisibility(View.VISIBLE);
 						}
 						if (!docInfo.status.equalsIgnoreCase("2")) {
@@ -354,6 +382,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					docInfodeleteImage1.setFile(null);
 					docInfodeleteImage1.url.set(0, null);
 					holder.addImageLayout.setEnabled(true);
+					holder.deleteImage1.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
 				}
 			});
@@ -364,8 +393,9 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 					DocInfo docInfodeleteImage2 = docs.get(holder.id);
 					docInfodeleteImage2.setFile1(null);
-					docInfodeleteImage2.url.set(1,null);
+					docInfodeleteImage2.url.set(1, null);
 					holder.addImageLayout2.setEnabled(true);
+					holder.deleteImage2.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
 				}
 			});
@@ -447,7 +477,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
@@ -642,6 +672,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				HashMap<String, String> params = new HashMap<String, String>();
 
 				params.put("access_token", accessToken);
+				params.put("img_position", String.valueOf(coloum));
 				params.put("doc_type_num", String.valueOf(docNumType));
 
 				TypedFile typedFile;
