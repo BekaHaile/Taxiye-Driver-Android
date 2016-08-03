@@ -581,6 +581,7 @@
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
     <string name="upload_again">Upload Again</string>
     <string name="self_enroled">Self Enroled</string>
+    <string name="register_via_agent">Register Via Agent</string>
 
     <string-array name="CountryCodes" >
 

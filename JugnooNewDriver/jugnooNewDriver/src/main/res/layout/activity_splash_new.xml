@@ -127,7 +127,7 @@
 
             <Button
                 android:id="@+id/buttonRegister"
-                android:text="@string/self_enroled"
+                android:text="@string/register"
                 android:textColor="@color/new_orange"
                 android:layout_width="636px"
                 android:layout_height="112px"
@@ -139,7 +139,7 @@
 
             <Button
                 android:id="@+id/buttonRegisterTookan"
-                android:text="@string/register"
+                android:text="@string/register_via_agent"
                 android:textColor="@color/new_orange"
                 android:layout_width="636px"
                 android:layout_height="112px"

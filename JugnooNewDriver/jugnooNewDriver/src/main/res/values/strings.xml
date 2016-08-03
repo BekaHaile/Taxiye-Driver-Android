@@ -639,6 +639,7 @@
 	<string name="outstanding_amount1">Outstanding Adjusted</string>
 	<string name="upload_again">Upload Again</string>
 	<string name="self_enroled">Self Register</string>
+	<string name="register_via_agent">Register Via Agent</string>
 
 
 	<string-array name="CountryCodes" >

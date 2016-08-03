@@ -602,6 +602,7 @@
     <string name="outstanding_amount1">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
     <string name="upload_again">Upload Again</string>
     <string name="self_enroled">Self Enroled</string>
+    <string name="register_via_agent">Register Via Agent</string>
 
 
     <string-array name="CountryCodes" >
