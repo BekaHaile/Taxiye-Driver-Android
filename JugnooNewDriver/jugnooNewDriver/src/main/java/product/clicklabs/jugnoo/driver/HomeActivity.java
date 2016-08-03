@@ -1343,7 +1343,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						String fare = Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo,
 								customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this),
 								customerInfo.getElapsedRideTime(HomeActivity.this),
-								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this)));
+								customerInfo.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this),0));
 						if (!fare.equalsIgnoreCase(s.toString())) {
 							fareFetchedFromJugnoo = 0;
 						}
@@ -2224,7 +2224,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					reviewDistanceValue.setText("" + decimalFormat.format(totalDistanceInKm) + " " + kmsStr);
 					reviewWaitValue.setText(waitTime + " "+ getResources().getString(R.string.min));
 					reviewRideTimeValue.setText(rideTime + " "+ getResources().getString(R.string.min));
-					reviewFareValue.setText(getResources().getString(R.string.rupees)+" " + Utils.getDecimalFormatForMoney().format(totalFare));
+					reviewFareValue.setText(getResources().getString(R.string.rupees) + " " + Utils.getDecimalFormatForMoney().format(totalFare));
 
 
 					if(customerInfo.getIsDelivery() == 1){
@@ -2993,8 +2993,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis) {
-		if(customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null){
+	private double getTotalFare(CustomerInfo customerInfo, double totalDistance, long elapsedTimeInMillis, long waitTimeInMillis, int invalidPool) {
+		if(customerInfo.getIsPooled() == 1 && customerInfo.getPoolFare() != null && invalidPool==0){
 			return customerInfo.getPoolFare().getFare(HomeActivity.this, customerInfo.getEngagementId());
 		}
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0d);
@@ -3021,7 +3021,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (Data.fareStructure != null) {
 				driverIRFareValue.setText(getResources().getString(R.string.rupee) + " "
 						+ Utils.getDecimalFormatForMoney().format(getTotalFare(customerInfo, distance,
-						elapsedTime, waitTime)));
+						elapsedTime, waitTime, 0)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -4113,6 +4113,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			double actualFare, finalDiscount, finalPaidUsingWallet, finalToPay, finalDistance;
 			int paymentMode = PaymentMode.CASH.getOrdinal();
+			int invalidPool =0;
+
+			LatLng poolDropLatLng = customerInfo.dropLatLng;
+			LatLng actualDropLatng = new LatLng(dropLatitude, dropLongitude);
+
+			double poolDropDistanceDiff = MapUtils.distance(poolDropLatLng, actualDropLatng);
+
+			if(poolDropDistanceDiff > customerInfo.getPoolFare().getPoolDropRadius()){
+				invalidPool =1;
+			}
+
+
 
 			double totalDistance = customerInfo.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 			finalDistance = 0;
@@ -4158,7 +4170,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalFare = enteredMeterFare;
 				} else {
 					totalFare = getTotalFare(customerInfo, finalDistance,
-							rideTimeInMillis, waitTimeInMillis);
+							rideTimeInMillis, waitTimeInMillis, invalidPool);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -4169,6 +4181,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (customerInfo != null && 1 == customerInfo.luggageChargesApplicable) {
 					totalFare = totalFare + (luggageCountAdded * Data.fareStructure.luggageFare);
 				}
+
+				if(1 == Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())
+						&& customerInfo.getPoolFare().getDiscountedFareEnabled() ==1){
+					totalFare = totalFare - (customerInfo.getPoolFare().getDiscountPercentage() * totalFare / 100);
+				}
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
