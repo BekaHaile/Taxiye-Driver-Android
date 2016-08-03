@@ -4183,7 +4183,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 
 				if(1 == Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())
-						&& customerInfo.getPoolFare().getDiscountedFareEnabled() ==1){
+						&& customerInfo.getPoolFare().getDiscountedFareEnabled() ==1 && invalidPool ==1){
 					totalFare = totalFare - (customerInfo.getPoolFare().getDiscountPercentage() * totalFare / 100);
 				}
 
