@@ -2361,10 +2361,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						startService(new Intent(this, DriverLocationUpdateService.class));
 					}
 
+					try {
+						polylineOptionsCustomersPath =null;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 					if (map != null) {
+
 						map.clear();
 						drawHeatMapData(heatMapResponseGlobal);
 					}
+
+
 
 					try {
 						if (timer != null) {
@@ -3643,7 +3652,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				Database2.getInstance(this).deleteRideData();
 			}
 			Database2.getInstance(this).deleteAllCurrentPathItems();
-			Database.getInstance(this).deleteSavedPath();
 
 			customerRideDataGlobal.setWaitTime(0);
 			customerRideDataGlobal.setStartRideTime(System.currentTimeMillis());
