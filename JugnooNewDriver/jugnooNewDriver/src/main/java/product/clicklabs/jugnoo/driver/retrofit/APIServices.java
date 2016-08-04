@@ -439,7 +439,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/delete_document")
-	void deleteImage(@PartMap Map<String, String> params,
+	void deleteImage(@FieldMap Map<String, String> params,
 					Callback<DocRequirementResponse> callback);
 
 	@FormUrlEncoded

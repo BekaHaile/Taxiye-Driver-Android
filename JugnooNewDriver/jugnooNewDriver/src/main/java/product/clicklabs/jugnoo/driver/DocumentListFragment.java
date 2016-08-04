@@ -268,6 +268,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			if(docInfo.isEditable ==0){
 				holder.addImageLayout.setEnabled(false);
 				holder.addImageLayout2.setEnabled(false);
+				holder.imageViewUploadDoc.setEnabled(false);
 			}
 
 			if (docInfo.getFile() != null) {
