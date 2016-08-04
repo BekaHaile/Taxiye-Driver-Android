@@ -438,6 +438,11 @@ public interface APIServices {
 							 Callback<DocRequirementResponse> cb);
 
 	@FormUrlEncoded
+	@POST("/delete_document")
+	void deleteImage(@PartMap Map<String, String> params,
+					Callback<DocRequirementResponse> callback);
+
+	@FormUrlEncoded
 	@POST("/get_all_cities")
 	void getCityRetro(@Field("password") String password,
 					  Callback<CityResponse> callback);

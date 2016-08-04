@@ -232,7 +232,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 //			boolean editOnReject = Prefs.with(getActivity()).getBoolean(Constants.SHOW_EDIT_ON_REJECT, true);
 
 			if (docInfo.docRequirement == 1) {
-				holder.docRequirement.setText(getResources().getString(R.string.mandatory) + "*");
+				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
 				holder.docType.setText(docInfo.docType+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
@@ -240,9 +240,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			}
 			holder.docStatus.setText(getResources().getString(R.string.uploading));
 
-			if (docInfo.status.equalsIgnoreCase("uploaded")) {
+			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
 				holder.docStatus.setText(getResources().getString(R.string.uploaded));
+				holder.docRejected.setVisibility(View.GONE);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
 			} else if (docInfo.status.equalsIgnoreCase("2")) {
 				holder.docStatus.setText(getResources().getString(R.string.rejected));
@@ -383,6 +384,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					docInfodeleteImage1.setFile(null);
 					docInfodeleteImage1.url.set(0, null);
 					holder.addImageLayout.setEnabled(true);
+					deleteImage(getActivity(), docInfodeleteImage1.docTypeNum);
 					holder.deleteImage1.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
 				}
@@ -396,6 +398,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					docInfodeleteImage2.setFile1(null);
 					docInfodeleteImage2.url.set(1, null);
 					holder.addImageLayout2.setEnabled(true);
+					deleteImage(getActivity(), docInfodeleteImage2.docTypeNum);
 					holder.deleteImage2.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
 				}
@@ -652,7 +655,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
-						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo, image);
+						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
 					}
 
 
@@ -666,7 +669,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo, final ChosenImage image) {
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, final ChosenImage image) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -741,6 +744,78 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			e.printStackTrace();
 		}
 	}
+
+
+	private void deleteImage(final Activity activity, Integer docNumType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", accessToken);
+				params.put("img_position", String.valueOf(coloum));
+				params.put("doc_type_num", String.valueOf(docNumType));
+
+
+				RestClient.getApiServices().deleteImage(params, new Callback<DocRequirementResponse>() {
+					@Override
+					public void success(DocRequirementResponse docRequirementResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+
+							if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+								int flag = jObj.getInt("flag");
+								String message = JSONParser.getServerMessage(jObj);
+
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+
+									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									} else {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									}
+									DialogPopup.dismissLoadingDialog();
+								}
+							} else {
+								DialogPopup.dismissLoadingDialog();
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.dismissLoadingDialog();
+							docs.get(index).isExpended = false;
+							driverDocumentListAdapter.notifyDataSetChanged();
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						docs.get(index).isExpended = false;
+						driverDocumentListAdapter.notifyDataSetChanged();
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
+			}
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
 									   int quality, int index) {
