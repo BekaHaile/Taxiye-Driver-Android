@@ -240,10 +240,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			}
 			holder.docStatus.setText(getResources().getString(R.string.uploading));
 
+			holder.docRejected.setVisibility(View.GONE);
+
 			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
 				holder.docStatus.setText(getResources().getString(R.string.uploaded));
-				holder.docRejected.setVisibility(View.GONE);
 				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
 			} else if (docInfo.status.equalsIgnoreCase("2")) {
 				holder.docStatus.setText(getResources().getString(R.string.rejected));
@@ -269,6 +270,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout.setEnabled(false);
 				holder.addImageLayout2.setEnabled(false);
 				holder.imageViewUploadDoc.setEnabled(false);
+			}else {
+				holder.addImageLayout.setEnabled(true);
+				holder.addImageLayout2.setEnabled(true);
+				holder.imageViewUploadDoc.setEnabled(true);
 			}
 
 			if (docInfo.getFile() != null) {
@@ -280,15 +285,16 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				if(docInfo.isEditable ==1) {
 					holder.deleteImage1.setVisibility(View.VISIBLE);
-//					if(docInfo.status.equalsIgnoreCase("2")){
-//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
-//					}
+				}else {
+					holder.deleteImage1.setVisibility(View.GONE);
 				}
 
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout.setEnabled(false);
 				} else {
 					holder.addImageLayout.setEnabled(true);
+					holder.deleteImage1.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 				}
 			} else {
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
@@ -302,9 +308,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.into(holder.setCapturedImage2);
 				if(docInfo.isEditable ==1) {
 					holder.deleteImage2.setVisibility(View.VISIBLE);
-//					if(docInfo.status.equalsIgnoreCase("2")){
-//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
-//					}
+				}else {
+					holder.deleteImage2.setVisibility(View.GONE);
 				}
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout2.setEnabled(false);
@@ -326,6 +331,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								.into(holder.setCapturedImage);
 						if(docInfo.isEditable ==1) {
 							holder.deleteImage1.setVisibility(View.VISIBLE);
+						}else {
+							holder.deleteImage1.setVisibility(View.GONE);
 						}
 					}
 					if (!docInfo.status.equalsIgnoreCase("2")) {
@@ -344,6 +351,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								.into(holder.setCapturedImage2);
 						if(docInfo.isEditable ==1) {
 							holder.deleteImage2.setVisibility(View.VISIBLE);
+						}else {
+							holder.deleteImage2.setVisibility(View.GONE);
 						}
 						if (!docInfo.status.equalsIgnoreCase("2")) {
 							holder.addImageLayout2.setEnabled(false);
