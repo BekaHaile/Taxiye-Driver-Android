@@ -146,4 +146,8 @@ public interface Constants {
     String SHOW_INVOICE_DETAILS = "show_invoice_details";
 //    String SHOW_EDIT_IMAGE_FLAG = "show_edit_image_flag";
 //	String SHOW_EDIT_ON_REJECT = "show_edit_on_reject";
+
+
+	String ACTION_UPDATE_DOCUMENT_LIST = "ACTION_UPDATE_DOCUMENT_LIST";
+
 }

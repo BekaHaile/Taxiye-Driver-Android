@@ -2,8 +2,10 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -112,15 +114,15 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		accessToken = getArguments().getString("access_token");
 		getDocsAsync(getActivity());
 
+		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
+
 		return rootView;
 	}
 
 
 	@Override
 	public void onDestroy() {
-//		if (fetchRidesClient != null) {
-//			fetchRidesClient.cancelAllRequests(true);
-//		}
+		activity.unregisterReceiver(broadcastReceiver);
 		super.onDestroy();
 	}
 
@@ -340,7 +342,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					} else {
 						holder.addImageLayout.setEnabled(true);
 						holder.setCapturedImage.setImageResource(R.drawable.reload_image);
-//						Prefs.with(getActivity()).save(Constants.SHOW_EDIT_ON_REJECT, true);
+						holder.deleteImage1.setVisibility(View.GONE);
+						holder.deleteImage2.setVisibility(View.GONE);
 						docInfo.setFile(null);
 						docInfo.setFile1(null);
 					}
@@ -470,6 +473,15 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		}
 
 	}
+
+
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			getDocsAsync(activity);
+		}
+	};
+
 
 	private void getDocsAsync(final Activity activity) {
 		try {

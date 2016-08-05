@@ -1,12 +1,16 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -57,7 +61,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 		Bundle bundle = new Bundle();
 		accessToken = getIntent().getExtras().getString("access_token");
-		bundle.putString("access_token",accessToken);
+		bundle.putString("access_token", accessToken);
 		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()
@@ -79,6 +83,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 			}
 		});
 	}
+
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -168,7 +173,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 		}
 	}
-
 
 
 }
