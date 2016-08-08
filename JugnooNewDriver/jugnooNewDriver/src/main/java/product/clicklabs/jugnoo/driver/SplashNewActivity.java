@@ -687,8 +687,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									else{
 										DialogPopup.dismissLoadingDialog();
 									}
-								}
-								else{
+								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
+									Intent intent = new Intent(SplashNewActivity.this, DriverDocumentActivity.class);
+									intent.putExtra("access_token",jObj.getString("access_token"));
+									startActivity(intent);
+								}  else{
 									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();
 								}

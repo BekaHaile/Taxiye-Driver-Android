@@ -483,7 +483,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	};
 
 
-	private void getDocsAsync(final Activity activity) {
+	public void getDocsAsync(final Activity activity) {
 		try {
 			progressBar.setVisibility(View.VISIBLE);
 			RestClient.getApiServices().docRequest(accessToken, new Callback<DocRequirementResponse>() {
@@ -500,6 +500,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							}
 						} else {
 
+							docs.clear();
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
