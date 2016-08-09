@@ -98,6 +98,12 @@ public class RateCardResponse {
 		@SerializedName("driver_to_driver_referral")
 		@Expose
 		private Double driverToDriverReferral;
+		@SerializedName("fare_per_km_threshold_distance")
+		@Expose
+		private Double afterThresholdDistance;
+		@SerializedName("fare_per_km_after_threshold")
+		@Expose
+		private Double getAfterThresholdValue;
 
 		/**
 		 *
@@ -225,6 +231,21 @@ public class RateCardResponse {
 			this.driverToDriverReferral = driverToDriverReferral;
 		}
 
+		public Double getAfterThresholdDistance() {
+			return afterThresholdDistance;
+		}
+
+		public void setAfterThresholdDistance(Double afterThresholdDistance) {
+			this.afterThresholdDistance = afterThresholdDistance;
+		}
+
+		public Double getGetAfterThresholdValue() {
+			return getAfterThresholdValue;
+		}
+
+		public void setGetAfterThresholdValue(Double getAfterThresholdValue) {
+			this.getAfterThresholdValue = getAfterThresholdValue;
+		}
 	}
 
 }

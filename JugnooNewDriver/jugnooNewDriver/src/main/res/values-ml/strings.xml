@@ -581,6 +581,9 @@
     <string name="this_week">ഈ ആഴ്ച</string>
     <string name="outstanding_amount1">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
     <string name="upload_again">Upload Again</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \\u20B9 %2$s per
+        Km
+    </string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -580,6 +580,9 @@
     <string name="this_week">এই সপ্তাহ</string>
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
     <string name="upload_again">Upload Again</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \\u20B9 %2$s per
+        Km
+    </string>
 
     <string-array name="CountryCodes" >
 
