@@ -584,6 +584,7 @@
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
     <string name="upload_again">Upload Again</string>
+    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

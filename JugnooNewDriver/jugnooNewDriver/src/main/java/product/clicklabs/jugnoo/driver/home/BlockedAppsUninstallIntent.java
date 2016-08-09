@@ -23,7 +23,7 @@ public class BlockedAppsUninstallIntent {
 				try {
 					final String packageName = Data.blockAppPackageNameList.getString(i);
 					if (Data.SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)
-							&& Utils.isAppInstalled(context, packageName)) {
+							&& Utils.fetchUserInstalledApps(context, packageName)) {
 						DialogPopup.alertPopupWithListener((Activity) context, "",
 								Data.userData.blockedAppPackageMessage,
 								new View.OnClickListener() {

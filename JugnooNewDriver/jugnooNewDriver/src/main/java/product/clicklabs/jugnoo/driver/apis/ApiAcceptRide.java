@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -89,6 +90,8 @@ public class ApiAcceptRide {
 									Prefs.with(activity).save(SPLabels.PERFECT_CUSTOMER_CONT, jObj.getString("phone_no"));
 									LatLng pickupLatLng = new LatLng(pickupLatitude, pickupLongitude);
 									Prefs.with(activity).save(SPLabels.ACCEPT_RIDE_TIME, System.currentTimeMillis());
+									Prefs.with(activity).save(Constants.DRIVER_RIDE_EARNING, "");
+									Prefs.with(activity).save(Constants.DRIVER_RIDE_DATE, "");
 									callback.onSuccess(pickupLatLng, customerName);
 								}
 
