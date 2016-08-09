@@ -147,4 +147,7 @@ public interface Constants {
     String SHOW_INVOICE_DETAILS = "show_invoice_details";
 	String KEY_DISCOUNT_PERCENTAGE = "discount_percentage";
 	String KEY_POOL_DROP_RADIUS = "pool_drop_radius";
+    String DRIVER_RIDE_EARNING = "driver_ride_earning";
+    String DRIVER_RIDE_DATE = "driver_ride_date";
+    String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
 }

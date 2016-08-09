@@ -636,6 +636,7 @@
 	<string name="this_week">इस सप्ताह</string>
 	<string name="outstanding_amount1">बकाया समायोजित किया गया</string>
 	<string name="upload_again">Upload Again</string>
+	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
