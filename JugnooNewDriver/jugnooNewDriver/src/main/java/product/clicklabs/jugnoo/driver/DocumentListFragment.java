@@ -397,6 +397,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					docInfodeleteImage1.setFile(null);
 					docInfodeleteImage1.url.set(0, null);
 					holder.addImageLayout.setEnabled(true);
+					coloum =0;
 					deleteImage(getActivity(), docInfodeleteImage1.docTypeNum);
 					holder.deleteImage1.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
@@ -411,6 +412,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					docInfodeleteImage2.setFile1(null);
 					docInfodeleteImage2.url.set(1, null);
 					holder.addImageLayout2.setEnabled(true);
+					coloum =1;
 					deleteImage(getActivity(), docInfodeleteImage2.docTypeNum);
 					holder.deleteImage2.setVisibility(View.GONE);
 					driverDocumentListAdapter.notifyDataSetChanged();
