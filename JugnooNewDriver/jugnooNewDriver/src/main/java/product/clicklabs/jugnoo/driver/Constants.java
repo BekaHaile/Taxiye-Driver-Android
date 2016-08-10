@@ -128,11 +128,12 @@ public interface Constants {
     String KEY_FARE = "fare";
 	String KEY_DISCOUNTED_FARE = "discounted_fare";
 	String KEY_DISCOUNT_ENABLED = "discount_enabled";
+
     String KEY_BEARING = "bearing";
     String KEY_DEVICE_TOKEN = "device_token";
     String KEY_LOCATION_ACCURACY = "location_accuracy";
-    String KEY_KILL_APP = "kill_app";
 
+    String KEY_KILL_APP = "kill_app";
 	String MIME_TYPE = "application/octet-stream";
     String KEY_LINK = "link";
 
@@ -150,4 +151,9 @@ public interface Constants {
 
 	String ACTION_UPDATE_DOCUMENT_LIST = "ACTION_UPDATE_DOCUMENT_LIST";
 
+	String KEY_DISCOUNT_PERCENTAGE = "discount_percentage";
+	String KEY_POOL_DROP_RADIUS = "pool_drop_radius";
+    String DRIVER_RIDE_EARNING = "driver_ride_earning";
+    String DRIVER_RIDE_DATE = "driver_ride_date";
+    String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
 }
