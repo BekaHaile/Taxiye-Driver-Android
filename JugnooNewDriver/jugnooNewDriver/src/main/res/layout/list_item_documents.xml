@@ -96,17 +96,19 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="24px"
             android:layout_marginTop="12px"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
                 android:layout_width="160px"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20px"
+                android:layout_marginRight="34px"
                 android:layout_marginTop="18px"
                 android:background="@drawable/background_white_rounded_orange_bordered"
                 android:orientation="vertical"
-                android:padding="0px">
+                android:padding="0px"
+                android:visibility="visible">
 
                 <ImageView
                     android:id="@+id/image_icon"
@@ -148,7 +150,7 @@
                 android:id="@+id/addImageLayout2"
                 android:layout_width="160px"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="64px"
+                android:layout_marginLeft="20px"
                 android:layout_marginTop="16px"
                 android:layout_toRightOf="@+id/addImageLayout"
                 android:background="@drawable/background_white_rounded_orange_bordered"

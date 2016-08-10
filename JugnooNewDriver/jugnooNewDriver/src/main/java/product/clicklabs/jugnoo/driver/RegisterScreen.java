@@ -197,19 +197,19 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 								} else {
 									phoneNo = "+91" + phoneNo;
 									if (isPhoneValid(phoneNo)) {
-										if(!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))){
-											if(cityposition != 0) {
-												if(vehiclePosition !=0 ) {
+										if (cityposition != 0) {
+											if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
+												if (vehiclePosition != 0) {
 													sendSignupValues(RegisterScreen.this, name, phoneNo, password);
 													FlurryEventLogger.emailSignupClicked(emailId);
-												}else {
-													DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Type ");
+												} else {
+													DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid Vehicle Type ");
 												}
-											}else {
-												DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid City ");
+											} else {
+												DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid Vehicle Status ");
 											}
-										}else {
-											DialogPopup.alertPopup(RegisterScreen.this,"","Please select valid Vehicle Status ");
+										} else {
+											DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid City ");
 										}
 
 									} else {
@@ -425,12 +425,15 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 									sendToOtpScreen = true;
 								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
-									RegisterScreen.this.name = name;
-									RegisterScreen.this.emailId = emailId;
-									RegisterScreen.this.phoneNo = phoneNo;
-									RegisterScreen.this.password = password;
-									RegisterScreen.this.accessToken = "";
-									parseDataSendToMultipleAccountsScreen(activity, jObj);
+
+									DialogPopup.alertPopup(activity, "", message);
+
+//									RegisterScreen.this.name = name;
+//									RegisterScreen.this.emailId = emailId;
+//									RegisterScreen.this.phoneNo = phoneNo;
+//									RegisterScreen.this.password = password;
+//									RegisterScreen.this.accessToken = "";
+//									parseDataSendToMultipleAccountsScreen(activity, jObj);
 								} else if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
 									performBackPressed();
 
