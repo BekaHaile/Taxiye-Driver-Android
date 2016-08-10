@@ -96,7 +96,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="24px"
             android:layout_marginTop="12px"
-            android:visibility="visible">
+            android:visibility="visible"
+            >
 
             <RelativeLayout
                 android:id="@+id/addImageLayout"
@@ -190,7 +191,7 @@
                 android:layout_width="48px"
                 android:layout_height="48px"
                 android:src="@drawable/orange_cross"
-                android:layout_marginLeft="384px"
+                android:layout_marginLeft="369px"
                 android:visibility="gone"
                 android:tag="mwar"/>
 

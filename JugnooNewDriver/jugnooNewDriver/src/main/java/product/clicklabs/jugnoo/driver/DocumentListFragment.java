@@ -66,6 +66,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
+	int imgPixel;
 
 
 	protected ImageChooserManager imageChooserManager;
@@ -302,6 +303,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			} else {
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
+				holder.deleteImage1.setVisibility(View.GONE);
 			}
 
 			if (docInfo.getFile1() != null) {
@@ -322,6 +324,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			} else {
 				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
+				holder.deleteImage2.setVisibility(View.GONE);
 			}
 
 			if ( docInfo.status.equalsIgnoreCase("2")
@@ -374,6 +377,8 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						}
 					}
 				} catch (Exception e) {
+					holder.deleteImage1.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 					e.printStackTrace();
 				}
 			}
@@ -383,9 +388,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			if (docInfo.status.equalsIgnoreCase("3")) {
 				if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0)))){
 					holder.addImageLayout.setVisibility(View.GONE);
+					holder.deleteImage1.setVisibility(View.GONE);
 				}
 				if((docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
 					holder.addImageLayout2.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 				}
 			}
 
@@ -543,7 +550,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
-
+							imgPixel = docRequirementResponse.getImgPixel();
 							docs.clear();
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
@@ -716,16 +723,25 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
 //					selected_photo.setImageBitmap(bitmap);
-					double oldHeight = bitmap.getHeight();
-					double oldWidth = bitmap.getWidth();
+					Bitmap newBitmap = null;
+					if(bitmap != null) {
+						double oldHeight = bitmap.getHeight();
+						double oldWidth = bitmap.getWidth();
 
-					int newHeight = 500;
-					int newWidth = (int) ((oldWidth/oldHeight)*500d);
-					Bitmap newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+						if (oldWidth > oldHeight) {
+							int newHeight = imgPixel;
+							int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+						} else {
+							int newWidth = imgPixel;
+							int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+						}
+					}
 
 					File f = null;
 					if (bitmap != null) {
-						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 50, index);
+						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
 						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);

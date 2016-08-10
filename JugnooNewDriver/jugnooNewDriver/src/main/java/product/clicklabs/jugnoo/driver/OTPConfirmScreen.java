@@ -365,7 +365,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 									} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
-										Data.userData.accessToken = jObj.getString("access_token");
+										JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 										Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
 										intent.putExtra("access_token",jObj.getString("access_token"));
 										startActivity(intent);

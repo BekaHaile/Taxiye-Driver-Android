@@ -19,6 +19,9 @@ public class DocRequirementResponse {
 	@SerializedName("phone_no")
 	@Expose
 	private String userPhoneNo;
+	@SerializedName("img_pixel")
+	@Expose
+	private int imgPixel;
 
 	/**
 	 * @return The flag
@@ -63,6 +66,13 @@ public class DocRequirementResponse {
 		this.userPhoneNo = userPhoneNo;
 	}
 
+	public int getImgPixel() {
+		return imgPixel;
+	}
+
+	public void setImgPixel(int imgPixel) {
+		this.imgPixel = imgPixel;
+	}
 
 	public class DocumentData {
 
