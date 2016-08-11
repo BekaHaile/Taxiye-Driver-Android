@@ -407,6 +407,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docRequirement.setVisibility(View.VISIBLE);
 			}
 
+			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
+				docInfo.isExpended = false;
+			}
+
 			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
