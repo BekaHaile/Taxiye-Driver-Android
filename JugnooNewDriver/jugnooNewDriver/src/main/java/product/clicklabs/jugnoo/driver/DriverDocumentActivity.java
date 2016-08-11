@@ -139,8 +139,14 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
 								} else if (ApiResponseFlags.UPLOAD_DOCUMENT_REFRESH.getOrdinal() == flag) {
 									try {
-										((DocumentListFragment)getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())).
-												getDocsAsync(DriverDocumentActivity.this);
+										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												((DocumentListFragment) getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())).
+														getDocsAsync(DriverDocumentActivity.this);
+											}
+										});
+
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
