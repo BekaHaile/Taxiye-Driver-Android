@@ -162,7 +162,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230px"
+            android:layout_height="270px"
             android:orientation="vertical">
 
             <LinearLayout
@@ -262,12 +262,6 @@
 
             </LinearLayout>
 
-            <!--<ImageView-->
-            <!--android:id="@+id/imageViewHorizontal6"-->
-            <!--android:layout_width="670px"-->
-            <!--android:layout_height="2px"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:background="@color/grey_dark_less"/>-->
 
             <RelativeLayout
                 android:layout_width="672px"
@@ -308,6 +302,17 @@
                     android:textSize="34px"/>
 
             </RelativeLayout>
+
+            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                android:id="@+id/textViewDifferentialPricingEnable"
+                android:layout_width="650px"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/diffrential_pricing_rate"
+                android:layout_marginLeft="34px"
+                android:textColor="@color/grey_dark_less"
+                android:textSize="24px"
+                />
 
         </LinearLayout>
 

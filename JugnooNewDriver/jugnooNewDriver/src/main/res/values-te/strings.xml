@@ -615,7 +615,6 @@
     <string name="owner">ఏజమాని</string>
     <string name="approval_pending">అనుమతి వాయిదా</string>
 
-
     <string name="rejection_reason">రిజెక్షన్ కారణము</string>
     <string name="mandatory">తప్పనిసరి</string>
     <string name="before_ride">రైడ్ ముందు</string>
@@ -642,6 +641,7 @@
     <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \\u20B9 %2$s/Km</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
