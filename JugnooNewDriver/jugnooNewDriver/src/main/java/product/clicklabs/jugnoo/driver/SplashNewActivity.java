@@ -727,8 +727,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
-//			buttonRegister.setVisibility(View.VISIBLE);
-			toggleRegistrationButton();
+			buttonRegister.setVisibility(View.VISIBLE);
+//			toggleRegistrationButton();
 		}
 
 	}
