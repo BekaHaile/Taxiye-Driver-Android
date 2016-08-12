@@ -206,9 +206,7 @@ public class Data {
 								+ Base64.encodeToString(md.digest(),
 										Base64.DEFAULT));
 			}
-		} catch (NameNotFoundException e) {
-			Log.e("error:", "," + e.toString());
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			Log.e("error:", "," + e.toString());
 		}
 	}

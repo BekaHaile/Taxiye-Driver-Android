@@ -454,7 +454,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			} else {
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

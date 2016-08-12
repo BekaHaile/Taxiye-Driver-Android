@@ -305,7 +305,7 @@ public class DateOperations {
 			Date date2 = format.parse(time2);
 			long millis = Math.abs(date1.getTime() - date2.getTime());
 			return millis;
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return 60000;
@@ -318,7 +318,7 @@ public class DateOperations {
 			Date date1 = format.parse(time1);
 			long millis = date1.getTime();
 			return millis;
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			try {
 				time1 = time1.replace("T", " ");
@@ -327,7 +327,7 @@ public class DateOperations {
 				Date date1 = format.parse(time1);
 				long millis = date1.getTime();
 				return millis;
-			} catch (ParseException e1) {
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
 		}
@@ -350,7 +350,7 @@ public class DateOperations {
 		Date newDate = null;
 		try {
 			newDate = inputFormat.parse(date);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return  outputFormat.format(newDate);

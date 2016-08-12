@@ -96,7 +96,7 @@ public class DeviceTokenGenerator {
 		try {
 			PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
 			return packageInfo.versionCode;
-		} catch (PackageManager.NameNotFoundException e) {
+		} catch (Exception e) {
 			// should never happen
 			throw new RuntimeException("Could not get package name: " + e);
 		}
