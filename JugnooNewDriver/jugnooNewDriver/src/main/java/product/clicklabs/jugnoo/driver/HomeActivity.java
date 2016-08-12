@@ -2352,6 +2352,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					relativeLayoutEndRideLuggageCount.setVisibility(View.GONE);
 					polylineOptionsCustomersPath = null;
+					polylineOptionsDelivery = null;
 
 				} else {
 					driverScreenMode = DriverScreenMode.D_INITIAL;
@@ -2416,7 +2417,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					try {
-						polylineOptionsCustomersPath =null;
+						polylineOptionsCustomersPath = null;
+						polylineOptionsDelivery = null;
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -2508,6 +2510,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 					if (map != null) {
+						map.clear();
 						setAttachedCustomerMarkers();
 					}
 
@@ -2564,6 +2567,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
 					if (map != null) {
+						map.clear();
 						setAttachedCustomerMarkers();
 					}
 
@@ -2640,6 +2644,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					if (map != null) {
+						map.clear();
 						setAttachedCustomerMarkers();
 						addStartMarker();
 					}
@@ -3782,10 +3787,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									e.printStackTrace();
 								}
 
-								if (map != null) {
-									map.clear();
-								}
-
 								initializeStartRideVariables();
 
 								if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal()) == null
@@ -4054,7 +4055,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					if (map != null) {
-						map.clear();
 						drawHeatMapData(heatMapResponseGlobal);
 					}
 
@@ -4369,10 +4369,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			}
 
-
-			if (map != null) {
-				map.clear();
-			}
 
 			rideTimeChronometer.stop();
 
@@ -4769,7 +4765,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								setAttachedCustomerMarkers();
+								if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+									setDeliveryMarkers();
+								} else {
+									setAttachedCustomerMarkers();
+								}
 							}
 						});
 					} catch (Exception e) {
@@ -6308,8 +6308,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+
+	private ArrayList<Marker> markersDelivery = new ArrayList<>();
+	private void clearDeliveryMarkers(){
+		for(Marker marker : markersDelivery){
+			marker.remove();
+		}
+		markersDelivery.clear();
+	}
+
+	private void addDeliveryMarker(Marker marker){
+		markersDelivery.add(marker);
+	}
+
 	public void setDeliveryMarkers(){
 		try {
+			clearDeliveryMarkers();
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(customerInfo.getIsDelivery() == 1
 					&& customerInfo.getDeliveryInfos() != null
@@ -6345,7 +6359,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 						}
-						addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1));
+						addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
 					}
 
 				}
@@ -6365,19 +6379,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 								@Override
 								public boolean showPath() {
-									return engagementId == Data.getCurrentEngagementId()
+									return engagementId.equalsIgnoreCase(Data.getCurrentEngagementId())
 											&& driverScreenMode == DriverScreenMode.D_IN_RIDE;
 								}
 
 								@Override
 								public void polylineOptionGenerated(PolylineOptions polylineOptions) {
-									polylineOptionsCustomersPath = polylineOptions;
+									polylineOptionsDelivery = polylineOptions;
 								}
 
 								@Override
 								public void onFinish() {
-									if(polylineOptionsCustomersPath != null){
-										map.addPolyline(polylineOptionsCustomersPath);
+									if(polylineOptionsDelivery != null){
+										if(polylineDelivery != null){
+											polylineDelivery.remove();
+										}
+										polylineDelivery = map.addPolyline(polylineOptionsDelivery);
 									}
 								}
 							}).execute();
@@ -6389,7 +6406,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	private void addDropPinMarker(GoogleMap map, LatLng latLng, String text){
+	private PolylineOptions polylineOptionsDelivery = null;
+	private Polyline polylineDelivery = null;
+
+	private Marker addDropPinMarker(GoogleMap map, LatLng latLng, String text){
 		final MarkerOptions markerOptions = new MarkerOptions()
 				.position(latLng)
 				.title("")
@@ -6397,7 +6417,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				.anchor(0.5f, 0.9f)
 				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
 						.getTextBitmap(this, assl, text, 20)));
-		map.addMarker(markerOptions);
+		return map.addMarker(markerOptions);
 	}
 
 	public RelativeLayout getRelativeLayoutContainer(){
@@ -6451,9 +6471,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
+	private ArrayList<Marker> markersCustomers = new ArrayList<>();
+	private void clearCustomerMarkers(){
+		for(Marker marker : markersCustomers){
+			marker.remove();
+		}
+		markersCustomers.clear();
+	}
+
+	private void addCustomerMarker(Marker marker){
+		markersCustomers.add(marker);
+	}
+
 	private void setAttachedCustomerMarkers(){
 		try {
-			map.clear();
+			clearCustomerMarkers();
 			ArrayList<LatLng> latLngs = new ArrayList<>();
 			LatLngBounds.Builder builder = new LatLngBounds.Builder();
 			HashMap<LatLng,Integer> counterMap = new HashMap<>();
@@ -6563,10 +6595,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
 							&& customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null){
-						addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "");
+						addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : ""));
 					} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
-						addCustomerPickupMarker(map, customerInfo, latLng);
+						addCustomerMarker(addCustomerPickupMarker(map, customerInfo, latLng));
 					}
 				}
 			}
@@ -6597,7 +6629,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							@Override
 							public void onFinish() {
 								if(polylineOptionsCustomersPath != null){
-									map.addPolyline(polylineOptionsCustomersPath);
+									if(polylineCustomersPath != null){
+										polylineCustomersPath.remove();
+									}
+									polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
 								}
 							}
 						}).execute();
@@ -6608,6 +6643,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	private PolylineOptions polylineOptionsCustomersPath = null;
+	private Polyline polylineCustomersPath = null;
 
 	private void addStartMarker(){
 		try {
