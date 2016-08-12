@@ -67,7 +67,8 @@ public enum ApiResponseFlags {
 
 
 	RESET_DEVICE_TOKEN(556),
-	UPLOAD_DOCCUMENT(701)
+	UPLOAD_DOCCUMENT(701),
+	UPLOAD_DOCUMENT_REFRESH(702)
 	;
 
 	private int ordinal;

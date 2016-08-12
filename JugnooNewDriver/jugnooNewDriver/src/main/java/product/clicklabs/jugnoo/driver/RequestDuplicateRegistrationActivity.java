@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -100,9 +102,9 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 				String email = "";
 				String phone = "";
 
-				name = OTPConfirmScreen.emailRegisterData.name;
-				email = OTPConfirmScreen.emailRegisterData.emailId;
-				phone = OTPConfirmScreen.emailRegisterData.phoneNo;
+				name = OldOTPConfirmScreen.emailRegisterData.name;
+				email = OldOTPConfirmScreen.emailRegisterData.emailId;
+				phone = OldOTPConfirmScreen.emailRegisterData.phoneNo;
 
 				submitDuplicateRegistrationRequestAPI(RequestDuplicateRegistrationActivity.this, messageStr, name, email, phone);
 
@@ -111,9 +113,9 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 
 
         try {
-			textViewRegisterNameValue.setText(OTPConfirmScreen.emailRegisterData.name);
-			textViewRegisterEmailValue.setText(OTPConfirmScreen.emailRegisterData.emailId);
-			textViewRegisterPhoneValue.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
+			textViewRegisterNameValue.setText(OldOTPConfirmScreen.emailRegisterData.name);
+			textViewRegisterEmailValue.setText(OldOTPConfirmScreen.emailRegisterData.emailId);
+			textViewRegisterPhoneValue.setText(OldOTPConfirmScreen.emailRegisterData.phoneNo);
 			editTextMessage.setHint(getResources().getString(R.string.You_have_already_created, Data.previousAccountInfoList.size()));
 		} catch(Exception e){
             e.printStackTrace();
@@ -207,8 +209,8 @@ public class RequestDuplicateRegistrationActivity extends BaseActivity {
 			params.put("login_type", Data.LOGIN_TYPE);
 
 			try {
-				if (RegisterScreen.multipleCaseJSON != null) {
-					params.put("users", ""+RegisterScreen.multipleCaseJSON.getJSONArray("users"));
+				if (OldRegisterScreen.multipleCaseJSON != null) {
+					params.put("users", ""+ OldRegisterScreen.multipleCaseJSON.getJSONArray("users"));
 				}
 			} catch(Exception e){
 				e.printStackTrace();

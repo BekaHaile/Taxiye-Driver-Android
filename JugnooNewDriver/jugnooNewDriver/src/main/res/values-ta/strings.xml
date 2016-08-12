@@ -662,6 +662,9 @@
     <string name="this_week">இந்த வாரம்</string>
     <string name="outstanding_amount1">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
     <string name="upload_again">Upload Again</string>
+    <string name="self_enroled">Self Enroled</string>
+    <string name="register_via_agent">Register Via Agent</string>
+    <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 
     <string-array name="CountryCodes" >

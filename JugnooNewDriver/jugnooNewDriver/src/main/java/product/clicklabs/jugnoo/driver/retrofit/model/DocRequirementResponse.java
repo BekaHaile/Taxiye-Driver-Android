@@ -19,6 +19,9 @@ public class DocRequirementResponse {
 	@SerializedName("phone_no")
 	@Expose
 	private String userPhoneNo;
+	@SerializedName("img_pixel")
+	@Expose
+	private int imgPixel;
 
 	/**
 	 * @return The flag
@@ -63,6 +66,13 @@ public class DocRequirementResponse {
 		this.userPhoneNo = userPhoneNo;
 	}
 
+	public int getImgPixel() {
+		return imgPixel;
+	}
+
+	public void setImgPixel(int imgPixel) {
+		this.imgPixel = imgPixel;
+	}
 
 	public class DocumentData {
 
@@ -78,6 +88,12 @@ public class DocRequirementResponse {
 		@SerializedName("doc_status")
 		@Expose
 		private String docStatus;
+		@SerializedName("doc_count")
+		@Expose
+		private Integer docCount;
+		@SerializedName("is_editable")
+		@Expose
+		private Integer isEditable;
 		@SerializedName("doc_url")
 		@Expose
 		private ArrayList<String> docUrl = new ArrayList<String>();
@@ -155,6 +171,23 @@ public class DocRequirementResponse {
 		 */
 		public void setDocStatus(String docStatus) {
 			this.docStatus = docStatus;
+		}
+
+
+		public Integer getDocCount() {
+			return docCount;
+		}
+
+		public void setDocCount(Integer docCount) {
+			this.docCount = docCount;
+		}
+
+		public Integer getIsEditable() {
+			return isEditable;
+		}
+
+		public void setIsEditable(Integer isEditable) {
+			this.isEditable = isEditable;
 		}
 
 		/**

@@ -1114,7 +1114,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													} else {
 														DialogPopup.alertPopup(activity, "", getResources().getString(R.string.present_near_customer_location));
 													}
-												} catch (Resources.NotFoundException e) {
+												} catch (Exception e) {
 													e.printStackTrace();
 												}
 											} else {

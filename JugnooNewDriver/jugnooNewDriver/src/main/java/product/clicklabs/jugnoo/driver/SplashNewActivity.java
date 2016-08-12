@@ -59,8 +59,10 @@ import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
+import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -104,10 +106,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	Spinner spinner;
 	String selectedLanguage;
-	int languagePrefStatus;
+	int languagePrefStatus, registerViaTooken = RegisterOption.ONLY_TOOKAN.getOrdinal();
 	Configuration conf;
 
-	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo;
+	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo, buttonRegisterTookan;
 	
 	static boolean loginDataFetched = false;
 	boolean loginFailed = false;
@@ -135,7 +137,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-//		Fabric.with(this, new Crashlytics());
+		Fabric.with(this, new Crashlytics());
 
 		selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 		bundleHomePush = getIntent().getExtras();
@@ -186,9 +188,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		buttonRegisterTookan = (Button) findViewById(R.id.buttonRegisterTookan);
+		buttonRegisterTookan.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 		
 		buttonLogin.setVisibility(View.GONE);
 		buttonRegister.setVisibility(View.GONE);
+		buttonRegisterTookan.setVisibility(View.GONE);
 		
 		
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
@@ -209,6 +215,16 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				linearLayoutSignUpIn.setVisibility(View.GONE);
 				linearLayoutAutoDriverConfirmation.setVisibility(View.GONE);
 				getCityAsync();
+			}
+		});
+
+		buttonRegisterTookan.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(SplashNewActivity.this, OldRegisterScreen.class));
+				finish();
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
 		
@@ -575,6 +591,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		if (!"".equalsIgnoreCase(accPair.first)){
 			buttonLogin.setVisibility(View.GONE);
 			buttonRegister.setVisibility(View.GONE);
+			buttonRegisterTookan.setVisibility(View.GONE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -671,8 +688,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									else{
 										DialogPopup.dismissLoadingDialog();
 									}
-								}
-								else{
+								} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+									JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
+									Intent intent = new Intent(SplashNewActivity.this, DriverDocumentActivity.class);
+									intent.putExtra("access_token",jObj.getString("access_token"));
+									startActivity(intent);
+								}  else{
 									DialogPopup.alertPopup(activity, "", message);
 									DialogPopup.dismissLoadingDialog();
 								}
@@ -706,11 +727,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
-			buttonRegister.setVisibility(View.GONE);
+//			buttonRegister.setVisibility(View.VISIBLE);
+			toggleRegistrationButton();
 		}
 
 	}
-	
+
+	public void toggleRegistrationButton(){
+		if((registerViaTooken == RegisterOption.BOTH_TOOKAN_SELF_REGISTER.getOrdinal()
+				|| registerViaTooken == RegisterOption.ONLY_SELF_REGISTER.getOrdinal())) {
+			buttonRegister.setVisibility(View.VISIBLE);
+		}
+	}
+
 	class AccessTokenDataParseAsync extends AsyncTask<String, Integer, String>{
 		
 		Activity activity;
@@ -1067,14 +1096,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									etCode.setError("Code not matched.");
 								}
 							}
-							else if(DriverDebugOpenMode.REGISTER == flag){
+							else if(DriverDebugOpenMode.REGISTER == flag && (registerViaTooken == RegisterOption.BOTH_TOOKAN_SELF_REGISTER.getOrdinal()
+									|| registerViaTooken == RegisterOption.ONLY_TOOKAN.getOrdinal())){
 								if(Data.REGISTER_PASSWORD.equalsIgnoreCase(code)){
 									dialog.dismiss();
-									buttonRegister.setVisibility(View.VISIBLE);
+									buttonRegisterTookan.setVisibility(View.VISIBLE);
 								}
 								else{
 									etCode.requestFocus();
-									etCode.setError("Code not matched.");
+									etCode.setError("Code not matched or disabled.");
 								}
 							}
 						}
@@ -1573,7 +1603,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								int flag = jObj.getInt("flag");
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									languagePrefStatus = jObj.getInt("locale_preference_enabled");
+									registerViaTooken = jObj.optInt("registration_enabled", RegisterOption.ONLY_TOOKAN.getOrdinal());
 									JSONArray jArray = jObj.getJSONArray("locales");
+//									toggleRegistrationButton();
 									if (jArray != null) {
 										categories.clear();
 										for (int i = 0; i < jArray.length(); i++) {

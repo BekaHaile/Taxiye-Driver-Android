@@ -1,32 +1,25 @@
 package product.clicklabs.jugnoo.driver;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import org.json.JSONObject;
 
-import java.io.File;
-import java.util.HashMap;
-
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
-import retrofit.mime.TypedFile;
 
 
 public class DriverDocumentActivity extends BaseFragmentActivity {
@@ -57,7 +50,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 		Bundle bundle = new Bundle();
 		accessToken = getIntent().getExtras().getString("access_token");
-		bundle.putString("access_token",accessToken);
+		bundle.putString("access_token", accessToken);
 		documentListFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()
@@ -80,6 +73,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 		});
 	}
 
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -88,6 +82,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 	@Override
 	public void onBackPressed() {
+		JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
 		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
 		startActivity(intent);
 		finish();
@@ -104,6 +99,7 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
+		JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
 		Intent intent = new Intent(DriverDocumentActivity.this, SplashNewActivity.class);
 		startActivity(intent);
 		finish();
@@ -130,15 +126,30 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 							if (!SplashNewActivity.checkIfTrivialAPIErrors(DriverDocumentActivity.this, jObj, flag)) {
 
 								if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
 									DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
+											JSONParser.saveAccessToken(DriverDocumentActivity.this, "");
 											startActivity(new Intent(DriverDocumentActivity.this, SplashNewActivity.class));
 											finish();
 										}
 									});
 								} else if (ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag) {
 									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
+								} else if (ApiResponseFlags.UPLOAD_DOCUMENT_REFRESH.getOrdinal() == flag) {
+									try {
+										DialogPopup.alertPopupWithListener(DriverDocumentActivity.this, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												((DocumentListFragment) getSupportFragmentManager().findFragmentByTag(DocumentListFragment.class.getName())).
+														getDocsAsync(DriverDocumentActivity.this);
+											}
+										});
+
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 								} else {
 									DialogPopup.alertPopup(DriverDocumentActivity.this, "", message);
 								}
@@ -165,7 +176,6 @@ public class DriverDocumentActivity extends BaseFragmentActivity {
 
 		}
 	}
-
 
 
 }

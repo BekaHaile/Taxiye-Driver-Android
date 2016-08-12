@@ -134,6 +134,18 @@
                 android:layout_marginTop="24px"
                 android:background="@drawable/background_white_rounded_bordered"
                 android:textSize="@dimen/button_text_size"
+                android:visibility="visible"
+                />
+
+            <Button
+                android:id="@+id/buttonRegisterTookan"
+                android:text="@string/register_via_agent"
+                android:textColor="@color/new_orange"
+                android:layout_width="636px"
+                android:layout_height="112px"
+                android:layout_marginTop="24px"
+                android:background="@drawable/background_white_rounded_bordered"
+                android:textSize="@dimen/button_text_size"
                 android:visibility="gone"
                 />
 
@@ -232,7 +244,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </RelativeLayout>
 
