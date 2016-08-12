@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -874,16 +875,20 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					loginDataFetched = false;
-					dialog.dismiss();
-					Intent intent = new Intent(Intent.ACTION_VIEW);
-					if("".equalsIgnoreCase(link)) {
-						intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
-					} else {
-						intent.setData(Uri.parse(link));
+					try {
+						loginDataFetched = false;
+						dialog.dismiss();
+						Intent intent = new Intent(Intent.ACTION_VIEW);
+						if("".equalsIgnoreCase(link)) {
+							intent.setData(Uri.parse("market://details?id=product.clicklabs.jugnoo.driver"));
+						} else {
+							intent.setData(Uri.parse(link));
+						}
+						activity.startActivity(intent);
+						activity.finish();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					activity.startActivity(intent);
-					activity.finish();
 				}
 				
 			});
@@ -1564,13 +1569,17 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				String item = parent.getItemAtPosition(position).toString();
-				((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
+				try {
+					String item = parent.getItemAtPosition(position).toString();
+					((TextView) parent.getChildAt(0)).setTextColor(getResources().getColor(R.color.white));
 
-				Prefs.with(SplashNewActivity.this).save(SPLabels.SELECTED_LANGUAGE, item);
-				if (!selectedLanguage.equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
-					selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
-					onCreate(new Bundle());
+					Prefs.with(SplashNewActivity.this).save(SPLabels.SELECTED_LANGUAGE, item);
+					if (!selectedLanguage.equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, ""))) {
+						selectedLanguage = Prefs.with(SplashNewActivity.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+						onCreate(new Bundle());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 

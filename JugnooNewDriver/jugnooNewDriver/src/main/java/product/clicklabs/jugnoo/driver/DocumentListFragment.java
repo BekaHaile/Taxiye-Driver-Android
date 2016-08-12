@@ -482,7 +482,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							uploadfile(getActivity(), holder.id);
 							coloum = 0;
 						}
-					} catch (Resources.NotFoundException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -518,7 +518,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							uploadfile(getActivity(), holder.id);
 							coloum = 1;
 						}
-					} catch (Resources.NotFoundException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -670,8 +670,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		imageChooserManager.clearOldFiles();
 		try {
 			String filePath = imageChooserManager.choose();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -684,8 +682,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		imageChooserManager.setImageChooserListener(this);
 		try {
 			String filePath = imageChooserManager.choose();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -833,7 +829,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			} else {
 				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
 			}
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -903,7 +899,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			} else {
 				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
 			}
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -923,7 +919,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			fos.write(bitmapdata);
 			fos.flush();
 			fos.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return f;

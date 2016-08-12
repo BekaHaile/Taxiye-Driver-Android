@@ -1133,7 +1133,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						else{
 							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.battery_level_arrived_text));
 						}
-					} catch (Resources.NotFoundException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 
@@ -1306,13 +1306,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reviewSkipBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
-					MeteringService.clearNotifications(HomeActivity.this);
-					Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
-					driverScreenMode = DriverScreenMode.D_INITIAL;
-					switchDriverScreen(driverScreenMode);
-					FlurryEventLogger.event(OK_ON_FARE_SCREEN);
-					perfectRideStateRestore();
+					try {
+						saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
+						MeteringService.clearNotifications(HomeActivity.this);
+						Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
+						driverScreenMode = DriverScreenMode.D_INITIAL;
+						switchDriverScreen(driverScreenMode);
+						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
+						perfectRideStateRestore();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 
@@ -1494,7 +1498,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			}
-		} catch (Resources.NotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -3760,7 +3764,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										dropLongitude = jObj.getDouble(KEY_OP_DROP_LONGITUDE);
 										Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, jObj.optString(KEY_PR_DISTANCE, "1000"));
 									}
-								} catch (JSONException e) {
+								} catch (Exception e) {
 									e.printStackTrace();
 								}
 								if ((Utils.compareDouble(dropLatitude, 0) == 0) && (Utils.compareDouble(dropLongitude, 0) == 0)) {
@@ -5411,10 +5415,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	// *****************************Used for flurry work***************//
 	@Override
 	protected void onStart() {
-		super.onStart();
-		FlurryAgent.init(this, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
-		FlurryAgent.onEvent("HomeActivity started");
+		try {
+			super.onStart();
+			FlurryAgent.init(this, Data.FLURRY_KEY);
+			FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
+			FlurryAgent.onEvent("HomeActivity started");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -6289,22 +6297,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	private void setMakeDeliveryButtonState(boolean isDefault){
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonMakeDelivery.getLayoutParams();
-		if(isDefault) {
-			params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
-			params.rightMargin = 0;
-			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			buttonMakeDelivery.setLayoutParams(params);
-			buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
-			buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
-		} else{
-			params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
-			params.rightMargin = (int) (30f * ASSL.Xscale());
-			params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
-			params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			buttonMakeDelivery.setLayoutParams(params);
-			buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
+		try {
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) buttonMakeDelivery.getLayoutParams();
+			if(isDefault) {
+				params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
+				params.rightMargin = 0;
+				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				buttonMakeDelivery.setLayoutParams(params);
+				buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
+				buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
+			} else{
+				params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
+				params.rightMargin = (int) (30f * ASSL.Xscale());
+				params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				buttonMakeDelivery.setLayoutParams(params);
+				buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

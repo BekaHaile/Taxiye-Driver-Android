@@ -132,11 +132,15 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 
 
 	protected synchronized void buildGoogleApiClient(Context context) {
-		googleApiClient = new GoogleApiClient.Builder(context)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.addApi(LocationServices.API).build();
-		googleApiClient.connect();
+		try {
+			googleApiClient = new GoogleApiClient.Builder(context)
+					.addConnectionCallbacks(this)
+					.addOnConnectionFailedListener(this)
+					.addApi(LocationServices.API).build();
+			googleApiClient.connect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	protected void startLocationUpdates(long interval, int priority) {

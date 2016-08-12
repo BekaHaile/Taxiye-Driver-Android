@@ -259,7 +259,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					});
 				}
 
-			} catch (Resources.NotFoundException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 

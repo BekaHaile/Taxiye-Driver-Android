@@ -243,7 +243,7 @@ public class DriverProfileActivity extends BaseActivity {
 
 											setUserData();
 
-										} catch (JSONException e) {
+										} catch (Exception e) {
 											e.printStackTrace();
 											DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 
