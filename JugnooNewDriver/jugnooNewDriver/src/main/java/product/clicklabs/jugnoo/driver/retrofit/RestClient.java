@@ -56,7 +56,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
@@ -76,7 +76,7 @@ public class RestClient {
 			RestAdapter.Builder builder = new RestAdapter.Builder()
 					.setEndpoint(url)
 					.setClient(new Ok3Client(getOkHttpClient()))
-//					.setLog(fooLog)
+					.setLog(fooLog)
 					.setLogLevel(RestAdapter.LogLevel.FULL);
 
 			RestAdapter restAdapter = builder.build();
@@ -107,7 +107,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint("http://maps.googleapis.com/maps/api")
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();
