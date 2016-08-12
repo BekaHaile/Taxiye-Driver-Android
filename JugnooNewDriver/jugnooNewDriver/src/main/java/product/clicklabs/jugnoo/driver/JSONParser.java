@@ -733,8 +733,10 @@ public class JSONParser implements Constants {
 				double convenienceCharge = jPoolFare.optDouble(KEY_CONVENIENCE_CHARGE);
 				double fare = jPoolFare.optDouble(KEY_FARE);
 				double discountedfare = jPoolFare.optDouble(KEY_DISCOUNTED_FARE);
-				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED,0);
-				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled));
+				int discountedFareEnabled = jPoolFare.optInt(KEY_DISCOUNT_ENABLED, 0);
+				double discountPercentage = jPoolFare.optDouble(KEY_DISCOUNT_PERCENTAGE, 0);
+				double poolDropRadius = jPoolFare.optDouble(KEY_POOL_DROP_RADIUS, 0);
+				customerInfo.setPoolFare(new PoolFare(distance, rideTime, convenienceCharge, fare, discountedfare, discountedFareEnabled, discountPercentage, poolDropRadius));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

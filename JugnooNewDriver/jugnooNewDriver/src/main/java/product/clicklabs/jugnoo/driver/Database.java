@@ -30,14 +30,7 @@ public class Database {																	// class for handling database related a
 	// **********************//
 	private static final String TABLE_EMAILS = "table_email_suggestions";
 	private static final String EMAIL = "email";
-	
-	// ***************** table_previous_latlng table columns
-		// **********************//
-	private static final String TABLE_PREVIOUS_PATH = "table_previous_path";
-	private static final String SLAT = "slat";
-	private static final String SLNG = "slng";
-	private static final String DLAT = "dlat";
-	private static final String DLNG = "dlng";
+
 
 	
 	/**
@@ -69,13 +62,6 @@ public class Database {																	// class for handling database related a
 					database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_EMAILS + " ("
 							+ EMAIL + " TEXT NOT NULL" + ");");
 
-					// table_previous_latlng
-					database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PREVIOUS_PATH + " (" 
-							+ SLAT + " REAL NOT NULL" + ","
-							+ SLNG + " REAL NOT NULL" + ","
-							+ DLAT + " REAL NOT NULL" + ","
-							+ DLNG + " REAL NOT NULL" + ""
-							+ ");");
 	}
 	
 
@@ -179,50 +165,5 @@ public class Database {																	// class for handling database related a
 		database.delete(Database.TABLE_EMAILS, Database.EMAIL + "=?",
 				new String[] { email });
 	}
-
-	
-	
-	public void insertPolyLine1(LatLng slatLng, LatLng dlatLng){
-		try{
-			ContentValues contentValues = new ContentValues();
-			contentValues.put(Database.SLAT, slatLng.latitude);
-			contentValues.put(Database.SLNG, slatLng.longitude);
-			contentValues.put(Database.DLAT, dlatLng.latitude);
-			contentValues.put(Database.DLNG, dlatLng.longitude);
-			database.insert(Database.TABLE_PREVIOUS_PATH, null, contentValues);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-	
-	
-	public ArrayList<Pair<LatLng, LatLng>> getSavedPath(){
-		
-		ArrayList<Pair<LatLng, LatLng>> pathList = new ArrayList<Pair<LatLng, LatLng>>();
-		
-		String[] columns = new String[] { Database.SLAT, Database.SLNG, Database.DLAT, Database.DLNG };
-
-		Cursor cursor = database.query(Database.TABLE_PREVIOUS_PATH, columns, null, null, null, null, null);
-		
-		int in0 = cursor.getColumnIndex(Database.SLAT);
-		int in1 = cursor.getColumnIndex(Database.SLNG);
-		int in2 = cursor.getColumnIndex(Database.DLAT);
-		int in3 = cursor.getColumnIndex(Database.DLNG);
-		
-		
-		for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
-			pathList.add(new Pair<LatLng, LatLng>(new LatLng(cursor.getDouble(in0), cursor.getDouble(in1)),
-					new LatLng(cursor.getDouble(in2), cursor.getDouble(in3))));
-		}
-		
-		return pathList;
-	}
-	
-	
-	
-	public void deleteSavedPath(){
-		database.delete(Database.TABLE_PREVIOUS_PATH, null, null);
-	}
-	
 	
 }

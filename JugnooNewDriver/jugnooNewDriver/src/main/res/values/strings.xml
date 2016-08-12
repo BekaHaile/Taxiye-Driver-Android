@@ -618,7 +618,7 @@
 	<string name="please_drop_customer">Please drop %s</string>
 	<string name="please_reach_customer_location">Please reach %s\'s location</string>
 	<string name="please_start_customer_ride">Please start %s\'s ride</string>
-	<string name="uploading">Uploading</string>
+	<string name="uploading">UPLOADING</string>
 	<string name="before_ride">BEFORE RIDE</string>
 	<string name="in_ride_rate">IN RIDE</string>
 	<string name="referral_rate">REFERRAL</string>
@@ -638,6 +638,10 @@
 	<string name="this_week">This Week</string>
 	<string name="outstanding_amount1">Outstanding Adjusted</string>
 	<string name="upload_again">Upload Again</string>
+	<string name="self_enroled">Self Register</string>
+	<string name="register_via_agent">Register Via Agent</string>
+	<string name="upload_Documents">Upload Documents</string>
+	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 
 
 	<string-array name="CountryCodes" >

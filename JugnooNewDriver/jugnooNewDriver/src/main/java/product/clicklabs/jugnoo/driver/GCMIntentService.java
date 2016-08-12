@@ -616,7 +616,12 @@ public class GCMIntentService extends IntentService {
 								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());
 								startService(synIntent);
 
-							}else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
+							} else if (PushFlags.UPDATE_DOCUMENT_LIST.getOrdinal() == flag) {
+								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_DOCUMENT_LIST);
+								fetchDocIntent.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
+								sendBroadcast(fetchDocIntent);
+
+							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
 										jObj.getString("transaction_time"),
 										jObj.getString("customer_phone_no"),

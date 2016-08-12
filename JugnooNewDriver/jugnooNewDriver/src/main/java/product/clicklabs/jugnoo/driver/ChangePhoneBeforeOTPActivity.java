@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -239,7 +240,7 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 
 
 	public void performBackPressed() {
-		Intent intent = new Intent(ChangePhoneBeforeOTPActivity.this, OTPConfirmScreen.class);
+		Intent intent = new Intent(ChangePhoneBeforeOTPActivity.this, OldOTPConfirmScreen.class);
 		startActivity(intent);
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);

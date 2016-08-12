@@ -10,16 +10,20 @@ import product.clicklabs.jugnoo.driver.Database2;
 public class PoolFare {
 	private double distance;
 	private long rideTime;
-	private double convenienceCharge, fare, discountedfare;
+	private double convenienceCharge, fare, discountedfare, discountPercentage, poolDropRadius;
 	private int discountedFareEnabled;
 
-	public PoolFare(double distance, long rideTime, double convenienceCharge, double fare, double discountedfare, int discountedFareEnabled) {
+	public PoolFare(double distance, long rideTime, double convenienceCharge, double fare, double discountedfare,
+					int discountedFareEnabled, double discountPercentage, double poolDropRadius) {
 		this.distance = distance;
 		this.rideTime = rideTime;
 		this.convenienceCharge = convenienceCharge;
 		this.fare = fare;
 		this.discountedfare = discountedfare;
 		this.discountedFareEnabled = discountedFareEnabled;
+		this.discountPercentage = discountPercentage;
+		this.poolDropRadius =poolDropRadius;
+
 	}
 
 	public double getDistance() {
@@ -75,5 +79,21 @@ public class PoolFare {
 
 	public void setDiscountedfare(double discountedfare) {
 		this.discountedfare = discountedfare;
+	}
+
+	public double getDiscountPercentage() {
+		return discountPercentage;
+	}
+
+	public void setDiscountPercentage(double discountPercentage) {
+		this.discountPercentage = discountPercentage;
+	}
+
+	public double getPoolDropRadius() {
+		return poolDropRadius;
+	}
+
+	public void setPoolDropRadius(double poolDropRadius) {
+		this.poolDropRadius = poolDropRadius;
 	}
 }

@@ -201,22 +201,22 @@ public class Utils {
 
 	public static boolean mockLocationEnabled(Location location) {
 
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -779,6 +779,28 @@ public class Utils {
 		}
 
 		return dir.delete();
+	}
+
+	public static boolean fetchUserInstalledApps(Context context, String packageName){
+		try {
+			int flags = PackageManager.GET_META_DATA ;
+			PackageManager pm = context.getPackageManager();
+			List<PackageInfo> packages = pm.getInstalledPackages(flags);
+			boolean installed = false;
+
+				for (PackageInfo packageInfo : packages) {
+					if (packageInfo.versionName != null && ((packageInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 1)) {
+						if(packageName.equalsIgnoreCase(packageInfo.packageName)){
+							installed = true;
+							break;
+						}
+					}
+				}
+			return installed;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }

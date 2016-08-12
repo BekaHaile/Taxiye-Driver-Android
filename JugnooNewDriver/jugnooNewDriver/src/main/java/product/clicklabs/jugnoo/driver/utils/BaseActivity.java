@@ -25,6 +25,8 @@ import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.RequestDuplicateRegistrationActivity;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldOTPConfirmScreen;
+import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 
 /**
  * Created by clicklabs on 7/3/15.
@@ -50,6 +52,8 @@ public class BaseActivity extends Activity {
 					|| this instanceof MultipleAccountsActivity
 					|| this instanceof OTPConfirmScreen
 					|| this instanceof RegisterScreen
+					|| this instanceof OldOTPConfirmScreen
+					|| this instanceof OldRegisterScreen
 					|| this instanceof RequestDuplicateRegistrationActivity
 					|| this instanceof MultipleAccountsActivity
 					|| this instanceof ChangePhoneBeforeOTPActivity

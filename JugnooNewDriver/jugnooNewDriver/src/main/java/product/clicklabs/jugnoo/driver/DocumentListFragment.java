@@ -2,11 +2,14 @@ package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -50,6 +53,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -62,6 +66,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	TextView textViewInfoDisplay;
 	ListView listView;
 	String accessToken;
+	int imgPixel;
 
 
 	protected ImageChooserManager imageChooserManager;
@@ -111,15 +116,15 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		accessToken = getArguments().getString("access_token");
 		getDocsAsync(getActivity());
 
+		activity.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_DOCUMENT_LIST));
+
 		return rootView;
 	}
 
 
 	@Override
 	public void onDestroy() {
-//		if (fetchRidesClient != null) {
-//			fetchRidesClient.cancelAllRequests(true);
-//		}
+		activity.unregisterReceiver(broadcastReceiver);
 		super.onDestroy();
 	}
 
@@ -139,7 +144,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		TextView docType, docRequirement, docStatus, docRejected;
 		RelativeLayout addImageLayout, addImageLayout2;
 		RelativeLayout relative, relativeLayoutImageStatus;
-		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus;
+		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
 		int id;
 	}
 
@@ -186,6 +191,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.setCapturedImage2 = (ImageView) convertView.findViewById(R.id.setCapturedImage2);
 				holder.imageViewDocStatus = (ImageView) convertView.findViewById(R.id.imageViewDocStatus);
 
+				holder.deleteImage1 = (ImageView) convertView.findViewById(R.id.deleteImage1);
+				holder.deleteImage1.setTag(holder);
+				holder.deleteImage2 = (ImageView) convertView.findViewById(R.id.deleteImage2);
+				holder.deleteImage2.setTag(holder);
+
 				holder.addImageLayout = (RelativeLayout) convertView.findViewById(R.id.addImageLayout);
 
 				holder.addImageLayout.setTag(holder);
@@ -214,19 +224,30 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder = (ViewHolderDriverDoc) convertView.getTag();
 			}
 
-			final DocInfo docInfo = docs.get(position);
+			DocInfo docInfo = docs.get(position);
 
 			holder.id = position;
 
-			holder.docType.setText(docInfo.docType);
+
+			if(docInfo.docCount<2){
+				holder.addImageLayout2.setVisibility(View.GONE);
+			}
+
 			if (docInfo.docRequirement == 1) {
-				holder.docRequirement.setText(getResources().getString(R.string.mandatory)+"*");
+				holder.docRequirement.setText(getResources().getString(R.string.mandatory));
+				holder.docType.setText(docInfo.docType+"*");
 			} else {
 				holder.docRequirement.setText(getResources().getString(R.string.optional));
+				holder.docType.setText(docInfo.docType);
 			}
 			holder.docStatus.setText(getResources().getString(R.string.uploading));
 
-			if (docInfo.status.equalsIgnoreCase("uploaded")) {
+			holder.docRejected.setVisibility(View.GONE);
+
+			holder.addImageLayout.setVisibility(View.VISIBLE);
+			holder.addImageLayout2.setVisibility(View.VISIBLE);
+
+			if (docInfo.status.equalsIgnoreCase("uploaded") || docInfo.status.equalsIgnoreCase("4")) {
 				holder.imageViewDocStatus.setImageResource(R.drawable.doc_uploaded);
 				holder.docStatus.setText(getResources().getString(R.string.uploaded));
 				holder.docStatus.setTextColor(getResources().getColor(R.color.new_orange));
@@ -245,19 +266,44 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docStatus.setTextColor(getResources().getColor(R.color.blue_status));
 			}
 
+			if (docInfo.status.equalsIgnoreCase("3") || docInfo.isEditable ==0) {
+				holder.addImageLayout.setEnabled(false);
+				holder.addImageLayout2.setEnabled(false);
+			}
+
+			if(docInfo.isEditable ==0){
+				holder.addImageLayout.setEnabled(false);
+				holder.addImageLayout2.setEnabled(false);
+				holder.imageViewUploadDoc.setEnabled(false);
+			}else {
+				holder.addImageLayout.setEnabled(true);
+				holder.addImageLayout2.setEnabled(true);
+				holder.imageViewUploadDoc.setEnabled(true);
+			}
+
 			if (docInfo.getFile() != null) {
 				docInfo.isExpended = true;
 				Picasso.with(getActivity()).load(docInfo.getFile())
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage);
+
+				if(docInfo.isEditable ==1) {
+					holder.deleteImage1.setVisibility(View.VISIBLE);
+				}else {
+					holder.deleteImage1.setVisibility(View.GONE);
+				}
+
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout.setEnabled(false);
 				} else {
 					holder.addImageLayout.setEnabled(true);
+					holder.deleteImage1.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 				}
 			} else {
 				holder.setCapturedImage.setImageResource(R.drawable.transparent);
+				holder.deleteImage1.setVisibility(View.GONE);
 			}
 
 			if (docInfo.getFile1() != null) {
@@ -266,6 +312,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 						//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 						.into(holder.setCapturedImage2);
+				if(docInfo.isEditable ==1) {
+					holder.deleteImage2.setVisibility(View.VISIBLE);
+				}else {
+					holder.deleteImage2.setVisibility(View.GONE);
+				}
 				if (!docInfo.status.equalsIgnoreCase("2")) {
 					holder.addImageLayout2.setEnabled(false);
 				} else {
@@ -273,31 +324,52 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			} else {
 				holder.setCapturedImage2.setImageResource(R.drawable.transparent);
+				holder.deleteImage2.setVisibility(View.GONE);
 			}
 
-			if (docInfo.url.size() > 0 || docInfo.status.equalsIgnoreCase("2")) {
+			if ( docInfo.status.equalsIgnoreCase("2")
+					|| (docInfo.url.get(0) != null && !"".equalsIgnoreCase(docInfo.url.get(0)))
+					|| ( docInfo.url.get(1) != null && !"".equalsIgnoreCase(docInfo.url.get(1)))) {
+
 				try {
 					docInfo.isExpended = true;
 
-					if (docInfo.url.size() > 0) {
+					if (docInfo.url.get(0) != null && !"".equalsIgnoreCase(docInfo.url.get(0))) {
 						Picasso.with(getActivity()).load(docInfo.url.get(0))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage);
+						if(docInfo.isEditable ==1) {
+							holder.deleteImage1.setVisibility(View.VISIBLE);
+						}else {
+							holder.deleteImage1.setVisibility(View.GONE);
+						}
 					}
 					if (!docInfo.status.equalsIgnoreCase("2")) {
 						holder.addImageLayout.setEnabled(false);
 					} else {
 						holder.addImageLayout.setEnabled(true);
 						holder.setCapturedImage.setImageResource(R.drawable.reload_image);
+						holder.deleteImage1.setVisibility(View.GONE);
+						holder.deleteImage2.setVisibility(View.GONE);
 						docInfo.setFile(null);
 						docInfo.setFile1(null);
 					}
-					if (docInfo.url.size() > 1) {
+
+					if(docInfo.status.equalsIgnoreCase("4")){
+						holder.addImageLayout.setEnabled(true);
+					}
+
+					if (docInfo.url.get(1) != null && !"".equalsIgnoreCase(docInfo.url.get(1))) {
 						Picasso.with(getActivity()).load(docInfo.url.get(1))
 								.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
 								//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 								.into(holder.setCapturedImage2);
+						if(docInfo.isEditable ==1) {
+							holder.deleteImage2.setVisibility(View.VISIBLE);
+						}else {
+							holder.deleteImage2.setVisibility(View.GONE);
+						}
 						if (!docInfo.status.equalsIgnoreCase("2")) {
 							holder.addImageLayout2.setEnabled(false);
 						} else {
@@ -305,7 +377,22 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						}
 					}
 				} catch (Exception e) {
+					holder.deleteImage1.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 					e.printStackTrace();
+				}
+			}
+
+
+
+			if (docInfo.status.equalsIgnoreCase("3")) {
+				if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0)))){
+					holder.addImageLayout.setVisibility(View.GONE);
+					holder.deleteImage1.setVisibility(View.GONE);
+				}
+				if((docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
+					holder.addImageLayout2.setVisibility(View.GONE);
+					holder.deleteImage2.setVisibility(View.GONE);
 				}
 			}
 
@@ -320,6 +407,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.docRequirement.setVisibility(View.VISIBLE);
 			}
 
+			if((docInfo.url.get(0) == null || "".equalsIgnoreCase(docInfo.url.get(0))) && (docInfo.url.get(1) == null || "".equalsIgnoreCase(docInfo.url.get(1)))){
+				docInfo.isExpended = false;
+			}
+
 			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -330,21 +421,63 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				}
 			});
 
+			holder.deleteImage1.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					DocInfo docInfodeleteImage1 = docs.get(holder.id);
+					docInfodeleteImage1.setFile(null);
+					docInfodeleteImage1.url.set(0, null);
+					holder.addImageLayout.setEnabled(true);
+					coloum =0;
+					deleteImage(getActivity(), docInfodeleteImage1.docTypeNum);
+					holder.deleteImage1.setVisibility(View.GONE);
+					driverDocumentListAdapter.notifyDataSetChanged();
+				}
+			});
+
+			holder.deleteImage2.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
+					DocInfo docInfodeleteImage2 = docs.get(holder.id);
+					docInfodeleteImage2.setFile1(null);
+					docInfodeleteImage2.url.set(1, null);
+					holder.addImageLayout2.setEnabled(true);
+					coloum =1;
+					deleteImage(getActivity(), docInfodeleteImage2.docTypeNum);
+					holder.deleteImage2.setVisibility(View.GONE);
+					driverDocumentListAdapter.notifyDataSetChanged();
+				}
+			});
+
 			holder.addImageLayout.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					try {
 						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 						rejectionId = holder.id;
-						if (docInfo.status.equalsIgnoreCase("2")) {
-							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+						DocInfo docInfoImageLayout = docs.get(holder.id);
+						if (docInfoImageLayout.status.equalsIgnoreCase("2")) {
+
+							DialogPopup.alertPopupTwoButtonsWithListeners(getActivity(),
+									getResources().getString(R.string.rejection_reason),
+									docInfoImageLayout.reason,
+									getResources().getString(R.string.upload_again),
+									getResources().getString(R.string.cancel),
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											uploadfile(getActivity(), rejectionId);
 											coloum = 0;
 										}
-									});
+									},
+									new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, true);
 						} else {
 							uploadfile(getActivity(), holder.id);
 							coloum = 0;
@@ -361,15 +494,26 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					try {
 						ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();
 						rejectionId = holder.id;
-						if (docInfo.status.equalsIgnoreCase("2")) {
-							DialogPopup.alertPopupWithListener(getActivity(), getResources().getString(R.string.rejection_reason), docInfo.reason,
+						DocInfo docInfoImageLayout2 = docs.get(holder.id);
+						if (docInfoImageLayout2.status.equalsIgnoreCase("2")) {
+							DialogPopup.alertPopupTwoButtonsWithListeners(getActivity(),
+									getResources().getString(R.string.rejection_reason),
+									docInfoImageLayout2.reason,
+									getResources().getString(R.string.upload_again),
+									getResources().getString(R.string.cancel),
 									new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											uploadfile(getActivity(), rejectionId);
 											coloum = 1;
 										}
-									});
+									},
+									new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, true);
 						} else {
 							uploadfile(getActivity(), holder.id);
 							coloum = 1;
@@ -385,7 +529,16 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	}
 
-	private void getDocsAsync(final Activity activity) {
+
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			getDocsAsync(activity);
+		}
+	};
+
+
+	public void getDocsAsync(final Activity activity) {
 		try {
 			progressBar.setVisibility(View.VISIBLE);
 			RestClient.getApiServices().docRequest(accessToken, new Callback<DocRequirementResponse>() {
@@ -401,11 +554,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
-
+							imgPixel = docRequirementResponse.getImgPixel();
+							docs.clear();
 							for (int i = 0; i < docRequirementResponse.getData().size(); i++) {
 								DocRequirementResponse.DocumentData data = docRequirementResponse.getData().get(i);
 								DocInfo docInfo = new DocInfo(data.getDocTypeText(), data.getDocTypeNum(), data.getDocRequirement(),
-										data.getDocStatus(), data.getDocUrl(), data.getReason());
+										data.getDocStatus(), data.getDocUrl(), data.getReason(), data.getDocCount(), data.getIsEditable());
 								docs.add(docInfo);
 							}
 							updateListData(activity.getResources().getString(R.string.no_doc_available), false);
@@ -573,13 +727,28 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
 //					selected_photo.setImageBitmap(bitmap);
+					Bitmap newBitmap = null;
+					if(bitmap != null) {
+						double oldHeight = bitmap.getHeight();
+						double oldWidth = bitmap.getWidth();
+
+						if (oldWidth > oldHeight) {
+							int newHeight = imgPixel;
+							int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+						} else {
+							int newWidth = imgPixel;
+							int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+						}
+					}
 
 					File f = null;
 					if (bitmap != null) {
-						f = compressToFile(getActivity(), bitmap, Bitmap.CompressFormat.JPEG, 50, index);
+						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
-						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, userPhoneNo, image);
+						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
 					}
 
 
@@ -593,13 +762,14 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, String userPhoneNo, final ChosenImage image) {
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, final ChosenImage image) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<String, String>();
 
 				params.put("access_token", accessToken);
+				params.put("img_position", String.valueOf(coloum));
 				params.put("doc_type_num", String.valueOf(docNumType));
 
 				TypedFile typedFile;
@@ -623,6 +793,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										docs.get(index).status = jObj.getString("status");
 										if (coloum == 0) {
 											docs.get(index).setFile(new File(image.getFileThumbnail()));
+
 										} else {
 											docs.get(index).setFile1(new File(image.getFileThumbnail()));
 										}
@@ -667,6 +838,78 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		}
 	}
 
+
+	private void deleteImage(final Activity activity, Integer docNumType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", accessToken);
+				params.put("img_position", String.valueOf(coloum));
+				params.put("doc_type_num", String.valueOf(docNumType));
+
+
+				RestClient.getApiServices().deleteImage(params, new Callback<DocRequirementResponse>() {
+					@Override
+					public void success(DocRequirementResponse docRequirementResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+
+							if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+								int flag = jObj.getInt("flag");
+								String message = JSONParser.getServerMessage(jObj);
+
+								if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+									if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+
+									} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									} else {
+										DialogPopup.alertPopup(activity, "", message);
+										docs.get(index).isExpended = false;
+										driverDocumentListAdapter.notifyDataSetChanged();
+									}
+									DialogPopup.dismissLoadingDialog();
+								}
+							} else {
+								DialogPopup.dismissLoadingDialog();
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.dismissLoadingDialog();
+							docs.get(index).isExpended = false;
+							driverDocumentListAdapter.notifyDataSetChanged();
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						docs.get(index).isExpended = false;
+						driverDocumentListAdapter.notifyDataSetChanged();
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
+			}
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
 									   int quality, int index) {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -684,6 +927,20 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 			e.printStackTrace();
 		}
 		return f;
+	}
+
+
+	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+				matrix, false);
+
+		return resizedBitmap;
 	}
 
 

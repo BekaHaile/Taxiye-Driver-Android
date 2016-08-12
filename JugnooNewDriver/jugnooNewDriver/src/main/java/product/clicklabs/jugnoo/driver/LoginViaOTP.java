@@ -592,6 +592,7 @@ public class LoginViaOTP extends BaseActivity {
 									overridePendingTransition(R.anim.right_in, R.anim.right_out);
 								}
 							} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+								JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 								Intent intent = new Intent(LoginViaOTP.this, DriverDocumentActivity.class);
 								intent.putExtra("access_token",jObj.getString("access_token"));
 								startActivity(intent);

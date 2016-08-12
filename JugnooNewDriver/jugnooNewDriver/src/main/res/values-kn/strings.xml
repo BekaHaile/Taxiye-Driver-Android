@@ -601,6 +601,10 @@
     <string name="this_week">ಈ ವಾರ</string>
     <string name="outstanding_amount1">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
     <string name="upload_again">Upload Again</string>
+    <string name="self_enroled">Self Enroled</string>
+    <string name="register_via_agent">Register Via Agent</string>
+    <string name="upload_Documents">Upload Documents</string>
+    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 
 
     <string-array name="CountryCodes" >

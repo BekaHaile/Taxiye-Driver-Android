@@ -65,8 +65,8 @@
 
                     <ImageView
                         android:id="@+id/image_gallery"
-                        android:layout_width="90px"
-                        android:layout_height="90px"
+                        android:layout_width="80px"
+                        android:layout_height="80px"
                         android:layout_gravity="center"
                         android:layout_marginTop="24px"
                         android:background="@drawable/doc_gallery"/>
@@ -77,7 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/image_gallery"
                         android:layout_marginBottom="20px"
-                        android:layout_marginLeft="16px"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="10px"
                         android:text="Gallery"
                         android:textColor="@color/grey_dark_more"
@@ -95,8 +95,8 @@
 
                     <ImageView
                         android:id="@+id/image_camera"
-                        android:layout_width="90px"
-                        android:layout_height="90px"
+                        android:layout_width="87px"
+                        android:layout_height="80px"
                         android:layout_marginTop="24px"
                         android:layout_toRightOf="@+id/image_gallery"
                         android:background="@drawable/doc_camera"/>
@@ -106,8 +106,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/image_camera"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginBottom="20px"
-                        android:layout_marginLeft="13px"
                         android:layout_marginTop="10px"
                         android:layout_toRightOf="@+id/image_gallery"
                         android:text="Camera"
