@@ -4769,7 +4769,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+								if(driverScreenMode == DriverScreenMode.D_IN_RIDE
+										&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
 									setDeliveryMarkers();
 								} else {
 									setAttachedCustomerMarkers();
