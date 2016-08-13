@@ -895,17 +895,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
-//					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
-				}
-			});
-
-			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
+//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//					FlurryEventLogger.event(CALL_US);
+					startActivity(new Intent(HomeActivity.this, CameraDemoActivity.class));
 				}
 			});
 

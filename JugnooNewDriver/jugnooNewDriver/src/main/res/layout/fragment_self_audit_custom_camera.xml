@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="1134px">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false" >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/profile"
+            android:textColor="@color/white"
+            android:textSize="40px" />
+
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/customCamera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
+
+        <Button
+            android:id="@+id/captureImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:background="@drawable/click_picture" />
+
+        <Button
+            android:id="@+id/flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginRight="25dp"
+            android:layout_toLeftOf="@id/captureImage"
+            android:visibility="gone"
+            android:background="@drawable/cross_30_px" />
+
+        <Button
+            android:id="@+id/flipCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@id/captureImage"
+            android:background="@drawable/tick_30_px" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>
