@@ -180,7 +180,8 @@ public class DriverRateCard extends BaseActivity {
 			if(rateCardResponse.getRates().getAfterThresholdDistance() > 0){
 				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
 				textViewDifferentialPricingEnable.setText(getResources().getString(R.string.diffrential_pricing_rate,
-						rateCardResponse.getRates().getAfterThresholdDistance(), rateCardResponse.getRates().getGetAfterThresholdValue()));
+						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance()),
+						String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue())));
 			}
 
 
