@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -21,12 +22,15 @@ import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 /**
  * Created by aneeshbansal on 28/05/16.
@@ -43,13 +47,14 @@ public class CustomerSwitcher {
 	private LinearLayout linearLayoutDeliveryFare;
 
 	private CustomerInfoAdapter customerInfoAdapter;
+	double distanceRefreshTime = 0;
 
-	public CustomerSwitcher(HomeActivity activity, View rootView){
+	public CustomerSwitcher(HomeActivity activity, View rootView) {
 		this.activity = activity;
 		init(rootView);
 	}
 
-	public void init(View rootView){
+	public void init(View rootView) {
 
 		textViewCustomerName = (TextView) rootView.findViewById(R.id.textViewCustomerName);
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
@@ -61,7 +66,7 @@ public class CustomerSwitcher {
 		textViewDeliveryFare.setTypeface(Fonts.mavenRegular(activity));
 		textViewShowDistance = (TextView) rootView.findViewById(R.id.textViewShowDistance);
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
-		((TextView)rootView.findViewById(R.id.textViewDeliveryApprox)).setTypeface(Fonts.mavenRegular(activity));
+		((TextView) rootView.findViewById(R.id.textViewDeliveryApprox)).setTypeface(Fonts.mavenRegular(activity));
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
 		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);
@@ -123,7 +128,7 @@ public class CustomerSwitcher {
 	public void setCustomerData(int engagementId) {
 		try {
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-			if(engagementId == customerInfo.getEngagementId()) {
+			if (engagementId == customerInfo.getEngagementId()) {
 				Utils.setDrawableColor(relativeLayoutCall, customerInfo.getColor(),
 						activity.getResources().getColor(R.color.new_orange));
 
@@ -181,28 +186,83 @@ public class CustomerSwitcher {
 		}
 	}
 
-	public void updateDistanceOnLocationChanged(){
-		try{
-			textViewShowDistance.setVisibility(View.GONE);
-			if(DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
-				textViewShowDistance.setVisibility(View.VISIBLE);
-				if (HomeActivity.myLocation != null) {
-					textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-							+ " " + activity.getResources().getString(R.string.km_away));
+	public void updateDistanceOnLocationChanged() {
+		try {
+			if (System.currentTimeMillis() - distanceRefreshTime > 60000) {
+				textViewShowDistance.setVisibility(View.GONE);
+				if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
+					textViewShowDistance.setVisibility(View.VISIBLE);
+					if (HomeActivity.myLocation != null) {
+
+						new Thread(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									Response responseR = RestClient.getDistanceApiServices().getDistance(HomeActivity.myLocation.getLongitude()
+											+ "," + HomeActivity.myLocation.getLatitude() + ";" + Data.getCurrentCustomerInfo().getRequestlLatLng().longitude
+											+ "," + Data.getCurrentCustomerInfo().getRequestlLatLng().latitude);
+
+									String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
+
+									try {
+										JSONObject jsonObject = new JSONObject(response);
+										String status = jsonObject.getString("code");
+										if ("OK".equalsIgnoreCase(status)) {
+											JSONObject element0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
+											double distance = element0.optDouble("distance", 0);
+											final double finalDistance = distance;
+
+											activity.runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													if (finalDistance > 0) {
+														distanceRefreshTime = System.currentTimeMillis();
+														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+																.format(finalDistance / 1000d)
+																+ " " + activity.getResources().getString(R.string.km_away));
+													} else {
+														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+																.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+																		new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+																+ " " + activity.getResources().getString(R.string.km_away));
+													}
+												}
+											});
+										}
+									} catch (Exception e) {
+										e.printStackTrace();
+										textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+												.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+														new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+												+ " " + activity.getResources().getString(R.string.km_away));
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+									textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+											.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+													new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+											+ " " + activity.getResources().getString(R.string.km_away));
+								}
+
+							}
+						}).start();
+					}
 				}
 			}
-		} catch(Exception e){
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
+
 	}
 
 
-	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback{
+	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback {
 
 		private int engagementId;
 		private TextView textView;
-		public CustomGoogleGeocodeCallback(int engagementId, TextView textView){
+
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView) {
 			this.engagementId = engagementId;
 			this.textView = textView;
 		}
@@ -224,7 +284,7 @@ public class CustomerSwitcher {
 	}
 
 
-	public void updateList(){
+	public void updateList() {
 		customerInfoAdapter.notifyList();
 	}
 }
