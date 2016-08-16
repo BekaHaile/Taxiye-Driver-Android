@@ -188,53 +188,45 @@ public class CustomerSwitcher {
 
 	public void updateDistanceOnLocationChanged() {
 		try {
-			if (System.currentTimeMillis() - distanceRefreshTime > 60000) {
-				textViewShowDistance.setVisibility(View.GONE);
-				if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
-					textViewShowDistance.setVisibility(View.VISIBLE);
-					if (HomeActivity.myLocation != null) {
+			textViewShowDistance.setVisibility(View.GONE);
+			if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
+				textViewShowDistance.setVisibility(View.VISIBLE);
+				if (System.currentTimeMillis() - distanceRefreshTime > 60000
+						&& HomeActivity.myLocation != null) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							try {
+								Response responseR = RestClient.getDistanceApiServices().getDistance(HomeActivity.myLocation.getLongitude()
+										+ "," + HomeActivity.myLocation.getLatitude() + ";" + Data.getCurrentCustomerInfo().getRequestlLatLng().longitude
+										+ "," + Data.getCurrentCustomerInfo().getRequestlLatLng().latitude);
 
-						new Thread(new Runnable() {
-							@Override
-							public void run() {
+								String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
+
 								try {
-									Response responseR = RestClient.getDistanceApiServices().getDistance(HomeActivity.myLocation.getLongitude()
-											+ "," + HomeActivity.myLocation.getLatitude() + ";" + Data.getCurrentCustomerInfo().getRequestlLatLng().longitude
-											+ "," + Data.getCurrentCustomerInfo().getRequestlLatLng().latitude);
+									JSONObject jsonObject = new JSONObject(response);
+									String status = jsonObject.getString("code");
+									if ("OK".equalsIgnoreCase(status)) {
+										JSONObject element0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
+										double distance = element0.optDouble("distance", 0);
+										final double finalDistance = distance;
 
-									String response = new String(((TypedByteArray) responseR.getBody()).getBytes());
-
-									try {
-										JSONObject jsonObject = new JSONObject(response);
-										String status = jsonObject.getString("code");
-										if ("OK".equalsIgnoreCase(status)) {
-											JSONObject element0 = jsonObject.getJSONArray("routes").getJSONObject(0).getJSONArray("legs").getJSONObject(0);
-											double distance = element0.optDouble("distance", 0);
-											final double finalDistance = distance;
-
-											activity.runOnUiThread(new Runnable() {
-												@Override
-												public void run() {
-													if (finalDistance > 0) {
-														distanceRefreshTime = System.currentTimeMillis();
-														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																.format(finalDistance / 1000d)
-																+ " " + activity.getResources().getString(R.string.km_away));
-													} else {
-														textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-																.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-																		new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-																+ " " + activity.getResources().getString(R.string.km_away));
-													}
+										activity.runOnUiThread(new Runnable() {
+											@Override
+											public void run() {
+												if (finalDistance > 0) {
+													distanceRefreshTime = System.currentTimeMillis();
+													textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+															.format(finalDistance / 1000d)
+															+ " " + activity.getResources().getString(R.string.km_away));
+												} else {
+													textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+															.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+																	new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+															+ " " + activity.getResources().getString(R.string.km_away));
 												}
-											});
-										}
-									} catch (Exception e) {
-										e.printStackTrace();
-										textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-												.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-														new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-												+ " " + activity.getResources().getString(R.string.km_away));
+											}
+										});
 									}
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -243,11 +235,18 @@ public class CustomerSwitcher {
 													new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
 											+ " " + activity.getResources().getString(R.string.km_away));
 								}
-
+							} catch (Exception e) {
+								e.printStackTrace();
+								textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+										.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+												new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+										+ " " + activity.getResources().getString(R.string.km_away));
 							}
-						}).start();
-					}
+
+						}
+					}).start();
 				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
