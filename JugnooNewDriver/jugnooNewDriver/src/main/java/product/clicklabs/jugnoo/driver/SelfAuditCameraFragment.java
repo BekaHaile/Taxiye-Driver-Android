@@ -1,7 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -9,71 +8,83 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
+
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.List;
-
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 
 /**
  * Created by aneeshbansal on 13/08/16.
  */
-public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Callback,
+public class SelfAuditCameraFragment extends android.support.v4.app.Fragment implements SurfaceHolder.Callback,
 		View.OnClickListener {
 
 	private SurfaceView surfaceView;
 	private SurfaceHolder surfaceHolder;
 	private Camera camera;
-	private Button flipCamera;
-	private Button flashCameraButton;
+	private Button acceptImage;
+	private Button rejectImage;
 	private Button captureImage;
 	private int cameraId;
 	private boolean flashmode = false;
 	private int rotation;
 	private LinearLayout linearLayoutroot;
+	private RelativeLayout relativeLayoutConfirmImage;
+	private SelfAuditActivity activity;
+	private ImageView imageViewCapturedImg1Progress, imageViewCapturedImg2Progress, imageViewCapturedImg3Progress,
+			imageViewCapturedImg4Progress, imageViewCapturedImg5Progress, imageViewCapturedImg1, imageViewCapturedImg2,
+			imageViewCapturedImg3, imageViewCapturedImg4, imageViewCapturedImg5;
+	private TextView textViewCapturedImg1Progress, textViewCapturedImg2Progress,textViewCapturedImg3Progress,
+			textViewCapturedImg4Progress, textViewCapturedImg5Progress;
+	public SelfAuditCameraFragment(){
+
+	}
 
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_self_audit_custom_camera);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_self_audit_custom_camera, container, false);
 
+		linearLayoutroot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
+		activity = (SelfAuditActivity) getActivity();
+		new ASSL(activity, linearLayoutroot, 1134, 720, false);
 
-		linearLayoutroot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
-		new ASSL(CameraDemoActivity.this, linearLayoutroot, 1134, 720, false);
 
 
 		// camera surface view created
+		relativeLayoutConfirmImage = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutConfirmImage);
 		cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
-		flipCamera = (Button) findViewById(R.id.flipCamera);
-		flashCameraButton = (Button) findViewById(R.id.flash);
-		captureImage = (Button) findViewById(R.id.captureImage);
-		surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+		acceptImage = (Button) rootView.findViewById(R.id.acceptImage);
+		rejectImage = (Button) rootView.findViewById(R.id.rejectImage);
+		captureImage = (Button) rootView.findViewById(R.id.captureImage);
+		surfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
 
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
-		flipCamera.setOnClickListener(this);
+		acceptImage.setOnClickListener(this);
 		captureImage.setOnClickListener(this);
-		flashCameraButton.setOnClickListener(this);
-		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+		rejectImage.setOnClickListener(this);
+		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+		return rootView;
 
 	}
 
@@ -86,22 +97,45 @@ public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Ca
 
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
+		refreshCamera();
 	}
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
+		camera.stopPreview();
+		camera.release();
+		camera = null;
+	}
 
+	public void refreshCamera() {
+
+		captureImage.setVisibility(View.VISIBLE);
+		relativeLayoutConfirmImage.setVisibility(View.GONE);
+
+		if (surfaceHolder.getSurface() == null) {
+			return;
+		}
+
+		try {
+			camera.stopPreview();
+		} catch (Exception e) {
+		}
+
+		try {
+			camera.setPreviewDisplay(surfaceHolder);
+			camera.startPreview();
+		} catch (Exception e) {
+		}
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.flash:
-//				flashOnButton();
+			case R.id.rejectImage:
+				rejectImage();
 				break;
-			case R.id.flipCamera:
-//				flipCamera();
+			case R.id.acceptImage:
+				acceptImage();
 				break;
 			case R.id.captureImage:
 				takeImage();
@@ -113,7 +147,7 @@ public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Ca
 	}
 
 	private void alertCameraDialog() {
-		AlertDialog.Builder dialog = createAlert(CameraDemoActivity.this,
+		AlertDialog.Builder dialog = createAlert(getActivity(),
 				"Camera info", "error to open camera");
 		dialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
 			@Override
@@ -195,7 +229,7 @@ public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Ca
 	private void setUpCamera(Camera c) {
 		Camera.CameraInfo info = new Camera.CameraInfo();
 		Camera.getCameraInfo(cameraId, info);
-		rotation = getWindowManager().getDefaultDisplay().getRotation();
+		rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
 		int degree = 0;
 		switch (rotation) {
 			case Surface.ROTATION_0:
@@ -257,52 +291,61 @@ public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Ca
 					Bitmap rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
 							0, loadedImage.getWidth(), loadedImage.getHeight(),
 							rotateMatrix, false);
-					String state = Environment.getExternalStorageState();
-					File folder = null;
-					if (state.contains(Environment.MEDIA_MOUNTED)) {
-						folder = new File(Environment
-								.getExternalStorageDirectory() + "/Demo");
-					} else {
-						folder = new File(Environment
-								.getExternalStorageDirectory() + "/Demo");
+
+					if(rotatedBitmap != null){
+						captureImage.setVisibility(View.GONE);
+						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
 					}
 
-					boolean success = true;
-					if (!folder.exists()) {
-						success = folder.mkdirs();
-					}
-					if (success) {
-						java.util.Date date = new java.util.Date();
-						imageFile = new File(folder.getAbsolutePath()
-								+ File.separator
-								+ new Timestamp(date.getTime()).toString()
-								+ "Image.jpg");
 
-						imageFile.createNewFile();
-					} else {
-						Toast.makeText(getBaseContext(), "Image Not saved",
-								Toast.LENGTH_SHORT).show();
-						return;
-					}
 
-					ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 
-					// save image into gallery
-					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-
-					FileOutputStream fout = new FileOutputStream(imageFile);
-					fout.write(ostream.toByteArray());
-					fout.close();
-					ContentValues values = new ContentValues();
-
-					values.put(MediaStore.Images.Media.DATE_TAKEN,
-							System.currentTimeMillis());
-					values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-					values.put(MediaStore.MediaColumns.DATA,
-							imageFile.getAbsolutePath());
-
-					CameraDemoActivity.this.getContentResolver().insert(
-							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+//					String state = Environment.getExternalStorageState();
+//					File folder = null;
+//					if (state.contains(Environment.MEDIA_MOUNTED)) {
+//						folder = new File(Environment
+//								.getExternalStorageDirectory() + "/Demo");
+//					} else {
+//						folder = new File(Environment
+//								.getExternalStorageDirectory() + "/Demo");
+//					}
+//
+//					boolean success = true;
+//					if (!folder.exists()) {
+//						success = folder.mkdirs();
+//					}
+//					if (success) {
+//						java.util.Date date = new java.util.Date();
+//						imageFile = new File(folder.getAbsolutePath()
+//								+ File.separator
+//								+ new Timestamp(date.getTime()).toString()
+//								+ "Image.jpg");
+//
+//						imageFile.createNewFile();
+//					} else {
+//						Toast.makeText(getBaseContext(), "Image Not saved",
+//								Toast.LENGTH_SHORT).show();
+//						return;
+//					}
+//
+//					ByteArrayOutputStream ostream = new ByteArrayOutputStream();
+//
+//					// save image into gallery
+//					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+//
+//					FileOutputStream fout = new FileOutputStream(imageFile);
+//					fout.write(ostream.toByteArray());
+//					fout.close();
+//					ContentValues values = new ContentValues();
+//
+//					values.put(MediaStore.Images.Media.DATE_TAKEN,
+//							System.currentTimeMillis());
+//					values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+//					values.put(MediaStore.MediaColumns.DATA,
+//							imageFile.getAbsolutePath());
+//
+//					SelfAuditCameraFragment.this.getContentResolver().insert(
+//							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -310,6 +353,14 @@ public class CameraDemoActivity extends BaseActivity implements SurfaceHolder.Ca
 
 			}
 		});
+	}
+
+	public void acceptImage(){
+		refreshCamera();
+	}
+
+	public void rejectImage(){
+		refreshCamera();
 	}
 }
 
