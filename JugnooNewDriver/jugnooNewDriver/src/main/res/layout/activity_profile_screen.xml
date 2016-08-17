@@ -313,7 +313,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
-                    android:text="@string/rides_cancelled"
+                    android:text="@string/rides_missed"
                     android:textColor="@color/black"
                     android:textSize="40px" />
 
@@ -348,7 +348,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="42px"
-                    android:text="@string/rides_missed"
+                    android:text="@string/rides_cancelled"
                     android:textColor="@color/black"
                     android:textSize="40px" />
 

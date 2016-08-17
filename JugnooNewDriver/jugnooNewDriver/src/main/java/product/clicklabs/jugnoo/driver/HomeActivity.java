@@ -3263,7 +3263,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if (distance >= 1000) {
-				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance / 1000) + getResources().getString(R.string.km_away));
+				holder.textViewRequestDistance.setText("" + decimalFormat.format(distance / 1000) + getResources().getString(R.string.km_away));
 			} else {
 				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
 			}
@@ -6304,14 +6304,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
 				params.rightMargin = 0;
 				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-				params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+					params.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+				} else{
+					params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, 0);
+				}
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.make_delivery));
 				buttonMakeDelivery.setTextSize(TypedValue.COMPLEX_UNIT_PX, 36f * ASSL.Xscale());
 			} else{
 				params.width = (int) (getResources().getDimension(R.dimen.button_width_small) * ASSL.Xscale());
 				params.rightMargin = (int) (30f * ASSL.Xscale());
-				params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
+					params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
+				} else{
+					params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
+				}
 				params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				buttonMakeDelivery.setLayoutParams(params);
 				buttonMakeDelivery.setText(getResources().getString(R.string.view_orders));
