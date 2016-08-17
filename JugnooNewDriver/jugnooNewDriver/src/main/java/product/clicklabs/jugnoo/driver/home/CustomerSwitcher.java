@@ -230,17 +230,28 @@ public class CustomerSwitcher {
 									}
 								} catch (Exception e) {
 									e.printStackTrace();
-									textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-											.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-													new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-											+ " " + activity.getResources().getString(R.string.km_away));
+									activity.runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+													.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+															new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+													+ " " + activity.getResources().getString(R.string.km_away));
+										}
+									});
+
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
-								textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
-										.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
-												new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
-										+ " " + activity.getResources().getString(R.string.km_away));
+								activity.runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+										textViewShowDistance.setText(Utils.getDecimalFormatForMoney()
+												.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
+														new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
+												+ " " + activity.getResources().getString(R.string.km_away));
+									}
+								});
 							}
 
 						}
@@ -254,6 +265,7 @@ public class CustomerSwitcher {
 
 
 	}
+
 
 
 	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback {
