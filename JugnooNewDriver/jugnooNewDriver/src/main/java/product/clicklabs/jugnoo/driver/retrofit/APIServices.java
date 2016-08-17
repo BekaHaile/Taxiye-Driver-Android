@@ -462,4 +462,10 @@ public interface APIServices {
 	@POST("/register_a_driver")
 	void oneTimeRegisteration(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
+
+	@Multipart
+	@POST("/update_audit_image")
+	void uploadAuditImageToServer(@Part("image_file") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
 }

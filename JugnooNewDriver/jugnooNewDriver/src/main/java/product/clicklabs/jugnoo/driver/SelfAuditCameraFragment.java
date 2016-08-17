@@ -1,8 +1,10 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -25,10 +27,29 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.kbeanie.imagechooser.api.ChosenImage;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RoundBorderTransform;
+
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by aneeshbansal on 13/08/16.
@@ -44,15 +65,18 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private Button captureImage;
 	private int cameraId;
 	private boolean flashmode = false;
-	private int rotation;
+	private Bitmap capturedImage;
+	private int rotation, imgPixel = 600;
 	private LinearLayout linearLayoutroot;
 	private RelativeLayout relativeLayoutConfirmImage;
 	private SelfAuditActivity activity;
+	private File frontImage = null, backImage = null, leftImage = null, rightImage = null, mobileStandImage = null;
+	private String frontURL, backURL, leftURL, rightURL, mobileStandURL;
 	private ImageView imageViewCapturedImg1Progress, imageViewCapturedImg2Progress, imageViewCapturedImg3Progress,
 			imageViewCapturedImg4Progress, imageViewCapturedImg5Progress, imageViewCapturedImg1, imageViewCapturedImg2,
 			imageViewCapturedImg3, imageViewCapturedImg4;
 	private TextView textViewCapturedImg1Progress, textViewCapturedImg2Progress,textViewCapturedImg3Progress,
-			textViewCapturedImg4Progress, textViewCapturedImg5Progress;
+			textViewCapturedImg4Progress, textViewCapturedImg5Progress, titleAutoSide;
 	public SelfAuditCameraFragment(){
 
 	}
@@ -99,6 +123,8 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		textViewCapturedImg4Progress.setTypeface(Data.latoRegular(activity));
 		textViewCapturedImg5Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg5Progress);
 		textViewCapturedImg5Progress.setTypeface(Data.latoRegular(activity));
+		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
+		titleAutoSide.setTypeface(Data.latoRegular(activity));
 
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
@@ -315,12 +341,11 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 							0, loadedImage.getWidth(), loadedImage.getHeight(),
 							rotateMatrix, false);
 
-					if(rotatedBitmap != null){
+					if (rotatedBitmap != null) {
+						capturedImage = rotatedBitmap;
 						captureImage.setVisibility(View.GONE);
 						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
 					}
-
-
 
 
 //					String state = Environment.getExternalStorageState();
@@ -380,10 +405,140 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 	public void acceptImage(){
 		refreshCamera();
+
+		Bitmap newBitmap = null;
+		if(capturedImage != null) {
+			double oldHeight = capturedImage.getHeight();
+			double oldWidth = capturedImage.getWidth();
+
+			if (oldWidth > oldHeight) {
+				int newHeight = imgPixel;
+				int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+				newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
+			} else {
+				int newWidth = imgPixel;
+				int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+				newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
+			}
+		}
+
+		File f = null;
+		if (capturedImage != null) {
+			f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
+		}
+
+		if(frontImage == null){
+			frontImage = f;
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+//			uploadPicToServer(activity, frontImage, 0, 1);
+
+		} else if (backImage == null){
+			backImage = f;
+			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
+
+		} else if (leftImage == null){
+			leftImage = f;
+			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
+		} else if (rightImage == null){
+			rightImage = f;
+			imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+		} else if (mobileStandImage == null){
+			mobileStandImage = f;
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+		}
+
+
+
 	}
 
 	public void rejectImage(){
+		capturedImage = null;
 		refreshCamera();
 	}
+
+	private void uploadPicToServer(final Activity activity, File photoFile, Integer auditType, Integer imageType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("image_type", String.valueOf(imageType));
+				params.put("audit_type", String.valueOf(auditType));
+
+				TypedFile typedFile;
+				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
+				RestClient.getApiServices().uploadAuditImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
+					@Override
+					public void success(DocRequirementResponse docRequirementResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
+
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+
+
+							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+								DialogPopup.alertPopup(activity, "", message);
+							} else {
+								DialogPopup.alertPopup(activity, "", message);
+							}
+
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
+			}
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+//	public void saveURL(String url, Integer imageType){
+//
+//		if(imageType == 1){
+//
+//			frontURL = url;
+//
+//		} if(imageType == 2){
+//
+//			backURL = url;
+//
+//		} if(imageType == 3){
+//
+//			leftURL = url;
+//
+//		} if(imageType == 4){
+//
+//			rightURL = url;
+//
+//
+//		} if(imageType == 5){
+//
+//		}
+//
+//	}
+
 }
 

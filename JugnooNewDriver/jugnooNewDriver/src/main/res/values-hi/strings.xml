@@ -645,6 +645,13 @@
 	<string name="add_photo">+ Add Photo</string>
 	<string name="left">Left</string>
 	<string name="right">Right</string>
+	<string name="Audit">AUDIT</string>
+	<string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
+	<string name="auto_from_front">Auto From Front</string>
+	<string name="auto_from_back">Auto From Back</string>
+	<string name="auto_from_left">Auto From Left</string>
+	<string name="auto_from_right">Auto From Right</string>
+	<string name="mobile_stand">Mobile Stand (Optional)</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

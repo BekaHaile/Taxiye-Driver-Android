@@ -16,48 +16,57 @@
         <LinearLayout
             android:id="@+id/relativeLayoutProgressBar"
             android:layout_width="388px"
-            android:layout_height="29px"
+            android:layout_height="28px"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="14px"
-            android:layout_marginTop="18px"
-            android:orientation="horizontal"
-            android:background="@drawable/self_audit_progress_bar">
+            android:layout_marginTop="18.5px"
+            android:tag="mwar"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImgProgress"
+                android:src="@drawable/self_audit_progress_bar"
+                android:tag="mwar"
+                android:layout_width="388px"
+                android:layout_height="28px"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg1Progress"
                 android:layout_marginTop="1.5px"
                 android:layout_marginLeft="1.5px"
+                android:src="@drawable/green_circle"
+                android:tag="mwar"
                 android:layout_width="24px"
-                android:layout_height="24px"
-                android:src="@drawable/green_circle"/>
+                android:layout_height="24px"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg2Progress"
                 android:layout_marginTop="1px"
                 android:layout_width="89.5px"
-                android:layout_height="wrap_content"
-                android:src="@drawable/green_circle_bar"/>
+                android:tag="mwar"
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg3Progress"
                 android:layout_marginTop="1px"
                 android:layout_width="89.5px"
-                android:layout_height="wrap_content"
-                android:src="@drawable/green_circle_bar"/>
+                android:tag="mwar"
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg4Progress"
                 android:layout_marginTop="1px"
                 android:layout_width="89.5px"
-                android:layout_height="wrap_content"
-                android:src="@drawable/green_circle_bar"/>
+                android:tag="mwar"
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg5Progress"
                 android:layout_marginTop="1px"
                 android:layout_width="89.5px"
-                android:layout_height="wrap_content"
-                android:src="@drawable/green_circle_bar"/>
+                android:tag="mwar"
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>
@@ -68,7 +77,7 @@
             android:layout_height="29px"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="14px"
-            android:layout_marginTop="16.5px"
+            android:layout_marginTop="17px"
             android:orientation="horizontal">
 
             <TextView
@@ -85,7 +94,7 @@
                 android:text="2"
                 android:textSize="26px"
                 android:layout_marginLeft="76px"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -94,7 +103,7 @@
                 android:text="3"
                 android:textSize="26px"
                 android:layout_marginLeft="75px"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -103,7 +112,7 @@
                 android:text="4"
                 android:textSize="26px"
                 android:layout_marginLeft="74px"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -112,7 +121,7 @@
                 android:text="5"
                 android:textSize="26px"
                 android:layout_marginLeft="74.5px"
-                android:textColor="@color/white"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -121,14 +130,14 @@
 
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/titleAutoSide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/relativeLayoutProgressBar"
             android:layout_centerInParent="true"
             android:layout_marginTop="22px"
             android:gravity="center"
-            android:text="@string/profile"
+            android:text="@string/auto_from_front"
             android:textColor="@color/white"
             android:textSize="40px"/>
 
@@ -152,6 +161,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="750px"
+            android:visibility="gone"
             android:orientation="horizontal">
 
 

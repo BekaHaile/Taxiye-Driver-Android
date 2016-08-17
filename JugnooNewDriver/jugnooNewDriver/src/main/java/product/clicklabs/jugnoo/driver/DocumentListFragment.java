@@ -54,6 +54,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -735,17 +736,17 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 						if (oldWidth > oldHeight) {
 							int newHeight = imgPixel;
 							int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+							newBitmap = Utils.getResizedBitmap(bitmap, newHeight, newWidth);
 						} else {
 							int newWidth = imgPixel;
 							int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+							newBitmap = Utils.getResizedBitmap(bitmap, newHeight, newWidth);
 						}
 					}
 
 					File f = null;
 					if (bitmap != null) {
-						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
+						f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
 						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
@@ -906,41 +907,6 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-
-
-
-	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
-									   int quality, int index) {
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		src.compress(format, quality, os);
-		File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
-		try {
-			f.createNewFile();
-			byte[] bitmapdata = os.toByteArray();
-
-			FileOutputStream fos = new FileOutputStream(f);
-			fos.write(bitmapdata);
-			fos.flush();
-			fos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return f;
-	}
-
-
-	public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
-		int width = bm.getWidth();
-		int height = bm.getHeight();
-		float scaleWidth = ((float) newWidth) / width;
-		float scaleHeight = ((float) newHeight) / height;
-		Matrix matrix = new Matrix();
-		matrix.postScale(scaleWidth, scaleHeight);
-		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
-				matrix, false);
-
-		return resizedBitmap;
 	}
 
 
