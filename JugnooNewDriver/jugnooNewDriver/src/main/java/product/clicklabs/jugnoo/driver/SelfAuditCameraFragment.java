@@ -50,7 +50,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private SelfAuditActivity activity;
 	private ImageView imageViewCapturedImg1Progress, imageViewCapturedImg2Progress, imageViewCapturedImg3Progress,
 			imageViewCapturedImg4Progress, imageViewCapturedImg5Progress, imageViewCapturedImg1, imageViewCapturedImg2,
-			imageViewCapturedImg3, imageViewCapturedImg4, imageViewCapturedImg5;
+			imageViewCapturedImg3, imageViewCapturedImg4;
 	private TextView textViewCapturedImg1Progress, textViewCapturedImg2Progress,textViewCapturedImg3Progress,
 			textViewCapturedImg4Progress, textViewCapturedImg5Progress;
 	public SelfAuditCameraFragment(){
@@ -76,6 +76,29 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		rejectImage = (Button) rootView.findViewById(R.id.rejectImage);
 		captureImage = (Button) rootView.findViewById(R.id.captureImage);
 		surfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
+
+
+		imageViewCapturedImg1Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg1Progress);
+		imageViewCapturedImg2Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg2Progress);
+		imageViewCapturedImg3Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg3Progress);
+		imageViewCapturedImg4Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg4Progress);
+		imageViewCapturedImg5Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg5Progress);
+
+		imageViewCapturedImg1 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg1);
+		imageViewCapturedImg2 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg2);
+		imageViewCapturedImg3 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg3);
+		imageViewCapturedImg4 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg4);
+
+		textViewCapturedImg1Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg1Progress);
+		textViewCapturedImg1Progress.setTypeface(Data.latoRegular(activity));
+		textViewCapturedImg2Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg2Progress);
+		textViewCapturedImg2Progress.setTypeface(Data.latoRegular(activity));
+		textViewCapturedImg3Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg3Progress);
+		textViewCapturedImg3Progress.setTypeface(Data.latoRegular(activity));
+		textViewCapturedImg4Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg4Progress);
+		textViewCapturedImg4Progress.setTypeface(Data.latoRegular(activity));
+		textViewCapturedImg5Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg5Progress);
+		textViewCapturedImg5Progress.setTypeface(Data.latoRegular(activity));
 
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
