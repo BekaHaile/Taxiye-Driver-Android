@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.RoundBorderTransform;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -20,7 +23,9 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.NotificationCenterActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
@@ -46,12 +51,13 @@ public class SubmitAuditFragment extends Fragment {
 	private ImageView imageIconFront, setCapturedImageFront, imageIconBack, setCapturedImageback, imageIconLeft, setCapturedImageLeft,
 			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand;
 
-
+	private int auditType;
 	private View rootView;
+	private AuditStateResponse auditStateResponse;
 	private NotificationCenterActivity activity;
 
-	public SubmitAuditFragment(){
-
+	public SubmitAuditFragment( int auditType){
+		this.auditType = auditType;
 	}
 
 	@Override
@@ -119,6 +125,9 @@ public class SubmitAuditFragment extends Fragment {
 		imageIconCameraStand = (ImageView) rootView.findViewById(R.id.image_icon_CameraStand);
 		setCapturedImageCameraStand = (ImageView) rootView.findViewById(R.id.setCapturedImageCameraStand);
 
+		if(auditType == 0){
+			etLayout.setVisibility(View.GONE);
+		}
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -143,8 +152,78 @@ public class SubmitAuditFragment extends Fragment {
 
 	public void update(){
 		try{
-			if(activity != null){
-				submitAuditStatus(activity);
+			if(activity != null && auditStateResponse!=null){
+
+				for(int i=0; i<auditStateResponse.getImages().size(); i++){
+
+					if(auditStateResponse.getImages().get(i).getImageType() == 0){
+						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
+							textViewRetryFront.setVisibility(View.VISIBLE);
+							imageIconFront.setImageResource(R.drawable.retry_icon_black);
+						} else {
+							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
+									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+									.into(setCapturedImageFront);
+							textViewRetryFront.setVisibility(View.GONE);
+							imageIconFront.setImageResource(R.drawable.retry_icon_white);
+
+						}
+					} else if(auditStateResponse.getImages().get(i).getImageType() == 1){
+						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
+							textViewRetryBack.setVisibility(View.VISIBLE);
+							imageIconBack.setImageResource(R.drawable.retry_icon_black);
+						} else {
+							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
+									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+									.into(setCapturedImageback);
+							textViewRetryBack.setVisibility(View.GONE);
+							imageIconBack.setImageResource(R.drawable.retry_icon_white);
+
+						}
+					} else if(auditStateResponse.getImages().get(i).getImageType() == 2){
+						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
+							textViewRetryLeft.setVisibility(View.VISIBLE);
+							imageIconLeft.setImageResource(R.drawable.retry_icon_black);
+						} else {
+							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
+									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+									.into(setCapturedImageLeft);
+							textViewRetryLeft.setVisibility(View.GONE);
+							imageIconLeft.setImageResource(R.drawable.retry_icon_white);
+
+						}
+					} else if(auditStateResponse.getImages().get(i).getImageType() == 3){
+						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
+							textViewRetryRight.setVisibility(View.VISIBLE);
+							imageIconRight.setImageResource(R.drawable.retry_icon_black);
+						} else {
+							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
+									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+									.into(setCapturedImageRight);
+							textViewRetryRight.setVisibility(View.GONE);
+							imageIconRight.setImageResource(R.drawable.retry_icon_white);
+
+						}
+					} else if(auditStateResponse.getImages().get(i).getImageType() == 4){
+						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
+							textViewRetryCameraStand.setVisibility(View.VISIBLE);
+							imageIconCameraStand.setImageResource(R.drawable.retry_icon_black);
+						} else {
+							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
+									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
+									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+									.into(setCapturedImageCameraStand);
+							textViewRetryCameraStand.setVisibility(View.GONE);
+							imageIconCameraStand.setImageResource(R.drawable.retry_icon_white);
+
+						}
+					}
+				}
+
 			}
 		} catch(Exception e){
 			e.printStackTrace();
@@ -214,6 +293,54 @@ public class SubmitAuditFragment extends Fragment {
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								int state = jObj.getInt("state");
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void getAuditState(final Activity activity, final Integer auditType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("audit_type", String.valueOf(auditType));
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().fetchAuditTypeStatus(params, new Callback<AuditStateResponse>() {
+					@Override
+					public void success(AuditStateResponse auditStateResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								SubmitAuditFragment.this.auditStateResponse = auditStateResponse;
+								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
+								selfAuditActivity.setAuditStateResponse(auditStateResponse);
+
 								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);

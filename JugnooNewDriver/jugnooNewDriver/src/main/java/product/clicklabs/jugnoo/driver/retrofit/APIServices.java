@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
@@ -474,4 +475,9 @@ public interface APIServices {
 	@POST("/fetch_audit_details_for_app")
 	void fetchAuditDetails(@FieldMap Map<String, String> params,
 							  Callback<AuditTypeResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_audit_type_status")
+	void fetchAuditTypeStatus(@FieldMap Map<String, String> params,
+						   Callback<AuditStateResponse> callback);
 }

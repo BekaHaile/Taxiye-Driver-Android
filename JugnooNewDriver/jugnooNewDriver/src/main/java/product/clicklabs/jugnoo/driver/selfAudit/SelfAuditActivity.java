@@ -9,6 +9,8 @@ import product.clicklabs.jugnoo.driver.DocumentListFragment;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.TransactionUtils;
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 
@@ -21,13 +23,11 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 
 	RelativeLayout relative;
-
-	Button backBtn, submitButton;
-
-	RelativeLayout relativeLayoutRides;
 	String accessToken;
+	AuditStateResponse auditStateResponse;
 
 	SelfAuditCameraFragment selfAuditCameraFragment;
+	SelectAuditFragment selectAuditFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(SelfAuditActivity.this, relative, 1134, 720, false);
-		selfAuditCameraFragment = new SelfAuditCameraFragment();
+		selectAuditFragment = new SelectAuditFragment();
 
 //		Bundle bundle = new Bundle();
 //		accessToken = getIntent().getExtras().getString("access_token");
@@ -44,18 +44,37 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 //		selfAuditCameraFragment.setArguments(bundle);
 
 		getSupportFragmentManager().beginTransaction()
-				.add(R.id.relative, selfAuditCameraFragment, SelfAuditCameraFragment.class.getName())
-				.addToBackStack(DocumentListFragment.class.getName())
+				.add(R.id.relative, selectAuditFragment, SelectAuditFragment.class.getName())
+				.addToBackStack(SelectAuditFragment.class.getName())
 				.commit();
 
 
 	}
 
+	public AuditStateResponse getAuditStateResponse() {
+		return auditStateResponse;
+	}
+
+	public void setAuditStateResponse(AuditStateResponse auditStateResponse) {
+		this.auditStateResponse = auditStateResponse;
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		selfAuditCameraFragment.onActivityResult(requestCode, resultCode, data);
+		selectAuditFragment.onActivityResult(requestCode, resultCode, data);
+	}
+
+	public RelativeLayout getRelativeLayoutContainer(){
+		return relative;
+	}
+
+	private TransactionUtils transactionUtils;
+	public TransactionUtils getTransactionUtils(){
+		if(transactionUtils == null){
+			transactionUtils = new TransactionUtils();
+		}
+		return transactionUtils;
 	}
 
 	@Override

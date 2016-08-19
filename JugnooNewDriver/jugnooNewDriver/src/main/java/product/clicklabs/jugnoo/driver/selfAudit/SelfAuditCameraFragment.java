@@ -63,7 +63,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private Button acceptImage;
 	private Button rejectImage;
 	private Button captureImage;
-	private int cameraId;
+	private int cameraId, auditState, auditType;
 	private boolean flashmode = false;
 	private Bitmap capturedImage;
 	private int rotation, imgPixel = 600;
@@ -71,14 +71,17 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private RelativeLayout relativeLayoutConfirmImage;
 	private SelfAuditActivity activity;
 	private File frontImage = null, backImage = null, leftImage = null, rightImage = null, mobileStandImage = null;
-	private String frontURL, backURL, leftURL, rightURL, mobileStandURL;
 	private ImageView imageViewCapturedImg1Progress, imageViewCapturedImg2Progress, imageViewCapturedImg3Progress,
 			imageViewCapturedImg4Progress, imageViewCapturedImg5Progress, imageViewCapturedImg1, imageViewCapturedImg2,
 			imageViewCapturedImg3, imageViewCapturedImg4;
 	private TextView textViewCapturedImg1Progress, textViewCapturedImg2Progress,textViewCapturedImg3Progress,
 			textViewCapturedImg4Progress, textViewCapturedImg5Progress, titleAutoSide;
-	public SelfAuditCameraFragment(){
 
+
+
+	public SelfAuditCameraFragment(int auditState, int auditType){
+			this.auditState = auditState;
+			this.auditType = auditType;
 	}
 
 
@@ -125,6 +128,24 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		textViewCapturedImg5Progress.setTypeface(Data.latoRegular(activity));
 		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
 		titleAutoSide.setTypeface(Data.latoRegular(activity));
+
+		if(auditState == 1){
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+		} else if(auditState == 2){
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
+		} else if(auditState == 3){
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
+		} else if(auditState == 4){
+			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+		}
 
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
@@ -427,37 +448,37 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 			f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
 		}
 
-		if(frontImage == null){
+		if(frontImage == null && auditState == 0){
 			frontImage = f;
 			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
-			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(frontImage, auditType, 0);
 
-		} else if (backImage == null){
+		} else if (backImage == null && auditState == 1){
 			backImage = f;
 			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
-			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(backImage, auditType, 1);
 
-		} else if (leftImage == null){
+		} else if (leftImage == null && auditState == 2){
 			leftImage = f;
 			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
-			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(leftImage, auditType, 2);
 
-		} else if (rightImage == null){
+		} else if (rightImage == null && auditState == 3){
 			rightImage = f;
 			imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
-			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(rightImage, auditType, 3);
 
-		} else if (mobileStandImage == null){
+		} else if (mobileStandImage == null && auditState == 4){
 			mobileStandImage = f;
-			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(mobileStandImage, auditType, 4);
 		}
 
 
@@ -469,7 +490,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		refreshCamera();
 	}
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer auditType, Integer imageType) {
+	private void uploadPicToServer(File photoFile, final Integer auditType, final Integer imageType) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				HashMap<String, String> params = new HashMap<String, String>();
@@ -492,7 +513,11 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 							String message = JSONParser.getServerMessage(jObj);
 
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", message);
+
+								if(imageType == 4){
+									activity.getTransactionUtils().openSubmitAuditFragment(activity,
+											activity.getRelativeLayoutContainer(), auditType);
+								}
 
 
 							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
@@ -515,30 +540,6 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		}
 	}
 
-//	public void saveURL(String url, Integer imageType){
-//
-//		if(imageType == 1){
-//
-//			frontURL = url;
-//
-//		} if(imageType == 2){
-//
-//			backURL = url;
-//
-//		} if(imageType == 3){
-//
-//			leftURL = url;
-//
-//		} if(imageType == 4){
-//
-//			rightURL = url;
-//
-//
-//		} if(imageType == 5){
-//
-//		}
-//
-//	}
 
 }
 

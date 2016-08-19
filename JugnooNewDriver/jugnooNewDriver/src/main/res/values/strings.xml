@@ -662,6 +662,9 @@
 	<string name="has_smart_phone">The driver has a smart phone</string>
 	<string name="optional_brack">(Optional)</string>
 	<string name="self_audit_caps">SELF AUDIT</string>
+	<string name="audit_required">Audit Required</string>
+	<string name="in_progress">In Progress</string>
+	<string name="request_pending">Request Pending</string>
 
 
 	<string-array name="CountryCodes" >

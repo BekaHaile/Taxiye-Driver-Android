@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -17,7 +18,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.NotificationCenterActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -25,6 +25,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -37,19 +38,21 @@ import retrofit.mime.TypedByteArray;
 public class NonJugnooAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
+	private RelativeLayout relativeLayoutNJBOption;
 	private LinearLayout etLayout;
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton;
 
 	private ImageView imageViewSmartPhoneCheck;
+	private int auditType;
 
 
 	private View rootView;
-	private NotificationCenterActivity activity;
+	private SelfAuditActivity activity;
 
-	public NonJugnooAuditFragment(){
-
+	public NonJugnooAuditFragment(int auditType){
+		this.auditType = auditType;
 	}
 
 	@Override
@@ -67,11 +70,11 @@ public class NonJugnooAuditFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_non_jugnoo_audit_branding, container, false);
 
-		activity = (NotificationCenterActivity) getActivity();
+		activity = (SelfAuditActivity) getActivity();
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.root);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
-
+		relativeLayoutNJBOption = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNJBOption);
 		etLayout = (LinearLayout) rootView.findViewById(R.id.etLayout);
 		submitButton = (Button) rootView.findViewById(R.id.submitButton);
 
@@ -87,15 +90,102 @@ public class NonJugnooAuditFragment extends Fragment {
 		textViewNextButton = (TextView) rootView.findViewById(R.id.textViewNextButton);
 		textViewNextButton.setTypeface(Data.latoRegular(activity));
 
-
 		imageViewSmartPhoneCheck = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheck);
 
+		if(auditType == 2){
+			nameEt.setVisibility(View.GONE);
+			relativeLayoutNJBOption.setVisibility(View.GONE);
+		} else {
+			nameEt.setVisibility(View.VISIBLE);
+			relativeLayoutNJBOption.setVisibility(View.VISIBLE);
+		}
 
+		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				nameEt.setError(null);
+
+			}
+		});
+
+		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				phoneNoEt.setError(null);
+			}
+		});
+
+		vehicleNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				vehicleNoEt.setError(null);
+			}
+		});
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				submitDriverDetails(activity);
+				String name ="";
+				if(auditType == 1) {
+					 name = nameEt.getText().toString().trim();
+					if (name.length() > 0) {
+						name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+					}
+				}
+
+				String autoNum = vehicleNoEt.getText().toString().trim();
+				String phoneNo = phoneNoEt.getText().toString().trim();
+
+				if ("".equalsIgnoreCase(name) && auditType==1 ) {
+					nameEt.requestFocus();
+					nameEt.setError("Please enter name");
+				} else {
+					if ("".equalsIgnoreCase(autoNum)) {
+						vehicleNoEt.requestFocus();
+						vehicleNoEt.setError("Please enter auto number");
+					} else {
+						if ("".equalsIgnoreCase(phoneNo)) {
+							phoneNoEt.requestFocus();
+							phoneNoEt.setError("Please enter phone number");
+						} else {
+							//TODO remove extra characters phoneNo
+							phoneNo = phoneNo.replace(" ", "");
+							phoneNo = phoneNo.replace("(", "");
+							phoneNo = phoneNo.replace("/", "");
+							phoneNo = phoneNo.replace(")", "");
+							phoneNo = phoneNo.replace("N", "");
+							phoneNo = phoneNo.replace(",", "");
+							phoneNo = phoneNo.replace("*", "");
+							phoneNo = phoneNo.replace(";", "");
+							phoneNo = phoneNo.replace("#", "");
+							phoneNo = phoneNo.replace("-", "");
+							phoneNo = phoneNo.replace(".", "");
+
+							if (phoneNo.length() >= 10) {
+								phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+								if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+									phoneNoEt.requestFocus();
+									phoneNoEt.setError("Please enter valid phone number");
+								} else {
+									phoneNo = "+91" + phoneNo;
+									if (isPhoneValid(phoneNo)) {
+										submitDriverDetails(name, phoneNo, autoNum);
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
+									}
+								}
+							} else {
+								phoneNoEt.requestFocus();
+								phoneNoEt.setError("Please enter valid phone number");
+							}
+						}
+
+					}
+				}
 			}
 		});
 
@@ -116,7 +206,6 @@ public class NonJugnooAuditFragment extends Fragment {
 	public void update(){
 		try{
 			if(activity != null){
-				submitDriverDetails(activity);
 			}
 		} catch(Exception e){
 			e.printStackTrace();
@@ -124,13 +213,17 @@ public class NonJugnooAuditFragment extends Fragment {
 	}
 
 
-	public void submitDriverDetails(final Activity activity) {
+	public void submitDriverDetails(String name, String phone, String autoNum) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 				HashMap<String, String> params = new HashMap<String, String>();
 
 				params.put("access_token", Data.userData.accessToken);
+				params.put("name", name);
+				params.put("phone_no", phone);
+				params.put("vehicle_no", autoNum);
+				params.put("audit_type", String.valueOf(auditType));
 
 				RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {
 					@Override
@@ -140,7 +233,8 @@ public class NonJugnooAuditFragment extends Fragment {
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+								activity.getTransactionUtils().openAuditCameraFragment(activity,
+										activity.getRelativeLayoutContainer(), 0, auditType);
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}
@@ -166,5 +260,8 @@ public class NonJugnooAuditFragment extends Fragment {
 		}
 	}
 
+	boolean isPhoneValid(CharSequence phone) {
+		return android.util.Patterns.PHONE.matcher(phone).matches();
+	}
 
 }
