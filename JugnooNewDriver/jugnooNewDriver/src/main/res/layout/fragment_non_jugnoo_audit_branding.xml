@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/menu_black">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/Audit"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="60.7px"
+            android:layout_height="76.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="20px"
+            android:src="@drawable/back_white_selector"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/etLayout"
+        android:layout_width="650px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24px"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:splitMotionEvents="false">
+
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewName"
+                android:layout_width="23px"
+                android:layout_height="33px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="22px"
+                android:background="@drawable/person_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/nameEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewName"
+                android:background="@drawable/transparent"
+                android:capitalize="words"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:paddingLeft="25px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNameLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/nameEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewPhone"
+                android:layout_width="37px"
+                android:layout_height="37px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="22px"
+                android:background="@drawable/phone_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/phoneNoEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewPhone"
+                android:background="@drawable/transparent"
+                android:hint="@string/phone_number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingLeft="12px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+            <ImageView
+                android:id="@+id/imageViewPhoneNoLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/phoneNoEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imageViewVehicle"
+                android:layout_width="47px"
+                android:layout_height="35px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="28px"
+                android:background="@drawable/vehicle_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/vehicleNoEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewVehicle"
+                android:background="@drawable/transparent"
+                android:hint="@string/vehicle_number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingLeft="4px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewCityLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/vehicleNoEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60px"
+        android:layout_marginTop="80px">
+
+        <TextView
+            android:id="@+id/textViewSmartPhoneOption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35px"
+            android:text="@string/has_smart_phone"/>
+        
+        <ImageView
+            android:id="@+id/imageViewSmartPhoneCheck"
+            android:layout_width="48px"
+            android:layout_height="48px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="65px"
+            android:src="@drawable/audit_checkbox"/>
+
+        <TextView
+            android:id="@+id/textViewOptional"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewSmartPhoneOption"
+            android:textSize="23px"
+            android:text="@string/optional_brack"/>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textViewNextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26px"
+        android:layout_marginTop="162px"
+        android:layout_gravity="center"
+        android:text="@string/tap_to_capturing_photos"/>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="550px"
+        android:layout_height="99px"
+        android:layout_gravity="center"
+        android:textSize="35px"
+        android:layout_marginTop="39px"
+        android:textColor="@color/white"
+        android:text="@string/next"
+        android:background="@drawable/new_orange_btn_selector_rounded"/>
+
+
+</LinearLayout>

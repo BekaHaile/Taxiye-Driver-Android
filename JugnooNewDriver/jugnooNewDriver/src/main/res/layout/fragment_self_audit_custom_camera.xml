@@ -13,37 +13,50 @@
         android:splitMotionEvents="false">
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/relativeLayoutProgressBar"
             android:layout_width="388px"
             android:layout_height="28px"
             android:layout_centerHorizontal="true"
             android:layout_marginLeft="14px"
             android:layout_marginTop="18.5px"
-            android:tag="mwar"
-            android:orientation="horizontal">
-
+            android:orientation="horizontal"
+            android:tag="mwar">
 
             <ImageView
                 android:id="@+id/imageViewCapturedImgProgress"
-                android:src="@drawable/self_audit_progress_bar"
-                android:tag="mwar"
                 android:layout_width="388px"
-                android:layout_height="28px"/>
+                android:layout_height="28px"
+                android:src="@drawable/self_audit_progress_bar"
+                android:tag="mwar"/>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/linearLayoutProgressBar"
+            android:layout_width="388px"
+            android:layout_height="28px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="14px"
+            android:layout_marginTop="18.5px"
+            android:orientation="horizontal"
+            android:tag="mwar">
+
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg1Progress"
-                android:layout_marginTop="1.5px"
-                android:layout_marginLeft="1.5px"
-                android:src="@drawable/green_circle"
-                android:tag="mwar"
                 android:layout_width="24px"
-                android:layout_height="24px"/>
+                android:layout_height="24px"
+                android:layout_marginLeft="1.5px"
+                android:layout_marginTop="1.5px"
+                android:src="@drawable/green_circle"
+                android:tag="mwar"/>
 
             <ImageView
                 android:id="@+id/imageViewCapturedImg2Progress"
-                android:layout_marginTop="1px"
                 android:layout_width="89.5px"
+                android:layout_marginTop="1px"
                 android:tag="mwar"
                 android:layout_height="wrap_content"/>
 

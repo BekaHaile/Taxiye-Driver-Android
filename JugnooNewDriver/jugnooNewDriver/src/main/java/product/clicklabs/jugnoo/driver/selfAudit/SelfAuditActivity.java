@@ -1,25 +1,16 @@
-package product.clicklabs.jugnoo.driver;
+package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import org.json.JSONObject;
-
-import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
-import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.DocumentListFragment;
+import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.AppStatus;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import retrofit.mime.TypedByteArray;
 
 /**
  * Created by aneeshbansal on 16/08/16.

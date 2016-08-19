@@ -592,6 +592,12 @@
     <string name="auto_from_left">Auto From Left</string>
     <string name="auto_from_right">Auto From Right</string>
     <string name="mobile_stand">Mobile Stand (Optional)</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="mobile_stand_non">Mobile Stand</string>
+    <string name="next">Next</string>
+    <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
+    <string name="has_smart_phone">The driver has a smart phone</string>
+    <string name="self_audit_caps">SELF AUDIT</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

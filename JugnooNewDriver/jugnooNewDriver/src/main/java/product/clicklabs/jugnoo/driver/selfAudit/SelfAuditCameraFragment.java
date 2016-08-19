@@ -1,4 +1,4 @@
-package product.clicklabs.jugnoo.driver;
+package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -27,10 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.kbeanie.imagechooser.api.ChosenImage;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.RoundBorderTransform;
-
 import org.json.JSONObject;
 
 import java.io.File;
@@ -38,6 +34,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.JSONParser;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
@@ -432,29 +432,32 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
-//			uploadPicToServer(activity, frontImage, 0, 1);
+			uploadPicToServer(activity, frontImage, 0, 1);
 
 		} else if (backImage == null){
 			backImage = f;
 			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
+			uploadPicToServer(activity, frontImage, 0, 1);
 
 		} else if (leftImage == null){
 			leftImage = f;
 			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
+			uploadPicToServer(activity, frontImage, 0, 1);
+
 		} else if (rightImage == null){
 			rightImage = f;
 			imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+			uploadPicToServer(activity, frontImage, 0, 1);
+
 		} else if (mobileStandImage == null){
 			mobileStandImage = f;
-			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
-			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+			uploadPicToServer(activity, frontImage, 0, 1);
 		}
 
 
@@ -493,9 +496,6 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 
 							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
-								DialogPopup.alertPopup(activity, "", message);
-							} else {
-								DialogPopup.alertPopup(activity, "", message);
 							}
 
 						} catch (Exception exception) {

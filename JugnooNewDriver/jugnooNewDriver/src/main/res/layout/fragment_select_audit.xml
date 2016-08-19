@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -39,36 +40,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="70px"
+        android:layout_marginTop="52px"
         android:orientation="vertical">
         
-        <Button
+        <TextView
+            android:id="@+id/textViewSelfAudit"
             android:layout_width="617px"
-            android:layout_height="99px"
-            android:text="@string/self_audit"
-            android:textColor="@color/white"
-            android:background="@drawable/new_orange_btn_selector_rounded"/>
+            android:layout_height="wrap_content"
+            android:textSize="35px"
+            android:text="@string/self_audit_caps"
+            android:textColor="@color/new_orange"/>
 
         <TextView
+            android:id="@+id/textViewSelfAuditLast"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="27px"/>
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
 
         <TextView
+            android:id="@+id/textViewSelfAuditNext"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
+            android:textSize="30px"
             android:layout_marginTop="17px"/>
 
         <TextView
+            android:id="@+id/textViewSelfAuditStatus"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="23px"/>
+            android:textSize="30px"
+            android:layout_marginTop="19px"/>
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="4px"
+            android:layout_marginTop="52px"
+            android:textSize="30px"
+            android:src="@drawable/shadow_down"/>
 
     </LinearLayout>
 
@@ -77,36 +89,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="70px"
+        android:layout_marginTop="52px"
         android:orientation="vertical">
 
-        <Button
+        <TextView
+            android:id="@+id/textViewNJAutoBranding"
             android:layout_width="617px"
-            android:layout_height="99px"
+            android:textSize="35px"
+            android:layout_height="wrap_content"
             android:text="@string/non_jugnoo_auto_branding"
-            android:textColor="@color/white"
-            android:background="@drawable/new_orange_btn_selector_rounded"/>
+            android:textColor="@color/new_orange"/>
 
         <TextView
+            android:id="@+id/textViewNJBOffer"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="27px"/>
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
 
         <TextView
+            android:id="@+id/textViewNJBNumber"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="17px"/>
+            android:textSize="30px"
+            android:visibility="visible"
+            android:layout_marginTop="25px"/>
 
         <TextView
+            android:id="@+id/textViewNJAutoBrandingStatus"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="23px"/>
+            android:textSize="30px"
+            android:visibility="visible"
+            android:layout_marginTop="19px"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="4px"
+            android:layout_marginTop="52px"
+            android:src="@drawable/shadow_down"/>
 
     </LinearLayout>
 
@@ -115,36 +139,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="70px"
+        android:layout_marginTop="52px"
         android:orientation="vertical">
 
-        <Button
+        <TextView
+            android:id="@+id/textViewNJAutoAudit"
             android:layout_width="617px"
-            android:layout_height="99px"
+            android:layout_height="wrap_content"
+            android:textSize="35px"
             android:text="@string/non_jugnoo_auto_audit"
-            android:textColor="@color/white"
-            android:background="@drawable/new_orange_btn_selector_rounded"/>
+            android:textColor="@color/new_orange"/>
 
         <TextView
+            android:id="@+id/textViewNJAutoAuditStatus"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="27px"/>
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
 
         <TextView
+            android:id="@+id/textViewNJAOffer"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="17px"/>
+            android:visibility="visible"
+            android:textSize="30px"
+            android:layout_marginTop="25px"/>
 
         <TextView
+            android:id="@+id/textViewNJANumber"
             android:layout_width="617px"
             android:layout_height="wrap_content"
             android:text="@string/NA"
-            android:gravity="center"
-            android:layout_marginTop="23px"/>
+            android:textSize="30px"
+            android:visibility="visible"
+            android:layout_marginTop="19px"/>
 
     </LinearLayout>
 

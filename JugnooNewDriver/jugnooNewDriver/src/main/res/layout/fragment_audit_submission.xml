@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/menu_black">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/Audit"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="60.7px"
+            android:layout_height="76.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="20px"
+            android:src="@drawable/back_white_selector"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/etLayout"
+        android:layout_width="650px"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24px"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        android:splitMotionEvents="false">
+
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewName"
+                android:layout_width="23px"
+                android:layout_height="33px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="22px"
+                android:background="@drawable/person_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/nameEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewName"
+                android:background="@drawable/transparent"
+                android:capitalize="words"
+                android:hint="@string/name"
+                android:inputType="text"
+                android:paddingLeft="25px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+            <ImageView
+                android:id="@+id/imageViewNameLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/nameEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:id="@+id/imageViewPhone"
+                android:layout_width="37px"
+                android:layout_height="37px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="22px"
+                android:background="@drawable/phone_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/phoneNoEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewPhone"
+                android:background="@drawable/transparent"
+                android:hint="@string/phone_number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingLeft="12px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+            <ImageView
+                android:id="@+id/imageViewPhoneNoLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/phoneNoEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="630px"
+            android:layout_height="117px"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:id="@+id/imageViewVehicle"
+                android:layout_width="47px"
+                android:layout_height="35px"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="48px"
+                android:layout_marginTop="28px"
+                android:background="@drawable/vehicle_img_grey"/>
+
+
+            <EditText
+                android:id="@+id/vehicleNoEt"
+                android:layout_width="525px"
+                android:layout_height="90px"
+                android:layout_toRightOf="@+id/imageViewVehicle"
+                android:background="@drawable/transparent"
+                android:hint="@string/vehicle_number"
+                android:inputType="number"
+                android:maxLength="10"
+                android:paddingLeft="4px"
+                android:paddingRight="20px"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@color/grey_black_light"
+                android:textSize="34px"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewCityLine"
+                android:layout_width="525px"
+                android:layout_height="2px"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/vehicleNoEt"
+                android:layout_marginLeft="72px"
+                android:background="@color/black_varient"/>
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="36px"
+        android:layout_gravity="center">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutFront"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewFront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="12px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutFront"
+                    android:layout_width="160px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7px"
+                    android:background="@drawable/background_grey_rounded_bordered"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/image_icon_front"
+                        android:layout_width="43px"
+                        android:layout_height="48px"
+                        android:layout_marginTop="42px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/retry_icon_black"/>
+
+                    <TextView
+                        android:id="@+id/textViewRetryFront"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_icon_front"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12px"
+                        android:text="@string/retry"
+                        android:textColor="@color/black"
+                        android:textSize="20px"/>
+
+                    <ImageView
+                        android:id="@+id/setCapturedImageFront"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="37px"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="12px"
+                    android:text="@string/back"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutBack"
+                    android:layout_width="160px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7px"
+                    android:background="@drawable/background_grey_rounded_bordered"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/image_icon_back"
+                        android:layout_width="43px"
+                        android:layout_height="48px"
+                        android:layout_marginTop="42px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/retry_icon_black"/>
+
+                    <TextView
+                        android:id="@+id/textViewRetryBack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_icon_back"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12px"
+                        android:text="@string/retry"
+                        android:textColor="@color/black"
+                        android:textSize="20px"/>
+
+                    <ImageView
+                        android:id="@+id/setCapturedImageBack"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24px"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/linearLayoutLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="12px"
+                    android:text="@string/left"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutLeft"
+                    android:layout_width="160px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7px"
+                    android:background="@drawable/background_grey_rounded_bordered"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/image_icon_left"
+                        android:layout_width="43px"
+                        android:layout_height="48px"
+                        android:layout_marginTop="42px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/retry_icon_black"/>
+
+                    <TextView
+                        android:id="@+id/textViewRetryLeft"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_icon_left"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12px"
+                        android:text="@string/retry"
+                        android:textColor="@color/black"
+                        android:textSize="20px"/>
+
+                    <ImageView
+                        android:id="@+id/setCapturedImageLeft"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="37px"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="12px"
+                    android:text="@string/right"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutRight"
+                    android:layout_width="160px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7px"
+                    android:background="@drawable/background_grey_rounded_bordered"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/image_icon_Right"
+                        android:layout_width="43px"
+                        android:layout_height="48px"
+                        android:layout_marginTop="42px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/retry_icon_black"/>
+
+                    <TextView
+                        android:id="@+id/textViewRetryRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_icon_Right"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12px"
+                        android:text="@string/retry"
+                        android:textColor="@color/black"
+                        android:textSize="20px"/>
+
+                    <ImageView
+                        android:id="@+id/setCapturedImageRight"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCameraStand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:visibility="visible"
+                android:layout_marginLeft="37px"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewCameraStand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="12px"
+                    android:text="@string/mobile_stand_non"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutCameraStand"
+                    android:layout_width="160px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7px"
+                    android:background="@drawable/background_grey_rounded_bordered"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:id="@+id/image_icon_CameraStand"
+                        android:layout_width="43px"
+                        android:layout_height="48px"
+                        android:layout_marginTop="42px"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/retry_icon_black"/>
+
+                    <TextView
+                        android:id="@+id/textViewRetryCameraStand"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/image_icon_CameraStand"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="12px"
+                        android:text="@string/retry"
+                        android:textColor="@color/black"
+                        android:textSize="20px"/>
+
+                    <ImageView
+                        android:id="@+id/setCapturedImageCameraStand"
+                        android:layout_width="160px"
+                        android:layout_height="160px"
+                        android:tag="mwar"/>
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+    
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="550px"
+        android:layout_height="99px"
+        android:layout_gravity="center"
+        android:layout_marginTop="60px"
+        android:textColor="@color/white"
+        android:text="@string/submit"
+        android:background="@drawable/new_orange_btn_selector_rounded"/>
+
+
+</LinearLayout>
