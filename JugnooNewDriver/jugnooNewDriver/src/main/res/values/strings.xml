@@ -42,8 +42,7 @@
 
 
 
-
-	    <!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
+	<!-- \n\nPeople with autos can offer rides to users who find taxis a bit too expensive. -->
 
 	<string name="about_1_text">Jugnoo helps you provide a friendly and affordable ride within the Chandigarh tricity area.\nThe rates are affordable, and definitely a good deal when you get them for a friendly ride.</string>
 	<string name="about_2_text">Rate card</string>
@@ -642,6 +641,7 @@
 	<string name="register_via_agent">Register Via Agent</string>
 	<string name="upload_Documents">Upload Documents</string>
 	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
+	<string name="diffrential_pricing_rate">After %1$sKm, distance charge will be \u20B9 %2$s/Km </string>
 
 
 	<string-array name="CountryCodes" >

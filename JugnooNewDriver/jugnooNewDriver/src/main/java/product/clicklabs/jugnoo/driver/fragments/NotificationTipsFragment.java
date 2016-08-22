@@ -201,8 +201,8 @@ public class NotificationTipsFragment extends Fragment {
 						try {
 							progressBar.setVisibility(View.GONE);
 							openHelpData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-						} catch (Resources.NotFoundException e) {
-							e.printStackTrace();
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
 
 					}

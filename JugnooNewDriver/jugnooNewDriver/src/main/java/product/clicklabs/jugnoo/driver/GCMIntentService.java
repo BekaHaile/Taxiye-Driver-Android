@@ -324,8 +324,12 @@ public class GCMIntentService extends IntentService {
 	}
 
 	public static void clearNotifications(Context context) {
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancelAll();
+		try {
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManager.cancelAll();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

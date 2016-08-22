@@ -89,10 +89,13 @@ public class JSONParser implements Constants {
 					fareDetails.getDouble("fare_per_min"),
 					fareDetails.getDouble("fare_threshold_time"),
 					fareDetails.getDouble("fare_per_waiting_min"),
-					fareDetails.getDouble("fare_threshold_waiting_time"));
+					fareDetails.getDouble("fare_threshold_waiting_time"),
+					fareDetails.getDouble("fare_per_km_threshold_distance"),
+					fareDetails.getDouble("fare_per_km_after_threshold"),
+					fareDetails.getDouble("fare_per_km_before_threshold"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new FareStructure(10, 0, 5, 1, 0, 0, 0);
+			return new FareStructure(10, 0, 5, 1, 0, 0, 0, 0, 5, 0);
 		}
 	}
 
@@ -238,7 +241,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_PUBLISHER_KEY, userData.optString("pubnub_publish_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_SUSCRIBER_KEY, userData.optString("pubnub_subscribe_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
-
+		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
 
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
@@ -510,7 +513,7 @@ public class JSONParser implements Constants {
 				Data.nextCustomerName = jObjCustomer.optString(KEY_PERFECT_USER_NAME, "");
 				Prefs.with(context).save(SPLabels.PERFECT_CUSTOMER_CONT, jObjCustomer.optString(KEY_PERFECT_PHONE_NO, ""));
 			}
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -611,7 +614,7 @@ public class JSONParser implements Constants {
 			Data.userData.referralDialogHintText = preferredLangStrings.optString("referral_dialog_hint_text", "Phone No.");
 			Data.userData.timeoutMessage = preferredLangStrings.optString("timeout_message", "We have noticed that, you aren't taking Jugnoo rides. So we are blocking you for some time");
 
-		} catch (JSONException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -19,11 +19,13 @@ public class RestClient {
 	private static final String TAG = RestClient.class.getSimpleName();
 	private static String CURRENT_URL;
 	private static APIServices API_SERVICES;
+	private static DirectionAPIService DISTANCE_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
 
 	static {
 		setupRestClient();
 		setupGoogleAPIRestClient();
+		setupDistanceAPIRestClient();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -118,4 +120,25 @@ public class RestClient {
 		return GOOGLE_API_SERVICES;
 	}
 
+
+	public static void setupDistanceAPIRestClient() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint("https://route.jugnoo.in/route/v1")
+				.setClient(new Ok3Client(getOkHttpClient()))
+				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+		RestAdapter restAdapter = builder.build();
+		DISTANCE_API_SERVICE = restAdapter.create(DirectionAPIService.class);
+	}
+
+	public static DirectionAPIService getDistanceApiServices() {
+		return DISTANCE_API_SERVICE;
+	}
 }

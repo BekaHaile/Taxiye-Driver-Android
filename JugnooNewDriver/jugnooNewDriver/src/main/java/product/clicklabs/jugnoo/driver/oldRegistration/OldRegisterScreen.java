@@ -273,7 +273,7 @@ public class OldRegisterScreen extends BaseActivity implements LocationUpdate {
                             }
                         }
                     }
-				} catch (Resources.NotFoundException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

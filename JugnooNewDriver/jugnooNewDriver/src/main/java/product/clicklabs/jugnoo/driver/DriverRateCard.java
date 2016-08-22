@@ -53,7 +53,7 @@ public class DriverRateCard extends BaseActivity {
 	TextView title;
 	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue, textViewPickupChargesCond,
 			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
-			textViewDriverReferralValue;
+			textViewDriverReferralValue, textViewDifferentialPricingEnable;
 	ImageView imageViewHorizontal7;
 
 	@Override
@@ -108,6 +108,8 @@ public class DriverRateCard extends BaseActivity {
 		textViewDriverReferral.setTypeface(Fonts.mavenRegular(this));
 		textViewDriverReferralValue= (TextView) findViewById(R.id.textViewDriverReferralValue);
 		textViewDriverReferralValue.setTypeface(Fonts.mavenRegular(this));
+		textViewDifferentialPricingEnable = (TextView) findViewById(R.id.textViewDifferentialPricingEnable);
+		textViewDifferentialPricingEnable.setTypeface(Fonts.mavenRegular(this));
 
 		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
@@ -174,6 +176,15 @@ public class DriverRateCard extends BaseActivity {
 					+ rateCardResponse.getRates().getFarePerKm());
 			textViewTimePKmValue.setText(getResources().getString(R.string.rupee)
 					+ rateCardResponse.getRates().getFarePerMin());
+
+			if(rateCardResponse.getRates().getAfterThresholdDistance() > 0){
+				textViewDifferentialPricingEnable.setVisibility(View.VISIBLE);
+				textViewDifferentialPricingEnable.setText(getResources().getString(R.string.diffrential_pricing_rate,
+						String.valueOf(rateCardResponse.getRates().getAfterThresholdDistance()),
+						String.valueOf(rateCardResponse.getRates().getGetAfterThresholdValue())));
+			}
+
+
 
 			double dToCReferral = rateCardResponse.getRates().getDriverToCustomerReferral();
 			double dToDReferral = rateCardResponse.getRates().getDriverToDriverReferral();
