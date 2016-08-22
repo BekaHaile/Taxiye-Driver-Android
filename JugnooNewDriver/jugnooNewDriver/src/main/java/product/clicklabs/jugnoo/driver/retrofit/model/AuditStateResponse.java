@@ -23,6 +23,18 @@ public class AuditStateResponse {
 	@SerializedName("last_unavailable_image_type")
 	@Expose
 	private Integer lastUnavailableImageType;
+	@SerializedName("njb_name")
+	@Expose
+	private String njbName;
+	@SerializedName("njb_phone_no")
+	@Expose
+	private String njbPhoneNo;
+	@SerializedName("njb_vehicle_no")
+	@Expose
+	private String njbVehicleNo;
+	@SerializedName("njb_smart_phone_available")
+	@Expose
+	private Integer njbSmartPhoneAvailable;
 
 	/**
 	 *
@@ -94,6 +106,78 @@ public class AuditStateResponse {
 	 */
 	public void setLastUnavailableImageType(Integer lastUnavailableImageType) {
 		this.lastUnavailableImageType = lastUnavailableImageType;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The njbName
+	 */
+	public String getNjbName() {
+		return njbName;
+	}
+
+	/**
+	 *
+	 * @param njbName
+	 * The njb_name
+	 */
+	public void setNjbName(String njbName) {
+		this.njbName = njbName;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The njbPhoneNo
+	 */
+	public String getNjbPhoneNo() {
+		return njbPhoneNo;
+	}
+
+	/**
+	 *
+	 * @param njbPhoneNo
+	 * The njb_phone_no
+	 */
+	public void setNjbPhoneNo(String njbPhoneNo) {
+		this.njbPhoneNo = njbPhoneNo;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The njbVehicleNo
+	 */
+	public String getNjbVehicleNo() {
+		return njbVehicleNo;
+	}
+
+	/**
+	 *
+	 * @param njbVehicleNo
+	 * The njb_vehicle_no
+	 */
+	public void setNjbVehicleNo(String njbVehicleNo) {
+		this.njbVehicleNo = njbVehicleNo;
+	}
+
+	/**
+	 *
+	 * @return
+	 * The njbSmartPhoneAvailable
+	 */
+	public Integer getNjbSmartPhoneAvailable() {
+		return njbSmartPhoneAvailable;
+	}
+
+	/**
+	 *
+	 * @param njbSmartPhoneAvailable
+	 * The njb_smart_phone_available
+	 */
+	public void setNjbSmartPhoneAvailable(Integer njbSmartPhoneAvailable) {
+		this.njbSmartPhoneAvailable = njbSmartPhoneAvailable;
 	}
 
 

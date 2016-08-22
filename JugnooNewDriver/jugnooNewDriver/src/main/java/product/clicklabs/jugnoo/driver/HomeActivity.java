@@ -897,6 +897,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 //					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 //					FlurryEventLogger.event(CALL_US);
+
 					startActivity(new Intent(HomeActivity.this, SelfAuditActivity.class));
 				}
 			});

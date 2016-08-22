@@ -63,11 +63,11 @@ public class TransactionUtils {
 		}
 	}
 
-	public void openAuditCameraFragment(FragmentActivity activity, View container, int auditState, int auditType) {
+	public void openAuditCameraFragment(FragmentActivity activity, View container, int auditState, int auditType, int auditCmeraOption) {
 		if(!checkIfFragmentAdded(activity, SelfAuditCameraFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new SelfAuditCameraFragment(auditState, auditType),
+					.add(container.getId(), new SelfAuditCameraFragment(auditState, auditType, auditCmeraOption),
 							SelfAuditCameraFragment.class.getName())
 					.addToBackStack(SelfAuditCameraFragment.class.getName())
 					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()

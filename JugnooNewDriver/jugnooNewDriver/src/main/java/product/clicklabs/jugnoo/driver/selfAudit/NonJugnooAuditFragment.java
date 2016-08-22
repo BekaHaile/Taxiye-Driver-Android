@@ -42,9 +42,10 @@ public class NonJugnooAuditFragment extends Fragment {
 	private LinearLayout etLayout;
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
+	private boolean smartPhoneAvailable = false;
 	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton;
 
-	private ImageView imageViewSmartPhoneCheck;
+	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes;
 	private int auditType;
 
 
@@ -90,7 +91,8 @@ public class NonJugnooAuditFragment extends Fragment {
 		textViewNextButton = (TextView) rootView.findViewById(R.id.textViewNextButton);
 		textViewNextButton.setTypeface(Data.latoRegular(activity));
 
-		imageViewSmartPhoneCheck = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheck);
+		imageViewSmartPhoneCheckYes = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckYes);
+		imageViewSmartPhoneCheckNo = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckNo);
 
 		if(auditType == 2){
 			nameEt.setVisibility(View.GONE);
@@ -122,6 +124,27 @@ public class NonJugnooAuditFragment extends Fragment {
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				vehicleNoEt.setError(null);
+			}
+		});
+
+		imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_select);
+		imageViewSmartPhoneCheckYes.setImageResource(R.drawable.radio_unslelcet);
+
+		imageViewSmartPhoneCheckNo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_select);
+				imageViewSmartPhoneCheckYes.setImageResource(R.drawable.radio_unslelcet);
+				smartPhoneAvailable = false;
+			}
+		});
+
+		imageViewSmartPhoneCheckYes.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				imageViewSmartPhoneCheckYes.setImageResource(R.drawable.radio_select);
+				imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_unslelcet);
+				smartPhoneAvailable = true;
 			}
 		});
 
@@ -224,8 +247,9 @@ public class NonJugnooAuditFragment extends Fragment {
 				params.put("phone_no", phone);
 				params.put("vehicle_no", autoNum);
 				params.put("audit_type", String.valueOf(auditType));
+				params.put("smart_phone_available", String.valueOf(smartPhoneAvailable));
 
-				RestClient.getApiServices().sendReferralMessage(params, new Callback<RegisterScreenResponse>() {
+				RestClient.getApiServices().sendAuditDetails(params, new Callback<RegisterScreenResponse>() {
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
@@ -234,7 +258,7 @@ public class NonJugnooAuditFragment extends Fragment {
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								activity.getTransactionUtils().openAuditCameraFragment(activity,
-										activity.getRelativeLayoutContainer(), 0, auditType);
+										activity.getRelativeLayoutContainer(), 0, auditType, 0);
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}

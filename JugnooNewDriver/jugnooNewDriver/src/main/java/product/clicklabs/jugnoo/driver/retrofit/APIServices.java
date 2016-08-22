@@ -480,4 +480,9 @@ public interface APIServices {
 	@POST("/fetch_audit_type_status")
 	void fetchAuditTypeStatus(@FieldMap Map<String, String> params,
 						   Callback<AuditStateResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_njb_driver_details")
+	void sendAuditDetails(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
 }

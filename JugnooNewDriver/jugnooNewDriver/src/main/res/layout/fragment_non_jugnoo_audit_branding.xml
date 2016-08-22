@@ -181,7 +181,7 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayoutNJBOption"
-        android:layout_width="wrap_content"
+        android:layout_width="560px"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60px"
         android:layout_marginTop="80px">
@@ -192,14 +192,7 @@
             android:layout_height="wrap_content"
             android:textSize="35px"
             android:text="@string/has_smart_phone"/>
-        
-        <ImageView
-            android:id="@+id/imageViewSmartPhoneCheck"
-            android:layout_width="48px"
-            android:layout_height="48px"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="65px"
-            android:src="@drawable/audit_checkbox"/>
+
 
         <TextView
             android:id="@+id/textViewOptional"
@@ -209,8 +202,49 @@
             android:textSize="23px"
             android:text="@string/optional_brack"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewOptional"
+            android:layout_marginTop="22px"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageViewSmartPhoneCheckYes"
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:layout_marginRight="25px"
+                android:src="@drawable/radio_select"/>
+
+            <TextView
+                android:id="@+id/textViewYes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:text="@string/yes"/>
+
+            <ImageView
+                android:id="@+id/imageViewSmartPhoneCheckNo"
+                android:layout_width="48px"
+                android:layout_height="48px"
+                android:layout_marginLeft="108px"
+                android:layout_marginRight="25px"
+                android:src="@drawable/radio_unslelcet"/>
+
+            <TextView
+                android:id="@+id/textViewNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:text="@string/no"/>
+
+
+        </LinearLayout>
+
 
     </RelativeLayout>
+
 
     <TextView
         android:id="@+id/textViewNextButton"

@@ -665,6 +665,7 @@
 	<string name="audit_required">Audit Required</string>
 	<string name="in_progress">In Progress</string>
 	<string name="request_pending">Request Pending</string>
+	<string name="name_cant_empty">Name can\'t be empty</string>
 
 
 	<string-array name="CountryCodes" >

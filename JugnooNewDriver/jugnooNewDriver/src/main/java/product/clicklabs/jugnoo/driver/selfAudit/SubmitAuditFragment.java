@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver.selfAudit;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -23,6 +25,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.NotificationCenterActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.ProfileUpdateMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
@@ -31,6 +34,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -43,6 +47,8 @@ public class SubmitAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
 	private LinearLayout etLayout, linearLayoutCameraStand;
+	private RelativeLayout relativeLayoutVehicleNo, relativeLayoutFront, relativeLayoutBack, relativeLayoutLeft,
+			relativeLayoutRight, relativeLayoutCameraStand;
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private TextView textViewFront, textViewBack, textViewLeft, textViewRight, textViewCameraStand, textViewRetryCameraStand,
@@ -54,7 +60,7 @@ public class SubmitAuditFragment extends Fragment {
 	private int auditType;
 	private View rootView;
 	private AuditStateResponse auditStateResponse;
-	private NotificationCenterActivity activity;
+	private SelfAuditActivity activity;
 
 	public SubmitAuditFragment( int auditType){
 		this.auditType = auditType;
@@ -75,7 +81,7 @@ public class SubmitAuditFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		rootView = inflater.inflate(R.layout.fragment_audit_submission, container, false);
 
-		activity = (NotificationCenterActivity) getActivity();
+		activity = (SelfAuditActivity) getActivity();
 
 		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.root);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
@@ -84,6 +90,15 @@ public class SubmitAuditFragment extends Fragment {
 
 		etLayout = (LinearLayout) rootView.findViewById(R.id.etLayout);
 		linearLayoutCameraStand = (LinearLayout) rootView.findViewById(R.id.linearLayoutCameraStand);
+
+		relativeLayoutFront = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutFront);
+		relativeLayoutBack = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutBack);
+		relativeLayoutLeft = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutLeft);
+		relativeLayoutRight = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutRight);
+		relativeLayoutCameraStand = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCameraStand);
+
+		relativeLayoutVehicleNo = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutVehicleNo);
+
 		submitButton = (Button) rootView.findViewById(R.id.submitButton);
 
 		nameEt = (EditText) rootView.findViewById(R.id.nameEt);
@@ -125,8 +140,158 @@ public class SubmitAuditFragment extends Fragment {
 		imageIconCameraStand = (ImageView) rootView.findViewById(R.id.image_icon_CameraStand);
 		setCapturedImageCameraStand = (ImageView) rootView.findViewById(R.id.setCapturedImageCameraStand);
 
-		if(auditType == 0){
+		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				nameEt.setError(null);
+
+			}
+		});
+
+		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				phoneNoEt.setError(null);
+			}
+		});
+
+		vehicleNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				vehicleNoEt.setError(null);
+			}
+		});
+
+		nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				String nameChanged = nameEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(nameChanged)) {
+					nameEt.requestFocus();
+					nameEt.setError(getResources().getString(R.string.name_cant_empty));
+				} else {
+					if (auditStateResponse != null) {
+						if (auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(nameChanged)) {
+							nameEt.requestFocus();
+							nameEt.setError(getResources().getString(R.string.changed_no_same_as_previous));
+						} else {
+							submitDriverDetails(nameChanged, phoneNoEt.getText().toString(), vehicleNoEt.getText().toString());
+						}
+					} else {
+						submitDriverDetails(nameChanged, phoneNoEt.getText().toString(), vehicleNoEt.getText().toString());
+					}
+				}
+				return true;
+			}
+		});
+
+		phoneNoEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				String phoneChanged = phoneNoEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(phoneChanged)) {
+					phoneNoEt.requestFocus();
+					phoneNoEt.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
+				} else {
+					phoneChanged = Utils.retrievePhoneNumberTenChars(phoneChanged);
+					if (Utils.validPhoneNumber(phoneChanged)) {
+						phoneChanged = "+91" + phoneChanged;
+						if (auditStateResponse != null) {
+							if(auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(phoneChanged)) {
+								phoneNoEt.requestFocus();
+								phoneNoEt.setError(getResources().getString(R.string.changed_no_same_as_previous));
+							}
+							else {
+								submitDriverDetails(nameEt.getText().toString(), phoneChanged, vehicleNoEt.getText().toString());
+							}
+						} else {
+							submitDriverDetails(nameEt.getText().toString(), phoneChanged, vehicleNoEt.getText().toString());
+						}
+					} else {
+						phoneNoEt.requestFocus();
+						phoneNoEt.setError(getResources().getString(R.string.enter_valid_phone_number));
+					}
+				}
+				return true;
+			}
+		});
+
+		vehicleNoEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				String vehicleNoChanged = vehicleNoEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(vehicleNoChanged)) {
+					vehicleNoEt.requestFocus();
+					vehicleNoEt.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
+				} else {
+						if (auditStateResponse != null) {
+							if(auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(vehicleNoChanged)) {
+								vehicleNoEt.requestFocus();
+								vehicleNoEt.setError(getResources().getString(R.string.changed_no_same_as_previous));
+							}
+							else {
+								submitDriverDetails(nameEt.getText().toString(), phoneNoEt.getText().toString(), vehicleNoChanged);
+							}
+						} else {
+							submitDriverDetails(nameEt.getText().toString(), phoneNoEt.getText().toString(), vehicleNoChanged);
+						}
+				}
+				return true;
+			}
+		});
+
+		relativeLayoutFront.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.getTransactionUtils().openAuditCameraFragment(activity,
+						activity.getRelativeLayoutContainer(), 0, auditType, 1);
+			}
+		});
+
+		relativeLayoutBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.getTransactionUtils().openAuditCameraFragment(activity,
+						activity.getRelativeLayoutContainer(), 1, auditType, 1);
+			}
+		});
+
+		relativeLayoutLeft.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.getTransactionUtils().openAuditCameraFragment(activity,
+						activity.getRelativeLayoutContainer(), 2, auditType, 1);
+			}
+		});
+
+		relativeLayoutRight.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.getTransactionUtils().openAuditCameraFragment(activity,
+						activity.getRelativeLayoutContainer(), 3, auditType, 1);
+			}
+		});
+
+		relativeLayoutCameraStand.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.getTransactionUtils().openAuditCameraFragment(activity,
+						activity.getRelativeLayoutContainer(), 4, auditType, 1);
+			}
+		});
+
+		if (auditType == 0){
 			etLayout.setVisibility(View.GONE);
+		} else if (auditType == 1){
+			relativeLayoutVehicleNo.setVisibility(View.VISIBLE);
+		} else if (auditType == 2){
+			relativeLayoutVehicleNo.setVisibility(View.GONE);
 		}
 
 		submitButton.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +318,20 @@ public class SubmitAuditFragment extends Fragment {
 	public void update(){
 		try{
 			if(activity != null && auditStateResponse!=null){
+
+				if(!"".equalsIgnoreCase(auditStateResponse.getNjbName())){
+					nameEt.setText(auditStateResponse.getNjbName());
+				}
+
+				if(!"".equalsIgnoreCase(auditStateResponse.getNjbPhoneNo())){
+					phoneNoEt.setText(auditStateResponse.getNjbPhoneNo());
+
+				}
+
+				if(!"".equalsIgnoreCase(auditStateResponse.getNjbVehicleNo())){
+					vehicleNoEt.setText(auditStateResponse.getNjbVehicleNo());
+				}
+
 
 				for(int i=0; i<auditStateResponse.getImages().size(); i++){
 
@@ -222,6 +401,10 @@ public class SubmitAuditFragment extends Fragment {
 
 						}
 					}
+				}
+
+				if(auditStateResponse.getImages().size() < 5){
+					linearLayoutCameraStand.setVisibility(View.GONE);
 				}
 
 			}
@@ -342,6 +525,54 @@ public class SubmitAuditFragment extends Fragment {
 								selfAuditActivity.setAuditStateResponse(auditStateResponse);
 
 								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void submitDriverDetails(String name, String phone, String autoNum) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("name", name);
+				params.put("phone_no", phone);
+				params.put("vehicle_no", autoNum);
+				params.put("audit_type", String.valueOf(auditType));
+
+				RestClient.getApiServices().sendAuditDetails(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								activity.getTransactionUtils().openAuditCameraFragment(activity,
+										activity.getRelativeLayoutContainer(), 0, auditType, 0);
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}

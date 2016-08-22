@@ -318,8 +318,6 @@ public class SelectAuditFragment extends Fragment {
 								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
 								selfAuditActivity.setAuditStateResponse(auditStateResponse);
 								setFragmentState(auditType);
-
-								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}
@@ -354,7 +352,7 @@ public class SelectAuditFragment extends Fragment {
 				if(auditType == 0){
 
 					activity.getTransactionUtils().openAuditCameraFragment(activity,
-							activity.getRelativeLayoutContainer(), 0, auditType);
+							activity.getRelativeLayoutContainer(), 0, auditType, 0);
 
 				} else {
 					activity.getTransactionUtils().openNonJugnooAuditFragment(activity,
@@ -364,7 +362,7 @@ public class SelectAuditFragment extends Fragment {
 			} else if (auditStateResponse.getAction() == 10) {
 
 				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), auditStateResponse.getLastUnavailableImageType(), auditType);
+						activity.getRelativeLayoutContainer(), auditStateResponse.getLastUnavailableImageType(), auditType, 0);
 
 			} else if (auditStateResponse.getAction() == 15) {
 

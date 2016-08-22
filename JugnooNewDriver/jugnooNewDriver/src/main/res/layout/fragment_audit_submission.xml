@@ -133,6 +133,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutVehicleNo"
             android:layout_width="630px"
             android:layout_height="117px"
             android:gravity="center_vertical">
