@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
@@ -742,5 +743,19 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 	}
+
+
+	public static void parsePushyInterval(Context context, JSONObject jObj){
+
+		try {
+			long pushyInterval = jObj.optLong("pushy_interval", Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
+			Prefs.with(context).save(SPLabels.PUSHY_REFRESH_INTERVAL, pushyInterval);
+			Pushy.setHeartbeatInterval((1000 * pushyInterval), context);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 }

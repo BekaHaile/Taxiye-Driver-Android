@@ -15,6 +15,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import java.util.Map;
 
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
@@ -43,7 +44,7 @@ public class MyApplication extends Application {
 
 		AnalyticsTrackers.initialize(this);
 		AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);
-
+		Pushy.listen(this);
 		initializeServerURLAndRestClient(this);
 
 	}

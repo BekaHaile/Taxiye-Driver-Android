@@ -143,6 +143,9 @@ public class DriverLocationUpdateService extends Service {
 			}
 		});
 
+		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
+				Context.MODE_PRIVATE).getString("pushy_registration_id", "");
+		Database2.getInstance(context).updatePushyToken(pushyToken);
 
 		RestClient.setupRestClient(SERVER_URL);
 

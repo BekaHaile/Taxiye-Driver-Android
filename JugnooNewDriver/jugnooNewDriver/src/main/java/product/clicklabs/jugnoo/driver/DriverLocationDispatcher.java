@@ -48,11 +48,13 @@ public class DriverLocationDispatcher {
 				
 				String accessToken = Database2.getInstance(context).getDLDAccessToken();
 				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
+				String pushyToken = Database2.getInstance(context).getPushyToken();
+
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
-				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(serverUrl))){
+				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(pushyToken)) && (!"".equalsIgnoreCase(serverUrl))){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 								DriverScreenMode.D_INITIAL.getOrdinal());
@@ -69,6 +71,7 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
+							nameValuePairs.put("pushy_token", pushyToken);
 							nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
 							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 

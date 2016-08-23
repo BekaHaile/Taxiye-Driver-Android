@@ -55,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
@@ -64,6 +65,7 @@ import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
+import product.clicklabs.jugnoo.driver.pushyToken.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
@@ -145,7 +147,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-
+		long interval = (1000 * Prefs.with(this).getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
+		Pushy.setHeartbeatInterval(interval, this);
+		Pushy.listen(this);
 
 		setContentView(R.layout.activity_splash_new);
 
@@ -328,10 +332,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	}
 
+
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
-		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver(){
+		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
 			public void deviceTokenReceived(final String regId) {
@@ -352,9 +357,22 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		new PushyDeviceTokenGenerator().generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
+			@Override
+			public void deviceTokenReceived(final String regId) {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						Data.pushyToken = regId;
+					 	checkForTokens();
+					}
+				});
+			}
+		});
+
 	}
 	private void checkForTokens(){
-		if(!"".equalsIgnoreCase(Data.deviceToken)){
+		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
 			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
@@ -606,7 +624,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //				RequestParams params = new RequestParams();
 				params.put("access_token", accPair.first);
 				params.put("device_token", Data.deviceToken);
-
+				params.put("pushy_token", Data.pushyToken);
 
 				params.put("latitude", ""+Data.latitude);
 				params.put("longitude", ""+Data.longitude);
@@ -682,6 +700,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
 										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										JSONParser.parsePushyInterval(activity, jObj);
 										Utils.deleteMFile();
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);

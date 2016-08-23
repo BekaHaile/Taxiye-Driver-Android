@@ -402,6 +402,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("password", password);
 			params.put("login_otp",otp);
 			params.put("device_token", Data.deviceToken);
+			params.put("pushy_token", Data.pushyToken);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
 			params.put("app_version", "" + Data.appVersion);

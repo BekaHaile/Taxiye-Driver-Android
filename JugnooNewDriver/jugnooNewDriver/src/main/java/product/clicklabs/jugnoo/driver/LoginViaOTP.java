@@ -511,6 +511,7 @@ public class LoginViaOTP extends BaseActivity {
 			params.put("password", password);
 			params.put("login_otp", otp);
 			params.put("device_token", Data.deviceToken);
+			params.put("pushy_token", Data.pushyToken);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
 			params.put("app_version", "" + Data.appVersion);
@@ -522,6 +523,7 @@ public class LoginViaOTP extends BaseActivity {
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
 			params.put("locale", conf.locale.toString());
+
 
 			if (Utils.isAppInstalled(activity, Data.GADDAR_JUGNOO_APP)) {
 				params.put("auto_n_cab_installed", "1");
@@ -588,6 +590,7 @@ public class LoginViaOTP extends BaseActivity {
 									Database.getInstance(LoginViaOTP.this).insertEmail(emailId);
 									Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 									startActivity(new Intent(LoginViaOTP.this, HomeActivity.class));
+									JSONParser.parsePushyInterval(activity, jObj);
 									finish();
 									overridePendingTransition(R.anim.right_in, R.anim.right_out);
 								}
