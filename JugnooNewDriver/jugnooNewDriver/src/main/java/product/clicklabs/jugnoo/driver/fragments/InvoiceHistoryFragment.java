@@ -227,7 +227,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.green_tick);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}else if(invoiceInfo.statusString.equalsIgnoreCase("Pending")){
-					holder.textViewStatusString.setText(getResources().getString(R.string.pending));
+					holder.textViewStatusString.setText(getResources().getString(R.string.payment_sent));
 					holder.statusImage.setImageResource(R.drawable.exclamation_red);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.red_delivery));
 				}else if(invoiceInfo.statusString.equalsIgnoreCase("Outstanding Adjusted")){

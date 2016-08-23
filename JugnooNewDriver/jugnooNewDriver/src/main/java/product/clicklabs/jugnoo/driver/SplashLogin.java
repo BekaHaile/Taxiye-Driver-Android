@@ -484,6 +484,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 							}
 							else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 								if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+									JSONParser.parsePushyInterval(activity, jObj);
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
 									startService(new Intent(activity, DriverLocationUpdateService.class));
 									Database.getInstance(SplashLogin.this).insertEmail(emailId);
