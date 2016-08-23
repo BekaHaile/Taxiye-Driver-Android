@@ -377,12 +377,6 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 	public void performBackPressed() {
 
-		DialogPopup.alertPopupWithImageListener(activity, "", getResources().getString(R.string.cancel_audit), R.drawable.error_icon_for_popup, new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
 
 		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
 				getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {

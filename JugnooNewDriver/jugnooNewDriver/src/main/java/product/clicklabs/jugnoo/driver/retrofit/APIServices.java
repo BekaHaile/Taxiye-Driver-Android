@@ -490,4 +490,9 @@ public interface APIServices {
 	@POST("/cancel_audit_by_driver")
 	void cancelAuditByDriver(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/submit_audit_images")
+	void submitAuditImages(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
 }
