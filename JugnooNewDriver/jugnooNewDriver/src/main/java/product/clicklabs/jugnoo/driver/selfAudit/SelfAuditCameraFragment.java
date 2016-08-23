@@ -2,8 +2,10 @@ package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,8 @@ import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -26,21 +30,27 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -367,6 +377,26 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 	public void performBackPressed() {
 
+		DialogPopup.alertPopupWithImageListener(activity, "", getResources().getString(R.string.cancel_audit), R.drawable.error_icon_for_popup, new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
+				getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						deleteCurrentAudit(activity);
+					}
+				}, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+
+					}
+				}, true, true);
+
 	}
 
 
@@ -385,9 +415,9 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 					// rotate Image
 					Bitmap rotatedBitmap = null;
-
+					Matrix rotateMatrix = new Matrix();
 					try {
-						Matrix rotateMatrix = new Matrix();
+
 						rotateMatrix.postRotate(rotation);
 						rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
 								0, loadedImage.getWidth(), loadedImage.getHeight(),
@@ -397,7 +427,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 					}
 
 					if (rotatedBitmap != null) {
-						capturedImage = Bitmap.createBitmap(rotatedBitmap.getWidth(), rotatedBitmap.getHeight(), Bitmap.Config.ARGB_8888);
+						capturedImage = rotatedBitmap.copy(rotatedBitmap.getConfig(), true);
 						rotatedBitmap.recycle();
 						captureImage.setVisibility(View.GONE);
 						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
@@ -427,7 +457,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 //
 //						imageFile.createNewFile();
 //					} else {
-//						Toast.makeText(getBaseContext(), "Image Not saved",
+//						Toast.makeText(activity, "Image Not saved",
 //								Toast.LENGTH_SHORT).show();
 //						return;
 //					}
@@ -435,7 +465,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 //					ByteArrayOutputStream ostream = new ByteArrayOutputStream();
 //
 //					// save image into gallery
-//					rotatedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+//					capturedImage.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
 //
 //					FileOutputStream fout = new FileOutputStream(imageFile);
 //					fout.write(ostream.toByteArray());
@@ -448,7 +478,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 //					values.put(MediaStore.MediaColumns.DATA,
 //							imageFile.getAbsolutePath());
 //
-//					SelfAuditCameraFragment.this.getContentResolver().insert(
+//					activity.getContentResolver().insert(
 //							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
 				} catch (Exception e) {
@@ -534,6 +564,9 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private void uploadPicToServer(File photoFile, final Integer auditType, final Integer imageType) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				if(auditCmeraOption == 1){
+					DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				}
 				HashMap<String, String> params = new HashMap<String, String>();
 
 				params.put("access_token", Data.userData.accessToken);
@@ -541,7 +574,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				params.put("audit_type", String.valueOf(auditType));
 				TypedFile typedFile;
 				typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-				Log.i("selfaudit", String.valueOf(typedFile)+params);
+				Log.i("selfaudit", String.valueOf(typedFile) + params);
 				capturedImage.recycle();
 				RestClient.getApiServices().uploadAuditImageToServer(typedFile, params, new Callback<DocRequirementResponse>() {
 					@Override
@@ -560,24 +593,89 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 									activity.getTransactionUtils().openSubmitAuditFragment(activity,
 											activity.getRelativeLayoutContainer(), auditType);
 								}
+								DialogPopup.dismissLoadingDialog();
 
 
 							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+								DialogPopup.dismissLoadingDialog();
+								reloadImagePopup(imageType);
+
 							}
 
 						} catch (Exception exception) {
 							exception.printStackTrace();
+							DialogPopup.dismissLoadingDialog();
+							reloadImagePopup(imageType);
 						}
 					}
 
 					@Override
 					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						reloadImagePopup(imageType);
 					}
 				});
 			} else {
 				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
 			}
 		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void reloadImagePopup(int imageType){
+		if(imageType == 4 || auditCmeraOption ==1) {
+			DialogPopup.alertPopupWithImageListener(activity, "", getResources().getString(R.string.image_upload_failed),
+					R.drawable.error_icon_for_popup, new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							activity.getTransactionUtils().openSubmitAuditFragment(activity,
+									activity.getRelativeLayoutContainer(), auditType);
+						}
+					});
+		}
+	}
+
+	public void deleteCurrentAudit(final Activity activity) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("audit_type", String.valueOf(auditType));
+
+				RestClient.getApiServices().cancelAuditByDriver(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								Intent intent = new Intent(activity, HomeActivity.class);
+								startActivity(intent);
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						product.clicklabs.jugnoo.driver.utils.Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -485,4 +485,9 @@ public interface APIServices {
 	@POST("/update_njb_driver_details")
 	void sendAuditDetails(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cancel_audit_by_driver")
+	void cancelAuditByDriver(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
 }

@@ -54,11 +54,11 @@ public class TransactionUtils {
 		if(!checkIfFragmentAdded(activity, NonJugnooAuditFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new NonJugnooAuditFragment(auditType),
+					.replace(container.getId(), new NonJugnooAuditFragment(auditType),
 							NonJugnooAuditFragment.class.getName())
-					.addToBackStack(NonJugnooAuditFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+//					.addToBackStack(NonJugnooAuditFragment.class.getName())
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
 		}
 	}
@@ -67,11 +67,11 @@ public class TransactionUtils {
 		if(!checkIfFragmentAdded(activity, SelfAuditCameraFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new SelfAuditCameraFragment(auditState, auditType, auditCmeraOption),
+					.replace(container.getId(), new SelfAuditCameraFragment(auditState, auditType, auditCmeraOption),
 							SelfAuditCameraFragment.class.getName())
-					.addToBackStack(SelfAuditCameraFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+//					.addToBackStack(SelfAuditCameraFragment.class.getName())
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
 		}
 	}
@@ -80,11 +80,11 @@ public class TransactionUtils {
 		if(!checkIfFragmentAdded(activity, SubmitAuditFragment.class.getName())) {
 			activity.getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-					.add(container.getId(), new SubmitAuditFragment(auditType),
+					.replace(container.getId(), new SubmitAuditFragment(auditType),
 							SubmitAuditFragment.class.getName())
-					.addToBackStack(SubmitAuditFragment.class.getName())
-					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
-							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+//					.addToBackStack(SubmitAuditFragment.class.getName())
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
 		}
 	}

@@ -83,7 +83,7 @@ public class SubmitAuditFragment extends Fragment {
 
 		activity = (SelfAuditActivity) getActivity();
 
-		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.root);
+		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
 
@@ -301,6 +301,7 @@ public class SubmitAuditFragment extends Fragment {
 			}
 		});
 
+		getAuditState(activity, auditType);
 		return rootView;
 	}
 
@@ -345,6 +346,7 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageFront);
 							textViewRetryFront.setVisibility(View.GONE);
+							imageIconFront.bringToFront();
 							imageIconFront.setImageResource(R.drawable.retry_icon_white);
 
 						}
@@ -358,6 +360,7 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageback);
 							textViewRetryBack.setVisibility(View.GONE);
+							imageIconBack.bringToFront();
 							imageIconBack.setImageResource(R.drawable.retry_icon_white);
 
 						}
@@ -371,6 +374,7 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageLeft);
 							textViewRetryLeft.setVisibility(View.GONE);
+							imageIconLeft.bringToFront();
 							imageIconLeft.setImageResource(R.drawable.retry_icon_white);
 
 						}
@@ -384,6 +388,7 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageRight);
 							textViewRetryRight.setVisibility(View.GONE);
+							imageIconRight.bringToFront();
 							imageIconRight.setImageResource(R.drawable.retry_icon_white);
 
 						}
@@ -397,6 +402,7 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageCameraStand);
 							textViewRetryCameraStand.setVisibility(View.GONE);
+							imageIconCameraStand.bringToFront();
 							imageIconCameraStand.setImageResource(R.drawable.retry_icon_white);
 
 						}
@@ -523,8 +529,7 @@ public class SubmitAuditFragment extends Fragment {
 								SubmitAuditFragment.this.auditStateResponse = auditStateResponse;
 								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
 								selfAuditActivity.setAuditStateResponse(auditStateResponse);
-
-								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+								update();
 							} else {
 								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
 							}

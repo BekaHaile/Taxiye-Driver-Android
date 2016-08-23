@@ -601,6 +601,9 @@
     <string name="audit_required">Audit Required</string>
     <string name="in_progress">In Progress</string>
     <string name="request_pending">Request Pending</string>
+    <string name="please_submit">Please Submit</string>
+    <string name="cancel_audit">Are you sure you want to cancel audit?</string>
+    <string name="image_upload_failed">Image uploading failed, please try again</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
