@@ -201,9 +201,13 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-		camera.stopPreview();
-		camera.release();
-		camera = null;
+		try {
+			camera.stopPreview();
+			camera.release();
+			camera = null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void refreshCamera() {
@@ -302,7 +306,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				camera.setPreviewDisplay(surfaceHolder);
 				camera.startPreview();
 				result = true;
-			} catch (IOException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				result = false;
 				releaseCamera();
@@ -382,7 +386,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						deleteCurrentAudit(activity);
+						deleteCurrentAudit();
 					}
 				}, new View.OnClickListener() {
 					@Override
@@ -629,7 +633,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		}
 	}
 
-	public void deleteCurrentAudit(final Activity activity) {
+	public void deleteCurrentAudit() {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
@@ -646,10 +650,10 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								Intent intent = new Intent(activity, HomeActivity.class);
-								startActivity(intent);
+								activity.getTransactionUtils().openSelectAuditFragment(activity,
+										activity.getRelativeLayoutContainer());
 							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();

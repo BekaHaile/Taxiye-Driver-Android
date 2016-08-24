@@ -45,6 +45,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/relativeLayoutNameEt"
             android:layout_width="630px"
             android:layout_height="117px"
             android:gravity="center_vertical"
@@ -112,7 +113,7 @@
                 android:background="@drawable/transparent"
                 android:hint="@string/phone_number"
                 android:inputType="number"
-                android:maxLength="10"
+                android:maxLength="13"
                 android:paddingLeft="12px"
                 android:paddingRight="20px"
                 android:singleLine="true"
@@ -154,7 +155,7 @@
                 android:layout_toRightOf="@+id/imageViewVehicle"
                 android:background="@drawable/transparent"
                 android:hint="@string/vehicle_number"
-                android:inputType="number"
+                android:capitalize="characters"
                 android:maxLength="10"
                 android:paddingLeft="4px"
                 android:paddingRight="20px"

@@ -8,6 +8,7 @@ import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.NonJugnooAuditFragment;
+import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SubmitAuditFragment;
 
@@ -87,6 +88,17 @@ public class TransactionUtils {
 //							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
 					.commitAllowingStateLoss();
 		}
+	}
+
+	public void openSelectAuditFragment(FragmentActivity activity, View container) {
+			activity.getSupportFragmentManager().beginTransaction()
+					.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+					.replace(container.getId(), new SelectAuditFragment(),
+							SelectAuditFragment.class.getName())
+//					.addToBackStack(SubmitAuditFragment.class.getName())
+//					.hide(activity.getSupportFragmentManager().findFragmentByTag(activity.getSupportFragmentManager()
+//							.getBackStackEntryAt(activity.getSupportFragmentManager().getBackStackEntryCount() - 1).getName()))
+					.commitAllowingStateLoss();
 	}
 
 	public boolean checkIfFragmentAdded(FragmentActivity activity, String tag){

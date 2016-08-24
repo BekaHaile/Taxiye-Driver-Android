@@ -108,27 +108,32 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 		super.onBackPressed();
 
 
-		Fragment myFragment = getSupportFragmentManager().findFragmentByTag(SelfAuditCameraFragment.class.getName());
-		if (myFragment != null && myFragment.isVisible()) {
-			((SelfAuditCameraFragment)myFragment).performBackPressed();
-		}
+		try {
+			Fragment myFragment = getSupportFragmentManager().findFragmentByTag(SelfAuditCameraFragment.class.getName());
+			if (myFragment != null && myFragment.isVisible()) {
+				((SelfAuditCameraFragment)myFragment).performBackPressed();
+			}
 
-		Fragment myFragment1 = getSupportFragmentManager().findFragmentByTag(SelectAuditFragment.class.getName());
-		if (myFragment1 != null && myFragment1.isVisible()) {
-			Intent intent = new Intent(SelfAuditActivity.this, HomeActivity.class);
-			startActivity(intent);
-			finish();
-			overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		}
+			Fragment myFragment1 = getSupportFragmentManager().findFragmentByTag(SelectAuditFragment.class.getName());
+			if (myFragment1 != null && myFragment1.isVisible()) {
+				Intent intent = new Intent(SelfAuditActivity.this, HomeActivity.class);
+				startActivity(intent);
+				finish();
+				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+			}
 
-		Fragment myFragment2= getSupportFragmentManager().findFragmentByTag(SubmitAuditFragment.class.getName());
-		if (myFragment2 != null && myFragment2.isVisible()) {
-			((SelfAuditCameraFragment)myFragment).performBackPressed();
-		}
+			Fragment myFragment2= getSupportFragmentManager().findFragmentByTag(SubmitAuditFragment.class.getName());
+			if (myFragment2 != null && myFragment2.isVisible()) {
+				((SubmitAuditFragment)myFragment).performBackPress();
+			}
 
-		Fragment myFragment3= getSupportFragmentManager().findFragmentByTag(NonJugnooAuditFragment.class.getName());
-		if (myFragment3 != null && myFragment3.isVisible()) {
-			((SelfAuditCameraFragment)myFragment).performBackPressed();
+			Fragment myFragment3= getSupportFragmentManager().findFragmentByTag(NonJugnooAuditFragment.class.getName());
+			if (myFragment3 != null && myFragment3.isVisible()) {
+				((NonJugnooAuditFragment)myFragment).performBackPress();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 

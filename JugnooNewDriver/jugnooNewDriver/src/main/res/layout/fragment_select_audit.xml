@@ -151,14 +151,6 @@
             android:textColor="@color/new_orange"/>
 
         <TextView
-            android:id="@+id/textViewNJAutoAuditStatus"
-            android:layout_width="617px"
-            android:layout_height="wrap_content"
-            android:text="@string/NA"
-            android:textSize="30px"
-            android:layout_marginTop="28px"/>
-
-        <TextView
             android:id="@+id/textViewNJAOffer"
             android:layout_width="617px"
             android:layout_height="wrap_content"
@@ -175,6 +167,14 @@
             android:textSize="30px"
             android:visibility="visible"
             android:layout_marginTop="19px"/>
+
+        <TextView
+            android:id="@+id/textViewNJAutoAuditStatus"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
 
     </LinearLayout>
 

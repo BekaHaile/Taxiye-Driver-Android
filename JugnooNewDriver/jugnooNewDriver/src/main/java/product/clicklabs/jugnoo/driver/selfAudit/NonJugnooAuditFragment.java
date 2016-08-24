@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -38,14 +40,14 @@ import retrofit.mime.TypedByteArray;
 public class NonJugnooAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
-	private RelativeLayout relativeLayoutNJBOption;
+	private RelativeLayout relativeLayoutNJBOption, relativeLayoutNameEt;
 	private LinearLayout etLayout;
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private boolean smartPhoneAvailable = false;
 	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton;
 
-	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes;
+	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes, imageViewBack;
 	private int auditType;
 
 
@@ -72,10 +74,11 @@ public class NonJugnooAuditFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_non_jugnoo_audit_branding, container, false);
 
 		activity = (SelfAuditActivity) getActivity();
-		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.root);
+		linearLayoutRoot = (LinearLayout) rootView.findViewById(R.id.linearLayoutRoot);
 		new ASSL(activity, linearLayoutRoot, 1134, 720, false);
 
 		relativeLayoutNJBOption = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNJBOption);
+		relativeLayoutNameEt = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutNameEt);
 		etLayout = (LinearLayout) rootView.findViewById(R.id.etLayout);
 		submitButton = (Button) rootView.findViewById(R.id.submitButton);
 
@@ -94,11 +97,13 @@ public class NonJugnooAuditFragment extends Fragment {
 		imageViewSmartPhoneCheckYes = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckYes);
 		imageViewSmartPhoneCheckNo = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckNo);
 
+		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+
 		if(auditType == 2){
-			nameEt.setVisibility(View.GONE);
+			relativeLayoutNameEt.setVisibility(View.GONE);
 			relativeLayoutNJBOption.setVisibility(View.GONE);
 		} else {
-			nameEt.setVisibility(View.VISIBLE);
+			relativeLayoutNameEt.setVisibility(View.VISIBLE);
 			relativeLayoutNJBOption.setVisibility(View.VISIBLE);
 		}
 
@@ -145,6 +150,13 @@ public class NonJugnooAuditFragment extends Fragment {
 				imageViewSmartPhoneCheckYes.setImageResource(R.drawable.radio_select);
 				imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_unslelcet);
 				smartPhoneAvailable = true;
+			}
+		});
+
+		imageViewBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				performBackPress();
 			}
 		});
 
@@ -235,6 +247,10 @@ public class NonJugnooAuditFragment extends Fragment {
 		}
 	}
 
+	public void performBackPress(){
+		activity.getTransactionUtils().openSelectAuditFragment(activity,
+				activity.getRelativeLayoutContainer());
+	}
 
 	public void submitDriverDetails(String name, String phone, String autoNum) {
 		try {

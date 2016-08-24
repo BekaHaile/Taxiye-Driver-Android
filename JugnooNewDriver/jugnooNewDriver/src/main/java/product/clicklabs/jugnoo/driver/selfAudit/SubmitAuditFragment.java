@@ -161,6 +161,9 @@ public class SubmitAuditFragment extends Fragment {
 			}
 		});
 
+
+		vehicleNoEt.setEnabled(false);
+
 		vehicleNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -292,7 +295,7 @@ public class SubmitAuditFragment extends Fragment {
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				performBackPress();
 			}
 		});
 
@@ -325,6 +328,12 @@ public class SubmitAuditFragment extends Fragment {
 		}
 		System.gc();
 	}
+
+	public void performBackPress(){
+		activity.getTransactionUtils().openSelectAuditFragment(activity,
+				activity.getRelativeLayoutContainer());
+	}
+
 
 	public void update(){
 		try{
@@ -550,10 +559,9 @@ public class SubmitAuditFragment extends Fragment {
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								activity.getTransactionUtils().openAuditCameraFragment(activity,
-										activity.getRelativeLayoutContainer(), 0, auditType, 0);
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();

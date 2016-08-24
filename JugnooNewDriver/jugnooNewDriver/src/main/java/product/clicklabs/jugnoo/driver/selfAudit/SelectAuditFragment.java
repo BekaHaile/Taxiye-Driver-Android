@@ -1,12 +1,14 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,6 +17,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -45,6 +48,7 @@ public class SelectAuditFragment extends Fragment {
 	private View rootView;
 	private SelfAuditActivity activity;
 
+	private ImageView imageViewBack;
 	private AuditTypeResponse auditTypeResponse;
 	private AuditStateResponse auditStateResponse;
 
@@ -107,6 +111,8 @@ public class SelectAuditFragment extends Fragment {
 		textViewNJANumber = (TextView) rootView.findViewById(R.id.textViewNJANumber);
 		textViewNJANumber.setTypeface(Data.latoRegular(activity));
 
+		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+
 
 		linearLayoutSelfAudit.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -129,6 +135,14 @@ public class SelectAuditFragment extends Fragment {
 			}
 		});
 
+		imageViewBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				performBackPress();
+			}
+		});
+
 		return rootView;
 	}
 
@@ -141,6 +155,11 @@ public class SelectAuditFragment extends Fragment {
 		} catch (Exception e) {
 		}
 		System.gc();
+	}
+
+	public void performBackPress(){
+		Intent intent = new Intent(activity, HomeActivity.class);
+		startActivity(intent);
 	}
 
 	public void update(){
