@@ -427,7 +427,6 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
 					}
 
-
 //					String state = Environment.getExternalStorageState();
 //					File folder = null;
 //					if (state.contains(Environment.MEDIA_MOUNTED)) {

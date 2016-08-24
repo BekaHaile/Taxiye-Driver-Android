@@ -57,7 +57,7 @@ public class SubmitAuditFragment extends Fragment {
 			textViewRetryFront, textViewRetryBack, textViewRetryLeft, textViewRetryRight, textViewTitle;
 
 	private ImageView imageIconFront, setCapturedImageFront, imageIconBack, setCapturedImageback, imageIconLeft, setCapturedImageLeft,
-			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand;
+			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, imageViewBack;
 
 	private int auditType;
 	private View rootView;
@@ -141,6 +141,8 @@ public class SubmitAuditFragment extends Fragment {
 		setCapturedImageRight = (ImageView) rootView.findViewById(R.id.setCapturedImageRight);
 		imageIconCameraStand = (ImageView) rootView.findViewById(R.id.image_icon_CameraStand);
 		setCapturedImageCameraStand = (ImageView) rootView.findViewById(R.id.setCapturedImageCameraStand);
+
+		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
 
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -232,17 +234,16 @@ public class SubmitAuditFragment extends Fragment {
 					vehicleNoEt.requestFocus();
 					vehicleNoEt.setError(getResources().getString(R.string.phone_no_cnt_be_empty));
 				} else {
-						if (auditStateResponse != null) {
-							if(auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(vehicleNoChanged)) {
-								vehicleNoEt.requestFocus();
-								vehicleNoEt.setError(getResources().getString(R.string.changed_no_same_as_previous));
-							}
-							else {
-								submitDriverDetails(nameEt.getText().toString(), phoneNoEt.getText().toString(), vehicleNoChanged);
-							}
+					if (auditStateResponse != null) {
+						if (auditStateResponse.getNjbPhoneNo().equalsIgnoreCase(vehicleNoChanged)) {
+							vehicleNoEt.requestFocus();
+							vehicleNoEt.setError(getResources().getString(R.string.changed_no_same_as_previous));
 						} else {
 							submitDriverDetails(nameEt.getText().toString(), phoneNoEt.getText().toString(), vehicleNoChanged);
 						}
+					} else {
+						submitDriverDetails(nameEt.getText().toString(), phoneNoEt.getText().toString(), vehicleNoChanged);
+					}
 				}
 				return true;
 			}
@@ -285,6 +286,13 @@ public class SubmitAuditFragment extends Fragment {
 			public void onClick(View v) {
 				activity.getTransactionUtils().openAuditCameraFragment(activity,
 						activity.getRelativeLayoutContainer(), 4, auditType, 1);
+			}
+		});
+
+		imageViewBack.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
 			}
 		});
 
