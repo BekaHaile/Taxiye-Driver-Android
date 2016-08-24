@@ -54,7 +54,7 @@ public class DriverLocationDispatcher {
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 				
-				if((!"".equalsIgnoreCase(accessToken)) && (!"".equalsIgnoreCase(deviceToken)) && (!"".equalsIgnoreCase(pushyToken)) && (!"".equalsIgnoreCase(serverUrl))){
+				if(!"".equalsIgnoreCase(accessToken)){
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 								DriverScreenMode.D_INITIAL.getOrdinal());
