@@ -72,7 +72,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private Camera camera;
 	private Button acceptImage;
 	private Button rejectImage;
-	private Button captureImage, backBtn;
+	private Button captureImage, backBtn, buttonSkip;
 	private int cameraId, auditState, auditType, auditCmeraOption;
 	private boolean flashmode = false;
 	private Bitmap capturedImage;
@@ -121,6 +121,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		captureImage = (Button) rootView.findViewById(R.id.captureImage);
 		surfaceView = (SurfaceView) rootView.findViewById(R.id.surfaceView);
 		backBtn = (Button) rootView.findViewById(R.id.backBtn);
+		buttonSkip = (Button) rootView.findViewById(R.id.buttonSkip);
 
 
 		imageViewCapturedImg1Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg1Progress);
@@ -154,15 +155,28 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		} else if(auditState == 2){
 			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
 		} else if(auditState == 3){
 			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
 		} else if(auditState == 4){
 			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
 			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
+			textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
 			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+			buttonSkip.setVisibility(View.VISIBLE);
 		}
 
 		if(auditCmeraOption ==1){
@@ -181,6 +195,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		captureImage.setOnClickListener(this);
 		rejectImage.setOnClickListener(this);
 		backBtn.setOnClickListener(this);
+		buttonSkip.setOnClickListener(this);
 		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 		return rootView;
@@ -245,6 +260,9 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				break;
 			case R.id.backBtn:
 				performBackPressed();
+				break;
+			case R.id.buttonSkip:
+				skipPicToServer(auditType, 4);
 				break;
 			default:
 				break;
@@ -540,6 +558,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
 				textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
 				titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+				buttonSkip.setVisibility(View.VISIBLE);
 				auditState = 4;
 				uploadPicToServer(rightImage, auditType, 3);
 
@@ -673,6 +692,65 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void skipPicToServer(final Integer auditType, final Integer imageType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				if(auditCmeraOption == 1){
+					DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+				}
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("image_type", String.valueOf(imageType));
+				params.put("audit_type", String.valueOf(auditType));
+
+				RestClient.getApiServices().skipImageToServer(params, new Callback<DocRequirementResponse>() {
+					@Override
+					public void success(DocRequirementResponse docRequirementResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
+
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+
+								if (imageType == 4 || auditCmeraOption == 1) {
+									activity.getTransactionUtils().openSubmitAuditFragment(activity,
+											activity.getRelativeLayoutContainer(), auditType);
+								}
+								DialogPopup.dismissLoadingDialog();
+
+
+							} else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
+								DialogPopup.dismissLoadingDialog();
+								reloadImagePopup(imageType);
+
+							}
+
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.dismissLoadingDialog();
+							reloadImagePopup(imageType);
+						}
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+						reloadImagePopup(imageType);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", getResources().getString(R.string.check_internet_message));
+			}
+		} catch (Resources.NotFoundException e) {
 			e.printStackTrace();
 		}
 	}

@@ -90,4 +90,6 @@ public class SPLabels {
     public static final String CLEAR_APP_CACHE_TIME = "clear_app_cache_time";
 
 	public static final String UPDATE_DRIVER_LOCATION_TIME = "update_driver_location_time";
+	public static final String SET_AUDIT_STATUS = "set_audit_status";
+	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
 }

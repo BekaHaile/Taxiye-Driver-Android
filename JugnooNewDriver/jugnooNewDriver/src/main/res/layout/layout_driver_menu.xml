@@ -292,6 +292,32 @@
                     android:background="@drawable/line_menu"/>
             </RelativeLayout>
 
+
+            <RelativeLayout
+                android:id="@+id/auditRL"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/menu_item_selector"
+                android:splitMotionEvents="false">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/auditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="42px"
+                    android:text="@string/audit_lower"
+                    android:textColor="@color/white"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/line_menu"/>
+            </RelativeLayout>
+
+
             <RelativeLayout
                 android:id="@+id/bookingsRl"
                 android:layout_width="match_parent"

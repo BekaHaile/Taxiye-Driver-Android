@@ -26,6 +26,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -43,6 +44,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 	String accessToken;
 	AuditStateResponse auditStateResponse;
 	int auditType;
+	String selfAudit;
 
 	SelfAuditCameraFragment selfAuditCameraFragment;
 	SelectAuditFragment selectAuditFragment;
@@ -61,11 +63,27 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 //		bundle.putString("access_token", accessToken);
 //		selfAuditCameraFragment.setArguments(bundle);
 
-		getSupportFragmentManager().beginTransaction()
-				.add(R.id.relative, selectAuditFragment, SelectAuditFragment.class.getName())
-				.addToBackStack(SelectAuditFragment.class.getName())
-				.commit();
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			selfAudit = extras.getString("self_audit");
+		}
 
+		try {
+			if(selfAudit.equalsIgnoreCase("yes")){
+				getAuditState(SelfAuditActivity.this, 0);
+			}else {
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.relative, selectAuditFragment, SelectAuditFragment.class.getName())
+						.addToBackStack(SelectAuditFragment.class.getName())
+						.commit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.relative, selectAuditFragment, SelectAuditFragment.class.getName())
+					.addToBackStack(SelectAuditFragment.class.getName())
+					.commit();
+		}
 
 	}
 
@@ -155,5 +173,86 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
+	public void getAuditState(final Activity activity, final Integer auditType) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("audit_type", String.valueOf(auditType));
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().fetchAuditTypeStatus(params, new Callback<AuditStateResponse>() {
+					@Override
+					public void success(AuditStateResponse auditStateResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								SelfAuditActivity.this.auditStateResponse = auditStateResponse;
+								SelfAuditActivity selfAuditActivity = new SelfAuditActivity();
+								selfAuditActivity.setAuditStateResponse(auditStateResponse);
+								setFragmentState(auditType);
+							} else {
+								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void setFragmentState(Integer auditType){
+
+		if(auditStateResponse != null) {
+
+			if (auditStateResponse.getAction() == 5) {
+
+				if(auditType == 0){
+
+					SelfAuditActivity.this.getTransactionUtils().openAuditCameraFragment(SelfAuditActivity.this,
+							SelfAuditActivity.this.getRelativeLayoutContainer(), 0, auditType, 0);
+
+				} else {
+					SelfAuditActivity.this.getTransactionUtils().openNonJugnooAuditFragment(SelfAuditActivity.this,
+							SelfAuditActivity.this.getRelativeLayoutContainer(), auditType);
+				}
+
+			} else if (auditStateResponse.getAction() == 10) {
+
+				SelfAuditActivity.this.getTransactionUtils().openAuditCameraFragment(SelfAuditActivity.this,
+						SelfAuditActivity.this.getRelativeLayoutContainer(), auditStateResponse.getLastUnavailableImageType(), auditType, 0);
+
+			} else if (auditStateResponse.getAction() == 15) {
+
+				SelfAuditActivity.this.getTransactionUtils().openSubmitAuditFragment(SelfAuditActivity.this,
+						SelfAuditActivity.this.getRelativeLayoutContainer(), auditType);
+
+			} else if (auditStateResponse.getAction() == 25) {
+
+				SelfAuditActivity.this.getTransactionUtils().openSubmitAuditFragment(SelfAuditActivity.this,
+						SelfAuditActivity.this.getRelativeLayoutContainer(), auditType);
+
+			}
+		}
+	}
 
 }

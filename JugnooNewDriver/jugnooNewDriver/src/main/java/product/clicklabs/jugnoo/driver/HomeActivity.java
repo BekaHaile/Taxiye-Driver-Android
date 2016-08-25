@@ -175,8 +175,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard;
-	TextView callUsText, termsConditionText, textViewRateCard;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL;
+	TextView callUsText, termsConditionText, textViewRateCard, auditText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -474,6 +474,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			auditRL = (RelativeLayout) findViewById(R.id.auditRL);
+			auditText = (TextView) findViewById(R.id.auditText);
+			auditText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
 			relativeLayoutRateCard = (RelativeLayout) findViewById(R.id.relativeLayoutRateCard);
@@ -895,9 +899,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-//					FlurryEventLogger.event(CALL_US);
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					FlurryEventLogger.event(CALL_US);
 
+				}
+			});
+
+			auditRL.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, SelfAuditActivity.class));
 				}
 			});
@@ -1452,6 +1462,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
+
+
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 2
+					|| Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 3){
+				DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
+						Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Intent intent = new Intent(HomeActivity.this, SelfAuditActivity.class);
+						intent.putExtra("self_audit", "yes");
+						startActivity(intent);
+						finish();
+						overridePendingTransition(R.anim.left_in, R.anim.left_out);
+					}
+				});
+			}
+
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1
+					|| Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 2){
+				auditRL.setVisibility(View.VISIBLE);
+			} else {
+				auditRL.setVisibility(View.GONE);
+			}
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

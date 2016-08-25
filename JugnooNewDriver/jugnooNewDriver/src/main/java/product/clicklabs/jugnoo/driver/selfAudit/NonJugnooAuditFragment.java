@@ -276,7 +276,12 @@ public class NonJugnooAuditFragment extends Fragment {
 								activity.getTransactionUtils().openAuditCameraFragment(activity,
 										activity.getRelativeLayoutContainer(), 0, auditType, 0);
 							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								DialogPopup.alertPopupWithImageListener(activity, "", jObj.getString("message"), R.drawable.error_icon_for_popup, new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+
+									}
+								});
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();

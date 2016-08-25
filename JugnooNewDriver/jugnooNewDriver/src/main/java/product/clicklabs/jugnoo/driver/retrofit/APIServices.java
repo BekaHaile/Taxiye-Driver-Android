@@ -495,4 +495,9 @@ public interface APIServices {
 	@POST("/submit_audit_images")
 	void submitAuditImages(@FieldMap Map<String, String> params,
 							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_audit_image")
+	void skipImageToServer(@FieldMap Map<String, String> params,
+						   Callback<DocRequirementResponse> cb);
 }

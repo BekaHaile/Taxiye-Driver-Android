@@ -254,9 +254,17 @@ public class SelectAuditFragment extends Fragment {
 				}
 
 
+				if("".equalsIgnoreCase(auditTypeResponse.getSaLastAuditString())) {
+					textViewSelfAuditLast.setVisibility(View.GONE);
+				} else {
+					textViewSelfAuditLast.setText(auditTypeResponse.getSaLastAuditString());
+				}
 
-				textViewSelfAuditLast.setText(auditTypeResponse.getSaLastAuditString());
-				textViewSelfAuditNext.setText(auditTypeResponse.getSaNextAuditString());
+				if("".equalsIgnoreCase(auditTypeResponse.getSaNextAuditString())) {
+					textViewSelfAuditNext.setVisibility(View.GONE);
+				} else {
+					textViewSelfAuditNext.setText(auditTypeResponse.getSaNextAuditString());
+				}
 
 				textViewNJBOffer.setText(auditTypeResponse.getNjbPromoString());
 				textViewNJAOffer.setText(auditTypeResponse.getNjaPromoString());
