@@ -1,11 +1,13 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -64,6 +66,8 @@ import retrofit.mime.TypedFile;
 /**
  * Created by aneeshbansal on 13/08/16.
  */
+@SuppressLint("ValidFragment")
+
 public class SelfAuditCameraFragment extends android.support.v4.app.Fragment implements SurfaceHolder.Callback,
 		View.OnClickListener {
 

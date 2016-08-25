@@ -1,7 +1,9 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -35,6 +37,9 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 16/08/16.
  */
+
+@SuppressLint("ValidFragment")
+
 public class SelfAuditActivity extends BaseFragmentActivity {
 
 
@@ -156,6 +161,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 
 	}
+
 
 
 	@Override

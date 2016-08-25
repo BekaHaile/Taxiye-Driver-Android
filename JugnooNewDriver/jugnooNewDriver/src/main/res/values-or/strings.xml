@@ -614,6 +614,10 @@
     <string name="image_upload_failed">Image uploading failed, please try again</string>
     <string name="audit_lower">Audit</string>
 
+    <string name="optional_brack">(Optional)</string>
+    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+
     <string-array name="CountryCodes" >
         <item>93,AF</item>
         <item>355,AL</item>

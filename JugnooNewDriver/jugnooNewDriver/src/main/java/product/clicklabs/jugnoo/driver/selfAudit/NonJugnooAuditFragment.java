@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.selfAudit;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,9 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by aneeshbansal on 18/08/16.
  */
+@SuppressLint("ValidFragment")
+
+
 public class NonJugnooAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
