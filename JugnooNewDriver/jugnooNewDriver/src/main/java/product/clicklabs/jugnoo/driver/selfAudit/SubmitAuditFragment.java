@@ -259,40 +259,86 @@ public class SubmitAuditFragment extends Fragment {
 		relativeLayoutFront.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), 0, auditType, 1);
+				if(auditStateResponse != null && !auditStateResponse.getImages().get(0).getRejectionReason().equalsIgnoreCase("")){
+					DialogPopup.alertPopupWithListener(activity, "",
+							auditStateResponse.getImages().get(0).getRejectionReason(), new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							openCamera(0);
+						}
+					});
+				} else {
+					openCamera(0);
+				}
+
 			}
 		});
 
 		relativeLayoutBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), 1, auditType, 1);
+				if(auditStateResponse != null && !auditStateResponse.getImages().get(1).getRejectionReason().equalsIgnoreCase("")){
+					DialogPopup.alertPopupWithListener(activity, "",
+							auditStateResponse.getImages().get(1).getRejectionReason(), new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									openCamera(1);
+								}
+							});
+				} else {
+					openCamera(1);
+				}
 			}
 		});
 
 		relativeLayoutLeft.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), 2, auditType, 1);
+				if(auditStateResponse != null && !auditStateResponse.getImages().get(2).getRejectionReason().equalsIgnoreCase("")){
+					DialogPopup.alertPopupWithListener(activity, "",
+							auditStateResponse.getImages().get(2).getRejectionReason(), new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									openCamera(2);
+								}
+							});
+				} else {
+					openCamera(2);
+				}
 			}
 		});
 
 		relativeLayoutRight.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), 3, auditType, 1);
+				if(auditStateResponse != null && !auditStateResponse.getImages().get(3).getRejectionReason().equalsIgnoreCase("")){
+					DialogPopup.alertPopupWithListener(activity, "",
+							auditStateResponse.getImages().get(3).getRejectionReason(), new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									openCamera(3);
+								}
+							});
+				} else {
+					openCamera(3);
+				}
 			}
 		});
 
 		relativeLayoutCameraStand.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.getTransactionUtils().openAuditCameraFragment(activity,
-						activity.getRelativeLayoutContainer(), 4, auditType, 1);
+				if(auditStateResponse != null && !auditStateResponse.getImages().get(4).getRejectionReason().equalsIgnoreCase("")){
+					DialogPopup.alertPopupWithListener(activity, "",
+							auditStateResponse.getImages().get(4).getRejectionReason(), new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									openCamera(4);
+								}
+							});
+				} else {
+					openCamera(4);
+				}
 			}
 		});
 
@@ -322,6 +368,10 @@ public class SubmitAuditFragment extends Fragment {
 		return rootView;
 	}
 
+	public void openCamera(int imageType){
+		activity.getTransactionUtils().openAuditCameraFragment(activity,
+				activity.getRelativeLayoutContainer(), imageType, auditType, 1);
+	}
 
 	@Override
 	public void onDestroy() {
@@ -468,9 +518,9 @@ public class SubmitAuditFragment extends Fragment {
 										Intent intent = new Intent(activity, HomeActivity.class);
 										startActivity(intent);
 									}
-								});
+								}, false);
 							} else {
-								DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
 							}
 						} catch (Exception exception) {
 							exception.printStackTrace();

@@ -21,6 +21,7 @@ import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.TransactionUtils;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
@@ -29,6 +30,7 @@ import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -75,6 +77,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 		try {
 			if(selfAudit.equalsIgnoreCase("yes")){
+				Prefs.with(SelfAuditActivity.this).save(SPLabels.SET_AUDIT_STATUS_POPUP, 0);
 				getAuditState(SelfAuditActivity.this, 0);
 			}else {
 				getSupportFragmentManager().beginTransaction()

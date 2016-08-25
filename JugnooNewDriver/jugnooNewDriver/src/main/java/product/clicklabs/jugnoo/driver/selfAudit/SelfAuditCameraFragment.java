@@ -404,18 +404,23 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	public void performBackPressed() {
 
 
-		DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
-				getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						deleteCurrentAudit();
-					}
-				}, new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
+		if(auditCmeraOption ==1){
+			activity.getTransactionUtils().openSubmitAuditFragment(activity,
+					activity.getRelativeLayoutContainer(), auditType);
+		} else {
+			DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
+					getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							deleteCurrentAudit();
+						}
+					}, new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
 
-					}
-				}, true, true);
+						}
+					}, true, false);
+		}
 
 	}
 
@@ -450,6 +455,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 						capturedImage = rotatedBitmap.copy(rotatedBitmap.getConfig(), true);
 						rotatedBitmap.recycle();
 						captureImage.setVisibility(View.GONE);
+						buttonSkip.setVisibility(View.GONE);
 						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
 					}
 
@@ -652,7 +658,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 							activity.getTransactionUtils().openSubmitAuditFragment(activity,
 									activity.getRelativeLayoutContainer(), auditType);
 						}
-					});
+					}, false);
 		}
 	}
 

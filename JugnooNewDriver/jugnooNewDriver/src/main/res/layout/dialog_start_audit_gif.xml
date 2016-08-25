@@ -18,12 +18,13 @@
 
         <Button
             android:id="@+id/buttonCancelPopup"
-            android:layout_width="70px"
-            android:layout_height="70px"
+            android:layout_width="80px"
+            android:layout_height="80px"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5px"
             android:text="X"
-            android:textColor="@color/grey_dark_less"
+            android:textSize="42px"
+            android:textColor="@color/grey_dark"
             android:background="@color/white"
             android:layout_marginTop="5px"/>
 

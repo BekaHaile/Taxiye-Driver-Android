@@ -252,7 +252,7 @@ public class DialogPopup {
 
 
 
-	public static void alertPopupWithImageListener(Activity activity, String title, String message, int resId, final View.OnClickListener onClickListener) {
+	public static void alertPopupWithImageListener(Activity activity, String title, String message, int resId, final View.OnClickListener onClickListener, final boolean showTitle) {
 		try {
 			dismissAlertPopup();
 			if("".equalsIgnoreCase(title)){
@@ -297,6 +297,13 @@ public class DialogPopup {
 				}
 
 			});
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
 
 			dialog.show();
 		} catch (Exception e) {

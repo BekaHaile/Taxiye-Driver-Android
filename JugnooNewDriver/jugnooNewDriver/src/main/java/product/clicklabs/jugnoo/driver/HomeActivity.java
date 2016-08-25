@@ -1464,8 +1464,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
 
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 2
-					|| Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 3){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP,0) == 1){
 				DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
 						Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
 					@Override
@@ -1479,8 +1478,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				});
 			}
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1
-					|| Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 2){
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
 				auditRL.setVisibility(View.VISIBLE);
 			} else {
 				auditRL.setVisibility(View.GONE);
