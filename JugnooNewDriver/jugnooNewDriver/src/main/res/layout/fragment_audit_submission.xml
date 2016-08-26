@@ -25,12 +25,23 @@
 
         <ImageView
             android:id="@+id/imageViewBack"
-            android:layout_width="60.7px"
+            android:layout_width="60.10px"
             android:layout_height="76.9px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10px"
             android:padding="20px"
             android:src="@drawable/back_white_selector"/>
+
+        <ImageView
+            android:id="@+id/imageViewBin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10px"
+            android:padding="20px"
+            android:src="@drawable/bin_icon"/>
+
     </RelativeLayout>
 
 
@@ -52,10 +63,10 @@
 
             <ImageView
                 android:id="@+id/imageViewName"
-                android:layout_width="23px"
-                android:layout_height="33px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/person_img_grey"/>
 
@@ -69,7 +80,7 @@
                 android:capitalize="words"
                 android:hint="@string/name"
                 android:inputType="text"
-                android:paddingLeft="25px"
+                android:paddingLeft="12px"
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
@@ -82,7 +93,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/nameEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -96,10 +107,10 @@
 
             <ImageView
                 android:id="@+id/imageViewPhone"
-                android:layout_width="37px"
-                android:layout_height="37px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/phone_img_grey"/>
 
@@ -126,7 +137,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/phoneNoEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -140,10 +151,10 @@
 
             <ImageView
                 android:id="@+id/imageViewVehicle"
-                android:layout_width="47px"
-                android:layout_height="35px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="28px"
                 android:background="@drawable/vehicle_img_grey"/>
 
@@ -157,7 +168,7 @@
                 android:hint="@string/vehicle_number"
                 android:maxLength="15"
                 android:capitalize="characters"
-                android:paddingLeft="4px"
+                android:paddingLeft="12px"
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
@@ -171,7 +182,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/vehicleNoEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -194,20 +205,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutFront"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textViewFront"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
-                    android:layout_marginTop="12px"
                     android:text="@string/front"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
 
@@ -216,7 +225,8 @@
                     android:id="@+id/relativeLayoutFront"
                     android:layout_width="160px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
+                    android:layout_marginTop="10px"
+                    android:layout_below="@+id/textViewFront"
                     android:background="@drawable/background_grey_rounded_bordered"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -228,6 +238,7 @@
                         android:layout_marginTop="42px"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/retry_icon_black"/>
+
 
                     <TextView
                         android:id="@+id/textViewRetryFront"
@@ -248,23 +259,35 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/deleteImageFront"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:src="@drawable/orange_cross"
+                    android:layout_marginLeft="138px"
+                    android:layout_marginTop="30px"
+                    android:visibility="visible"
+                    android:tag="mwar"/>
+
                 <TextView
                     android:id="@+id/textViewStatusFront"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
+                    android:layout_below="@+id/relativeLayoutFront"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10px"
                     android:text="@string/front"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     android:textSize="28px"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutBack"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="37px"
+                android:layout_marginLeft="32px"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -273,7 +296,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginTop="12px"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/back"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
@@ -283,7 +306,8 @@
                     android:id="@+id/relativeLayoutBack"
                     android:layout_width="160px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
+                    android:layout_marginTop="10px"
+                    android:layout_below="@+id/textViewBack"
                     android:background="@drawable/background_grey_rounded_bordered"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -314,17 +338,30 @@
                         android:tag="mwar"/>
 
                 </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/deleteImageBack"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:src="@drawable/orange_cross"
+                    android:layout_marginLeft="138px"
+                    android:layout_marginTop="30px"
+                    android:visibility="visible"
+                    android:tag="mwar"/>
+
                 <TextView
                     android:id="@+id/textViewStatusBack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
+                    android:layout_below="@+id/relativeLayoutBack"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10px"
                     android:text="@string/front"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
 
         </LinearLayout>
@@ -332,10 +369,10 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12px"
+            android:layout_marginTop="22px"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -347,7 +384,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginTop="12px"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/left"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
@@ -357,7 +394,8 @@
                     android:id="@+id/relativeLayoutLeft"
                     android:layout_width="160px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
+                    android:layout_marginTop="10px"
+                    android:layout_below="@+id/textViewLeft"
                     android:background="@drawable/background_grey_rounded_bordered"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -389,23 +427,35 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/deleteImageLeft"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:src="@drawable/orange_cross"
+                    android:layout_marginLeft="138px"
+                    android:layout_marginTop="30px"
+                    android:visibility="visible"
+                    android:tag="mwar"/>
+
                 <TextView
                     android:id="@+id/textViewStatusLeft"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
+                    android:layout_below="@+id/relativeLayoutLeft"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10px"
                     android:text="@string/front"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="37px"
+                android:layout_marginLeft="32px"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -414,7 +464,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginTop="12px"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/right"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
@@ -424,7 +474,8 @@
                     android:id="@+id/relativeLayoutRight"
                     android:layout_width="160px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
+                    android:layout_below="@+id/textViewRight"
+                    android:layout_marginTop="10px"
                     android:background="@drawable/background_grey_rounded_bordered"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -456,25 +507,37 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/deleteImageRight"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:src="@drawable/orange_cross"
+                    android:layout_marginLeft="138px"
+                    android:layout_marginTop="30px"
+                    android:visibility="visible"
+                    android:tag="mwar"/>
+
                 <TextView
                     android:id="@+id/textViewStatusRight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
+                    android:layout_below="@+id/relativeLayoutRight"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10px"
                     android:text="@string/front"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/linearLayoutCameraStand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:visibility="visible"
-                android:layout_marginLeft="37px"
+                android:layout_marginLeft="32px"
                 android:orientation="vertical">
 
                 <TextView
@@ -482,7 +545,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
-                    android:layout_marginTop="12px"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/mobile_stand_non"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
@@ -492,7 +555,8 @@
                     android:id="@+id/relativeLayoutCameraStand"
                     android:layout_width="160px"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="7px"
+                    android:layout_below="@+id/textViewCameraStand"
+                    android:layout_marginTop="10px"
                     android:background="@drawable/background_grey_rounded_bordered"
                     android:orientation="vertical"
                     android:visibility="visible">
@@ -524,17 +588,29 @@
 
                 </RelativeLayout>
 
+                <ImageView
+                    android:id="@+id/deleteImageMobileStand"
+                    android:layout_width="42px"
+                    android:layout_height="42px"
+                    android:src="@drawable/orange_cross"
+                    android:layout_marginLeft="138px"
+                    android:layout_marginTop="30px"
+                    android:visibility="visible"
+                    android:tag="mwar"/>
+
                 <TextView
                     android:id="@+id/textViewStatusMobileStand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/image_icon"
+                    android:layout_below="@+id/relativeLayoutCameraStand"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10px"
                     android:text="@string/front"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="28px"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -547,6 +623,7 @@
         android:layout_height="99px"
         android:layout_gravity="center"
         android:layout_marginTop="36px"
+        android:textSize="36px"
         android:textColor="@color/white"
         android:text="@string/submit"
         android:background="@drawable/new_orange_btn_selector_rounded"/>

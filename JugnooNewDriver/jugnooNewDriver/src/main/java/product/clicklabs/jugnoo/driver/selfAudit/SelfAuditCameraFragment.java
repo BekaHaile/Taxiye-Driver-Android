@@ -81,15 +81,13 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 	private boolean flashmode = false;
 	private Bitmap capturedImage;
 	private int rotation, imgPixel = 600;
-	private LinearLayout linearLayoutroot, linearLayoutProgressBar, relativeLayoutProgressBarText;
+	private LinearLayout linearLayoutroot;
 	private RelativeLayout relativeLayoutConfirmImage, relativeLayoutProgressBar;
 	private SelfAuditActivity activity;
 	private File frontImage = null, backImage = null, leftImage = null, rightImage = null, mobileStandImage = null;
-	private ImageView imageViewCapturedImg1Progress, imageViewCapturedImg2Progress, imageViewCapturedImg3Progress,
-			imageViewCapturedImg4Progress, imageViewCapturedImg5Progress, imageViewCapturedImg1, imageViewCapturedImg2,
-			imageViewCapturedImg3, imageViewCapturedImg4;
-	private TextView textViewCapturedImg1Progress, textViewCapturedImg2Progress,textViewCapturedImg3Progress,
-			textViewCapturedImg4Progress, textViewCapturedImg5Progress, titleAutoSide;
+	private ImageView imageViewCapturedImg1, imageViewCapturedImg2,
+			imageViewCapturedImg3, imageViewCapturedImg4, imageViewCapturedImgProgress;
+	private TextView titleAutoSide;
 
 
 
@@ -109,15 +107,9 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		activity = (SelfAuditActivity) getActivity();
 		new ASSL(activity, linearLayoutroot, 1134, 720, false);
 
-
-
 		// camera surface view created
 		relativeLayoutConfirmImage = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutConfirmImage);
 		relativeLayoutProgressBar = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutProgressBar);
-
-		relativeLayoutProgressBarText = (LinearLayout) rootView.findViewById(R.id.relativeLayoutProgressBarText);
-		linearLayoutProgressBar = (LinearLayout) rootView.findViewById(R.id.linearLayoutProgressBar);
-
 
 		cameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
 		acceptImage = (Button) rootView.findViewById(R.id.acceptImage);
@@ -128,69 +120,34 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 		buttonSkip = (Button) rootView.findViewById(R.id.buttonSkip);
 
 
-		imageViewCapturedImg1Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg1Progress);
-		imageViewCapturedImg2Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg2Progress);
-		imageViewCapturedImg3Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg3Progress);
-		imageViewCapturedImg4Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg4Progress);
-		imageViewCapturedImg5Progress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg5Progress);
-
+		imageViewCapturedImgProgress = (ImageView) rootView.findViewById(R.id.imageViewCapturedImgProgress);
 		imageViewCapturedImg1 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg1);
 		imageViewCapturedImg2 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg2);
 		imageViewCapturedImg3 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg3);
 		imageViewCapturedImg4 = (ImageView) rootView.findViewById(R.id.imageViewCapturedImg4);
 
-		textViewCapturedImg1Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg1Progress);
-		textViewCapturedImg1Progress.setTypeface(Data.latoRegular(activity));
-		textViewCapturedImg2Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg2Progress);
-		textViewCapturedImg2Progress.setTypeface(Data.latoRegular(activity));
-		textViewCapturedImg3Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg3Progress);
-		textViewCapturedImg3Progress.setTypeface(Data.latoRegular(activity));
-		textViewCapturedImg4Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg4Progress);
-		textViewCapturedImg4Progress.setTypeface(Data.latoRegular(activity));
-		textViewCapturedImg5Progress = (TextView) rootView.findViewById(R.id.textViewCapturedImg5Progress);
-		textViewCapturedImg5Progress.setTypeface(Data.latoRegular(activity));
 		titleAutoSide = (TextView) rootView.findViewById(R.id.titleAutoSide);
 		titleAutoSide.setTypeface(Data.latoRegular(activity));
 
 		if(auditState == 1){
-			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImgProgress.setImageResource(R.drawable.progress_back);
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
 		} else if(auditState == 2){
-			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImgProgress.setImageResource(R.drawable.progress_left);
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
 		} else if(auditState == 3){
-			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImgProgress.setImageResource(R.drawable.progress_right);
 			titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
 		} else if(auditState == 4){
-			imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
-			imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
-			textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
+			imageViewCapturedImgProgress.setImageResource(R.drawable.progress_mobile_stand);
 			titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
 			buttonSkip.setVisibility(View.VISIBLE);
 		}
 
 		if(auditCmeraOption ==1){
 			relativeLayoutProgressBar.setVisibility(View.INVISIBLE);
-			linearLayoutProgressBar.setVisibility(View.INVISIBLE);
-			relativeLayoutProgressBarText.setVisibility(View.INVISIBLE);
 		} else {
 			relativeLayoutProgressBar.setVisibility(View.VISIBLE);
-			linearLayoutProgressBar.setVisibility(View.VISIBLE);
-			relativeLayoutProgressBarText.setVisibility(View.VISIBLE);
 		}
 
 		surfaceHolder = surfaceView.getHolder();
@@ -545,32 +502,28 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 			if (frontImage == null && auditState == 0) {
 				frontImage = f;
-				imageViewCapturedImg2Progress.setImageResource(R.drawable.green_circle_bar);
-				textViewCapturedImg2Progress.setTextColor(getResources().getColor(R.color.white));
+				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_back);
 				titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
 				auditState = 1;
 				uploadPicToServer(frontImage, auditType, 0);
 
 			} else if (backImage == null && auditState == 1) {
 				backImage = f;
-				imageViewCapturedImg3Progress.setImageResource(R.drawable.green_circle_bar);
-				textViewCapturedImg3Progress.setTextColor(getResources().getColor(R.color.white));
+				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_left);
 				titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
 				auditState = 2;
 				uploadPicToServer(backImage, auditType, 1);
 
 			} else if (leftImage == null && auditState == 2) {
 				leftImage = f;
-				imageViewCapturedImg4Progress.setImageResource(R.drawable.green_circle_bar);
-				textViewCapturedImg4Progress.setTextColor(getResources().getColor(R.color.white));
+				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_right);
 				titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
 				auditState = 3;
 				uploadPicToServer(leftImage, auditType, 2);
 
 			} else if (rightImage == null && auditState == 3) {
 				rightImage = f;
-				imageViewCapturedImg5Progress.setImageResource(R.drawable.green_circle_bar);
-				textViewCapturedImg5Progress.setTextColor(getResources().getColor(R.color.white));
+				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_mobile_stand);
 				titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
 				buttonSkip.setVisibility(View.VISIBLE);
 				auditState = 4;

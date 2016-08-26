@@ -52,9 +52,9 @@ import retrofit.mime.TypedByteArray;
 public class SubmitAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
-	private LinearLayout etLayout, linearLayoutCameraStand;
+	private LinearLayout etLayout;
 	private RelativeLayout relativeLayoutVehicleNo, relativeLayoutFront, relativeLayoutBack, relativeLayoutLeft,
-			relativeLayoutRight, relativeLayoutCameraStand;
+			relativeLayoutRight, relativeLayoutCameraStand, linearLayoutCameraStand;
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private TextView textViewFront, textViewBack, textViewLeft, textViewRight, textViewCameraStand, textViewRetryCameraStand,
@@ -62,7 +62,8 @@ public class SubmitAuditFragment extends Fragment {
 			textViewStatusBack, textViewStatusLeft, textViewStatusRight, textViewStatusMobileStand;
 
 	private ImageView imageIconFront, setCapturedImageFront, imageIconBack, setCapturedImageback, imageIconLeft, setCapturedImageLeft,
-			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, imageViewBack;
+			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, imageViewBack, deleteImageFront,
+			deleteImageBack, deleteImageLeft, deleteImageRight, deleteImageMobileStand, imageViewBin;
 
 	private int auditType;
 	private View rootView;
@@ -96,7 +97,7 @@ public class SubmitAuditFragment extends Fragment {
 
 
 		etLayout = (LinearLayout) rootView.findViewById(R.id.etLayout);
-		linearLayoutCameraStand = (LinearLayout) rootView.findViewById(R.id.linearLayoutCameraStand);
+		linearLayoutCameraStand = (RelativeLayout) rootView.findViewById(R.id.linearLayoutCameraStand);
 
 		relativeLayoutFront = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutFront);
 		relativeLayoutBack = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutBack);
@@ -159,7 +160,14 @@ public class SubmitAuditFragment extends Fragment {
 		imageIconCameraStand = (ImageView) rootView.findViewById(R.id.image_icon_CameraStand);
 		setCapturedImageCameraStand = (ImageView) rootView.findViewById(R.id.setCapturedImageCameraStand);
 
+		deleteImageFront = (ImageView) rootView.findViewById(R.id.deleteImageFront);
+		deleteImageBack = (ImageView) rootView.findViewById(R.id.deleteImageBack);
+		deleteImageLeft = (ImageView) rootView.findViewById(R.id.deleteImageLeft);
+		deleteImageRight = (ImageView) rootView.findViewById(R.id.deleteImageRight);
+		deleteImageMobileStand = (ImageView) rootView.findViewById(R.id.deleteImageMobileStand);
+
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		imageViewBin = (ImageView) rootView.findViewById(R.id.imageViewBin);
 
 		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
@@ -269,89 +277,155 @@ public class SubmitAuditFragment extends Fragment {
 			}
 		});
 
-		relativeLayoutFront.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(auditStateResponse != null && !auditStateResponse.getImages().get(0).getRejectionReason().equalsIgnoreCase("")){
-					DialogPopup.alertPopupWithListener(activity, "",
-							auditStateResponse.getImages().get(0).getRejectionReason(), new View.OnClickListener() {
-						@Override
-						public void onClick(View v) {
-							openCamera(0);
+			relativeLayoutFront.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (auditStateResponse.getImages().get(0).getImageStatus() != 10) {
+						if (auditStateResponse != null && !auditStateResponse.getImages().get(0).getRejectionReason().equalsIgnoreCase("")) {
+							DialogPopup.alertPopupWithListener(activity, "",
+									auditStateResponse.getImages().get(0).getRejectionReason(), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(0);
+										}
+									});
+						} else {
+							DialogPopup.alertPopupWithListener(activity, "",
+									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(0);
+										}
+									});
 						}
-					});
-				} else {
-					openCamera(0);
+					}
 				}
+			});
 
-			}
-		});
 
-		relativeLayoutBack.setOnClickListener(new View.OnClickListener() {
+			relativeLayoutBack.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(auditStateResponse.getImages().get(1).getImageStatus() != 10) {
+						if (auditStateResponse != null && !auditStateResponse.getImages().get(1).getRejectionReason().equalsIgnoreCase("")) {
+							DialogPopup.alertPopupWithListener(activity, "",
+									auditStateResponse.getImages().get(1).getRejectionReason(), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(1);
+										}
+									});
+						} else {
+							DialogPopup.alertPopupWithListener(activity, "",
+									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(1);
+										}
+									});
+						}
+					}
+				}
+			});
+
+
+
+			relativeLayoutLeft.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(auditStateResponse.getImages().get(2).getImageStatus() != 10) {
+						if (auditStateResponse != null && !auditStateResponse.getImages().get(2).getRejectionReason().equalsIgnoreCase("")) {
+							DialogPopup.alertPopupWithListener(activity, "",
+									auditStateResponse.getImages().get(2).getRejectionReason(), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(2);
+										}
+									});
+						} else {
+							DialogPopup.alertPopupWithListener(activity, "",
+									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(2);
+										}
+									});
+						}
+					}
+				}
+			});
+
+
+
+			relativeLayoutRight.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(auditStateResponse.getImages().get(3).getImageStatus() != 10) {
+						if (auditStateResponse != null && !auditStateResponse.getImages().get(3).getRejectionReason().equalsIgnoreCase("")) {
+							DialogPopup.alertPopupWithListener(activity, "",
+									auditStateResponse.getImages().get(3).getRejectionReason(), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(3);
+										}
+									});
+						} else {
+							DialogPopup.alertPopupWithListener(activity, "",
+									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(3);
+										}
+									});
+						}
+					}
+				}
+			});
+
+
+
+			relativeLayoutCameraStand.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(auditStateResponse.getImages().get(4).getImageStatus() != 10) {
+						if (auditStateResponse != null && !auditStateResponse.getImages().get(4).getRejectionReason().equalsIgnoreCase("")) {
+							DialogPopup.alertPopupWithListener(activity, "",
+									auditStateResponse.getImages().get(4).getRejectionReason(), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(4);
+										}
+									});
+						} else {
+							DialogPopup.alertPopupWithListener(activity, "",
+									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											openCamera(4);
+										}
+									});
+						}
+					}
+				}
+			});
+
+
+
+		imageViewBin.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(auditStateResponse != null && !auditStateResponse.getImages().get(1).getRejectionReason().equalsIgnoreCase("")){
-					DialogPopup.alertPopupWithListener(activity, "",
-							auditStateResponse.getImages().get(1).getRejectionReason(), new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									openCamera(1);
-								}
-							});
-				} else {
-					openCamera(1);
-				}
-			}
-		});
+				DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.cancel_audit),
+						getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								deleteCurrentAudit();
+							}
+						}, new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
 
-		relativeLayoutLeft.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(auditStateResponse != null && !auditStateResponse.getImages().get(2).getRejectionReason().equalsIgnoreCase("")){
-					DialogPopup.alertPopupWithListener(activity, "",
-							auditStateResponse.getImages().get(2).getRejectionReason(), new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									openCamera(2);
-								}
-							});
-				} else {
-					openCamera(2);
-				}
-			}
-		});
-
-		relativeLayoutRight.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(auditStateResponse != null && !auditStateResponse.getImages().get(3).getRejectionReason().equalsIgnoreCase("")){
-					DialogPopup.alertPopupWithListener(activity, "",
-							auditStateResponse.getImages().get(3).getRejectionReason(), new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									openCamera(3);
-								}
-							});
-				} else {
-					openCamera(3);
-				}
-			}
-		});
-
-		relativeLayoutCameraStand.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if(auditStateResponse != null && !auditStateResponse.getImages().get(4).getRejectionReason().equalsIgnoreCase("")){
-					DialogPopup.alertPopupWithListener(activity, "",
-							auditStateResponse.getImages().get(4).getRejectionReason(), new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									openCamera(4);
-								}
-							});
-				} else {
-					openCamera(4);
-				}
+							}
+						}, true, false);
 			}
 		});
 
@@ -437,12 +511,13 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageFront);
 							textViewRetryFront.setVisibility(View.GONE);
-							imageIconFront.bringToFront();
-							imageIconFront.setImageResource(R.drawable.retry_icon_white);
+//							imageIconFront.bringToFront();
+//							imageIconFront.setImageResource(R.drawable.retry_icon_white);
 							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
 								textViewStatusFront.setText(getResources().getString(R.string.verified));
 								textViewStatusFront.setTextColor(getResources().getColor(R.color.green_delivery));
 								textViewStatusFront.setVisibility(View.VISIBLE);
+								deleteImageFront.setVisibility(View.GONE);
 							}
 
 						}
@@ -461,12 +536,13 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageback);
 							textViewRetryBack.setVisibility(View.GONE);
-							imageIconBack.bringToFront();
-							imageIconBack.setImageResource(R.drawable.retry_icon_white);
+//							imageIconBack.bringToFront();
+//							imageIconBack.setImageResource(R.drawable.retry_icon_white);
 							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
 								textViewStatusBack.setText(getResources().getString(R.string.verified));
 								textViewStatusBack.setTextColor(getResources().getColor(R.color.green_delivery));
 								textViewStatusBack.setVisibility(View.VISIBLE);
+								deleteImageBack.setVisibility(View.GONE);
 							}
 
 						}
@@ -485,12 +561,13 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageLeft);
 							textViewRetryLeft.setVisibility(View.GONE);
-							imageIconLeft.bringToFront();
-							imageIconLeft.setImageResource(R.drawable.retry_icon_white);
+//							imageIconLeft.bringToFront();
+//							imageIconLeft.setImageResource(R.drawable.retry_icon_white);
 							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
 								textViewStatusLeft.setText(getResources().getString(R.string.verified));
 								textViewStatusLeft.setTextColor(getResources().getColor(R.color.green_delivery));
 								textViewStatusLeft.setVisibility(View.VISIBLE);
+								deleteImageLeft.setVisibility(View.GONE);
 							}
 
 						}
@@ -509,12 +586,13 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageRight);
 							textViewRetryRight.setVisibility(View.GONE);
-							imageIconRight.bringToFront();
-							imageIconRight.setImageResource(R.drawable.retry_icon_white);
+//							imageIconRight.bringToFront();
+//							imageIconRight.setImageResource(R.drawable.retry_icon_white);
 							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
 								textViewStatusRight.setText(getResources().getString(R.string.verified));
 								textViewStatusRight.setTextColor(getResources().getColor(R.color.green_delivery));
 								textViewStatusRight.setVisibility(View.VISIBLE);
+								deleteImageRight.setVisibility(View.GONE);
 							}
 
 						}
@@ -533,12 +611,13 @@ public class SubmitAuditFragment extends Fragment {
 									//.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
 									.into(setCapturedImageCameraStand);
 							textViewRetryCameraStand.setVisibility(View.GONE);
-							imageIconCameraStand.bringToFront();
-							imageIconCameraStand.setImageResource(R.drawable.retry_icon_white);
+//							imageIconCameraStand.bringToFront();
+//							imageIconCameraStand.setImageResource(R.drawable.retry_icon_white);
 							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
 								textViewStatusMobileStand.setText(getResources().getString(R.string.verified));
 								textViewStatusMobileStand.setTextColor(getResources().getColor(R.color.green_delivery));
 								textViewStatusMobileStand.setVisibility(View.VISIBLE);
+								deleteImageMobileStand.setVisibility(View.GONE);
 							}
 
 						}
@@ -690,6 +769,51 @@ public class SubmitAuditFragment extends Fragment {
 					@Override
 					public void failure(RetrofitError error) {
 						Log.e("request fail", error.toString());
+						DialogPopup.dismissLoadingDialog();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+					}
+				});
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void deleteCurrentAudit() {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+
+				params.put("access_token", Data.userData.accessToken);
+				params.put("audit_type", String.valueOf(auditType));
+
+				RestClient.getApiServices().cancelAuditByDriver(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt("flag");
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								activity.getTransactionUtils().openSelectAuditFragment(activity,
+										activity.getRelativeLayoutContainer());
+							} else {
+								DialogPopup.alertPopup(activity, "", jObj.getString("message"));
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+							DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						}
+						DialogPopup.dismissLoadingDialog();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						product.clicklabs.jugnoo.driver.utils.Log.e("request fail", error.toString());
 						DialogPopup.dismissLoadingDialog();
 						DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 					}

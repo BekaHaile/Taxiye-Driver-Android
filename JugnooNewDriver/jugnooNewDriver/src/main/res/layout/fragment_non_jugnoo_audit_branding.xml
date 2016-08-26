@@ -53,10 +53,10 @@
 
             <ImageView
                 android:id="@+id/imageViewName"
-                android:layout_width="23px"
-                android:layout_height="33px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/person_img_grey"/>
 
@@ -70,7 +70,7 @@
                 android:capitalize="words"
                 android:hint="@string/name"
                 android:inputType="text"
-                android:paddingLeft="25px"
+                android:paddingLeft="12px"
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
@@ -83,7 +83,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/nameEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -97,10 +97,10 @@
 
             <ImageView
                 android:id="@+id/imageViewPhone"
-                android:layout_width="37px"
-                android:layout_height="37px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="22px"
                 android:background="@drawable/phone_img_grey"/>
 
@@ -127,7 +127,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/phoneNoEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
@@ -140,10 +140,10 @@
 
             <ImageView
                 android:id="@+id/imageViewVehicle"
-                android:layout_width="47px"
-                android:layout_height="35px"
+                android:layout_width="69px"
+                android:layout_height="49px"
                 android:layout_alignParentLeft="true"
-                android:layout_marginRight="48px"
+                android:layout_marginRight="32px"
                 android:layout_marginTop="28px"
                 android:background="@drawable/vehicle_img_grey"/>
 
@@ -157,7 +157,7 @@
                 android:hint="@string/vehicle_number"
                 android:capitalize="characters"
                 android:maxLength="10"
-                android:paddingLeft="4px"
+                android:paddingLeft="12px"
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
@@ -171,7 +171,7 @@
                 android:layout_height="2px"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/vehicleNoEt"
-                android:layout_marginLeft="72px"
+                android:layout_marginLeft="92px"
                 android:background="@color/black_varient"/>
 
 
