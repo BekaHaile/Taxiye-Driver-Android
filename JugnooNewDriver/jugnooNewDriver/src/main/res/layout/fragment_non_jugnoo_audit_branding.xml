@@ -240,9 +240,7 @@
                 android:textSize="32px"
                 android:text="@string/no"/>
 
-
         </LinearLayout>
-
 
     </RelativeLayout>
 

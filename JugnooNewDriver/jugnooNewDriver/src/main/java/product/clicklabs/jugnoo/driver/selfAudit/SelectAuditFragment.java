@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ import retrofit.mime.TypedByteArray;
 public class SelectAuditFragment extends Fragment {
 
 	private LinearLayout linearLayoutRoot;
-	private LinearLayout linearLayoutSelfAudit, linearLayoutNJAutoBranding, linearLayoutNJAutoAudit;
+	private RelativeLayout linearLayoutSelfAudit, linearLayoutNJAutoBranding, linearLayoutNJAutoAudit;
 	private TextView textViewSelfAudit, textViewNJAutoBranding, textViewNJAutoAudit;
 	private TextView textViewSelfAuditLast, textViewSelfAuditNext, textViewNJBOffer, textViewNJAOffer, textViewNJBNumber, textViewNJANumber,
 			textViewSelfAuditStatus, textViewNJAutoBrandingStatus, textViewNJAutoAuditStatus;
@@ -78,9 +79,9 @@ public class SelectAuditFragment extends Fragment {
 
 
 		getAuditStatus(activity);
-		linearLayoutSelfAudit = (LinearLayout) rootView.findViewById(R.id.linearLayoutSelfAudit);
-		linearLayoutNJAutoBranding = (LinearLayout) rootView.findViewById(R.id.linearLayoutNJAutoBranding);
-		linearLayoutNJAutoAudit = (LinearLayout) rootView.findViewById(R.id.linearLayoutNJAutoAudit);
+		linearLayoutSelfAudit = (RelativeLayout) rootView.findViewById(R.id.linearLayoutSelfAudit);
+		linearLayoutNJAutoBranding = (RelativeLayout) rootView.findViewById(R.id.linearLayoutNJAutoBranding);
+		linearLayoutNJAutoAudit = (RelativeLayout) rootView.findViewById(R.id.linearLayoutNJAutoAudit);
 
 
 		textViewSelfAudit = (TextView) rootView.findViewById(R.id.textViewSelfAudit);
