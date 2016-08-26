@@ -503,28 +503,36 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 			if (frontImage == null && auditState == 0) {
 				frontImage = f;
 				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_back);
-				titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+				if(auditCmeraOption == 0) {
+					titleAutoSide.setText(getResources().getString(R.string.auto_from_back));
+				}
 				auditState = 1;
 				uploadPicToServer(frontImage, auditType, 0);
 
 			} else if (backImage == null && auditState == 1) {
 				backImage = f;
 				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_left);
-				titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
+				if(auditCmeraOption == 0) {
+					titleAutoSide.setText(getResources().getString(R.string.auto_from_left));
+				}
 				auditState = 2;
 				uploadPicToServer(backImage, auditType, 1);
 
 			} else if (leftImage == null && auditState == 2) {
 				leftImage = f;
 				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_right);
-				titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
+				if(auditCmeraOption == 0) {
+					titleAutoSide.setText(getResources().getString(R.string.auto_from_right));
+				}
 				auditState = 3;
 				uploadPicToServer(leftImage, auditType, 2);
 
 			} else if (rightImage == null && auditState == 3) {
 				rightImage = f;
 				imageViewCapturedImgProgress.setImageResource(R.drawable.progress_mobile_stand);
-				titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+				if(auditCmeraOption == 0) {
+					titleAutoSide.setText(getResources().getString(R.string.mobile_stand));
+				}
 				buttonSkip.setVisibility(View.VISIBLE);
 				auditState = 4;
 				uploadPicToServer(rightImage, auditType, 3);

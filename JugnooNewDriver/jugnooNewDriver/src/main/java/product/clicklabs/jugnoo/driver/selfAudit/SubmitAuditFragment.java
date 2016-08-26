@@ -197,6 +197,14 @@ public class SubmitAuditFragment extends Fragment {
 			}
 		});
 
+		if(auditType == 0){
+			textViewTitle.setText(getResources().getString(R.string.self_audit));
+		} else if (auditType == 1){
+			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_branding));
+		} else if (auditType == 2){
+			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_audit));
+		}
+
 		nameEt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
 			@Override

@@ -642,7 +642,7 @@
 	<string name="register_via_agent">Register Via Agent</string>
 	<string name="upload_Documents">Upload Documents</string>
 	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-	<string name="self_audit">Self Audit</string>
+	<string name="self_audit">SELF AUDIT</string>
 	<string name="front">Front</string>
 	<string name="add_photo">+ Add Photo</string>
 	<string name="left">Left</string>
@@ -669,7 +669,7 @@
 	<string name="request_pending">Request Pending</string>
 
 	<string name="please_submit">Please Submit</string>
-	<string name="cancel_audit">Are you sure you want to cancel audit?</string>
+	<string name="cancel_audit">Are you sure you want to cancel process?</string>
 	<string name="image_upload_failed">Image uploading failed, please try again</string>
 	<string name="audit_lower">Audit</string>
 	<string name="deletion_confirmation">Are you sure, you want to delete image ?</string>

@@ -49,7 +49,7 @@ public class NonJugnooAuditFragment extends Fragment {
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private boolean smartPhoneAvailable = false;
-	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton;
+	private TextView textViewSmartPhoneOption, textViewOptional, textViewNextButton, textViewTitle;
 
 	private ImageView imageViewSmartPhoneCheckNo, imageViewSmartPhoneCheckYes, imageViewBack;
 	private int auditType;
@@ -98,6 +98,9 @@ public class NonJugnooAuditFragment extends Fragment {
 		textViewNextButton = (TextView) rootView.findViewById(R.id.textViewNextButton);
 		textViewNextButton.setTypeface(Data.latoRegular(activity));
 
+		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
+		textViewTitle.setTypeface(Data.latoRegular(activity));
+
 		imageViewSmartPhoneCheckYes = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckYes);
 		imageViewSmartPhoneCheckNo = (ImageView) rootView.findViewById(R.id.imageViewSmartPhoneCheckNo);
 
@@ -135,6 +138,14 @@ public class NonJugnooAuditFragment extends Fragment {
 				vehicleNoEt.setError(null);
 			}
 		});
+
+		if(auditType == 0){
+			textViewTitle.setText(getResources().getString(R.string.self_audit));
+		} else if (auditType == 1){
+			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_branding));
+		} else if (auditType == 2){
+			textViewTitle.setText(getResources().getString(R.string.non_jugnoo_auto_audit));
+		}
 
 		imageViewSmartPhoneCheckNo.setImageResource(R.drawable.radio_select);
 		imageViewSmartPhoneCheckYes.setImageResource(R.drawable.radio_unslelcet);

@@ -21,7 +21,7 @@
             android:layout_centerVertical="true"
             android:text="@string/Audit"
             android:textColor="@color/white"
-            android:textSize="40px"/>
+            android:textSize="32px"/>
 
         <ImageView
             android:id="@+id/imageViewBack"
