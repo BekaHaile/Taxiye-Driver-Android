@@ -427,6 +427,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 
 	private void takeImage() {
+		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 		camera.takePicture(null, null, new Camera.PictureCallback() {
 
 			private File imageFile;
@@ -449,6 +450,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 								rotateMatrix, false);
 					} catch (Exception e) {
 						e.printStackTrace();
+						DialogPopup.dismissLoadingDialog();
 					}
 
 					if (rotatedBitmap != null) {
@@ -457,6 +459,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 						captureImage.setVisibility(View.GONE);
 						buttonSkip.setVisibility(View.GONE);
 						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
+						DialogPopup.dismissLoadingDialog();
 					}
 
 //					String state = Environment.getExternalStorageState();
@@ -508,6 +511,7 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 				} catch (Exception e) {
 					e.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
 				}
 
 			}

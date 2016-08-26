@@ -58,7 +58,8 @@ public class SubmitAuditFragment extends Fragment {
 	private EditText nameEt, phoneNoEt, vehicleNoEt;
 	private Button submitButton;
 	private TextView textViewFront, textViewBack, textViewLeft, textViewRight, textViewCameraStand, textViewRetryCameraStand,
-			textViewRetryFront, textViewRetryBack, textViewRetryLeft, textViewRetryRight, textViewTitle;
+			textViewRetryFront, textViewRetryBack, textViewRetryLeft, textViewRetryRight, textViewTitle, textViewStatusFront,
+			textViewStatusBack, textViewStatusLeft, textViewStatusRight, textViewStatusMobileStand;
 
 	private ImageView imageIconFront, setCapturedImageFront, imageIconBack, setCapturedImageback, imageIconLeft, setCapturedImageLeft,
 			imageIconRight, setCapturedImageRight, imageIconCameraStand, setCapturedImageCameraStand, imageViewBack;
@@ -133,6 +134,18 @@ public class SubmitAuditFragment extends Fragment {
 		textViewRetryRight.setTypeface(Data.latoRegular(activity));
 		textViewRetryCameraStand = (TextView) rootView.findViewById(R.id.textViewRetryCameraStand);
 		textViewRetryCameraStand.setTypeface(Data.latoRegular(activity));
+
+
+		textViewStatusFront = (TextView) rootView.findViewById(R.id.textViewStatusFront);
+		textViewStatusFront.setTypeface(Data.latoRegular(activity));
+		textViewStatusBack = (TextView) rootView.findViewById(R.id.textViewStatusBack);
+		textViewStatusBack.setTypeface(Data.latoRegular(activity));
+		textViewStatusLeft = (TextView) rootView.findViewById(R.id.textViewStatusLeft);
+		textViewStatusLeft.setTypeface(Data.latoRegular(activity));
+		textViewStatusRight = (TextView) rootView.findViewById(R.id.textViewStatusRight);
+		textViewStatusRight.setTypeface(Data.latoRegular(activity));
+		textViewStatusMobileStand = (TextView) rootView.findViewById(R.id.textViewStatusMobileStand);
+		textViewStatusMobileStand.setTypeface(Data.latoRegular(activity));
 
 
 		imageIconFront = (ImageView) rootView.findViewById(R.id.image_icon_front);
@@ -413,6 +426,11 @@ public class SubmitAuditFragment extends Fragment {
 						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
 							textViewRetryFront.setVisibility(View.VISIBLE);
 							imageIconFront.setImageResource(R.drawable.retry_icon_black);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 5){
+								textViewStatusFront.setText(getResources().getString(R.string.rejected));
+								textViewStatusFront.setTextColor(getResources().getColor(R.color.red_delivery));
+								textViewStatusFront.setVisibility(View.VISIBLE);
+							}
 						} else {
 							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
 									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
@@ -421,12 +439,22 @@ public class SubmitAuditFragment extends Fragment {
 							textViewRetryFront.setVisibility(View.GONE);
 							imageIconFront.bringToFront();
 							imageIconFront.setImageResource(R.drawable.retry_icon_white);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
+								textViewStatusFront.setText(getResources().getString(R.string.verified));
+								textViewStatusFront.setTextColor(getResources().getColor(R.color.green_delivery));
+								textViewStatusFront.setVisibility(View.VISIBLE);
+							}
 
 						}
 					} else if(auditStateResponse.getImages().get(i).getImageType() == 1){
 						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
 							textViewRetryBack.setVisibility(View.VISIBLE);
 							imageIconBack.setImageResource(R.drawable.retry_icon_black);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 5){
+								textViewStatusBack.setText(getResources().getString(R.string.rejected));
+								textViewStatusBack.setTextColor(getResources().getColor(R.color.red_delivery));
+								textViewStatusBack.setVisibility(View.VISIBLE);
+							}
 						} else {
 							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
 									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
@@ -435,12 +463,22 @@ public class SubmitAuditFragment extends Fragment {
 							textViewRetryBack.setVisibility(View.GONE);
 							imageIconBack.bringToFront();
 							imageIconBack.setImageResource(R.drawable.retry_icon_white);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
+								textViewStatusBack.setText(getResources().getString(R.string.verified));
+								textViewStatusBack.setTextColor(getResources().getColor(R.color.green_delivery));
+								textViewStatusBack.setVisibility(View.VISIBLE);
+							}
 
 						}
 					} else if(auditStateResponse.getImages().get(i).getImageType() == 2){
 						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
 							textViewRetryLeft.setVisibility(View.VISIBLE);
 							imageIconLeft.setImageResource(R.drawable.retry_icon_black);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 5){
+								textViewStatusLeft.setText(getResources().getString(R.string.rejected));
+								textViewStatusLeft.setTextColor(getResources().getColor(R.color.red_delivery));
+								textViewStatusLeft.setVisibility(View.VISIBLE);
+							}
 						} else {
 							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
 									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
@@ -449,12 +487,22 @@ public class SubmitAuditFragment extends Fragment {
 							textViewRetryLeft.setVisibility(View.GONE);
 							imageIconLeft.bringToFront();
 							imageIconLeft.setImageResource(R.drawable.retry_icon_white);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
+								textViewStatusLeft.setText(getResources().getString(R.string.verified));
+								textViewStatusLeft.setTextColor(getResources().getColor(R.color.green_delivery));
+								textViewStatusLeft.setVisibility(View.VISIBLE);
+							}
 
 						}
 					} else if(auditStateResponse.getImages().get(i).getImageType() == 3){
 						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
 							textViewRetryRight.setVisibility(View.VISIBLE);
 							imageIconRight.setImageResource(R.drawable.retry_icon_black);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 5){
+								textViewStatusRight.setText(getResources().getString(R.string.rejected));
+								textViewStatusRight.setTextColor(getResources().getColor(R.color.red_delivery));
+								textViewStatusRight.setVisibility(View.VISIBLE);
+							}
 						} else {
 							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
 									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
@@ -463,12 +511,22 @@ public class SubmitAuditFragment extends Fragment {
 							textViewRetryRight.setVisibility(View.GONE);
 							imageIconRight.bringToFront();
 							imageIconRight.setImageResource(R.drawable.retry_icon_white);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
+								textViewStatusRight.setText(getResources().getString(R.string.verified));
+								textViewStatusRight.setTextColor(getResources().getColor(R.color.green_delivery));
+								textViewStatusRight.setVisibility(View.VISIBLE);
+							}
 
 						}
 					} else if(auditStateResponse.getImages().get(i).getImageType() == 4){
 						if("".equalsIgnoreCase(auditStateResponse.getImages().get(i).getImageUrl())){
 							textViewRetryCameraStand.setVisibility(View.VISIBLE);
 							imageIconCameraStand.setImageResource(R.drawable.retry_icon_black);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 5){
+								textViewStatusMobileStand.setText(getResources().getString(R.string.rejected));
+								textViewStatusMobileStand.setTextColor(getResources().getColor(R.color.red_delivery));
+								textViewStatusMobileStand.setVisibility(View.VISIBLE);
+							}
 						} else {
 							Picasso.with(getActivity()).load(auditStateResponse.getImages().get(i).getImageUrl())
 									.transform(new RoundBorderTransform()).resize(300, 300).centerCrop()
@@ -477,6 +535,11 @@ public class SubmitAuditFragment extends Fragment {
 							textViewRetryCameraStand.setVisibility(View.GONE);
 							imageIconCameraStand.bringToFront();
 							imageIconCameraStand.setImageResource(R.drawable.retry_icon_white);
+							if(auditStateResponse.getImages().get(i).getImageStatus() == 10){
+								textViewStatusMobileStand.setText(getResources().getString(R.string.verified));
+								textViewStatusMobileStand.setTextColor(getResources().getColor(R.color.green_delivery));
+								textViewStatusMobileStand.setVisibility(View.VISIBLE);
+							}
 
 						}
 					}

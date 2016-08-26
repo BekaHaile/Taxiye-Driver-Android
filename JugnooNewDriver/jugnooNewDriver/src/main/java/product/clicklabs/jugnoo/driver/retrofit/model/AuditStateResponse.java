@@ -192,6 +192,9 @@ public class AuditStateResponse {
 		@SerializedName("rejection_reason")
 		@Expose
 		private String rejectionReason;
+		@SerializedName("image_status")
+		@Expose
+		private Integer imageStatus;
 
 		/**
 		 *
@@ -247,6 +250,13 @@ public class AuditStateResponse {
 			this.rejectionReason = rejectionReason;
 		}
 
+		public Integer getImageStatus() {
+			return imageStatus;
+		}
+
+		public void setImageStatus(Integer imageStatus) {
+			this.imageStatus = imageStatus;
+		}
 	}
 
 }

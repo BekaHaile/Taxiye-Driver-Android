@@ -38,7 +38,7 @@
         android:id="@+id/etLayout"
         android:layout_width="650px"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24px"
+        android:layout_marginTop="12px"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical"
         android:splitMotionEvents="false">
@@ -46,7 +46,7 @@
 
         <RelativeLayout
             android:layout_width="630px"
-            android:layout_height="117px"
+            android:layout_height="110px"
             android:gravity="center_vertical"
             >
 
@@ -90,7 +90,7 @@
 
         <RelativeLayout
             android:layout_width="630px"
-            android:layout_height="117px"
+            android:layout_height="110px"
             android:gravity="center_vertical"
             >
 
@@ -135,7 +135,7 @@
         <RelativeLayout
             android:id="@+id/relativeLayoutVehicleNo"
             android:layout_width="630px"
-            android:layout_height="117px"
+            android:layout_height="110px"
             android:gravity="center_vertical">
 
             <ImageView
@@ -186,7 +186,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:layout_marginTop="36px"
+        android:layout_marginTop="24px"
         android:layout_gravity="center">
 
         <LinearLayout
@@ -248,6 +248,15 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/textViewStatusFront"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="10px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
 
             </LinearLayout>
 
@@ -305,7 +314,15 @@
                         android:tag="mwar"/>
 
                 </RelativeLayout>
-
+                <TextView
+                    android:id="@+id/textViewStatusBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="10px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
 
             </LinearLayout>
 
@@ -315,7 +332,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="12px"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -372,6 +389,15 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/textViewStatusLeft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="10px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
 
             </LinearLayout>
 
@@ -430,6 +456,15 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/textViewStatusRight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="10px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
 
             </LinearLayout>
 
@@ -489,6 +524,15 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/textViewStatusMobileStand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/image_icon"
+                    android:layout_marginTop="10px"
+                    android:text="@string/front"
+                    android:textColor="@color/black"
+                    android:textSize="28px"/>
 
             </LinearLayout>
 
@@ -502,7 +546,7 @@
         android:layout_width="550px"
         android:layout_height="99px"
         android:layout_gravity="center"
-        android:layout_marginTop="60px"
+        android:layout_marginTop="36px"
         android:textColor="@color/white"
         android:text="@string/submit"
         android:background="@drawable/new_orange_btn_selector_rounded"/>
