@@ -49,7 +49,7 @@ public class SelectAuditFragment extends Fragment {
 	private View rootView;
 	private SelfAuditActivity activity;
 
-	private ImageView imageViewBack;
+	private ImageView imageViewBack, imageViewArrowSA, imageViewArrowNJB, imageViewArrowNJA;
 	private AuditTypeResponse auditTypeResponse;
 	private AuditStateResponse auditStateResponse;
 
@@ -113,7 +113,9 @@ public class SelectAuditFragment extends Fragment {
 		textViewNJANumber.setTypeface(Data.latoRegular(activity));
 
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
-
+		imageViewArrowSA = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		imageViewArrowNJB = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		imageViewArrowNJA = (ImageView) rootView.findViewById(R.id.imageViewBack);
 
 		linearLayoutSelfAudit.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -205,12 +207,14 @@ public class SelectAuditFragment extends Fragment {
 				} else if(auditTypeResponse.getSaStatus() == 20){
 					textViewSelfAuditStatus.setText(getResources().getString(R.string.request_pending));
 					textViewSelfAuditStatus.setTextColor(getResources().getColor(R.color.red_delivery));
+					imageViewArrowSA.setVisibility(View.GONE);
 				} else if(auditTypeResponse.getSaStatus() == 25){
 					textViewSelfAuditStatus.setText(getResources().getString(R.string.rejected));
 					textViewSelfAuditStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 				} else if(auditTypeResponse.getSaStatus() == 30){
 					textViewSelfAuditStatus.setText(getResources().getString(R.string.accepted));
 					textViewSelfAuditStatus.setTextColor(getResources().getColor(R.color.green_delivery));
+					imageViewArrowSA.setVisibility(View.GONE);
 				}
 
 				if(auditTypeResponse.getNjaStatus() == 5) {
@@ -224,6 +228,7 @@ public class SelectAuditFragment extends Fragment {
 					textViewNJAutoAuditStatus.setTextColor(getResources().getColor(R.color.status_yellow));
 				} else if(auditTypeResponse.getNjaStatus() == 20){
 					textViewNJAutoAuditStatus.setText(getResources().getString(R.string.pending));
+					imageViewArrowNJA.setVisibility(View.GONE);
 					textViewNJAutoAuditStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 				} else if(auditTypeResponse.getNjaStatus() == 25){
 					textViewNJAutoAuditStatus.setText(getResources().getString(R.string.rejected));
@@ -231,6 +236,7 @@ public class SelectAuditFragment extends Fragment {
 				} else if(auditTypeResponse.getNjaStatus() == 30){
 					textViewNJAutoAuditStatus.setText(getResources().getString(R.string.accepted));
 					textViewNJAutoAuditStatus.setTextColor(getResources().getColor(R.color.green_delivery));
+					imageViewArrowNJA.setVisibility(View.GONE);
 				}
 
 
@@ -245,12 +251,14 @@ public class SelectAuditFragment extends Fragment {
 					textViewNJAutoBrandingStatus.setTextColor(getResources().getColor(R.color.status_yellow));
 				} else if(auditTypeResponse.getNjbStatus() == 20){
 					textViewNJAutoBrandingStatus.setText(getResources().getString(R.string.pending));
+					imageViewArrowNJB.setVisibility(View.GONE);
 					textViewNJAutoBrandingStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 				} else if(auditTypeResponse.getNjbStatus() == 25){
 					textViewNJAutoBrandingStatus.setText(getResources().getString(R.string.rejected));
 					textViewNJAutoBrandingStatus.setTextColor(getResources().getColor(R.color.red_delivery));
 				} else if(auditTypeResponse.getNjbStatus() == 30){
 					textViewNJAutoBrandingStatus.setText(getResources().getString(R.string.accepted));
+					imageViewArrowNJB.setVisibility(View.GONE);
 					textViewNJAutoBrandingStatus.setTextColor(getResources().getColor(R.color.green_delivery));
 				}
 

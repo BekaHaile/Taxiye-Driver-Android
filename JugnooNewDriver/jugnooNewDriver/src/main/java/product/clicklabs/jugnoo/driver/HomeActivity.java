@@ -1464,19 +1464,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
 
 
-			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP,0) == 1){
-				DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
-						Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(HomeActivity.this, SelfAuditActivity.class);
-						intent.putExtra("self_audit", "yes");
-						startActivity(intent);
-						finish();
-						overridePendingTransition(R.anim.left_in, R.anim.left_out);
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+
+					if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP,0) == 1){
+						DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
+								Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Intent intent = new Intent(HomeActivity.this, SelfAuditActivity.class);
+										intent.putExtra("self_audit", "yes");
+										startActivity(intent);
+										finish();
+										overridePendingTransition(R.anim.left_in, R.anim.left_out);
+									}
+								});
 					}
-				});
-			}
+
+				}
+			}, 300);
+
+
+
 
 			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
 				auditRL.setVisibility(View.VISIBLE);
