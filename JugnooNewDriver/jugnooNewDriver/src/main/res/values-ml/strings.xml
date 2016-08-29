@@ -580,17 +580,17 @@
     <string name="total_amount">ഫൈനൽ ഇൻവോയ്സ് തുക</string>
     <string name="this_week">ഈ ആഴ്ച</string>
     <string name="outstanding_amount1">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
-    <string name="upload_again">Upload Again</string>
-    <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
-    <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
+    <string name="upload_again">വീണ്ടും അപ്ലോഡുചെയ്യുക</string>
+    <string name="self_enroled">സ്വയം എൻറോൾ ചെയ്‌തത്‌ </string>
+    <string name="register_via_agent">ഏജൻറ് വഴി രജിസ്റ്റർ ചെയ്യുക</string>
+    <string name="upload_Documents">അപ്ലോഡ് ചെയ്ത ഡോക്യൂമെൻറ്സ്</string>
+    <string name="last_trip_earning">ഡ്രൈവറുടെ  അവസാനത്തെ ട്രിപ്പിലെ വരുമാനം</string>
+    <string name="non_jugnoo_auto_branding">Non Jugnoo ഓട്ടോ ബ്രാൻഡിംഗ്</string>
 
-    <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
-    <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+    <string name="optional_brack">(ഓപ്ഷണൽ)</string>
+    <string name="non_jugnoo_auto_audit">Non Jugnoo ഓട്ടോ ഓഡിറ്റ്</string>
+    <string name="name_cant_empty">പേര് പൂരിപ്പിക്കുക</string>
+    <string name="deletion_confirmation">ചിത്രം ഒഴിവാക്കണം എന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?   </string>
 
     <string name="audit_lower">ഓഡിറ്റ്</string>
     <string name="self_audit">സ്വയമായുള്ള  ഓഡിറ്റ് </string>

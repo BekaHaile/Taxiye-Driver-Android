@@ -472,9 +472,9 @@ public class SubmitAuditFragment extends Fragment {
 		if (auditType == 0){
 			etLayout.setVisibility(View.GONE);
 		} else if (auditType == 1){
-			relativeLayoutVehicleNo.setVisibility(View.VISIBLE);
+			etLayout.setVisibility(View.VISIBLE);
 		} else if (auditType == 2){
-			relativeLayoutVehicleNo.setVisibility(View.GONE);
+			etLayout.setVisibility(View.GONE);
 		}
 
 		submitButton.setOnClickListener(new View.OnClickListener() {

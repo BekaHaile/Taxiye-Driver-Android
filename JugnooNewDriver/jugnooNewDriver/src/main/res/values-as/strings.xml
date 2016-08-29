@@ -579,12 +579,17 @@
     <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
     <string name="this_week">এই সপ্তাহ</string>
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
+    <string name="self_enroled">স্বয়ং ভর্তি</string>
+    <string name="upload_Documents">নথিপত্ৰ আপলোড কৰক</string>
 
-    <string name="optional_brack">(Optional)</string>
-    <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure you want to delete image ?</string>
+    <string name="optional_brack">(ইচ্ছামূলক)</string>
+    <string name="name_cant_empty">নাম খালি থাকিব নোৱাৰে</string>
+    <string name="deletion_confirmation">আপোনি চবি মুছি ফেলাবলৈ নিশ্চিত নে ?</string>
+
+
+
+
+
 
 
     <string name="upload_again">আকৌ আপলোড কৰক</string>
