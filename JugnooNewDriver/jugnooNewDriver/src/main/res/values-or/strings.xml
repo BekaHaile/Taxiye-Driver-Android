@@ -589,6 +589,11 @@
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

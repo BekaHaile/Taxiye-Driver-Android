@@ -10,6 +10,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -726,25 +728,34 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 					BitmapFactory.Options options = new BitmapFactory.Options();
 					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
+
+					Uri uri = Uri.fromFile(new File(image.getFilePathOriginal()));
+					int rotate = getCameraPhotoOrientation(activity, uri, image.getFilePathOriginal());
+					Bitmap rotatedBitmap = null;
+					Matrix rotateMatrix = new Matrix();
+					rotateMatrix.postRotate(rotate);
+					rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
+
+
 //					selected_photo.setImageBitmap(bitmap);
 					Bitmap newBitmap = null;
-					if(bitmap != null) {
-						double oldHeight = bitmap.getHeight();
-						double oldWidth = bitmap.getWidth();
+					if(rotatedBitmap != null) {
+						double oldHeight = rotatedBitmap.getHeight();
+						double oldWidth = rotatedBitmap.getWidth();
 
 						if (oldWidth > oldHeight) {
 							int newHeight = imgPixel;
 							int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+							newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
 						} else {
 							int newWidth = imgPixel;
 							int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-							newBitmap = getResizedBitmap(bitmap, newHeight, newWidth);
+							newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
 						}
 					}
 
 					File f = null;
-					if (bitmap != null) {
+					if (newBitmap != null) {
 						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
 						docs.get(index).isExpended = true;
 						driverDocumentListAdapter.notifyDataSetChanged();
@@ -761,6 +772,37 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	public void onError(final String reason) {
 		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 	}
+
+
+	public int getCameraPhotoOrientation(Context context, Uri imageUri, String imagePath){
+		int rotate = 0;
+		try {
+			context.getContentResolver().notifyChange(imageUri, null);
+			File imageFile = new File(imagePath);
+
+			ExifInterface exif = new ExifInterface(imageFile.getAbsolutePath());
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+			switch (orientation) {
+				case ExifInterface.ORIENTATION_ROTATE_270:
+					rotate = 270;
+					break;
+				case ExifInterface.ORIENTATION_ROTATE_180:
+					rotate = 180;
+					break;
+				case ExifInterface.ORIENTATION_ROTATE_90:
+					rotate = 90;
+					break;
+			}
+
+			Log.i("RotateImage", "Exif orientation: " + orientation);
+			Log.i("RotateImage", "Rotate value: " + rotate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rotate;
+	}
+
 
 	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, final ChosenImage image) {
 		try {
