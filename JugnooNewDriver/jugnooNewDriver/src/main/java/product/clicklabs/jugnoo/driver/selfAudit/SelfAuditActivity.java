@@ -142,10 +142,7 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 			Fragment myFragment1 = getSupportFragmentManager().findFragmentByTag(SelectAuditFragment.class.getName());
 			if (myFragment1 != null && myFragment1.isVisible()) {
-				Intent intent = new Intent(SelfAuditActivity.this, HomeActivity.class);
-				startActivity(intent);
-				finish();
-				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+				performbackPressed();
 			}
 
 			Fragment myFragment2= getSupportFragmentManager().findFragmentByTag(SubmitAuditFragment.class.getName());
@@ -175,7 +172,6 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 	}
 
 	public void performbackPressed() {
-		JSONParser.saveAccessToken(SelfAuditActivity.this, "");
 		Intent intent = new Intent(SelfAuditActivity.this, HomeActivity.class);
 		startActivity(intent);
 		finish();

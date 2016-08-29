@@ -579,41 +579,46 @@
     <string name="total_amount">একাওন্তত প্ৰদান কৰিবৰ বাবে</string>
     <string name="this_week">এই সপ্তাহ</string>
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
-    <string name="upload_again">Upload Again</string>
     <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-    <string name="self_audit">Self Audit</string>
-    <string name="front">Front</string>
-    <string name="add_photo">+ Add Photo</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="Audit">AUDIT</string>
-    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
-    <string name="auto_from_front">Auto From Front</string>
-    <string name="auto_from_back">Auto From Back</string>
-    <string name="auto_from_left">Auto From Left</string>
-    <string name="auto_from_right">Auto From Right</string>
-    <string name="mobile_stand">Mobile Stand (Optional)</string>
-    <string name="vehicle_number">Vehicle Number</string>
-    <string name="mobile_stand_non">Mobile Stand</string>
-    <string name="next">Next</string>
-    <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
-    <string name="has_smart_phone">The driver has a smart phone</string>
-    <string name="self_audit_caps">SELF AUDIT</string>
-    <string name="audit_required">Audit Required</string>
-    <string name="in_progress">In Progress</string>
-    <string name="request_pending">Request Pending</string>
-    <string name="please_submit">Please Submit</string>
-    <string name="cancel_audit">Are you sure you want to cancel audit?</string>
-    <string name="image_upload_failed">Image uploading failed, please try again</string>
-    <string name="audit_lower">Audit</string>
 
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+    <string name="deletion_confirmation">Are you sure you want to delete image ?</string>
+
+
+    <string name="upload_again">আকৌ আপলোড কৰক</string>
+    <string name="register_via_agent">এজেণ্টৰ দ্বাৰাই ৰেজিষ্টাৰ কৰক</string>
+    <string name="last_trip_earning">ড্ৰাইভাৰ যনৰ বিগত যাত্রাৰ আদায়</string>
+
+
+    <string name="audit_lower">নিৰীক্ষা</string>
+    <string name="self_audit">স্বয়ং নিৰীক্ষা</string>
+    <string name="front">আগৰ</string>
+    <string name="add_photo">ফোটো দিয়ক</string>
+    <string name="left">বাওঁ</string>
+    <string name="right">সোঔ</string>
+    <string name="Audit">নিৰীক্ষা</string>
+    <string name="non_jugnoo_auto_branding">নান জুগনূ অট ব্ৰেন্দিং</string>
+    <string name="non_jugnoo_auto_audit">নান জুগনূ অট নিৰীক্ষা</string>
+    <string name="auto_from_front">অটৰ আগৰ ফালে</string>
+    <string name="auto_from_back">অটৰ পিছৰ ফালে</string>
+    <string name="auto_from_left">অটৰ বাওঁ ফালে</string>
+    <string name="auto_from_right">অটৰ সোঔ ফালে</string>
+    <string name="mobile_stand">মবাইল ষ্টেন্দ (ইচ্ছামূলক)</string>
+    <string name="vehicle_number">বাাহন সংখ্যা</string>
+    <string name="mobile_stand_non">মবাইল ষ্টেন্দ </string>
+    <string name="next">পৰবর্তী</string>
+    <string name="tap_to_capturing_photos">অটৰ ফোটো উঠাবৰ বাৱে পৰবর্তীত টিপক </string>
+    <string name="has_smart_phone">চালকৰ ম্মাৰ্টফোন আছে (ইচ্ছামূলক)</string>
+    <string name="self_audit_caps">স্বয়ং নিৰীক্ষা</string>
+    <string name="audit_required">নিৰীক্ষণ লাগিব</string>
+    <string name="in_progress">চলি আছে</string>
+    <string name="request_pending">অনুৰোধ পেন্দিং</string>
+    <string name="please_submit">অনুুগ্ৰহ কৰি জমা কৰক</string>
+    <string name="cancel_audit">আপোনি বাস্তৱত নিৰীক্ষণ বাতিল কৰিব খোজে নে ?</string>
+    <string name="image_upload_failed">চবি আপলোড বিফল হল, পূণৰ চেষ্টা কৰক</string>
+
 
     <string-array name="CountryCodes" >
 

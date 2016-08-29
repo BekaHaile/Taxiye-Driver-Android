@@ -298,13 +298,18 @@ public class SubmitAuditFragment extends Fragment {
 										}
 									});
 						} else {
-							DialogPopup.alertPopupWithListener(activity, "",
-									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+							DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.deletion_confirmation),
+									getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											openCamera(0);
 										}
-									});
+									}, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, false);
 						}
 					}
 				}
@@ -324,13 +329,18 @@ public class SubmitAuditFragment extends Fragment {
 										}
 									});
 						} else {
-							DialogPopup.alertPopupWithListener(activity, "",
-									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+							DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.deletion_confirmation),
+									getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											openCamera(1);
 										}
-									});
+									}, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, false);
 						}
 					}
 				}
@@ -351,13 +361,18 @@ public class SubmitAuditFragment extends Fragment {
 										}
 									});
 						} else {
-							DialogPopup.alertPopupWithListener(activity, "",
-									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+							DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.deletion_confirmation),
+									getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											openCamera(2);
 										}
-									});
+									}, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, false);
 						}
 					}
 				}
@@ -378,13 +393,18 @@ public class SubmitAuditFragment extends Fragment {
 										}
 									});
 						} else {
-							DialogPopup.alertPopupWithListener(activity, "",
-									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+							DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.deletion_confirmation),
+									getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											openCamera(3);
 										}
-									});
+									}, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, false);
 						}
 					}
 				}
@@ -405,13 +425,18 @@ public class SubmitAuditFragment extends Fragment {
 										}
 									});
 						} else {
-							DialogPopup.alertPopupWithListener(activity, "",
-									getResources().getString(R.string.deletion_confirmation), new View.OnClickListener() {
+							DialogPopup.alertPopupTwoButtonsWithListeners(activity, "", getResources().getString(R.string.deletion_confirmation),
+									getResources().getString(R.string.yes), getResources().getString(R.string.no), new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
 											openCamera(4);
 										}
-									});
+									}, new View.OnClickListener() {
+										@Override
+										public void onClick(View v) {
+
+										}
+									}, true, false);
 						}
 					}
 				}

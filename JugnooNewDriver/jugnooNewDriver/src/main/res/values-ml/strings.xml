@@ -585,36 +585,38 @@
     <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-    <string name="self_audit">Self Audit</string>
-    <string name="front">Front</string>
-    <string name="add_photo">+ Add Photo</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="Audit">AUDIT</string>
     <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
-    <string name="auto_from_front">Auto From Front</string>
-    <string name="auto_from_back">Auto From Back</string>
-    <string name="auto_from_left">Auto From Left</string>
-    <string name="auto_from_right">Auto From Right</string>
-    <string name="mobile_stand">Mobile Stand (Optional)</string>
-    <string name="vehicle_number">Vehicle Number</string>
-    <string name="mobile_stand_non">Mobile Stand</string>
-    <string name="next">Next</string>
-    <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
-    <string name="has_smart_phone">The driver has a smart phone</string>
-    <string name="self_audit_caps">SELF AUDIT</string>
-    <string name="audit_required">Audit Required</string>
-    <string name="in_progress">In Progress</string>
-    <string name="request_pending">Request Pending</string>
-    <string name="please_submit">Please Submit</string>
-    <string name="cancel_audit">Are you sure you want to cancel audit?</string>
-    <string name="image_upload_failed">Image uploading failed, please try again</string>
-    <string name="audit_lower">Audit</string>
 
     <string name="optional_brack">(Optional)</string>
     <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+    <string name="audit_lower">ഓഡിറ്റ്</string>
+    <string name="self_audit">സ്വയമായുള്ള  ഓഡിറ്റ് </string>
+    <string name="front">മുൻവശം</string>
+    <string name="add_photo">ഫോട്ടോ ആഡ് ചെയ്യുക </string>
+    <string name="left">ഇടതുവശം</string>
+    <string name="right">വലതുവശം</string>
+    <string name="Audit">ഓഡിറ്റ്</string>
+
+    <string name="auto_from_front">ഓട്ടോ മുൻപിൽ നിന്ന് </string>
+    <string name="auto_from_back">ഓട്ടോ പിന്നിൽ നിന്ന്</string>
+    <string name="auto_from_left">ഓട്ടോ ഇടതു നിന്ന്   </string>
+    <string name="auto_from_right">ഓട്ടോ വലതു നിന്ന്</string>
+    <string name="mobile_stand">മൊബൈൽ സ്റ്റാൻഡ് (ആവശ്യമെങ്കിൽ)</string>
+    <string name="vehicle_number">വണ്ടി നമ്പർ</string>
+    <string name="mobile_stand_non">മൊബൈൽ സ്റ്റാൻഡ്</string>
+    <string name="next">അടുത്തത്</string>
+    <string name="tap_to_capturing_photos">ഫോട്ടോ എടുത്തുതുടങ്ങുന്നതിനായി അടുത്തത് എന്ന ബട്ടൺ അമർത്തു</string>
+    <string name="has_smart_phone">ഡ്രൈവറിനു സ്മാർട്ട് ഫോൺ ഉണ്ട് (ആവശ്യമെങ്കിൽ)</string>
+    <string name="self_audit_caps">സ്വയം ഓഡിറ്റ് ചെയ്യുക</string>
+    <string name="audit_required">ഓഡിറ്റ് ചെയ്യേണ്ടതായുണ്ട്</string>
+    <string name="in_progress">പുരോഗമിക്കുകയാണ്</string>
+    <string name="request_pending">അവശേഷിക്കുന്ന അഭ്യർത്ഥന</string>
+    <string name="please_submit">ദയവായി സമർപ്പിക്കുക </string>
+    <string name="cancel_audit">ഓഡിറ്റ് ക്യാൻസൽ ചെയ്യണം എന്ന് താക്കൾക്ക് ഉറപ്പാണോ?</string>
+    <string name="image_upload_failed">ചിത്രം അപ്‌ലോഡ് ചെയ്യാൻ സാധിച്ചില്ല, ദയവായി ഒരിക്കൽകൂടി ശ്രെമിക്കുക.  </string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

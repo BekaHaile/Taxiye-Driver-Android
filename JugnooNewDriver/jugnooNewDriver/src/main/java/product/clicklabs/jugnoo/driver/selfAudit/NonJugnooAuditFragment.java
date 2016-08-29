@@ -193,13 +193,13 @@ public class NonJugnooAuditFragment extends Fragment {
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
 				} else {
-					if ("".equalsIgnoreCase(autoNum)) {
-						vehicleNoEt.requestFocus();
-						vehicleNoEt.setError("Please enter auto number");
+					if ("".equalsIgnoreCase(phoneNo)) {
+						phoneNoEt.requestFocus();
+						phoneNoEt.setError("Please enter phone number");
 					} else {
-						if ("".equalsIgnoreCase(phoneNo)) {
-							phoneNoEt.requestFocus();
-							phoneNoEt.setError("Please enter phone number");
+						if ("".equalsIgnoreCase(autoNum)) {
+							vehicleNoEt.requestFocus();
+							vehicleNoEt.setError("Please enter auto number");
 						} else {
 							//TODO remove extra characters phoneNo
 							phoneNo = phoneNo.replace(" ", "");

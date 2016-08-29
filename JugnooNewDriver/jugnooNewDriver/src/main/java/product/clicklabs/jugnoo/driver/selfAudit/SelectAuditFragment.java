@@ -113,9 +113,9 @@ public class SelectAuditFragment extends Fragment {
 		textViewNJANumber.setTypeface(Data.latoRegular(activity));
 
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
-		imageViewArrowSA = (ImageView) rootView.findViewById(R.id.imageViewBack);
-		imageViewArrowNJB = (ImageView) rootView.findViewById(R.id.imageViewBack);
-		imageViewArrowNJA = (ImageView) rootView.findViewById(R.id.imageViewBack);
+		imageViewArrowSA = (ImageView) rootView.findViewById(R.id.imageViewArrowSA);
+		imageViewArrowNJB = (ImageView) rootView.findViewById(R.id.imageViewArrowNJB);
+		imageViewArrowNJA = (ImageView) rootView.findViewById(R.id.imageViewArrowNJA);
 
 		linearLayoutSelfAudit.setOnClickListener(new View.OnClickListener() {
 			@Override

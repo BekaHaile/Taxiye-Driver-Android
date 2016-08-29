@@ -13,13 +13,14 @@
         android:layout_alignParentTop="true"
         android:background="@color/menu_black">
 
-        <TextView
+        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="580px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/Audit"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="32px"/>
 
@@ -84,7 +85,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
             <ImageView
@@ -128,7 +129,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
             <ImageView
@@ -172,7 +173,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
 
@@ -540,9 +541,9 @@
                 android:layout_marginLeft="32px"
                 android:orientation="vertical">
 
-                <TextView
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewCameraStand"
-                    android:layout_width="wrap_content"
+                    android:layout_width="180px"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/image_icon"
                     android:layout_centerHorizontal="true"

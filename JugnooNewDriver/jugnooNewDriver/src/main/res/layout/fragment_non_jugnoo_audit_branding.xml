@@ -13,13 +13,14 @@
         android:layout_alignParentTop="true"
         android:background="@color/menu_black">
 
-        <TextView
+        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="580px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="@string/Audit"
+            android:gravity="center"
             android:textColor="@color/white"
             android:textSize="32px"/>
 
@@ -74,7 +75,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
             <ImageView
@@ -118,7 +119,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
             <ImageView
@@ -161,7 +162,7 @@
                 android:paddingRight="20px"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:textColorHint="@color/grey_black_light"
+                android:textColorHint="@color/grey_ride_history"
                 android:textSize="34px"/>
 
 
@@ -182,14 +183,14 @@
 
     <RelativeLayout
         android:id="@+id/relativeLayoutNJBOption"
-        android:layout_width="560px"
+        android:layout_width="620px"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60px"
         android:layout_marginTop="80px">
 
-        <TextView
+        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewSmartPhoneOption"
-            android:layout_width="wrap_content"
+            android:layout_width="615px"
             android:layout_height="wrap_content"
             android:textSize="35px"
             android:text="@string/has_smart_phone"/>
@@ -245,12 +246,13 @@
     </RelativeLayout>
 
 
-    <TextView
+    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
         android:id="@+id/textViewNextButton"
-        android:layout_width="wrap_content"
+        android:layout_width="660px"
         android:layout_height="wrap_content"
         android:textSize="26px"
         android:layout_marginTop="162px"
+        android:gravity="center"
         android:layout_gravity="center"
         android:text="@string/tap_to_capturing_photos"/>
 

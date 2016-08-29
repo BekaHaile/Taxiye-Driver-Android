@@ -672,7 +672,7 @@
 	<string name="cancel_audit">Are you sure you want to cancel process?</string>
 	<string name="image_upload_failed">Image uploading failed, please try again</string>
 	<string name="audit_lower">Audit</string>
-	<string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+	<string name="deletion_confirmation">Are you sure you want to delete image ?</string>
 
 
 	<string-array name="CountryCodes" >

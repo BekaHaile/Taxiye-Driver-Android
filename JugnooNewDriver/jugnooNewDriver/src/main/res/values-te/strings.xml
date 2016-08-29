@@ -639,39 +639,43 @@
     <string name="outstanding_amount1">బాకీ మొత్తం సర్దుబాటు చేయబడింది</string>
     <string name="upload_again">Upload Again</string>
     <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
-    <string name="self_audit">Self Audit</string>
-    <string name="front">Front</string>
-    <string name="add_photo">+ Add Photo</string>
-    <string name="left">Left</string>
-    <string name="right">Right</string>
-    <string name="Audit">AUDIT</string>
-    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
-    <string name="auto_from_front">Auto From Front</string>
-    <string name="auto_from_back">Auto From Back</string>
-    <string name="auto_from_left">Auto From Left</string>
-    <string name="auto_from_right">Auto From Right</string>
-    <string name="mobile_stand">Mobile Stand (Optional)</string>
-    <string name="vehicle_number">Vehicle Number</string>
-    <string name="mobile_stand_non">Mobile Stand</string>
-    <string name="next">Next</string>
-    <string name="tap_to_capturing_photos">Tap on NEXT to start capturing auto photos</string>
-    <string name="has_smart_phone">The driver has a smart phone</string>
-    <string name="self_audit_caps">SELF AUDIT</string>
-    <string name="audit_required">Audit Required</string>
-    <string name="in_progress">In Progress</string>
-    <string name="request_pending">Request Pending</string>
-    <string name="please_submit">Please Submit</string>
-    <string name="cancel_audit">Are you sure you want to cancel audit?</string>
-    <string name="image_upload_failed">Image uploading failed, please try again</string>
-    <string name="audit_lower">Audit</string>
 
     <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+
+    <string name="register_via_agent">ఏజెంట్ ద్వారా నమోదు</string>
+    <string name="last_trip_earning">గత రైడ్ నగదు</string>
+
+
+    <string name="audit_lower">ఆడిట్</string>
+    <string name="self_audit">స్వీయ ఆడిట్</string>
+    <string name="front">యెదురు</string>
+    <string name="add_photo">ఫోటో అప్‌లోడ్</string>
+    <string name="left">ఎడమ</string>
+    <string name="right">కూడిమ</string>
+    <string name="Audit">ఆడిట్</string>
+    <string name="non_jugnoo_auto_branding">నాన్-జూగ్నూ బ్ర్యాన్‌డింగ్</string>
+    <string name="non_jugnoo_auto_audit">నాన్-జూగ్నూ ఆడిట్</string>
+    <string name="auto_from_front">ఆటో ముందర వైపు</string>
+    <string name="auto_from_back">ఆటో వెనక వైపు</string>
+    <string name="auto_from_left">ఆటో ఎడమ వైపు</string>
+    <string name="auto_from_right">ఆటో కూడి వైపు</string>
+    <string name="mobile_stand">మొబైల్ స్టాండ్ (ఐచ్ఛిక)</string>
+    <string name="vehicle_number">ఆటో నంబర్</string>
+    <string name="mobile_stand_non">మొబైల్ స్టాండ్</string>
+    <string name="next">తరువాత</string>
+    <string name="tap_to_capturing_photos">తర్వాత\' మీద నొక్కక ఆటోది ఫోటోలు తీయ్యండి</string>
+    <string name="has_smart_phone">డ్రైవర్ వద్ద ఆండ్రాయ్డ్ ఫోన్ ఉంది</string>
+    <string name="self_audit_caps">స్వీయ ఆడిట్</string>
+    <string name="audit_required">ఆడిట్ చెయ్యాలి</string>
+    <string name="in_progress">పురోగతి లో</string>
+    <string name="request_pending">రిక్వెస్ట్ పెండింగ్</string>
+    <string name="please_submit">సబ్మిట చెయ్యండి</string>
+    <string name="cancel_audit">మీరు ఆడిట్ను రద్దు చెయ్యాలని అనుకుంటున్నారా?</string>
+    <string name="image_upload_failed">ఫోటో సరిగ్గా రాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
