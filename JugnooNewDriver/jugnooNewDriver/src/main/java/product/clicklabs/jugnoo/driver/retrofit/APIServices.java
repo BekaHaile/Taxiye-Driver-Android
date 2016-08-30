@@ -464,4 +464,8 @@ public interface APIServices {
 	@POST("/register_a_driver")
 	void oneTimeRegisteration(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/driver/push/ack")
+	Response sendPushAckToServerRetro(@FieldMap Map<String, String> params);
 }

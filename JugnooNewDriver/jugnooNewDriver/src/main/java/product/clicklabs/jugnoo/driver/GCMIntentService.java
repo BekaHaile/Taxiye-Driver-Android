@@ -525,6 +525,8 @@ public class GCMIntentService extends IntentService {
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
+								String campainId = jObj.getString("campaign_id");
+
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
 								if("".equalsIgnoreCase(picture)){
@@ -535,6 +537,7 @@ public class GCMIntentService extends IntentService {
 								} else{
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
 								}
+								sendMarketPushAckToServer(this, campainId, currentTimeUTC);
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
@@ -1046,6 +1049,46 @@ public class GCMIntentService extends IntentService {
 
 
 					Response response = RestClient.getApiServices().sendRequestAckToServerRetro(params);
+					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+					JSONObject jObj = new JSONObject(result);
+					if (jObj.has("flag")) {
+						int flag = jObj.getInt("flag");
+						if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == flag) {
+							String log = jObj.getString("log");
+							Log.e("ack to server successfull", "=" + log);
+						}
+					}
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void sendMarketPushAckToServer(final Context context, final String campainId, final String actTimeStamp) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					String accessToken = Database2.getInstance(context).getDLDAccessToken();
+					if ("".equalsIgnoreCase(accessToken)) {
+						DriverLocationUpdateService.updateServerData(context);
+						accessToken = Database2.getInstance(context).getDLDAccessToken();
+					}
+
+					String serverUrl = Database2.getInstance(context).getDLDServerUrl();
+					String networkName = getNetworkName(context);
+
+
+					HashMap<String, String> params = new HashMap<String, String>();
+					params.put("access_token", accessToken);
+					params.put("campaign_id", campainId);
+					params.put("ack_timestamp", actTimeStamp);
+
+
+					Response response = RestClient.getApiServices().sendPushAckToServerRetro(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);

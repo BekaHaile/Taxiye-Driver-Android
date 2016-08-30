@@ -4664,9 +4664,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			polygonOptions.zIndex(100 / zIndex);
 			LatLngBounds latLngBounds = builder.build();
-			CustomMapMarkerCreator.addTextMarkerToMap(this, map,
-					latLngBounds.getCenter(),
-					decimalFormat.format(fareFactor), 2, 20);
+			if(fareFactor > 0) {
+				CustomMapMarkerCreator.addTextMarkerToMap(this, map,
+						latLngBounds.getCenter(),
+						decimalFormat.format(fareFactor), 2, 20);
+			}
 
 			map.addPolygon(polygonOptions);
 		} catch (Exception e) {
