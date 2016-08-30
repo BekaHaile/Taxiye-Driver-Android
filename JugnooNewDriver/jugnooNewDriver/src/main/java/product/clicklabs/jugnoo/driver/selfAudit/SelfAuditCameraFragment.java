@@ -209,24 +209,28 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 	@Override
 	public void onClick(View v) {
-		switch (v.getId()) {
-			case R.id.rejectImage:
-				rejectImage();
-				break;
-			case R.id.acceptImage:
-				acceptImage();
-				break;
-			case R.id.captureImage:
-				takeImage();
-				break;
-			case R.id.backBtn:
-				performBackPressed();
-				break;
-			case R.id.buttonSkip:
-				skipPicToServer(auditType, 4);
-				break;
-			default:
-				break;
+		try {
+			switch (v.getId()) {
+				case R.id.rejectImage:
+					rejectImage();
+					break;
+				case R.id.acceptImage:
+					acceptImage();
+					break;
+				case R.id.captureImage:
+					takeImage();
+					break;
+				case R.id.backBtn:
+					performBackPressed();
+					break;
+				case R.id.buttonSkip:
+					skipPicToServer(auditType, 4);
+					break;
+				default:
+					break;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -384,121 +388,83 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 
 
 	private void takeImage() {
-		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
-		camera.takePicture(null, null, new Camera.PictureCallback() {
+		try {
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+			camera.takePicture(null, null, new Camera.PictureCallback() {
 
-			private File imageFile;
+				private File imageFile;
 
-			@Override
-			public void onPictureTaken(byte[] data, Camera camera) {
-				try {
-					// convert byte array into bitmap
-					Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
-							data.length);
-
-					// rotate Image
-					Bitmap rotatedBitmap = null;
-					Matrix rotateMatrix = new Matrix();
+				@Override
+				public void onPictureTaken(byte[] data, Camera camera) {
 					try {
+						// convert byte array into bitmap
+						Bitmap loadedImage = BitmapFactory.decodeByteArray(data, 0,
+								data.length);
 
-						rotateMatrix.postRotate(rotation);
-						rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
-								0, loadedImage.getWidth(), loadedImage.getHeight(),
-								rotateMatrix, false);
+						// rotate Image
+						Bitmap rotatedBitmap = null;
+						Matrix rotateMatrix = new Matrix();
+						try {
+
+							rotateMatrix.postRotate(rotation);
+							rotatedBitmap = Bitmap.createBitmap(loadedImage, 0,
+									0, loadedImage.getWidth(), loadedImage.getHeight(),
+									rotateMatrix, false);
+						} catch (Exception e) {
+							e.printStackTrace();
+							DialogPopup.dismissLoadingDialog();
+						}
+
+						if (rotatedBitmap != null) {
+							try {
+								capturedImage = rotatedBitmap.copy(rotatedBitmap.getConfig(), true);
+								rotatedBitmap.recycle();
+								captureImage.setVisibility(View.GONE);
+								buttonSkip.setVisibility(View.GONE);
+								relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
+								DialogPopup.dismissLoadingDialog();
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+
 					} catch (Exception e) {
 						e.printStackTrace();
 						DialogPopup.dismissLoadingDialog();
 					}
 
-					if (rotatedBitmap != null) {
-						capturedImage = rotatedBitmap.copy(rotatedBitmap.getConfig(), true);
-						rotatedBitmap.recycle();
-						captureImage.setVisibility(View.GONE);
-						buttonSkip.setVisibility(View.GONE);
-						relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
-						DialogPopup.dismissLoadingDialog();
-					}
-
-//					String state = Environment.getExternalStorageState();
-//					File folder = null;
-//					if (state.contains(Environment.MEDIA_MOUNTED)) {
-//						folder = new File(Environment
-//								.getExternalStorageDirectory() + "/Demo");
-//					} else {
-//						folder = new File(Environment
-//								.getExternalStorageDirectory() + "/Demo");
-//					}
-//
-//					boolean success = true;
-//					if (!folder.exists()) {
-//						success = folder.mkdirs();
-//					}
-//					if (success) {
-//						java.util.Date date = new java.util.Date();
-//						imageFile = new File(folder.getAbsolutePath()
-//								+ File.separator
-//								+ new Timestamp(date.getTime()).toString()
-//								+ "Image.jpg");
-//
-//						imageFile.createNewFile();
-//					} else {
-//						Toast.makeText(activity, "Image Not saved",
-//								Toast.LENGTH_SHORT).show();
-//						return;
-//					}
-//
-//					ByteArrayOutputStream ostream = new ByteArrayOutputStream();
-//
-//					// save image into gallery
-//					capturedImage.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-//
-//					FileOutputStream fout = new FileOutputStream(imageFile);
-//					fout.write(ostream.toByteArray());
-//					fout.close();
-//					ContentValues values = new ContentValues();
-//
-//					values.put(MediaStore.Images.Media.DATE_TAKEN,
-//							System.currentTimeMillis());
-//					values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-//					values.put(MediaStore.MediaColumns.DATA,
-//							imageFile.getAbsolutePath());
-//
-//					activity.getContentResolver().insert(
-//							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-				} catch (Exception e) {
-					e.printStackTrace();
-					DialogPopup.dismissLoadingDialog();
 				}
-
-			}
-		});
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
 	public void acceptImage(){
-		refreshCamera();
+		try {
+			refreshCamera();
 
-		Bitmap newBitmap = null;
-		if(capturedImage != null) {
-			double oldHeight = capturedImage.getHeight();
-			double oldWidth = capturedImage.getWidth();
+			Bitmap newBitmap = null;
+			if(capturedImage != null) {
+				double oldHeight = capturedImage.getHeight();
+				double oldWidth = capturedImage.getWidth();
 
-			if (oldWidth > oldHeight) {
-				int newHeight = imgPixel;
-				int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-				newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
-			} else {
-				int newWidth = imgPixel;
-				int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-				newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
+				if (oldWidth > oldHeight) {
+					int newHeight = imgPixel;
+					int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+					newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
+				} else {
+					int newWidth = imgPixel;
+					int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+					newBitmap = Utils.getResizedBitmap(capturedImage, newHeight, newWidth);
+				}
 			}
-		}
 
-		File f = null;
-		if (newBitmap != null) {
-			f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
-		}
+			File f = null;
+			if (newBitmap != null) {
+				f = Utils.compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100,0);
+			}
 
 			if (frontImage == null && auditState == 0) {
 				frontImage = f;
@@ -541,8 +507,9 @@ public class SelfAuditCameraFragment extends android.support.v4.app.Fragment imp
 				mobileStandImage = f;
 				uploadPicToServer(mobileStandImage, auditType, 4);
 			}
-
-
+		} catch (Resources.NotFoundException e) {
+			e.printStackTrace();
+		}
 
 
 	}

@@ -691,6 +691,7 @@ public class SubmitAuditFragment extends Fragment {
 									@Override
 									public void onClick(View v) {
 										Intent intent = new Intent(activity, HomeActivity.class);
+										activity.finish();
 										startActivity(intent);
 									}
 								}, false);

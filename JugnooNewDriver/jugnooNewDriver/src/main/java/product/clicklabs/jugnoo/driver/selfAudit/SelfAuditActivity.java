@@ -95,6 +95,17 @@ public class SelfAuditActivity extends BaseFragmentActivity {
 
 	}
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		try {
+			SelfAuditActivity.this.getTransactionUtils().openSelectAuditFragment(SelfAuditActivity.this,
+					SelfAuditActivity.this.getRelativeLayoutContainer());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public AuditStateResponse getAuditStateResponse() {
 		return auditStateResponse;
 	}
