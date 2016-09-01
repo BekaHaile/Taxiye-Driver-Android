@@ -569,13 +569,15 @@
     <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ </string>
     <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
     <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="per_min">(ମିନିଟ୍ ପ୍ରତି)</string>
+
     <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
     <string name="driver_to_driver">ଡ୍ରାଇଭର୍ ଠାରୁ ଡ୍ରାଇଭର୍ କୁ</string>
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="owned">ନିଜର</string>
 
     <string name="distance_per_km">ଦୁରତା\n(ମିନିଟ୍ ପ୍ରତି)</string>
-    <string name="per_km">(ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="per_km">(କି.ମି ପ୍ରତି)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ଗତକାଲି</string>
@@ -589,6 +591,7 @@
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

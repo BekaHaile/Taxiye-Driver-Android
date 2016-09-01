@@ -15,6 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CancelOption;
@@ -248,8 +249,6 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT, userData.optInt("start_navigation_accept", 3));
 		Prefs.with(context).save(Constants.START_NAVIGATION_START, userData.optInt("start_navigation_start", 0));
-
-
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
@@ -742,5 +741,19 @@ public class JSONParser implements Constants {
 			e.printStackTrace();
 		}
 	}
+
+
+	public static void parsePushyInterval(Context context, JSONObject jObj){
+
+		try {
+			long pushyInterval = jObj.optLong("pushy_interval", Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
+			Prefs.with(context).save(SPLabels.PUSHY_REFRESH_INTERVAL, pushyInterval);
+			Pushy.setHeartbeatInterval((1000 * pushyInterval), context);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 
 }

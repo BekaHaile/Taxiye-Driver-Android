@@ -625,6 +625,7 @@
 	<string name="base_fare">Base Fare</string>
 	<string name="distance_per_km">Distance\n(Per Km)</string>
 	<string name="time_per_min">Time\n(per min)</string>
+	<string name="per_min">(per min)</string>
 	<string name="driver_to_customer">Driver to Customer</string>
 	<string name="driver_to_driver">Driver to Driver</string>
 	<string name="rate_card">Rate Card</string>
@@ -642,6 +643,7 @@
 	<string name="upload_Documents">Upload Documents</string>
 	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 	<string name="diffrential_pricing_rate">After %1$sKm, distance charge will be \u20B9 %2$s/Km </string>
+	<string name="payment_sent">Payment Sent</string>
 
 
 	<string-array name="CountryCodes" >

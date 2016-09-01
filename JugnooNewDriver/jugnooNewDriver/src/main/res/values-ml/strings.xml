@@ -567,12 +567,14 @@
     <string name="pickup_charges">പിക്കപ്പ് ചാർജ്  </string>
     <string name="base_fare">ബേസിക് യാത്രാചിലവ്</string>
     <string name="time_per_min">സമയം ( മിനിറ്റിന് )</string>
+    <string name="per_min">( മിനിറ്റിന് )</string>
+
     <string name="driver_to_customer">ഡ്രൈവറിൽ നിന്നു കസ്റ്റമർലേക്ക് </string>
     <string name="driver_to_driver">ഡ്രൈവറിൽ നിന്നു ഡ്രൈവറിലേക് </string>
     <string name="rate_card">റേറ്റ് കാർഡ്</string>
     <string name="owned">സ്വന്തം</string>
     <string name="distance_per_km">അകലം\n( മിനിറ്റിന് )</string>
-    <string name="per_km">(മിനിറ്റിന്)</string>
+    <string name="per_km">( കിലോമീറ്ററിന് )</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ഇന്നലെ</string>
@@ -586,6 +588,7 @@
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

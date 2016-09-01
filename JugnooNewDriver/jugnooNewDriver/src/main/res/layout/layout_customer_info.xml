@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:text="Aneesh Bansal"
+            android:text="@string/NA"
             android:textColor="@color/bg_grey_opaque"
             android:textSize="36px"
             android:visibility="visible"/>
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginTop="12px"
-            android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
+            android:text="@string/NA"
             android:textColor="@color/bg_grey_opaque"
             android:textSize="30px"
             android:visibility="visible"/>
@@ -97,7 +97,7 @@
                 android:id="@+id/textViewDeliveryFare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rs. 200"
+                android:text="@string/NA"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text_size_28"/>
 
@@ -117,7 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8px"
-            android:text="0 m away"
+            android:text="@string/NA"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_28"
             android:visibility="visible"

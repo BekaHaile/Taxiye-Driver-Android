@@ -566,12 +566,14 @@
     <string name="pickup_charges">পিকঅপৰ মুল্য</string>
     <string name="base_fare"> সর্বনিম্ন ভাড়া</string>
     <string name="time_per_min">সময় ( প্ৰতি মি:)</string>
+    <string name="per_min">( প্ৰতি মি:)</string>
+
     <string name="driver_to_customer">চালকৰ পৰা গ্ৰাহক</string>
     <string name="driver_to_driver">চালকৰ পৰা চালক</string>
     <string name="rate_card"> ভাড়াৰ কার্ড</string>
     <string name="owned">নিজোৰ</string>
     <string name="distance_per_km">দূৰত্ব\n( প্ৰতি মি:)</string>
-    <string name="per_km">( প্ৰতি মি:)</string>
+    <string name="per_km">(কি: মি:)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">যোৱা কালি</string>
@@ -585,6 +587,7 @@
     <string name="upload_Documents">Upload Documents</string>
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
 
     <string-array name="CountryCodes" >
 

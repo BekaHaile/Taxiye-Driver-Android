@@ -263,7 +263,7 @@ public class CustomerSwitcher {
 							.format(MapUtils.distance(Data.getCurrentCustomerInfo().getRequestlLatLng(),
 									new LatLng(HomeActivity.myLocation.getLatitude(), HomeActivity.myLocation.getLongitude())) / 1000d)
 							+ " " + activity.getResources().getString(R.string.km_away));
-				} catch (Resources.NotFoundException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}

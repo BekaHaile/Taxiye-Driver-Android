@@ -52,7 +52,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 120000;
+	    			serverUpdateTimePeriod = Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	    		else{
@@ -60,7 +60,7 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = 15000;
+	    			serverUpdateTimePeriod = Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
 	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
 	    		}
 	            setupLocationUpdateAlarm();
@@ -143,6 +143,9 @@ public class DriverLocationUpdateService extends Service {
 			}
 		});
 
+		String pushyToken = context.getSharedPreferences(SplashLogin.class.getSimpleName(),
+				Context.MODE_PRIVATE).getString("pushy_registration_id", "");
+		Database2.getInstance(context).updatePushyToken(pushyToken);
 
 		RestClient.setupRestClient(SERVER_URL);
 

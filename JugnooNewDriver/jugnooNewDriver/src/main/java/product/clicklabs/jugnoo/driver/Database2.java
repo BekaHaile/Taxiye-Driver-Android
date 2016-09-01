@@ -166,6 +166,8 @@ public class Database2 {                                                        
 	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
 	private static final String POOL_RIDE_DISCOUNT_FLAG = "pool_ride_discount_flag";
 
+	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
+	private static final String PUSHY_TOKEN = "pushy_token";
 
 
 	/**
@@ -310,6 +312,10 @@ public class Database2 {                                                        
 				+ POOL_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ POOL_RIDE_DISCOUNT_FLAG + " INTEGER"
 				+ ");");
+
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PUSHY_TOKEN + " ("
+				+ PUSHY_TOKEN + " TEXT" + ");");
 
 	}
 
@@ -1728,5 +1734,41 @@ public class Database2 {                                                        
 			e.printStackTrace();
 		}
 	}
+
+	public String getPushyToken(){
+		try {
+			String [] colums = new String[] {Database2.PUSHY_TOKEN};
+			Cursor cursor = database.query(Database2.TABLE_PUSHY_TOKEN, colums, null, null, null, null, null);
+			if(cursor.getCount() > 0){
+				cursor.moveToFirst();
+				String token = cursor.getString(cursor.getColumnIndex(Database2.PUSHY_TOKEN));
+				return token;
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+
+	public int updatePushyToken(String token){
+
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.PUSHY_TOKEN, token);
+			int rowsAffected = database.update(Database2.PUSHY_TOKEN, contentValues, null, null);
+			if(rowsAffected == 0){
+				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
+				return 1;
+			} else {
+				return rowsAffected;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
 
 }

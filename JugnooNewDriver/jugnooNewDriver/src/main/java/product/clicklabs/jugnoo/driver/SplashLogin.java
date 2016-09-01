@@ -402,6 +402,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			params.put("password", password);
 			params.put("login_otp",otp);
 			params.put("device_token", Data.deviceToken);
+			params.put("pushy_token", Data.pushyToken);
 			params.put("device_type", Data.DEVICE_TYPE);
 			params.put("device_name", Data.deviceName);
 			params.put("app_version", "" + Data.appVersion);
@@ -483,6 +484,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 							}
 							else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 								if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
+									JSONParser.parsePushyInterval(activity, jObj);
 									new JSONParser().parseAccessTokenLoginData(activity, jsonString);
 									startService(new Intent(activity, DriverLocationUpdateService.class));
 									Database.getInstance(SplashLogin.this).insertEmail(emailId);

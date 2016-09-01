@@ -156,4 +156,7 @@ public interface Constants {
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
+    public static final long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
+
 }
+
