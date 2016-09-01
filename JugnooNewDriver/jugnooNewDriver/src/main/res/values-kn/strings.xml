@@ -587,12 +587,14 @@
     <string name="pickup_charges">ಪಿಕ್ ಅಪ್ ಚಾರ್ಜ್</string>
     <string name="base_fare">ಮೂಲ ದರ</string>
     <string name="time_per_min">ಸಮಯ (ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
+    <string name="per_min">(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
+
     <string name="driver_to_customer">ಚಾಲಕರಿಂದ ಗ್ರಾಕರಿಗೆ  </string>
     <string name="driver_to_driver">ಚಾಲಕರಿಂದ ಚಾಲಕರಿಗೆ </string>
     <string name="rate_card">ದರದ ಕಾರ್ಡ್</string>
     <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
     <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
-    <string name="per_km">(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ)</string>
+    <string name="per_km">(ಪ್ರತಿ km ಗೆ )</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ನಿನ್ನೆ</string>

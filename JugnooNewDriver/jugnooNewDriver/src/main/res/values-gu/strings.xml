@@ -562,12 +562,14 @@
     <string name="pickup_charges">પિક અપ ખર્ચ</string>
     <string name="base_fare">ઓછા માં ઓછું ભાડું </string>
     <string name="time_per_min">સમય ( મિનિટ દીઠ )</string>
+    <string name="per_min">( મિનિટ દીઠ )</string>
+
     <string name="driver_to_customer">ડરાઇવર થી ગ્રાહક </string>
     <string name="driver_to_driver">ડરાઇવર થી ડરાઇવર</string>
     <string name="rate_card">ભાવ પત્રક</string>
     <string name="owned">માલિકી</string>
     <string name="distance_per_km">અંતર\n( મિનિટ દીઠ )</string>
-    <string name="per_km">(મિનિટ દીઠ)</string>
+    <string name="per_km">(per Km)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ગઇકાલે</string>

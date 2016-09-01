@@ -569,13 +569,15 @@
     <string name="pickup_charges">ପିକ୍-ଅପ୍ ଚାର୍ଜେସ୍ </string>
     <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
     <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="per_min">(ମିନିଟ୍ ପ୍ରତି)</string>
+
     <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
     <string name="driver_to_driver">ଡ୍ରାଇଭର୍ ଠାରୁ ଡ୍ରାଇଭର୍ କୁ</string>
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
     <string name="owned">ନିଜର</string>
 
     <string name="distance_per_km">ଦୁରତା\n(ମିନିଟ୍ ପ୍ରତି)</string>
-    <string name="per_km">(ମିନିଟ୍ ପ୍ରତି)</string>
+    <string name="per_km">(କି.ମି ପ୍ରତି)</string>
     <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ଗତକାଲି</string>
