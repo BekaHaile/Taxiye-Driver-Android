@@ -644,6 +644,7 @@
 	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 	<string name="diffrential_pricing_rate">After %1$sKm, distance charge will be \u20B9 %2$s/Km </string>
 	<string name="payment_sent">Payment Sent</string>
+	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
 
 
 	<string-array name="CountryCodes" >

@@ -94,7 +94,7 @@
                 android:id="@+id/distTimeRl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="5px"
                 android:layout_marginLeft="30px"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
@@ -103,7 +103,7 @@
                 <TextView
                     android:id="@+id/idValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="@string/ride_id"
@@ -113,7 +113,7 @@
                 <TextView
                     android:id="@+id/distanceValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Distance: 5.6 Km"
@@ -125,7 +125,7 @@
                 <TextView
                     android:id="@+id/rideTimeValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Total Time: 10 min"
@@ -135,7 +135,7 @@
                 <TextView
                     android:id="@+id/waitTimeValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Wait Time: 10 min"
@@ -151,7 +151,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="20px"
-            android:layout_marginTop="15px"
+            android:layout_marginTop="10px"
             android:layout_gravity="center_vertical"
             android:background="@drawable/background_white_rounded_orange_bordered">
 
@@ -163,7 +163,7 @@
                 <TextView
                     android:id="@+id/textViewRideFare"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/ride_fare"
@@ -199,12 +199,12 @@
                 android:id="@+id/relativeLayoutConvenienceCharges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="2px">
 
                 <TextView
                     android:id="@+id/textViewConvayenceCharge"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/convenience_charge"
@@ -239,12 +239,12 @@
                 android:id="@+id/relativeLayoutLuggageCharges"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="2px">
 
                 <TextView
                     android:id="@+id/textViewLuggageCharge"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/luggage_charge"
@@ -277,12 +277,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="2px">
 
                 <TextView
                     android:id="@+id/textViewRateApplied"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/rate_applied"
@@ -315,12 +315,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="2px">
 
                 <TextView
                     android:id="@+id/textViewAcceptSubsidy"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/accept_subsidy"
@@ -353,13 +353,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="2px"
                 android:id="@+id/relativeLayoutCancelSubsidy">
 
                 <TextView
                     android:id="@+id/textViewCancelSubsidy"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/cancel_subsidy"
@@ -392,13 +392,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="2px"
                 android:id="@+id/relativeLayoutJugnooCut">
 
                 <TextView
                     android:id="@+id/textViewJugnooCut"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/jugnoo_cut"
@@ -459,7 +459,7 @@
             <TextView
                 android:id="@+id/textViewActualFareText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60px"
                 android:layout_below="@+id/textViewFare"
                 android:gravity="center"
                 android:singleLine="true"
@@ -470,13 +470,13 @@
             <TextView
                 android:id="@+id/textViewIncSubsidy"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="34px"
                 android:gravity="center_vertical"
                 android:text="@string/inc_subsidy"
                 android:textColor="@color/black"
                 android:textSize="24px"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="15px"
+                android:layout_marginBottom="5px"
                 />
 
 
@@ -503,7 +503,7 @@
                 <TextView
                     android:id="@+id/textViewCustomerPaidText"
                     android:layout_width="345px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40px"
                     android:layout_marginBottom="5px"
                     android:gravity="center"
                     android:layout_below="@+id/textViewCustomerPaid"
@@ -534,7 +534,7 @@
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewAccountBalanceText"
                     android:layout_width="345px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40px"
                     android:layout_below="@+id/textViewAccountBalance"
                     android:layout_toRightOf="@+id/imageViewVertical"
                     android:gravity="center"
