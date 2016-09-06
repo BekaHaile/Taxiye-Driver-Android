@@ -15,8 +15,8 @@ public class MapLatLngBoundsCreator {
          * than this.
          * 1000m on the diagonal translates into about 709m to each direction. */
         LatLng center = tmpBounds.getCenter();
-        LatLng northEast = move(center, 408, 408);
-        LatLng southWest = move(center, -408, -408);
+        LatLng northEast = move(center, distance, distance);
+        LatLng southWest = move(center, -distance, -distance);
         builder.include(southWest);
         builder.include(northEast);
         return builder.build();

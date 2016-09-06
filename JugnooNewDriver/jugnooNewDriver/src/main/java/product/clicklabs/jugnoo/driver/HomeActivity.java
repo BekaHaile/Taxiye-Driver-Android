@@ -2778,6 +2778,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if(DriverScreenMode.D_INITIAL != mode){
 				relativeLayoutCancelRide.setVisibility(View.GONE);
 			}
+
+			if(DriverScreenMode.D_IN_RIDE == mode && Data.getCurrentCustomerInfo().getDropLatLng()!= null){
+				setInRideZoom();
+			} else {
+				map.setPadding(0, 0, 0, 0);
+				inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
+			}
+
+
 			map.setPadding(0,0,0,0);
 			showAllRideRequestsOnMap();
 
@@ -5791,6 +5800,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
 			customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
 			setAttachedCustomerMarkers();
+			setInRideZoom();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -6078,6 +6088,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		smilyHandler.postDelayed(smilyRunnalble, 1000);
 	}
 
+	Handler inRideMapZoomHandler = new Handler();
+	Runnable inRideMapZoomRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (driverScreenMode == DriverScreenMode.D_IN_RIDE && myLocation != null) {
+				LatLngBounds.Builder builder = new LatLngBounds.Builder();
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+				map.setPadding(0, 150, 0, 200);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+				inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
+			}
+		}
+	};
+
+	public  void setInRideZoom(){
+		inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
+		inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 1000);
+	}
 	public void perfectRideRequestRegion(double currentDropDist) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -6672,10 +6703,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 
-			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
-							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
-					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
-					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
+//			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
+//							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
+//					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
+//					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 			if(latLngs.size() > 1) {
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
@@ -6730,5 +6761,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
 
 }
