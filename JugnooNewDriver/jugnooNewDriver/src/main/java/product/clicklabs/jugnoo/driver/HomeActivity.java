@@ -278,8 +278,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout linearLayoutEndDelivery;
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning;
-	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
+	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
 
 
 	CustomerSwitcher customerSwitcher;
@@ -734,7 +734,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-
+			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
+			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
@@ -1090,6 +1091,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""))){
+				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+				textViewHighDemandAreas.setText(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""));
+			}
+
+			relativeLayoutHighDemandAreas.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, HighDemandAreaActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
 
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
@@ -2757,6 +2770,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			showAllRideRequestsOnMap();
 
+			if(DriverScreenMode.D_INITIAL == mode){
+				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
+			}
+
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				updateReceiveRequestsFlag();
@@ -2997,7 +3016,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				jc.put(KEY_RIDE_TIME, System.currentTimeMillis());
 				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime());
 				jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
-			} else{
+			} else {
 				jObj.remove(String.valueOf(customerInfo.getEngagementId()));
 			}
 			Prefs.with(this).save(SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
@@ -3406,12 +3425,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
-					if(customerInfo.getIsPooled() ==1){
-						if(Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())!=1) {
+					if (customerInfo.getIsPooled() == 1) {
+						if (Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId()) != 1) {
 							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
 							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
 						}
-						if(customerEnfagementInfos1.size() >1){
+						if (customerEnfagementInfos1.size() > 1) {
 							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
 								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
 							}
