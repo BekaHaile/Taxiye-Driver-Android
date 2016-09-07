@@ -42,6 +42,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
@@ -329,6 +330,7 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			DialogPopup.showGooglePlayErrorAlert(SplashLogin.this);
 		}
 		else{
+//			LocationInit.showLocationAlertDialog(SplashLogin.this);
 			DialogPopup.showLocationSettingsAlert(SplashLogin.this);
 		}
 
@@ -346,6 +348,20 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 		Database2.getInstance(this).close();
 		super.onPause();
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		try {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (LocationInit.LOCATION_REQUEST_CODE == requestCode) {
+				if (0 == resultCode) {
+					finish();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 

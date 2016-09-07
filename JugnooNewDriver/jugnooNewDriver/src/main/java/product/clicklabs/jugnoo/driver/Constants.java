@@ -139,6 +139,7 @@ public interface Constants {
 
 	String START_NAVIGATION_ACCEPT = "start_navigation_accept";
 	String START_NAVIGATION_START = "start_navigation_start";
+	String POWER_OFF_INITIATED = "power_off_initiated";
 
     String SP_START_LATITUDE = "sp_start_latitude";
     String SP_START_LONGITUDE = "sp_start_longitude";
@@ -156,6 +157,7 @@ public interface Constants {
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
+	String MOBILE_DATA_STATE = "mobile_data_state";
     public static final long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
 
 }
