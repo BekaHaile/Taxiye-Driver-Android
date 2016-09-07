@@ -26,14 +26,23 @@ import android.telephony.TelephonyManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
@@ -56,12 +65,14 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.RSA;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedInput;
 
 public class GCMIntentService extends IntentService {
 
@@ -526,6 +537,7 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
 								String campainId = jObj.getString("campaign_id");
+								boolean sendAck = jObj.optBoolean("ack_notif", false);
 
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
@@ -537,7 +549,9 @@ public class GCMIntentService extends IntentService {
 								} else{
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
 								}
-								sendMarketPushAckToServer(this, campainId, currentTimeUTC);
+								if(sendAck) {
+									sendMarketPushAckToServer(this, campainId, currentTimeUTC);
+								}
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
@@ -1078,17 +1092,20 @@ public class GCMIntentService extends IntentService {
 						accessToken = Database2.getInstance(context).getDLDAccessToken();
 					}
 
-					String serverUrl = Database2.getInstance(context).getDLDServerUrl();
-					String networkName = getNetworkName(context);
+					JSONObject params = new JSONObject();
+					try {
+						params.put("user_id", Data.userData.getUserId());
+						params.put("campaign_id", campainId);
+						params.put("ack_timestamp", actTimeStamp);
 
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-					HashMap<String, String> params = new HashMap<String, String>();
-					params.put("access_token", accessToken);
-					params.put("campaign_id", campainId);
-					params.put("ack_timestamp", actTimeStamp);
-
-
-					Response response = RestClient.getApiServices().sendPushAckToServerRetro(params);
+					String encryptData = RSA.encryptWithPublicKeyStr(String.valueOf(params));
+					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
+					Response response1 = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);

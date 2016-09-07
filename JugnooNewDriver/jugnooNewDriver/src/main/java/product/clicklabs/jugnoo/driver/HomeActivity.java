@@ -4661,8 +4661,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					for (HeatMapResponse.Region_ region_ : regionList) {
 						arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
 					}
-					addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-							region.getColor(), region.getStrokeColor());
+					if(region.getDriverFareFactor() != null){
+						addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+								region.getColor(), region.getStrokeColor());
+					} else {
+						addPolygonWithoutMarker(arrLatLng, region.getDriverFareFactorPriority(),
+								region.getColor(), region.getStrokeColor());
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -4689,6 +4694,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						decimalFormat.format(fareFactor), 2, 20);
 			}
 
+			map.addPolygon(polygonOptions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addPolygonWithoutMarker(ArrayList<LatLng> arg, int zIndex, String color, String strokeColor) {
+		try {
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			PolygonOptions polygonOptions = new PolygonOptions();
+			polygonOptions.strokeColor(Color.parseColor(strokeColor))
+					.strokeWidth((4))
+					.fillColor(Color.parseColor(color));
+			for (LatLng latLng : arg) {
+				polygonOptions.add(latLng);
+				builder.include(latLng);
+			}
+			polygonOptions.zIndex(100 / zIndex);
+			LatLngBounds latLngBounds = builder.build();
 			map.addPolygon(polygonOptions);
 		} catch (Exception e) {
 			e.printStackTrace();
