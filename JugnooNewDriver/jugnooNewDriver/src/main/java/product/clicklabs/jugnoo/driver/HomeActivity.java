@@ -279,8 +279,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout linearLayoutEndDelivery;
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutCancelRide;
-	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue, textViewCancellationMessage;
+	RelativeLayout relativeLayoutCancelRide;
+	TextView textViewCancellationMessage;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
+	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
 
 
 	CustomerSwitcher customerSwitcher;
@@ -738,6 +740,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutCancelRide = (RelativeLayout) findViewById(R.id.relativeLayoutCancelRide);
 			textViewCancellationMessage  = (TextView) findViewById(R.id.textViewCancellationMessage);
+			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
+			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
@@ -1093,6 +1097,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""))){
+				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+				textViewHighDemandAreas.setText(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""));
+			}
+
+			relativeLayoutHighDemandAreas.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, HighDemandAreaActivity.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
 
 			buttonMarkArrived.setOnClickListener(new OnClickListener() {
 				@Override
@@ -2790,6 +2806,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			map.setPadding(0,0,0,0);
 			showAllRideRequestsOnMap();
 
+			if(DriverScreenMode.D_INITIAL == mode){
+				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+			} else {
+				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
+			}
+
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
 				updateReceiveRequestsFlag();
@@ -3030,7 +3052,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				jc.put(KEY_RIDE_TIME, System.currentTimeMillis());
 				jc.put(KEY_WAIT_TIME, customerRideDataGlobal.getWaitTime());
 				jObj.put(String.valueOf(customerInfo.getEngagementId()), jc);
-			} else{
+			} else {
 				jObj.remove(String.valueOf(customerInfo.getEngagementId()));
 			}
 			Prefs.with(this).save(SP_CUSTOMER_RIDE_DATAS_OBJECT, jObj.toString());
@@ -3439,12 +3461,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
-					if(customerInfo.getIsPooled() ==1){
-						if(Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId())!=1) {
+					if (customerInfo.getIsPooled() == 1) {
+						if (Database2.getInstance(HomeActivity.this).getPoolDiscountFlag(customerInfo.getEngagementId()) != 1) {
 							Database2.getInstance(HomeActivity.this).deletePoolDiscountFlag(customerInfo.getEngagementId());
 							Database2.getInstance(HomeActivity.this).insertPoolDiscountFlag(customerInfo.getEngagementId(), 0);
 						}
-						if(customerEnfagementInfos1.size() >1){
+						if (customerEnfagementInfos1.size() > 1) {
 							for (int i = 0; i < customerEnfagementInfos1.size(); i++) {
 								Database2.getInstance(HomeActivity.this).updatePoolDiscountFlag(customerEnfagementInfos1.get(i).getEngagementId(), 1);
 							}
@@ -4675,8 +4697,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					for (HeatMapResponse.Region_ region_ : regionList) {
 						arrLatLng.add(new LatLng(region_.getX(), region_.getY()));
 					}
-					addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
-							region.getColor(), region.getStrokeColor());
+					if(region.getDriverFareFactor() != null){
+						addPolygon(arrLatLng, region.getDriverFareFactor(), region.getDriverFareFactorPriority(),
+								region.getColor(), region.getStrokeColor());
+					} else {
+						addPolygonWithoutMarker(arrLatLng, region.getDriverFareFactorPriority(),
+								region.getColor(), region.getStrokeColor());
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -4697,10 +4724,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			polygonOptions.zIndex(100 / zIndex);
 			LatLngBounds latLngBounds = builder.build();
-			CustomMapMarkerCreator.addTextMarkerToMap(this, map,
-					latLngBounds.getCenter(),
-					decimalFormat.format(fareFactor), 2, 20);
+			if(fareFactor > 0) {
+				CustomMapMarkerCreator.addTextMarkerToMap(this, map,
+						latLngBounds.getCenter(),
+						decimalFormat.format(fareFactor), 2, 20);
+			}
 
+			map.addPolygon(polygonOptions);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void addPolygonWithoutMarker(ArrayList<LatLng> arg, int zIndex, String color, String strokeColor) {
+		try {
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			PolygonOptions polygonOptions = new PolygonOptions();
+			polygonOptions.strokeColor(Color.parseColor(strokeColor))
+					.strokeWidth((4))
+					.fillColor(Color.parseColor(color));
+			for (LatLng latLng : arg) {
+				polygonOptions.add(latLng);
+				builder.include(latLng);
+			}
+			polygonOptions.zIndex(100 / zIndex);
+			LatLngBounds latLngBounds = builder.build();
 			map.addPolygon(polygonOptions);
 		} catch (Exception e) {
 			e.printStackTrace();

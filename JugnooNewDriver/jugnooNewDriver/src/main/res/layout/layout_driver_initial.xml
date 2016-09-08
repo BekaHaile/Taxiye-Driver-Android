@@ -84,16 +84,47 @@
         android:background="@drawable/icon_i"
         android:tag="mwar"/>
 
-    <Button
-        android:id="@+id/driverInitialMyLocationBtn"
-        android:layout_width="80px"
-        android:layout_height="80px"
-        android:layout_alignParentBottom="true"
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="60px"
+        android:layout_marginBottom="40px"
         android:layout_marginLeft="36px"
-        android:background="@drawable/new_my_loc_button"
-        android:tag="mwar"/>
+        android:layout_marginRight="36px"
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/driverInitialMyLocationBtn"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_above="@+id/relativeLayoutHighDemandAreas"
+            android:background="@drawable/new_my_loc_button"
+            android:tag="mwar"/>
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutHighDemandAreas"
+            android:layout_width="match_parent"
+            android:layout_height="90px"
+            android:layout_marginTop="20px"
+            android:gravity="center_vertical"
+            android:visibility="visible"
+            android:background="@drawable/background_white_rounded_orange_bordered">
+
+            <TextView
+                android:id="@+id/textViewHighDemandAreas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/high_demand_areas"
+                android:layout_centerHorizontal="true"
+                android:textSize="28px"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/jugnooOffText"
@@ -105,6 +136,6 @@
         android:text="@string/jugnoo_off"
         android:textColor="@color/black"
         android:textSize="44px"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 </RelativeLayout>

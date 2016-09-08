@@ -610,6 +610,8 @@
     <string name="diffrential_pricing_rate">%1$s ಕಿಲೋಮೀಟರ್  ನಂತರ, ಪ್ರತಿ ಕಿಲೋಮೀಟರಿಗೆ ರೂ. \u20B9 %2$s ಸಿಗುತ್ತದೆ</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
 
 
     <string-array name="CountryCodes" >

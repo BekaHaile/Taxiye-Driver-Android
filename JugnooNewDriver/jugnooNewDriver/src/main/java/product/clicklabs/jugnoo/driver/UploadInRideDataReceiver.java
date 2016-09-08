@@ -8,6 +8,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
@@ -16,8 +20,10 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -111,5 +117,27 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
     }
+
+//    public void updateWalletBalance(JSONObject jsonObject) {
+//		try {
+//			JSONArray jsonArray = jsonObject.getJSONArray("aaaa");
+//			for (int i = 0; i < jsonArray.length(); i++) {
+//				int engagementId = jsonArray.getJSONObject(i).get("engagement_id");
+//				String walletBalance = String.valueOf(0);
+//				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+//				if (customerInfo != null) {
+//					if (walletBalance != null) {
+//						double newBalance = Double.parseDouble(walletBalance);
+//						if (newBalance > -1) {
+//							customerInfo.setJugnooBalance(newBalance);
+//						}
+//					}
+//				}
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 
 }
