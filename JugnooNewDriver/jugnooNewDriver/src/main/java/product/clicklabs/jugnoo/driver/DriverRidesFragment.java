@@ -446,14 +446,14 @@ public class DriverRidesFragment extends Fragment implements FlurryEventNames {
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut());
 											} else if (data.getType().equalsIgnoreCase("delivery")) {
 												rideInfo = new RideInfo(data.getId(), data.getFrom(), data.getTo(), data.getFare(),
 														data.getCustomerPaid(), data.getBalance(), data.getSubsidy(), data.getDistance(),
 														data.getRideTime(), data.getWaitTime(), data.getTime(), data.getCouponUsed(), data.getPaymentMode(),
 														data.getBusinessId(), data.getDriverPaymentStatus(), data.getStatusString(), data.getConvenienceCharges(),
 														data.getLuggageCharges(), data.getFareFactorApplied(), data.getFareFactorValue(), data.getAcceptSubsidy(),
-														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare());
+														data.getCancelSubsidy(), data.getAccountBalance(), data.getActualFare(), data.getType(), data.getDriverRideFare(), data.getJugnooCut());
 											} else if (data.getType().equalsIgnoreCase("referral")) {
 												rideInfo = new RideInfo(data.getCustomerId(), data.getReferralAmount(), data.getReferredOn(), data.getType(), data.getTime());
 											} else if (data.getType().equalsIgnoreCase("phone_deductions")) {

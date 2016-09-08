@@ -101,7 +101,7 @@ public class RideDetailsActivity extends BaseActivity {
 		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
 		textViewCancelSubsidyValue.setTypeface(Data.latoRegular(this));
 		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
-		textViewJugnooCutValue.setTypeface(Data.latoRegular(this));
+		textViewJugnooCutValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
@@ -130,15 +130,13 @@ public class RideDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.textViewLuggageChargeRupee)).setTypeface(Data.latoRegular(this));
 
 		((TextView) findViewById(R.id.textViewJugnooCut)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewJugnooCutRupee)).setTypeface(Data.latoRegular(this));
+//		((TextView) findViewById(R.id.textViewJugnooCutRupee)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewCancelSubsidy)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewCancelSubsidyRupee)).setTypeface(Data.latoRegular(this));
 
 		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
 
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
@@ -200,22 +198,22 @@ public class RideDetailsActivity extends BaseActivity {
 				textViewCancelSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.cancelSubsidy)));
 			}
 
-			relativeLayoutJugnooCut.setVisibility(View.GONE);
-//			if("0".equalsIgnoreCase(openedRideInfo.)){
-//				relativeLayoutJugnooCut.setVisibility(View.GONE);
-//			}
-//			else{
-//				relativeLayoutJugnooCut.setVisibility(View.VISIBLE);
-//				textViewConvayenceChargeValue.setText(openedRideInfo.cancelSubsidy);
-//			}
+//			relativeLayoutJugnooCut.setVisibility(View.GONE);
+			if("0".equalsIgnoreCase(openedRideInfo.jugnooCut)){
+				relativeLayoutJugnooCut.setVisibility(View.GONE);
+			}
+			else{
+				relativeLayoutJugnooCut.setVisibility(View.GONE);
+				textViewJugnooCutValue.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.jugnooCut)));
+			}
 
 			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
 			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
 
 			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
 				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.black));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.black));
+				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
+				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
 				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
 			} else {
 				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));

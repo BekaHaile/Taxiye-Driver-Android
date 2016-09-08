@@ -2779,7 +2779,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutCancelRide.setVisibility(View.GONE);
 			}
 
-			if(DriverScreenMode.D_IN_RIDE == mode && Data.getCurrentCustomerInfo().getDropLatLng()!= null){
+			if(DriverScreenMode.D_IN_RIDE == mode){
 				setInRideZoom();
 			} else {
 				map.setPadding(0, 0, 0, 0);
@@ -6095,7 +6095,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (driverScreenMode == DriverScreenMode.D_IN_RIDE && myLocation != null) {
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-				builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+				if(Data.getCurrentCustomerInfo().dropLatLng != null) {
+					builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
 				map.setPadding(0, 150, 0, 200);
