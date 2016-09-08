@@ -445,6 +445,20 @@
             android:theme="@android:style/Theme.NoDisplay">
         </activity>
 
+        <receiver
+            android:name=".receiver.NetworkCheckReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver android:name=".receiver.PowerCheckReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+            </intent-filter>
+        </receiver>
+
         <!--<service-->
         <!--android:name=".pubnub.PubnubService"-->
         <!--android:enabled="true"-->

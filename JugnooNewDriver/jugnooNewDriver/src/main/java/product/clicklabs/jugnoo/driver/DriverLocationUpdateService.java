@@ -22,9 +22,7 @@ public class DriverLocationUpdateService extends Service {
 	
 	LocationFetcherDriver locationFetcherDriver;
 
-	long serverUpdateTimePeriod = 20000;
-	
-	
+
 	public DriverLocationUpdateService() {
 	}
 
@@ -52,16 +50,14 @@ public class DriverLocationUpdateService extends Service {
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
-	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
+	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000));
 	    		}
 	    		else{
 	    			if(locationFetcherDriver != null){
 	    				locationFetcherDriver.destroy();
 	    				locationFetcherDriver = null;
 	    			}
-	    			serverUpdateTimePeriod = Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000);
-	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, serverUpdateTimePeriod);
+	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000));
 	    		}
 	            setupLocationUpdateAlarm();
     		}
