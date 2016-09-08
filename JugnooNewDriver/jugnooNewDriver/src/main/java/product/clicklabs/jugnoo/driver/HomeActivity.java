@@ -131,6 +131,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
@@ -278,8 +279,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout linearLayoutEndDelivery;
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning;
-	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutCancelRide;
+	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue, textViewCancellationMessage;
 
 
 	CustomerSwitcher customerSwitcher;
@@ -729,12 +730,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			linearLayoutEndDelivery.setVisibility(View.GONE);
 
 			relativeLayoutLastRideEarning = (RelativeLayout) findViewById(R.id.relativeLayoutLastRideEarning);
+
 			textViewDriverEarningOnScreen  = (TextView) findViewById(R.id.textViewDriverEarningOnScreen);
 			textViewDriverEarningOnScreenDate = (TextView) findViewById(R.id.textViewDriverEarningOnScreenDate);
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-
+			relativeLayoutCancelRide = (RelativeLayout) findViewById(R.id.relativeLayoutCancelRide);
+			textViewCancellationMessage  = (TextView) findViewById(R.id.textViewCancellationMessage);
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
@@ -1140,6 +1143,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			relativeLayoutCancelRide.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					relativeLayoutCancelRide.setVisibility(View.GONE);
+				}
+			});
 
 			driverCancelRideBtn.setOnClickListener(new OnClickListener() {
 
@@ -1330,6 +1339,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			relativeLayoutLastRideEarning.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					relativeLayoutLastRideEarning.setVisibility(View.GONE);
+					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
+					intent.putExtra("trick_page", 1);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
 
 			editTextEnterMeterFare.addTextChangedListener(new TextWatcher() {
 				@Override
@@ -2006,6 +2025,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
+							relativeLayoutCancelRide.setVisibility(View.GONE);
 						}
 
 						if (1 == Data.userData.sharingAvailable) {
@@ -2755,6 +2775,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					cancelTimerPathRerouting();
 
 			}
+			if(DriverScreenMode.D_INITIAL != mode){
+				relativeLayoutCancelRide.setVisibility(View.GONE);
+			}
+
+			if(DriverScreenMode.D_IN_RIDE == mode){
+				setInRideZoom();
+			} else {
+				map.setPadding(0, 0, 0, 0);
+				inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
+			}
+
+
+			map.setPadding(0,0,0,0);
 			showAllRideRequestsOnMap();
 
 			try {
@@ -2969,7 +3002,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	protected void onPause() {
 
-		GCMIntentService.clearNotifications(getApplicationContext());
+//		GCMIntentService.clearNotifications(getApplicationContext());
 
 		try {
 			if (userMode == UserMode.DRIVER) {
@@ -5211,6 +5244,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				driverRequestListAdapter.setResults(customerInfos);
 
+				if(driverScreenMode == DriverScreenMode.D_INITIAL && myLocation != null && requestMarkers.size() == 1){
+					LatLngBounds.Builder builder = new LatLngBounds.Builder();
+					builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+					builder.include(requestMarkers.get(0).getPosition());
+					LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+					final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+					map.setPadding(0, 300, 0, 0);
+					map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (160 * minScaleRatio)), 300, null);
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							map.setPadding(0, 0, 0, 0);
+						}
+					}, 1000);
+
+
+				} else{
+					map.setPadding(0, 0, 0, 0);
+				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -5318,7 +5371,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void onChangeStatePushReceived(final int flag, final String engagementId) {
+	public void onChangeStatePushReceived(final int flag, final String engagementId, final String message) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -5344,6 +5397,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 						perfectRidePassengerInfoRl.setVisibility(View.GONE);
 						driverPassengerInfoRl.setVisibility(View.VISIBLE);
+						if(!"".equalsIgnoreCase(message)){
+							relativeLayoutCancelRide.setVisibility(View.VISIBLE);
+							textViewCancellationMessage.setText(message);
+						}
 					}
 
 				} catch (Exception e) {
@@ -5743,6 +5800,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
 			customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
 			setAttachedCustomerMarkers();
+			setInRideZoom();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -6030,6 +6088,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		smilyHandler.postDelayed(smilyRunnalble, 1000);
 	}
 
+	Handler inRideMapZoomHandler = new Handler();
+	Runnable inRideMapZoomRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (driverScreenMode == DriverScreenMode.D_IN_RIDE && myLocation != null) {
+				LatLngBounds.Builder builder = new LatLngBounds.Builder();
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				if(Data.getCurrentCustomerInfo().dropLatLng != null) {
+					builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+				}
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+				map.setPadding(0, 150, 0, 200);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+				inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
+			}
+		}
+	};
+
+	public  void setInRideZoom(){
+		inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
+		inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 1000);
+	}
 	public void perfectRideRequestRegion(double currentDropDist) {
 		try {
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -6624,10 +6705,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 
-			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
-							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
-					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
-					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
+//			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
+//							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
+//					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
+//					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 			if(latLngs.size() > 1) {
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
@@ -6682,5 +6763,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
 
 }

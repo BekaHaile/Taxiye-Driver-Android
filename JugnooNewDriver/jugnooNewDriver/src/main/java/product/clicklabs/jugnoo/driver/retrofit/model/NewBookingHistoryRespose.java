@@ -121,7 +121,7 @@ public class NewBookingHistoryRespose {
 		private Integer convenienceJugnooCut;
 		@SerializedName("jugnoo_cut")
 		@Expose
-		private Integer jugnooCut;
+		private String jugnooCut;
 		@SerializedName("customer_id")
 		@Expose
 		private Integer customerId;
@@ -650,7 +650,7 @@ public class NewBookingHistoryRespose {
 		 * @return
 		 * The jugnooCut
 		 */
-		public Integer getJugnooCut() {
+		public String getJugnooCut() {
 			return jugnooCut;
 		}
 
@@ -659,7 +659,7 @@ public class NewBookingHistoryRespose {
 		 * @param jugnooCut
 		 * The jugnoo_cut
 		 */
-		public void setJugnooCut(Integer jugnooCut) {
+		public void setJugnooCut(String jugnooCut) {
 			this.jugnooCut = jugnooCut;
 		}
 

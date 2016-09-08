@@ -68,7 +68,8 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		tabs.setViewPager(viewPager);
 
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
-		textViewTitle = (TextView) findViewById(R.id.textViewTitle); textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
+		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +78,14 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 				performbackPressed();
 			}
 		});
+
+		try {
+			if(getIntent().getExtras().getInt("trick_page") ==1){
+				viewPager.setCurrentItem(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override

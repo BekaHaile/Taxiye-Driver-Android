@@ -182,8 +182,9 @@
                 <TextView
                     android:id="@+id/textViewCustomerPaidtext"
                     android:layout_width="150px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="28px"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginTop="5px"
                     android:layout_marginBottom="10px"
                     android:layout_below="@+id/textViewCustomerPaid"
@@ -219,7 +220,7 @@
                 <TextView
                     android:id="@+id/textViewBalanceText"
                     android:layout_width="150px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="28px"
                     android:layout_below="@+id/textViewAccountBalance"
                     android:gravity="center"
                     android:layout_marginTop="5px"

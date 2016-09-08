@@ -20,7 +20,7 @@ public interface AppInterruptHandler {
 	
 	public void onManualDispatchPushReceived();
 
-	public void onChangeStatePushReceived(int flag, String engagementId);
+	public void onChangeStatePushReceived(int flag, String engagementId, String message);
 	
 	public void onCashAddedToWalletByCustomer(int engagementId, int userId, double balance);
 
