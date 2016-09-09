@@ -463,6 +463,10 @@ public class JSONParser implements Constants {
 										customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 									}
 								}
+								if(jObjCustomer.has(KEY_DROP_ADDRESS)){
+									customerInfo.setDropAddress(jObjCustomer.getString(KEY_DROP_ADDRESS));
+								}
+
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

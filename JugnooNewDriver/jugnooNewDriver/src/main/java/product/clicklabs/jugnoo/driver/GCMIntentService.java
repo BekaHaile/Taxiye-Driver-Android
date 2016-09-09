@@ -586,9 +586,10 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble(Constants.KEY_OP_DROP_LATITUDE);
 								double dropLongitude = jObj.getDouble(Constants.KEY_OP_DROP_LONGITUDE);
+								String dropAddress = jObj.getString(Constants.KEY_DROP_ADDRESS);
 								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
+									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
 								}
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");

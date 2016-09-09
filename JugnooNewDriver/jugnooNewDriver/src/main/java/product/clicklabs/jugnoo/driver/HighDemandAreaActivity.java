@@ -69,7 +69,10 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.getSettings().setDatabaseEnabled(true);
 		webview.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
 		webview.setWebViewClient(new MyWebViewClient1());
-		webview.loadUrl(Prefs.with(HighDemandAreaActivity.this).getString(Constants.HIGH_DEMAND_WEB_URL, ""));
+
+		if(Database2.getInstance(this).getDLDAccessToken() != null) {
+			webview.loadUrl(Prefs.with(HighDemandAreaActivity.this).getString(Constants.HIGH_DEMAND_WEB_URL, "")+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
+		}
 
 
 		backBtn.setOnClickListener(new View.OnClickListener() {

@@ -330,8 +330,8 @@ public class SplashLogin extends Activity implements LocationUpdate, FlurryEvent
 			DialogPopup.showGooglePlayErrorAlert(SplashLogin.this);
 		}
 		else{
-//			LocationInit.showLocationAlertDialog(SplashLogin.this);
-			DialogPopup.showLocationSettingsAlert(SplashLogin.this);
+			LocationInit.showLocationAlertDialog(SplashLogin.this);
+//			DialogPopup.showLocationSettingsAlert(SplashLogin.this);
 		}
 
 	}

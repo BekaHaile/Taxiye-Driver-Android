@@ -399,8 +399,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			DialogPopup.showGooglePlayErrorAlert(SplashNewActivity.this);
 		}
 		else{
-//			LocationInit.showLocationAlertDialog(this);
-			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
+			LocationInit.showLocationAlertDialog(this);
+//			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
 		}
 
 		NudgeClient.getGcmClient(this);

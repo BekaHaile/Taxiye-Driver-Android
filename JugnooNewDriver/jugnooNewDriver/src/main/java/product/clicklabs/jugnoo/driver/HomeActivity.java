@@ -130,6 +130,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
+import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -3824,6 +3825,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										dropLongitude = jObj.getDouble(KEY_OP_DROP_LONGITUDE);
 										Prefs.with(HomeActivity.this).save(SPLabels.PERFECT_DISTANCE, jObj.optString(KEY_PR_DISTANCE, "1000"));
 									}
+									if(jObj.has(KEY_DROP_ADDRESS)){
+										customerInfo.setDropAddress(jObj.getString(KEY_DROP_ADDRESS));
+									}
+
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -3832,6 +3837,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								} else {
 									customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 								}
+
+
 
 
 								if (customerInfo.getIsDelivery() == 1) {
@@ -5224,7 +5231,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					e.printStackTrace();
 				}
 
-
 			}
 		}).start();
 	}
@@ -5251,7 +5257,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		}
 		if (hasFocus) {
-			buildAlertMessageNoGps();
+			LocationInit.showLocationAlertDialog(this);
+//			buildAlertMessageNoGps();
+		}
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		try {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (LocationInit.LOCATION_REQUEST_CODE == requestCode) {
+				if (0 == resultCode) {
+					finish();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -5832,20 +5854,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng) {
+	public void onDropLocationUpdated(final String engagementId, final LatLng dropLatLng, final String dropAddress) {
 		runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				updateDropLatLngandPath(engagementId, dropLatLng);
+				updateDropLatLngandPath(engagementId, dropLatLng, dropAddress);
 			}
 		});
 	}
 
 
-	private void updateDropLatLngandPath(String engagementId, LatLng dropLatLng) {
+	private void updateDropLatLngandPath(String engagementId, LatLng dropLatLng, String dropAddress) {
 		try {
 			Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
+			Data.getCustomerInfo(engagementId).setDropAddress(dropAddress);
 			customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
 			setAttachedCustomerMarkers();
 			setInRideZoom();
@@ -6143,12 +6166,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (driverScreenMode == DriverScreenMode.D_IN_RIDE && myLocation != null) {
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-				if(Data.getCurrentCustomerInfo().dropLatLng != null) {
-					builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+//				if(Data.getCurrentCustomerInfo().dropLatLng != null) {
+//					builder.include(Data.getCurrentCustomerInfo().dropLatLng);
+//				}
+				for(int i=0; i<markersCustomers.size(); i++){
+					builder.include(markersCustomers.get(i).getPosition());
 				}
+
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				map.setPadding(0, 150, 0, 200);
+				map.setPadding(0, 175, 0, 325);
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 				inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
 			}
@@ -6786,6 +6813,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 							}
 						}).execute();
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
