@@ -244,6 +244,8 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
 
+		Prefs.with(context).save(KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(userData.optDouble(KEY_SP_METER_DISP_MIN_THRESHOLD, 14d)));
+		Prefs.with(context).save(KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(userData.optDouble(KEY_SP_METER_DISP_MAX_THRESHOLD, 200d)));
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 

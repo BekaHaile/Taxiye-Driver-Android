@@ -346,16 +346,19 @@ public class GpsDistanceCalculator {
 			if (speedMPS <= MAX_SPEED_THRESHOLD) {
 				if ((Utils.compareDouble(lastLatLng.latitude, 0.0) != 0) && (Utils.compareDouble(lastLatLng.longitude, 0.0) != 0)) {
 					calculateWaitTime(speedMPS);
-					addLatLngPathToDistance(lastLatLng, currentLatLng, location);
+					boolean locationAccepted = addLatLngPathToDistance(lastLatLng, currentLatLng, location);
 					if (lastGPSLocation == null) {
 						MyApplication.getInstance().insertRideDataToEngagements("" + lastLatLng.latitude, "" + lastLatLng.longitude, "" + System.currentTimeMillis());
 						MyApplication.getInstance().writePathLogToFile("m", "first time lastLatLng =" + lastLatLng);
 					}
+					if(locationAccepted){
+						lastGPSLocation = location;
+					}
 				} else {
 					lastLocationTime = System.currentTimeMillis();
 					saveData(context, lastGPSLocation, lastLocationTime);
+					lastGPSLocation = location;
 				}
-				lastGPSLocation = location;
 			} else {
 				reconnectGPSHandler();
 			}
@@ -395,10 +398,11 @@ public class GpsDistanceCalculator {
 		}, 5000);
 	}
 
-	private synchronized void addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation) {
+	private synchronized boolean addLatLngPathToDistance(final LatLng lastLatLng, final LatLng currentLatLng, final Location currentLocation) {
 		try {
 			final double displacement = MapUtils.distance(lastLatLng, currentLatLng);
-			if (Utils.compareDouble(displacement, MAX_DISPLACEMENT_THRESHOLD) == -1) {
+			if (Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(14d)))) == 1
+					&& Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) == -1) {
 				boolean validDistance = updateTotalDistance(lastLatLng, currentLatLng, displacement, currentLocation);
 				if (validDistance) {
 					if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
@@ -410,16 +414,21 @@ public class GpsDistanceCalculator {
 							lastFusedLocation, totalHaversineDistance, true);
 					GpsDistanceCalculator.this.gpsDistanceUpdater.addPathToMap(new PolylineOptions().add(lastLatLng, currentLatLng));
 				}
-			} else {
+				return true;
+			} else if(Utils.compareDouble(displacement, Double.parseDouble(Prefs.with(context).getString(Constants.KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(200d)))) >= 0){
 				long rowId = -1;
 				if(getDriverScreenModeSP(context) == DriverScreenMode.D_IN_RIDE.getOrdinal()) {
 					rowId = Database2.getInstance(context).insertCurrentPathItem(-1, lastLatLng.latitude, lastLatLng.longitude,
 							currentLatLng.latitude, currentLatLng.longitude, 1, 1);
 				}
 				callGoogleDirectionsAPI(lastLatLng, currentLatLng, displacement, currentLocation, rowId);
+				return true;
+			} else {
+				return false;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			return true;
 		}
 	}
 
