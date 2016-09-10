@@ -46,15 +46,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="130px"
-            android:layout_marginLeft="15px"
-            android:layout_marginRight="15px">
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px">
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutLastRideEarning"
                 android:layout_width="match_parent"
                 android:layout_height="135px"
+                android:layout_marginLeft="10px"
+                android:layout_marginRight="10px"
                 android:gravity="center_vertical"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:background="@drawable/background_white_rounded_orange_bordered">
 
                 <TextView
@@ -93,7 +95,7 @@
                 android:layout_alignParentTop="true"
                 android:gravity="center_vertical"
                 android:visibility="gone"
-                android:background="@drawable/background_white_rounded_orange_bordered">
+                android:background="@drawable/background_white">
 
                 <TextView
                     android:id="@+id/textViewCancellationMessage"

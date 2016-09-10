@@ -666,6 +666,50 @@ public class DialogPopup {
 		}
 	}
 
+	public static void dialogNewBanner(Activity activity, String message) {
+		dialogBannerNewWithCancelListener(activity, message, null, 5000);
+	}
+
+	public static void dialogBannerNewWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
+		try {
+			dismissAlertPopup();
+
+			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_banner);
+
+			LinearLayout linearLayout = (LinearLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, linearLayout, 1134, 720, false);
+
+			dialog.setCancelable(true);
+			dialog.setCanceledOnTouchOutside(true);
+
+			TextView textViewBanner = (TextView) dialog.findViewById(R.id.textViewBanner); textViewBanner.setTypeface(Fonts.latoRegular(activity));
+			textViewBanner.setText(message);
+
+			linearLayout.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					if(onClickListener != null) {
+						onClickListener.onClick(v);
+					}
+				}
+			});
+
+			dialog.show();
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					//DialogPopup.dismissAlertPopup();
+					dialog.dismiss();
+				}
+			}, timeToDismiss);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

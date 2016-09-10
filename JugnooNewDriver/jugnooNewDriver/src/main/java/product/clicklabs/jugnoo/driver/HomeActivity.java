@@ -32,6 +32,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -280,8 +282,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	LinearLayout linearLayoutEndDelivery;
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutCancelRide;
-	TextView textViewCancellationMessage;
 	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
 
@@ -358,6 +358,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private CustomerInfo openedCustomerInfo;
 	private boolean rideCancelledByCustomer = false;
+	private String cancelationMessage = "";
 
 	private CustomerInfo getOpenedCustomerInfo(){
 		return openedCustomerInfo;
@@ -741,8 +742,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-			relativeLayoutCancelRide = (RelativeLayout) findViewById(R.id.relativeLayoutCancelRide);
-			textViewCancellationMessage  = (TextView) findViewById(R.id.textViewCancellationMessage);
 			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
 			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 
@@ -1162,12 +1161,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			relativeLayoutCancelRide.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					relativeLayoutCancelRide.setVisibility(View.GONE);
-				}
-			});
 
 			driverCancelRideBtn.setOnClickListener(new OnClickListener() {
 
@@ -1528,7 +1521,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode) {
 
 				relativeLayoutLastRideEarning.setVisibility(View.VISIBLE);
-				relativeLayoutCancelRide.setVisibility(View.GONE);
 
 				textViewDriverEarningOnScreenValue.setText(getResources().getString(R.string.rupee) + Prefs.with(HomeActivity.this).
 						getString(Constants.DRIVER_RIDE_EARNING, ""));
@@ -2045,7 +2037,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
 							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
-							relativeLayoutCancelRide.setVisibility(View.GONE);
 						}
 
 						if (1 == Data.userData.sharingAvailable) {
@@ -2170,12 +2161,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void onClick(View v) {
 			if (myLocation != null) {
-				if (map.getCameraPosition().zoom < 12) {
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12), MAP_ANIMATION_TIME, null);
-				} else if (map.getCameraPosition().zoom < 15) {
-					map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 15), MAP_ANIMATION_TIME, null);
+				if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+					if (map.getCameraPosition().zoom < 12) {
+						map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12), MAP_ANIMATION_TIME, null);
+					} else if (map.getCameraPosition().zoom < 15) {
+						map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 15), MAP_ANIMATION_TIME, null);
+					} else {
+						map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())), MAP_ANIMATION_TIME, null);
+					}
+				} else if(DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+					inRideZoom();
 				} else {
-					map.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(myLocation.getLatitude(), myLocation.getLongitude())), MAP_ANIMATION_TIME, null);
+					arrivedOrStartStateZoom();
 				}
 			}
 			else{
@@ -2446,7 +2443,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
-			relativeLayoutCancelRide.setVisibility(View.GONE);
 			switch (mode) {
 
 				case D_INITIAL:
@@ -2514,7 +2510,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_REQUEST_ACCEPT:
 
 					updateDriverServiceFast("no");
-
+					inRideZoom();
 					setDriverServiceRunOnOnlineBasis();
 					if (!Utils.isServiceRunning(HomeActivity.this, DriverLocationUpdateService.class)) {
 						startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -2549,7 +2545,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_ARRIVED:
 
 					updateDriverServiceFast("yes");
-
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -2606,7 +2601,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_START_RIDE:
 
 					updateDriverServiceFast("yes");
-
+					inRideZoom();
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -2802,7 +2797,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverInformationBtn.setVisibility(View.GONE);
 			}
 
-			if(DriverScreenMode.D_IN_RIDE == mode){
+			if(DriverScreenMode.D_IN_RIDE == mode || DriverScreenMode.D_ARRIVED == mode){
 				setInRideZoom();
 			} else {
 				map.setPadding(0, 0, 0, 0);
@@ -2820,9 +2815,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(rideCancelledByCustomer){
-				relativeLayoutCancelRide.setVisibility(View.VISIBLE);
-			} else{
-				relativeLayoutCancelRide.setVisibility(View.GONE);
+				DialogPopup.dialogNewBanner(HomeActivity.this, cancelationMessage);
 			}
 			rideCancelledByCustomer = false;
 
@@ -5481,9 +5474,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						perfectRidePassengerInfoRl.setVisibility(View.GONE);
 						driverPassengerInfoRl.setVisibility(View.VISIBLE);
 						if(!"".equalsIgnoreCase(message)){
-							relativeLayoutCancelRide.setVisibility(View.VISIBLE);
+							cancelationMessage = message;
 							rideCancelledByCustomer = true;
-							textViewCancellationMessage.setText(message);
 						}
 					}
 
@@ -6177,24 +6169,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	Runnable inRideMapZoomRunnable = new Runnable() {
 		@Override
 		public void run() {
-			if (driverScreenMode == DriverScreenMode.D_IN_RIDE && myLocation != null) {
-				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-//				if(Data.getCurrentCustomerInfo().dropLatLng != null) {
-//					builder.include(Data.getCurrentCustomerInfo().dropLatLng);
-//				}
-				for(int i=0; i<markersCustomers.size(); i++){
-					builder.include(markersCustomers.get(i).getPosition());
+			if (myLocation != null) {
+				if(driverScreenMode == DriverScreenMode.D_IN_RIDE) {
+					inRideZoom();
+				} else if(driverScreenMode == DriverScreenMode.D_ARRIVED){
+					arrivedOrStartStateZoom();
 				}
-
-				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
-				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				map.setPadding(0, 175, 0, 325);
-				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 				inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
 			}
 		}
 	};
+
+
+	public void inRideZoom(){
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+		for(int i=0; i<markersCustomers.size(); i++){
+			builder.include(markersCustomers.get(i).getPosition());
+		}
+		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+		map.setPadding(0, 175, 0, 325);
+		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+	}
+
+	public void arrivedOrStartStateZoom(){
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+		for(int i=0; i<markersCustomers.size(); i++){
+			builder.include(markersCustomers.get(i).getPosition());
+		}
+		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+		map.setPadding(0, 275, 0, 225);
+		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+	}
 
 	public  void setInRideZoom(){
 		inRideMapZoomHandler.removeCallbacks(inRideMapZoomRunnable);
