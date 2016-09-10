@@ -114,6 +114,7 @@ public class RestClient {
 				.setClient(new Ok3Client(getOkHttpClient()))
 //				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
+				;
 
 		RestAdapter restAdapter = builder.build();
 		GOOGLE_API_SERVICES = restAdapter.create(GoogleAPIServices.class);

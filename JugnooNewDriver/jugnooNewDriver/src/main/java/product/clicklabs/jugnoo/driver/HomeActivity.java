@@ -96,7 +96,6 @@ import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerRideData;
 import product.clicklabs.jugnoo.driver.datastructure.DisplayPushHandler;
-import product.clicklabs.jugnoo.driver.datastructure.DriverLeaderboard;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EndRideData;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
@@ -117,6 +116,7 @@ import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -179,8 +179,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard;
-	TextView callUsText, termsConditionText, textViewRateCard;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL;
+	TextView callUsText, termsConditionText, textViewRateCard, auditText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -481,6 +481,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			auditRL = (RelativeLayout) findViewById(R.id.auditRL);
+			auditText = (TextView) findViewById(R.id.auditText);
+			auditText.setTypeface(Data.latoRegular(getApplicationContext()));
 
 
 			relativeLayoutRateCard = (RelativeLayout) findViewById(R.id.relativeLayoutRateCard);
@@ -906,15 +910,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
 					FlurryEventLogger.event(CALL_US);
-//					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
+
 				}
 			});
 
-			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
-
+			auditRL.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
+					startActivity(new Intent(HomeActivity.this, SelfAuditActivity.class));
 				}
 			});
 
@@ -1494,6 +1497,39 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
+
+
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+
+					if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS_POPUP,0) == 1){
+						DialogPopup.alertPopupAuditWithListener(HomeActivity.this, "",
+								Prefs.with(HomeActivity.this).getString(SPLabels.SET_AUDIT_POPUP_STRING,""), new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Intent intent = new Intent(HomeActivity.this, SelfAuditActivity.class);
+										intent.putExtra("self_audit", "yes");
+										startActivity(intent);
+										finish();
+										overridePendingTransition(R.anim.left_in, R.anim.left_out);
+									}
+								});
+					}
+
+				}
+			}, 300);
+
+
+
+
+			if(Prefs.with(HomeActivity.this).getInt(SPLabels.SET_AUDIT_STATUS,0) == 1){
+				auditRL.setVisibility(View.VISIBLE);
+			} else {
+				auditRL.setVisibility(View.GONE);
+			}
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -2808,7 +2844,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
-			if(DriverScreenMode.D_INITIAL == mode){
+			if(DriverScreenMode.D_INITIAL == mode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
 				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
 			} else {
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);

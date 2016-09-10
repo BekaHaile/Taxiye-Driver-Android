@@ -585,11 +585,9 @@
     <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
-    <string name="upload_again">Upload Again</string>
+
     <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
@@ -601,6 +599,42 @@
     <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
     <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
     <string name="select_valid_city">Please select valid City</string>
+    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
+    <string name="optional_brack">(Optional)</string>
+    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+
+    <string name="upload_again">ଆଉଥରେ ଅପ୍-ଲୋଡ୍ କରନ୍ତୁ</string>
+    <string name="register_via_agent">ଏଜେନ୍ଟ୍ ଜରିଆରେ ରେଜିଷ୍ଟର୍ </string>
+    <string name="last_trip_earning">ଶେଷ ଟ୍ରିପ୍ ରେ ଡ୍ରାଇଭରନ୍କ ଭଡା. </string>
+
+    <string name="audit_lower">ଯାନ୍ଚ୍</string>
+    <string name="self_audit">ନିଜେ ଯାନ୍ଚ୍ କରନ୍ତୁ</string>
+    <string name="front">ସାମ୍ନାକୁ</string>
+    <string name="add_photo">ଫୋଟ ଜୋଡନ୍ତୁ</string>
+    <string name="left">ବାମ</string>
+    <string name="right">ଡାହାଣ</string>
+    <string name="Audit">ଯାନ୍ଚ୍</string>
+
+    <string name="auto_from_front">ଅଟୋ ସାମ୍ନାରୁ</string>
+    <string name="auto_from_back">ଅଟୋ ପଛରୁ</string>
+    <string name="auto_from_left">ଅଟୋ ବାମ ପଟରୁ</string>
+    <string name="auto_from_right">ଅଟୋ ଡାହାଣ ପଟରୁ</string>
+    <string name="mobile_stand">ମୋବାଇଲ୍ ଷ୍ଟାଣ୍ଡ୍(ଇଛାଧିନ)</string>
+    <string name="vehicle_number">ଅଟୋ ନମ୍ବର୍</string>
+    <string name="mobile_stand_non">ମୋବାଇଲ୍ ଷ୍ଟାଣ୍ଡ୍</string>
+    <string name="next">ପରବର୍ତି</string>
+    <string name="tap_to_capturing_photos">ଅଟୋ ଫୋଟ ଉଠେଇବାକୁ"ପରବର୍ତି"ଉପରେ ଦବାନ୍ତୁ</string>
+    <string name="has_smart_phone">ଡ୍ରାଇଭର୍ ପଖେ ଗୋଟେ ସ୍ମାଟ୍-ଫୋନ୍ ଥିବ(ଇଛାଧିନ)</string>
+    <string name="self_audit_caps">ନିଜେ ଯାନ୍ଚ୍ କରନ୍ତୁ</string>
+    <string name="audit_required">ଯାନ୍ଚ୍ ଜରୁରୀ ଅଟେ</string>
+    <string name="in_progress">ଚାଲୁଅଛି</string>
+    <string name="request_pending"> ରିକୁଏସ୍ଟ ପେଣ୍ଡିଂଗ୍</string>
+    <string name="please_submit">ଦୟାକରି ଦାଖଲ କରନ୍ତୁ</string>
+    <string name="cancel_audit">ଆପଣ ନିସ୍ଚିତ ଅଛନ୍ତି କି ଯାଂଚ୍ କ୍ୟାନ୍-ସଲ୍ କରିବା ପାଇଁ</string>
+    <string name="image_upload_failed">ଫଟୋ ଅପ୍-ଲୋଡ୍ ଫେଲ୍, ପୁଣିଥରେ ଚେସ୍ଟା କରନ୍ତୁ</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

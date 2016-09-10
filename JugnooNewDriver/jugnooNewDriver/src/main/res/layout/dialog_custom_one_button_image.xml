@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/rv"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="720px"
+             android:layout_height="1134px"
+             android:orientation="vertical"
+             android:splitMotionEvents="false">
+
+
+
+    <RelativeLayout
+        android:layout_width="620px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="30px"
+        android:splitMotionEvents="false"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="82px"
+            android:background="@drawable/white_bg_rounded"
+            android:padding="1px"
+            android:splitMotionEvents="false">
+
+            <TextView
+                android:id="@+id/textHead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:text="@string/title"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:padding="20px"
+                android:textColor="@color/blue_btn"
+                android:textSize="50px"
+                android:visibility="gone"
+
+                />
+
+
+            <TextView
+                android:id="@+id/textMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/message"
+                android:layout_marginTop="128px"
+                android:gravity="center"
+                android:lineSpacingExtra="10px"
+                android:maxHeight="800px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:padding="20px"
+                android:textColor="@color/black"
+                android:textSize="34px"
+
+                />
+
+
+            <Button
+                android:id="@+id/btnOk"
+                android:layout_width="400px"
+                android:layout_height="83px"
+                android:layout_marginBottom="15px"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30px"
+                android:background="@drawable/new_orange_btn_selector_rounded"
+                android:singleLine="true"
+                android:padding="3px"
+                android:text="@string/ok"
+                android:textColor="@drawable/white_color_selector"
+                android:textSize="@dimen/button_text_size"
+                />
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageViewAlert"
+            android:layout_width="165px"
+            android:layout_height="165px"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
@@ -472,7 +474,39 @@ public interface APIServices {
 	Response sendPushAckToServerRetro(@Field("data") String data);
 
 
-//	@FormUrlEncoded
-//	@POST("/driver/push/ack")
-//	Response sendPushAckToServerRetro(@FieldMap Map<String, String> params);
+	@Multipart
+	@POST("/update_audit_image")
+	void uploadAuditImageToServer(@Part("image_file") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
+
+	@FormUrlEncoded
+	@POST("/fetch_audit_details_for_app")
+	void fetchAuditDetails(@FieldMap Map<String, String> params,
+							  Callback<AuditTypeResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_audit_type_status")
+	void fetchAuditTypeStatus(@FieldMap Map<String, String> params,
+						   Callback<AuditStateResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_njb_driver_details")
+	void sendAuditDetails(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cancel_audit_by_driver")
+	void cancelAuditByDriver(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/submit_audit_images")
+	void submitAuditImages(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_audit_image")
+	void skipImageToServer(@FieldMap Map<String, String> params,
+						   Callback<DocRequirementResponse> cb);
 }

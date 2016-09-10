@@ -44,6 +44,11 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false"/>
+    <uses-permission
+        android:name="android.permission.FLASHLIGHT"
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal"
+        android:required="false"/>
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"
@@ -232,8 +237,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".DriverRateCard"
+            android:name=".selfAudit.SelfAuditActivity"
             android:label="@string/app_name"
+            android:largeHeap="true"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"></activity>
 
         <receiver

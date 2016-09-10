@@ -663,11 +663,7 @@
     <string name="total_amount">இறுதி விலைப்பட்டியல் தொகை</string>
     <string name="this_week">இந்த வாரம்</string>
     <string name="outstanding_amount1">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
-    <string name="upload_again">Upload Again</string>
     <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
-    <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
@@ -679,6 +675,45 @@
     <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
     <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
     <string name="select_valid_city">Please select valid City</string>
+    <string name="upload_Documents">பதிவேற்ற ஆவணங்கள்</string>
+
+    <string name="optional_brack">(Optional)</string>
+    <string name="name_cant_empty">பெயர் வெறுமையாக இருக்க முடியாது</string>
+    <string name="deletion_confirmation">நீங்கள் படத்தை நீக்க வேண்டும் என்று உறுதியாக இருக்கிறீர்களா?</string>
+
+
+
+    <string name="upload_again">மீண்டும் பதிவேற்ற</string>
+    <string name="register_via_agent">முகவர் வழியாக பதிவு</string>
+    <string name="last_trip_earning">முந்தைய பயணம் டிரைவர் வருவாய்</string>
+
+    <string name="audit_lower">தணிக்கை</string>
+    <string name="self_audit">சுய தணிக்கை</string>
+    <string name="front">முன்</string>
+    <string name="add_photo">புகைப்படம் சேர்க்க</string>
+    <string name="left">இடப்பக்கம்</string>
+    <string name="right">வலது</string>
+    <string name="Audit">தணிக்கை</string>
+    <string name="non_jugnoo_auto_branding">ஜுகுனூ  அல்லாத ஆட்டோ பிராண்டிங் </string>
+    <string name="non_jugnoo_auto_audit">ஜுகுனூ அல்லாத ஆட்டோ தணிக்கை</string>
+    <string name="auto_from_front">ஆட்டோ முன் இருந்து</string>
+    <string name="auto_from_back">ஆட்டோ பின்னால் இருந்து</string>
+    <string name="auto_from_left">ஆட்டோ இடது இருந்து</string>
+    <string name="auto_from_right">ஆட்டோ வலது இருந்து</string>
+    <string name="mobile_stand">மொபைல் நிறுத்தும்</string>
+    <string name="vehicle_number">வாகன எண்</string>
+    <string name="mobile_stand_non">மொபைல் நிறுத்தும்</string>
+    <string name="next">அடுத்து</string>
+    <string name="tap_to_capturing_photos">ஆட்டோ புகைப்படங்கள் கைப்பற்ற தொடங்க நெஸ்ட் மீது தட்டவும்</string>
+    <string name="has_smart_phone">ஓட்டுனர் ஸ்மார்ட்போன் உள்ளது</string>
+    <string name="self_audit_caps">சுய தணிக்கை</string>
+    <string name="audit_required">தணிக்கை தேவை</string>
+    <string name="in_progress">நடக்கிறது</string>
+    <string name="request_pending">கோரிக்கை நிலுவையில் உள்ளது</string>
+    <string name="please_submit">சமர்ப்பிக்கவும்</string>
+    <string name="cancel_audit">நீங்கள் தணிக்கை ரத்து செய்ய வேண்டும் என்று உறுதியாக இருக்கிறீர்களா?</string>
+    <string name="image_upload_failed">படத்தை பதிவேற்றும் தோல்வி , மீண்டும் முயற்சிக்கவும்</string>
+
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -56,6 +56,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
@@ -335,6 +336,50 @@ public class GCMIntentService extends IntentService {
 
 	}
 
+	@SuppressWarnings("deprecation")
+	public static void notificationManagerCustomIDAudit(Context context, String title, String message, int notificationId,
+												   Class notifClass, Bitmap bitmap) {
+
+		try {
+			long when = System.currentTimeMillis();
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			Log.v("message", "," + message);
+			Intent notificationIntent = new Intent(context, notifClass);
+
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			builder.setAutoCancel(true);
+			builder.setContentTitle(title);
+			if(bitmap == null) {
+				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			} else {
+				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+						.setBigContentTitle(title).setSummaryText(message));
+			}
+			builder.setContentText(message);
+			builder.setTicker(message);
+			builder.setDefaults(Notification.DEFAULT_ALL);
+			builder.setWhen(when);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
+			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setContentIntent(intent);
+
+			Notification notification = builder.build();
+			notificationManager.notify(notificationId, notification);
+
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+			wl.acquire(15000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public static void clearNotifications(Context context) {
 		try {
 			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -553,6 +598,19 @@ public class GCMIntentService extends IntentService {
 								}
 								if(sendAck) {
 									sendMarketPushAckToServer(this, campainId, currentTimeUTC);
+								}
+
+							} else if (PushFlags.DISPLAY_AUDIT_IMAGE.getOrdinal() == flag) {
+								String message1 = jObj.getString("message");
+
+								String picture = jObj.optString(Constants.KEY_PICTURE, "");
+								if("".equalsIgnoreCase(picture)){
+									picture = jObj.optString(Constants.KEY_IMAGE, "");
+								}
+								if(!"".equalsIgnoreCase(picture)){
+									new BigImageNotifAsync(title, message1, picture).execute();
+								} else{
+									notificationManagerCustomIDAudit(this, title, message1, PROMOTION_ID, SelfAuditActivity.class, null);
 								}
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {

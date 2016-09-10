@@ -50,6 +50,8 @@
     <color name="blue_btn">#4CC1D2</color>
     <color name="blue_btn_pressed">#2CA1B2</color>
     <color name="blue_btn_alpha">#774CC1D2</color>
+
+    <color name="status_yellow">#FF9C5A</color>
     
     <color name="green_btn">#66BB66</color>
     <color name="green_btn_pressed">#669966</color>
@@ -62,6 +64,7 @@
     <color name="menu_black_pressed">#97918D</color>
     <color name="new_orange_path">#F8A654</color>
 
+    <color name="black_varient">#979797</color>
 
     <color name="blue_dark_btn">#3B5999</color>
     <color name="blue_dark_btn_pressed">#1B3979</color>
