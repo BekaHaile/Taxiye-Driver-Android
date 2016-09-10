@@ -357,6 +357,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private String currentPreferredLang = "";
 
 	private CustomerInfo openedCustomerInfo;
+	private boolean rideCancelledByCustomer = false;
+
 	private CustomerInfo getOpenedCustomerInfo(){
 		return openedCustomerInfo;
 	}
@@ -1526,6 +1528,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode) {
 
 				relativeLayoutLastRideEarning.setVisibility(View.VISIBLE);
+				relativeLayoutCancelRide.setVisibility(View.GONE);
 
 				textViewDriverEarningOnScreenValue.setText(getResources().getString(R.string.rupee) + Prefs.with(HomeActivity.this).
 						getString(Constants.DRIVER_RIDE_EARNING, ""));
@@ -2443,6 +2446,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
+			relativeLayoutCancelRide.setVisibility(View.GONE);
 			switch (mode) {
 
 				case D_INITIAL:
@@ -2451,7 +2455,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
-
+					driverInformationBtn.setVisibility(View.VISIBLE);
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
 						startService(new Intent(this, DriverLocationUpdateService.class));
@@ -2793,7 +2797,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 			if(DriverScreenMode.D_INITIAL != mode){
-				relativeLayoutCancelRide.setVisibility(View.GONE);
+//				relativeLayoutCancelRide.setVisibility(View.GONE);
+				relativeLayoutLastRideEarning.setVisibility(View.GONE);
+				driverInformationBtn.setVisibility(View.GONE);
 			}
 
 			if(DriverScreenMode.D_IN_RIDE == mode){
@@ -2804,7 +2810,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
-			map.setPadding(0,0,0,0);
+			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
 			if(DriverScreenMode.D_INITIAL == mode){
@@ -2812,6 +2818,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			}
+
+			if(rideCancelledByCustomer){
+				relativeLayoutCancelRide.setVisibility(View.VISIBLE);
+			} else{
+				relativeLayoutCancelRide.setVisibility(View.GONE);
+			}
+			rideCancelledByCustomer = false;
 
 			try {
 				Prefs.with(HomeActivity.this).save(SPLabels.DRIVER_ARRIVED_DISTANCE, "" + Data.userData.driverArrivalDistance);
@@ -5469,6 +5482,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						driverPassengerInfoRl.setVisibility(View.VISIBLE);
 						if(!"".equalsIgnoreCase(message)){
 							relativeLayoutCancelRide.setVisibility(View.VISIBLE);
+							rideCancelledByCustomer = true;
 							textViewCancellationMessage.setText(message);
 						}
 					}

@@ -94,6 +94,9 @@ public interface Constants {
     String KEY_RIDE_PATH_DATA = "ride_path_data";
     String KEY_POOL_FARE ="pool_fare";
 
+	String KEY_SP_METER_DISP_MIN_THRESHOLD = "meter_disp_min_threshold";
+	String KEY_SP_METER_DISP_MAX_THRESHOLD = "meter_disp_max_threshold";
+
     String SP_CUSTOMER_RIDE_DATAS_OBJECT = "sp_customer_ride_datas_object";
     String KEY_HAVERSINE_DISTANCE = "haversine_distance";
     String KEY_RIDE_TIME = "ride_time";
