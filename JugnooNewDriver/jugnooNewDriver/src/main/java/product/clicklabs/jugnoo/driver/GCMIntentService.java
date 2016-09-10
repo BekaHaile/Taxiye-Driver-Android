@@ -1162,9 +1162,9 @@ public class GCMIntentService extends IntentService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+
 					String encryptData = RSA.encryptWithPublicKeyStr(String.valueOf(params));
 //					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
-					Log.e("encData", encryptData);
 					Response response = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 

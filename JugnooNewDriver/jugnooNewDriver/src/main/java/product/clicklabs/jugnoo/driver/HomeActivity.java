@@ -914,6 +914,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			relativeLayoutRateCard.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					startActivity(new Intent(HomeActivity.this, DriverRateCard.class));
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				}
+			});
+
 			auditRL.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -5366,9 +5375,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					LatLngBounds.Builder builder = new LatLngBounds.Builder();
 					builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 					builder.include(requestMarkers.get(0).getPosition());
-					LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
+					LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 					final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-					int top = (int) (400f * ASSL.Yscale());
+					int top = (int) (430f * ASSL.Yscale());
 					map.setPadding(0, top, 0, 0);
 					map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (160 * minScaleRatio)), 300, null);
 					new Handler().postDelayed(new Runnable() {
@@ -5377,8 +5386,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							map.setPadding(0, 0, 0, 0);
 						}
 					}, 1000);
-
-
 				} else{
 					map.setPadding(0, 0, 0, 0);
 				}
@@ -6225,31 +6232,43 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public void inRideZoom(){
-		LatLngBounds.Builder builder = new LatLngBounds.Builder();
-		builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-		for(int i=0; i<markersCustomers.size(); i++){
-			builder.include(markersCustomers.get(i).getPosition());
+		try {
+			if(myLocation!=null) {
+				LatLngBounds.Builder builder = new LatLngBounds.Builder();
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				for (int i = 0; i < markersCustomers.size(); i++) {
+					builder.include(markersCustomers.get(i).getPosition());
+				}
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
+				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+				int top = (int) (175f * ASSL.Yscale());
+				int bottom = (int) (325f * ASSL.Yscale());
+				map.setPadding(0, top, 0, bottom);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
-		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-		int top = (int) (175f * ASSL.Yscale());
-		int bottom = (int) (325f * ASSL.Yscale());
-		map.setPadding(0, top, 0, bottom);
-		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 	}
 
 	public void arrivedOrStartStateZoom(){
-		LatLngBounds.Builder builder = new LatLngBounds.Builder();
-		builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-		for(int i=0; i<markersCustomers.size(); i++){
-			builder.include(markersCustomers.get(i).getPosition());
+		try {
+			if(myLocation!=null) {
+				LatLngBounds.Builder builder = new LatLngBounds.Builder();
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				for (int i = 0; i < markersCustomers.size(); i++) {
+					builder.include(markersCustomers.get(i).getPosition());
+				}
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
+				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+				int top = (int) (295f * ASSL.Yscale());
+				int bottom = (int) (225f * ASSL.Yscale());
+				map.setPadding(0, top, 0, bottom);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
-		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-		int top = (int) (275f * ASSL.Yscale());
-		int bottom = (int) (225f * ASSL.Yscale());
-		map.setPadding(0, top, 0, bottom);
-		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 	}
 
 	public  void setInRideZoom(){

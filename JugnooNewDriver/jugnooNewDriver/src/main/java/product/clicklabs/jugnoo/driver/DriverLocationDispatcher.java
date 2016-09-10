@@ -73,8 +73,16 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
 							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getBatteryPercentage(context)));
-							nameValuePairs.put("mobile_data_state", String.valueOf(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)));
-							nameValuePairs.put("power_off_state", String.valueOf(Prefs.with(context).getBoolean(Constants.POWER_OFF_INITIATED, false)));
+							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
+								nameValuePairs.put("mobile_data_state", String.valueOf(1));
+							}else {
+								nameValuePairs.put("mobile_data_state", String.valueOf(0));
+							}
+							if(Prefs.with(context).getBoolean(Constants.POWER_OFF_INITIATED, false)) {
+								nameValuePairs.put("power_off_state", String.valueOf(1));
+							} else {
+								nameValuePairs.put("power_off_state", String.valueOf(0));
+							}
 							nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
 							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 

@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit.model;
 
+import org.json.JSONObject;
+
 import retrofit.client.Response;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
