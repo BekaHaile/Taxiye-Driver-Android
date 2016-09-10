@@ -3287,8 +3287,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& DriverScreenMode.D_REQUEST_ACCEPT != HomeActivity.driverScreenMode
 					&& customerInfos.size() > 0) {
 				driverRideRequestsList.setVisibility(View.VISIBLE);
+				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
+				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
+				if(DriverScreenMode.D_INITIAL == driverScreenMode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
+					relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+				}
+				showDriverEarning();
 			}
 		}
 
@@ -5360,9 +5366,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					LatLngBounds.Builder builder = new LatLngBounds.Builder();
 					builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 					builder.include(requestMarkers.get(0).getPosition());
-					LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+					LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
 					final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-					map.setPadding(0, 300, 0, 0);
+					int top = (int) (400f * ASSL.Yscale());
+					map.setPadding(0, top, 0, 0);
 					map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (160 * minScaleRatio)), 300, null);
 					new Handler().postDelayed(new Runnable() {
 						@Override
@@ -6223,9 +6230,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		for(int i=0; i<markersCustomers.size(); i++){
 			builder.include(markersCustomers.get(i).getPosition());
 		}
-		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
 		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-		map.setPadding(0, 175, 0, 325);
+		int top = (int) (175f * ASSL.Yscale());
+		int bottom = (int) (325f * ASSL.Yscale());
+		map.setPadding(0, top, 0, bottom);
 		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 	}
 
@@ -6235,9 +6244,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		for(int i=0; i<markersCustomers.size(); i++){
 			builder.include(markersCustomers.get(i).getPosition());
 		}
-		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 400);
+		LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 200);
 		final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-		map.setPadding(0, 275, 0, 225);
+		int top = (int) (275f * ASSL.Yscale());
+		int bottom = (int) (225f * ASSL.Yscale());
+		map.setPadding(0, top, 0, bottom);
 		map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
 	}
 

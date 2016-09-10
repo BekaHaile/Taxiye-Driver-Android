@@ -1152,7 +1152,6 @@ public class GCMIntentService extends IntentService {
 						DriverLocationUpdateService.updateServerData(context);
 						accessToken = Database2.getInstance(context).getDLDAccessToken();
 					}
-
 					JSONObject params = new JSONObject();
 					try {
 						params.put("user_id", Data.userData.getUserId());
@@ -1163,10 +1162,10 @@ public class GCMIntentService extends IntentService {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-
 					String encryptData = RSA.encryptWithPublicKeyStr(String.valueOf(params));
-					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
-					Response response1 = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
+//					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
+					Log.e("encData", encryptData);
+					Response response = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);
@@ -1177,7 +1176,6 @@ public class GCMIntentService extends IntentService {
 							Log.e("ack to server successfull", "=" + log);
 						}
 					}
-
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
