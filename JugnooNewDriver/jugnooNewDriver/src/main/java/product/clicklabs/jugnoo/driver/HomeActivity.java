@@ -6242,6 +6242,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				for (int i = 0; i < markersCustomers.size(); i++) {
 					builder.include(markersCustomers.get(i).getPosition());
+					break;
 				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
@@ -6262,6 +6263,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				for (int i = 0; i < markersCustomers.size(); i++) {
 					builder.include(markersCustomers.get(i).getPosition());
+					break;
 				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
