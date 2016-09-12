@@ -371,7 +371,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
 
-	private final double FIX_ZOOM_DIAGONAL = 408;
+	private final double FIX_ZOOM_DIAGONAL = 200;
 
 //	Button distanceReset2;
 
@@ -2654,6 +2654,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (map != null) {
 						map.clear();
 						setAttachedCustomerMarkers();
+						buttonDriverNavigationSetVisibility(View.GONE);
+						if(polylineCustomersPath != null){
+							polylineCustomersPath.remove();
+						}
 					}
 
 
@@ -2842,7 +2846,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverInformationBtn.setVisibility(View.GONE);
 			}
 
-			if(DriverScreenMode.D_IN_RIDE == mode || DriverScreenMode.D_ARRIVED == mode){
+			if(DriverScreenMode.D_IN_RIDE == mode || DriverScreenMode.D_ARRIVED == mode || DriverScreenMode.D_START_RIDE == mode){
 				setInRideZoom();
 			} else {
 				map.setPadding(0, 0, 0, 0);
@@ -6222,7 +6226,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (myLocation != null) {
 				if(driverScreenMode == DriverScreenMode.D_IN_RIDE) {
 					inRideZoom();
-				} else if(driverScreenMode == DriverScreenMode.D_ARRIVED){
+				} else if(driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE){
 					arrivedOrStartStateZoom();
 				}
 				inRideMapZoomHandler.postDelayed(inRideMapZoomRunnable, 10000);
@@ -6241,10 +6245,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (175f * ASSL.Yscale());
-				int bottom = (int) (325f * ASSL.Yscale());
+				int top = (int) (250f * ASSL.Yscale());
+				int bottom = (int) (370f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
-				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6261,10 +6265,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (295f * ASSL.Yscale());
-				int bottom = (int) (225f * ASSL.Yscale());
+				int top = (int) (400f * ASSL.Yscale());
+				int bottom = (int) (250f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
-				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (120 * minScaleRatio)), 300, null);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -6894,7 +6898,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 							@Override
 							public void onFinish() {
-								if(polylineOptionsCustomersPath != null){
+								if(DriverScreenMode.D_START_RIDE != driverScreenMode
+										&& polylineOptionsCustomersPath != null){
 									if(polylineCustomersPath != null){
 										polylineCustomersPath.remove();
 									}

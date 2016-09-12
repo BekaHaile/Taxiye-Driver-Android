@@ -158,7 +158,9 @@ public class CustomerSwitcher {
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					}
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
