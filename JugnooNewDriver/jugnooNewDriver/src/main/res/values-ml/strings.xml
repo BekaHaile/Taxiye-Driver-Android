@@ -589,6 +589,8 @@
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
+    <string name="estimated_payout">ESTIMATED PAYOUT</string>
+    <string name="this_week_cap">THIS WEEK</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

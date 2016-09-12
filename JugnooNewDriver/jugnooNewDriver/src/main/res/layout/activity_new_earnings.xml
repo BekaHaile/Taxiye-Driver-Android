@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/earnings"
+            android:textColor="@color/white"
+            android:textSize="48px" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28px"
+        android:layout_marginLeft="24px">
+
+        <TextView
+            android:id="@+id/textViewEstPayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/estimated_payout"
+            android:textSize="36px"/>
+
+        <TextView
+            android:id="@+id/textViewThisWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textViewEstPayout"
+            android:text="@string/this_week_cap"
+            android:textSize="28px"/>
+
+        <ImageView
+            android:layout_width="32px"
+            android:layout_height="32px"
+            android:layout_marginRight="24px"
+            android:layout_centerVertical="true"
+            android:src="@drawable/arrow_icon_normal"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

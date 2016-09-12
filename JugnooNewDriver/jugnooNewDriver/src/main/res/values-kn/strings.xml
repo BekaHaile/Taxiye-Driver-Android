@@ -609,6 +609,8 @@
     <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">%1$s ಕಿಲೋಮೀಟರ್  ನಂತರ, ಪ್ರತಿ ಕಿಲೋಮೀಟರಿಗೆ ರೂ. \u20B9 %2$s ಸಿಗುತ್ತದೆ</string>
     <string name="payment_sent">Payment Sent</string>
+    <string name="estimated_payout">ESTIMATED PAYOUT</string>
+    <string name="this_week_cap">THIS WEEK</string>
 
 
     <string-array name="CountryCodes" >
