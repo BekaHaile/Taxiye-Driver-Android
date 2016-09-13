@@ -213,6 +213,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".DriverEarningsNew"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
