@@ -17,6 +17,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONObject;
@@ -27,6 +30,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.CustomMarkerView;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -37,10 +41,11 @@ import retrofit.mime.TypedByteArray;
 public class DriverEarningsNew extends BaseActivity {
 
 	LinearLayout relative, linearLayoutDriverReferral;
-	RelativeLayout relativeLayoutPayout;
+	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5, relativeLayoutRideHistory;
 	Button backBtn;
-	TextView title;
-	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod;
+	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
+			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
+			textViewDailyValue5, title;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext;
 
 	@Override
@@ -78,6 +83,30 @@ public class DriverEarningsNew extends BaseActivity {
 		textViewThisWeek.setTypeface(Fonts.mavenRegular(this));
 		textViewInvPeriod = (TextView) findViewById(R.id.textViewInvPeriod);
 		textViewInvPeriod.setTypeface(Fonts.mavenRegular(this));
+
+
+		textViewDayDateVal1 = (TextView) findViewById(R.id.textViewDayDateVal1);
+		textViewDayDateVal1.setTypeface(Fonts.mavenRegular(this));
+		textViewDayDateVal2 = (TextView) findViewById(R.id.textViewDayDateVal2);
+		textViewDayDateVal2.setTypeface(Fonts.mavenRegular(this));
+		textViewDayDateVal3 = (TextView) findViewById(R.id.textViewDayDateVal3);
+		textViewDayDateVal3.setTypeface(Fonts.mavenRegular(this));
+		textViewDayDateVal4 = (TextView) findViewById(R.id.textViewDayDateVal4);
+		textViewDayDateVal4.setTypeface(Fonts.mavenRegular(this));
+		textViewDayDateVal5 = (TextView) findViewById(R.id.textViewDayDateVal5);
+		textViewDayDateVal5.setTypeface(Fonts.mavenRegular(this));
+		textViewDailyValue1 = (TextView) findViewById(R.id.textViewDailyValue1);
+		textViewDailyValue1.setTypeface(Fonts.mavenRegular(this));
+		textViewDailyValue2 = (TextView) findViewById(R.id.textViewDailyValue2);
+		textViewDailyValue2.setTypeface(Fonts.mavenRegular(this));
+		textViewDailyValue3 = (TextView) findViewById(R.id.textViewDailyValue3);
+		textViewDailyValue3.setTypeface(Fonts.mavenRegular(this));
+		textViewDailyValue4 = (TextView) findViewById(R.id.textViewDailyValue4);
+		textViewDailyValue4.setTypeface(Fonts.mavenRegular(this));
+		textViewDailyValue5 = (TextView) findViewById(R.id.textViewDailyValue5);
+		textViewDailyValue5.setTypeface(Fonts.mavenRegular(this));
+
+
 
 //		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
 //		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
@@ -136,6 +165,24 @@ public class DriverEarningsNew extends BaseActivity {
 		yAxis.setDrawLabels(false);
 
 		barChart.getAxisLeft().setTextSize(12);
+
+		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+			@Override
+			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+				Log.e("barchart", String.valueOf(e) + "ds:" + dataSetIndex + "h:" + h);
+			}
+
+			@Override
+			public void onNothingSelected() {
+
+			}
+		});
+		barChart.setDrawMarkerViews(true);
+		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker);
+		barChart.setMarkerView(mv);
+		barChart.setPinchZoom(false);
+
+
 
 
 //		getRateCardDetails(this);

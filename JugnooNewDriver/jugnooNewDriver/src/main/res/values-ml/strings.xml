@@ -591,6 +591,7 @@
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ESTIMATED PAYOUT</string>
     <string name="this_week_cap">THIS WEEK</string>
+    <string name="ride_history_cap">RIDE HISTORY</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
