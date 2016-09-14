@@ -80,6 +80,6 @@
         android:text="@string/jugnoo_off"
         android:textColor="@color/black"
         android:textSize="44px"
-        android:visibility="visible"
+        android:visibility="gone"
         />
 </RelativeLayout>

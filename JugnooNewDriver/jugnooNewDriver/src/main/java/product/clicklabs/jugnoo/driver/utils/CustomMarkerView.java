@@ -1,7 +1,10 @@
 package product.clicklabs.jugnoo.driver.utils;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.data.Entry;
@@ -15,11 +18,17 @@ import product.clicklabs.jugnoo.driver.R;
 public class CustomMarkerView extends MarkerView {
 
 	private TextView tvContent;
+	private Listener mListener;
+	private int mLayoutX;
+	private int mLayoutY;
+	private int mMarkerVisibility;
 
-	public CustomMarkerView (Context context, int layoutResource) {
+	public CustomMarkerView (final Context context, int layoutResource, Listener listener) {
 		super(context, layoutResource);
+		mListener = listener;
 		// this markerview only displays a textview
 		tvContent = (TextView) findViewById(R.id.tvContent);
+
 	}
 
 	// callbacks everytime the MarkerView is redrawn, can be used to update the
@@ -32,12 +41,34 @@ public class CustomMarkerView extends MarkerView {
 	@Override
 	public int getXOffset(float xpos) {
 		// this will center the marker-view horizontally
+		mLayoutX = (int) (xpos - (getWidth() / 2));
 		return -(getWidth() / 2);
 	}
 
 	@Override
 	public int getYOffset(float ypos) {
 		// this will cause the marker-view to be above the selected value
-		return -getHeight()-50;
+		mLayoutY = (int) (ypos - getWidth());
+		return -getHeight()-10;
 	}
+
+	public interface Listener {
+		/**
+		 * A callback with the x,y position of the marker
+		 * @param x the x in pixels
+		 * @param y the y in pixels
+		 */
+		void onMarkerViewLayout(int x, int y);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+		if(mMarkerVisibility == View.VISIBLE) mListener.onMarkerViewLayout(mLayoutX, mLayoutY);
+	}
+
+	public void setMarkerVisibility(int markerVisibility) {
+		mMarkerVisibility = markerVisibility;
+	}
+
 }

@@ -1,14 +1,20 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.flurry.android.FlurryAgent;
 import com.github.mikephil.charting.charts.BarChart;
@@ -38,15 +44,17 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverEarningsNew extends BaseActivity {
+public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView.Listener{
 
-	LinearLayout relative, linearLayoutDriverReferral;
-	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5, relativeLayoutRideHistory;
+	LinearLayout  linearLayoutDriverReferral;
+	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5,
+			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative;
 	Button backBtn;
 	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
 			textViewDailyValue5, title;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext;
+	BarChart barChart;
 
 	@Override
 	protected void onStart() {
@@ -70,13 +78,16 @@ public class DriverEarningsNew extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_earnings);
-		relative = (LinearLayout) findViewById(R.id.relative);
+		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
-		BarChart barChart = (BarChart) findViewById(R.id.chart);
+		barChart = (BarChart) findViewById(R.id.chart);
 
 		linearLayoutDriverReferral = (LinearLayout) findViewById(R.id.linearLayoutDriverReferral);
 		relativeLayoutPayout = (RelativeLayout) findViewById(R.id.relativeLayoutPayout);
+		relativelayoutChart = (RelativeLayout) findViewById(R.id.relativelayoutChart);
+		relativelayoutRandom = (RelativeLayout) findViewById(R.id.relativelayoutRandom);
+
 		textViewEstPayout = (TextView) findViewById(R.id.textViewEstPayout);
 		textViewEstPayout.setTypeface(Fonts.mavenRegular(this));
 		textViewThisWeek = (TextView) findViewById(R.id.textViewThisWeek);
@@ -124,6 +135,11 @@ public class DriverEarningsNew extends BaseActivity {
 		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
+		Shader textShader=new LinearGradient(0, 0, 0, 20,
+				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+				new float[]{0, 1}, Shader.TileMode.CLAMP);
+		title.getPaint().setShader(textShader);
+
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -149,22 +165,28 @@ public class DriverEarningsNew extends BaseActivity {
 
 
 		BarData data = new BarData(labels, dataset);
-		dataset.setColor(getResources().getColor(R.color.bg_grey));
+		dataset.setColor(getResources().getColor(R.color.white_grey_v2));
+		dataset.setHighLightColor(R.drawable.orange_gradient);
 //		dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
 		barChart.setData(data);
 		barChart.setNoDataTextDescription("");
 		dataset.setBarSpacePercent(20);
-		barChart.animateY(5000);
+		barChart.animateY(500);
+
+		barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 		XAxis xAxis = barChart.getXAxis();
 		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 		xAxis.setTextSize(15);
+		xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
 		YAxis yAxis = barChart.getAxisRight();
 		yAxis.setDrawAxisLine(false);
 		yAxis.setDrawLabels(false);
 
 		barChart.getAxisLeft().setTextSize(12);
+		barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
+
 
 		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
@@ -178,11 +200,23 @@ public class DriverEarningsNew extends BaseActivity {
 			}
 		});
 		barChart.setDrawMarkerViews(true);
-		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker);
+		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
 		barChart.setMarkerView(mv);
 		barChart.setPinchZoom(false);
+		barChart.setDescription("");
+		barChart.setDoubleTapToZoomEnabled(false);
+//		barChart.setDrawValueAboveBar(false);
+		barChart.setDrawGridBackground(false);
+		barChart.setExtraTopOffset(40);
+		dataset.setDrawValues(false);
 
 
+		relativelayoutRandom.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(DriverEarningsNew.this, "hello", Toast.LENGTH_LONG).show();
+			}
+		});
 
 
 //		getRateCardDetails(this);
@@ -264,6 +298,29 @@ public class DriverEarningsNew extends BaseActivity {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onMarkerViewLayout(int x, int y) {
+//		if(getParent() == null || barChart == null) return;
+		// remove the marker
+		relativelayoutChart.removeView(relativelayoutRandom);
+		relativelayoutChart.addView(relativelayoutRandom);
+
+		// measure the layout
+		// if this is not done, the first calculation of the layout parameter margins
+		// will be incorrect as the layout at this point has no height or width
+		int widthMeasureSpec = View.MeasureSpec.makeMeasureSpec(relativelayoutChart.getWidth(), View.MeasureSpec.UNSPECIFIED);
+		int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(relativelayoutChart.getHeight(), View.MeasureSpec.UNSPECIFIED);
+		relativelayoutRandom.measure(widthMeasureSpec, heightMeasureSpec);
+
+		// set up layout parameters so our marker is in the same position as the mpchart marker would be (based no the x and y)
+		RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) relativelayoutRandom.getLayoutParams();
+		lps.height = 40;
+		lps.width = 70;
+		lps.leftMargin = x - (relativelayoutRandom.getMeasuredWidth() / 2) + 50;
+		lps.topMargin = y - relativelayoutRandom.getMeasuredHeight()+ 135;
+		relativelayoutRandom.setLayoutParams(lps);
 	}
 
 }

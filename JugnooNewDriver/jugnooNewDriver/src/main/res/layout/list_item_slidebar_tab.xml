@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_white_selector"
+    android:splitMotionEvents="false">
+
+   <RelativeLayout
+       android:id="@+id/relativeLayoutHead"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="30px">
+
+       <TextView
+           android:id="@+id/textViewHeadText"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="llllllllllllll"
+           android:textColor="@color/grey_light_v2"
+           android:layout_marginLeft="36px"
+           android:textSize="30px"/>
+       
+       <ImageView
+           android:layout_width="12px"
+           android:layout_height="18px"
+           android:layout_marginRight="36px"
+           android:src="@drawable/arrow_icon_normal"
+           android:layout_alignParentRight="true"/>
+
+   </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeLayoutHead"
+        android:layout_marginBottom="36px"
+        android:layout_marginTop="38px">
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView1Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="lll"
+                android:textColor="@color/black_text_v2"
+                android:layout_marginLeft="36px"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="460px"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textView1Value"
+                android:textColor="@color/black_text_v2"
+                android:text="llllllllllllll"
+                android:layout_marginLeft="24px"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayout1">
+
+            <TextView
+                android:id="@+id/textView2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="lll"
+                android:textColor="@color/black_text_v2"
+                android:layout_marginLeft="36px"
+                android:textSize="30px"/>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="460px"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textView2Value"
+                android:text="llllllllllllll"
+                android:textColor="@color/black_text_v2"
+                android:layout_marginTop="6px"
+                android:layout_marginLeft="24px"
+                android:textSize="30px"/>
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="190px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/textViewValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="70%"
+                android:textColor="@color/red_v2"
+                android:textSize="72px"/>
+
+            <TextView
+                android:id="@+id/textViewValueSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/textViewValue"
+                android:text="fulfillment"
+                android:textColor="@color/red_v2"
+                android:textSize="24px"/>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <!--<ImageView-->
+        <!--android:layout_width="700px"-->
+        <!--android:layout_height="3px"-->
+        <!--android:layout_below="@+id/rideHistoryItem"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_marginTop="24px"-->
+        <!--android:background="@color/menu_black"/>-->
+
+
+</RelativeLayout>

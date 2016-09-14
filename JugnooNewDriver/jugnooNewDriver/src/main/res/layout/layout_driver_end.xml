@@ -7,7 +7,7 @@
     android:layout_marginTop="@dimen/top_bar_height"
     android:animateLayoutChanges="true"
     android:splitMotionEvents="false"
-    android:visibility="visible"
+    android:visibility="gone"
     >
 
 

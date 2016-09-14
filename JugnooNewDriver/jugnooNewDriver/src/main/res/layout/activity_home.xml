@@ -11,23 +11,41 @@
         android:orientation="vertical"
         android:splitMotionEvents="false">
 
-        <!-- map layout -->
-        <RelativeLayout
-            android:id="@+id/mapLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:splitMotionEvents="false"
-            android:visibility="gone">
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            xmlns:sothree="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom"
+            sothree:umanoFadeColor="@color/transparent"
+            sothree:umanoPanelHeight="110px"
+            sothree:umanoShadowHeight="6px">
 
-            <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
-        </RelativeLayout>
+            <RelativeLayout android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                <!-- map layout -->
+                <RelativeLayout
+                    android:id="@+id/mapLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:splitMotionEvents="false"
+                    android:visibility="gone">
 
-        <!-- initial layout-->
-        <include layout="@layout/layout_driver_initial"/>
+                    <fragment
+                        android:id="@+id/map"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
+                </RelativeLayout>
+
+                <!-- initial layout-->
+                <include layout="@layout/layout_driver_initial"/>
+
+            </RelativeLayout>
+
+            <include layout="@layout/layout_home_sliding_menu"/>
+
+
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
         <!-- request accept layout-->
         <include layout="@layout/layout_driver_request_accept"/>
@@ -63,8 +81,8 @@
             android:id="@+id/relativeLayoutContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:background="@color/white"
+            android:visibility="gone"
             >
         </RelativeLayout>
 

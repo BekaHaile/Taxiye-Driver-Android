@@ -22,6 +22,8 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -79,6 +81,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
+import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
+import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
@@ -107,6 +112,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
@@ -114,6 +120,7 @@ import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
@@ -201,6 +208,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout mapLayout;
 	GoogleMap map;
 
+	//slider menu
+
+	RecyclerView recyclerViewInfo;
+	InfoTilesAdapter infoTilesAdapter;
 
 
 	//Driver initial layout
@@ -363,7 +374,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private RelativeLayout relativeLayoutContainer;
 
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
-
+	ArrayList<InfoTileResponse> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 408;
 
 //	Button distanceReset2;
@@ -733,6 +744,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreenDate = (TextView) findViewById(R.id.textViewDriverEarningOnScreenDate);
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+
+
+			recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
+			recyclerViewInfo.setHasFixedSize(true);
+			LinearLayoutManager llm = new LinearLayoutManager(this);
+			llm.setOrientation(LinearLayoutManager.VERTICAL);
+			recyclerViewInfo.setLayoutManager(llm);
+
+			infoTileResponses = new ArrayList<>();
+			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
+			recyclerViewInfo.setAdapter(infoTilesAdapter);
 
 
 
@@ -1484,6 +1507,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 		}
 	};
+
+
+	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
+		@Override
+		public void okClicked(InfoTileResponse infoTileResponse) {
+
+		}
+	};
+
+	public void updateListData(String message, boolean errorOccurred) {
+		if (errorOccurred) {
+			DialogPopup.alertPopup(HomeActivity.this, "", message);
+			infoTileResponses.clear();
+			infoTilesAdapter.notifyDataSetChanged();
+		} else {
+			infoTilesAdapter.notifyDataSetChanged();
+		}
+	}
 
 
 	public void showDriverEarning(){
