@@ -602,16 +602,61 @@
     <string name="total_amount">ಅಂತಿಮ ಸರಕುಪಟ್ಟಿಯ ಮೊತ್ತ </string>
     <string name="this_week">ಈ ವಾರ</string>
     <string name="outstanding_amount1">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
-    <string name="upload_again">Upload Again</string>
+
     <string name="self_enroled">Self Enroled</string>
-    <string name="register_via_agent">Register Via Agent</string>
     <string name="upload_Documents">Upload Documents</string>
-    <string name="last_trip_earning">Last Trip Driver’s Earnings</string>
     <string name="diffrential_pricing_rate">%1$s ಕಿಲೋಮೀಟರ್  ನಂತರ, ಪ್ರತಿ ಕಿಲೋಮೀಟರಿಗೆ ರೂ. \u20B9 %2$s ಸಿಗುತ್ತದೆ</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ESTIMATED PAYOUT</string>
     <string name="this_week_cap">THIS WEEK</string>
     <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+
+    <string name="optional_brack">(Optional)</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+
+    <string name="upload_again">ಪುನಃ ಅಪ್ಲೋಡ್ ಮಾಡಿ </string>
+    <string name="register_via_agent">ಏಜೆಂಟ್ ನ  ಮೂಲಕ ನೋಂದಣಿಮಾಡಿಕೊಳ್ಳಿ </string>
+    <string name="last_trip_earning">ಕೊನೆಯ ಬಾಡಿಗೆಯಲ್ಲಿ ಚಾಲಕನ ಗಳಿಕೆ </string>
+
+
+    <string name="audit_lower">ಆಡಿಟ್</string>
+    <string name="self_audit">ಸ್ವಯಂ ಆಡಿಟ್</string>
+    <string name="front">ಮುಂದೆ</string>
+    <string name="add_photo">ಫೋಟೋ ಸೇರಿಸಿ</string>
+    <string name="left">ಎಡ</string>
+    <string name="right">ಬಲ </string>
+    <string name="Audit">ಆಡಿಟ್</string>
+    <string name="non_jugnoo_auto_branding">ಜುಗ್ನೂ ಜೊತೆ ಸೇರದ ಆಟೋ ಗಳಿಗೆ ಬ್ರ್ಯಾಂಡಿಂಗ್</string>
+    <string name="non_jugnoo_auto_audit">ಜುಗ್ನೂ ಜೊತೆ ಸೇರದ ಆಟೋ ಆಡಿಟ್ </string>
+    <string name="auto_from_front">ಆಟೋ ಮುಂಭಾಗದಿಂದ </string>
+    <string name="auto_from_back">ಆಟೋ ಹಿಂದಿನಿಂದ</string>
+    <string name="auto_from_left">ಆಟೋ ಎಡದಿಂದ </string>
+    <string name="auto_from_right">ಬಲದಿಂದ  ಆಟೋ</string>
+    <string name="mobile_stand">ಮೊಬೈಲ್ ಸ್ಟಾಂಡ್(ಐಚ್ಛಿಕ)</string>
+    <string name="vehicle_number">ವಾಹನ ಸಂಖ್ಯೆ</string>
+    <string name="mobile_stand_non">ಮೊಬೈಲ್ ಸ್ಟಾಂಡ್ </string>
+    <string name="next">ಮುಂದಿನ</string>
+    <string name="tap_to_capturing_photos">ಸ್ವಯಂ ಆಟೋ  ಫೋಟೋ ತಗೆಯಲು next ಬಟನ್ ಟ್ಯಾಪ್ ಮಾಡಿ </string>
+    <string name="has_smart_phone">ಚಾಲಕ ಸ್ಮಾರ್ಟ್ ಫೋನ್ ಹೊಂದಿದ್ದಾರೆ</string>
+    <string name="self_audit_caps">ಸ್ವಯಂ ಆಡಿಟ್</string>
+    <string name="audit_required">ಆಡಿಟ್ ಅಗತ್ಯವಿದೆ</string>
+    <string name="in_progress">ಪ್ರಗತಿಯಲ್ಲಿದೆ</string>
+    <string name="request_pending">ಬಾಕಿ ವಿನಂತಿ</string>
+    <string name="please_submit">ದಯವಿಟ್ಟು ಸಲ್ಲಿಸಿ</string>
+    <string name="cancel_audit">ನೀವು ಆಡಿಟ್ ರದ್ದು ಮಾಡಲು ಬಯಸುವಿರಾ?</string>
+    <string name="image_upload_failed">ಫೋಟೋ  ಅಪ್ಲೋಡ್ ವಿಫಲವಾಗಿದೆ , ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
+
 
 
     <string-array name="CountryCodes" >

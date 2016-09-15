@@ -63,16 +63,19 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 	Button backBtn;
 	TextView title;
 
-	EditText nameEt, phoneNoEt;
+	EditText nameEt, phoneNoEt, referralCodeEt;
 	Button signUpBtn;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 //	ImageView isRentedCheck, isOwnedCheck;
 	LinearLayout relative;
+	TextView textViewTandC;
+	ImageView imageViewTandC;
 //	RelativeLayout isOwnedRelative, isRentedRelative;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
 	CityResponse res;
+	boolean tandc = false;
 	boolean sendToOtpScreen = false;
 //	boolean isRented = false, isOwned = false;
 
@@ -108,7 +111,6 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(RegisterScreen.this, relative, 1134, 720, false);
 
-
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 		title = (TextView) findViewById(R.id.title);
@@ -116,11 +118,17 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 		nameEt = (EditText) findViewById(R.id.nameEt);
 		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		referralCodeEt = (EditText) findViewById(R.id.referralCodeEt);
+		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+
+		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
+		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
+		imageViewTandC = (ImageView) findViewById(R.id.imageViewTandC);
 
 		signUpBtn = (Button) findViewById(R.id.signUpBtn);
 		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -151,6 +159,33 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			}
 		});
 
+		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				referralCodeEt.setError(null);
+			}
+		});
+
+		textViewTandC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(RegisterScreen.this, HelpActivity.class));
+			}
+		});
+
+		imageViewTandC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(tandc){
+					imageViewTandC.setImageResource(R.drawable.audit_checkbox);
+					tandc = false;
+				} else {
+					imageViewTandC.setImageResource(R.drawable.boxwith_tick);
+					tandc = true;
+				}
+			}
+		});
 
 		signUpBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -161,6 +196,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 				if (name.length() > 0) {
 					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
 				}
+				String referralCode = referralCodeEt.getText().toString().trim();
+
 //				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 
@@ -200,16 +237,20 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 										if (cityposition != 0) {
 											if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 												if (vehiclePosition != 0) {
-													sendSignupValues(RegisterScreen.this, name, phoneNo, password);
-													FlurryEventLogger.emailSignupClicked(emailId);
+													if(tandc) {
+														sendSignupValues(RegisterScreen.this, name, phoneNo, password, referralCode);
+														FlurryEventLogger.emailSignupClicked(emailId);
+													} else {
+														DialogPopup.alertPopup(RegisterScreen.this, "", getResources().getString(R.string.select_tandc));
+													}
 												} else {
-													DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid Vehicle Type ");
+													DialogPopup.alertPopup(RegisterScreen.this, "", getResources().getString(R.string.select_valid_vehicle_type));
 												}
 											} else {
-												DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid Vehicle Status ");
+												DialogPopup.alertPopup(RegisterScreen.this, "", getResources().getString(R.string.select_valid_vehicle_status));
 											}
 										} else {
-											DialogPopup.alertPopup(RegisterScreen.this, "", "Please select valid City ");
+											DialogPopup.alertPopup(RegisterScreen.this, "", getResources().getString(R.string.select_valid_city));
 										}
 
 									} else {
@@ -357,7 +398,7 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 
 //	Retrofit
 
-	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city, final String referralCode) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -385,8 +426,8 @@ public class RegisterScreen extends BaseActivity implements LocationUpdate{
 			params.put("country", Data.country);
 			params.put("client_id", Data.CLIENT_ID);
 			params.put("login_type", Data.LOGIN_TYPE);
-			params.put("referral_code", "");
 			params.put("pushy_token", Data.pushyToken);
+			params.put("referral_code", ""+referralCode);
 			params.put("device_token", Data.deviceToken);
 			params.put("unique_device_id", Data.uniqueDeviceId);
 

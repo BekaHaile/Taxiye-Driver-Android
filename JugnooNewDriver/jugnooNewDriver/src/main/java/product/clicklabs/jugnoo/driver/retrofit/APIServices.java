@@ -2,6 +2,8 @@ package product.clicklabs.jugnoo.driver.retrofit;
 
 import java.util.Map;
 
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
@@ -23,6 +25,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
 import retrofit.client.Response;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
@@ -34,6 +37,7 @@ import retrofit.http.PartMap;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
+import retrofit.mime.TypedInput;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -470,4 +474,44 @@ public interface APIServices {
 	@POST("/show_tiles")
 	void getInfoTilesAsync(@Field("access_token") String accessToken,
 							 Callback<InfoTileResponse> callback);
+//	@FormUrlEncoded
+	@POST("/driver/push/ack")
+	Response sendPushAckToServerRetro(@Body String data);
+
+
+	@Multipart
+	@POST("/update_audit_image")
+	void uploadAuditImageToServer(@Part("image_file") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
+
+	@FormUrlEncoded
+	@POST("/fetch_audit_details_for_app")
+	void fetchAuditDetails(@FieldMap Map<String, String> params,
+							  Callback<AuditTypeResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/fetch_audit_type_status")
+	void fetchAuditTypeStatus(@FieldMap Map<String, String> params,
+						   Callback<AuditStateResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_njb_driver_details")
+	void sendAuditDetails(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/cancel_audit_by_driver")
+	void cancelAuditByDriver(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/submit_audit_images")
+	void submitAuditImages(@FieldMap Map<String, String> params,
+							 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_audit_image")
+	void skipImageToServer(@FieldMap Map<String, String> params,
+						   Callback<DocRequirementResponse> cb);
 }

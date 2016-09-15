@@ -93,4 +93,8 @@ public class SPLabels {
     public static final String OSRM_ENABLED = "osrm_enabled";
 
     public static final String PUSHY_REFRESH_INTERVAL = "pushy_refresh_interval";
+	public static final String SET_AUDIT_STATUS = "set_audit_status";
+
+	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
+	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
 }

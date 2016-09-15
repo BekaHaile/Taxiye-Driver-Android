@@ -637,16 +637,60 @@
 	<string name="total_amount">अंतिम चालान राशि</string>
 	<string name="this_week">इस सप्ताह</string>
 	<string name="outstanding_amount1">बकाया समायोजित किया गया</string>
-	<string name="upload_again">Upload Again</string>
 	<string name="self_enroled">Self Enroled</string>
-	<string name="register_via_agent">Register Via Agent</string>
 	<string name="upload_Documents">Upload Documents</string>
-	<string name="last_trip_earning">Last Trip Driver’s Earnings</string>
 	<string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
 	<string name="payment_sent">Payment Sent</string>
 	<string name="estimated_payout">ESTIMATED PAYOUT</string>
 	<string name="this_week_cap">THIS WEEK</string>
 	<string name="ride_history_cap">RIDE HISTORY</string>
+	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+	<string name="high_demand_areas">Click here to know high demand areas</string>
+	<string name="high_demad">High Demand Areas</string>
+	<string name="referral_code">Referral Code</string>
+	<string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+	<string name="select_tandc">Please select Terms and Conditions</string>
+	<string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+	<string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+	<string name="select_valid_city">Please select valid City</string>
+
+	<string name="optional_brack">(Optional)</string>
+	<string name="name_cant_empty">Name can\'t be empty</string>
+	<string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+
+	<string name="upload_again">पुनः अपलोड करें </string>
+	<string name="register_via_agent">एजेंट के माध्यम से रजिस्टर</string>
+	<string name="last_trip_earning">चालक की अंतिम यात्रा  की आय</string>
+
+
+	<string name="audit_lower">आडिट</string>
+	<string name="self_audit">खुद से ऑडिट करना </string>
+	<string name="front">सामने</string>
+	<string name="add_photo">तस्वीर जोड़ो</string>
+	<string name="left">बाएं</string>
+	<string name="right">दाएँ </string>
+	<string name="Audit">आडिट</string>
+	<string name="non_jugnoo_auto_branding">नॉन जुगनू ऑटो ब्रांडिंग</string>
+	<string name="non_jugnoo_auto_audit">नॉन जुगनू ऑटो ऑडिट</string>
+	<string name="auto_from_front">ऑटो सामने से </string>
+	<string name="auto_from_back">ऑटो पीछे से</string>
+	<string name="auto_from_left">ऑटो बाएँ से</string>
+	<string name="auto_from_right">ऑटो दाएँ से</string>
+	<string name="mobile_stand">मोबाइल स्टैंड (वैकल्पिक)</string>
+	<string name="vehicle_number">वाहन संख्या</string>
+	<string name="mobile_stand_non">मोबाइल स्टैंड</string>
+	<string name="next">अगला</string>
+	<string name="tap_to_capturing_photos">ऑटो की फोटो लेने के लिए NEXT पर  दबाएँ</string>
+	<string name="has_smart_phone">ड्राइवर के पास एक स्मार्टफोन है (वैकल्पिक)</string>
+	<string name="self_audit_caps">खुद से ऑडिट करना </string>
+	<string name="audit_required">ऑडिट की आवश्यकता है </string>
+	<string name="in_progress">चालू है </string>
+	<string name="request_pending">अनुरोध अपूर्ण है</string>
+	<string name="please_submit">कृपया जमा करें</string>
+	<string name="cancel_audit">क्या आप वास्तव मे ऑडिट रद्द करना चाहते है </string>
+	<string name="image_upload_failed">छवि अपलोड विफल रहा है, कृपया पुनः प्रयास करें</string>
+>>>>>>> develop_new
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

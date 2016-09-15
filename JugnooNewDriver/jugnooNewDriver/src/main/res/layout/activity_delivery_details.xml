@@ -26,7 +26,7 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="55px"
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/delivery_details"
@@ -103,7 +103,7 @@
                 <TextView
                     android:id="@+id/idValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="@string/delivery_id"
@@ -113,10 +113,10 @@
                 <TextView
                     android:id="@+id/distanceValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="4px"
                     android:text="Ride Distance: 5.6 Km"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
@@ -126,22 +126,22 @@
                 <TextView
                     android:id="@+id/rideTimeValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Total Time: 10 min"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="4px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"/>
 
                 <TextView
                     android:id="@+id/textViewReturnDistance"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
                     android:text="Return Distance: 4 Km"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="4px"
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"
                     android:visibility="visible"
@@ -150,10 +150,10 @@
                 <TextView
                     android:id="@+id/textViewNoOfDeliveries"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="38px"
                     android:layout_marginLeft="0px"
                     android:singleLine="true"
-                    android:layout_marginTop="10px"
+                    android:layout_marginTop="4px"
                     android:text="No of Deliveries: 4 "
                     android:textColor="@color/bg_grey_opaque"
                     android:textSize="28px"
@@ -180,7 +180,7 @@
                 <TextView
                     android:id="@+id/textViewRideFare"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/ride_fare"
@@ -216,12 +216,12 @@
                 android:id="@+id/relativeLayoutDeliveryFare"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="5px">
 
                 <TextView
                     android:id="@+id/textViewDeliveryFare"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/delivery_fare"
@@ -256,12 +256,12 @@
                 android:id="@+id/relativeLayoutReturnSubsidy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px">
+                android:layout_marginTop="5px">
 
                 <TextView
                     android:id="@+id/textViewReturnSubsidy"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/return_subsidy"
@@ -294,13 +294,13 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="5px"
                 android:id="@+id/relativeLayoutJugnooCut">
 
                 <TextView
                     android:id="@+id/textViewJugnooCut"
                     android:layout_width="400px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="42px"
                     android:gravity="center_vertical"
                     android:layout_marginLeft="38px"
                     android:text="@string/jugnoo_cut"
@@ -361,7 +361,7 @@
             <TextView
                 android:id="@+id/textViewActualFareText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60px"
                 android:layout_below="@+id/textViewFare"
                 android:gravity="center"
                 android:singleLine="true"
@@ -372,7 +372,7 @@
             <TextView
                 android:id="@+id/textViewIncSubsidy"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="34px"
                 android:gravity="center_vertical"
                 android:text="@string/inc_subsidy"
                 android:textColor="@color/black"
@@ -392,58 +392,187 @@
                 android:layout_height="wrap_content">
 
 
-                <TextView
-                    android:id="@+id/textViewCustomerPaid"
-                    android:layout_width="345px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5px"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/rupee_zero"
-                    android:textColor="@color/grey_ride_history"
-                    android:textSize="52px"/>
-                <TextView
-                    android:id="@+id/textViewCustomerPaidText"
-                    android:layout_width="345px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5px"
-                    android:gravity="center"
-                    android:layout_below="@+id/textViewCustomerPaid"
-                    android:text="@string/paid_cash"
-                    android:textColor="@color/grey_ride_history"
-                    android:textSize="30px"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="116px"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="2px"
-                    android:layout_height="125px"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/imageViewVertical"
-                    android:background="@color/new_orange"/>
+                    <RelativeLayout
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
 
-                <TextView
-                    android:id="@+id/textViewAccountBalance"
-                    android:layout_width="345px"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:layout_marginTop="5px"
-                    android:layout_toRightOf="@+id/imageViewVertical"
-                    android:text="@string/rupee_zero"
-                    android:textColor="@color/grey_ride_history"
-                    android:textSize="52px"/>
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewCustomerPaid"
+                            android:layout_width="230px"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:singleLine="true"
+                            android:text="@string/rupee_zero"
+                            android:textColor="@color/grey_ride_history"
+                            android:textSize="52px"/>
 
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/textViewAccountBalanceText"
-                    android:layout_width="345px"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewAccountBalance"
-                    android:layout_toRightOf="@+id/imageViewVertical"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:text="@string/account"
-                    android:textColor="@color/grey_ride_history"
-                    android:textSize="30px"/>
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewCustomerPaidText"
+                            android:layout_width="230px"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textViewCustomerPaid"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/paid_cash"
+                            android:textColor="@color/grey_ride_history"
+                            android:textSize="30px"/>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:layout_width="2px"
+                        android:layout_height="125px"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:id="@+id/imageViewVertical"
+                        android:background="@color/new_orange"/>
+
+                    <RelativeLayout
+                        android:layout_width="0px"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:gravity="center">
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewAccountBalance"
+                            android:layout_width="230px"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="@string/rupee_zero"
+                            android:textColor="@color/grey_ride_history"
+                            android:textSize="52px"/>
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewAccountBalanceText"
+                            android:layout_width="230px"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/textViewAccountBalance"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:singleLine="true"
+                            android:text="@string/account"
+                            android:textColor="@color/grey_ride_history"
+                            android:textSize="30px"/>
+
+                    </RelativeLayout>
+
+                    <ImageView
+                        android:id="@+id/imageViewHorizontal4"
+                        android:layout_width="2px"
+                        android:layout_height="125px"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/ring_orange_dark"/>
+
+                    <!--<RelativeLayout-->
+                        <!--android:id="@+id/relativeLayoutJugnooCut"-->
+                        <!--android:layout_width="0px"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_vertical"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:gravity="center">-->
+
+                        <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+                            <!--android:id="@+id/textViewJugnooCutValue"-->
+                            <!--android:layout_width="230px"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_gravity="center_vertical"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="center"-->
+                            <!--android:text="@string/rupee_zero"-->
+                            <!--android:textColor="@color/grey_ride_history"-->
+                            <!--android:textSize="52px"/>-->
+
+
+                        <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+                            <!--android:id="@+id/textViewJugnooCut"-->
+                            <!--android:layout_width="230px"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_below="@+id/textViewJugnooCutValue"-->
+                            <!--android:layout_gravity="center_vertical"-->
+                            <!--android:layout_weight="1"-->
+                            <!--android:gravity="center"-->
+                            <!--android:singleLine="true"-->
+                            <!--android:text="@string/jugnoo_cut"-->
+                            <!--android:textColor="@color/grey_ride_history"-->
+                            <!--android:textSize="30px"/>-->
+
+                    <!--</RelativeLayout>-->
+
+                </LinearLayout>
+
+
+                <!--<TextView-->
+                    <!--android:id="@+id/textViewCustomerPaid"-->
+                    <!--android:layout_width="345px"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="5px"-->
+                    <!--android:gravity="center"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:text="@string/rupee_zero"-->
+                    <!--android:textColor="@color/grey_ride_history"-->
+                    <!--android:textSize="52px"/>-->
+                <!--<TextView-->
+                    <!--android:id="@+id/textViewCustomerPaidText"-->
+                    <!--android:layout_width="345px"-->
+                    <!--android:layout_height="40px"-->
+                    <!--android:layout_marginBottom="5px"-->
+                    <!--android:gravity="center"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:layout_below="@+id/textViewCustomerPaid"-->
+                    <!--android:text="@string/paid_cash"-->
+                    <!--android:textColor="@color/grey_ride_history"-->
+                    <!--android:textSize="30px"/>-->
+
+                <!--<ImageView-->
+                    <!--android:layout_width="2px"-->
+                    <!--android:layout_height="125px"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:id="@+id/imageViewVertical"-->
+                    <!--android:background="@color/new_orange"/>-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/textViewAccountBalance"-->
+                    <!--android:layout_width="345px"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:gravity="center"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:layout_marginTop="5px"-->
+                    <!--android:layout_toRightOf="@+id/imageViewVertical"-->
+                    <!--android:text="@string/rupee_zero"-->
+                    <!--android:textColor="@color/grey_ride_history"-->
+                    <!--android:textSize="52px"/>-->
+
+                <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+                    <!--android:id="@+id/textViewAccountBalanceText"-->
+                    <!--android:layout_width="345px"-->
+                    <!--android:layout_height="40px"-->
+                    <!--android:layout_below="@+id/textViewAccountBalance"-->
+                    <!--android:layout_toRightOf="@+id/imageViewVertical"-->
+                    <!--android:gravity="center"-->
+                    <!--android:visibility="gone"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:text="@string/account"-->
+                    <!--android:textColor="@color/grey_ride_history"-->
+                    <!--android:textSize="30px"/>-->
 
 
 

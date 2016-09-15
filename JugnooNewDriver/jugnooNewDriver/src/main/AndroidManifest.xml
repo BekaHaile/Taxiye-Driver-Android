@@ -44,6 +44,11 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false"/>
+    <uses-permission
+        android:name="android.permission.FLASHLIGHT"
+        android:permissionGroup="android.permission-group.HARDWARE_CONTROLS"
+        android:protectionLevel="normal"
+        android:required="false"/>
 
     <permission
         android:name="product.clicklabs.jugnoo.driver.permission.C2D_MESSAGE"
@@ -219,6 +224,19 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".DriverRateCard"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".HighDemandAreaActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"
             android:enabled="true"
@@ -231,8 +249,10 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name=".DriverRateCard"
+            android:name=".selfAudit.SelfAuditActivity"
             android:label="@string/app_name"
+            android:largeHeap="true"
+            android:theme="@style/AppTheme"
             android:screenOrientation="portrait"></activity>
 
         <receiver
@@ -443,6 +463,20 @@
             android:name="com.nudgespot.notification.ReceiverActivity"
             android:theme="@android:style/Theme.NoDisplay">
         </activity>
+
+        <receiver
+            android:name=".receiver.NetworkCheckReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver android:name=".receiver.PowerCheckReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN"/>
+            </intent-filter>
+        </receiver>
 
         <!--<service-->
         <!--android:name=".pubnub.PubnubService"-->

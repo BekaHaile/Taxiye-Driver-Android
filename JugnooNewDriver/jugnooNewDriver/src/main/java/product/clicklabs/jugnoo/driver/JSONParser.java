@@ -243,12 +243,20 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.PUBNUB_SUSCRIBER_KEY, userData.optString("pubnub_subscribe_key", ""));
 		Prefs.with(context).save(SPLabels.PUBNUB_CHANNEL, userData.optString("pubnub_channel", ""));
 		Prefs.with(context).save(SPLabels.OSRM_ENABLED, userData.optInt("driver_app_osrm_enabled", 0));
+		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
+		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
+		Prefs.with(context).save(SPLabels.SET_AUDIT_POPUP_STRING, userData.optString("self_audit_popup_message", ""));
 
+		Prefs.with(context).save(KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(userData.optInt("meter_disp_min_threshold", 14)));
+		Prefs.with(context).save(KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(userData.optInt("meter_disp_max_threshold", 200)));
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
 		Prefs.with(context).save(Constants.START_NAVIGATION_ACCEPT, userData.optInt("start_navigation_accept", 3));
 		Prefs.with(context).save(Constants.START_NAVIGATION_START, userData.optInt("start_navigation_start", 0));
+		Prefs.with(context).save(Constants.HIGH_DEMAND_AREA_POPUP, userData.optString("high_demand_area_popup", ""));
+		Prefs.with(context).save(Constants.HIGH_DEMAND_WEB_URL, userData.optString("high_demand_web_url", ""));
+
 
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_free_state_update_time_period", 110000));
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
@@ -460,6 +468,10 @@ public class JSONParser implements Constants {
 										customerInfo.setDropLatLng(new LatLng(dropLatitude, dropLongitude));
 									}
 								}
+								if(jObjCustomer.has(KEY_DROP_ADDRESS)){
+									customerInfo.setDropAddress(jObjCustomer.getString(KEY_DROP_ADDRESS));
+								}
+
 							} catch (Exception e) {
 								e.printStackTrace();
 							}

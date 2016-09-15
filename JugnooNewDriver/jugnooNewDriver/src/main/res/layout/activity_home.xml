@@ -54,6 +54,91 @@
         <!-- engaged layout-->
         <include layout="@layout/layout_driver_engaged"/>
 
+        <!-- end ride review layout -->
+        <include layout="@layout/layout_driver_end"/>
+
+        <!-- top bar layout-->
+        <include layout="@layout/layout_home_top_bar"/>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130px"
+            android:layout_marginLeft="5px"
+            android:layout_marginRight="5px">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutLastRideEarning"
+                android:layout_width="match_parent"
+                android:layout_height="135px"
+                android:layout_marginLeft="10px"
+                android:layout_marginRight="10px"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:background="@drawable/background_white_rounded_orange_bordered">
+
+                <TextView
+                    android:id="@+id/textViewDriverEarningOnScreen"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/last_trip_earning"
+                    android:layout_marginLeft="32px"
+                    android:textSize="28px"/>
+
+                <TextView
+                    android:id="@+id/textViewDriverEarningOnScreenDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewDriverEarningOnScreen"
+                    android:text="@string/NA"
+                    android:layout_marginLeft="32px"
+                    android:textSize="24px"/>
+
+                <TextView
+                    android:id="@+id/textViewDriverEarningOnScreenValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="26px"
+                    android:text="@string/NA"
+                    android:textColor="@color/new_orange"
+                    android:textSize="44px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutCancelRide"
+                android:layout_width="match_parent"
+                android:layout_height="95px"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:visibility="gone"
+                android:background="@drawable/background_white">
+
+                <TextView
+                    android:id="@+id/textViewCancellationMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel_ride_by_customer"
+                    android:layout_centerHorizontal="true"
+                    android:textSize="32px"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/driverInformationBtn"
+            android:layout_width="80px"
+            android:layout_height="80px"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/relativeLayoutBanner"
+            android:layout_marginTop="24px"
+            android:layout_marginRight="36px"
+            android:background="@drawable/icon_i"
+            android:tag="mwar"/>
+
         <ListView
             android:id="@+id/driverRideRequestsList"
             android:layout_width="match_parent"
@@ -64,13 +149,6 @@
             android:splitMotionEvents="false"
             android:visibility="gone"
             />
-
-
-        <!-- end ride review layout -->
-        <include layout="@layout/layout_driver_end"/>
-
-        <!-- top bar layout-->
-        <include layout="@layout/layout_home_top_bar"/>
 
         <ImageView
             android:layout_width="match_parent"
