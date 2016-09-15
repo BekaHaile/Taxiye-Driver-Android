@@ -86,12 +86,16 @@ public interface Constants {
     String KEY_RATING = "rating";
     String KEY_OP_DROP_LATITUDE = "op_drop_latitude";
     String KEY_OP_DROP_LONGITUDE = "op_drop_longitude";
+    String KEY_DROP_ADDRESS = "drop_address";
     String KEY_DRYRUN_DISTANCE = "dryrun_distance";
     String KEY_ERROR = "error";
     String KEY_WALLET_BALANCE = "wallet_balance";
     String KEY_DISTANCE = "distance";
     String KEY_RIDE_PATH_DATA = "ride_path_data";
     String KEY_POOL_FARE ="pool_fare";
+
+	String KEY_SP_METER_DISP_MIN_THRESHOLD = "meter_disp_min_threshold";
+	String KEY_SP_METER_DISP_MAX_THRESHOLD = "meter_disp_max_threshold";
 
     String SP_CUSTOMER_RIDE_DATAS_OBJECT = "sp_customer_ride_datas_object";
     String KEY_HAVERSINE_DISTANCE = "haversine_distance";
@@ -125,6 +129,8 @@ public interface Constants {
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
     String KEY_RING_COUNT = "ring_count";
 
+	String HIGH_DEMAND_WEB_URL = "high_demand_web_url";
+
     String KEY_FARE = "fare";
 	String KEY_DISCOUNTED_FARE = "discounted_fare";
 	String KEY_DISCOUNT_ENABLED = "discount_enabled";
@@ -139,6 +145,9 @@ public interface Constants {
 
 	String START_NAVIGATION_ACCEPT = "start_navigation_accept";
 	String START_NAVIGATION_START = "start_navigation_start";
+	String POWER_OFF_INITIATED = "power_off_initiated";
+
+    String HIGH_DEMAND_AREA_POPUP = "high_demand_area_popup";
 
     String SP_START_LATITUDE = "sp_start_latitude";
     String SP_START_LONGITUDE = "sp_start_longitude";
@@ -156,6 +165,7 @@ public interface Constants {
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
+	String MOBILE_DATA_STATE = "mobile_data_state";
     public static final long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
 
 }

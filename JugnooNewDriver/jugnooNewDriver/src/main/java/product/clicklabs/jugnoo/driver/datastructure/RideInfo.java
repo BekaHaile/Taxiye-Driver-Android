@@ -20,7 +20,7 @@ public class RideInfo {
 	public String paidByCustomer;
 	public int driverPaymentStatus, customerId;
 	public String statusString, referredOn, phone, status, type;
-	public String convenienceCharges, luggageCharges, fareFactorApplied, referralAmount, amount,
+	public String convenienceCharges, luggageCharges, fareFactorApplied, referralAmount, amount, jugnooCut,
 			fareFactorValue, acceptSubsidy, cancelSubsidy, accountBalance, actualFare, driverRideFair;
 
 
@@ -30,7 +30,7 @@ public class RideInfo {
 					int couponUsed, int paymentMode, int businessId, int paymentStatus,
 					String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
 					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare,
-					String type, String driverRideFair) {
+					String type, String driverRideFair, String jugnooCut) {
 		this.id = id;
 		this.fromLocation = fromLocation;
 		this.toLocation = toLocation;
@@ -66,6 +66,7 @@ public class RideInfo {
 		this.actualFare = actualFare;
 		this.type = type;
 		this.driverRideFair = driverRideFair;
+		this.jugnooCut = jugnooCut;
 	}
 
 	public RideInfo(int customerId, String referralAmount, String referredOn, String type, String dateTime){

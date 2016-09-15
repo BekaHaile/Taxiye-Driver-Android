@@ -139,11 +139,15 @@ public class CustomerSwitcher {
 				if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 					if (customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null) {
-						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-						new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
-								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-										textViewCustomerPickupAddress)).execute();
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
+							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
+									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
+											textViewCustomerPickupAddress)).execute();
+						}else {
+							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
+						}
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
@@ -154,7 +158,9 @@ public class CustomerSwitcher {
 
 				} else {
 					textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
-					activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					if(DriverScreenMode.D_START_RIDE != HomeActivity.driverScreenMode) {
+						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+					}
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),

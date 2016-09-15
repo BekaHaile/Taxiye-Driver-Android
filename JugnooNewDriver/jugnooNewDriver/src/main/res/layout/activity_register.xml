@@ -10,14 +10,14 @@
     <RelativeLayout
         android:id="@+id/topRl"
         android:layout_width="match_parent"
-        android:layout_height="90px"
+        android:layout_height="76px"
         android:background="@color/transparent"
         android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/backBtn"
-            android:layout_width="82px"
-            android:layout_height="82px"
+            android:layout_width="74px"
+            android:layout_height="74px"
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
             android:textSize="@dimen/button_text_size"/>
@@ -48,10 +48,9 @@
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"
-            android:layout_width="300px"
-            android:layout_height="240px"
+            android:layout_width="200px"
+            android:layout_height="160px"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5px"
             android:background="@drawable/jugnoo_white_logo"
             android:tag="mwar"
             android:visibility="visible"/>
@@ -62,7 +61,7 @@
             android:layout_width="670px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="40px"
+            android:layout_marginTop="32px"
             android:background="@drawable/background_white_rounded_orange_bordered"
             android:gravity="center_horizontal"
             android:orientation="vertical"
@@ -71,7 +70,7 @@
 
             <RelativeLayout
                 android:layout_width="630px"
-                android:layout_height="120px"
+                android:layout_height="110px"
                 android:gravity="center_vertical"
                 >
 
@@ -88,7 +87,7 @@
                 <EditText
                     android:id="@+id/nameEt"
                     android:layout_width="525px"
-                    android:layout_height="90px"
+                    android:layout_height="85px"
                     android:layout_toRightOf="@+id/imageViewName"
                     android:background="@drawable/transparent"
                     android:capitalize="words"
@@ -116,7 +115,7 @@
 
             <RelativeLayout
                 android:layout_width="630px"
-                android:layout_height="120px"
+                android:layout_height="110px"
                 android:gravity="center_vertical"
                 >
 
@@ -133,7 +132,7 @@
                 <EditText
                     android:id="@+id/phoneNoEt"
                     android:layout_width="525px"
-                    android:layout_height="90px"
+                    android:layout_height="85px"
                     android:layout_toRightOf="@+id/imageViewPhone"
                     android:background="@drawable/transparent"
                     android:hint="@string/phone_number"
@@ -160,7 +159,51 @@
 
             <RelativeLayout
                 android:layout_width="630px"
-                android:layout_height="120px"
+                android:layout_height="110px"
+                android:gravity="center_vertical"
+                >
+
+                <ImageView
+                    android:id="@+id/imageViewReferralCode"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginRight="48px"
+                    android:layout_marginTop="22px"
+                    android:background="@drawable/ic_email"/>
+
+
+                <EditText
+                    android:id="@+id/referralCodeEt"
+                    android:layout_width="525px"
+                    android:layout_height="85px"
+                    android:layout_toRightOf="@+id/imageViewReferralCode"
+                    android:background="@drawable/transparent"
+                    android:hint="@string/referral_code"
+                    android:maxLength="10"
+                    android:inputType="text"
+                    android:paddingLeft="15px"
+                    android:paddingRight="20px"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey_black_light"
+                    android:textSize="34px"/>
+
+                <ImageView
+                    android:id="@+id/imageViewreferralCodeLine"
+                    android:layout_width="525px"
+                    android:layout_height="2px"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/referralCodeEt"
+                    android:layout_marginLeft="72px"
+                    android:background="@color/black"/>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="630px"
+                android:layout_height="110px"
                 android:gravity="center_vertical">
 
                 <ImageView
@@ -176,7 +219,7 @@
                 <Spinner
                     android:id="@+id/selectCitySp"
                     android:layout_width="525px"
-                    android:layout_height="90px"
+                    android:layout_height="85px"
                     android:layout_toRightOf="@+id/imageViewCity"
                     android:background="@drawable/transparent"
                     android:capitalize="words"
@@ -212,7 +255,7 @@
 
             <RelativeLayout
                 android:layout_width="630px"
-                android:layout_height="120px"
+                android:layout_height="110px"
                 android:gravity="center_vertical"
                 >
 
@@ -229,7 +272,7 @@
                 <Spinner
                     android:id="@+id/VehicleType"
                     android:layout_width="525px"
-                    android:layout_height="90px"
+                    android:layout_height="85px"
                     android:layout_toRightOf="@+id/imageViewVehicleType"
                     android:background="@drawable/transparent"
                     android:capitalize="words"
@@ -265,7 +308,7 @@
 
             <RelativeLayout
                 android:layout_width="630px"
-                android:layout_height="110px"
+                android:layout_height="100px"
                 android:gravity="center_vertical"
                 >
 
@@ -282,7 +325,7 @@
                 <Spinner
                     android:id="@+id/autoNumEt"
                     android:layout_width="525px"
-                    android:layout_height="80px"
+                    android:layout_height="75px"
                     android:layout_toRightOf="@+id/imageViewAutoNum"
                     android:background="@drawable/transparent"
                     android:capitalize="words"
@@ -303,118 +346,44 @@
                     android:layout_marginTop="32px"
                     android:background="@drawable/arrow_down"/>
 
-                <!--<ImageView-->
-                <!--android:id="@+id/imageViewAutoNumLine"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_below="@+id/autoNumEt"-->
-                <!--android:layout_width="525px"-->
-                <!--android:layout_height="2px"-->
-                <!--android:layout_marginLeft="72px"-->
-                <!--android:background="@color/black"/>-->
+
 
 
             </RelativeLayout>
 
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="650px"-->
-            <!--android:layout_height="200px"-->
-            <!--android:layout_marginTop="64px"-->
-            <!--android:background="@drawable/background_white_rounded_black_border"-->
-            <!--android:orientation="vertical">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:layout_marginTop="25px"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<ImageView-->
-            <!--android:layout_width="175px"-->
-            <!--android:layout_height="2px"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:background="@color/white"/>-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/autoType"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="@string/vehicle_status"-->
-            <!--android:layout_marginLeft="20px"-->
-            <!--android:layout_marginRight="20px"-->
-            <!--android:textColor="@color/grey_dark_more"-->
-            <!--android:textSize="36px"/>-->
-
-            <!--<ImageView-->
-            <!--android:layout_width="175px"-->
-            <!--android:layout_height="2px"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:background="@color/white"/>-->
-
-            <!--</LinearLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:layout_marginTop="48px">-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/isRentedRelative"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:layout_height="wrap_content">-->
-
-            <!--<ImageView-->
-            <!--android:id="@+id/isRentedCheck"-->
-            <!--android:background="@drawable/radio_select"-->
-            <!--android:layout_width="40px"-->
-            <!--android:layout_height="40px"/>-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/isRentedText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="24px"-->
-            <!--android:layout_toRightOf="@+id/isRentedCheck"-->
-            <!--android:text="@string/owner"-->
-            <!--android:textColor="@color/grey_dark_more"-->
-            <!--android:textSize="36px"/>-->
-
-            <!--</RelativeLayout>-->
-
-            <!--<RelativeLayout-->
-            <!--android:id="@+id/isOwnedRelative"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:layout_marginLeft="120px"-->
-            <!--android:layout_toRightOf="@+id/isRentedRelative">-->
-
-            <!--<ImageView-->
-            <!--android:id="@+id/isOwnedCheck"-->
-            <!--android:layout_width="50px"-->
-            <!--android:layout_height="50px"-->
-            <!--android:background="@drawable/option_unchecked"/>-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/isOwnedText"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="32px"-->
-            <!--android:layout_toRightOf="@+id/isOwnedCheck"-->
-            <!--android:text="@string/rented"-->
-            <!--android:textColor="@color/grey_dark_more"-->
-            <!--android:textSize="36px"/>-->
-
-            <!--</RelativeLayout>-->
-
-            <!--</RelativeLayout>-->
-
-            <!--</LinearLayout>-->
-
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="670px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24px">
+
+            <TextView
+                android:id="@+id/textViewTandC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/i_accept"
+                android:textColor="@color/white"
+                android:layout_marginRight="4px"
+                android:layout_toRightOf="@+id/imageViewTandC"
+                android:textSize="34px"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewTandC"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="32px"
+                android:src="@drawable/audit_checkbox"
+                android:tag="mwar"
+                />
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/signUpBtn"

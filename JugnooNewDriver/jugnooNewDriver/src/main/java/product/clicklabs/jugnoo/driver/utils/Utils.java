@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -801,6 +802,40 @@ public class Utils {
 			e.printStackTrace();
 			return false;
 		}
+	}
+
+
+	public static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
+									  int quality, int index) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		src.compress(format, quality, os);
+		File f = new File(context.getExternalCacheDir(), "temp" + index + ".jpg");
+		try {
+			f.createNewFile();
+			byte[] bitmapdata = os.toByteArray();
+
+			FileOutputStream fos = new FileOutputStream(f);
+			fos.write(bitmapdata);
+			fos.flush();
+			fos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
+
+
+	public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+		int width = bm.getWidth();
+		int height = bm.getHeight();
+		float scaleWidth = ((float) newWidth) / width;
+		float scaleHeight = ((float) newHeight) / height;
+		Matrix matrix = new Matrix();
+		matrix.postScale(scaleWidth, scaleHeight);
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height,
+				matrix, false);
+
+		return resizedBitmap;
 	}
 
 }

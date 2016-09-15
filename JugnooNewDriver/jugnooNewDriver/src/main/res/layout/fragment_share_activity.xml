@@ -22,8 +22,9 @@
             <TextView
                 android:id="@+id/textViewNumberOfDownloads"
                 android:layout_width="560px"
-                android:layout_height="wrap_content"
+                android:layout_height="55px"
                 android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_downloads"
                 android:textColor="@color/black"
@@ -56,8 +57,9 @@
             <TextView
                 android:id="@+id/textViewNumberOfFirstRides"
                 android:layout_width="560px"
-                android:layout_height="wrap_content"
+                android:layout_height="55px"
                 android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
                 android:text="@string/number_of_first_rides"
                 android:textColor="@color/black"
@@ -89,8 +91,9 @@
             <TextView
                 android:id="@+id/textViewMoneyEarned"
                 android:layout_width="560px"
-                android:layout_height="wrap_content"
+                android:layout_height="55px"
                 android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:layout_marginLeft="@dimen/share_activity_text_margin_left"
                 android:text="@string/money_earned"
                 android:textColor="@color/black"

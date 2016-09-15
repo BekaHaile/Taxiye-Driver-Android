@@ -80,6 +80,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.IDeviceTokenReceiver;
+import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PendingApiHit;
@@ -398,7 +399,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			DialogPopup.showGooglePlayErrorAlert(SplashNewActivity.this);
 		}
 		else{
-			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
+			LocationInit.showLocationAlertDialog(this);
+//			DialogPopup.showLocationSettingsAlert(SplashNewActivity.this);
 		}
 
 		NudgeClient.getGcmClient(this);
@@ -578,6 +580,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		
 	}
+
+
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		try {
+			super.onActivityResult(requestCode, resultCode, data);
+			if (LocationInit.LOCATION_REQUEST_CODE == requestCode) {
+				if (0 == resultCode) {
+					finish();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
@@ -747,8 +766,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			fetchLanguageList();
 			buttonLogin.setVisibility(View.VISIBLE);
-//			buttonRegister.setVisibility(View.VISIBLE);
-			toggleRegistrationButton();
+			buttonRegister.setVisibility(View.VISIBLE);
+//			toggleRegistrationButton();
 		}
 
 	}

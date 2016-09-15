@@ -9,6 +9,7 @@ import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.retrofit.model.PushAckAPIService;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.RestAdapter;
 
@@ -21,11 +22,13 @@ public class RestClient {
 	private static APIServices API_SERVICES;
 	private static DirectionAPIService DISTANCE_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
+	private static PushAckAPIService PUSH_ACK_API_SERVICE;
 
 	static {
 		setupRestClient();
 		setupGoogleAPIRestClient();
 		setupDistanceAPIRestClient();
+		setupPushAckAPIRestClient();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -111,6 +114,7 @@ public class RestClient {
 				.setClient(new Ok3Client(getOkHttpClient()))
 				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
+				;
 
 		RestAdapter restAdapter = builder.build();
 		GOOGLE_API_SERVICES = restAdapter.create(GoogleAPIServices.class);
@@ -140,5 +144,27 @@ public class RestClient {
 
 	public static DirectionAPIService getDistanceApiServices() {
 		return DISTANCE_API_SERVICE;
+	}
+
+	public static void setupPushAckAPIRestClient() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+				.setEndpoint("https://marketing-api.jugnoo.in")
+//				.setEndpoint("http://192.168.0.247:8090")
+				.setClient(new Ok3Client(getOkHttpClient()))
+				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+		RestAdapter restAdapter = builder.build();
+		PUSH_ACK_API_SERVICE = restAdapter.create(PushAckAPIService.class);
+	}
+
+	public static PushAckAPIService getPushAckApiServices() {
+		return PUSH_ACK_API_SERVICE;
 	}
 }

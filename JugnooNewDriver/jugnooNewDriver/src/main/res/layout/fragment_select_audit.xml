@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linearLayoutRoot"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="720px"
+        android:layout_height="96px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/menu_black">
+
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/Audit"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+        <ImageView
+            android:id="@+id/imageViewBack"
+            android:layout_width="60.7px"
+            android:layout_height="76.9px"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10px"
+            android:padding="20px"
+            android:src="@drawable/back_white_selector"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/linearLayoutSelfAudit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="52px"
+        android:orientation="vertical">
+        
+        <TextView
+            android:id="@+id/textViewSelfAudit"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:textSize="35px"
+            android:layout_marginLeft="32px"
+            android:text="@string/self_audit_caps"
+            android:textColor="@color/new_orange"/>
+
+        <TextView
+            android:id="@+id/textViewSelfAuditLast"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:layout_marginLeft="32px"
+            android:layout_below="@+id/textViewSelfAudit"
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
+
+        <TextView
+            android:id="@+id/textViewSelfAuditNext"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:layout_marginLeft="32px"
+            android:layout_below="@+id/textViewSelfAuditLast"
+            android:textSize="30px"
+            android:layout_marginTop="17px"/>
+
+        <TextView
+            android:id="@+id/textViewSelfAuditStatus"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:layout_marginLeft="32px"
+            android:textSize="30px"
+            android:layout_below="@+id/textViewSelfAuditNext"
+            android:layout_marginTop="19px"/>
+        
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="4px"
+            android:layout_marginTop="52px"
+            android:layout_below="@+id/textViewSelfAuditStatus"
+            android:textSize="30px"
+            android:src="@drawable/shadow_down"/>
+
+        <ImageView
+            android:id="@+id/imageViewArrowSA"
+            android:layout_width="12px"
+            android:layout_height="20px"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60px"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:src="@drawable/audit_next_arrow"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearLayoutNJAutoBranding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_marginTop="52px"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNJAutoBranding"
+            android:layout_width="617px"
+            android:textSize="35px"
+            android:layout_marginLeft="32px"
+            android:layout_height="wrap_content"
+            android:text="@string/non_jugnoo_auto_branding"
+            android:textColor="@color/new_orange"/>
+
+        <TextView
+            android:id="@+id/textViewNJBOffer"
+            android:layout_below="@+id/textViewNJAutoBranding"
+            android:layout_width="617px"
+            android:layout_marginLeft="32px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
+
+        <TextView
+            android:id="@+id/textViewNJBNumber"
+            android:layout_below="@+id/textViewNJBOffer"
+            android:layout_width="617px"
+            android:layout_marginLeft="32px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:textSize="30px"
+            android:visibility="visible"
+            android:layout_marginTop="25px"/>
+
+        <TextView
+            android:id="@+id/textViewNJAutoBrandingStatus"
+            android:layout_below="@+id/textViewNJBNumber"
+            android:layout_width="617px"
+            android:layout_marginLeft="32px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:textSize="30px"
+            android:visibility="visible"
+            android:layout_marginTop="19px"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_below="@+id/textViewNJAutoBrandingStatus"
+            android:layout_height="4px"
+            android:layout_marginTop="52px"
+            android:src="@drawable/shadow_down"/>
+
+        <ImageView
+            android:id="@+id/imageViewArrowNJB"
+            android:layout_width="12px"
+            android:layout_height="20px"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60px"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/audit_next_arrow"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearLayoutNJAutoAudit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="visible"
+        android:layout_marginTop="52px"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textViewNJAutoAudit"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:textSize="35px"
+            android:layout_marginLeft="32px"
+            android:text="@string/non_jugnoo_auto_audit"
+            android:textColor="@color/new_orange"/>
+
+        <TextView
+            android:id="@+id/textViewNJAOffer"
+            android:layout_below="@+id/textViewNJAutoAudit"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:visibility="visible"
+            android:layout_marginLeft="32px"
+            android:textSize="30px"
+            android:layout_marginTop="25px"/>
+
+        <TextView
+            android:id="@+id/textViewNJANumber"
+            android:layout_below="@+id/textViewNJAOffer"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:textSize="30px"
+            android:layout_marginLeft="32px"
+            android:visibility="visible"
+            android:layout_marginTop="19px"/>
+
+        <TextView
+            android:id="@+id/textViewNJAutoAuditStatus"
+            android:layout_below="@+id/textViewNJANumber"
+            android:layout_width="617px"
+            android:layout_height="wrap_content"
+            android:text="@string/NA"
+            android:layout_marginLeft="32px"
+            android:textSize="30px"
+            android:layout_marginTop="28px"/>
+
+        <ImageView
+            android:id="@+id/imageViewArrowNJA"
+            android:layout_width="12px"
+            android:layout_height="20px"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="60px"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/audit_next_arrow"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

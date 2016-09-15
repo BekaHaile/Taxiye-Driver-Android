@@ -18,6 +18,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
@@ -26,14 +27,23 @@ import android.telephony.TelephonyManager;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
@@ -46,6 +56,7 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
@@ -56,12 +67,14 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.RSA;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
+import retrofit.mime.TypedInput;
 
 public class GCMIntentService extends IntentService {
 
@@ -110,7 +123,7 @@ public class GCMIntentService extends IntentService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
+			notificationManager.notify(1, notification);
 
 			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
@@ -157,11 +170,11 @@ public class GCMIntentService extends IntentService {
 
 
 			Notification notification = builder.build();
-			notificationManager.notify(Prefs.with(context).getInt(SPLabels.NOTIFICATION_ID, 0), notification);
+			notificationManager.notify(1, notification);
 
-			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
-			wl.acquire(15000);
+//			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+//			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+//			wl.acquire(15000);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -281,6 +294,50 @@ public class GCMIntentService extends IntentService {
 
 	@SuppressWarnings("deprecation")
 	public static void notificationManagerCustomID(Context context, String title, String message, int notificationId,
+												   Class notifClass, Bitmap bitmap) {
+
+		try {
+			long when = System.currentTimeMillis();
+
+			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+			Log.v("message", "," + message);
+			Intent notificationIntent = new Intent(context, notifClass);
+
+			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+			builder.setAutoCancel(true);
+			builder.setContentTitle(title);
+			if(bitmap == null) {
+				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
+			} else {
+				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
+						.setBigContentTitle(title).setSummaryText(message));
+			}
+			builder.setContentText(message);
+			builder.setTicker(message);
+			builder.setDefaults(Notification.DEFAULT_ALL);
+			builder.setWhen(when);
+			builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.jugnoo_icon));
+			builder.setSmallIcon(R.drawable.notif_icon);
+			builder.setContentIntent(intent);
+
+			Notification notification = builder.build();
+			notificationManager.notify(notificationId, notification);
+
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
+			wl.acquire(15000);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@SuppressWarnings("deprecation")
+	public static void notificationManagerCustomIDAudit(Context context, String title, String message, int notificationId,
 												   Class notifClass, Bitmap bitmap) {
 
 		try {
@@ -503,28 +560,32 @@ public class GCMIntentService extends IntentService {
 								}
 
 								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
-								String logMessage = jObj.getString("message");
+								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, logMessage);
 									notificationManagerResume(this, logMessage, true);
 								} else {
 									notificationManager(this, logMessage, true);
 								}
+
 							} else if (PushFlags.CHANGE_STATE.getOrdinal() == flag) {
 
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "");
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);
 								}
 							} else if (PushFlags.DISPLAY_MESSAGE.getOrdinal() == flag) {
 								String message1 = jObj.getString("message");
+								String campainId = jObj.getString("campaign_id");
+								boolean sendAck = jObj.optBoolean("ack_notif", false);
+
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
 								if("".equalsIgnoreCase(picture)){
@@ -534,6 +595,22 @@ public class GCMIntentService extends IntentService {
 									new BigImageNotifAsync(title, message1, picture).execute();
 								} else{
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
+								}
+								if(sendAck) {
+									sendMarketPushAckToServer(this, campainId, currentTimeUTC);
+								}
+
+							} else if (PushFlags.DISPLAY_AUDIT_IMAGE.getOrdinal() == flag) {
+								String message1 = jObj.getString("message");
+
+								String picture = jObj.optString(Constants.KEY_PICTURE, "");
+								if("".equalsIgnoreCase(picture)){
+									picture = jObj.optString(Constants.KEY_IMAGE, "");
+								}
+								if(!"".equalsIgnoreCase(picture)){
+									new BigImageNotifAsync(title, message1, picture).execute();
+								} else{
+									notificationManagerCustomIDAudit(this, title, message1, PROMOTION_ID, SelfAuditActivity.class, null);
 								}
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
@@ -567,9 +644,10 @@ public class GCMIntentService extends IntentService {
 							} else if (PushFlags.UPDATE_DROP_LOCATION.getOrdinal() == flag) {
 								double dropLatitude = jObj.getDouble(Constants.KEY_OP_DROP_LATITUDE);
 								double dropLongitude = jObj.getDouble(Constants.KEY_OP_DROP_LONGITUDE);
+								String dropAddress = jObj.getString(Constants.KEY_DROP_ADDRESS);
 								String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude));
+									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
 								}
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");
@@ -1057,6 +1135,47 @@ public class GCMIntentService extends IntentService {
 						}
 					}
 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+	public void sendMarketPushAckToServer(final Context context, final String campainId, final String actTimeStamp) {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					String accessToken = Database2.getInstance(context).getDLDAccessToken();
+					if ("".equalsIgnoreCase(accessToken)) {
+						DriverLocationUpdateService.updateServerData(context);
+						accessToken = Database2.getInstance(context).getDLDAccessToken();
+					}
+					JSONObject params = new JSONObject();
+					try {
+						params.put("user_id", Data.userData.getUserId());
+						params.put("campaign_id", campainId);
+						params.put("ack_timestamp", actTimeStamp);
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					String encryptData = RSA.encryptWithPublicKeyStr(String.valueOf(params));
+//					Response response = RestClient.getApiServices().sendPushAckToServerRetro(encryptData);
+					Response response = RestClient.getPushAckApiServices().sendPushAckToServerRetro(encryptData);
+					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+					JSONObject jObj = new JSONObject(result);
+					if (jObj.has("flag")) {
+						int flag = jObj.getInt("flag");
+						if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == flag) {
+							String log = jObj.getString("log");
+							Log.e("ack to server successfull", "=" + log);
+						}
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

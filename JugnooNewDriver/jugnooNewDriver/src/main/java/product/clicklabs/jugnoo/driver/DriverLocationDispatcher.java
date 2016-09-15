@@ -49,7 +49,6 @@ public class DriverLocationDispatcher {
 				String accessToken = Database2.getInstance(context).getDLDAccessToken();
 				String deviceToken = Database2.getInstance(context).getDLDDeviceToken();
 				String pushyToken = Database2.getInstance(context).getPushyToken();
-
 				String serverUrl = Database2.getInstance(context).getDLDServerUrl();
 
 				Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
@@ -65,6 +64,7 @@ public class DriverLocationDispatcher {
 						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
 								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
+
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 							nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
@@ -72,16 +72,25 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
+							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getBatteryPercentage(context)));
+							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
+								nameValuePairs.put("mobile_data_state", String.valueOf(1));
+							}else {
+								nameValuePairs.put("mobile_data_state", String.valueOf(0));
+							}
+							if(Prefs.with(context).getBoolean(Constants.POWER_OFF_INITIATED, false)) {
+								nameValuePairs.put("power_off_state", String.valueOf(1));
+							} else {
+								nameValuePairs.put("power_off_state", String.valueOf(0));
+							}
 							nameValuePairs.put(Constants.KEY_LOCATION_ACCURACY, String.valueOf(location.getAccuracy()));
 							nameValuePairs.put(Constants.KEY_APP_VERSION, String.valueOf(Utils.getAppVersion(context)));
 
 							Log.i(TAG, "sendLocationToServer nameValuePairs=" + nameValuePairs.toString());
-
 							RestClient.setupRestClient(serverUrl);
 
 							Response response = RestClient.getApiServices().updateDriverLocation(nameValuePairs);
 							String result = new String(((TypedByteArray) response.getBody()).getBytes());
-
 							Log.i(TAG, "sendLocationToServer result=" + result);
 
 							try {
@@ -90,6 +99,8 @@ public class DriverLocationDispatcher {
 								if (jObj.has("log")) {
 									String log = jObj.getString("log");
 									if ("Updated".equalsIgnoreCase(log)) {
+										Prefs.with(context).save(Constants.MOBILE_DATA_STATE, true);
+										Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
 										Database2.getInstance(context).updateDriverLastLocationTime();
 										Prefs.with(context).save(SPLabels.UPDATE_DRIVER_LOCATION_TIME, System.currentTimeMillis());
 										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
@@ -108,9 +119,7 @@ public class DriverLocationDispatcher {
 						}
 					}
 				}
-
 				checkForMarkArrived(context, location, accessToken);
-
 				wakeLock.release();
 			}
 			else{

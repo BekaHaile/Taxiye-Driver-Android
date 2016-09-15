@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/linearLayoutRoot"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="1134px"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="145px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutProgressBar"
+            android:layout_width="388px"
+            android:layout_height="28px"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="14px"
+            android:layout_marginTop="18.5px"
+            android:orientation="horizontal"
+            android:tag="mwar">
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImgProgress"
+                android:layout_width="388px"
+                android:layout_height="28px"
+                android:src="@drawable/progress_front"
+                android:tag="mwar"/>
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/titleAutoSide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/relativeLayoutProgressBar"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="22px"
+            android:gravity="center"
+            android:text="@string/auto_from_front"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/customCamera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <SurfaceView
+            android:id="@+id/surfaceView"
+            android:layout_width="match_parent"
+            android:layout_height="845px"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutCapturedImageThumbnails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="750px"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImg1"
+                android:layout_width="69px"
+                android:layout_height="87px"
+                android:layout_marginLeft="25px"
+                android:background="@drawable/background_white_rounded_bordered"/>
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImg2"
+                android:layout_width="69px"
+                android:layout_height="87px"
+                android:layout_marginLeft="14px"
+                android:background="@drawable/background_white_rounded_bordered"/>
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImg3"
+                android:layout_width="69px"
+                android:layout_height="87px"
+                android:layout_marginLeft="14px"
+                android:background="@drawable/background_white_rounded_bordered"/>
+
+            <ImageView
+                android:id="@+id/imageViewCapturedImg4"
+                android:layout_width="69px"
+                android:layout_height="87px"
+                android:layout_marginLeft="14px"
+                android:background="@drawable/background_white_rounded_bordered"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/surfaceView"
+            android:background="@color/black">
+
+            <Button
+                android:id="@+id/captureImage"
+                android:layout_width="86px"
+                android:layout_height="86px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/click_picture"
+                android:visibility="gone"/>
+
+            <Button
+                android:id="@+id/buttonSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25px"
+                android:layout_marginRight="50px"
+                android:text="@string/skip"
+                android:textSize="40px"
+                android:background="@color/black"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                android:layout_alignParentRight="true"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutConfirmImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible">
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="94px"
+                android:layout_marginLeft="14px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"/>
+
+
+            <Button
+                android:id="@+id/rejectImage"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/self_audit_cross"
+                android:visibility="visible"/>
+
+            <Button
+                android:id="@+id/acceptImage"
+                android:layout_width="350px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/self_audit_tick"
+                android:visibility="visible"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

@@ -111,8 +111,8 @@
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewPickupChargesCond"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="410px"
+                    android:layout_height="34px"
                     android:layout_marginTop="5px"
                     android:text="@string/applicable_after"
                     android:textColor="@color/grey_black_light"
@@ -362,7 +362,7 @@
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewDtoC"
                     android:layout_width="0px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48px"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -380,7 +380,7 @@
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewDtoD"
                     android:layout_width="0px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48px"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
@@ -442,7 +442,7 @@
             <TextView
                 android:id="@+id/textViewDriverReferral"
                 android:layout_width="480px"
-                android:layout_height="wrap_content"
+                android:layout_height="48px"
                 android:text="@string/pickup_charges"
                 android:textColor="@color/black"
                 android:textSize="34px"/>

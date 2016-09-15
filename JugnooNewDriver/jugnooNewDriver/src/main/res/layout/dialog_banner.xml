@@ -26,11 +26,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@color/menu_black"
+            android:background="@color/white"
             android:gravity="center_horizontal"
             android:padding="35px"
             android:text="@string/message"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="36px" />
     </LinearLayout>
 

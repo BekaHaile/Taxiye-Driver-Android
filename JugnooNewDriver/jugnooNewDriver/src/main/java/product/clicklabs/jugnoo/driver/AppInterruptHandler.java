@@ -20,11 +20,11 @@ public interface AppInterruptHandler {
 	
 	public void onManualDispatchPushReceived();
 
-	public void onChangeStatePushReceived(int flag, String engagementId);
+	public void onChangeStatePushReceived(int flag, String engagementId, String message);
 	
 	public void onCashAddedToWalletByCustomer(int engagementId, int userId, double balance);
 
-	void onDropLocationUpdated(String engagementId, LatLng dropLatLng);
+	void onDropLocationUpdated(String engagementId, LatLng dropLatLng, String dropAddress);
 	
 	public void updateMeteringUI(double distance, long elapsedTime, long waitTime, Location lastGPSLocation,
 								 Location lastFusedLocation, double totalHaversineDistance);

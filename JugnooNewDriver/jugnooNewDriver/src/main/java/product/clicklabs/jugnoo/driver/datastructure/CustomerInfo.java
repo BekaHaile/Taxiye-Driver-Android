@@ -32,6 +32,7 @@ public class CustomerInfo {
 	public PromoInfo promoInfo;
 	public double jugnooBalance;
 	public LatLng dropLatLng;
+	public String dropAddress;
 	public int meterFareApplicable;
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
@@ -74,6 +75,7 @@ public class CustomerInfo {
 
 		this.image = this.image.replace("http://graph.facebook", "https://graph.facebook");
 		this.dropLatLng = null;
+		this.dropAddress = null;
 
 		this.meterFareApplicable = meterFareApplicable;
 		this.getJugnooFareEnabled = jugnooFareButton;
@@ -283,6 +285,14 @@ public class CustomerInfo {
 
 	public void setDropLatLng(LatLng dropLatLng) {
 		this.dropLatLng = dropLatLng;
+	}
+
+	public String getDropAddress() {
+		return dropAddress;
+	}
+
+	public void setDropAddress(String dropAddress) {
+		this.dropAddress = dropAddress;
 	}
 
 	public int getMeterFareApplicable() {
