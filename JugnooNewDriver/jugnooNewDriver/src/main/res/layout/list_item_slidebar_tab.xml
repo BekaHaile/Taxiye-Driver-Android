@@ -6,8 +6,8 @@
     android:layout_width="700px"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:background="@drawable/list_white_selector"
-    android:layout_marginBottom="10px"
+    android:background="@drawable/background_info_tile"
+    android:layout_marginBottom="15px"
     android:splitMotionEvents="false">
 
    <RelativeLayout
@@ -22,7 +22,7 @@
            android:layout_height="wrap_content"
            android:text="llllllllllllll"
            android:textColor="@color/grey_light_v2"
-           android:layout_marginLeft="36px"
+           android:layout_marginLeft="32px"
            android:textSize="30px"/>
        
        <ImageView
@@ -41,9 +41,15 @@
         android:layout_marginBottom="36px"
         android:layout_marginTop="38px">
 
+        <TextView
+            android:id="@+id/textViewEmpty"
+            android:layout_width="22px"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:id="@+id/relativeLayout1"
+            android:layout_toRightOf="@+id/textViewEmpty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -53,17 +59,17 @@
                 android:layout_height="wrap_content"
                 android:text="lll"
                 android:textColor="@color/black_text_v2"
-                android:layout_marginLeft="36px"
+                android:layout_marginLeft="32px"
                 android:textSize="30px"/>
 
             <TextView
                 android:id="@+id/textView1"
-                android:layout_width="460px"
+                android:layout_width="450px"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/textView1Value"
                 android:textColor="@color/black_text_v2"
                 android:text="llllllllllllll"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="10px"
                 android:textSize="30px"/>
 
         </RelativeLayout>
@@ -72,6 +78,8 @@
             android:id="@+id/relativeLayout2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/textViewEmpty"
+            android:layout_marginTop="4px"
             android:layout_below="@+id/relativeLayout1">
 
             <TextView
@@ -80,18 +88,17 @@
                 android:layout_height="wrap_content"
                 android:text="lll"
                 android:textColor="@color/black_text_v2"
-                android:layout_marginLeft="36px"
+                android:layout_marginLeft="32px"
                 android:textSize="30px"/>
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="460px"
+                android:layout_width="450px"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/textView2Value"
                 android:text="llllllllllllll"
                 android:textColor="@color/black_text_v2"
-                android:layout_marginTop="6px"
-                android:layout_marginLeft="24px"
+                android:layout_marginLeft="10px"
                 android:textSize="30px"/>
 
 
@@ -99,9 +106,10 @@
 
 
         <RelativeLayout
-            android:layout_width="190px"
+            android:layout_width="195px"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="10px"
             android:gravity="center">
 
             <TextView
@@ -111,7 +119,7 @@
                 android:layout_centerHorizontal="true"
                 android:text="70%"
                 android:textColor="@color/red_v2"
-                android:textSize="72px"/>
+                android:textSize="64px"/>
 
             <TextView
                 android:id="@+id/textViewValueSub"

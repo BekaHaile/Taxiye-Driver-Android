@@ -25,7 +25,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	LinearLayout relative;
 
 	Button backBtn;
-	TextView textViewTitle;
+	TextView textViewTitle, title;
 
 	ProgressBar progressBar;
 	TextView textViewInfo;
@@ -62,6 +62,10 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		textViewInfo = (TextView) findViewById(R.id.textViewInfo);
 		textViewInfo.setTypeface(Data.latoRegular(this));
+
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(this));
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);

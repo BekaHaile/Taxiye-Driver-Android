@@ -54,6 +54,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 		infoTileViewHolder.textView2.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textViewValue.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textViewValueSub.setTypeface(Data.latoRegular(context));
+		infoTileViewHolder.textViewEmpty.setVisibility(View.GONE);
 
 		if(itr.getTitle() != null){
 			infoTileViewHolder.textViewHeadText.setText(itr.getTitle());
@@ -65,6 +66,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			infoTileViewHolder.textView1Value.setText(itr.getTextValue1());
 		} else {
 			infoTileViewHolder.textView1Value.setVisibility(View.GONE);
+			infoTileViewHolder.textViewEmpty.setVisibility(View.VISIBLE);
 		}
 
 		if(itr.getTextView1() != null){
@@ -77,6 +79,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			infoTileViewHolder.textView2Value.setText(itr.getTextValue2());
 		} else {
 			infoTileViewHolder.textView2Value.setVisibility(View.GONE);
+			infoTileViewHolder.textViewEmpty.setVisibility(View.VISIBLE);
 		}
 
 		if(itr.getTextView2() != null){
@@ -122,7 +125,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 	public class infoTileViewHolder extends RecyclerView.ViewHolder {
 		protected RelativeLayout relative;
 		protected TextView textViewHeadText, textView1Value, textView1, textView2Value,
-				textView2, textViewValue, textViewValueSub;
+				textView2, textViewValue, textViewValueSub, textViewEmpty;
 		protected int id;
 
 		public infoTileViewHolder(View v) {
@@ -142,6 +145,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			textViewValue.setTypeface(Data.latoRegular(context));
 			textViewValueSub = (TextView) v.findViewById(R.id.textViewValueSub);
 			textViewValueSub.setTypeface(Data.latoRegular(context));
+			textViewEmpty = (TextView) v.findViewById(R.id.textViewEmpty);
 
 
 			relative.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));

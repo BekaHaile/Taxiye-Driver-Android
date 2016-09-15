@@ -632,6 +632,8 @@
     <string name="please_submit">অনুুগ্ৰহ কৰি জমা কৰক</string>
     <string name="cancel_audit">আপোনি বাস্তৱত নিৰীক্ষণ বাতিল কৰিব খোজে নে ?</string>
     <string name="image_upload_failed">চবি আপলোড বিফল হল, পূণৰ চেষ্টা কৰক</string>
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
 
     <string-array name="CountryCodes" >

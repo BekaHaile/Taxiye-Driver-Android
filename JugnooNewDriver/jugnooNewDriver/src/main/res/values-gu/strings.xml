@@ -629,6 +629,8 @@
     <string name="please_submit">સબમિટ કરો</string>
     <string name="cancel_audit"> શું તમે ઓડિટ રદ કરવા માંગો છો?</string>
     <string name="image_upload_failed">છબી અપલોડ નિષ્ફળ, ફરીથી પ્રયત્ન કરો</string>
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

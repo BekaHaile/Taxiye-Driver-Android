@@ -716,6 +716,8 @@
     <string name="please_submit">சமர்ப்பிக்கவும்</string>
     <string name="cancel_audit">நீங்கள் தணிக்கை ரத்து செய்ய வேண்டும் என்று உறுதியாக இருக்கிறீர்களா?</string>
     <string name="image_upload_failed">படத்தை பதிவேற்றும் தோல்வி , மீண்டும் முயற்சிக்கவும்</string>
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
 
     <string-array name="CountryCodes" >

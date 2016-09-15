@@ -103,8 +103,8 @@
     <color name="black_text">#242424</color>
     <color name="black_text_v2">#595968</color>
     <color name="black_text_alpha">#99242424</color>
-    
-     <color name="grey_light_more">#BBBBBB</color>
+    <color name="grey_light_info_v2">#f0f0f0</color>
+    <color name="grey_light_more">#BBBBBB</color>
     <color name="grey_light">#DDDDDD</color>
     <color name="grey_light_alpha">#99DDDDDD</color>
     <color name="grey_light_v2">#bcbcbc</color>

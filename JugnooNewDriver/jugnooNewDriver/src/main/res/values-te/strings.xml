@@ -691,6 +691,8 @@
     <string name="please_submit">సబ్మిట చెయ్యండి</string>
     <string name="cancel_audit">మీరు ఆడిట్ను రద్దు చెయ్యాలని అనుకుంటున్నారా?</string>
     <string name="image_upload_failed">ఫోటో సరిగ్గా రాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

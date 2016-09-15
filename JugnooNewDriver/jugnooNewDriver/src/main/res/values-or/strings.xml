@@ -638,6 +638,8 @@
     <string name="please_submit">ଦୟାକରି ଦାଖଲ କରନ୍ତୁ</string>
     <string name="cancel_audit">ଆପଣ ନିସ୍ଚିତ ଅଛନ୍ତି କି ଯାଂଚ୍ କ୍ୟାନ୍-ସଲ୍ କରିବା ପାଇଁ</string>
     <string name="image_upload_failed">ଫଟୋ ଅପ୍-ଲୋଡ୍ ଫେଲ୍, ପୁଣିଥରେ ଚେସ୍ଟା କରନ୍ତୁ</string>
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

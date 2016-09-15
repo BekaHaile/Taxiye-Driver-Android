@@ -690,7 +690,9 @@
 	<string name="please_submit">कृपया जमा करें</string>
 	<string name="cancel_audit">क्या आप वास्तव मे ऑडिट रद्द करना चाहते है </string>
 	<string name="image_upload_failed">छवि अपलोड विफल रहा है, कृपया पुनः प्रयास करें</string>
->>>>>>> develop_new
+	<string name="estimated_payout_lower">Estimated Payout</string>
+	<string name="bank_deposite">Bank Deposite</string>
+	>>>>>>> develop_new
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

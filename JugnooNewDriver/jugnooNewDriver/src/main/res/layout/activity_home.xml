@@ -13,6 +13,7 @@
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             xmlns:sothree="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/slidingLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
@@ -20,6 +21,8 @@
             sothree:umanoFadeColor="@color/transparent"
             sothree:umanoPanelHeight="70px"
             sothree:umanoShadowHeight="6px">
+
+
 
             <RelativeLayout android:layout_width="match_parent"
                             android:layout_height="match_parent">
@@ -36,7 +39,10 @@
                         class="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"/>
+
+
                 </RelativeLayout>
+
 
                 <!-- initial layout-->
                 <include layout="@layout/layout_driver_initial"/>
@@ -47,6 +53,8 @@
 
 
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+
 
         <!-- request accept layout-->
         <include layout="@layout/layout_driver_request_accept"/>

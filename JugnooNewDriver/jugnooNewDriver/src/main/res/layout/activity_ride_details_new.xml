@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/menu_black"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/ride_details"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/dateTimeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="24px"
+            android:layout_marginLeft="5px"
+            android:layout_toRightOf="@+id/imageViewTime"
+            android:singleLine="true"
+            android:text="23 June, 2014 18:88 AM"
+            android:textColor="@color/new_orange"
+            android:textSize="32px"
+            />
+
+        <TextView
+            android:id="@+id/textViewActualFare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_marginTop="15px"
+            android:text="@string/rupee_zero"
+            android:textColor="@color/red_v2"
+            android:textSize="72px"/>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewRideFare"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/ride_fare"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+            <TextView
+                android:id="@+id/textViewRideFareValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="00000.00"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewRateApplied"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/rate_applied"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+
+            <TextView
+                android:id="@+id/textViewRateAppliedValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewAcceptSubsidy"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/accept_subsidy"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+
+            <TextView
+                android:id="@+id/textViewAcceptSubsidyValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewCancelSubsidy"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/cancel_subsidy"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+
+            <TextView
+                android:id="@+id/textViewCancelSubsidyValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+            android:id="@+id/textViewJugnooCut"
+            android:layout_width="400px"
+            android:layout_height="45px"
+            android:gravity="center_vertical"
+            android:text="@string/jugnoo_cut"
+            android:textColor="@color/black"
+            android:textSize="32px"/>
+
+
+            <TextView
+            android:id="@+id/textViewJugnooCutValue"
+            android:layout_width="140px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical|right"
+            android:text="0"
+            android:textColor="@color/red_status"
+            android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="24px"
+            android:background="@color/grey_light"/>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2px">
+
+            <TextView
+                android:id="@+id/textViewActualFareText"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/estimated_payout_lower"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+            <TextView
+                android:id="@+id/textViewActualFareValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="00000.00"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewCustomerPaidText"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/cash_collected"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+            <TextView
+                android:id="@+id/textViewCustomerPaid"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="00000.00"
+                android:textColor="@color/black"
+                android:textSize="32px"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="24px"
+            android:background="@color/grey_light"/>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewBankDeposite"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/bank_deposite"
+                android:textColor="@color/black"
+                android:textSize="36px"/>
+            <TextView
+                android:id="@+id/textViewBankDepositeValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="0000.00"
+                android:textColor="@color/black"
+                android:textSize="36px"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="35px"
+            android:background="@color/grey_light"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutFrom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="20px"
+            android:splitMotionEvents="false">
+
+            <ImageView
+                android:layout_width="17px"
+                android:layout_height="17px"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/from"
+                android:background="@drawable/start_marker_v2"/>
+
+            <TextView
+                android:id="@+id/textViewFromValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22px"
+                android:layout_marginBottom="0px"
+                android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="20px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutTo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20px"
+            android:layout_marginLeft="60px"
+            android:layout_marginRight="20px"
+            android:splitMotionEvents="false">
+
+            <ImageView
+                android:layout_width="17px"
+                android:layout_height="17px"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/to"
+                android:background="@drawable/end_marker_v2"/>
+
+            <TextView
+                android:id="@+id/textViewToValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="22px"
+                android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+                android:layout_marginBottom="0px"
+                android:textColor="@color/bg_grey_opaque"
+                android:textSize="20px"/>
+
+        </LinearLayout>
+
+        <!-- map layout -->
+        <RelativeLayout
+            android:id="@+id/mapLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="300px"
+            android:layout_marginTop="36px"
+            android:splitMotionEvents="false"
+            android:visibility="visible">
+
+            <fragment
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

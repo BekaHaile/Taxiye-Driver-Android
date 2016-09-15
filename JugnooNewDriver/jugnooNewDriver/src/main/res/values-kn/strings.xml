@@ -656,7 +656,8 @@
     <string name="please_submit">ದಯವಿಟ್ಟು ಸಲ್ಲಿಸಿ</string>
     <string name="cancel_audit">ನೀವು ಆಡಿಟ್ ರದ್ದು ಮಾಡಲು ಬಯಸುವಿರಾ?</string>
     <string name="image_upload_failed">ಫೋಟೋ  ಅಪ್ಲೋಡ್ ವಿಫಲವಾಗಿದೆ , ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
-
+    <string name="estimated_payout_lower">Estimated Payout</string>
+    <string name="bank_deposite">Bank Deposite</string>
 
 
     <string-array name="CountryCodes" >

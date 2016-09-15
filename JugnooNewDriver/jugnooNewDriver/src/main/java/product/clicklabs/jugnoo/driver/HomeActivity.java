@@ -64,6 +64,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
@@ -201,6 +202,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout logoutRl;
 	TextView logoutText;
 	HeatMapResponse heatMapResponseGlobal;
+
+	SlidingUpPanelLayout slidingUpPanelLayout;
 
 
 	//Top RL
@@ -772,7 +775,35 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
+			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
+
+			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+				@Override
+				public void onPanelSlide(View panel, float slideOffset) {
+
+				}
+
+				@Override
+				public void onPanelCollapsed(View panel) {
+//					Toast.makeText(HomeActivity.this, "collapsed", Toast.LENGTH_LONG).show();
+				}
+
+				@Override
+				public void onPanelExpanded(View panel) {
+//					Toast.makeText(HomeActivity.this, "expanded", Toast.LENGTH_LONG).show();
+				}
+
+				@Override
+				public void onPanelAnchored(View panel) {
+
+				}
+
+				@Override
+				public void onPanelHidden(View panel) {
+
+				}
+			});
 
 
 
@@ -1141,7 +1172,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			});
 
 			if(!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""))){
-				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				textViewHighDemandAreas.setText(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, ""));
 			}
 
@@ -1590,60 +1621,69 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	};
 
 
+
+
 	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
 		@Override
 		public void okClicked(InfoTileResponse.Tile infoTileResponse) {
 
-			if(infoTileResponse.getDeepIndex() ==1){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==2){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==3){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==4){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==5){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==6){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==7){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==8){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==9){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-			} else if(infoTileResponse.getDeepIndex() ==10){
-				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-				HomeActivity.this.startActivity(intent);
-				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+			}else {
+
+				if (infoTileResponse.getDeepIndex() == 1) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 2) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 3) {
+
+					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+
+				} else if (infoTileResponse.getDeepIndex() == 4) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 5) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 6) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 7) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 8) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 9) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if (infoTileResponse.getDeepIndex() == 10) {
+					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
 			}
 
 
@@ -2597,7 +2637,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
-					driverInformationBtn.setVisibility(View.VISIBLE);
+					driverInformationBtn.setVisibility(View.GONE);
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
 						startService(new Intent(this, DriverLocationUpdateService.class));
@@ -2959,7 +2999,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			showAllRideRequestsOnMap();
 
 			if(DriverScreenMode.D_INITIAL == mode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
-				relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			} else {
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			}
@@ -3408,7 +3448,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
-					relativeLayoutHighDemandAreas.setVisibility(View.VISIBLE);
+					relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				}
 				showDriverEarning();
 			}
