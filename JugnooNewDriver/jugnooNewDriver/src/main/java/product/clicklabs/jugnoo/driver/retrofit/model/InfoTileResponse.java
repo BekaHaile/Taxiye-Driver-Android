@@ -63,25 +63,25 @@ public class InfoTileResponse {
 		private String title;
 		@SerializedName("text_view_1")
 		@Expose
-		private Object textView1;
+		private String textView1;
 		@SerializedName("text_view_2")
 		@Expose
-		private Object textView2;
+		private String textView2;
 		@SerializedName("text_view_sub")
 		@Expose
-		private Object textViewSub;
+		private String textViewSub;
 		@SerializedName("deep_index")
 		@Expose
 		private Integer deepIndex;
 		@SerializedName("text_value_1")
 		@Expose
-		private Object textValue1;
+		private String textValue1;
 		@SerializedName("text_value_2")
 		@Expose
-		private Object textValue2;
+		private String textValue2;
 		@SerializedName("value")
 		@Expose
-		private Object value;
+		private String value;
 		@SerializedName("extras")
 		@Expose
 		private Extras extras;
@@ -109,7 +109,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The textView1
 		 */
-		public Object getTextView1() {
+		public String getTextView1() {
 			return textView1;
 		}
 
@@ -118,7 +118,7 @@ public class InfoTileResponse {
 		 * @param textView1
 		 * The text_view_1
 		 */
-		public void setTextView1(Object textView1) {
+		public void setTextView1(String textView1) {
 			this.textView1 = textView1;
 		}
 
@@ -127,7 +127,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The textView2
 		 */
-		public Object getTextView2() {
+		public String getTextView2() {
 			return textView2;
 		}
 
@@ -136,7 +136,7 @@ public class InfoTileResponse {
 		 * @param textView2
 		 * The text_view_2
 		 */
-		public void setTextView2(Object textView2) {
+		public void setTextView2(String textView2) {
 			this.textView2 = textView2;
 		}
 
@@ -145,7 +145,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The textViewSub
 		 */
-		public Object getTextViewSub() {
+		public String getTextViewSub() {
 			return textViewSub;
 		}
 
@@ -154,7 +154,7 @@ public class InfoTileResponse {
 		 * @param textViewSub
 		 * The text_view_sub
 		 */
-		public void setTextViewSub(Object textViewSub) {
+		public void setTextViewSub(String textViewSub) {
 			this.textViewSub = textViewSub;
 		}
 
@@ -181,7 +181,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The textValue1
 		 */
-		public Object getTextValue1() {
+		public String getTextValue1() {
 			return textValue1;
 		}
 
@@ -190,7 +190,7 @@ public class InfoTileResponse {
 		 * @param textValue1
 		 * The text_value_1
 		 */
-		public void setTextValue1(Object textValue1) {
+		public void setTextValue1(String textValue1) {
 			this.textValue1 = textValue1;
 		}
 
@@ -199,7 +199,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The textValue2
 		 */
-		public Object getTextValue2() {
+		public String getTextValue2() {
 			return textValue2;
 		}
 
@@ -208,7 +208,7 @@ public class InfoTileResponse {
 		 * @param textValue2
 		 * The text_value_2
 		 */
-		public void setTextValue2(Object textValue2) {
+		public void setTextValue2(String textValue2) {
 			this.textValue2 = textValue2;
 		}
 
@@ -217,7 +217,7 @@ public class InfoTileResponse {
 		 * @return
 		 * The value
 		 */
-		public Object getValue() {
+		public String getValue() {
 			return value;
 		}
 
@@ -226,7 +226,7 @@ public class InfoTileResponse {
 		 * @param value
 		 * The value
 		 */
-		public void setValue(Object value) {
+		public void setValue(String value) {
 			this.value = value;
 		}
 

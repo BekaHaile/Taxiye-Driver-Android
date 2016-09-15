@@ -10,6 +10,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
@@ -464,4 +465,9 @@ public interface APIServices {
 	@POST("/register_a_driver")
 	void oneTimeRegisteration(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/show_tiles")
+	void getInfoTilesAsync(@Field("access_token") String accessToken,
+							 Callback<InfoTileResponse> callback);
 }

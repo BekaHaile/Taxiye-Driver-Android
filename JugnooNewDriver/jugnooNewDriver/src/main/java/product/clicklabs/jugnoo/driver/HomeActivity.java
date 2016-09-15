@@ -22,6 +22,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -72,6 +73,7 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -122,6 +124,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -374,7 +377,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private RelativeLayout relativeLayoutContainer;
 
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
-	ArrayList<InfoTileResponse> infoTileResponses = new ArrayList<>();
+	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 408;
 
 //	Button distanceReset2;
@@ -752,6 +755,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			LinearLayoutManager llm = new LinearLayoutManager(this);
 			llm.setOrientation(LinearLayoutManager.VERTICAL);
 			recyclerViewInfo.setLayoutManager(llm);
+			recyclerViewInfo.setItemAnimator(new DefaultItemAnimator());
 
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
@@ -1492,6 +1496,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 
+		getInfoTilesAsync(HomeActivity.this);
 
 	}
 
@@ -1511,12 +1516,65 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
 		@Override
-		public void okClicked(InfoTileResponse infoTileResponse) {
+		public void okClicked(InfoTileResponse.Tile infoTileResponse) {
+
+			if(infoTileResponse.getDeepIndex() ==1){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==2){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==3){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==4){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==5){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==6){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==7){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==8){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==9){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			} else if(infoTileResponse.getDeepIndex() ==10){
+				Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+				intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+				HomeActivity.this.startActivity(intent);
+				HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+
 
 		}
 	};
 
-	public void updateListData(String message, boolean errorOccurred) {
+	public void updateInfoTileListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
 			DialogPopup.alertPopup(HomeActivity.this, "", message);
 			infoTileResponses.clear();
@@ -3006,6 +3064,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			ActivityCompat.finishAffinity(this);
 			sendToSplash();
 		}
+
+		getInfoTilesAsync(HomeActivity.this);
 	}
 
 
@@ -6724,6 +6784,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+
+	private void getInfoTilesAsync(final Activity activity) {
+		RestClient.getApiServices().getInfoTilesAsync(Data.userData.accessToken, new Callback<InfoTileResponse>() {
+			@Override
+			public void success(InfoTileResponse infoTileResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					Log.e("Shared rides jsonString", "=" + jsonString);
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					if (!jObj.isNull("error")) {
+						String errorMessage = jObj.getString("error");
+						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+							HomeActivity.logoutUser(activity);
+						} else {
+							updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+						}
+					} else {
+						infoTileResponses.clear();
+						infoTileResponses.addAll((ArrayList<InfoTileResponse.Tile>) infoTileResponse.getTiles());
+						updateInfoTileListData(getResources().getString(R.string.no_rides_currently), false);
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+					updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.dismissLoadingDialog();
+				updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+			}
+		});
+
+
 	}
 
 }

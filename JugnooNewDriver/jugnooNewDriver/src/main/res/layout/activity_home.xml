@@ -16,8 +16,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom"
+            android:background="@color/transparent"
             sothree:umanoFadeColor="@color/transparent"
-            sothree:umanoPanelHeight="110px"
+            sothree:umanoPanelHeight="70px"
             sothree:umanoShadowHeight="6px">
 
             <RelativeLayout android:layout_width="match_parent"

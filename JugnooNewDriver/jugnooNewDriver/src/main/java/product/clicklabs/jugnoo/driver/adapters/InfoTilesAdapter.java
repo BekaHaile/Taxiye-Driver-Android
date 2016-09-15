@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -26,11 +28,11 @@ import product.clicklabs.jugnoo.driver.utils.Utils;
  */
 public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.infoTileViewHolder> {
 
-	private ArrayList<InfoTileResponse> infoTileResponses;
+	private ArrayList<InfoTileResponse.Tile> infoTileResponses;
 	private Context context;
 	private InfoTilesAdapterHandler infoTilesAdapterHandler;
 
-	public InfoTilesAdapter(Context context, ArrayList<InfoTileResponse> infoTileResponses, InfoTilesAdapterHandler infoTilesAdapterHandler) {
+	public InfoTilesAdapter(Context context, ArrayList<InfoTileResponse.Tile> infoTileResponses, InfoTilesAdapterHandler infoTilesAdapterHandler) {
 		this.infoTileResponses = infoTileResponses;
 		this.context = context;
 		this.infoTilesAdapterHandler = infoTilesAdapterHandler;
@@ -43,16 +45,57 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 
 	@Override
 	public void onBindViewHolder(infoTileViewHolder infoTileViewHolder, int i) {
-		InfoTileResponse srd = infoTileResponses.get(i);
+		final InfoTileResponse.Tile itr = infoTileResponses.get(i);
 
 		infoTileViewHolder.textViewHeadText.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textView1Value.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textView1.setTypeface(Data.latoRegular(context));
-		infoTileViewHolder.textView2Value.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-		infoTileViewHolder.textView2.setTypeface(Data.latoRegular(context), Typeface.BOLD);
-		infoTileViewHolder.textViewValue.setTypeface(Data.latoRegular(context), Typeface.BOLD);
+		infoTileViewHolder.textView2Value.setTypeface(Data.latoRegular(context));
+		infoTileViewHolder.textView2.setTypeface(Data.latoRegular(context));
+		infoTileViewHolder.textViewValue.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textViewValueSub.setTypeface(Data.latoRegular(context));
 
+		if(itr.getTitle() != null){
+			infoTileViewHolder.textViewHeadText.setText(itr.getTitle());
+		} else {
+			infoTileViewHolder.textViewHeadText.setVisibility(View.GONE);
+		}
+
+		if(itr.getTextValue1() != null){
+			infoTileViewHolder.textView1Value.setText(itr.getTextValue1());
+		} else {
+			infoTileViewHolder.textView1Value.setVisibility(View.GONE);
+		}
+
+		if(itr.getTextView1() != null){
+			infoTileViewHolder.textView1.setText(itr.getTextView1());
+		} else {
+			infoTileViewHolder.textView1.setVisibility(View.GONE);
+		}
+
+		if(itr.getTextValue2() != null){
+			infoTileViewHolder.textView2Value.setText(itr.getTextValue2());
+		} else {
+			infoTileViewHolder.textView2Value.setVisibility(View.GONE);
+		}
+
+		if(itr.getTextView2() != null){
+			infoTileViewHolder.textView2.setText(itr.getTextView2());
+		} else {
+			infoTileViewHolder.textView2.setVisibility(View.GONE);
+		}
+
+		if(itr.getValue() != null){
+			infoTileViewHolder.textViewValue.setText(itr.getValue());
+		} else {
+			infoTileViewHolder.textViewValue.setVisibility(View.GONE);
+		}
+
+		if(itr.getTextViewSub() != null){
+			infoTileViewHolder.textViewValueSub.setText(itr.getTextViewSub());
+		} else {
+			infoTileViewHolder.textViewValueSub.setVisibility(View.GONE);
+		}
 
 		infoTileViewHolder.relative.setTag(i);
 		infoTileViewHolder.relative.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +104,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			public void onClick(View v) {
 //				infoTileResponses.get((int) v.getTag()).completed = 1;
 				notifyDataSetChanged();
-				infoTilesAdapterHandler.okClicked(infoTileResponses.get((int) v.getTag()));
+				infoTilesAdapterHandler.okClicked(infoTileResponses.get((Integer) v.getTag()));
 			}
 		});
 
