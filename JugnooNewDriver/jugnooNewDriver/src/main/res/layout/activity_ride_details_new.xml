@@ -31,6 +31,10 @@
             android:textSize="40px"/>
     </RelativeLayout>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -63,138 +67,148 @@
             android:textColor="@color/red_v2"
             android:textSize="72px"/>
 
-        <RelativeLayout
+        <!--<RelativeLayout-->
+            <!--android:layout_width="540px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10px">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewRideFare"-->
+                <!--android:layout_width="400px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="@string/ride_fare"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/textViewRideFareValue"-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:gravity="center_vertical|right"-->
+                <!--android:text="00000.00"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="540px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10px">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewRateApplied"-->
+                <!--android:layout_width="400px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="@string/rate_applied"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewRateAppliedValue"-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:gravity="center_vertical|right"-->
+                <!--android:text="0"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="540px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10px">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewAcceptSubsidy"-->
+                <!--android:layout_width="400px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="@string/accept_subsidy"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewAcceptSubsidyValue"-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:gravity="center_vertical|right"-->
+                <!--android:text="0"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="540px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10px">-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewCancelSubsidy"-->
+                <!--android:layout_width="400px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="@string/cancel_subsidy"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewCancelSubsidyValue"-->
+                <!--android:layout_width="140px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentRight="true"-->
+                <!--android:gravity="center_vertical|right"-->
+                <!--android:text="0"-->
+                <!--android:textColor="@color/black_text_v2"-->
+                <!--android:textSize="30px"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <!--<RelativeLayout-->
+            <!--android:layout_width="540px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10px">-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/textViewJugnooCut"-->
+            <!--android:layout_width="400px"-->
+            <!--android:layout_height="45px"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@string/jugnoo_cut"-->
+            <!--android:textColor="@color/black_text_v2"-->
+            <!--android:textSize="30px"/>-->
+
+
+            <!--<TextView-->
+            <!--android:id="@+id/textViewJugnooCutValue"-->
+            <!--android:layout_width="140px"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:gravity="center_vertical|right"-->
+            <!--android:text="0"-->
+            <!--android:textColor="@color/black_text_v2"-->
+            <!--android:textSize="30px"/>-->
+
+        <!--</RelativeLayout>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewRideInfo"
             android:layout_width="540px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_gravity="center_horizontal"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"/>
 
-            <TextView
-                android:id="@+id/textViewRideFare"
-                android:layout_width="400px"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/ride_fare"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-            <TextView
-                android:id="@+id/textViewRideFareValue"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
-                android:text="00000.00"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="540px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-                android:id="@+id/textViewRateApplied"
-                android:layout_width="400px"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/rate_applied"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-
-            <TextView
-                android:id="@+id/textViewRateAppliedValue"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="540px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-                android:id="@+id/textViewAcceptSubsidy"
-                android:layout_width="400px"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/accept_subsidy"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-
-            <TextView
-                android:id="@+id/textViewAcceptSubsidyValue"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="540px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-                android:id="@+id/textViewCancelSubsidy"
-                android:layout_width="400px"
-                android:layout_height="45px"
-                android:gravity="center_vertical"
-                android:text="@string/cancel_subsidy"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-
-            <TextView
-                android:id="@+id/textViewCancelSubsidyValue"
-                android:layout_width="140px"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:gravity="center_vertical|right"
-                android:text="0"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="540px"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
-
-            <TextView
-            android:id="@+id/textViewJugnooCut"
-            android:layout_width="400px"
-            android:layout_height="45px"
-            android:gravity="center_vertical"
-            android:text="@string/jugnoo_cut"
-            android:textColor="@color/black"
-            android:textSize="32px"/>
-
-
-            <TextView
-            android:id="@+id/textViewJugnooCutValue"
-            android:layout_width="140px"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center_vertical|right"
-            android:text="0"
-            android:textColor="@color/red_status"
-            android:textSize="32px"/>
-
-        </RelativeLayout>
 
         <ImageView
             android:layout_width="580px"
@@ -214,8 +228,8 @@
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/estimated_payout_lower"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
             <TextView
                 android:id="@+id/textViewActualFareValue"
                 android:layout_width="140px"
@@ -223,8 +237,8 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="00000.00"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
 
         </RelativeLayout>
 
@@ -239,8 +253,8 @@
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/cash_collected"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
             <TextView
                 android:id="@+id/textViewCustomerPaid"
                 android:layout_width="140px"
@@ -248,8 +262,8 @@
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="00000.00"
-                android:textColor="@color/black"
-                android:textSize="32px"/>
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
 
         </RelativeLayout>
 
@@ -347,24 +361,107 @@
         </LinearLayout>
 
         <!-- map layout -->
+
         <RelativeLayout
-            android:id="@+id/mapLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="300px"
+            android:id="@+id/relativeLayoutMapLite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="36px"
-            android:splitMotionEvents="false"
-            android:visibility="visible">
+            android:background="@drawable/background_white_bordered"
+            android:padding="2px">
 
             <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
-
-
+                android:id="@+id/mapLite"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="300px" />
         </RelativeLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px"
+            android:layout_marginBottom="25px"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/rideTimeValue"
+                    android:layout_width="230px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/rideTimeValueText"
+                    android:layout_width="230px"
+                    android:layout_height="38px"
+                    android:layout_below="@+id/rideTimeValue"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/paid_cash"
+                    android:textColor="@color/grey_light_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="64px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/imageViewVertical"
+                android:background="@color/grey_light_v2"/>
+
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/distanceValue"
+                    android:layout_width="230px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/distanceValueText"
+                    android:layout_width="225px"
+                    android:layout_height="38px"
+                    android:layout_below="@+id/distanceValue"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/money_to"
+                    android:textColor="@color/grey_light_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
+
+    </ScrollView>
 
 
 

@@ -64,6 +64,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.squareup.picasso.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -778,6 +779,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
 
+
+			slidingUpPanelLayout.setPanelHeight((int) (70f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
@@ -1633,7 +1636,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				if (infoTileResponse.getDeepIndex() == 1) {
 					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					Gson gson = new Gson();
+					intent.putExtra("extras", gson.toJson(infoTileResponse.getExtras(), InfoTileResponse.Tile.Extras.class));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 2) {

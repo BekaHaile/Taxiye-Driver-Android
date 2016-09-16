@@ -4,16 +4,15 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:layout_marginTop="175px"
-                android:background="@color/grey_light_info_v2">
+                android:background="@color/grey_light_alpha">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewInfo"
-        android:layout_width="700px"
+        android:layout_width="690px"
         android:layout_height="match_parent"
         android:visibility="visible"
         android:layout_gravity="center_horizontal"
         android:scrollbars="vertical"
-        android:fadeScrollbars="true"
-        />
+        android:fadeScrollbars="true"/>
 
 </LinearLayout>
