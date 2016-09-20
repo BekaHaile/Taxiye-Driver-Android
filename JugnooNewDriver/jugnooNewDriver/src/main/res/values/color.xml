@@ -106,6 +106,7 @@
     <color name="grey_light_info_v2">#f0f0f0</color>
     <color name="grey_light_more">#BBBBBB</color>
     <color name="grey_light">#DDDDDD</color>
+    <color name="grey_light_side_menu">#f9fafb</color>
     <color name="grey_light_alpha">#99DDDDDD</color>
     <color name="grey_light_v2">#bcbcbc</color>
     <color name="grey_dark_less">#A3A3A3</color>

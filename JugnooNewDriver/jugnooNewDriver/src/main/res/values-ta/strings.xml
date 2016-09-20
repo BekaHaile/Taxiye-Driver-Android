@@ -718,6 +718,8 @@
     <string name="image_upload_failed">படத்தை பதிவேற்றும் தோல்வி , மீண்டும் முயற்சிக்கவும்</string>
     <string name="estimated_payout_lower">Estimated Payout</string>
     <string name="bank_deposite">Bank Deposite</string>
+    <string name="trips">Trips</string>
+    <string name="home">Home</string>
 
 
     <string-array name="CountryCodes" >

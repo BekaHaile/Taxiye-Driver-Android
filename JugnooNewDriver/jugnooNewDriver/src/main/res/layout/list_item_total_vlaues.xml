@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/linear"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="24px"
+            android:background="@color/grey_light"/>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2px">
+
+            <TextView
+                android:id="@+id/textViewActualFareText"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/estimated_payout_lower"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
+            <TextView
+                android:id="@+id/textViewActualFareValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="00000.00"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewCustomerPaidText"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/cash_collected"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
+            <TextView
+                android:id="@+id/textViewCustomerPaid"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="00000.00"
+                android:textColor="@color/black_text_v2"
+                android:textSize="30px"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="24px"
+            android:background="@color/grey_light"/>
+
+        <RelativeLayout
+            android:layout_width="540px"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10px">
+
+            <TextView
+                android:id="@+id/textViewBankDeposite"
+                android:layout_width="400px"
+                android:layout_height="45px"
+                android:gravity="center_vertical"
+                android:text="@string/bank_deposite"
+                android:textColor="@color/black"
+                android:textSize="36px"/>
+            <TextView
+                android:id="@+id/textViewBankDepositeValue"
+                android:layout_width="140px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="center_vertical|right"
+                android:text="0000.00"
+                android:textColor="@color/black"
+                android:textSize="36px"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="35px"
+            android:background="@color/grey_light"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25px"
+            android:layout_marginBottom="25px"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/onlineTimeValue"
+                    android:layout_width="230px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/NA"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/rideTimeValueText"
+                    android:layout_width="230px"
+                    android:layout_height="38px"
+                    android:layout_below="@+id/onlineTimeValue"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/total_time"
+                    android:textColor="@color/grey_light_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="64px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/imageViewVertical"
+                android:background="@color/grey_light_v2"/>
+
+            <RelativeLayout
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewTripCount"
+                    android:layout_width="230px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/NA"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewTrips"
+                    android:layout_width="225px"
+                    android:layout_height="38px"
+                    android:layout_below="@+id/textViewTripCount"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/trips"
+                    android:textColor="@color/grey_light_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="580px"
+            android:layout_height="2px"
+            android:layout_marginTop="24px"
+            android:layout_marginBottom="35px"
+            android:background="@color/grey_light"/>
+
+        <TextView
+            android:id="@+id/textViewTripsText"
+            android:layout_width="535px"
+            android:layout_height="45px"
+            android:gravity="center_vertical"
+            android:text="@string/trips"
+            android:textColor="@color/black_text_v2"
+            android:textSize="30px"/>
+
+</LinearLayout>

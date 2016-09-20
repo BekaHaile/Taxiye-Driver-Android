@@ -1,55 +1,33 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
 
-import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
+import java.util.ArrayList;
+
+import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
-import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
+import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
-import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
-import product.clicklabs.jugnoo.driver.utils.DateOperations;
-import product.clicklabs.jugnoo.driver.utils.DialogPopup;
-import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
-import product.clicklabs.jugnoo.driver.utils.MapUtils;
-import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -61,14 +39,10 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	Button backBtn;
 	TextView title;
 
-	TextView idValue, dateTimeValue, textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText;
 
-	ImageView imageViewRequestType;
-	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
-			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
-	ArrayList<FareStructureInfo> fareStructureInfos = new ArrayList<>();
-	RecyclerView recyclerViewRideInfo;
-	RideInfoTilesAdapter rideInfoTilesAdapter;
+	ArrayList<DailyEarningItem> dailyEarningItems = new ArrayList<>();
+	RecyclerView recyclerViewDailyInfo;
+	DailyRideDetailsAdapter dailyRideDetailsAdapter;
 
 	public static RideInfo openedRideInfo;
 	public ASSL assl;
@@ -104,7 +78,6 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 			String extra = intent.getStringExtra("extra");
 			InfoTileResponse.Tile.Extras extras = new Gson().fromJson(extra, InfoTileResponse.Tile.Extras.class);
 
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,49 +90,16 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
 
-		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
-		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
-		relativeLayoutCancelSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutCancelSubsidy);
-		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
-
-
-		recyclerViewRideInfo = (RecyclerView) findViewById(R.id.recyclerViewRideInfo);
-		recyclerViewRideInfo.setHasFixedSize(true);
+		recyclerViewDailyInfo = (RecyclerView) findViewById(R.id.recyclerViewDailyInfo);
+		recyclerViewDailyInfo.setHasFixedSize(true);
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
-		recyclerViewRideInfo.setLayoutManager(llm);
-		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewDailyInfo.setLayoutManager(llm);
+		recyclerViewDailyInfo.setItemAnimator(new DefaultItemAnimator());
 
-		fareStructureInfos = new ArrayList<>();
-		rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
-		recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
-
-
-		idValue = (TextView) findViewById(R.id.idValue);
-		idValue.setTypeface(Data.latoRegular(this));
-		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
-		dateTimeValue.setTypeface(Data.latoRegular(this));
-
-
-		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
-		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
-		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
-		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
-
-		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
-
-		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Data.latoRegular(this));
-
-		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Data.latoRegular(this));
-
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-
-		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
+		dailyEarningItems = new ArrayList<>();
+		dailyRideDetailsAdapter = new DailyRideDetailsAdapter(this, dailyEarningItems, this);
+		recyclerViewDailyInfo.setAdapter(dailyRideDetailsAdapter);
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -170,38 +110,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		});
 
 
-		if (openedRideInfo != null) {
-
-			customerInfo = Data.getCustomerInfo("");
-
-			idValue.setText(getResources().getString(R.string.ride_id) + " " + openedRideInfo.id);
-			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-
-
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
-
-			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
-			} else {
-				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
-			}
-
-			imageViewRequestType.setImageResource(R.drawable.request_autos);
-
-		} else {
-			performBackPressed();
-		}
+		dailyEarningItems.add(new DailyEarningItem(null, null, null, null, null, DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
 	}
-
-
 
 	public void performBackPressed() {
 		finish();
@@ -220,6 +131,58 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		super.onDestroy();
 		ASSL.closeActivity(relative);
 		System.gc();
+	}
+
+	private void getRidesAsync(final Activity activity) {
+		try {
+
+			progressBar.setVisibility(View.VISIBLE);
+			RestClient.getApiServices().bookingHistory(Data.userData.accessToken, "1",
+					new Callback<NewBookingHistoryRespose>() {
+						@Override
+						public void success(NewBookingHistoryRespose newBookingHistoryRespose, Response response) {
+							try {
+								if(activity != null) {
+									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									JSONObject jObj;
+									jObj = new JSONObject(jsonString);
+									if (!jObj.isNull("error")) {
+										String errorMessage = jObj.getString("error");
+										if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+											HomeActivity.logoutUser(activity);
+										} else {
+											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+										}
+
+									} else {
+
+									}
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+								try {
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+								} catch (Exception e1) {
+									e1.printStackTrace();
+								}
+							}
+
+						}
+
+
+						@Override
+						public void failure(RetrofitError error) {
+							try {
+								progressBar.setVisibility(View.GONE);
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

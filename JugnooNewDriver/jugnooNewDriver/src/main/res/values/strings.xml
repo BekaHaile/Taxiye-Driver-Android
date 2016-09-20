@@ -689,6 +689,8 @@
 	<string name="deletion_confirmation">Are you sure you want to delete image ?</string>
 	<string name="estimated_payout_lower">Estimated Payout</string>
 	<string name="bank_deposite">Bank Deposite</string>
+	<string name="trips">Trips</string>
+	<string name="home">Home</string>
 
 
 	<string-array name="CountryCodes" >

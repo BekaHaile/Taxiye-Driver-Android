@@ -692,6 +692,8 @@
 	<string name="image_upload_failed">छवि अपलोड विफल रहा है, कृपया पुनः प्रयास करें</string>
 	<string name="estimated_payout_lower">Estimated Payout</string>
 	<string name="bank_deposite">Bank Deposite</string>
+	<string name="trips">Trips</string>
+	<string name="home">Home</string>
 	>>>>>>> develop_new
 
 	<string-array name="CountryCodes" >

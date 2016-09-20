@@ -6,7 +6,7 @@
               android:layout_height="match_parent">
 
     <TextView
-    android:id="@+id/textViewJugnooCut"
+    android:id="@+id/textViewInfoText"
     android:layout_width="400px"
     android:layout_height="45px"
     android:gravity="center_vertical"
@@ -16,7 +16,7 @@
 
 
     <TextView
-    android:id="@+id/textViewJugnooCutValue"
+    android:id="@+id/textViewInfoValue"
     android:layout_width="140px"
     android:layout_height="wrap_content"
     android:layout_alignParentRight="true"

@@ -640,6 +640,8 @@
     <string name="image_upload_failed">ଫଟୋ ଅପ୍-ଲୋଡ୍ ଫେଲ୍, ପୁଣିଥରେ ଚେସ୍ଟା କରନ୍ତୁ</string>
     <string name="estimated_payout_lower">Estimated Payout</string>
     <string name="bank_deposite">Bank Deposite</string>
+    <string name="trips">Trips</string>
+    <string name="home">Home</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

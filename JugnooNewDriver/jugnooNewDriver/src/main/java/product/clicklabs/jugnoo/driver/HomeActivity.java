@@ -2220,27 +2220,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				try {
 					if (Data.userData != null) {
 						if (1 == Data.userData.autosAvailable) {
-							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_on_v2);
 							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_on));
 
 						} else {
-							imageViewAutosOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+							imageViewAutosOnToggle.setImageResource(R.drawable.toggle_off_v2);
 							textViewAutosOn.setText(getResources().getString(R.string.jugnoo_off));
 							relativeLayoutLastRideEarning.setVisibility(View.GONE);
 						}
 
 						if (1 == Data.userData.sharingAvailable) {
-							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+							imageViewSharingOnToggle.setImageResource(R.drawable.toggle_on_v2);
 						} else {
-							imageViewSharingOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+							imageViewSharingOnToggle.setImageResource(R.drawable.toggle_off_v2);
 						}
 
 						if (1 == Data.userData.getDeliveryAvailable()) {
-							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_on_button);
+							imageViewDeliveryOnToggle.setImageResource(R.drawable.toggle_on_v2);
 							textViewDeliveryOn.setText(getResources().getString(R.string.delivery_on));
 
 						} else {
-							imageViewDeliveryOnToggle.setImageResource(R.drawable.jugnoo_off_button);
+							imageViewDeliveryOnToggle.setImageResource(R.drawable.toggle_off_v2);
 							textViewDeliveryOn.setText(getResources().getString(R.string.delivery_off));
 
 						}

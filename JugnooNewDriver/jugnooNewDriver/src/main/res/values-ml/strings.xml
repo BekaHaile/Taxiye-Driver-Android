@@ -635,6 +635,8 @@
     <string name="image_upload_failed">ചിത്രം അപ്‌ലോഡ് ചെയ്യാൻ സാധിച്ചില്ല, ദയവായി ഒരിക്കൽകൂടി ശ്രെമിക്കുക.  </string>
     <string name="estimated_payout_lower">Estimated Payout</string>
     <string name="bank_deposite">Bank Deposite</string>
+    <string name="trips">Trips</string>
+    <string name="home">Home</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
