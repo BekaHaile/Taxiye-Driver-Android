@@ -9,6 +9,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
@@ -377,6 +378,13 @@ public interface APIServices {
 	void earningDetails(@Field("access_token") String accessToken,
 									   @Field("login_type") String loginType,
 									   Callback<EarningsDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/v2/get_driver_earnings")
+	void earningNewDetails(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						   @Field("invoice_id") String invoiceId,
+						Callback<DriverEarningsResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/delivery_details")

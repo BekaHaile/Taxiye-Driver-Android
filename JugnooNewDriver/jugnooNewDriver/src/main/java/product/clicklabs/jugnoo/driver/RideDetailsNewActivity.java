@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
+import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
@@ -80,8 +81,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
 	ArrayList<FareStructureInfo> fareStructureInfos = new ArrayList<>();
-	RecyclerView recyclerViewInfo;
-	InfoTilesAdapter infoTilesAdapter;
+	RecyclerView recyclerViewRideInfo;
+	RideInfoTilesAdapter rideInfoTilesAdapter;
 
 	public static RideInfo openedRideInfo;
 	public ASSL assl;
@@ -164,16 +165,16 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
 
 
-		recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
-		recyclerViewInfo.setHasFixedSize(true);
+		recyclerViewRideInfo = (RecyclerView) findViewById(R.id.recyclerViewRideInfo);
+		recyclerViewRideInfo.setHasFixedSize(true);
 		LinearLayoutManager llm = new LinearLayoutManager(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
-		recyclerViewInfo.setLayoutManager(llm);
-		recyclerViewInfo.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewRideInfo.setLayoutManager(llm);
+		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
 
 		fareStructureInfos = new ArrayList<>();
-//		infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
-		recyclerViewInfo.setAdapter(infoTilesAdapter);
+		rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
+		recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
 
 
 		((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapLite)).getMapAsync(new OnMapReadyCallback() {

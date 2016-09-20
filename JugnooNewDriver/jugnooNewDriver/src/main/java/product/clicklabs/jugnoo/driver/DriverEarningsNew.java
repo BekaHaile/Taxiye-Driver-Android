@@ -33,12 +33,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMarkerView;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -52,9 +55,11 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 	Button backBtn;
 	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
-			textViewDailyValue5, title;
+			textViewDailyValue5, title, textViewPayOutValue;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext;
 	BarChart barChart;
+	Shader textShader;
+	DriverEarningsResponse res;
 
 	@Override
 	protected void onStart() {
@@ -87,13 +92,29 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayoutPayout = (RelativeLayout) findViewById(R.id.relativeLayoutPayout);
 		relativelayoutChart = (RelativeLayout) findViewById(R.id.relativelayoutChart);
 		relativelayoutRandom = (RelativeLayout) findViewById(R.id.relativelayoutRandom);
+		relativeLayout1 = (RelativeLayout) findViewById(R.id.relativeLayout1);
+		relativeLayout2 = (RelativeLayout) findViewById(R.id.relativeLayout2);
+		relativeLayout3 = (RelativeLayout) findViewById(R.id.relativeLayout3);
+		relativeLayout4 = (RelativeLayout) findViewById(R.id.relativeLayout4);
+		relativeLayout5 = (RelativeLayout) findViewById(R.id.relativeLayout5);
+		relativeLayoutRideHistory = (RelativeLayout) findViewById(R.id.relativeLayoutRideHistory);
 
+		relativeLayout1.setVisibility(View.GONE);
+		relativeLayout2.setVisibility(View.GONE);
+		relativeLayout3.setVisibility(View.GONE);
+		relativeLayout4.setVisibility(View.GONE);
+		relativeLayout5.setVisibility(View.GONE);
+
+		imageViewPrev = (ImageView) findViewById(R.id.imageViewPrev);
+		imageViewNext = (ImageView) findViewById(R.id.imageViewNext);
 		textViewEstPayout = (TextView) findViewById(R.id.textViewEstPayout);
 		textViewEstPayout.setTypeface(Fonts.mavenRegular(this));
 		textViewThisWeek = (TextView) findViewById(R.id.textViewThisWeek);
 		textViewThisWeek.setTypeface(Fonts.mavenRegular(this));
 		textViewInvPeriod = (TextView) findViewById(R.id.textViewInvPeriod);
 		textViewInvPeriod.setTypeface(Fonts.mavenRegular(this));
+		textViewPayOutValue = (TextView) findViewById(R.id.textViewPayOutValue);
+		textViewPayOutValue.setTypeface(Fonts.mavenRegular(this));
 
 
 		textViewDayDateVal1 = (TextView) findViewById(R.id.textViewDayDateVal1);
@@ -119,23 +140,12 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 
 
-//		((TextView) findViewById(R.id.textViewBeforeRide)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewPickupCharges)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewBaseFare)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewDistancePKm)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewTimePKm)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewPKm)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewPm)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewInRide)).setTypeface(Fonts.mavenRegular(this));
-//		((TextView) findViewById(R.id.textViewReferral)).setTypeface(Fonts.mavenRegular(this));
-
-
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
-		Shader textShader=new LinearGradient(0, 0, 0, 20,
+		textShader=new LinearGradient(0, 0, 0, 20,
 				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 				new float[]{0, 1}, Shader.TileMode.CLAMP);
 		title.getPaint().setShader(textShader);
@@ -147,45 +157,58 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			}
 		});
 
+		imageViewPrev.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getEarningsDetails(DriverEarningsNew.this, 1);
+			}
+		});
+
+		imageViewNext.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getEarningsDetails(DriverEarningsNew.this, 2);
+			}
+		});
 		// HorizontalBarChart barChart= (HorizontalBarChart) findViewById(R.id.chart);
 
-		ArrayList<BarEntry> entries = new ArrayList<>();
-		entries.add(new BarEntry(100f, 0));
-		entries.add(new BarEntry(200f, 1));
-		entries.add(new BarEntry(400f, 2));
-		entries.add(new BarEntry(360f, 3));
-
-		BarDataSet dataset = new BarDataSet(entries, "");
-
-		ArrayList<String> labels = new ArrayList<String>();
-		labels.add("MON");
-		labels.add("TUE");
-		labels.add("WED");
-		labels.add("THU");
-
-
-		BarData data = new BarData(labels, dataset);
-		dataset.setColor(getResources().getColor(R.color.white_grey_v2));
-		dataset.setHighLightColor(R.drawable.orange_gradient);
+//		ArrayList<BarEntry> entries = new ArrayList<>();
+//		entries.add(new BarEntry(100f, 0));
+//		entries.add(new BarEntry(200f, 1));
+//		entries.add(new BarEntry(400f, 2));
+//		entries.add(new BarEntry(360f, 3));
+//
+//		BarDataSet dataset = new BarDataSet(entries, "");
+//
+//		ArrayList<String> labels = new ArrayList<String>();
+//		labels.add("MON");
+//		labels.add("TUE");
+//		labels.add("WED");
+//		labels.add("THU");
+//
+//
+//		BarData data = new BarData(labels, dataset);
+//		dataset.setColor(getResources().getColor(R.color.white_grey_v2));
+//		dataset.setHighLightColor(R.drawable.orange_gradient);
 //		dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-
-		barChart.setData(data);
-		barChart.setNoDataTextDescription("");
-		dataset.setBarSpacePercent(20);
-		barChart.animateY(500);
-
-		barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
-
-		XAxis xAxis = barChart.getXAxis();
-		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-		xAxis.setTextSize(15);
-		xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
-		YAxis yAxis = barChart.getAxisRight();
-		yAxis.setDrawAxisLine(false);
-		yAxis.setDrawLabels(false);
-
-		barChart.getAxisLeft().setTextSize(12);
-		barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
+//
+//		barChart.setData(data);
+//		barChart.setNoDataTextDescription("");
+//		dataset.setBarSpacePercent(20);
+//		barChart.animateY(500);
+//
+//		barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
+//
+//		XAxis xAxis = barChart.getXAxis();
+//		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//		xAxis.setTextSize(15);
+//		xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
+//		YAxis yAxis = barChart.getAxisRight();
+//		yAxis.setDrawAxisLine(false);
+//		yAxis.setDrawLabels(false);
+//
+//		barChart.getAxisLeft().setTextSize(12);
+//		barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
 
 
 		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
@@ -199,16 +222,16 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 			}
 		});
-		barChart.setDrawMarkerViews(true);
-		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
-		barChart.setMarkerView(mv);
-		barChart.setPinchZoom(false);
-		barChart.setDescription("");
-		barChart.setDoubleTapToZoomEnabled(false);
+//		barChart.setDrawMarkerViews(true);
+//		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
+//		barChart.setMarkerView(mv);
+//		barChart.setPinchZoom(false);
+//		barChart.setDescription("");
+//		barChart.setDoubleTapToZoomEnabled(false);
 //		barChart.setDrawValueAboveBar(false);
-		barChart.setDrawGridBackground(false);
-		barChart.setExtraTopOffset(40);
-		dataset.setDrawValues(false);
+//		barChart.setDrawGridBackground(false);
+//		barChart.setExtraTopOffset(40);
+//		dataset.setDrawValues(false);
 
 
 		relativelayoutRandom.setOnClickListener(new View.OnClickListener() {
@@ -219,7 +242,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		});
 
 
-//		getRateCardDetails(this);
+		getEarningsDetails(this, 0);
 	}
 
 	public void performBackPressed() {
@@ -245,22 +268,121 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 //	Retrofit
 
 
-	public void updateData(RateCardResponse rateCardResponse) {
+	public void updateData(DriverEarningsResponse driverEarningsResponse) {
 
-		if (rateCardResponse != null) {
+		if (driverEarningsResponse != null) {
 
-			double dToCReferral = rateCardResponse.getRates().getDriverToCustomerReferral();
-			double dToDReferral = rateCardResponse.getRates().getDriverToDriverReferral();
-
-			if(dToCReferral == 0 && dToDReferral ==0){
-				linearLayoutDriverReferral.setVisibility(View.GONE);
-			} else if(dToCReferral > 0 && dToDReferral ==0){
-				linearLayoutDriverReferral.setVisibility(View.GONE);
-			} else if(dToCReferral == 0 && dToDReferral >0){
-				linearLayoutDriverReferral.setVisibility(View.GONE);
-			} else if(dToCReferral > 0 && dToDReferral > 0){
-				linearLayoutDriverReferral.setVisibility(View.VISIBLE);
+			if(driverEarningsResponse.getCurrentInvoiceId() == 0){
+				relativeLayoutPayout.setVisibility(View.VISIBLE);
+				textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
+			} else {
+				relativeLayoutPayout.setVisibility(View.GONE);
 			}
+
+			if(driverEarningsResponse.getNextInvoiceId() != null){
+				imageViewNext.setVisibility(View.VISIBLE);
+			} else {
+				imageViewNext.setVisibility(View.GONE);
+			}
+
+			if(driverEarningsResponse.getPreviousInvoiceId() != null){
+				imageViewPrev.setVisibility(View.VISIBLE);
+			} else {
+				imageViewPrev.setVisibility(View.GONE);
+			}
+
+			if(driverEarningsResponse.getCurrentInvoiceId() == 0){
+				textViewInvPeriod.setText(getResources().getString(R.string.this_week));
+			} else {
+				textViewInvPeriod.setText(driverEarningsResponse.getPeriod());
+			}
+
+			if(driverEarningsResponse.getEarnings().size() >=1){
+				relativeLayout1.setVisibility(View.VISIBLE);
+				textViewDayDateVal1.setText(driverEarningsResponse.getEarnings().get(0).getDay()
+						+", "+DateOperations.convertMonthDayViaFormat(driverEarningsResponse.getEarnings().get(0).getDate()));
+				textViewDailyValue1.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
+			} else {
+				relativeLayout1.setVisibility(View.GONE);
+			}
+			if(driverEarningsResponse.getEarnings().size() >=2){
+				relativeLayout2.setVisibility(View.VISIBLE);
+				textViewDayDateVal2.setText(driverEarningsResponse.getEarnings().get(1).getDay()
+						+ ", " + DateOperations.convertMonthDayViaFormat(driverEarningsResponse.getEarnings().get(1).getDate()));
+				textViewDailyValue2.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(1).getEarnings());
+			} else {
+				relativeLayout2.setVisibility(View.GONE);
+			}
+			if(driverEarningsResponse.getEarnings().size() >=3){
+				relativeLayout3.setVisibility(View.VISIBLE);
+				textViewDayDateVal3.setText(driverEarningsResponse.getEarnings().get(2).getDay()+", "
+						+ DateOperations.convertMonthDayViaFormat(driverEarningsResponse.getEarnings().get(2).getDate()));
+				textViewDailyValue3.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(2).getEarnings());
+			} else {
+				relativeLayout3.setVisibility(View.GONE);
+			}
+			if(driverEarningsResponse.getEarnings().size() >=4){
+				relativeLayout4.setVisibility(View.VISIBLE);
+				textViewDayDateVal4.setText(driverEarningsResponse.getEarnings().get(3).getDay()
+						+", "+DateOperations.convertMonthDayViaFormat(driverEarningsResponse.getEarnings().get(3).getDate()));
+				textViewDailyValue4.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(3).getEarnings());
+			} else {
+				relativeLayout4.setVisibility(View.GONE);
+			}
+			if(driverEarningsResponse.getEarnings().size() >=5){
+				relativeLayout5.setVisibility(View.VISIBLE);
+				textViewDayDateVal5.setText(driverEarningsResponse.getEarnings().get(4).getDay()
+						+", "+DateOperations.convertMonthDayViaFormat(driverEarningsResponse.getEarnings().get(4).getDate()));
+				textViewDailyValue5.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(4).getEarnings());
+			} else {
+				relativeLayout5.setVisibility(View.GONE);
+			}
+
+
+
+			ArrayList<BarEntry> entries = new ArrayList<>();
+			ArrayList<String> labels = new ArrayList<String>();
+
+			for(int i=0; i < driverEarningsResponse.getEarnings().size(); i++){
+				entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i).getEarnings(), i));
+				labels.add(driverEarningsResponse.getEarnings().get(i).getDay());
+			}
+
+			BarDataSet dataset = new BarDataSet(entries, "");
+			BarData data = new BarData(labels, dataset);
+			dataset.setColor(getResources().getColor(R.color.white_grey_v2));
+			dataset.setHighLightColor(getResources().getColor(R.color.red_v2));
+//			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
+
+			barChart.setData(data);
+			barChart.setNoDataTextDescription("");
+			dataset.setBarSpacePercent(20);
+			barChart.animateY(500);
+
+			barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+			XAxis xAxis = barChart.getXAxis();
+			xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+			xAxis.setTextSize(15);
+			xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
+			YAxis yAxis = barChart.getAxisRight();
+			yAxis.setDrawAxisLine(false);
+			yAxis.setDrawLabels(false);
+
+			barChart.getAxisLeft().setTextSize(12);
+			barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
+
+			barChart.setDrawMarkerViews(true);
+			CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
+			barChart.setMarkerView(mv);
+			barChart.setPinchZoom(false);
+			barChart.setDescription("");
+			barChart.setDoubleTapToZoomEnabled(false);
+			barChart.setDrawGridBackground(false);
+			barChart.setExtraTopOffset(40f);
+			barChart.setExtraRightOffset(20f);
+			dataset.setDrawValues(false);
+
 
 
 		} else {
@@ -269,11 +391,21 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 	}
 
-	private void getRateCardDetails(final Activity activity) {
+	private void getEarningsDetails(final Activity activity, int invoice) {
 		try {
-			RestClient.getApiServices().rateCardDetail(Data.userData.accessToken, new Callback<RateCardResponse>() {
+			String invoiceId = "0";
+			if(invoice == 0){
+				invoiceId = "0";
+			} else if(invoice == 1 && res != null){
+				invoiceId = String.valueOf(res.getPreviousInvoiceId());
+			}else if(invoice == 2 && res != null) {
+				invoiceId = String.valueOf(res.getNextInvoiceId());
+			}
+
+
+			RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, new Callback<DriverEarningsResponse>() {
 				@Override
-				public void success(RateCardResponse rateCardResponse, Response response) {
+				public void success(DriverEarningsResponse driverEarningsResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 						JSONObject jObj;
@@ -284,12 +416,14 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
-							updateData(rateCardResponse);
+							res = driverEarningsResponse;
+							updateData(driverEarningsResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
 					}
 				}
+
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));

@@ -35,7 +35,7 @@ public class CustomMarkerView extends MarkerView {
 	// content (user-interface)
 	@Override
 	public void refreshContent(Entry e, Highlight highlight) {
-		tvContent.setText("" + e.getVal()); // set the entry-value as the display text
+		tvContent.setText(getResources().getString(R.string.rupee)+ e.getVal()); // set the entry-value as the display text
 	}
 
 	@Override

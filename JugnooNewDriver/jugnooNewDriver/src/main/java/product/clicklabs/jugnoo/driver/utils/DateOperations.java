@@ -368,4 +368,16 @@ public class DateOperations {
 			return convertDate(dateTime);
 		}
 	}
+
+	public static String convertMonthDayViaFormat(String date) {
+		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd");
+		try {
+			Date myDate = sdfFrom.parse(date);
+			return sdfTo.format(myDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return convertDate(date);
+		}
+	}
 }

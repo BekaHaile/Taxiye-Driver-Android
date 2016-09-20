@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="150px"
+                android:layout_width="120px"
                 android:layout_height="32dp"
-                android:background="@drawable/background_grey_rounded_grey_bordered">
+                android:background="@drawable/background_white_rounded_bordered_new">
 
 
         <TextView
@@ -13,19 +13,19 @@
             android:layout_centerVertical="true"
             android:text="100"
             android:textSize="12dp"
-            android:textColor="@android:color/white"
+            android:textColor="@color/red_v2"
             android:ellipsize="end"
             android:singleLine="true"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <ImageView
             android:id="@+id/arrow"
-            android:layout_width="24px"
-            android:layout_height="24px"
+            android:layout_width="15px"
+            android:layout_height="9px"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="12px"
-            android:src="@drawable/arrow_icon_normal"/>
+            android:src="@drawable/red_arrow_v2"/>
 
 
 </RelativeLayout>
