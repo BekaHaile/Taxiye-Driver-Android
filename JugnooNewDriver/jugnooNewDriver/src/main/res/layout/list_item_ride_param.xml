@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/linearLayoutRideItem"
               android:orientation="horizontal"
+              android:layout_gravity="center_horizontal"
               android:layout_width="540px"
               android:layout_height="match_parent">
 

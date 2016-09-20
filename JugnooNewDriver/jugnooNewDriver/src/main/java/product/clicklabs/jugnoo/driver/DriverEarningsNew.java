@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -57,7 +58,9 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
 			textViewDailyValue5, title, textViewPayOutValue;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext;
+	ASSL assl;
 	BarChart barChart;
+	int index = 0;
 	Shader textShader;
 	DriverEarningsResponse res;
 
@@ -84,7 +87,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_earnings);
 		relative = (RelativeLayout) findViewById(R.id.relative);
-		new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
+		assl = new ASSL(DriverEarningsNew.this, relative, 1134, 720, false);
 
 		barChart = (BarChart) findViewById(R.id.chart);
 
@@ -170,51 +173,13 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 				getEarningsDetails(DriverEarningsNew.this, 2);
 			}
 		});
-		// HorizontalBarChart barChart= (HorizontalBarChart) findViewById(R.id.chart);
-
-//		ArrayList<BarEntry> entries = new ArrayList<>();
-//		entries.add(new BarEntry(100f, 0));
-//		entries.add(new BarEntry(200f, 1));
-//		entries.add(new BarEntry(400f, 2));
-//		entries.add(new BarEntry(360f, 3));
-//
-//		BarDataSet dataset = new BarDataSet(entries, "");
-//
-//		ArrayList<String> labels = new ArrayList<String>();
-//		labels.add("MON");
-//		labels.add("TUE");
-//		labels.add("WED");
-//		labels.add("THU");
-//
-//
-//		BarData data = new BarData(labels, dataset);
-//		dataset.setColor(getResources().getColor(R.color.white_grey_v2));
-//		dataset.setHighLightColor(R.drawable.orange_gradient);
-//		dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-//
-//		barChart.setData(data);
-//		barChart.setNoDataTextDescription("");
-//		dataset.setBarSpacePercent(20);
-//		barChart.animateY(500);
-//
-//		barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
-//
-//		XAxis xAxis = barChart.getXAxis();
-//		xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-//		xAxis.setTextSize(15);
-//		xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
-//		YAxis yAxis = barChart.getAxisRight();
-//		yAxis.setDrawAxisLine(false);
-//		yAxis.setDrawLabels(false);
-//
-//		barChart.getAxisLeft().setTextSize(12);
-//		barChart.getAxisLeft().setTextColor(getResources().getColor(R.color.white_grey_v2));
 
 
 		barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 				Log.e("barchart", String.valueOf(e) + "ds:" + dataSetIndex + "h:" + h);
+				index = e.getXIndex();
 			}
 
 			@Override
@@ -222,22 +187,55 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 			}
 		});
-//		barChart.setDrawMarkerViews(true);
-//		CustomMarkerView mv = new CustomMarkerView(this, R.layout.graph_marker, this);
-//		barChart.setMarkerView(mv);
-//		barChart.setPinchZoom(false);
-//		barChart.setDescription("");
-//		barChart.setDoubleTapToZoomEnabled(false);
-//		barChart.setDrawValueAboveBar(false);
-//		barChart.setDrawGridBackground(false);
-//		barChart.setExtraTopOffset(40);
-//		dataset.setDrawValues(false);
 
 
 		relativelayoutRandom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(DriverEarningsNew.this, "hello", Toast.LENGTH_LONG).show();
+				if(index >= 0 && index < 5) {
+					getDailyDetails(res.getEarnings().get(index).getDate());
+				}
+			}
+		});
+
+		relativeLayout1.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getDailyDetails(res.getEarnings().get(0).getDate());
+
+			}
+		});
+
+		relativeLayout2.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getDailyDetails(res.getEarnings().get(1).getDate());
+
+			}
+		});
+
+		relativeLayout3.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getDailyDetails(res.getEarnings().get(2).getDate());
+
+			}
+		});
+
+
+		relativeLayout4.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getDailyDetails(res.getEarnings().get(3).getDate());
+
+			}
+		});
+
+		relativeLayout5.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getDailyDetails(res.getEarnings().get(4).getDate());
+
 			}
 		});
 
@@ -262,6 +260,14 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		super.onDestroy();
 		ASSL.closeActivity(relative);
 		System.gc();
+	}
+
+	public void getDailyDetails(String date){
+		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
+		intent.putExtra("date", date);
+		startActivity(intent);
+		finish();
+		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
 
@@ -352,6 +358,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			BarData data = new BarData(labels, dataset);
 			dataset.setColor(getResources().getColor(R.color.white_grey_v2));
 			dataset.setHighLightColor(getResources().getColor(R.color.red_v2));
+			dataset.setHighLightAlpha(255);
 //			dataset.setColors(ColorTemplate.COLORFUL_COLORS);
 
 			barChart.setData(data);
@@ -450,10 +457,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 		// set up layout parameters so our marker is in the same position as the mpchart marker would be (based no the x and y)
 		RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) relativelayoutRandom.getLayoutParams();
-		lps.height = 40;
-		lps.width = 70;
-		lps.leftMargin = x - (relativelayoutRandom.getMeasuredWidth() / 2) + 50;
-		lps.topMargin = y - relativelayoutRandom.getMeasuredHeight()+ 135;
+		lps.height = (int) (55f * ASSL.Yscale());
+		lps.width = (int) (150f * ASSL.Xscale());
+		lps.leftMargin = (x) - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (75f * ASSL.Xscale());
+		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (135f * ASSL.Yscale());
 		relativelayoutRandom.setLayoutParams(lps);
 	}
 

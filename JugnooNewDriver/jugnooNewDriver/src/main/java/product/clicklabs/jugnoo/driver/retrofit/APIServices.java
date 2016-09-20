@@ -5,6 +5,7 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
@@ -55,6 +56,12 @@ public interface APIServices {
 	@POST("/share_ride_history")
 	void getSharedRidesAsync(@Field("access_token") String accessToken,
 							 Callback<SharedRideResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/v2/booking_history")
+	void getDailyRidesAsync(@Field("engagement_date") String date,
+							@Field("access_token") String accessToken,
+							 Callback<DailyEarningResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")

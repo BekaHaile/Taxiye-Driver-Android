@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
+import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 
@@ -25,6 +26,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     private ArrayList<DailyEarningItem> items;
     private Callback callback;
     protected String editTextStr = "";
+    DailyEarningResponse dailyEarningResponse;
 
     public DailyRideDetailsAdapter(DailyRideDetailsActivity activity, ArrayList<DailyEarningItem> items, Callback callback) {
         this.activity = activity;
@@ -32,7 +34,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.callback = callback;
     }
 
-    public void setList(ArrayList<DailyEarningItem> slots){
+    public void setList(ArrayList<DailyEarningItem> slots, DailyEarningResponse dailyEarningResponse){
+        this.dailyEarningResponse = dailyEarningResponse;
         this.items = slots;
         notifyDataSetChanged();
     }
@@ -78,15 +81,14 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             if(holder instanceof ViewHolderRide){
 
 				((ViewHolderRide)holder).textViewInfoText.setText(item.getTime());
-				((ViewHolderRide)holder).textViewInfoValue.setText(item.getEarning());
+				((ViewHolderRide)holder).textViewInfoValue.setText(""+item.getEarning());
 				((ViewHolderRide)holder).linear.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 
 						try {
 							int pos = (int) v.getTag();
-							//pos = pos - 2;
-							callback.onSlotSelected(pos, items.get(pos).getExtras());
+							callback.onRideClick(pos, items.get(pos).getExtras());
 							notifyDataSetChanged();
 
 						} catch (Exception e) {
@@ -98,22 +100,24 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             } else if(holder instanceof ViewHolderHeader) {
 
-
-                ((ViewHolderHeader)holder).textViewActualFareValue.setText("");
-				((ViewHolderHeader) holder).textViewCustomerPaid.setText("");
-				((ViewHolderHeader)holder).onlineTimeValue.setText("");
-				((ViewHolderHeader) holder).textViewBankDepositeValue.setText("");
-				((ViewHolderHeader) holder).textViewTripCount.setText("");
+				if(dailyEarningResponse != null) {
+					((ViewHolderHeader) holder).textViewActualFareValue.setText(""+dailyEarningResponse.getEarnings());
+					((ViewHolderHeader) holder).textViewCustomerPaid.setText(""+dailyEarningResponse.getPaidByCustomer());
+					((ViewHolderHeader) holder).onlineTimeValue.setText(""+dailyEarningResponse.getTimeOnline());
+					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(""+dailyEarningResponse.getAccount());
+					((ViewHolderHeader) holder).textViewTripCount.setText(""+dailyEarningResponse.getTotalTrips());
+				}
 
             } else if(holder instanceof ViewHolderTotalAmount) {
-
-                ((ViewHolderTotalAmount)holder).dateTimeValue.setText("");
-				((ViewHolderTotalAmount)holder).textViewEarningsValue.setText("");
+				if(dailyEarningResponse != null) {
+					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + dailyEarningResponse.getDate());
+					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText("" + dailyEarningResponse.getEarnings());
+				}
 
 			} else if(holder instanceof ViewHolderRideParam){
-                final Slot slot = items.get(position);
-                ((ViewHolderRideParam)holder).textViewInfoText.setText("");
-                ((ViewHolderRideParam)holder).textViewInfoValue.setText("");
+                final DailyEarningItem param = items.get(position);
+                ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
+                ((ViewHolderRideParam)holder).textViewInfoValue.setText(""+param.getValue());
 
             }
         } catch (Exception e) {
@@ -213,15 +217,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
     }
 
-    static class ViewHolderSlotDiv extends RecyclerView.ViewHolder {
-        public ViewHolderSlotDiv(View itemView, Context context) {
-            super(itemView);
-        }
-    }
-
     public interface Callback{
-        void onSlotSelected(int position, );
-        void onAddressClick();
+        void onRideClick(int position, Object extras);
     }
 
     public enum ViewType {

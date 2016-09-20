@@ -174,7 +174,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	ImageView profileImg, seprator;
 	TextView userName, ratingValue, textViewAutosOn;
-	LinearLayout linearLayoutDEI, driverImageRL, linearLayout_DEI;
+	LinearLayout linearLayoutDEI, linearLayout_DEI;
+	RelativeLayout driverImageRL;
 
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
@@ -483,7 +484,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			((TextView) findViewById(R.id.textViewSharingRides)).setTypeface(Data.latoRegular(this));
 
 			fareDetailsRl = (RelativeLayout) findViewById(R.id.fareDetailsRl);
-			driverImageRL = (LinearLayout) findViewById(R.id.driverImageRL);
+			driverImageRL = (RelativeLayout) findViewById(R.id.driverImageRL);
 			fareDetailsText = (TextView) findViewById(R.id.fareDetailsText);
 			fareDetailsText.setTypeface(Data.latoRegular(getApplicationContext()));
 

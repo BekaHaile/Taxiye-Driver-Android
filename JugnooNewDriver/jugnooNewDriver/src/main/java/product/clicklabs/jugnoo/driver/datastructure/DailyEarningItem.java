@@ -8,14 +8,14 @@ import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
 public class DailyEarningItem {
 
 	private String text;
-	private String value;
+	private double value;
 	private String time;
-	private String earning;
+	private double earning;
 	private Object extras;
 
 	private DailyRideDetailsAdapter.ViewType viewType;
 
-	public DailyEarningItem(String text, String value, String time, String earning, Object extras, DailyRideDetailsAdapter.ViewType viewType) {
+	public DailyEarningItem(String text, double value, String time, double earning, Object extras, DailyRideDetailsAdapter.ViewType viewType) {
 		this.text = text;
 		this.value = value;
 		this.time = time;
@@ -32,11 +32,11 @@ public class DailyEarningItem {
 		this.text = text;
 	}
 
-	public String getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 
@@ -48,11 +48,11 @@ public class DailyEarningItem {
 		this.time = time;
 	}
 
-	public String getEarning() {
+	public double getEarning() {
 		return earning;
 	}
 
-	public void setEarning(String earning) {
+	public void setEarning(double earning) {
 		this.earning = earning;
 	}
 
