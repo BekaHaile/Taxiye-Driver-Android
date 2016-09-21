@@ -2,10 +2,11 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,15 +32,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
@@ -49,11 +45,11 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
-import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -69,29 +65,26 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 	Button backBtn;
 	TextView title;
 
-	TextView idValue, dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
-			textViewRideFareValue, textViewConvayenceChargeValue, textViewLuggageChargeValue,
-			textViewRateApplied, textViewRateAppliedValue,
-			textViewAcceptSubsidyValue, textViewCancelSubsidyValue, textViewJugnooCutValue,
+	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
-			textViewFromValue, textViewToValue;
+			textViewFromValue, textViewToValue, textViewActualFareValue;
 
 	ImageView imageViewRequestType;
-	public static final int MAP_PATH_COLOR = Color.TRANSPARENT;
+	public static final int MAP_PATH_COLOR = Color.RED;
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
-			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut;
+			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut, relativeWaitingTime;
 	ArrayList<FareStructureInfo> fareStructureInfos = new ArrayList<>();
 	RecyclerView recyclerViewRideInfo;
 	RideInfoTilesAdapter rideInfoTilesAdapter;
 
 	public static RideInfo openedRideInfo;
 	public ASSL assl;
-
+	Shader textShader;
 	GoogleMap mapLite;
 	private GoogleApiClient mGoogleApiClient;
-	private LatLng pickupLatLng;
+	private LatLng pickupLatLng, dropLatLng;
 	private SearchResult searchResultGlobal;
-
+	InfoTileResponse.Tile.Extras extras;
 	CustomerInfo customerInfo;
 
 
@@ -121,26 +114,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 
 		try {
 			Intent intent = getIntent();
-			String extra = intent.getStringExtra("extra");
-			InfoTileResponse.Tile.Extras extras = new Gson().fromJson(extra, InfoTileResponse.Tile.Extras.class);
+			String extra = intent.getStringExtra("extras");
+			extras = new Gson().fromJson(extra, InfoTileResponse.Tile.Extras.class);
 
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-
-		try {
-			double latitude = getIntent().getDoubleExtra(Constants.KEY_LATITUDE, 0);
-			double longitude = getIntent().getDoubleExtra(Constants.KEY_LONGITUDE, 0);
-			pickupLatLng = new LatLng(latitude, longitude);
-		} catch (Exception e) {
-			e.printStackTrace();
-			try {
-//				pickupLatLng = Data.autoData.getPickupLatLng();
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
 		}
 
 		mGoogleApiClient = new GoogleApiClient
@@ -158,19 +137,25 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
-
+		textShader=new LinearGradient(0, 0, 0, 20,
+				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+				new float[]{0, 1}, Shader.TileMode.CLAMP);
+		title.getPaint().setShader(textShader);
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
 		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
 		relativeLayoutCancelSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutCancelSubsidy);
 		relativeLayoutJugnooCut = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooCut);
-
+		relativeWaitingTime = (RelativeLayout) findViewById(R.id.relativeWaitingTime);
 
 		recyclerViewRideInfo = (RecyclerView) findViewById(R.id.recyclerViewRideInfo);
 		recyclerViewRideInfo.setHasFixedSize(true);
-		LinearLayoutManager llm = new LinearLayoutManager(this);
+		LinearLayoutManagerForResizableRecyclerView llm = new LinearLayoutManagerForResizableRecyclerView(this);
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
+
+		int viewHeight = (int)(55f * ASSL.Yscale()) * extras.getRideParam().size();
+		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
 		fareStructureInfos = new ArrayList<>();
 		rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
@@ -185,7 +170,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 					mapLite.getUiSettings().setAllGesturesEnabled(false);
 					mapLite.getUiSettings().setZoomGesturesEnabled(false);
 					mapLite.getUiSettings().setZoomControlsEnabled(false);
-					mapLite.setMyLocationEnabled(true);
+					mapLite.setMyLocationEnabled(false);
 					mapLite.getUiSettings().setTiltGesturesEnabled(false);
 					mapLite.getUiSettings().setMyLocationButtonEnabled(false);
 					mapLite.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -202,8 +187,6 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		});
 
 
-		idValue = (TextView) findViewById(R.id.idValue);
-		idValue.setTypeface(Data.latoRegular(this));
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
 		dateTimeValue.setTypeface(Data.latoRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
@@ -212,24 +195,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		rideTimeValue.setTypeface(Data.latoRegular(this));
 		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
 		waitTimeValue.setTypeface(Data.latoRegular(this));
-
-		textViewRideFareValue = (TextView) findViewById(R.id.textViewRideFareValue);
-		textViewRideFareValue.setTypeface(Data.latoRegular(this));
-		textViewConvayenceChargeValue = (TextView) findViewById(R.id.textViewConvayenceChargeValue);
-		textViewConvayenceChargeValue.setTypeface(Data.latoRegular(this));
-		textViewLuggageChargeValue = (TextView) findViewById(R.id.textViewLuggageChargeValue);
-		textViewLuggageChargeValue.setTypeface(Data.latoRegular(this));
-		textViewRateApplied = (TextView) findViewById(R.id.textViewRateApplied);
-		textViewRateApplied.setTypeface(Data.latoRegular(this));
-
-		textViewRateAppliedValue = (TextView) findViewById(R.id.textViewRateAppliedValue);
-		textViewRateAppliedValue.setTypeface(Data.latoRegular(this));
-		textViewAcceptSubsidyValue = (TextView) findViewById(R.id.textViewAcceptSubsidyValue);
-		textViewAcceptSubsidyValue.setTypeface(Data.latoRegular(this));
-		textViewCancelSubsidyValue = (TextView) findViewById(R.id.textViewCancelSubsidyValue);
-		textViewCancelSubsidyValue.setTypeface(Data.latoRegular(this));
-		textViewJugnooCutValue = (TextView) findViewById(R.id.textViewJugnooCutValue);
-		textViewJugnooCutValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewActualFareValue = (TextView) findViewById(R.id.textViewActualFareValue);
+		textViewActualFareValue.setTypeface(Data.latoRegular(this));
 
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
@@ -249,23 +216,10 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 
 		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFare)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRideFareRupee)).setTypeface(Data.latoRegular(this));
-
-		((TextView) findViewById(R.id.textViewConvayenceCharge)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewConvayenceChargeRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewLuggageCharge)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewLuggageChargeRupee)).setTypeface(Data.latoRegular(this));
-
-		((TextView) findViewById(R.id.textViewJugnooCut)).setTypeface(Data.latoRegular(this));
-//		((TextView) findViewById(R.id.textViewJugnooCutRupee)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCancelSubsidy)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCancelSubsidyRupee)).setTypeface(Data.latoRegular(this));
 
 		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
 		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewRateAppliedRupee)).setTypeface(Data.latoRegular(this));
-
+		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Data.latoRegular(this));
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
 
@@ -278,97 +232,61 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		});
 
 
-		if (openedRideInfo != null) {
+		if (extras != null) {
 
-			customerInfo = Data.getCustomerInfo("");
+			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(extras.getDate())));
 
-			idValue.setText(getResources().getString(R.string.ride_id) + " " + openedRideInfo.id);
-			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(openedRideInfo.dateTime)));
-
-			distanceValue.setText(getResources().getString(R.string.distance) + ": "
-					+ Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.distance))
+			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
 					+ " " + getResources().getString(R.string.km));
 
-			rideTimeValue.setText(getResources().getString(R.string.total_time) + ": "
-					+ openedRideInfo.rideTime + " " + getResources().getString(R.string.min));
+			rideTimeValue.setText(extras.getRideTime() + " " + getResources().getString(R.string.min));
 
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.waitTime), 0) == 0) {
-				waitTimeValue.setVisibility(View.GONE);
+			if (extras.getWaitTime() == 0) {
+				relativeWaitingTime.setVisibility(View.GONE);
 			} else {
-				waitTimeValue.setVisibility(View.VISIBLE);
-				waitTimeValue.setText(getResources().getString(R.string.wait) + ": "
-						+ openedRideInfo.waitTime + " " + getResources().getString(R.string.min));
+				relativeWaitingTime.setVisibility(View.VISIBLE);
+				waitTimeValue.setText( extras.getWaitTime() + " " + getResources().getString(R.string.min));
 			}
 
-			textViewRideFareValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.driverRideFair)));
 
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.convenienceCharges), 0) == 0) {
-				relativeLayoutConvenienceCharges.setVisibility(View.GONE);
-			} else {
-				relativeLayoutConvenienceCharges.setVisibility(View.VISIBLE);
-				textViewConvayenceChargeValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.convenienceCharges)));
-			}
+			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getEarning()));
+			textViewActualFareValue.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getEarning()));
+			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getPaidUsingCash()));
+			textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(extras.getAccount()))));
 
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.luggageCharges), 0) == 0) {
-				relativeLayoutLuggageCharges.setVisibility(View.GONE);
-			} else {
-				relativeLayoutLuggageCharges.setVisibility(View.VISIBLE);
-				textViewLuggageChargeValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.luggageCharges)));
-			}
-
-			textViewRateAppliedValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.fareFactorValue)));
-			textViewRateApplied.setText(getResources().getString(R.string.rate_applied) + " "
-					+ Utils.getDecimalFormat().format(Double.parseDouble(openedRideInfo.fareFactorApplied)) + "x");
-
-			textViewAcceptSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.acceptSubsidy)));
-
-			if (Utils.compareDouble(Double.parseDouble(openedRideInfo.cancelSubsidy), 0) == 0) {
-				relativeLayoutCancelSubsidy.setVisibility(View.GONE);
-			} else {
-				relativeLayoutCancelSubsidy.setVisibility(View.VISIBLE);
-				textViewCancelSubsidyValue.setText(Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.cancelSubsidy)));
-			}
-
-//			relativeLayoutJugnooCut.setVisibility(View.GONE);
-			if ("0".equalsIgnoreCase(openedRideInfo.jugnooCut)) {
-				relativeLayoutJugnooCut.setVisibility(View.GONE);
-			} else {
-				relativeLayoutJugnooCut.setVisibility(View.GONE);
-				textViewJugnooCutValue.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.jugnooCut)));
-			}
-
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.actualFare)));
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.customerPaid)));
-
-			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
-			} else {
-				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
-				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
-			}
-			textViewFromValue.setText(openedRideInfo.fromLocation);
-			textViewToValue.setText(openedRideInfo.toLocation);
-
-			imageViewRequestType.setImageResource(R.drawable.request_autos);
-
+//			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
+//				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
+//				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
+//				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
+//				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
+//			} else {
+//				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
+//				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
+//				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
+//				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
+//			}
+			textViewFromValue.setText(extras.getFrom());
+			textViewToValue.setText(extras.getTo());
+			fareStructureInfos.addAll(extras.getRideParam());
+			rideInfoTilesAdapter.notifyDataSetChanged();
 		} else {
 			performBackPressed();
 		}
 
-
 		try {
-			if (customerInfo.getDropLatLng() != null) {
-				getDirectionsAndComputeFare(customerInfo.getDropLatLng(), customerInfo.getDropLatLng());
+			if(extras.getPickupLatitude() != null && extras.getPickupLongitude() != null){
+				 pickupLatLng = new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude());
+			}
+			if(extras.getDropLatitude() != null && extras.getDropLongitude() != null){
+				 dropLatLng = new LatLng(extras.getDropLatitude(), extras.getDropLongitude());
+			}
+
+			if (pickupLatLng != null && dropLatLng != null) {
+				getDirectionsAndComputeFare(pickupLatLng, dropLatLng);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 	}
 
@@ -401,14 +319,15 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 									MarkerOptions markerOptionsS = new MarkerOptions();
 									markerOptionsS.title("Start");
 									markerOptionsS.position(sourceLatLng);
-									markerOptionsS.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator.createPinMarkerBitmap(RideDetailsNewActivity.this, assl)));
+									markerOptionsS.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.start_marker_v2)));
 									mapLite.addMarker(markerOptionsS);
 
 									MarkerOptions markerOptionsE = new MarkerOptions();
-									markerOptionsE.title("Start");
+									markerOptionsE.title("End");
 									markerOptionsE.position(destLatLng);
 									markerOptionsE.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 50f, 69f, R.drawable.passenger)));
+											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.end_marker_v2)));
 									mapLite.addMarker(markerOptionsE);
 
 

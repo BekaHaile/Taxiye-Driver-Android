@@ -1,17 +1,22 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 
 import product.clicklabs.jugnoo.driver.adapters.PaymentFragmentAdapter;
+import product.clicklabs.jugnoo.driver.fragments.InvoiceHistoryFragment;
+import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -25,11 +30,12 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 
 	ImageView imageViewBack;
 	TextView textViewTitle;
-
+	RelativeLayout relativeContainer;
 	ViewPager viewPager;
 	PaymentFragmentAdapter paymentFragmentAdapter;
+	Shader textShader;
 	PagerSlidingTabStrip tabs;
-
+	InvoiceHistoryFragment invoiceHistoryFragment;
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -56,11 +62,11 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
 		new ASSL(PaymentActivity.this, linearLayoutRoot, 1134, 720, false);
-
+		relativeContainer = (RelativeLayout) findViewById(R.id.relativeContainer);
 		viewPager = (ViewPager) findViewById(R.id.viewPager);
 		paymentFragmentAdapter = new PaymentFragmentAdapter(PaymentActivity.this, getSupportFragmentManager());
 		viewPager.setAdapter(paymentFragmentAdapter);
-
+		invoiceHistoryFragment = new InvoiceHistoryFragment();
 		tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
 		tabs.setIndicatorColor(getResources().getColor(R.color.new_orange));
 		tabs.setTextColorResource(R.color.new_orange, R.color.menu_black);
@@ -70,6 +76,16 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		imageViewBack = (ImageView) findViewById(R.id.imageViewBack); 
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+
+		textShader=new LinearGradient(0, 0, 0, 20,
+				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+				new float[]{0, 1}, Shader.TileMode.CLAMP);
+		textViewTitle.getPaint().setShader(textShader);
+
+		getSupportFragmentManager().beginTransaction()
+				.add(R.id.relativeContainer, invoiceHistoryFragment, InvoiceHistoryFragment.class.getName())
+				.addToBackStack(InvoiceHistoryFragment.class.getName())
+				.commit();
 
 
 		imageViewBack.setOnClickListener(new View.OnClickListener() {

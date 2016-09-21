@@ -13,6 +13,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
@@ -76,8 +78,10 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -192,8 +196,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL;
-	TextView callUsText, termsConditionText, textViewRateCard, auditText;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL;
+	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -230,7 +234,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout driverInitialLayout;
 	ListView driverRideRequestsList;
 	Button driverInitialMyLocationBtn, driverInformationBtn;
-	TextView jugnooOffText;
+	TextView jugnooOffText, temptext;
 
 	DriverRequestListAdapter driverRequestListAdapter;
 
@@ -303,7 +307,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
-
+	Shader textShader;
 
 	CustomerSwitcher customerSwitcher;
 
@@ -445,23 +449,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutAutosOn = (RelativeLayout) findViewById(R.id.relativeLayoutAutosOn);
 			textViewAutosOn = (TextView) findViewById(R.id.textViewAutosOn);
-			textViewAutosOn.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewAutosOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			imageViewAutosOnToggle = (ImageView) findViewById(R.id.imageViewAutosOnToggle);
 
 			relativeLayoutSharingOn = (RelativeLayout) findViewById(R.id.relativeLayoutSharingOn);
 			((TextView) findViewById(R.id.textViewSharingOn)).setTypeface(Data.latoRegular(getApplicationContext()));
 			imageViewSharingOnToggle = (ImageView) findViewById(R.id.imageViewSharingOnToggle);
 
+			temptext  = (TextView) findViewById(R.id.temptext);
+			temptext.setTypeface(Data.latoRegular(getApplicationContext()));
+			textShader=new LinearGradient(0, 0, 0, 20,
+					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+					new float[]{0, 1}, Shader.TileMode.CLAMP);
+			temptext.getPaint().setShader(textShader);
+
 			relativeLayoutDeliveryOn = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOn);
 			textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
-			textViewDeliveryOn.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewDeliveryOn.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			imageViewDeliveryOnToggle = (ImageView) findViewById(R.id.imageViewDeliveryOnToggle);
 
 
 			inviteFriendRl = (RelativeLayout) findViewById(R.id.inviteFriendRl);
 			driverRatingRl = (RelativeLayout) findViewById(R.id.driverRatingRl);
 			inviteFriendText = (TextView) findViewById(R.id.inviteFriendText);
-			inviteFriendText.setTypeface(Data.latoRegular(getApplicationContext()));
+			inviteFriendText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			inviteFriendText.setText(getStringText(R.string.invite_earn));
 
 			notificationCenterRl = (RelativeLayout) findViewById(R.id.notificationCenterRl);
@@ -490,7 +501,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutSuperDrivers = (RelativeLayout) findViewById(R.id.relativeLayoutSuperDrivers);
 			textViewSuperDrivers = (TextView) findViewById(R.id.textViewSuperDrivers);
-			textViewSuperDrivers.setTypeface(Data.latoRegular(this));
+			textViewSuperDrivers.setTypeface(Fonts.mavenRegular(this));
 			textViewSuperDrivers.setText(getStringText(R.string.super_driver));
 
 			relativeLayoutDestination = (RelativeLayout) findViewById(R.id.relativeLayoutDestination);
@@ -498,41 +509,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			callUsRl = (RelativeLayout) findViewById(R.id.callUsRl);
 			callUsText = (TextView) findViewById(R.id.callUsText);
-			callUsText.setTypeface(Data.latoRegular(getApplicationContext()));
+			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			earningsRL = (RelativeLayout) findViewById(R.id.earningsRL);
+			earningsText = (TextView) findViewById(R.id.earningsText);
+			earningsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			auditRL = (RelativeLayout) findViewById(R.id.auditRL);
 			auditText = (TextView) findViewById(R.id.auditText);
-			auditText.setTypeface(Data.latoRegular(getApplicationContext()));
+			auditText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 
 			relativeLayoutRateCard = (RelativeLayout) findViewById(R.id.relativeLayoutRateCard);
 			textViewRateCard = (TextView) findViewById(R.id.textViewRateCard);
-			textViewRateCard.setTypeface(Data.latoRegular(getApplicationContext()));
+			textViewRateCard.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			textViewRateCard.setText(getResources().getText(R.string.rate_card));
 
 
 			termsConditionRl = (RelativeLayout) findViewById(R.id.termsConditionRl);
 			termsConditionText = (TextView) findViewById(R.id.termsConditionText);
-			termsConditionText.setTypeface(Data.latoRegular(getApplicationContext()));
+			termsConditionText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			paytmRechargeRl = (RelativeLayout) findViewById(R.id.paytmRechargeRl);
 			paytmRechargeText = (TextView) findViewById(R.id.paytmRechargeText);
-			paytmRechargeText.setTypeface(Data.latoRegular(getApplicationContext()));
+			paytmRechargeText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			paytmRechargeText.setText(getStringText(R.string.paytm_recharge));
 
 			paymentsRl = (RelativeLayout) findViewById(R.id.paymentRL);
 			paymentsText = (TextView) findViewById(R.id.paymentText);
-			paymentsText.setTypeface(Data.latoRegular(getApplicationContext()));
-			paymentsText.setText(getResources().getString(R.string.Payments));
+			paymentsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
+			paymentsText.setText(getResources().getString(R.string.Invoices));
 
 			languagePrefrencesRl = (RelativeLayout) findViewById(R.id.languagePrefrencesRl);
 			languagePrefrencesText = (TextView) findViewById(R.id.languagePrefrencesText);
-			languagePrefrencesText.setTypeface(Data.latoRegular(getApplicationContext()));
+			languagePrefrencesText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			logoutRl = (RelativeLayout) findViewById(R.id.logoutRl);
 			logoutText = (TextView) findViewById(R.id.logoutText);
-			logoutText.setTypeface(Data.latoRegular(getApplicationContext()));
+			logoutText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 
 
@@ -564,7 +579,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverInitialMyLocationBtn = (Button) findViewById(R.id.driverInitialMyLocationBtn);
 			driverInformationBtn = (Button) findViewById(R.id.driverInformationBtn);
 			jugnooOffText = (TextView) findViewById(R.id.jugnooOffText);
-			jugnooOffText.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+			jugnooOffText.setTypeface(Fonts.mavenRegular(getApplicationContext()), Typeface.BOLD);
 			jugnooOffText.setVisibility(View.GONE);
 
 			driverRideRequestsList.setVisibility(View.GONE);
@@ -781,7 +796,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
 
 
-			slidingUpPanelLayout.setPanelHeight((int) (70f * ASSL.Yscale()));
+			slidingUpPanelLayout.setPanelHeight((int) (90f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
@@ -970,11 +985,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+					FlurryEventLogger.event(CALL_US);
+					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
+				}
+			});
+
+			earningsRL.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, DriverEarningsNew.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-//					FlurryEventLogger.event(CALL_US);
-//					Log.i("completeRingData",Database2.getInstance(HomeActivity.this).getRingCompleteData());
 				}
 			});
 
@@ -1636,25 +1657,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}else {
 
 				if (infoTileResponse.getDeepIndex() == 1) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					Intent intent = new Intent(HomeActivity.this, RideDetailsNewActivity.class);
 					Gson gson = new Gson();
 					intent.putExtra("extras", gson.toJson(infoTileResponse.getExtras(), InfoTileResponse.Tile.Extras.class));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 2) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					Calendar c = Calendar.getInstance();
+					System.out.println("Current time => " + c.getTime());
+					SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+					String formattedDate = df.format(c.getTime());
+					Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
+					intent.putExtra("date", formattedDate);
+					startActivity(intent);
+					finish();
+					overridePendingTransition(R.anim.left_in, R.anim.left_out);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
-
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
 				} else if (infoTileResponse.getDeepIndex() == 4) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
+					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -1711,7 +1736,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.DRIVER_RIDE_EARNING, ""))
 					&& DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode) {
 
-				relativeLayoutLastRideEarning.setVisibility(View.VISIBLE);
+				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 
 				textViewDriverEarningOnScreenValue.setText(getResources().getString(R.string.rupee) + Prefs.with(HomeActivity.this).
 						getString(Constants.DRIVER_RIDE_EARNING, ""));

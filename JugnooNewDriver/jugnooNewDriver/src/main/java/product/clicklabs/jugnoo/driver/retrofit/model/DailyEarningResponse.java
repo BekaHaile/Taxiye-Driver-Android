@@ -257,9 +257,12 @@ public class DailyEarningResponse {
 		@SerializedName("earning")
 		@Expose
 		private Double earning;
+		@SerializedName("type")
+		@Expose
+		private Integer type;
 		@SerializedName("extras")
 		@Expose
-		private Extras extras;
+		private InfoTileResponse.Tile.Extras extras;
 
 		/**
 		 *
@@ -300,9 +303,27 @@ public class DailyEarningResponse {
 		/**
 		 *
 		 * @return
+		 * The type
+		 */
+		public Integer getType() {
+			return type;
+		}
+
+		/**
+		 *
+		 * @param type
+		 * The type
+		 */
+		public void setType(Integer type) {
+			this.type = type;
+		}
+
+		/**
+		 *
+		 * @return
 		 * The extras
 		 */
-		public Extras getExtras() {
+		public InfoTileResponse.Tile.Extras getExtras() {
 			return extras;
 		}
 
@@ -311,292 +332,10 @@ public class DailyEarningResponse {
 		 * @param extras
 		 * The extras
 		 */
-		public void setExtras(Extras extras) {
+		public void setExtras(InfoTileResponse.Tile.Extras extras) {
 			this.extras = extras;
 		}
 
-		public class Extras {
-
-			@SerializedName("type")
-			@Expose
-			private String type;
-			@SerializedName("engagement_id")
-			@Expose
-			private Integer engagementId;
-			@SerializedName("date")
-			@Expose
-			private String date;
-			@SerializedName("ride_param")
-			@Expose
-			private List<RideParam> rideParam = new ArrayList<RideParam>();
-			@SerializedName("earning")
-			@Expose
-			private Double earning;
-			@SerializedName("paid_using_cash")
-			@Expose
-			private Double paidUsingCash;
-			@SerializedName("account")
-			@Expose
-			private Double account;
-			@SerializedName("from")
-			@Expose
-			private String from;
-			@SerializedName("to")
-			@Expose
-			private String to;
-			@SerializedName("ride_time")
-			@Expose
-			private Integer rideTime;
-			@SerializedName("distance")
-			@Expose
-			private Integer distance;
-
-			/**
-			 *
-			 * @return
-			 * The type
-			 */
-			public String getType() {
-				return type;
-			}
-
-			/**
-			 *
-			 * @param type
-			 * The type
-			 */
-			public void setType(String type) {
-				this.type = type;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The engagementId
-			 */
-			public Integer getEngagementId() {
-				return engagementId;
-			}
-
-			/**
-			 *
-			 * @param engagementId
-			 * The engagement_id
-			 */
-			public void setEngagementId(Integer engagementId) {
-				this.engagementId = engagementId;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The date
-			 */
-			public String getDate() {
-				return date;
-			}
-
-			/**
-			 *
-			 * @param date
-			 * The date
-			 */
-			public void setDate(String date) {
-				this.date = date;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The rideParam
-			 */
-			public List<RideParam> getRideParam() {
-				return rideParam;
-			}
-
-			/**
-			 *
-			 * @param rideParam
-			 * The rideParam
-			 */
-			public void setRideParam(List<RideParam> rideParam) {
-				this.rideParam = rideParam;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The earning
-			 */
-			public Double getEarning() {
-				return earning;
-			}
-
-			/**
-			 *
-			 * @param earning
-			 * The earning
-			 */
-			public void setEarning(Double earning) {
-				this.earning = earning;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The paidUsingCash
-			 */
-			public Double getPaidUsingCash() {
-				return paidUsingCash;
-			}
-
-			/**
-			 *
-			 * @param paidUsingCash
-			 * The paid_using_cash
-			 */
-			public void setPaidUsingCash(Double paidUsingCash) {
-				this.paidUsingCash = paidUsingCash;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The account
-			 */
-			public Double getAccount() {
-				return account;
-			}
-
-			/**
-			 *
-			 * @param account
-			 * The account
-			 */
-			public void setAccount(Double account) {
-				this.account = account;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The from
-			 */
-			public String getFrom() {
-				return from;
-			}
-
-			/**
-			 *
-			 * @param from
-			 * The from
-			 */
-			public void setFrom(String from) {
-				this.from = from;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The to
-			 */
-			public String getTo() {
-				return to;
-			}
-
-			/**
-			 *
-			 * @param to
-			 * The to
-			 */
-			public void setTo(String to) {
-				this.to = to;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The rideTime
-			 */
-			public Integer getRideTime() {
-				return rideTime;
-			}
-
-			/**
-			 *
-			 * @param rideTime
-			 * The ride_time
-			 */
-			public void setRideTime(Integer rideTime) {
-				this.rideTime = rideTime;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The distance
-			 */
-			public Integer getDistance() {
-				return distance;
-			}
-
-			/**
-			 *
-			 * @param distance
-			 * The distance
-			 */
-			public void setDistance(Integer distance) {
-				this.distance = distance;
-			}
-
-			public class RideParam {
-
-				@SerializedName("text")
-				@Expose
-				private String text;
-				@SerializedName("value")
-				@Expose
-				private Double value;
-
-				/**
-				 *
-				 * @return
-				 * The text
-				 */
-				public String getText() {
-					return text;
-				}
-
-				/**
-				 *
-				 * @param text
-				 * The text
-				 */
-				public void setText(String text) {
-					this.text = text;
-				}
-
-				/**
-				 *
-				 * @return
-				 * The value
-				 */
-				public Double getValue() {
-					return value;
-				}
-
-				/**
-				 *
-				 * @param value
-				 * The value
-				 */
-				public void setValue(Double value) {
-					this.value = value;
-				}
-
-			}
-
-		}
 
 	}
 

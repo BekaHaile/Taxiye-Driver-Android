@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/relative"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -9,7 +10,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/menu_black"
+        android:background="@color/blue_black_v2"
         android:splitMotionEvents="false">
 
         <Button
@@ -31,7 +32,7 @@
             android:textSize="40px"/>
     </RelativeLayout>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -202,11 +203,11 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewRideInfo"
-            android:layout_width="540px"
-            android:layout_height="match_parent"
-            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:scrollbars="vertical"
+            android:layout_marginTop="24px"
             android:fadeScrollbars="true"/>
 
 
@@ -280,7 +281,7 @@
             android:layout_marginTop="10px">
 
             <TextView
-                android:id="@+id/textViewBankDeposite"
+                android:id="@+id/textViewAccountBalanceText"
                 android:layout_width="400px"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
@@ -288,7 +289,7 @@
                 android:textColor="@color/black"
                 android:textSize="36px"/>
             <TextView
-                android:id="@+id/textViewBankDepositeValue"
+                android:id="@+id/textViewAccountBalance"
                 android:layout_width="140px"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -411,7 +412,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/paid_cash"
+                    android:text="@string/duration"
                     android:textColor="@color/grey_light_v2"
                     android:textSize="24px"/>
 
@@ -451,7 +452,48 @@
                     android:layout_gravity="center_vertical"
                     android:gravity="center"
                     android:layout_weight="1"
-                    android:text="@string/money_to"
+                    android:text="@string/distance"
+                    android:textColor="@color/grey_light_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="2px"
+                android:layout_height="64px"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:id="@+id/imageViewVertical1"
+                android:background="@color/grey_light_v2"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeWaitingTime"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/waitTimeValue"
+                    android:layout_width="230px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/rupee_zero"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="32px"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/waitTimeText"
+                    android:layout_width="225px"
+                    android:layout_height="38px"
+                    android:layout_below="@+id/waitTimeValue"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="@string/wait_time"
                     android:textColor="@color/grey_light_v2"
                     android:textSize="24px"/>
 
@@ -461,7 +503,7 @@
 
     </LinearLayout>
 
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 
 

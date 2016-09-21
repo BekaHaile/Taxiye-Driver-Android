@@ -40,20 +40,20 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 	public void onBindViewHolder(rideInfoViewHolder rideInfoViewHolder, int i) {
 		final FareStructureInfo itr = fareStructureInfos.get(i);
 
-		rideInfoViewHolder.textViewJugnooCut.setTypeface(Data.latoRegular(context));
-		rideInfoViewHolder.textViewJugnooCutValue.setTypeface(Data.latoRegular(context));
+		rideInfoViewHolder.textViewInfoText.setTypeface(Data.latoRegular(context));
+		rideInfoViewHolder.textViewInfoValue.setTypeface(Data.latoRegular(context));
 
 
 		if(itr.getInfo() != null){
-			rideInfoViewHolder.textViewJugnooCut.setText(itr.getInfo());
+			rideInfoViewHolder.textViewInfoText.setText(itr.getInfo());
 		} else {
-			rideInfoViewHolder.textViewJugnooCut.setVisibility(View.GONE);
+			rideInfoViewHolder.textViewInfoText.setVisibility(View.GONE);
 		}
 
-		if(itr.getValue() != null){
-			rideInfoViewHolder.textViewJugnooCutValue.setText(itr.getValue());
+		if(itr.getValue() != 0){
+			rideInfoViewHolder.textViewInfoValue.setText(""+itr.getValue());
 		} else {
-			rideInfoViewHolder.textViewJugnooCutValue.setVisibility(View.GONE);
+			rideInfoViewHolder.textViewInfoValue.setVisibility(View.GONE);
 		}
 
 
@@ -70,16 +70,16 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 
 	public class rideInfoViewHolder extends RecyclerView.ViewHolder {
 		protected LinearLayout linearLayoutRideItem;
-		protected TextView textViewJugnooCut, textViewJugnooCutValue;
+		protected TextView textViewInfoText, textViewInfoValue;
 		protected int id;
 
 		public rideInfoViewHolder(View v) {
 			super(v);
 			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
-			textViewJugnooCut = (TextView) v.findViewById(R.id.textViewJugnooCut);
-			textViewJugnooCut.setTypeface(Data.latoRegular(context));
-			textViewJugnooCutValue = (TextView) v.findViewById(R.id.textViewJugnooCutValue);
-			textViewJugnooCutValue.setTypeface(Data.latoRegular(context));
+			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
+			textViewInfoText.setTypeface(Data.latoRegular(context));
+			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
+			textViewInfoValue.setTypeface(Data.latoRegular(context));
 
 
 			linearLayoutRideItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));

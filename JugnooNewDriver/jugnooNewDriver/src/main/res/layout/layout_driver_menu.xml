@@ -376,6 +376,37 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/auditRL"
+                android:layout_width="match_parent"
+                android:layout_height="84px"
+                android:background="@drawable/menu_item_selector"
+                android:visibility="visible"
+                android:splitMotionEvents="false">
+
+
+                <ImageView
+                    android:id="@+id/imageViewAuditIcon"
+                    android:layout_width="56px"
+                    android:layout_height="35px"
+                    android:layout_marginLeft="20px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/audit_v2"
+                    android:tag="mwar"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/auditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/imageViewAuditIcon"
+                    android:layout_marginLeft="8px"
+                    android:text="@string/audit_lower"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="34px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/inviteFriendRl"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
@@ -407,29 +438,6 @@
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
                     android:background="@color/grey_light_v2"/>
-
-            </RelativeLayout>
-
-
-
-
-            <RelativeLayout
-                android:id="@+id/auditRL"
-                android:layout_width="match_parent"
-                android:layout_height="84px"
-                android:background="@drawable/menu_item_selector"
-                android:visibility="gone"
-                android:splitMotionEvents="false">
-
-                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                    android:id="@+id/auditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="42px"
-                    android:text="@string/audit_lower"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="34px"/>
 
             </RelativeLayout>
 

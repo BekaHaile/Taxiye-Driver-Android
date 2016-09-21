@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 
@@ -82,6 +84,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
 				((ViewHolderRide)holder).textViewInfoText.setText(item.getTime());
 				((ViewHolderRide)holder).textViewInfoValue.setText(""+item.getEarning());
+                ((ViewHolderRide)holder).linear.setTag(position);
 				((ViewHolderRide)holder).linear.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -152,6 +155,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     static class ViewHolderRide extends RecyclerView.ViewHolder {
 		public LinearLayout linear;
 		public TextView textViewInfoText, textViewInfoValue;
+		public ImageView imageViewArrow;
         public ViewHolderRide(View itemView, Context context) {
             super(itemView);
 			linear = (LinearLayout)itemView.findViewById(R.id.linear);
@@ -159,6 +163,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
 			textViewInfoValue = (TextView)itemView.findViewById(R.id.textViewInfoValue);
 			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
+			imageViewArrow = (ImageView) itemView.findViewById(R.id.imageViewArrow);
         }
     }
 
@@ -218,7 +223,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public interface Callback{
-        void onRideClick(int position, Object extras);
+        void onRideClick(int position, InfoTileResponse.Tile.Extras extras);
     }
 
     public enum ViewType {

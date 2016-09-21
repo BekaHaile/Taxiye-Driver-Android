@@ -13,7 +13,7 @@
         android:layout_height="96px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/menu_black">
+        android:background="@color/blue_black_v2">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/PAYMENTS"
+            android:text="@string/Invoices_cap"
             android:textColor="@color/white"
             android:textSize="40px"/>
 
@@ -46,7 +46,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="99px"
-        android:visibility="visible"
+        android:visibility="gone"
         app:pstsIndicatorHeight="7px"
         app:pstsDividerColor="@color/menu_black"
         app:pstsShouldExpand="true"
@@ -56,8 +56,16 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/relativeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
 
 </LinearLayout>

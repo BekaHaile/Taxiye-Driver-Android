@@ -6,6 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.datastructure.FareStructure;
+import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
+
 /**
  * Created by aneeshbansal on 14/09/16.
  */
@@ -259,24 +262,15 @@ public class InfoTileResponse {
 			@SerializedName("date")
 			@Expose
 			private String date;
+			@SerializedName("status")
+			@Expose
+			private String status;
+			@SerializedName("ride_param")
+			@Expose
+			private List<FareStructureInfo> rideParam = new ArrayList<FareStructureInfo>();
 			@SerializedName("ride_fare")
 			@Expose
 			private Double rideFare;
-			@SerializedName("driver_fare_factor")
-			@Expose
-			private Double driverFareFactor;
-			@SerializedName("surge_amount")
-			@Expose
-			private Double surgeAmount;
-			@SerializedName("accept_subsidy")
-			@Expose
-			private Double acceptSubsidy;
-			@SerializedName("cancel_subsidy")
-			@Expose
-			private Double cancelSubsidy;
-			@SerializedName("jugnoo_commission")
-			@Expose
-			private Double jugnooCommission;
 			@SerializedName("earning")
 			@Expose
 			private Double earning;
@@ -292,12 +286,27 @@ public class InfoTileResponse {
 			@SerializedName("to")
 			@Expose
 			private String to;
+			@SerializedName("pickup_latitude")
+			@Expose
+			private Double pickupLatitude;
+			@SerializedName("pickup_longitude")
+			@Expose
+			private Double pickupLongitude;
+			@SerializedName("drop_latitude")
+			@Expose
+			private Double dropLatitude;
+			@SerializedName("drop_longitude")
+			@Expose
+			private Double dropLongitude;
 			@SerializedName("ride_time")
 			@Expose
 			private Integer rideTime;
+			@SerializedName("wait_time")
+			@Expose
+			private Integer waitTime;
 			@SerializedName("distance")
 			@Expose
-			private Integer distance;
+			private double distance;
 			@SerializedName("redirect_url")
 			@Expose
 			private String redirectUrl;
@@ -377,91 +386,37 @@ public class InfoTileResponse {
 			/**
 			 *
 			 * @return
-			 * The driverFareFactor
+			 * The status
 			 */
-			public Double getDriverFareFactor() {
-				return driverFareFactor;
+			public String getStatus() {
+				return status;
 			}
 
 			/**
 			 *
-			 * @param driverFareFactor
-			 * The driver_fare_factor
+			 * @param status
+			 * The status
 			 */
-			public void setDriverFareFactor(Double driverFareFactor) {
-				this.driverFareFactor = driverFareFactor;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The surgeAmount
-			 */
-			public Double getSurgeAmount() {
-				return surgeAmount;
-			}
-
-			/**
-			 *
-			 * @param surgeAmount
-			 * The surge_amount
-			 */
-			public void setSurgeAmount(Double surgeAmount) {
-				this.surgeAmount = surgeAmount;
+			public void setStatus(String status) {
+				this.status = status;
 			}
 
 			/**
 			 *
 			 * @return
-			 * The acceptSubsidy
+			 * The rideParam
 			 */
-			public Double getAcceptSubsidy() {
-				return acceptSubsidy;
+			public List<FareStructureInfo> getRideParam() {
+				return rideParam;
 			}
 
 			/**
 			 *
-			 * @param acceptSubsidy
-			 * The accept_subsidy
+			 * @param rideParam
+			 * The ride_param
 			 */
-			public void setAcceptSubsidy(Double acceptSubsidy) {
-				this.acceptSubsidy = acceptSubsidy;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The cancelSubsidy
-			 */
-			public Double getCancelSubsidy() {
-				return cancelSubsidy;
-			}
-
-			/**
-			 *
-			 * @param cancelSubsidy
-			 * The cancel_subsidy
-			 */
-			public void setCancelSubsidy(Double cancelSubsidy) {
-				this.cancelSubsidy = cancelSubsidy;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The jugnooCommission
-			 */
-			public Double getJugnooCommission() {
-				return jugnooCommission;
-			}
-
-			/**
-			 *
-			 * @param jugnooCommission
-			 * The jugnoo_commission
-			 */
-			public void setJugnooCommission(Double jugnooCommission) {
-				this.jugnooCommission = jugnooCommission;
+			public void setRideParam(List<FareStructureInfo> rideParam) {
+				this.rideParam = rideParam;
 			}
 
 			/**
@@ -557,6 +512,79 @@ public class InfoTileResponse {
 			/**
 			 *
 			 * @return
+			 * The pickupLatitude
+			 */
+			public Double getPickupLatitude() {
+				return pickupLatitude;
+			}
+
+			/**
+			 *
+			 * @param pickupLatitude
+			 * The pickup_latitude
+			 */
+			public void setPickupLatitude(Double pickupLatitude) {
+				this.pickupLatitude = pickupLatitude;
+			}
+
+			/**
+			 *
+			 * @return
+			 * The pickupLongitude
+			 */
+			public Double getPickupLongitude() {
+				return pickupLongitude;
+			}
+
+			/**
+			 *
+			 * @param pickupLongitude
+			 * The pickup_longitude
+			 */
+			public void setPickupLongitude(Double pickupLongitude) {
+				this.pickupLongitude = pickupLongitude;
+			}
+
+			/**
+			 *
+			 * @return
+			 * The dropLatitude
+			 */
+			public Double getDropLatitude() {
+				return dropLatitude;
+			}
+
+			/**
+			 *
+			 * @param dropLatitude
+			 * The drop_latitude
+			 */
+			public void setDropLatitude(Double dropLatitude) {
+				this.dropLatitude = dropLatitude;
+			}
+
+			/**
+			 *
+			 * @return
+			 * The dropLongitude
+			 */
+			public Double getDropLongitude() {
+				return dropLongitude;
+			}
+
+			/**
+			 *
+			 * @param dropLongitude
+			 * The drop_longitude
+			 */
+			public void setDropLongitude(Double dropLongitude) {
+				this.dropLongitude = dropLongitude;
+			}
+
+
+			/**
+			 *
+			 * @return
 			 * The rideTime
 			 */
 			public Integer getRideTime() {
@@ -572,12 +600,20 @@ public class InfoTileResponse {
 				this.rideTime = rideTime;
 			}
 
+			public Integer getWaitTime() {
+				return waitTime;
+			}
+
+			public void setWaitTime(Integer waitTime) {
+				this.waitTime = waitTime;
+			}
+
 			/**
 			 *
 			 * @return
 			 * The distance
 			 */
-			public Integer getDistance() {
+			public double getDistance() {
 				return distance;
 			}
 
@@ -586,7 +622,7 @@ public class InfoTileResponse {
 			 * @param distance
 			 * The distance
 			 */
-			public void setDistance(Integer distance) {
+			public void setDistance(double distance) {
 				this.distance = distance;
 			}
 

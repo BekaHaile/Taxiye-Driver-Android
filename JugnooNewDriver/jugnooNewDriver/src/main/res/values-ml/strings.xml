@@ -637,6 +637,9 @@
     <string name="bank_deposite">Bank Deposite</string>
     <string name="trips">Trips</string>
     <string name="home">Home</string>
+    <string name="duration">Duration</string>
+    <string name="daily_earnings">DAILY EARNINGS</string>
+    <string name="Invoices_cap">INVOICES</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

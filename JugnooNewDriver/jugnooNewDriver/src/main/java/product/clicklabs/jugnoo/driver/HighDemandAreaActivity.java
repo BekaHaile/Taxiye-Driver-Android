@@ -30,6 +30,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	ProgressBar progressBar;
 	TextView textViewInfo;
 	WebView webview;
+	String url;
 
 	@Override
 	protected void onStart() {
@@ -66,6 +67,13 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
 
+		try {
+			Intent intent = getIntent();
+			url = intent.getStringExtra("date");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
@@ -75,7 +83,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.setWebViewClient(new MyWebViewClient1());
 
 		if(Database2.getInstance(this).getDLDAccessToken() != null) {
-			webview.loadUrl(Prefs.with(HighDemandAreaActivity.this).getString(Constants.HIGH_DEMAND_WEB_URL, "")+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
+			webview.loadUrl(url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
 		}
 
 

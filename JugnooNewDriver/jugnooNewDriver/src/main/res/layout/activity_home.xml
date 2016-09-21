@@ -19,8 +19,8 @@
             android:gravity="bottom"
             android:background="@color/transparent"
             sothree:umanoFadeColor="@color/transparent"
-            sothree:umanoPanelHeight="70px"
-            sothree:umanoShadowHeight="6px">
+            sothree:umanoPanelHeight="90px"
+            sothree:umanoShadowHeight="16px">
 
 
 

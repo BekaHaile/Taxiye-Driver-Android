@@ -6,12 +6,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class FareStructureInfo {
 
-	@SerializedName("info")
+	@SerializedName("text")
 	@Expose
 	private String info;
 	@SerializedName("value")
 	@Expose
-	private String value;
+	private double value;
 
 	public String getInfo() {
 		return info;
@@ -21,11 +21,11 @@ public class FareStructureInfo {
 		this.info = info;
 	}
 
-	public String getValue() {
+	public double getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	public void setValue(double value) {
 		this.value = value;
 	}
 }

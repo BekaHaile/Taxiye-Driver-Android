@@ -10,7 +10,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/menu_black"
+        android:background="@color/blue_black_v2"
         android:splitMotionEvents="false">
 
         <Button
@@ -27,14 +27,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/ride_details"
+            android:text="@string/daily_earnings"
             android:textColor="@color/white"
             android:textSize="40px"/>
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewDailyInfo"
-        android:layout_width="540px"
+        android:layout_width="720px"
         android:layout_height="match_parent"
         android:visibility="visible"
         android:layout_gravity="center_horizontal"

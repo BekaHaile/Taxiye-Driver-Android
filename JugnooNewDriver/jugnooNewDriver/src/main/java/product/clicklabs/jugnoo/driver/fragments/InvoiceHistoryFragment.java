@@ -219,8 +219,8 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + invoiceInfo.id);
 				}
 
-				holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
-				holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
+				holder.dateTimeValueTo.setText(DateOperations.convertMonthDayViaFormat(invoiceInfo.toTime));
+				holder.dateTimeValueFrom.setText(DateOperations.convertMonthDayViaFormat(invoiceInfo.fromTime));
 
 				if(invoiceInfo.statusString.equalsIgnoreCase("Success")) {
 					holder.textViewStatusString.setText(getResources().getString(R.string.success));
