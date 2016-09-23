@@ -11,15 +11,21 @@ public class DailyEarningItem {
 	private String text;
 	private double value;
 	private String time;
+	private String date;
+	private int type;
+	private String status;
 	private double earning;
 	private InfoTileResponse.Tile.Extras extras;
 
 	private DailyRideDetailsAdapter.ViewType viewType;
 
-	public DailyEarningItem(String text, double value, String time, double earning, InfoTileResponse.Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType) {
+	public DailyEarningItem(String text, double value, String time,String date, int type, String status, double earning, InfoTileResponse.Tile.Extras extras, DailyRideDetailsAdapter.ViewType viewType) {
 		this.text = text;
 		this.value = value;
 		this.time = time;
+		this.date = date;
+		this.type = type;
+		this.status = status;
 		this.earning = earning;
 		this.extras = extras;
 		this.viewType = viewType;
@@ -47,6 +53,30 @@ public class DailyEarningItem {
 
 	public void setTime(String time) {
 		this.time = time;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public double getEarning() {

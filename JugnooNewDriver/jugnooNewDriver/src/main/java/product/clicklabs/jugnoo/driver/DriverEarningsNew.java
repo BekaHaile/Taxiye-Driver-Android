@@ -192,7 +192,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativelayoutRandom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(index >= 0 && index < 5) {
+				if (index >= 0 && index < 5) {
 					getDailyDetails(res.getEarnings().get(index).getDate());
 				}
 			}
@@ -239,6 +239,15 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			}
 		});
 
+		relativeLayoutRideHistory.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(DriverEarningsNew.this, DriverRideHistoryNew.class);
+				startActivity(intent);
+				finish();
+				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+			}
+		});
 
 		getEarningsDetails(this, 0);
 	}
@@ -457,10 +466,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 		// set up layout parameters so our marker is in the same position as the mpchart marker would be (based no the x and y)
 		RelativeLayout.LayoutParams lps = (RelativeLayout.LayoutParams) relativelayoutRandom.getLayoutParams();
-		lps.height = (int) (55f * ASSL.Yscale());
+		lps.height = (int) (155f * ASSL.Yscale());
 		lps.width = (int) (150f * ASSL.Xscale());
 		lps.leftMargin = (x) - (int) (relativelayoutRandom.getMeasuredWidth() / 2) + (int) (75f * ASSL.Xscale());
-		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (135f * ASSL.Yscale());
+		lps.topMargin = (y) - (int) (relativelayoutRandom.getMeasuredHeight()) + (int) (145f * ASSL.Yscale());
 		relativelayoutRandom.setLayoutParams(lps);
 	}
 

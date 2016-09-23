@@ -16,8 +16,11 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by gurmail on 19/05/16.
@@ -29,6 +32,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     private Callback callback;
     protected String editTextStr = "";
     DailyEarningResponse dailyEarningResponse;
+	InvoiceDetailResponseNew invoiceDetailResponseNew;
 
     public DailyRideDetailsAdapter(DailyRideDetailsActivity activity, ArrayList<DailyEarningItem> items, Callback callback) {
         this.activity = activity;
@@ -36,9 +40,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.callback = callback;
     }
 
-    public void setList(ArrayList<DailyEarningItem> slots, DailyEarningResponse dailyEarningResponse){
+    public void setList(ArrayList<DailyEarningItem> slots, DailyEarningResponse dailyEarningResponse, InvoiceDetailResponseNew invoiceDetailResponseNew){
         this.dailyEarningResponse = dailyEarningResponse;
         this.items = slots;
+		this.invoiceDetailResponseNew = invoiceDetailResponseNew;
         notifyDataSetChanged();
     }
 
@@ -68,7 +73,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			return new ViewHolderHeader(v, activity);
 
         } else {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_ride_info, parent, false);
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_ride_history_new, parent, false);
             RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
             v.setLayoutParams(layoutParams);
             ASSL.DoMagic(v);
@@ -82,16 +87,43 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			DailyEarningItem item = items.get(position);
             if(holder instanceof ViewHolderRide){
 
-				((ViewHolderRide)holder).textViewInfoText.setText(item.getTime());
-				((ViewHolderRide)holder).textViewInfoValue.setText(""+item.getEarning());
-                ((ViewHolderRide)holder).linear.setTag(position);
-				((ViewHolderRide)holder).linear.setOnClickListener(new View.OnClickListener() {
+				if (item.getTime() != null) {
+					((ViewHolderRide) holder).textViewInfoText.setText(item.getTime());
+				}else {
+					((ViewHolderRide) holder).textViewInfoText.setVisibility(View.GONE);
+				}
+				((ViewHolderRide)holder).textViewInfoDate.setText(DateOperations.convertDateToDay(item.getDate()) +","+
+						DateOperations.convertMonthDayViaFormat(item.getDate()));
+				((ViewHolderRide)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, item.getEarning()));
+
+
+				if(item.getStatus()!= null && item.getStatus().equalsIgnoreCase("Ride Cancelled")){
+					((ViewHolderRide)holder).textViewStatus.setVisibility(View.VISIBLE);
+					((ViewHolderRide)holder).textViewStatus.setText("("+activity.getResources().getString(R.string.cancelled)+")");
+					((ViewHolderRide)holder).textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
+					((ViewHolderRide)holder).textViewInfoText.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
+					((ViewHolderRide)holder).textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
+				} else {
+					((ViewHolderRide)holder).textViewStatus.setVisibility(View.GONE);
+					((ViewHolderRide)holder).textViewInfoText.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+					((ViewHolderRide)holder).textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				}
+
+				if(item.getType() ==3){
+					((ViewHolderRide)holder).textViewType.setVisibility(View.VISIBLE);
+				} else {
+					((ViewHolderRide)holder).textViewType.setVisibility(View.GONE);
+				}
+
+
+                ((ViewHolderRide)holder).linearLayoutRideItem.setTag(position);
+				((ViewHolderRide)holder).linearLayoutRideItem.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
 
 						try {
 							int pos = (int) v.getTag();
-							callback.onRideClick(pos, items.get(pos).getExtras());
+							callback.onRideClick(pos, items.get(pos).getExtras(), items.get(pos).getDate());
 							notifyDataSetChanged();
 
 						} catch (Exception e) {
@@ -104,23 +136,34 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else if(holder instanceof ViewHolderHeader) {
 
 				if(dailyEarningResponse != null) {
-					((ViewHolderHeader) holder).textViewActualFareValue.setText(""+dailyEarningResponse.getEarnings());
-					((ViewHolderHeader) holder).textViewCustomerPaid.setText(""+dailyEarningResponse.getPaidByCustomer());
+					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
+					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getPaidByCustomer()));
 					((ViewHolderHeader) holder).onlineTimeValue.setText(""+dailyEarningResponse.getTimeOnline());
-					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(""+dailyEarningResponse.getAccount());
+					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getAccount()));
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+dailyEarningResponse.getTotalTrips());
+					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
+				} else if(invoiceDetailResponseNew != null) {
+					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
+					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getPaidUsingCash()));
+					((ViewHolderHeader) holder).onlineTimeValue.setText(""+invoiceDetailResponseNew.getTotalDistanceTravelled());
+					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount()));
+					((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips());
+					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
 				}
 
             } else if(holder instanceof ViewHolderTotalAmount) {
 				if(dailyEarningResponse != null) {
-					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + dailyEarningResponse.getDate());
-					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText("" + dailyEarningResponse.getEarnings());
+					((ViewHolderTotalAmount) holder).dateTimeValue.setText("" + dailyEarningResponse.getDay() + ", " + DateOperations.convertMonthDayViaFormat(dailyEarningResponse.getDate()));
+					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
+				} else if(invoiceDetailResponseNew != null) {
+					((ViewHolderTotalAmount) holder).dateTimeValue.setText(invoiceDetailResponseNew.getPeriod());
+					((ViewHolderTotalAmount) holder).textViewEarningsValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
 				}
 
 			} else if(holder instanceof ViewHolderRideParam){
                 final DailyEarningItem param = items.get(position);
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
-                ((ViewHolderRideParam)holder).textViewInfoValue.setText(""+param.getValue());
+                ((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, param.getValue()));
 
             }
         } catch (Exception e) {
@@ -153,17 +196,23 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     static class ViewHolderRide extends RecyclerView.ViewHolder {
-		public LinearLayout linear;
-		public TextView textViewInfoText, textViewInfoValue;
-		public ImageView imageViewArrow;
-        public ViewHolderRide(View itemView, Context context) {
-            super(itemView);
-			linear = (LinearLayout)itemView.findViewById(R.id.linear);
-			textViewInfoText = (TextView) itemView.findViewById(R.id.textViewInfoText);
+		protected LinearLayout linearLayoutRideItem;
+		protected TextView textViewInfoText, textViewInfoValue, textViewStatus, textViewType, textViewInfoDate;
+		protected ImageView imageViewArrow;
+        public ViewHolderRide(View v, Context context) {
+            super(v);
+			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
+			imageViewArrow = (ImageView)v.findViewById(R.id.imageViewArrow);
+			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
 			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
-			textViewInfoValue = (TextView)itemView.findViewById(R.id.textViewInfoValue);
+			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
 			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
-			imageViewArrow = (ImageView) itemView.findViewById(R.id.imageViewArrow);
+			textViewStatus = (TextView) v.findViewById(R.id.textViewStatus);
+			textViewStatus.setTypeface(Fonts.mavenRegular(context));
+			textViewType = (TextView) v.findViewById(R.id.textViewType);
+			textViewType.setTypeface(Fonts.mavenRegular(context));
+			textViewInfoDate = (TextView) v.findViewById(R.id.textViewInfoDate);
+			textViewInfoDate.setTypeface(Fonts.mavenRegular(context));
         }
     }
 
@@ -223,7 +272,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     public interface Callback{
-        void onRideClick(int position, InfoTileResponse.Tile.Extras extras);
+        void onRideClick(int position, InfoTileResponse.Tile.Extras extras, String date);
     }
 
     public enum ViewType {

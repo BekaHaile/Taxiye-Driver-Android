@@ -16,6 +16,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
@@ -369,6 +370,12 @@ public interface APIServices {
 	void invoiceDetail(@Field("access_token") String accessToken,
 						@Field("invoice_id") String invoiceId,
 						Callback<InvoiceDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/v2/get_invoice_details\n")
+	void invoiceDetailNew(@Field("access_token") String accessToken,
+					   @Field("invoice_id") String invoiceId,
+					   Callback<InvoiceDetailResponseNew> callback);
 
 	@FormUrlEncoded
 	@POST("/get_wallet_balance_end_ride")

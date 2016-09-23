@@ -91,6 +91,7 @@
     <color name="yellow_status">#F89414</color>    
     <color name="green_status">#2EA058</color>    
     <color name="red_status">#F53C37</color>
+    <color name="red_status_v2">#eb5635</color>
     <color name="red_v2">#ff8162</color>
     
     <color name="orange_text">#FBBC12</color>

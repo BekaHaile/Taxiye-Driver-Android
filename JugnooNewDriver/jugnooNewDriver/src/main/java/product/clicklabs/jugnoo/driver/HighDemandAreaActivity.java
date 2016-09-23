@@ -2,7 +2,10 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -31,6 +34,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	TextView textViewInfo;
 	WebView webview;
 	String url;
+	Shader textShader;
 
 	@Override
 	protected void onStart() {
@@ -66,10 +70,14 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
+		textShader=new LinearGradient(0, 0, 0, 20,
+				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+				new float[]{0, 1}, Shader.TileMode.CLAMP);
+		title.getPaint().setShader(textShader);
 
 		try {
 			Intent intent = getIntent();
-			url = intent.getStringExtra("date");
+			url = intent.getStringExtra("extras");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -83,6 +91,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.setWebViewClient(new MyWebViewClient1());
 
 		if(Database2.getInstance(this).getDLDAccessToken() != null) {
+			Log.e("URL", url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
 			webview.loadUrl(url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
 		}
 

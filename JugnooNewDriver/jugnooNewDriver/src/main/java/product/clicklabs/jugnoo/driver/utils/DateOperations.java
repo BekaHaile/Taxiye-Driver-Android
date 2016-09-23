@@ -380,4 +380,18 @@ public class DateOperations {
 			return convertDate(date);
 		}
 	}
+
+	public static String convertDateToDay(String date){
+		String day;
+		try {
+			SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date newDate = inFormat.parse(date);
+			SimpleDateFormat outFormat = new SimpleDateFormat("EEE");
+			day = outFormat.format(newDate);
+			return day.toUpperCase();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 }

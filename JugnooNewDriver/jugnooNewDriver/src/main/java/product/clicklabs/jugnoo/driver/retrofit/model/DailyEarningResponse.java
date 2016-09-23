@@ -29,7 +29,7 @@ public class DailyEarningResponse {
 	@SerializedName("account")
 	@Expose
 	private Double account;
-	@SerializedName("time_online")
+	@SerializedName("total_distance_travelled")
 	@Expose
 	private String timeOnline;
 	@SerializedName("total_trips")
@@ -251,6 +251,9 @@ public class DailyEarningResponse {
 
 	public class Trip {
 
+		@SerializedName("date")
+		@Expose
+		private String date;
 		@SerializedName("time")
 		@Expose
 		private String time;
@@ -260,9 +263,20 @@ public class DailyEarningResponse {
 		@SerializedName("type")
 		@Expose
 		private Integer type;
+		@SerializedName("status")
+		@Expose
+		private String status;
 		@SerializedName("extras")
 		@Expose
 		private InfoTileResponse.Tile.Extras extras;
+
+		public String getDate() {
+			return date;
+		}
+
+		public void setDate(String date) {
+			this.date = date;
+		}
 
 		/**
 		 *
@@ -316,6 +330,15 @@ public class DailyEarningResponse {
 		 */
 		public void setType(Integer type) {
 			this.type = type;
+		}
+
+
+		public String getStatus() {
+			return status;
+		}
+
+		public void setStatus(String status) {
+			this.status = status;
 		}
 
 		/**

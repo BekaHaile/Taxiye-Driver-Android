@@ -636,6 +636,8 @@
     <string name="duration">Duration</string>
     <string name="daily_earnings">DAILY EARNINGS</string>
     <string name="Invoices_cap">INVOICES</string>
+    <string name="Today_earning">TODAY\'S EARNING</string>
+    <string name="daily_breakup">DAILY BREAKUP</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

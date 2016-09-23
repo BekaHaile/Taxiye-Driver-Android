@@ -137,7 +137,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="@string/total_time"
+                    android:text="@string/total_distance"
                     android:textColor="@color/grey_light_v2"
                     android:textSize="24px"/>
 

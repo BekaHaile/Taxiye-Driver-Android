@@ -154,7 +154,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
 
-		int viewHeight = (int)(55f * ASSL.Yscale()) * extras.getRideParam().size();
+		int viewHeight = (int)(65f * ASSL.Yscale()) * extras.getRideParam().size();
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
 		fareStructureInfos = new ArrayList<>();

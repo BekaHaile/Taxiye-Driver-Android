@@ -60,7 +60,7 @@
                     android:id="@+id/textViewEstPayout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/estimated_payout"
+                    android:text="@string/Today_earning"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
 
@@ -70,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewEstPayout"
                     android:text="@string/this_week_cap"
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:textSize="28px"/>
 
@@ -112,7 +113,7 @@
                     android:layout_width="40px"
                     android:layout_height="40px"
                     android:layout_alignParentTop="true"
-                    android:background="@color/new_orange">
+                    android:background="@color/transparent">
 
                 </RelativeLayout>
 
@@ -127,8 +128,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewPrev"
-                    android:layout_width="23px"
-                    android:layout_height="14px"
+                    android:layout_width="36px"
+                    android:layout_height="21px"
                     android:layout_centerVertical="true"
                     android:layout_toLeftOf="@+id/textViewInvPeriod"
                     android:rotation="180"
@@ -146,8 +147,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewNext"
-                    android:layout_width="23px"
-                    android:layout_height="14px"
+                    android:layout_width="36px"
+                    android:layout_height="21px"
                     android:layout_toRightOf="@+id/textViewInvPeriod"
                     android:layout_marginLeft="60px"
                     android:layout_centerVertical="true"
@@ -287,6 +288,7 @@
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginTop="42px"
                     android:layout_marginLeft="32px"
                     android:layout_marginRight="32px">
@@ -370,7 +372,7 @@
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutRideHistory"
-                android:layout_width="680px"
+                android:layout_width="620px"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="44px"
@@ -392,6 +394,7 @@
                     android:layout_width="23px"
                     android:layout_height="14px"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="4px"
                     android:src="@drawable/arrow_icon_normal"/>
 

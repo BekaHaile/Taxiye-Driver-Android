@@ -9,7 +9,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/menu_black"
+        android:background="@color/blue_black_v2"
         android:splitMotionEvents="false" >
 
         <Button

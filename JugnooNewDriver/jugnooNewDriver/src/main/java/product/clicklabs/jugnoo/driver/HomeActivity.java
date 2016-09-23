@@ -1674,7 +1674,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					overridePendingTransition(R.anim.left_in, R.anim.left_out);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 
@@ -2663,7 +2663,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				case D_INITIAL:
 					updateDriverServiceFast("no");
-
+					setPannelVisibility(true);
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
@@ -2727,6 +2727,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					updateDriverServiceFast("no");
 					inRideZoom();
+					setPannelVisibility(false);
 					setDriverServiceRunOnOnlineBasis();
 					if (!Utils.isServiceRunning(HomeActivity.this, DriverLocationUpdateService.class)) {
 						startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -2777,7 +2778,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
-
+					setPannelVisibility(false);
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
 
@@ -2821,7 +2822,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-
+					setPannelVisibility(false);
 					if (map != null) {
 						map.clear();
 						setAttachedCustomerMarkers();
@@ -2897,7 +2898,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-
+					setPannelVisibility(false);
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
 					startRideChronometer(customerInfo);
@@ -2974,7 +2975,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
-
+					setPannelVisibility(false);
 					cancelTimerPathRerouting();
 
 					break;
@@ -2987,7 +2988,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
-
+					setPannelVisibility(false);
 					GCMIntentService.clearNotifications(getApplicationContext());
 					GCMIntentService.stopRing(true, HomeActivity.this);
 
@@ -3028,9 +3029,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			map.setPadding(0, 0, 0, 0);
 			showAllRideRequestsOnMap();
 
-			if(DriverScreenMode.D_INITIAL == mode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
+			if(DriverScreenMode.D_INITIAL == mode ){
+				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			} else {
+				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			}
 
@@ -3208,6 +3211,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	public void setPannelVisibility(boolean state){
+		if(state){
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+		}else{
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
+		}
+	}
+
 
 	@Override
 	protected void onResume() {
@@ -3224,6 +3235,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				buildTimeSettingsAlertDialog(this);
 			}
 
+		}
+
+		if(driverRequestListAdapter.customerInfos.size() > 0){
+			setPannelVisibility(false);
+		} else {
+			setPannelVisibility(true);
 		}
 
 		resumed = true;
@@ -3474,6 +3491,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					&& customerInfos.size() > 0) {
 				driverRideRequestsList.setVisibility(View.VISIBLE);
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
+				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
@@ -5615,10 +5633,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							|| driverScreenMode == DriverScreenMode.D_START_RIDE) {
 						if (engagementId.equalsIgnoreCase(Data.getCurrentEngagementId())) {
 							driverScreenMode = DriverScreenMode.D_INITIAL;
+							setPannelVisibility(true);
 							switchDriverScreen(driverScreenMode);
 							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
 						}
 					} else if(driverScreenMode == DriverScreenMode.D_IN_RIDE){
+						setPannelVisibility(false);
 						removePRMarkerAndRefreshList();
 					}
 				}
@@ -5635,7 +5655,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			@Override
 			public void run() {
 				showAllRideRequestsOnMap();
+				setPannelVisibility(true);
 				if (driverScreenMode == DriverScreenMode.D_IN_RIDE) {
+					setPannelVisibility(false);
 					removePRMarkerAndRefreshList();
 				}
 			}
@@ -5698,6 +5720,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					callAndHandleStateRestoreAPI();
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
+						setPannelVisibility(true);
 						perfectRidePassengerInfoRl.setVisibility(View.GONE);
 						driverPassengerInfoRl.setVisibility(View.VISIBLE);
 						if(!"".equalsIgnoreCase(message)){

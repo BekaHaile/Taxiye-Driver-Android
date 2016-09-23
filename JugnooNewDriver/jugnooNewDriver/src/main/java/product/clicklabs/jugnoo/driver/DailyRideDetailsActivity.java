@@ -29,9 +29,11 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -44,7 +46,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	Button backBtn;
 	TextView title;
-	String date;
+	String date = "";
 	TextView textViewInfoDisplay;
 	ArrayList<DailyEarningItem> dailyEarningItems = new ArrayList<>();
 	RecyclerView recyclerViewDailyInfo;
@@ -52,7 +54,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 	Shader textShader;
 	public static RideInfo openedRideInfo;
 	public ASSL assl;
-	int invoice_id;
+	int invoice_id = 0;
 	CustomerInfo customerInfo;
 
 
@@ -82,8 +84,13 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 		try {
 			Intent intent = getIntent();
-			date = intent.getStringExtra("date");
-			invoice_id = intent.getIntExtra("invoice_id", 0);
+
+			if(intent.getStringExtra("date") != null) {
+				date = intent.getStringExtra("date");
+			}
+			if(intent.getIntExtra("invoice_id", 0) != 0) {
+				invoice_id = intent.getIntExtra("invoice_id", 0);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,7 +114,11 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getRidesAsync(date, DailyRideDetailsActivity.this);
+				if(!"".equalsIgnoreCase(date)) {
+					getRidesAsync(date, DailyRideDetailsActivity.this);
+				} else if(invoice_id != 0){
+					getInvoiceDetails(DailyRideDetailsActivity.this);
+				}
 			}
 		});
 
@@ -121,16 +132,31 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		dailyEarningItems = new ArrayList<>();
 		dailyRideDetailsAdapter = new DailyRideDetailsAdapter(this, dailyEarningItems, new DailyRideDetailsAdapter.Callback() {
 			@Override
-			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras) {
-				Intent intent = new Intent(DailyRideDetailsActivity.this, RideDetailsNewActivity.class);
-				Gson gson = new Gson();
-				intent.putExtra("extras", gson.toJson(extras, InfoTileResponse.Tile.Extras.class));
-				DailyRideDetailsActivity.this.startActivity(intent);
-				DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras, String date) {
+
+				if(extras !=null) {
+					Intent intent = new Intent(DailyRideDetailsActivity.this, RideDetailsNewActivity.class);
+					Gson gson = new Gson();
+					intent.putExtra("extras", gson.toJson(extras, InfoTileResponse.Tile.Extras.class));
+					DailyRideDetailsActivity.this.startActivity(intent);
+					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else if(date != null) {
+					Intent intent = new Intent(DailyRideDetailsActivity.this, DailyRideDetailsActivity.class);
+					intent.putExtra("date", date);
+					DailyRideDetailsActivity.this.startActivity(intent);
+					DailyRideDetailsActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
 			}
 		});
 		recyclerViewDailyInfo.setAdapter(dailyRideDetailsAdapter);
-		getRidesAsync(date, this);
+
+		if(!"".equalsIgnoreCase(date)) {
+			title.setText(getResources().getString(R.string.daily_earnings));
+			getRidesAsync(date, this);
+		} else if(invoice_id != 0){
+			title.setText(getResources().getString(R.string.invoice_detail));
+			getInvoiceDetails(this);
+		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -142,13 +168,13 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	}
 
-	public void updateListData(String message, boolean errorOccurred, DailyEarningResponse dailyEarningResponse) {
+	public void updateListData(String message, boolean errorOccurred, DailyEarningResponse dailyEarningResponse, InvoiceDetailResponseNew invoiceDetailResponseNew) {
 		if (errorOccurred) {
 			textViewInfoDisplay.setText(message);
 			textViewInfoDisplay.setVisibility(View.VISIBLE);
 			dailyRideDetailsAdapter.notifyDataSetChanged();
 		} else {
-			dailyRideDetailsAdapter.setList(dailyEarningItems, dailyEarningResponse);
+			dailyRideDetailsAdapter.setList(dailyEarningItems, dailyEarningResponse, invoiceDetailResponseNew);
 		}
 	}
 
@@ -188,33 +214,36 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 										if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
 											HomeActivity.logoutUser(activity);
 										} else {
-											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null);
+											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 										}
 
 									} else {
 										dailyEarningItems.clear();
-										dailyEarningItems.add(new DailyEarningItem(null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
+										dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
 										for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
 											dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
 													, dailyEarningResponse.getDailyParam().get(i).getValue(),
-													null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+													null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
 										}
-										dailyEarningItems.add(new DailyEarningItem(null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+										dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
 
 										for (int i=0; i<dailyEarningResponse.getTrips().size(); i++) {
 											dailyEarningItems.add(new DailyEarningItem(null, 0,dailyEarningResponse.getTrips().get(i).getTime(),
-													 dailyEarningResponse.getTrips().get(i).getEarning(),
-													 dailyEarningResponse.getTrips().get(i).getExtras(), DailyRideDetailsAdapter.ViewType.RIDE_INFO));
+													dailyEarningResponse.getTrips().get(i).getDate(),
+													dailyEarningResponse.getTrips().get(i).getType(),
+													dailyEarningResponse.getTrips().get(i).getStatus(),
+													dailyEarningResponse.getTrips().get(i).getEarning(),
+													dailyEarningResponse.getTrips().get(i).getExtras(), DailyRideDetailsAdapter.ViewType.RIDE_INFO));
 										}
 
-										updateListData(getResources().getString(R.string.no_rides), false, dailyEarningResponse);
+										updateListData(getResources().getString(R.string.no_rides), false, dailyEarningResponse, null);
 									}
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
 								try {
-									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null);
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 								} catch (Exception e1) {
 									e1.printStackTrace();
 								}
@@ -225,7 +254,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 						@Override
 						public void failure(RetrofitError error) {
 							try {
-								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null);
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
@@ -238,24 +267,52 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	private void getInvoiceDetails(final Activity activity) {
 		try {
-			RestClient.getApiServices().invoiceDetail(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponse>() {
+			RestClient.getApiServices().invoiceDetailNew(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponseNew>() {
 				@Override
-				public void success(InvoiceDetailResponse invoiceDetailResponse, Response response) {
+				public void success(InvoiceDetailResponseNew invoiceDetailResponse, Response response) {
 					try {
-						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
-						jObj = new JSONObject(jsonString);
-						if (!jObj.isNull("error")) {
-							String errorMessage = jObj.getString("error");
-							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-								HomeActivity.logoutUser(activity);
+						if (activity != null) {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								} else {
+									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
+								}
+
+							} else {
+								dailyEarningItems.clear();
+								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
+
+								for (int i=0; i<invoiceDetailResponse.getEarningParams().size(); i++) {
+									dailyEarningItems.add(new DailyEarningItem(invoiceDetailResponse.getEarningParams().get(i).getText()
+											, invoiceDetailResponse.getEarningParams().get(i).getValue(),
+											null, null, 0, null, 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+								}
+								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+
+								for (int i=0; i<invoiceDetailResponse.getDailyBreakup().size(); i++) {
+									dailyEarningItems.add(new DailyEarningItem(null, 0,null,
+											invoiceDetailResponse.getDailyBreakup().get(i).getDate(),0,null,
+											invoiceDetailResponse.getDailyBreakup().get(i).getEarnings(),
+											null, DailyRideDetailsAdapter.ViewType.RIDE_INFO));
+								}
+
+								updateListData(getResources().getString(R.string.no_rides), false, null, invoiceDetailResponse);
 							}
-						} else {
-//							updateData(invoiceDetailResponse);
 						}
-					} catch (Exception exception) {
-						exception.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+						try {
+							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
 					}
+
 				}
 
 				@Override

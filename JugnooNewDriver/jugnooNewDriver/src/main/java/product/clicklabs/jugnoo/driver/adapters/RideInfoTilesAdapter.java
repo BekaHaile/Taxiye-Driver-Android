@@ -16,6 +16,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
  * Created by aneesh on 10/4/15.
@@ -50,11 +51,8 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 			rideInfoViewHolder.textViewInfoText.setVisibility(View.GONE);
 		}
 
-		if(itr.getValue() != 0){
-			rideInfoViewHolder.textViewInfoValue.setText(""+itr.getValue());
-		} else {
-			rideInfoViewHolder.textViewInfoValue.setVisibility(View.GONE);
-		}
+		rideInfoViewHolder.textViewInfoValue.setText(Utils.getAbsAmount(context, itr.getValue()));
+
 
 
 	}

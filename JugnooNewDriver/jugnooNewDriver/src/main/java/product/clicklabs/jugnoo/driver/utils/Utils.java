@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -63,6 +64,7 @@ import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 
 
@@ -836,6 +838,21 @@ public class Utils {
 				matrix, false);
 
 		return resizedBitmap;
+	}
+
+	public static String getAbsAmount(Context context, double amount){
+		String showAmount;
+		try {
+			if(amount >= 0){
+				showAmount = context.getResources().getString(R.string.rupee)+amount;
+			} else {
+				showAmount = "-"+context.getResources().getString(R.string.rupee)+Math.abs(amount);
+			}
+			return showAmount;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 
 }
