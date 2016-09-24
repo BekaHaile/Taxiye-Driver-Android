@@ -39,9 +39,9 @@ public class DeliveryAddressListAdapter extends BaseAdapter {
 	LayoutInflater mInflater;
 	ViewHolderDeliveryAddress holder;
 	Context context;
-	ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList;
+	ArrayList<String> deliveryAddressList;
 
-	public DeliveryAddressListAdapter(Context context, ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList) {
+	public DeliveryAddressListAdapter(Context context, ArrayList<String> deliveryAddressList) {
 		this.context = context;
 		this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		this.deliveryAddressList = deliveryAddressList;
@@ -86,9 +86,9 @@ public class DeliveryAddressListAdapter extends BaseAdapter {
 
 		holder.id = position;
 
-		DeliveryDetailResponse.Details.To address = deliveryAddressList.get(position);
+		String address = deliveryAddressList.get(position);
 
-		holder.textViewToValue.setText(address.getAddress());
+		holder.textViewToValue.setText(address);
 
 
 		return convertView;

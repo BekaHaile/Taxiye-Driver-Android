@@ -795,6 +795,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
 
+			slidingUpPanelLayout.setScrollableView(recyclerViewInfo);
+
 
 			slidingUpPanelLayout.setPanelHeight((int) (90f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {

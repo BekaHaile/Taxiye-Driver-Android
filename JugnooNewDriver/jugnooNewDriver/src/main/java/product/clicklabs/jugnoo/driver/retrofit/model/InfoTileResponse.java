@@ -259,6 +259,9 @@ public class InfoTileResponse {
 			@SerializedName("engagement_id")
 			@Expose
 			private Integer engagementId;
+			@SerializedName("time")
+			@Expose
+			private String time;
 			@SerializedName("date")
 			@Expose
 			private String date;
@@ -285,19 +288,16 @@ public class InfoTileResponse {
 			private String from;
 			@SerializedName("to")
 			@Expose
-			private String to;
+			private List<String> to = new ArrayList<String>();
 			@SerializedName("pickup_latitude")
 			@Expose
 			private Double pickupLatitude;
 			@SerializedName("pickup_longitude")
 			@Expose
 			private Double pickupLongitude;
-			@SerializedName("drop_latitude")
+			@SerializedName("drop_coordinates")
 			@Expose
-			private Double dropLatitude;
-			@SerializedName("drop_longitude")
-			@Expose
-			private Double dropLongitude;
+			private List<DropCoordinate> dropCoordinates = new ArrayList<DropCoordinate>();
 			@SerializedName("ride_time")
 			@Expose
 			private Integer rideTime;
@@ -346,6 +346,26 @@ public class InfoTileResponse {
 			public void setEngagementId(Integer engagementId) {
 				this.engagementId = engagementId;
 			}
+
+
+			/**
+			 *
+			 * @return
+			 * The time
+			 */
+			public String getTime() {
+				return time;
+			}
+
+			/**
+			 *
+			 * @param time
+			 * The time
+			 */
+			public void setTime(String time) {
+				this.time = time;
+			}
+
 
 			/**
 			 *
@@ -496,7 +516,7 @@ public class InfoTileResponse {
 			 * @return
 			 * The to
 			 */
-			public String getTo() {
+			public List<String> getTo() {
 				return to;
 			}
 
@@ -505,7 +525,7 @@ public class InfoTileResponse {
 			 * @param to
 			 * The to
 			 */
-			public void setTo(String to) {
+			public void setTo(List<String> to) {
 				this.to = to;
 			}
 
@@ -548,37 +568,19 @@ public class InfoTileResponse {
 			/**
 			 *
 			 * @return
-			 * The dropLatitude
+			 * The dropCoordinates
 			 */
-			public Double getDropLatitude() {
-				return dropLatitude;
+			public List<DropCoordinate> getDropCoordinates() {
+				return dropCoordinates;
 			}
 
 			/**
 			 *
-			 * @param dropLatitude
-			 * The drop_latitude
+			 * @param dropCoordinates
+			 * The drop_coordinates
 			 */
-			public void setDropLatitude(Double dropLatitude) {
-				this.dropLatitude = dropLatitude;
-			}
-
-			/**
-			 *
-			 * @return
-			 * The dropLongitude
-			 */
-			public Double getDropLongitude() {
-				return dropLongitude;
-			}
-
-			/**
-			 *
-			 * @param dropLongitude
-			 * The drop_longitude
-			 */
-			public void setDropLongitude(Double dropLongitude) {
-				this.dropLongitude = dropLongitude;
+			public void setDropCoordinates(List<DropCoordinate> dropCoordinates) {
+				this.dropCoordinates = dropCoordinates;
 			}
 
 
@@ -644,10 +646,58 @@ public class InfoTileResponse {
 				this.redirectUrl = redirectUrl;
 			}
 
+			public class DropCoordinate {
+
+				@SerializedName("latitude")
+				@Expose
+				private Double latitude;
+				@SerializedName("longitude")
+				@Expose
+				private Double longitude;
+
+				/**
+				 *
+				 * @return
+				 * The latitude
+				 */
+				public Double getLatitude() {
+					return latitude;
+				}
+
+				/**
+				 *
+				 * @param latitude
+				 * The latitude
+				 */
+				public void setLatitude(Double latitude) {
+					this.latitude = latitude;
+				}
+
+				/**
+				 *
+				 * @return
+				 * The longitude
+				 */
+				public Double getLongitude() {
+					return longitude;
+				}
+
+				/**
+				 *
+				 * @param longitude
+				 * The longitude
+				 */
+				public void setLongitude(Double longitude) {
+					this.longitude = longitude;
+				}
+
+			}
+
 		}
 
 	}
 
 }
+
 
 

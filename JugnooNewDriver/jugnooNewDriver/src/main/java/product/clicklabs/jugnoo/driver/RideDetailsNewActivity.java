@@ -38,12 +38,13 @@ import java.util.List;
 
 import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
+import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
-import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -60,8 +61,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class RideDetailsNewActivity extends BaseFragmentActivity implements GoogleApiClient.ConnectionCallbacks,
-		GoogleApiClient.OnConnectionFailedListener {
+public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 	LinearLayout relative;
 
@@ -70,7 +70,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
-			textViewFromValue, textViewToValue, textViewActualFareValue;
+			textViewFromValue, textViewActualFareValue;
 
 	NonScrollListView listViewDeliveryAddresses;
 	DeliveryAddressListAdapter deliveryAddressListAdapter;
@@ -87,8 +87,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 	public ASSL assl;
 	Shader textShader;
 	GoogleMap mapLite;
-	private GoogleApiClient mGoogleApiClient;
-	private LatLng pickupLatLng, dropLatLng;
+	private ArrayList<LatLng> latLngs = new ArrayList<>();
 	private SearchResult searchResultGlobal;
 	InfoTileResponse.Tile.Extras extras;
 	CustomerInfo customerInfo;
@@ -128,13 +127,6 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 			e.printStackTrace();
 		}
 
-		mGoogleApiClient = new GoogleApiClient
-				.Builder(this)
-				.addApi(Places.GEO_DATA_API)
-				.addApi(Places.PLACE_DETECTION_API)
-				.addConnectionCallbacks(this)
-				.addOnConnectionFailedListener(this)
-				.build();
 
 
 		relative = (LinearLayout) findViewById(R.id.relative);
@@ -168,7 +160,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
 
 
-		ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList = new ArrayList<>();
+		ArrayList<String> deliveryAddressList = new ArrayList<>();
 		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
 		deliveryAddressListAdapter = new DeliveryAddressListAdapter(RideDetailsNewActivity.this, deliveryAddressList);
 		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
@@ -193,6 +185,78 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 							return true;
 						}
 					});
+					final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+					try {
+						latLngs.clear();
+
+						if(extras.getPickupLatitude() != null && extras.getPickupLongitude() != null){
+							latLngs.add(new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude()));
+							MarkerOptions markerOptionsS = new MarkerOptions();
+							markerOptionsS.title("Start");
+							markerOptionsS.position(new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude()));
+							markerOptionsS.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+									.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.start_marker_v2)));
+							mapLite.addMarker(markerOptionsS);
+							builder.include(new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude()));
+						}
+						if(extras.getDropCoordinates() != null){
+							for(InfoTileResponse.Tile.Extras.DropCoordinate dropCoordinate : extras.getDropCoordinates()){
+								latLngs.add(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+								MarkerOptions markerOptionsE = new MarkerOptions();
+								markerOptionsE.title("End");
+								markerOptionsE.position(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+								markerOptionsE.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+										.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.end_marker_v2)));
+								mapLite.addMarker(markerOptionsE);
+								builder.include(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+							}
+						}
+						if(latLngs.size() > 1){
+							new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
+									new ApiGoogleDirectionWaypoints.Callback() {
+										@Override
+										public void onPre() {
+
+										}
+
+										@Override
+										public boolean showPath() {
+											return true;
+										}
+
+										@Override
+										public void polylineOptionGenerated(PolylineOptions polylineOptions) {
+											mapLite.addPolyline(polylineOptions);
+
+											if(mapLite != null){
+												mapLite.addPolyline(polylineOptions);
+											}
+										}
+
+										@Override
+										public void onFinish() {
+										}
+									}).execute();
+						}
+
+						final LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
+						new Handler().postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								try {
+									float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+									mapLite.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds,
+											(int) (660f * minRatio), (int) (240f * minRatio),
+											(int) (minRatio * 60)));
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}, 500);
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 				}
 			}
@@ -218,8 +282,8 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
 		textViewFromValue.setTypeface(Data.latoRegular(this));
-		textViewToValue = (TextView) findViewById(R.id.textViewToValue);
-		textViewToValue.setTypeface(Data.latoRegular(this));
+//		textViewToValue = (TextView) findViewById(R.id.textViewToValue);
+//		textViewToValue.setTypeface(Data.latoRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
 		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
 
@@ -246,7 +310,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 
 		if (extras != null) {
 
-			dateTimeValue.setText(DateOperations.convertDate(DateOperations.utcToLocal(extras.getDate())));
+			dateTimeValue.setText(DateOperations.convertDate(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime()));
 
 			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
 					+ " " + getResources().getString(R.string.km));
@@ -278,32 +342,18 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 //				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
 //			}
 			textViewFromValue.setText(extras.getFrom());
-			textViewToValue.setText(extras.getTo());
 			fareStructureInfos.addAll(extras.getRideParam());
+			deliveryAddressList.addAll(extras.getTo());
+			deliveryAddressListAdapter.notifyDataSetChanged();
 			rideInfoTilesAdapter.notifyDataSetChanged();
 		} else {
 			performBackPressed();
 		}
 
-		try {
-			if(extras.getPickupLatitude() != null && extras.getPickupLongitude() != null){
-				 pickupLatLng = new LatLng(extras.getPickupLatitude(), extras.getPickupLongitude());
-			}
-			if(extras.getDropLatitude() != null && extras.getDropLongitude() != null){
-				 dropLatLng = new LatLng(extras.getDropLatitude(), extras.getDropLongitude());
-			}
-
-			if (pickupLatLng != null && dropLatLng != null) {
-				getDirectionsAndComputeFare(pickupLatLng, dropLatLng);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 
-	private void getDirectionsAndComputeFare(final LatLng sourceLatLng, final LatLng destLatLng) {
+	private void getDirections(final LatLng sourceLatLng, final LatLng destLatLng) {
 		try {
 			RestClient.getGoogleApiServices().getDirections(sourceLatLng.latitude + "," + sourceLatLng.longitude,
 					destLatLng.latitude + "," + destLatLng.longitude, false, "driving", false, new retrofit.Callback<SettleUserDebt>() {
@@ -391,19 +441,4 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		System.gc();
 	}
 
-
-	@Override
-	public void onConnected(Bundle bundle) {
-
-	}
-
-	@Override
-	public void onConnectionSuspended(int i) {
-
-	}
-
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-
-	}
 }

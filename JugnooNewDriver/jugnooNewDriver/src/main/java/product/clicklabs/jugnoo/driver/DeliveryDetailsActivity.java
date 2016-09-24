@@ -155,9 +155,9 @@ public class DeliveryDetailsActivity extends BaseActivity {
 		((TextView) findViewById(R.id.textViewAccountBalanceText)).setTypeface(Data.latoRegular(this));
 
 
-		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
-		deliveryAddressListAdapter = new DeliveryAddressListAdapter(DeliveryDetailsActivity.this, deliveryAddressList);
-		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
+//		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
+//		deliveryAddressListAdapter = new DeliveryAddressListAdapter(DeliveryDetailsActivity.this, deliveryAddressList);
+//		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
 
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
