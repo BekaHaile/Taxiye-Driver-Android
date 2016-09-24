@@ -19,6 +19,8 @@ import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
+import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
@@ -26,6 +28,7 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
@@ -103,6 +106,9 @@ public class DriverLocationDispatcher {
 										Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
 										Database2.getInstance(context).updateDriverLastLocationTime();
 										Prefs.with(context).save(SPLabels.UPDATE_DRIVER_LOCATION_TIME, System.currentTimeMillis());
+										Intent intent1 = new Intent(context, FetchDataUsageService.class);
+										intent1.putExtra("task_id", "2");
+										context.startService(intent1);
 										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 									}
 								}
@@ -126,7 +132,15 @@ public class DriverLocationDispatcher {
 				context.stopService(new Intent(context, DriverLocationUpdateService.class));
 			}
 		}
+		catch (RetrofitError retrofitError){
+			Intent intent1 = new Intent(context, FetchDataUsageService.class);
+			intent1.putExtra("task_id", "1");
+			context.startService(intent1);
+		}
 		catch (Exception e) {
+			Intent intent1 = new Intent(context, FetchDataUsageService.class);
+			intent1.putExtra("task_id", "1");
+			context.startService(intent1);
 			e.printStackTrace();
 		}
 	}

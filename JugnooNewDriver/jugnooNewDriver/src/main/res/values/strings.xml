@@ -688,7 +688,7 @@
 	<string name="audit_lower">Audit</string>
 	<string name="deletion_confirmation">Are you sure you want to delete image ?</string>
 	<string name="estimated_payout_lower">Estimated Payout</string>
-	<string name="bank_deposite">Bank Deposite</string>
+	<string name="bank_deposite">Bank Deposit</string>
 	<string name="trips">Trips</string>
 	<string name="home">Home</string>
 	<string name="duration">Duration</string>
@@ -696,6 +696,7 @@
 	<string name="Invoices_cap">INVOICES</string>
 	<string name="Today_earning">TODAY\'S EARNING</string>
 	<string name="daily_breakup">DAILY BREAKUP</string>
+	<string name="trip_earning">TRIP EARNINGS</string>
 
 
 	<string-array name="CountryCodes" >

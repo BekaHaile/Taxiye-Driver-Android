@@ -8,20 +8,20 @@
 
 
         <ImageView
-            android:layout_width="580px"
+            android:layout_width="620px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="540px"
+            android:layout_width="600px"
             android:layout_height="wrap_content"
             android:layout_marginTop="2px">
 
             <TextView
                 android:id="@+id/textViewActualFareText"
-                android:layout_width="400px"
+                android:layout_width="460px"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/estimated_payout_lower"
@@ -40,13 +40,13 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="540px"
+            android:layout_width="600px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
             <TextView
                 android:id="@+id/textViewCustomerPaidText"
-                android:layout_width="400px"
+                android:layout_width="460px"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/cash_collected"
@@ -65,20 +65,20 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="580px"
+            android:layout_width="620px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="540px"
+            android:layout_width="600px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
             <TextView
                 android:id="@+id/textViewBankDeposite"
-                android:layout_width="400px"
+                android:layout_width="460px"
                 android:layout_height="45px"
                 android:gravity="center_vertical"
                 android:text="@string/bank_deposite"
@@ -97,7 +97,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="580px"
+            android:layout_width="620px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="35px"
@@ -186,7 +186,7 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="580px"
+            android:layout_width="620px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="35px"
@@ -194,7 +194,7 @@
 
         <TextView
             android:id="@+id/textViewTripsText"
-            android:layout_width="535px"
+            android:layout_width="600px"
             android:layout_height="45px"
             android:gravity="center_vertical"
             android:text="@string/trips"

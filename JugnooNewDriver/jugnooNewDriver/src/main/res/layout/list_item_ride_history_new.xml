@@ -6,32 +6,37 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="600px"
         android:layout_height="140px"
-        android:layout_marginLeft="64px"
+        android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/relativeLeft"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
 
 
             <TextView
                 android:id="@+id/textViewInfoDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="MON, 00/00"
+                android:layout_height="45px"
+                android:gravity="center"
+                android:text="MON"
                 android:textColor="@color/grey_light_v2"
-                android:textSize="28px"/>
+                android:textSize="30px"/>
 
             <RelativeLayout
                 android:id="@+id/relativeBelow"
                 android:layout_below="@+id/textViewInfoDate"
-                android:layout_marginTop="10px"
+                android:layout_marginTop="5px"
+                android:visibility="visible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -40,10 +45,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45px"
                     android:text="00:00"
-
                     android:layout_centerVertical="true"
                     android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
+                    android:textSize="32px"/>
 
 
                 <TextView
@@ -55,16 +59,21 @@
                     android:text="@string/status"
                     android:layout_centerVertical="true"
                     android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
+                    android:textSize="32px"/>
 
             </RelativeLayout>
 
-            <RelativeLayout
+        </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/relativeRight"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                >
 
                 <TextView
                     android:id="@+id/textViewType"
@@ -75,8 +84,6 @@
                     android:paddingRight="10px"
                     android:text="@string/delivery"
                     android:layout_marginRight="15px"
-                    android:layout_marginTop="2px"
-                    android:layout_toLeftOf="@+id/textViewInfoValue"
                     android:background="@drawable/background_dark_grey_rounded_bordered"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
@@ -87,7 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45px"
                     android:text="0"
-                    android:layout_toLeftOf="@+id/imageViewArrow"
                     android:layout_marginRight="10px"
                     android:layout_centerVertical="true"
                     android:textColor="@color/black_text_v2"
@@ -95,23 +101,20 @@
 
                 <ImageView
                     android:id="@+id/imageViewArrow"
-                    android:layout_width="20px"
-                    android:layout_height="12px"
-                    android:src="@drawable/arrow_thick"
-                    android:layout_marginTop="18px"
+                    android:layout_width="26px"
+                    android:layout_height="22px"
+                    android:src="@drawable/arrow_thick_new"
+                    android:layout_marginTop="12px"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="48px"/>
+                    android:layout_marginRight="4px"/>
 
-            </RelativeLayout>
-
-
-        </RelativeLayout>
+            </LinearLayout>
 
 
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="660px"
+        android:layout_width="620px"
         android:layout_height="2px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="4px"

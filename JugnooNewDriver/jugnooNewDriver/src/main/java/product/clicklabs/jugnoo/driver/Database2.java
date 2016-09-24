@@ -21,6 +21,7 @@ import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
+import product.clicklabs.jugnoo.driver.datastructure.UsageData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -161,6 +162,11 @@ public class Database2 {                                                        
 	private static final String CUSTOMER_START_RIDE_TIME = "customer_start_ride_time";
 	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
 
+
+	private static final String TABLE_DATA_USAGE = "table_data_usage";
+	private static final String LOG_TIME = "log_time";
+	private static final String BYTES_RECEIVED = "bytes_received";
+	private static final String BYTES_SENT = "bytes_sent";
 
 	private static final String TABLE_POOL_DISCOUNT_FLAG = "table_pool_discount_flag";
 	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
@@ -306,6 +312,12 @@ public class Database2 {                                                        
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_CUSTOMER_RIDE_DATA + " ("
 				+ CUSTOMER_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ CUSTOMER_START_RIDE_TIME + " TEXT"
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DATA_USAGE + " ("
+				+ LOG_TIME + " TEXT, "
+				+ BYTES_RECEIVED + " TEXT, "
+				+ BYTES_SENT + " TEXT"
 				+ ");");
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_POOL_DISCOUNT_FLAG + " ("
@@ -1767,6 +1779,64 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+
+	public long insertDataUsage(String time, String recived, String sent) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(LOG_TIME, time);
+			contentValues.put(BYTES_RECEIVED, recived);
+			contentValues.put(BYTES_SENT, sent);
+
+			return database.insert(TABLE_DATA_USAGE, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public String getDataUsage() {
+		String usageDataStr = "";
+		String template = "time,receive,sent";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.LOG_TIME, Database2.BYTES_RECEIVED, Database2.BYTES_SENT};
+			Cursor cursor = database.query(Database2.TABLE_DATA_USAGE, columns, null, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.LOG_TIME);
+			int i1 = cursor.getColumnIndex(Database2.BYTES_RECEIVED);
+			int i2 = cursor.getColumnIndex(Database2.BYTES_SENT);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					UsageData usageData = new UsageData(cursor.getString(i0),
+							cursor.getString(i1),
+							cursor.getString(i2));
+
+					usageDataStr = usageDataStr + usageData.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				usageDataStr = template + newLine + usageDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return usageDataStr;
+	}
+
+	public void deleteUsageData() {
+		try {
+			database.delete(Database2.TABLE_DATA_USAGE, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

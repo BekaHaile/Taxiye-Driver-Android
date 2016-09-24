@@ -31,4 +31,15 @@
         android:textColor="@color/red_v2"
         android:textSize="72px"/>
 
+    <TextView
+        android:id="@+id/textViewEarningsText"
+        android:layout_width="600px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:singleLine="true"
+        android:layout_marginTop="48px"
+        android:text="@string/trip_earning"
+        android:textColor="@color/grey_light_v2"
+        android:textSize="30px"/>
+
 </LinearLayout>

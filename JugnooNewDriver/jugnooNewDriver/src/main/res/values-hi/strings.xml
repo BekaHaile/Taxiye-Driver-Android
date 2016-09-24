@@ -699,6 +699,7 @@
 	<string name="Invoices_cap">INVOICES</string>
 	<string name="Today_earning">TODAY\'S EARNING</string>
 	<string name="daily_breakup">DAILY BREAKUP</string>
+	<string name="trip_earning">TRIP EARNINGS</string>
 	>>>>>>> develop_new
 
 	<string-array name="CountryCodes" >

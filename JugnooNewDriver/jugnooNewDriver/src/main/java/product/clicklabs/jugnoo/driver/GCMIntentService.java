@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -1193,11 +1194,14 @@ public class GCMIntentService extends IntentService {
 				try {
 					final long resposeTime = System.currentTimeMillis();
 					String networkName = getNetworkName(context);
+					Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("uuid", uuid);
 					params.put("timestamp", ackTimeStamp);
 					params.put("network_name", networkName);
+					params.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
+					params.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
 
 					RestClient.getApiServices().sendHeartbeatAckToServerRetro(params, new Callback<RegisterScreenResponse>() {
 						@Override

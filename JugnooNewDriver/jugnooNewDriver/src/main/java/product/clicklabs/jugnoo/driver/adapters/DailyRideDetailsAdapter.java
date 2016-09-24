@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -115,6 +116,10 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderRide)holder).textViewType.setVisibility(View.GONE);
 				}
 
+				if(invoiceDetailResponseNew != null){
+					((ViewHolderRide)holder).relativeBelow.setVisibility(View.GONE);
+				}
+
 
                 ((ViewHolderRide)holder).linearLayoutRideItem.setTag(position);
 				((ViewHolderRide)holder).linearLayoutRideItem.setOnClickListener(new View.OnClickListener() {
@@ -138,14 +143,16 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				if(dailyEarningResponse != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getPaidByCustomer()));
-					((ViewHolderHeader) holder).onlineTimeValue.setText(""+dailyEarningResponse.getTimeOnline());
+					((ViewHolderHeader) holder).onlineTimeValue.setText(""+dailyEarningResponse.getTimeOnline()
+							+ activity.getResources().getString(R.string.km));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, dailyEarningResponse.getAccount()));
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+dailyEarningResponse.getTotalTrips());
 					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.trips));
 				} else if(invoiceDetailResponseNew != null) {
 					((ViewHolderHeader) holder).textViewActualFareValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getEarnings()));
 					((ViewHolderHeader) holder).textViewCustomerPaid.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getPaidUsingCash()));
-					((ViewHolderHeader) holder).onlineTimeValue.setText(""+invoiceDetailResponseNew.getTotalDistanceTravelled());
+					((ViewHolderHeader) holder).onlineTimeValue.setText(""+invoiceDetailResponseNew.getTotalDistanceTravelled()
+							+ activity.getResources().getString(R.string.km));
 					((ViewHolderHeader) holder).textViewBankDepositeValue.setText(Utils.getAbsAmount(activity, invoiceDetailResponseNew.getAccount()));
 					((ViewHolderHeader) holder).textViewTripCount.setText(""+invoiceDetailResponseNew.getTotalTrips());
 					((ViewHolderHeader) holder).textViewTripsText.setText(activity.getResources().getString(R.string.daily_breakup));
@@ -199,12 +206,14 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 		protected LinearLayout linearLayoutRideItem;
 		protected TextView textViewInfoText, textViewInfoValue, textViewStatus, textViewType, textViewInfoDate;
 		protected ImageView imageViewArrow;
+		protected RelativeLayout relativeBelow;
         public ViewHolderRide(View v, Context context) {
             super(v);
 			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
+			relativeBelow = (RelativeLayout)v.findViewById(R.id.relativeBelow);
 			imageViewArrow = (ImageView)v.findViewById(R.id.imageViewArrow);
 			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
-			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
+			textViewInfoText.setTypeface(Fonts.mavenBold(context));
 			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
 			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
 			textViewStatus = (TextView) v.findViewById(R.id.textViewStatus);
@@ -218,7 +227,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     static class ViewHolderTotalAmount extends RecyclerView.ViewHolder {
 		public LinearLayout linearLayout;
-		public TextView dateTimeValue, textViewEarningsValue;
+		public TextView dateTimeValue, textViewEarningsValue, textViewEarningsText;
         public ViewHolderTotalAmount(View itemView, Context context) {
             super(itemView);
 			linearLayout = (LinearLayout) itemView.findViewById(R.id.linearLayout);
@@ -226,6 +235,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			dateTimeValue.setTypeface(Fonts.mavenRegular(context));
 			textViewEarningsValue = (TextView)itemView.findViewById(R.id.textViewEarningsValue);
 			textViewEarningsValue.setTypeface(Fonts.mavenRegular(context));
+			textViewEarningsText = (TextView)itemView.findViewById(R.id.textViewEarningsText);
+			textViewEarningsText.setTypeface(Fonts.mavenRegular(context));
         }
     }
 

@@ -27,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Field;
@@ -284,7 +285,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/update_driver_location")
-	Response updateDriverLocation(@FieldMap Map<String, String> params);
+	Response updateDriverLocation(@FieldMap Map<String, String> params) throws RetrofitError;
 
 
 	@FormUrlEncoded
@@ -536,4 +537,9 @@ public interface APIServices {
 	@POST("/update_audit_image")
 	void skipImageToServer(@FieldMap Map<String, String> params,
 						   Callback<DocRequirementResponse> cb);
+
+	@FormUrlEncoded
+	@POST("/delivery_details")
+	Response usageData(@Field("access_token") String accessToken,
+						 @Field("usage_data") String usageData);
 }

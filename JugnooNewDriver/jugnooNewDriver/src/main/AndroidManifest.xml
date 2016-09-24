@@ -350,6 +350,10 @@
         <service
             android:name=".services.SyncMessageService"
             android:enabled="true"/>
+        <service
+            android:name=".services.FetchDataUsageService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <receiver android:name=".LocationReceiverDriver"/>
         <receiver android:name=".GPSLocationReceiverBackground"/>

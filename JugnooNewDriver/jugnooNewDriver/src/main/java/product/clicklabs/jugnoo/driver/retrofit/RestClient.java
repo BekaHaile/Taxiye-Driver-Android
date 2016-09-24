@@ -157,7 +157,7 @@ public class RestClient {
 				.setEndpoint("https://marketing-api.jugnoo.in")
 //				.setEndpoint("http://192.168.0.247:8090")
 				.setClient(new Ok3Client(getOkHttpClient()))
-				.setLog(fooLog)
+//				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();
