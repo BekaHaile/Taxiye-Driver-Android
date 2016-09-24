@@ -15,22 +15,40 @@
         android:layout_height="wrap_content"
         android:splitMotionEvents="false">
 
+        <!--<ImageView-->
+            <!--android:id="@+id/destination"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:background="@drawable/red_dot_icon"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewToValue"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="0px"-->
+            <!--android:layout_marginLeft="70px"-->
+            <!--android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"-->
+            <!--android:textColor="@color/bg_grey_opaque"-->
+            <!--android:textSize="28px"/>-->
+
+
         <ImageView
             android:id="@+id/destination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="17px"
+            android:layout_height="17px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/red_dot_icon"/>
+            android:background="@drawable/end_marker_v2"/>
 
         <TextView
             android:id="@+id/textViewToValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0px"
-            android:layout_marginLeft="70px"
+            android:layout_marginLeft="22px"
             android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+            android:layout_marginBottom="0px"
             android:textColor="@color/bg_grey_opaque"
-            android:textSize="28px"/>
+            android:textSize="20px"/>
 
     </LinearLayout>
 

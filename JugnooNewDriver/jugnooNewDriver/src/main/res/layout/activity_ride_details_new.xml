@@ -333,6 +333,7 @@
                 android:textSize="20px"/>
         </LinearLayout>
 
+
         <LinearLayout
             android:id="@+id/linearLayoutTo"
             android:layout_width="match_parent"
@@ -342,24 +343,45 @@
             android:layout_marginRight="20px"
             android:splitMotionEvents="false">
 
-            <ImageView
-                android:layout_width="17px"
-                android:layout_height="17px"
-                android:layout_centerHorizontal="true"
-                android:id="@+id/to"
-                android:background="@drawable/end_marker_v2"/>
-
-            <TextView
-                android:id="@+id/textViewToValue"
-                android:layout_width="wrap_content"
+            <product.clicklabs.jugnoo.driver.utils.NonScrollListView
+                android:id="@+id/listViewDeliveryAddresses"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="22px"
-                android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
-                android:layout_marginBottom="0px"
-                android:textColor="@color/bg_grey_opaque"
-                android:textSize="20px"/>
+                android:layout_marginTop="20px"
+                android:divider="@color/transparent"
+                android:dividerHeight="10px"
+                android:splitMotionEvents="false">
+            </product.clicklabs.jugnoo.driver.utils.NonScrollListView>
 
         </LinearLayout>
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/linearLayoutTo"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="20px"-->
+            <!--android:layout_marginLeft="48px"-->
+            <!--android:layout_marginRight="20px"-->
+            <!--android:splitMotionEvents="false">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="17px"-->
+                <!--android:layout_height="17px"-->
+                <!--android:layout_centerHorizontal="true"-->
+                <!--android:id="@+id/to"-->
+                <!--android:background="@drawable/end_marker_v2"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/textViewToValue"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="22px"-->
+                <!--android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"-->
+                <!--android:layout_marginBottom="0px"-->
+                <!--android:textColor="@color/bg_grey_opaque"-->
+                <!--android:textSize="20px"/>-->
+
+        <!--</LinearLayout>-->
 
         <!-- map layout -->
 

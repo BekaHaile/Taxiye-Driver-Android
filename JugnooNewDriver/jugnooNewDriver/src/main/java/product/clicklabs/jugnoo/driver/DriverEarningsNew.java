@@ -244,7 +244,6 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			public void onClick(View v) {
 				Intent intent = new Intent(DriverEarningsNew.this, DriverRideHistoryNew.class);
 				startActivity(intent);
-				finish();
 				overridePendingTransition(R.anim.left_in, R.anim.left_out);
 			}
 		});
@@ -275,7 +274,6 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
 		intent.putExtra("date", date);
 		startActivity(intent);
-		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}
 
@@ -374,7 +372,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			barChart.setNoDataTextDescription("");
 			dataset.setBarSpacePercent(20);
 			barChart.animateY(500);
-
+			barChart.getLegend().setEnabled(false);
 			barChart.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 			XAxis xAxis = barChart.getXAxis();
@@ -397,6 +395,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			barChart.setDrawGridBackground(false);
 			barChart.setExtraTopOffset(40f);
 			barChart.setExtraRightOffset(20f);
+			barChart.setExtraBottomOffset(10f);
 			dataset.setDrawValues(false);
 
 

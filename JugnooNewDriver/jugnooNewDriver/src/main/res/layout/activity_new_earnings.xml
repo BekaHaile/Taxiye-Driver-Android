@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:gravity="center"
-            android:text="@string/earnings"
+            android:text="@string/earnings_caps"
             android:textColor="@color/red_v2"
             android:textSize="48px"/>
     </RelativeLayout>
@@ -174,15 +174,15 @@
                 <RelativeLayout
                     android:id="@+id/relativeLayout1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32px"
-                    android:layout_marginRight="32px">
+                    android:layout_height="84px"
+                    android:background="@drawable/list_white_selector"
+                    android:gravity="center_vertical">
 
                     <TextView
                         android:id="@+id/textViewDayDateVal1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginLeft="44px"
                         android:text="day, date"
                         android:textColor="@color/grey_black_v2"
                         android:textSize="32px"/>
@@ -200,27 +200,26 @@
                     <ImageView
                         android:id="@+id/arrow1"
                         android:layout_width="23px"
-                        android:layout_height="14px"
+                        android:layout_height="21px"
+                        android:layout_marginTop="8px"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="4px"
-                        android:src="@drawable/arrow_icon_normal"/>
+                        android:layout_marginRight="36px"
+                        android:src="@drawable/arrow_thick_new"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="42px"
-                    android:layout_marginLeft="32px"
-                    android:layout_marginRight="32px">
+                    android:layout_height="84px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
 
                     <TextView
                         android:id="@+id/textViewDayDateVal2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginLeft="44px"
                         android:textColor="@color/grey_black_v2"
                         android:text="day, date"
                         android:textSize="32px"/>
@@ -238,27 +237,26 @@
                     <ImageView
                         android:id="@+id/arrow2"
                         android:layout_width="23px"
-                        android:layout_height="14px"
+                        android:layout_height="21px"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="4px"
-                        android:src="@drawable/arrow_icon_normal"/>
+                        android:layout_marginTop="8px"
+                        android:layout_marginRight="36px"
+                        android:src="@drawable/arrow_thick_new"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout3"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="42px"
-                    android:layout_marginLeft="32px"
-                    android:layout_marginRight="32px">
+                    android:layout_height="84px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
 
                     <TextView
                         android:id="@+id/textViewDayDateVal3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginLeft="44px"
                         android:textColor="@color/grey_black_v2"
                         android:text="day, date"
                         android:textSize="32px"/>
@@ -276,28 +274,27 @@
                     <ImageView
                         android:id="@+id/arrow3"
                         android:layout_width="23px"
-                        android:layout_height="14px"
+                        android:layout_height="21px"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="4px"
-                        android:src="@drawable/arrow_icon_normal"/>
+                        android:layout_marginTop="8px"
+                        android:layout_marginRight="36px"
+                        android:src="@drawable/arrow_thick_new"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="84px"
                     android:visibility="gone"
-                    android:layout_marginTop="42px"
-                    android:layout_marginLeft="32px"
-                    android:layout_marginRight="32px">
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
 
                     <TextView
                         android:id="@+id/textViewDayDateVal4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginLeft="44px"
                         android:textColor="@color/grey_black_v2"
                         android:text="day, date"
                         android:textSize="32px"/>
@@ -315,21 +312,20 @@
                     <ImageView
                         android:id="@+id/arrow4"
                         android:layout_width="23px"
-                        android:layout_height="14px"
+                        android:layout_height="21px"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="4px"
-                        android:src="@drawable/arrow_icon_normal"/>
+                        android:layout_marginTop="8px"
+                        android:layout_marginRight="36px"
+                        android:src="@drawable/arrow_thick_new"/>
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout5"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="42px"
-                    android:layout_marginLeft="32px"
-                    android:layout_marginRight="32px"
+                    android:layout_height="84px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector"
                     android:visibility="gone">
 
                     <TextView
@@ -337,7 +333,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/grey_black_v2"
-                        android:layout_marginLeft="12px"
+                        android:layout_marginLeft="44px"
                         android:text="day, date"
                         android:textSize="32px"/>
 
@@ -354,10 +350,11 @@
                     <ImageView
                         android:id="@+id/arrow5"
                         android:layout_width="23px"
-                        android:layout_height="14px"
+                        android:layout_height="21px"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="4px"
-                        android:src="@drawable/arrow_icon_normal"/>
+                        android:layout_marginRight="36px"
+                        android:layout_marginTop="8px"
+                        android:src="@drawable/arrow_thick_new"/>
 
                 </RelativeLayout>
 
@@ -372,19 +369,18 @@
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutRideHistory"
-                android:layout_width="620px"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="44px"
-                android:layout_marginTop="24px"
-                android:layout_marginLeft="32px"
-                android:layout_marginRight="32px">
+                android:layout_width="680px"
+                android:layout_height="84px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/list_white_selector"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="44px">
 
                 <TextView
                     android:id="@+id/textViewRideHistory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="12px"
+                    android:layout_marginLeft="44px"
                     android:textColor="@color/grey_black_v2"
                     android:text="@string/ride_history_cap"
                     android:textSize="32px"/>
@@ -392,11 +388,11 @@
 
                 <ImageView
                     android:layout_width="23px"
-                    android:layout_height="14px"
+                    android:layout_height="21px"
+                    android:layout_marginTop="8px"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="4px"
-                    android:src="@drawable/arrow_icon_normal"/>
+                    android:layout_marginRight="36px"
+                    android:src="@drawable/arrow_thick_new"/>
 
             </RelativeLayout>
 

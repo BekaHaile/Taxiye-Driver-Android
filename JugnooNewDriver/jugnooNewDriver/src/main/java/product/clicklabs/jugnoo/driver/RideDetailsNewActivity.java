@@ -36,12 +36,14 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
+import product.clicklabs.jugnoo.driver.adapters.DeliveryAddressListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.RideInfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -52,6 +54,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
+import product.clicklabs.jugnoo.driver.utils.NonScrollListView;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -68,6 +71,9 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
 			textViewFromValue, textViewToValue, textViewActualFareValue;
+
+	NonScrollListView listViewDeliveryAddresses;
+	DeliveryAddressListAdapter deliveryAddressListAdapter;
 
 	ImageView imageViewRequestType;
 	public static final int MAP_PATH_COLOR = Color.RED;
@@ -160,6 +166,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity implements Goog
 		fareStructureInfos = new ArrayList<>();
 		rideInfoTilesAdapter = new RideInfoTilesAdapter(this, fareStructureInfos);
 		recyclerViewRideInfo.setAdapter(rideInfoTilesAdapter);
+
+
+		ArrayList<DeliveryDetailResponse.Details.To> deliveryAddressList = new ArrayList<>();
+		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
+		deliveryAddressListAdapter = new DeliveryAddressListAdapter(RideDetailsNewActivity.this, deliveryAddressList);
+		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
 
 
 		((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapLite)).getMapAsync(new OnMapReadyCallback() {

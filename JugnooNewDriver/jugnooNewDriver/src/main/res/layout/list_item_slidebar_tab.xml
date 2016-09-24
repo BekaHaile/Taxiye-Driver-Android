@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15px"
+        android:background="@drawable/list_white_selector"
         card_view:cardBackgroundColor="@color/white">
 
         <LinearLayout
@@ -131,7 +132,7 @@
                     android:layout_centerHorizontal="true"
                     android:text="70%"
                     android:textColor="@color/red_v2"
-                    android:textSize="64px"/>
+                    android:textSize="58px"/>
 
                 <TextView
                     android:id="@+id/textViewValueSub"

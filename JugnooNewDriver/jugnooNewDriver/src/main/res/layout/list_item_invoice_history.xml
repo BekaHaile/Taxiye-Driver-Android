@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="36px"
-        android:background="@drawable/white_bg"
+        android:background="@drawable/transparent"
         android:orientation="horizontal">
 
         <LinearLayout

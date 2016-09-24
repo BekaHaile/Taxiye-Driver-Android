@@ -1670,52 +1670,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
 					intent.putExtra("date", formattedDate);
 					startActivity(intent);
-					finish();
 					overridePendingTransition(R.anim.left_in, R.anim.left_out);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-
 				} else if (infoTileResponse.getDeepIndex() == 4) {
 					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 5) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 6) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					Intent intent = new Intent(HomeActivity.this, ShareActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 7) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 8) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
+					intent.putExtra("trick_page", 1);
+					startActivity(intent);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 9) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
+					Intent intent = new Intent(HomeActivity.this, DriverProfileActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 10) {
-					Intent intent = new Intent(HomeActivity.this, InvoiceDetailsActivity.class);
-					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
-					HomeActivity.this.startActivity(intent);
-					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			}
-
 
 		}
 	};
