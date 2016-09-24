@@ -6712,7 +6712,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	public double getCurrentDeliveryDistance(CustomerInfo customerInfo){
+		double totalDistanceFromLogInMeter = 0;
+		try {
+			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		double distance = customerRideDataGlobal.getDistance(HomeActivity.this);
+		if(distance - totalDistanceFromLogInMeter < 100){
+			distance = totalDistanceFromLogInMeter;
+		}
 		for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
 			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 				distance = distance - deliveryInfo.getDistance();
