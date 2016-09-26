@@ -649,7 +649,7 @@
 	<string name="ride_history_cap">RIDE HISTORY</string>
 	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
 	<string name="high_demand_areas">Click here to know high demand areas</string>
-	<string name="high_demad">High Demand Areas</string>
+	<string name="high_demad">HIGH DEMAND AREAS</string>
 	<string name="referral_code">Referral Code</string>
 	<string name="i_accept">I accept <u>Terms &amp; Condition</u></string>
 	<string name="select_tandc">Please select Terms and Conditions</string>

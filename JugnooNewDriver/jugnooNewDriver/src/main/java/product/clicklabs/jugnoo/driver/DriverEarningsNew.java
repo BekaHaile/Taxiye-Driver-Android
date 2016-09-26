@@ -57,7 +57,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
 			textViewDailyValue5, title, textViewPayOutValue;
-	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext;
+	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
 	BarChart barChart;
 	int index = 0;
@@ -107,6 +107,13 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout3.setVisibility(View.GONE);
 		relativeLayout4.setVisibility(View.GONE);
 		relativeLayout5.setVisibility(View.GONE);
+
+		arrow5 = (ImageView) findViewById(R.id.arrow5);
+		arrow4 = (ImageView) findViewById(R.id.arrow4);
+		arrow3 = (ImageView) findViewById(R.id.arrow3);
+		arrow2 = (ImageView) findViewById(R.id.arrow2);
+		arrow1 = (ImageView) findViewById(R.id.arrow1);
+
 
 		imageViewPrev = (ImageView) findViewById(R.id.imageViewPrev);
 		imageViewNext = (ImageView) findViewById(R.id.imageViewNext);
@@ -201,7 +208,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout1.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getDailyDetails(res.getEarnings().get(0).getDate());
+				if(res.getEarnings().get(0).getEarnings() >0) {
+					arrow1.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(0).getDate());
+				}
 
 			}
 		});
@@ -209,7 +219,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout2.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getDailyDetails(res.getEarnings().get(1).getDate());
+				if(res.getEarnings().get(1).getEarnings() >0) {
+					arrow2.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(1).getDate());
+				}
 
 			}
 		});
@@ -217,7 +230,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout3.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getDailyDetails(res.getEarnings().get(2).getDate());
+				if(res.getEarnings().get(2).getEarnings() >0) {
+					arrow3.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(2).getDate());
+				}
 
 			}
 		});
@@ -226,7 +242,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getDailyDetails(res.getEarnings().get(3).getDate());
+				if(res.getEarnings().get(3).getEarnings() >0) {
+					arrow4.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(3).getDate());
+				}
 
 			}
 		});
@@ -234,7 +253,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout5.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getDailyDetails(res.getEarnings().get(4).getDate());
+				if(res.getEarnings().get(4).getEarnings() >0) {
+					arrow5.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(4).getDate());
+				}
 
 			}
 		});
@@ -244,7 +266,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			public void onClick(View v) {
 				Intent intent = new Intent(DriverEarningsNew.this, DriverRideHistoryNew.class);
 				startActivity(intent);
-				overridePendingTransition(R.anim.left_in, R.anim.left_out);
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
 
@@ -274,7 +296,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		Intent intent = new Intent(DriverEarningsNew.this, DailyRideDetailsActivity.class);
 		intent.putExtra("date", date);
 		startActivity(intent);
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 

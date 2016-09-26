@@ -63,7 +63,7 @@ import retrofit.mime.TypedByteArray;
 
 public class RideDetailsNewActivity extends BaseFragmentActivity {
 
-	LinearLayout relative;
+	LinearLayout relative, linearLayoutTo;
 
 	Button backBtn;
 	TextView title;
@@ -139,6 +139,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 				new float[]{0, 1}, Shader.TileMode.CLAMP);
 		title.getPaint().setShader(textShader);
+		linearLayoutTo = (LinearLayout) findViewById(R.id.linearLayoutTo);
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
 		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
 		relativeLayoutCancelSubsidy = (RelativeLayout) findViewById(R.id.relativeLayoutCancelSubsidy);
@@ -201,14 +202,16 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 						}
 						if(extras.getDropCoordinates() != null){
 							for(InfoTileResponse.Tile.Extras.DropCoordinate dropCoordinate : extras.getDropCoordinates()){
-								latLngs.add(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
-								MarkerOptions markerOptionsE = new MarkerOptions();
-								markerOptionsE.title("End");
-								markerOptionsE.position(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
-								markerOptionsE.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-										.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.end_marker_v2)));
-								mapLite.addMarker(markerOptionsE);
-								builder.include(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+								if(dropCoordinate.getLatitude() != 0 && dropCoordinate.getLongitude()!= 0) {
+									latLngs.add(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+									MarkerOptions markerOptionsE = new MarkerOptions();
+									markerOptionsE.title("End");
+									markerOptionsE.position(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+									markerOptionsE.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.end_marker_v2)));
+									mapLite.addMarker(markerOptionsE);
+									builder.include(new LatLng(dropCoordinate.getLatitude(), dropCoordinate.getLongitude()));
+								}
 							}
 						}
 						if(latLngs.size() > 1){
@@ -310,7 +313,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 		if (extras != null) {
 
-			dateTimeValue.setText(DateOperations.convertDate(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime()));
+			dateTimeValue.setText(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime());
 
 			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
 					+ " " + getResources().getString(R.string.km));
@@ -343,6 +346,10 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 //			}
 			textViewFromValue.setText(extras.getFrom());
 			fareStructureInfos.addAll(extras.getRideParam());
+
+			if(extras.getTo().size() == 0){
+				linearLayoutTo.setVisibility(View.GONE);
+			}
 			deliveryAddressList.addAll(extras.getTo());
 			deliveryAddressListAdapter.notifyDataSetChanged();
 			rideInfoTilesAdapter.notifyDataSetChanged();

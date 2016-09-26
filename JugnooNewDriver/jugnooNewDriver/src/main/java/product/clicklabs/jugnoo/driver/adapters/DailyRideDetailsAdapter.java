@@ -85,7 +85,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         try {
-			DailyEarningItem item = items.get(position);
+			final DailyEarningItem item = items.get(position);
             if(holder instanceof ViewHolderRide){
 
 				if (item.getTime() != null) {
@@ -120,12 +120,17 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderRide)holder).relativeBelow.setVisibility(View.GONE);
 				}
 
+//				if(item.getEarning() > 0 || invoiceDetailResponseNew != null) {
+//					((ViewHolderRide)holder).imageViewArrow.setVisibility(View.VISIBLE);
+//				} else {
+//					((ViewHolderRide)holder).imageViewArrow.setVisibility(View.GONE);
+//				}
+
 
                 ((ViewHolderRide)holder).linearLayoutRideItem.setTag(position);
 				((ViewHolderRide)holder).linearLayoutRideItem.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-
 						try {
 							int pos = (int) v.getTag();
 							callback.onRideClick(pos, items.get(pos).getExtras(), items.get(pos).getDate());
@@ -134,7 +139,6 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-
 					}
 				});
 
