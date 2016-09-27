@@ -2,6 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/super_driver_orange_v2" android:state_focused="false" android:state_pressed="true"/>
-    <item android:drawable="@drawable/super_driver_v2"/>
+    <item android:drawable="@drawable/audit_menu_v2"/>
 
 </selector>

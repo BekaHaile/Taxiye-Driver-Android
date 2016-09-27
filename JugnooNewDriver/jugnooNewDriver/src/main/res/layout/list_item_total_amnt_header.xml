@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/linearLayout"
               android:orientation="vertical"
+              android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
@@ -16,7 +17,7 @@
         android:layout_toRightOf="@+id/imageViewTime"
         android:singleLine="true"
         android:text="23 June, 2014 18:88 AM"
-        android:textColor="@color/new_orange"
+        android:textColor="@color/grey_light_v2"
         android:textSize="32px"
         />
 
@@ -40,6 +41,6 @@
         android:layout_marginTop="48px"
         android:text="@string/trip_earning"
         android:textColor="@color/grey_light_v2"
-        android:textSize="30px"/>
+        android:textSize="34px"/>
 
 </LinearLayout>

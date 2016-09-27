@@ -217,7 +217,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			relativeBelow = (RelativeLayout)v.findViewById(R.id.relativeBelow);
 			imageViewArrow = (ImageView)v.findViewById(R.id.imageViewArrow);
 			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
-			textViewInfoText.setTypeface(Fonts.mavenBold(context));
+			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
 			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
 			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
 			textViewStatus = (TextView) v.findViewById(R.id.textViewStatus);

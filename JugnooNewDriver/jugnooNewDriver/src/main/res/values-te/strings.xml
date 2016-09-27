@@ -702,6 +702,7 @@
     <string name="daily_breakup">DAILY BREAKUP</string>
     <string name="trip_earning">TRIP EARNINGS</string>
     <string name="earnings_caps">EARNINGS</string>
+    <string name="trip_details">TRIP DETAILS</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -27,12 +27,12 @@
 
         <ImageView
             android:id="@+id/imageViewBack"
-            android:layout_width="60.7px"
-            android:layout_height="76.9px"
+            android:layout_width="82px"
+            android:layout_height="82px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:background="@drawable/back_btn_selector"/>
     </RelativeLayout>
 
     <ImageView

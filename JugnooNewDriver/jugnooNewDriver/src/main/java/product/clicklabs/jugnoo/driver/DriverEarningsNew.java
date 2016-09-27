@@ -152,7 +152,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		title.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
 		textShader=new LinearGradient(0, 0, 0, 20,
@@ -192,6 +192,16 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onNothingSelected() {
 
+			}
+		});
+
+		relativeLayoutPayout.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(res.getEarnings().get(0).getEarnings() >0) {
+					arrow1.setVisibility(View.VISIBLE);
+					getDailyDetails(res.getEarnings().get(0).getDate());
+				}
 			}
 		});
 

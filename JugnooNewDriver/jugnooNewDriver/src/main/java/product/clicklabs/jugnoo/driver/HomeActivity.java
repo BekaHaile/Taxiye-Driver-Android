@@ -148,6 +148,7 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
+import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -156,6 +157,7 @@ import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
+import product.clicklabs.jugnoo.driver.widgets.LinearLayoutManagerScrollControl;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -228,6 +230,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	RecyclerView recyclerViewInfo;
 	InfoTilesAdapter infoTilesAdapter;
+	LinearLayoutManager linearLayoutManagerScrollControl;
 
 
 	//Driver initial layout
@@ -302,7 +305,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	RelativeLayout relativeLayoutDeliveryOver;
 	TextView textViewDeliveryIsOver, textViewEndRideCustomerName;
-	LinearLayout linearLayoutEndDelivery;
+	LinearLayout linearLayoutEndDelivery, linearLayoutSlidingBottom;
+
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
@@ -350,6 +354,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	boolean dontCallRefreshDriver = false, resumed = false;
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
+	int tileCount = 0;
 
 
 	AlertDialog gpsDialogAlert;
@@ -782,47 +787,58 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
 			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
-
+			linearLayoutSlidingBottom = (LinearLayout) findViewById(R.id.linearLayoutSlidingBottom);
+			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
 			recyclerViewInfo.setHasFixedSize(true);
-			LinearLayoutManager llm = new LinearLayoutManager(this);
-			llm.setOrientation(LinearLayoutManager.VERTICAL);
-			recyclerViewInfo.setLayoutManager(llm);
+			linearLayoutManagerScrollControl = new LinearLayoutManager(this);
+			linearLayoutManagerScrollControl.setOrientation(LinearLayoutManager.VERTICAL);
+//			linearLayoutManagerScrollControl.setScrollEnabled(false);
+			recyclerViewInfo.setLayoutManager(linearLayoutManagerScrollControl);
 			recyclerViewInfo.setItemAnimator(new DefaultItemAnimator());
 
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
-			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
+
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
-
 			slidingUpPanelLayout.setScrollableView(recyclerViewInfo);
-
 
 			slidingUpPanelLayout.setPanelHeight((int) (90f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
-
+					findViewById(R.id.viewSliderStopper).setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				public void onPanelCollapsed(View panel) {
 //					Toast.makeText(HomeActivity.this, "collapsed", Toast.LENGTH_LONG).show();
+					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onPanelExpanded(View panel) {
 //					Toast.makeText(HomeActivity.this, "expanded", Toast.LENGTH_LONG).show();
+					infoTilesAdapter.notifyDataSetChanged();
+					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onPanelAnchored(View panel) {
-
+					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onPanelHidden(View panel) {
+					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
+				}
+			});
 
+			findViewById(R.id.viewSliderStopper).setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(HomeActivity.this, "viewSliderStopper click", Toast.LENGTH_SHORT).show();
 				}
 			});
 
@@ -872,7 +888,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			// menu events
-			imageViewAutosOnToggle.setOnClickListener(new OnClickListener() {
+			relativeLayoutAutosOn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -901,7 +917,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			imageViewDeliveryOnToggle.setOnClickListener(new OnClickListener() {
+			relativeLayoutDeliveryOn.setOnClickListener(new OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
@@ -1717,6 +1733,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			infoTileResponses.clear();
 			infoTilesAdapter.notifyDataSetChanged();
 		} else {
+			try {
+				LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
+				if(tileCount > 0 && tileCount < 4){
+					params.height = tileCount * (int)(250f * ASSL.Yscale());
+				} else {
+					params.height = (int)(950f * ASSL.Yscale());
+				}
+				linearLayoutSlidingBottom.setLayoutParams(params);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			infoTilesAdapter.notifyDataSetChanged();
 		}
 	}
@@ -7142,6 +7169,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					} else {
 						infoTileResponses.clear();
+						tileCount = infoTileResponse.getTiles().size();
 						infoTileResponses.addAll((ArrayList<InfoTileResponse.Tile>) infoTileResponse.getTiles());
 						updateInfoTileListData(getResources().getString(R.string.no_rides_currently), false);
 					}

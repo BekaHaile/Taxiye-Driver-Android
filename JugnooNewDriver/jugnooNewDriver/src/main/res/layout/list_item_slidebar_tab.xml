@@ -40,11 +40,11 @@
                 android:textSize="30px"/>
 
             <ImageView
-                android:layout_width="12px"
-                android:layout_height="18px"
+                android:layout_width="21px"
+                android:layout_height="20px"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="40px"
-                android:src="@drawable/arrow_icon_normal"/>
+                android:layout_marginRight="60px"
+                android:src="@drawable/arrow_thick_new"/>
 
         </RelativeLayout>
 

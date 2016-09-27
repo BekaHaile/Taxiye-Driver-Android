@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="120px"
-                android:layout_height="32dp"
+                android:layout_height="64px"
                 android:background="@drawable/background_white_rounded_bordered_new">
 
 
@@ -12,7 +12,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="100"
-            android:textSize="12dp"
+            android:textSize="24px"
             android:textColor="@color/red_v2"
             android:ellipsize="end"
             android:singleLine="true"

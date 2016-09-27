@@ -52,6 +52,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -278,7 +279,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		textViewActualFareValue.setTypeface(Data.latoRegular(this));
 
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
-		textViewActualFare.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewActualFare.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
 		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
@@ -328,10 +329,10 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			}
 
 
-			textViewActualFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getEarning()));
-			textViewActualFareValue.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getEarning()));
-			textViewCustomerPaid.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(extras.getPaidUsingCash()));
-			textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(extras.getAccount()))));
+			textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning()));
+			textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning()));
+			textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
+			textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
 
 //			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
 //				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
