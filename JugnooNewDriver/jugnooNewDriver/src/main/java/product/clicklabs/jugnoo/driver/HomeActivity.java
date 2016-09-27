@@ -218,7 +218,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout topRl;
 	Button menuBtn;
 	Button checkServerBtn;
-	ImageView imageViewTitleBarDEI;
+	ImageView imageViewTitleBarDEI, imageViewSliderView;
 	TextView textViewTitleBarDEI;
 
 
@@ -305,11 +305,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	RelativeLayout relativeLayoutDeliveryOver;
 	TextView textViewDeliveryIsOver, textViewEndRideCustomerName;
-	LinearLayout linearLayoutEndDelivery, linearLayoutSlidingBottom;
+	LinearLayout linearLayoutEndDelivery;
 
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
 	Shader textShader;
 
@@ -784,10 +784,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreenDate = (TextView) findViewById(R.id.textViewDriverEarningOnScreenDate);
 			textViewDriverEarningOnScreenValue = (TextView) findViewById(R.id.textViewDriverEarningOnScreenValue);
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+			imageViewSliderView = (ImageView)findViewById(R.id.imageViewSliderView);
 
 			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
 			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
-			linearLayoutSlidingBottom = (LinearLayout) findViewById(R.id.linearLayoutSlidingBottom);
+			linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
 			slidingUpPanelLayout = (SlidingUpPanelLayout)findViewById(R.id.slidingLayout);
 			recyclerViewInfo = (RecyclerView) findViewById(R.id.recyclerViewInfo);
 			recyclerViewInfo.setHasFixedSize(true);
@@ -796,6 +797,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //			linearLayoutManagerScrollControl.setScrollEnabled(false);
 			recyclerViewInfo.setLayoutManager(linearLayoutManagerScrollControl);
 			recyclerViewInfo.setItemAnimator(new DefaultItemAnimator());
+			linearLayoutSlidingBottom.setBackgroundColor(getResources().getColor(R.color.transparent));
 
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
@@ -803,46 +805,33 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
 			slidingUpPanelLayout.setScrollableView(recyclerViewInfo);
 
-			slidingUpPanelLayout.setPanelHeight((int) (90f * ASSL.Yscale()));
+			slidingUpPanelLayout.setPanelHeight((int) (130f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
-					findViewById(R.id.viewSliderStopper).setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				public void onPanelCollapsed(View panel) {
 //					Toast.makeText(HomeActivity.this, "collapsed", Toast.LENGTH_LONG).show();
-					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
+					imageViewSliderView.setRotation(0);
 				}
 
 				@Override
 				public void onPanelExpanded(View panel) {
 //					Toast.makeText(HomeActivity.this, "expanded", Toast.LENGTH_LONG).show();
 					infoTilesAdapter.notifyDataSetChanged();
-					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
+					imageViewSliderView.setRotation(180);
 				}
 
 				@Override
 				public void onPanelAnchored(View panel) {
-					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
 				}
 
 				@Override
 				public void onPanelHidden(View panel) {
-					findViewById(R.id.viewSliderStopper).setVisibility(View.GONE);
 				}
 			});
-
-			findViewById(R.id.viewSliderStopper).setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(HomeActivity.this, "viewSliderStopper click", Toast.LENGTH_SHORT).show();
-				}
-			});
-
-
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);

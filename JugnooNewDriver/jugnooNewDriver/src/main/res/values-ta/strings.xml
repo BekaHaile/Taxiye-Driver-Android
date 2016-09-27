@@ -728,6 +728,11 @@
     <string name="trip_earning">TRIP EARNINGS</string>
     <string name="earnings_caps">EARNINGS</string>
     <string name="trip_details">TRIP DETAILS</string>
+    <string name="fare_issues">FARE ISSUES</string>
+    <string name="req_text">If there was an issue with ride fare, please let us know.</string>
+    <string name="type_issue">Type your issue here</string>
+    <string name="report_issue">REPORT FARE ISSUES</string>
+    <string name="id">ID</string>
 
 
     <string-array name="CountryCodes" >

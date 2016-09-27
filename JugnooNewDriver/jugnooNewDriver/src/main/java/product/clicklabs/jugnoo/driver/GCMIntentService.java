@@ -212,7 +212,7 @@ public class GCMIntentService extends IntentService {
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
-			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+//			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
 
 			if (ring) {
 				builder.setLights(Color.GREEN, 500, 500);

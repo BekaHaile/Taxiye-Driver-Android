@@ -12,16 +12,16 @@
         android:splitMotionEvents="false">
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
-            xmlns:sothree="http://schemas.android.com/apk/res-auto"
             android:id="@+id/slidingLayout"
+            xmlns:sothree="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="bottom"
             android:background="@color/transparent"
+            android:gravity="bottom"
+            sothree:umanoOverlay="true"
             sothree:umanoFadeColor="@color/transparent"
-            sothree:umanoPanelHeight="90px"
-            sothree:umanoShadowHeight="16px">
-
+            sothree:umanoPanelHeight="130px"
+            sothree:umanoShadowHeight="0px">
 
 
             <RelativeLayout
@@ -50,11 +50,11 @@
 
             </RelativeLayout>
 
+
             <include layout="@layout/layout_home_sliding_menu"/>
 
 
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
-
 
 
         <!-- request accept layout-->
@@ -73,9 +73,9 @@
             android:id="@+id/relativeLayoutBanner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="130px"
             android:layout_marginLeft="5px"
-            android:layout_marginRight="5px">
+            android:layout_marginRight="5px"
+            android:layout_marginTop="130px">
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutLastRideEarning"
@@ -83,16 +83,16 @@
                 android:layout_height="135px"
                 android:layout_marginLeft="10px"
                 android:layout_marginRight="10px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
                 android:gravity="center_vertical"
-                android:visibility="gone"
-                android:background="@drawable/background_white_rounded_orange_bordered">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewDriverEarningOnScreen"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/last_trip_earning"
                     android:layout_marginLeft="32px"
+                    android:text="@string/last_trip_earning"
                     android:textSize="28px"/>
 
                 <TextView
@@ -100,8 +100,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textViewDriverEarningOnScreen"
-                    android:text="@string/NA"
                     android:layout_marginLeft="32px"
+                    android:text="@string/NA"
                     android:textSize="24px"/>
 
                 <TextView
@@ -121,16 +121,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="95px"
                 android:layout_alignParentTop="true"
+                android:background="@drawable/background_white"
                 android:gravity="center_vertical"
-                android:visibility="gone"
-                android:background="@drawable/background_white">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/textViewCancellationMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cancel_ride_by_customer"
                     android:layout_centerHorizontal="true"
+                    android:text="@string/cancel_ride_by_customer"
                     android:textSize="32px"/>
 
             </RelativeLayout>
@@ -143,8 +143,8 @@
             android:layout_height="80px"
             android:layout_alignParentRight="true"
             android:layout_below="@+id/relativeLayoutBanner"
-            android:layout_marginTop="24px"
             android:layout_marginRight="36px"
+            android:layout_marginTop="24px"
             android:background="@drawable/icon_i"
             android:tag="mwar"/>
 

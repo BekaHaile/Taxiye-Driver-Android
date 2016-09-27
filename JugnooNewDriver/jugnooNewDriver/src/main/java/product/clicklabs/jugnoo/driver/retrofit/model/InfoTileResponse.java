@@ -310,6 +310,9 @@ public class InfoTileResponse {
 			@SerializedName("redirect_url")
 			@Expose
 			private String redirectUrl;
+			@SerializedName("ticket_status")
+			@Expose
+			private Integer ticketStatus;
 
 			/**
 			 *
@@ -644,6 +647,14 @@ public class InfoTileResponse {
 			 */
 			public void setRedirectUrl(String redirectUrl) {
 				this.redirectUrl = redirectUrl;
+			}
+
+			public Integer getTicketStatus() {
+				return ticketStatus;
+			}
+
+			public void setTicketStatus(Integer ticketStatus) {
+				this.ticketStatus = ticketStatus;
 			}
 
 			public class DropCoordinate {

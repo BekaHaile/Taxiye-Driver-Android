@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/relative"
+                android:layout_width="720px"
+                android:layout_height="1134px"
+                android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/topBar"
+            android:layout_width="720px"
+            android:layout_height="96px"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/blue_black_v2" >
+
+            <TextView
+                android:id="@+id/textViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:text="@string/fare_issues"
+                android:textColor="@color/white"
+                android:textSize="40px" />
+
+            <ImageView
+                android:id="@+id/imageViewBack"
+                android:layout_width="82px"
+                android:layout_height="82px"
+                android:layout_centerVertical="true"
+                android:background="@drawable/back_btn_selector"
+                android:tag="mwar"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:splitMotionEvents="false" >
+
+            <LinearLayout
+                android:id="@+id/linearLayoutMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white_light_grey"
+                android:orientation="vertical"
+                android:splitMotionEvents="false" >
+
+                <TextView
+                    android:id="@+id/textViewRegistration"
+                    android:layout_width="680px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40px"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:textColor="@color/black_text"
+                    android:textSize="30px"
+                    android:text="@string/req_text"/>
+
+
+                <EditText
+                    android:id="@+id/editTextMessage"
+                    android:layout_width="match_parent"
+                    android:layout_height="310px"
+                    android:layout_marginLeft="40px"
+                    android:layout_marginRight="40px"
+                    android:layout_marginTop="50px"
+                    android:background="@drawable/background_white_rounded_bordered"
+                    android:gravity="left"
+                    android:hint="@string/type_issue"
+                    android:padding="20px"
+                    android:scrollbars="vertical"
+                    android:textSize="24px"
+                    android:textColor="@color/black_text"
+                    android:textColorHint="@color/black_text_alpha"
+                    />
+
+
+                <Button
+                    android:id="@+id/buttonSubmitRequest"
+                    android:layout_width="432px"
+                    android:layout_height="100px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="98px"
+                    android:text="@string/submit"
+                    android:background="@drawable/new_orange_btn_selector_rounded"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size" />
+
+                <TextView
+                    android:id="@+id/textViewScroll"
+                    android:layout_width="20px"
+                    android:layout_height="20px"
+                    android:text=" " />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -542,4 +542,10 @@ public interface APIServices {
 	@POST("/delivery_details")
 	Response usageData(@Field("access_token") String accessToken,
 						 @Field("usage_data") String usageData);
+
+	@FormUrlEncoded
+	@POST("/fetch_required_docs")
+	void sendIssue(@Field("access_token") String accessToken,
+				   @Field("message") String message,
+					Callback<DocRequirementResponse> callback);
 }

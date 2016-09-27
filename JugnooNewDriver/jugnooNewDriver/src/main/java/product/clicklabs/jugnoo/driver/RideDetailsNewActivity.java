@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResult;
+import product.clicklabs.jugnoo.driver.fragments.RideIssueFragment;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
@@ -64,17 +65,20 @@ import retrofit.mime.TypedByteArray;
 
 public class RideDetailsNewActivity extends BaseFragmentActivity {
 
-	LinearLayout relative, linearLayoutTo;
+	LinearLayout linearLayoutTo;
 
-	Button backBtn;
+	RelativeLayout relative, relativeContainer, relativeLayoutCreateTicket;
+
+	Button backBtn, buttonReportIssue;
 	TextView title;
 
 	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
-			textViewFromValue, textViewActualFareValue;
+			textViewFromValue, textViewActualFareValue, textViewStatus, textViewEngID;
 
 	NonScrollListView listViewDeliveryAddresses;
 	DeliveryAddressListAdapter deliveryAddressListAdapter;
+	RideIssueFragment rideIssueFragment;
 
 	ImageView imageViewRequestType;
 	public static final int MAP_PATH_COLOR = Color.RED;
@@ -92,6 +96,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	private SearchResult searchResultGlobal;
 	InfoTileResponse.Tile.Extras extras;
 	CustomerInfo customerInfo;
+	String accessToken;
 
 
 	@Override
@@ -130,12 +135,16 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 
 
-		relative = (LinearLayout) findViewById(R.id.relative);
+		relative = (RelativeLayout) findViewById(R.id.relative);
 		assl = new ASSL(RideDetailsNewActivity.this, relative, 1134, 720, false);
 
+		relativeContainer = (RelativeLayout) findViewById(R.id.relativeContainer);
 		backBtn = (Button) findViewById(R.id.backBtn);
+		buttonReportIssue = (Button) findViewById(R.id.buttonReportIssue);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
+		textViewEngID = (TextView) findViewById(R.id.textViewEngID);
+		textViewEngID.setTypeface(Fonts.mavenRegular(this));
 		textShader=new LinearGradient(0, 0, 0, 20,
 				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
 				new float[]{0, 1}, Shader.TileMode.CLAMP);
@@ -166,6 +175,16 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		listViewDeliveryAddresses = (NonScrollListView) findViewById(R.id.listViewDeliveryAddresses);
 		deliveryAddressListAdapter = new DeliveryAddressListAdapter(RideDetailsNewActivity.this, deliveryAddressList);
 		listViewDeliveryAddresses.setAdapter(deliveryAddressListAdapter);
+
+		try {
+			rideIssueFragment = new RideIssueFragment();
+			Bundle bundle = new Bundle();
+			accessToken = Data.userData.accessToken;
+			bundle.putString("access_token", accessToken);
+			rideIssueFragment.setArguments(bundle);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 		((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapLite)).getMapAsync(new OnMapReadyCallback() {
@@ -277,7 +296,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		waitTimeValue.setTypeface(Data.latoRegular(this));
 		textViewActualFareValue = (TextView) findViewById(R.id.textViewActualFareValue);
 		textViewActualFareValue.setTypeface(Data.latoRegular(this));
-
+		relativeContainer.setVisibility(View.GONE);
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
@@ -286,8 +305,6 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
 		textViewFromValue.setTypeface(Data.latoRegular(this));
-//		textViewToValue = (TextView) findViewById(R.id.textViewToValue);
-//		textViewToValue.setTypeface(Data.latoRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
 		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
 
@@ -311,9 +328,23 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			}
 		});
 
+		buttonReportIssue.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+				relativeContainer.setVisibility(View.VISIBLE);
+				getSupportFragmentManager().beginTransaction()
+						.add(R.id.relativeContainer, rideIssueFragment, RideIssueFragment.class.getName())
+						.addToBackStack(RideIssueFragment.class.getName())
+						.commit();
+
+			}
+		});
+
 
 		if (extras != null) {
 
+			textViewEngID.setText(getResources().getString(R.string.id)+" : "+extras.getEngagementId());
 			dateTimeValue.setText(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime());
 
 			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
@@ -334,17 +365,21 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
 			textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
 
-//			if (Double.parseDouble(openedRideInfo.accountBalance) < 0) {
-//				textViewAccountBalance.setText((getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Math.abs(Double.parseDouble(openedRideInfo.accountBalance)))));
-//				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-//				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-//				textViewAccountBalanceText.setText(getResources().getString(R.string.money_to));
-//			} else {
-//				textViewAccountBalance.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(Double.parseDouble(openedRideInfo.accountBalance)));
-//				textViewAccountBalanceText.setTextColor(getResources().getColor(R.color.grey_ride_history));
-//				textViewAccountBalance.setTextColor(getResources().getColor(R.color.grey_ride_history));
-//				textViewAccountBalanceText.setText(getResources().getString(R.string.account));
-//			}
+			if(extras.getTicketStatus() == 1){
+				buttonReportIssue.setVisibility(View.VISIBLE);
+				textViewStatus.setVisibility(View.GONE);
+
+			} else if(extras.getTicketStatus() == 2){
+				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.pending));
+				textViewStatus.setTextColor(getResources().getColor(R.color.status_pending));
+			} else if(extras.getTicketStatus() == 3){
+				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.success));
+				textViewStatus.setTextColor(getResources().getColor(R.color.green_status));
+			} else if(extras.getTicketStatus() == 4){
+				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.rejected));
+				textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+			}
+
 			textViewFromValue.setText(extras.getFrom());
 			fareStructureInfos.addAll(extras.getRideParam());
 
@@ -361,84 +396,20 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	}
 
 
-	private void getDirections(final LatLng sourceLatLng, final LatLng destLatLng) {
-		try {
-			RestClient.getGoogleApiServices().getDirections(sourceLatLng.latitude + "," + sourceLatLng.longitude,
-					destLatLng.latitude + "," + destLatLng.longitude, false, "driving", false, new retrofit.Callback<SettleUserDebt>() {
-						@Override
-						public void success(SettleUserDebt settleUserDebt, Response response) {
-							String result = new String(((TypedByteArray) response.getBody()).getBytes());
-							List<LatLng> list = MapUtils.getLatLngListFromPath(result);
-							if (list.size() > 0) {
-								LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
-								PolylineOptions polylineOptions = new PolylineOptions();
-								polylineOptions.width(ASSL.Xscale() * 5).color(MAP_PATH_COLOR).geodesic(true);
-								for (int z = 0; z < list.size(); z++) {
-									polylineOptions.add(list.get(z));
-									builder.include(list.get(z));
-								}
-
-								final LatLngBounds latLngBounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 408);
-
-								if (mapLite != null) {
-									mapLite.clear();
-									mapLite.addPolyline(polylineOptions);
-
-
-									MarkerOptions markerOptionsS = new MarkerOptions();
-									markerOptionsS.title("Start");
-									markerOptionsS.position(sourceLatLng);
-									markerOptionsS.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.start_marker_v2)));
-									mapLite.addMarker(markerOptionsS);
-
-									MarkerOptions markerOptionsE = new MarkerOptions();
-									markerOptionsE.title("End");
-									markerOptionsE.position(destLatLng);
-									markerOptionsE.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-											.createCustomMarkerBitmap(RideDetailsNewActivity.this, assl, 24f, 24f, R.drawable.end_marker_v2)));
-									mapLite.addMarker(markerOptionsE);
-
-
-									new Handler().postDelayed(new Runnable() {
-										@Override
-										public void run() {
-											try {
-												float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-												mapLite.moveCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds,
-														(int) (660f * minRatio), (int) (240f * minRatio),
-														(int) (minRatio * 60)));
-											} catch (Exception e) {
-												e.printStackTrace();
-											}
-										}
-									}, 500);
-								}
-							}
-						}
-
-						@Override
-						public void failure(RetrofitError error) {
-
-						}
-					});
-		} catch (Exception e) {
-			e.printStackTrace();
-			DialogPopup.dismissLoadingDialog();
-		}
-	}
-
-
 	public void performBackPressed() {
-		finish();
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+			finish();
+			overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		} else {
+			super.onBackPressed();
+		}
+
 	}
 
 	@Override
 	public void onBackPressed() {
 		performBackPressed();
-		super.onBackPressed();
+
 	}
 
 

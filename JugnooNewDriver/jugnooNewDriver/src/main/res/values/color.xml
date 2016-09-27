@@ -82,6 +82,7 @@
     
     <color name="yellow_jugnoo">#FAA31C</color>
     <color name="musturd_jugnoo">#FFAC00</color>
+    <color name="status_pending">#f5a623</color>
     <color name="grey_leader">#54585d</color>
     <color name="blue_leader">#4cc1d2</color>
 
