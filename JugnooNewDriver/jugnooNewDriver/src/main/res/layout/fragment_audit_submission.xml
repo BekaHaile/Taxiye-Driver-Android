@@ -11,7 +11,7 @@
         android:layout_height="96px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/menu_black">
+        android:background="@color/black_top_bar_bg">
 
         <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewTitle"

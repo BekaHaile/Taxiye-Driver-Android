@@ -313,6 +313,9 @@ public class InfoTileResponse {
 			@SerializedName("ticket_status")
 			@Expose
 			private Integer ticketStatus;
+			@SerializedName("ticket_date")
+			@Expose
+			private String ticketDate;
 
 			/**
 			 *
@@ -655,6 +658,14 @@ public class InfoTileResponse {
 
 			public void setTicketStatus(Integer ticketStatus) {
 				this.ticketStatus = ticketStatus;
+			}
+
+			public String getTicketDate() {
+				return ticketDate;
+			}
+
+			public void setTicketDate(String ticketDate) {
+				this.ticketDate = ticketDate;
 			}
 
 			public class DropCoordinate {

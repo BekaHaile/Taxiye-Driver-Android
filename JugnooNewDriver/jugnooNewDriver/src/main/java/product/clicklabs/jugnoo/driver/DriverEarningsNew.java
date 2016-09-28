@@ -31,7 +31,9 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
@@ -40,6 +42,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMarkerView;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -52,11 +55,11 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 	LinearLayout  linearLayoutDriverReferral;
 	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5,
-			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative;
+			relativeLayoutRideHistory, relativelayoutRandom, relativelayoutChart, relative, relativeLayoutPrev, relativeLayoutNext;
 	Button backBtn;
-	TextView textViewEstPayout, textViewThisWeek, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
+	TextView textViewEstPayout, textViewInvPeriod, textViewDayDateVal1, textViewDayDateVal2, textViewDayDateVal3,
 			textViewDayDateVal4, textViewDayDateVal5, textViewDailyValue1, textViewDailyValue2, textViewDailyValue3, textViewDailyValue4,
-			textViewDailyValue5, title, textViewPayOutValue;
+			textViewDailyValue5, title, textViewPayOutValue, textViewRideHistory;
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
 	BarChart barChart;
@@ -101,6 +104,8 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayout4 = (RelativeLayout) findViewById(R.id.relativeLayout4);
 		relativeLayout5 = (RelativeLayout) findViewById(R.id.relativeLayout5);
 		relativeLayoutRideHistory = (RelativeLayout) findViewById(R.id.relativeLayoutRideHistory);
+		relativeLayoutPrev = (RelativeLayout) findViewById(R.id.relativeLayoutPrev);
+		relativeLayoutNext = (RelativeLayout) findViewById(R.id.relativeLayoutNext);
 
 		relativeLayout1.setVisibility(View.GONE);
 		relativeLayout2.setVisibility(View.GONE);
@@ -119,13 +124,12 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		imageViewNext = (ImageView) findViewById(R.id.imageViewNext);
 		textViewEstPayout = (TextView) findViewById(R.id.textViewEstPayout);
 		textViewEstPayout.setTypeface(Fonts.mavenRegular(this));
-		textViewThisWeek = (TextView) findViewById(R.id.textViewThisWeek);
-		textViewThisWeek.setTypeface(Fonts.mavenRegular(this));
 		textViewInvPeriod = (TextView) findViewById(R.id.textViewInvPeriod);
 		textViewInvPeriod.setTypeface(Fonts.mavenRegular(this));
 		textViewPayOutValue = (TextView) findViewById(R.id.textViewPayOutValue);
 		textViewPayOutValue.setTypeface(Fonts.mavenRegular(this));
-
+		textViewRideHistory = (TextView) findViewById(R.id.textViewRideHistory);
+		textViewRideHistory.setTypeface(Fonts.mavenBold(this));
 
 		textViewDayDateVal1 = (TextView) findViewById(R.id.textViewDayDateVal1);
 		textViewDayDateVal1.setTypeface(Fonts.mavenRegular(this));
@@ -155,10 +159,10 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		title.setTypeface(Data.latoRegular(this), Typeface.NORMAL);
 		imageViewHorizontal7 = (ImageView) findViewById(R.id.imageViewHorizontal7);
 
-		textShader=new LinearGradient(0, 0, 0, 20,
-				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-				new float[]{0, 1}, Shader.TileMode.CLAMP);
-		title.getPaint().setShader(textShader);
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		title.getPaint().setShader(textShader);
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -167,14 +171,14 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			}
 		});
 
-		imageViewPrev.setOnClickListener(new View.OnClickListener() {
+		relativeLayoutPrev.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				getEarningsDetails(DriverEarningsNew.this, 1);
 			}
 		});
 
-		imageViewNext.setOnClickListener(new View.OnClickListener() {
+		relativeLayoutNext.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				getEarningsDetails(DriverEarningsNew.this, 2);
@@ -198,10 +202,12 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativeLayoutPayout.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if(res.getEarnings().get(0).getEarnings() >0) {
-					arrow1.setVisibility(View.VISIBLE);
-					getDailyDetails(res.getEarnings().get(0).getDate());
-				}
+
+				Calendar c = Calendar.getInstance();
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String formattedDate = df.format(c.getTime());
+				arrow1.setVisibility(View.VISIBLE);
+				getDailyDetails(formattedDate);
 			}
 		});
 
@@ -209,8 +215,14 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 		relativelayoutRandom.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (index >= 0 && index < 5) {
-					getDailyDetails(res.getEarnings().get(index).getDate());
+				try {
+					if (index >= 0 && index < 5) {
+						if(res.getEarnings().get(index).getEarnings()>0) {
+							getDailyDetails(res.getEarnings().get(index).getDate());
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -321,19 +333,23 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 				relativeLayoutPayout.setVisibility(View.VISIBLE);
 				textViewPayOutValue.setText(getResources().getString(R.string.rupee)+driverEarningsResponse.getEarnings().get(0).getEarnings());
 			} else {
-				relativeLayoutPayout.setVisibility(View.GONE);
+				relativeLayoutPayout.setVisibility(View.VISIBLE);
 			}
 
 			if(driverEarningsResponse.getNextInvoiceId() != null){
 				imageViewNext.setVisibility(View.VISIBLE);
+				relativeLayoutNext.setClickable(true);
 			} else {
 				imageViewNext.setVisibility(View.GONE);
+				relativeLayoutNext.setClickable(false);
 			}
 
 			if(driverEarningsResponse.getPreviousInvoiceId() != null){
 				imageViewPrev.setVisibility(View.VISIBLE);
+				relativeLayoutPrev.setClickable(true);
 			} else {
 				imageViewPrev.setVisibility(View.GONE);
+				relativeLayoutPrev.setClickable(false);
 			}
 
 			if(driverEarningsResponse.getCurrentInvoiceId() == 0){
@@ -430,6 +446,12 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			barChart.setExtraBottomOffset(10f);
 			dataset.setDrawValues(false);
 
+			if (entries.size() <3){ // barEntries is my Entry Array
+				int factor = 7; // increase this to decrease the bar width. Decrease to increase he bar width
+				int percent = (factor - entries.size())*10;
+				dataset.setBarSpacePercent(percent);
+			}
+
 
 
 		} else {
@@ -449,7 +471,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 				invoiceId = String.valueOf(res.getNextInvoiceId());
 			}
 
-
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().earningNewDetails(Data.userData.accessToken, Data.LOGIN_TYPE, invoiceId, new Callback<DriverEarningsResponse>() {
 				@Override
 				public void success(DriverEarningsResponse driverEarningsResponse, Response response) {
@@ -463,21 +485,25 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
+							DialogPopup.dismissLoadingDialog();
 							res = driverEarningsResponse;
 							updateData(driverEarningsResponse);
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
+						DialogPopup.dismissLoadingDialog();
 					}
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
 		}
 	}
 

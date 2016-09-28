@@ -841,12 +841,14 @@ public class Utils {
 	}
 
 	public static String getAbsAmount(Context context, double amount){
+		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 		String showAmount;
+
 		try {
 			if(amount >= 0){
-				showAmount = context.getResources().getString(R.string.rupee)+amount;
+				showAmount = context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(amount);
 			} else {
-				showAmount = "-"+context.getResources().getString(R.string.rupee)+Math.abs(amount);
+				showAmount = "-"+context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(Math.abs(amount));
 			}
 			return showAmount;
 		} catch (Exception e) {

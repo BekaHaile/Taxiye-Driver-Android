@@ -16,7 +16,7 @@
             android:layout_height="96px"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@color/blue_black_v2" >
+            android:background="@color/black_top_bar_bg" >
 
             <TextView
                 android:id="@+id/textViewTitle"
@@ -41,6 +41,7 @@
             android:id="@+id/scrollView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white_light_grey"
             android:splitMotionEvents="false" >
 
             <LinearLayout
@@ -48,34 +49,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white_light_grey"
+                android:gravity="center_horizontal"
                 android:orientation="vertical"
                 android:splitMotionEvents="false" >
 
                 <TextView
                     android:id="@+id/textViewRegistration"
-                    android:layout_width="680px"
+                    android:layout_width="640px"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="40px"
-                    android:layout_marginLeft="20px"
-                    android:layout_marginRight="20px"
                     android:textColor="@color/black_text"
-                    android:textSize="30px"
+                    android:textSize="32px"
                     android:text="@string/req_text"/>
 
 
                 <EditText
                     android:id="@+id/editTextMessage"
-                    android:layout_width="match_parent"
+                    android:layout_width="640px"
                     android:layout_height="310px"
-                    android:layout_marginLeft="40px"
-                    android:layout_marginRight="40px"
                     android:layout_marginTop="50px"
                     android:background="@drawable/background_white_rounded_bordered"
                     android:gravity="left"
                     android:hint="@string/type_issue"
                     android:padding="20px"
                     android:scrollbars="vertical"
-                    android:textSize="24px"
+                    android:textSize="28px"
                     android:textColor="@color/black_text"
                     android:textColorHint="@color/black_text_alpha"
                     />
@@ -85,7 +83,6 @@
                     android:id="@+id/buttonSubmitRequest"
                     android:layout_width="432px"
                     android:layout_height="100px"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="98px"
                     android:text="@string/submit"
                     android:background="@drawable/new_orange_btn_selector_rounded"

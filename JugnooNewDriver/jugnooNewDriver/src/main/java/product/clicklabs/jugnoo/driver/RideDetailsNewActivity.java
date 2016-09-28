@@ -72,7 +72,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	Button backBtn, buttonReportIssue;
 	TextView title;
 
-	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,
+	TextView dateTimeValue, distanceValue, rideTimeValue, waitTimeValue,textViewTicketDate,
 			textViewActualFare, textViewCustomerPaid, textViewAccountBalance, textViewAccountBalanceText,
 			textViewFromValue, textViewActualFareValue, textViewStatus, textViewEngID;
 
@@ -140,15 +140,21 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 		relativeContainer = (RelativeLayout) findViewById(R.id.relativeContainer);
 		backBtn = (Button) findViewById(R.id.backBtn);
+		relativeLayoutCreateTicket = (RelativeLayout) findViewById(R.id.relativeLayoutCreateTicket);
 		buttonReportIssue = (Button) findViewById(R.id.buttonReportIssue);
 		title = (TextView) findViewById(R.id.title);
-		title.setTypeface(Data.latoRegular(this));
+		title.setTypeface(Fonts.mavenRegular(this));
+		textViewStatus = (TextView) findViewById(R.id.textViewStatus);
+		textViewStatus.setTypeface(Fonts.mavenRegular(this));
 		textViewEngID = (TextView) findViewById(R.id.textViewEngID);
 		textViewEngID.setTypeface(Fonts.mavenRegular(this));
-		textShader=new LinearGradient(0, 0, 0, 20,
-				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-				new float[]{0, 1}, Shader.TileMode.CLAMP);
-		title.getPaint().setShader(textShader);
+		textViewTicketDate = (TextView) findViewById(R.id.textViewTicketDate);
+		textViewTicketDate.setTypeface(Fonts.mavenRegular(this));
+
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		title.getPaint().setShader(textShader);
 		linearLayoutTo = (LinearLayout) findViewById(R.id.linearLayoutTo);
 		relativeLayoutConvenienceCharges = (RelativeLayout) findViewById(R.id.relativeLayoutConvenienceCharges);
 		relativeLayoutLuggageCharges = (RelativeLayout) findViewById(R.id.relativeLayoutLuggageCharges);
@@ -181,6 +187,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			Bundle bundle = new Bundle();
 			accessToken = Data.userData.accessToken;
 			bundle.putString("access_token", accessToken);
+			bundle.putString("engagement_id", String.valueOf(extras.getEngagementId()));
 			rideIssueFragment.setArguments(bundle);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -287,36 +294,36 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 
 		dateTimeValue = (TextView) findViewById(R.id.dateTimeValue);
-		dateTimeValue.setTypeface(Data.latoRegular(this));
+		dateTimeValue.setTypeface(Fonts.mavenRegular(this));
 		distanceValue = (TextView) findViewById(R.id.distanceValue);
-		distanceValue.setTypeface(Data.latoRegular(this));
+		distanceValue.setTypeface(Fonts.mavenRegular(this));
 		rideTimeValue = (TextView) findViewById(R.id.rideTimeValue);
-		rideTimeValue.setTypeface(Data.latoRegular(this));
+		rideTimeValue.setTypeface(Fonts.mavenRegular(this));
 		waitTimeValue = (TextView) findViewById(R.id.waitTimeValue);
-		waitTimeValue.setTypeface(Data.latoRegular(this));
+		waitTimeValue.setTypeface(Fonts.mavenRegular(this));
 		textViewActualFareValue = (TextView) findViewById(R.id.textViewActualFareValue);
-		textViewActualFareValue.setTypeface(Data.latoRegular(this));
+		textViewActualFareValue.setTypeface(Fonts.mavenRegular(this));
 		relativeContainer.setVisibility(View.GONE);
 		textViewActualFare = (TextView) findViewById(R.id.textViewActualFare);
 		textViewActualFare.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalance = (TextView) findViewById(R.id.textViewAccountBalance);
-		textViewAccountBalance.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewAccountBalance.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewCustomerPaid = (TextView) findViewById(R.id.textViewCustomerPaid);
-		textViewCustomerPaid.setTypeface(Data.latoRegular(this), Typeface.BOLD);
+		textViewCustomerPaid.setTypeface(Fonts.mavenRegular(this), Typeface.BOLD);
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
-		textViewFromValue.setTypeface(Data.latoRegular(this));
+		textViewFromValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Data.latoRegular(this));
+		textViewAccountBalanceText.setTypeface(Fonts.mavenBold(this));
 
-		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.distanceValue)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.rideTimeValue)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.waitTimeValue)).setTypeface(Fonts.mavenRegular(this));
 
-		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Data.latoRegular(this));
-		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Data.latoRegular(this));
+		((TextView) findViewById(R.id.textViewActualFareText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.textViewCustomerPaidText)).setTypeface(Fonts.mavenRegular(this));
+		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Fonts.mavenRegular(this));
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
 
@@ -334,9 +341,11 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 				relativeContainer.setVisibility(View.VISIBLE);
 				getSupportFragmentManager().beginTransaction()
+						.setCustomAnimations(R.anim.right_in, R.anim.right_out,R.anim.right_in, R.anim.left_out)
 						.add(R.id.relativeContainer, rideIssueFragment, RideIssueFragment.class.getName())
 						.addToBackStack(RideIssueFragment.class.getName())
 						.commit();
+
 
 			}
 		});
@@ -344,7 +353,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 		if (extras != null) {
 
-			textViewEngID.setText(getResources().getString(R.string.id)+" : "+extras.getEngagementId());
+			textViewEngID.setText(getResources().getString(R.string.id)+": "+extras.getEngagementId());
 			dateTimeValue.setText(DateOperations.convertMonthDayViaFormat(extras.getDate())+", "+extras.getTime());
 
 			distanceValue.setText( Utils.getDecimalFormatForMoney().format(extras.getDistance())
@@ -365,19 +374,34 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			textViewCustomerPaid.setText(Utils.getAbsAmount(this, extras.getPaidUsingCash()));
 			textViewAccountBalance.setText(Utils.getAbsAmount(this, extras.getAccount()));
 
-			if(extras.getTicketStatus() == 1){
+			if(extras.getTicketStatus() == 0){
+				relativeLayoutCreateTicket.setVisibility(View.GONE);
+			} else if(extras.getTicketStatus() == 1){
 				buttonReportIssue.setVisibility(View.VISIBLE);
 				textViewStatus.setVisibility(View.GONE);
+				textViewTicketDate.setVisibility(View.GONE);
 
 			} else if(extras.getTicketStatus() == 2){
-				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.pending));
+				buttonReportIssue.setVisibility(View.GONE);
+				textViewStatus.setVisibility(View.VISIBLE);
+				textViewTicketDate.setVisibility(View.VISIBLE);
+				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.in_review));
+				textViewTicketDate.setText(extras.getTicketDate());
 				textViewStatus.setTextColor(getResources().getColor(R.color.status_pending));
 			} else if(extras.getTicketStatus() == 3){
-				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.success));
+				buttonReportIssue.setVisibility(View.GONE);
+				textViewStatus.setVisibility(View.VISIBLE);
+				textViewTicketDate.setVisibility(View.VISIBLE);
+				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.success));
 				textViewStatus.setTextColor(getResources().getColor(R.color.green_status));
+				textViewTicketDate.setText(extras.getTicketDate());
 			} else if(extras.getTicketStatus() == 4){
-				textViewStatus.setText(getResources().getString(R.string.status)+":"+getResources().getString(R.string.rejected));
+				buttonReportIssue.setVisibility(View.GONE);
+				textViewStatus.setVisibility(View.VISIBLE);
+				textViewTicketDate.setVisibility(View.VISIBLE);
+				textViewStatus.setText(getResources().getString(R.string.fair_complaint)+":"+getResources().getString(R.string.rejected));
 				textViewStatus.setTextColor(getResources().getColor(R.color.red_v2));
+				textViewTicketDate.setText(extras.getTicketDate());
 			}
 
 			textViewFromValue.setText(extras.getFrom());
@@ -395,13 +419,22 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 	}
 
+	public void setTicketState(final String date){
+		buttonReportIssue.setVisibility(View.GONE);
+		textViewStatus.setVisibility(View.VISIBLE);
+		textViewTicketDate.setVisibility(View.VISIBLE);
+		textViewStatus.setText(getResources().getString(R.string.fair_complaint) + ":" + getResources().getString(R.string.in_review));
+		textViewTicketDate.setText(date);
+		textViewStatus.setTextColor(getResources().getColor(R.color.status_pending));
+
+	}
 
 	public void performBackPressed() {
 		if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+			super.onBackPressed();
+		} else {
 			finish();
 			overridePendingTransition(R.anim.left_in, R.anim.left_out);
-		} else {
-			super.onBackPressed();
 		}
 
 	}

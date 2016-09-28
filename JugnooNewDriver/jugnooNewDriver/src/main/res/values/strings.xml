@@ -145,7 +145,7 @@
 
 	<string name="rating"> Rating</string>
 	<string name="call">Call</string>
-	<string name="ride_time">Ride Time</string>
+	<string name="ride_time">RIDE TIME</string>
 
 	<string name="start_wait">Start wait</string>
 	<string name="stop_wait">Stop wait</string>
@@ -592,7 +592,7 @@
 	<string name="Messages">Messages</string>
 	<string name="Hints">Hints</string>
 	<string name="tricks">Tricks To Earn</string>
-	<string name="success">Success</string>
+	<string name="success">SUCCESS</string>
 	<string name="vehicle_status">Vehicle Status</string>
 	<string name="owner">Owner</string>
 	<string name="rented">Rented</string>
@@ -635,7 +635,7 @@
 	<string name="Yesterday">Yesterday</string>
 	<string name="ride_money">Total ride amount</string>
 	<string name="total_amount">Final invoice amount</string>
-	<string name="this_week">This Week</string>
+	<string name="this_week">THIS WEEK</string>
 	<string name="outstanding_amount1">Outstanding Adjusted</string>
 	<string name="upload_again">Upload Again</string>
 	<string name="self_enroled">Self Register</string>
@@ -704,6 +704,9 @@
 	<string name="type_issue">Type your issue here</string>
 	<string name="report_issue">REPORT FARE ISSUES</string>
 	<string name="id">ID</string>
+	<string name="fair_complaint">Fare Complaint</string>
+	<string name="in_review">IN REVIEW</string>
+	<string name="pool">Pool Ride</string>
 
 
 	<string-array name="CountryCodes" >

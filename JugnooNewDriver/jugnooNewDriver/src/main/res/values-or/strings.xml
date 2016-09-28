@@ -655,6 +655,9 @@
     <string name="type_issue">Type your issue here</string>
     <string name="report_issue">REPORT FARE ISSUES</string>
     <string name="id">ID</string>
+    <string name="fair_complaint">Fare Complaint</string>
+    <string name="in_review">IN REVIEW</string>
+    <string name="pool">Pool</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

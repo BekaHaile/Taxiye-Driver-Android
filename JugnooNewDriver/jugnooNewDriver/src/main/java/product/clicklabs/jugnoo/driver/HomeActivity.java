@@ -199,7 +199,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
 	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL;
-	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText;
+	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
 	TextView paytmRechargeText, paymentsText;
@@ -463,10 +463,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			temptext  = (TextView) findViewById(R.id.temptext);
 			temptext.setTypeface(Data.latoRegular(getApplicationContext()));
-			textShader=new LinearGradient(0, 0, 0, 20,
-					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-					new float[]{0, 1}, Shader.TileMode.CLAMP);
-			temptext.getPaint().setShader(textShader);
+//			textShader=new LinearGradient(0, 0, 0, 20,
+//					new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//					new float[]{0, 1}, Shader.TileMode.CLAMP);
+//			temptext.getPaint().setShader(textShader);
 
 			relativeLayoutDeliveryOn = (RelativeLayout) findViewById(R.id.relativeLayoutDeliveryOn);
 			textViewDeliveryOn = (TextView) findViewById(R.id.textViewDeliveryOn);
@@ -516,6 +516,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
+
+			homeText = (TextView) findViewById(R.id.homeText);
+			homeText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
 			earningsRL = (RelativeLayout) findViewById(R.id.earningsRL);
 			earningsText = (TextView) findViewById(R.id.earningsText);
@@ -805,7 +808,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			recyclerViewInfo.setAdapter(infoTilesAdapter);
 			slidingUpPanelLayout.setScrollableView(recyclerViewInfo);
 
-			slidingUpPanelLayout.setPanelHeight((int) (130f * ASSL.Yscale()));
+			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
@@ -813,15 +816,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onPanelCollapsed(View panel) {
-//					Toast.makeText(HomeActivity.this, "collapsed", Toast.LENGTH_LONG).show();
-					imageViewSliderView.setRotation(0);
+					imageViewSliderView.setImageResource(R.drawable.up_arrow_even_sahdow);
+					driverInitialMyLocationBtn.setVisibility(View.VISIBLE);
 				}
 
 				@Override
 				public void onPanelExpanded(View panel) {
-//					Toast.makeText(HomeActivity.this, "expanded", Toast.LENGTH_LONG).show();
 					infoTilesAdapter.notifyDataSetChanged();
-					imageViewSliderView.setRotation(180);
+					imageViewSliderView.setImageResource(R.drawable.down_arrow_even_sahdow);
+					driverInitialMyLocationBtn.setVisibility(View.GONE);
+
 				}
 
 				@Override
@@ -858,6 +862,41 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(MENU);
 					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
+				}
+			});
+
+
+			drawerLayout.setDrawerListener(new DrawerLayout.DrawerListener() {
+				@Override
+				public void onDrawerSlide(View drawerView, float slideOffset) {
+
+				}
+
+				@Override
+				public void onDrawerOpened(View drawerView) {
+					slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+				}
+
+				@Override
+				public void onDrawerClosed(View drawerView) {
+
+				}
+
+				@Override
+				public void onDrawerStateChanged(int newState) {
+
+				}
+			});
+
+
+			imageViewSliderView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+					} else {
+						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+					}
 				}
 			});
 
@@ -1677,7 +1716,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Intent intent = new Intent(HomeActivity.this, DailyRideDetailsActivity.class);
 					intent.putExtra("date", formattedDate);
 					startActivity(intent);
-					overridePendingTransition(R.anim.left_in, R.anim.left_out);
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
@@ -2671,6 +2710,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_INITIAL:
 					updateDriverServiceFast("no");
 					setPannelVisibility(true);
+					getInfoTilesAsync(HomeActivity.this);
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
@@ -3502,8 +3542,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
-				if(DriverScreenMode.D_INITIAL == driverScreenMode && (!"".equalsIgnoreCase(Prefs.with(HomeActivity.this).getString(Constants.HIGH_DEMAND_AREA_POPUP, "")))){
+				if(DriverScreenMode.D_INITIAL == driverScreenMode){
 					relativeLayoutHighDemandAreas.setVisibility(View.GONE);
+//					setPannelVisibility(true);
 				}
 				showDriverEarning();
 			}
@@ -5647,6 +5688,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else if(driverScreenMode == DriverScreenMode.D_IN_RIDE){
 						setPannelVisibility(false);
 						removePRMarkerAndRefreshList();
+					} else if(driverScreenMode == DriverScreenMode.D_INITIAL){
+						setPannelVisibility(true);
 					}
 				}
 			});

@@ -544,8 +544,10 @@ public interface APIServices {
 						 @Field("usage_data") String usageData);
 
 	@FormUrlEncoded
-	@POST("/fetch_required_docs")
+	@POST("/generate_driver_support_ticket")
 	void sendIssue(@Field("access_token") String accessToken,
-				   @Field("message") String message,
+				   @Field("support_feedback_text") String message,
+				   @Field("engagement_id") String engagementId,
+				   @Field("ticket_type") String ticketType,
 					Callback<DocRequirementResponse> callback);
 }

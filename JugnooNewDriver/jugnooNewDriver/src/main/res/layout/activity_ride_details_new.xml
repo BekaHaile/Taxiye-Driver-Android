@@ -11,7 +11,7 @@
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/blue_black_v2"
+        android:background="@color/black_top_bar_bg"
         android:splitMotionEvents="false">
 
         <Button
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24px"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/black_text_v2"
+            android:textColor="@color/grey_light_v2"
             android:textSize="26px"
             android:text="STATUS"/>
 
@@ -75,10 +75,18 @@
             android:layout_height="84px"
             android:gravity="center"
             android:singleLine="true"
-            android:layout_marginTop="15px"
+            android:layout_marginTop="10px"
             android:text="@string/rupee_zero"
             android:textColor="@color/red_v2"
             android:textSize="72px"/>
+
+
+        <ImageView
+            android:layout_width="640px"
+            android:layout_height="2px"
+            android:layout_marginTop="36px"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/grey_light"/>
 
 
         <android.support.v7.widget.RecyclerView
@@ -87,19 +95,19 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:scrollbars="vertical"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="36px"
             android:fadeScrollbars="true"/>
 
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="2px">
 
@@ -124,7 +132,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
@@ -149,14 +157,14 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
@@ -181,7 +189,7 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="35px"
@@ -197,8 +205,9 @@
             android:splitMotionEvents="false">
 
             <ImageView
-                android:layout_width="17px"
-                android:layout_height="17px"
+                android:layout_width="22px"
+                android:layout_height="22px"
+                android:padding="2px"
                 android:layout_centerHorizontal="true"
                 android:id="@+id/from"
                 android:background="@drawable/start_marker_v2"/>
@@ -243,6 +252,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="36px"
+            android:visibility="visible"
             android:background="@drawable/background_white_bordered"
             android:padding="2px">
 
@@ -257,7 +267,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25px"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -376,12 +386,18 @@
 
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="620px"
+            android:layout_height="2px"
+            android:layout_marginTop="20px"
+            android:layout_marginBottom="36px"
+            android:background="@color/grey_light"/>
+
        <RelativeLayout 
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:id="@+id/relativeLayoutCreateTicket"
            android:gravity="center_horizontal"
-           android:layout_marginTop="44px"
            android:layout_marginBottom="25px">
            
            <Button
@@ -391,15 +407,28 @@
                android:text="@string/report_issue"
                android:textColor="@color/black_text_v2"
                android:textSize="30px"
-               android:visibility="gone"
-               android:background="@drawable/grey_light_btn_selector"/>
+               android:visibility="visible"
+               android:background="@drawable/shadow_btn_selector"/>
 
            <TextView
                android:id="@+id/textViewStatus"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
                android:layout_centerHorizontal="true"
+               android:visibility="gone"
                android:textSize="32px"
+               android:text="STATUS"/>
+
+           <TextView
+               android:id="@+id/textViewTicketDate"
+               android:layout_below="@+id/textViewStatus"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:visibility="gone"
+               android:textColor="@color/grey_light_v2"
+               android:layout_marginTop="10px"
+               android:layout_centerHorizontal="true"
+               android:textSize="22px"
                android:text="STATUS"/>
 
 

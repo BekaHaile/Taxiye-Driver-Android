@@ -70,10 +70,10 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
-		textShader=new LinearGradient(0, 0, 0, 20,
-				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-				new float[]{0, 1}, Shader.TileMode.CLAMP);
-		title.getPaint().setShader(textShader);
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		title.getPaint().setShader(textShader);
 
 		try {
 			Intent intent = getIntent();

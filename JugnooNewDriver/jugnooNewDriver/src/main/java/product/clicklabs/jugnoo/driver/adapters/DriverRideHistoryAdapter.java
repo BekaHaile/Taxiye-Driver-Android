@@ -61,7 +61,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 
 
 		rideInfoViewHolder.textViewInfoText.setText(itr.getTime());
-		rideInfoViewHolder.textViewInfoDate.setText(DateOperations.convertDateToDay(itr.getDate()) +","+
+		rideInfoViewHolder.textViewInfoDate.setText(DateOperations.convertDateToDay(itr.getDate()) +", "+
 				DateOperations.convertMonthDayViaFormat(itr.getDate()));
 
 		if(itr.getEarning() >= 0) {
@@ -85,6 +85,14 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 
 		if(itr.getType() ==3){
 			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
+			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.delivery));
+		} else {
+			rideInfoViewHolder.textViewType.setVisibility(View.GONE);
+		}
+
+		if(itr.getType() ==2){
+			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
+			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.pool));
 		} else {
 			rideInfoViewHolder.textViewType.setVisibility(View.GONE);
 		}

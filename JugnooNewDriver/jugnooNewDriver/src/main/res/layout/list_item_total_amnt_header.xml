@@ -18,7 +18,7 @@
         android:singleLine="true"
         android:text="23 June, 2014 18:88 AM"
         android:textColor="@color/grey_light_v2"
-        android:textSize="32px"
+        android:textSize="30px"
         />
 
     <TextView
@@ -27,20 +27,27 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:singleLine="true"
-        android:layout_marginTop="15px"
+        android:layout_marginTop="10px"
         android:text="@string/rupee_zero"
         android:textColor="@color/red_v2"
-        android:textSize="72px"/>
+        android:textSize="84px"/>
+
+    <ImageView
+        android:layout_width="640px"
+        android:layout_height="2px"
+        android:layout_marginTop="36px"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/grey_light"/>
 
     <TextView
         android:id="@+id/textViewEarningsText"
-        android:layout_width="600px"
+        android:layout_width="620px"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:singleLine="true"
         android:layout_marginTop="48px"
         android:text="@string/trip_earning"
         android:textColor="@color/grey_light_v2"
-        android:textSize="34px"/>
+        android:textSize="30px"/>
 
 </LinearLayout>

@@ -15,7 +15,7 @@
     <TextView
         android:id="@+id/textViewInfoText"
         android:layout_width="400px"
-        android:layout_height="45px"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="@string/NA"
         android:textColor="@color/black_text_v2"

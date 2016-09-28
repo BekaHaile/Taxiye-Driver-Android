@@ -9,14 +9,14 @@
 
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="2px">
 
@@ -41,7 +41,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
@@ -66,14 +66,14 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
             android:layout_marginBottom="24px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="wrap_content"
             android:layout_marginTop="10px">
 
@@ -98,17 +98,16 @@
         </RelativeLayout>
 
         <ImageView
-            android:layout_width="620px"
+            android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
-            android:layout_marginBottom="35px"
+            android:layout_marginBottom="38px"
             android:background="@color/grey_light"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25px"
-            android:layout_marginBottom="25px"
+            android:layout_marginBottom="38px"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -120,9 +119,10 @@
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/onlineTimeValue"
-                    android:layout_width="230px"
+                    android:layout_width="250px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12px"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:singleLine="true"
@@ -132,7 +132,7 @@
 
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/rideTimeValueText"
-                    android:layout_width="230px"
+                    android:layout_width="250px"
                     android:layout_height="38px"
                     android:layout_below="@+id/onlineTimeValue"
                     android:layout_gravity="center_vertical"
@@ -140,13 +140,13 @@
                     android:gravity="center"
                     android:text="@string/total_distance"
                     android:textColor="@color/grey_light_v2"
-                    android:textSize="28px"/>
+                    android:textSize="30px"/>
 
             </RelativeLayout>
 
             <ImageView
                 android:layout_width="2px"
-                android:layout_height="64px"
+                android:layout_height="84px"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:id="@+id/imageViewVertical"
@@ -164,6 +164,7 @@
                     android:layout_width="230px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="12px"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/NA"
@@ -180,7 +181,7 @@
                     android:layout_weight="1"
                     android:text="@string/trips"
                     android:textColor="@color/grey_light_v2"
-                    android:textSize="28px"/>
+                    android:textSize="30px"/>
 
             </RelativeLayout>
 
@@ -194,18 +195,19 @@
 
        <RelativeLayout
            android:layout_width="match_parent"
-           android:layout_height="80px"
-           android:background="@color/grey_light_info_v2"
+           android:layout_height="98px"
+           android:background="@color/grey_ride_detail_bg"
            android:gravity="center">
 
         <TextView
             android:id="@+id/textViewTripsText"
-            android:layout_width="600px"
+            android:layout_width="620px"
             android:layout_height="45px"
             android:gravity="center_vertical"
+            android:layout_marginTop="24px"
             android:text="@string/trips"
-            android:textColor="@color/black_text_v2"
-            android:textSize="34px"/>
+            android:textColor="@color/grey_ride_detail"
+            android:textSize="30px"/>
 
 
        </RelativeLayout>

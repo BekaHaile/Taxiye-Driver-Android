@@ -266,9 +266,9 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			textViewCustomerPaid.setTypeface(Fonts.mavenRegular(context));
 
 			textViewBankDeposite = (TextView)itemView.findViewById(R.id.textViewBankDeposite);
-			textViewBankDeposite.setTypeface(Fonts.mavenRegular(context));
+			textViewBankDeposite.setTypeface(Fonts.mavenBold(context));
 			textViewBankDepositeValue = (TextView)itemView.findViewById(R.id.textViewBankDepositeValue);
-			textViewBankDepositeValue.setTypeface(Fonts.mavenRegular(context));
+			textViewBankDepositeValue.setTypeface(Fonts.mavenBold(context));
 
 			onlineTimeValue = (TextView)itemView.findViewById(R.id.onlineTimeValue);
 			onlineTimeValue.setTypeface(Fonts.mavenRegular(context));

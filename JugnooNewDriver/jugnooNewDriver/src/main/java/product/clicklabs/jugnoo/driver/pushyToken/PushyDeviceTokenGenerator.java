@@ -97,22 +97,6 @@ public class PushyDeviceTokenGenerator {
 			executor.shutdown();
 			deviceTokenReceiver.deviceTokenReceived(regId); //try breakpoint here
 
-//			new Thread(new Runnable() {
-//
-//				@Override
-//				public void run() {
-//					try {
-//						long interval = ( 1000 * 60 * 3 ); // Every 3 minutes
-//						Pushy.setHeartbeatInterval( interval, context );
-//						regId = Pushy.register(context);
-//						setRegistrationId(context, regId);
-//					} catch(Exception e){
-//						e.printStackTrace();
-//					} finally{
-//						deviceTokenReceiver.deviceTokenReceived(regId);
-//					}
-//				}
-//			}).start();
 			Log.i(regId, "pushy");
 		}
 		else{

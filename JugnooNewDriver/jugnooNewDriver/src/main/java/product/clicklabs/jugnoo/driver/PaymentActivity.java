@@ -77,10 +77,10 @@ public class PaymentActivity extends BaseFragmentActivity implements FlurryEvent
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
-		textShader=new LinearGradient(0, 0, 0, 20,
-				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-				new float[]{0, 1}, Shader.TileMode.CLAMP);
-		textViewTitle.getPaint().setShader(textShader);
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		textViewTitle.getPaint().setShader(textShader);
 
 		getSupportFragmentManager().beginTransaction()
 				.add(R.id.relativeContainer, invoiceHistoryFragment, InvoiceHistoryFragment.class.getName())

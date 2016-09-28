@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -102,10 +103,10 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		backBtn = (Button) findViewById(R.id.backBtn);
 		title = (TextView) findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(this));
-		textShader=new LinearGradient(0, 0, 0, 20,
-				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
-				new float[]{0, 1}, Shader.TileMode.CLAMP);
-		title.getPaint().setShader(textShader);
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		title.getPaint().setShader(textShader);
 
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
@@ -199,7 +200,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	private void getRidesAsync(String date, final Activity activity) {
 		try {
-
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().getDailyRidesAsync(date, Data.userData.accessToken,
 					new Callback<DailyEarningResponse>() {
 						@Override
@@ -218,6 +219,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 										}
 
 									} else {
+										DialogPopup.dismissLoadingDialog();
 										dailyEarningItems.clear();
 										dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
@@ -243,9 +245,11 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 							} catch (Exception e) {
 								e.printStackTrace();
 								try {
+									DialogPopup.dismissLoadingDialog();
 									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 								} catch (Exception e1) {
 									e1.printStackTrace();
+									DialogPopup.dismissLoadingDialog();
 								}
 							}
 
@@ -254,19 +258,23 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 						@Override
 						public void failure(RetrofitError error) {
 							try {
+								DialogPopup.dismissLoadingDialog();
 								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 							} catch (Exception e) {
+								DialogPopup.dismissLoadingDialog();
 								e.printStackTrace();
 							}
 						}
 					});
 		} catch (Exception e) {
 			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
 		}
 	}
 
 	private void getInvoiceDetails(final Activity activity) {
 		try {
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().invoiceDetailNew(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponseNew>() {
 				@Override
 				public void success(InvoiceDetailResponseNew invoiceDetailResponse, Response response) {
@@ -284,6 +292,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 								}
 
 							} else {
+								DialogPopup.dismissLoadingDialog();
 								dailyEarningItems.clear();
 								dailyEarningItems.add(new DailyEarningItem(null,0,null,null,0,null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
 
@@ -307,9 +316,11 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 					} catch (Exception e) {
 						e.printStackTrace();
 						try {
+							DialogPopup.dismissLoadingDialog();
 							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
 						} catch (Exception e1) {
 							e1.printStackTrace();
+							DialogPopup.dismissLoadingDialog();
 						}
 					}
 
@@ -318,10 +329,12 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("error", String.valueOf(error));
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
 		}
 	}
 

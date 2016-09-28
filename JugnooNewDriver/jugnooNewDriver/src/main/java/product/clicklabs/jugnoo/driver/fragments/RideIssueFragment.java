@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityRespons
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -64,6 +65,7 @@ public class RideIssueFragment extends Fragment {
 	EditText editTextMessage;
 	Button buttonSubmitRequest;
 	String accessToken;
+	String engagementId;
 	ScrollView scrollView;
 	TextView textViewScroll;
 
@@ -111,9 +113,9 @@ public class RideIssueFragment extends Fragment {
 		imageViewBack = (ImageView) rootView.findViewById(R.id.imageViewBack);
 
 		textViewRegistration = (TextView) rootView.findViewById(R.id.textViewRegistration);
-		textViewRegistration.setTypeface(Data.latoLight(activity));
+		textViewRegistration.setTypeface(Fonts.mavenRegular(activity));
 		editTextMessage = (EditText) rootView.findViewById(R.id.editTextMessage);
-		editTextMessage.setTypeface(Data.latoLight(activity), Typeface.BOLD);
+		editTextMessage.setTypeface(Fonts.mavenRegular(activity));
 
 		buttonSubmitRequest = (Button) rootView.findViewById(R.id.buttonSubmitRequest);
 		buttonSubmitRequest.setTypeface(Data.latoRegular(activity));
@@ -136,8 +138,9 @@ public class RideIssueFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				accessToken = getArguments().getString("access_token");
+				engagementId = getArguments().getString("engagement_id");
 				String messageStr = editTextMessage.getText().toString().trim();
-				sendIssue(activity, messageStr);
+				sendIssue(messageStr);
 			}
 		});
 
@@ -158,14 +161,15 @@ public class RideIssueFragment extends Fragment {
         System.gc();
 	}
 
-	public void sendIssue(final Activity activity, String message) {
+	public void sendIssue(String message) {
 		try {
-			RestClient.getApiServices().sendIssue(accessToken, message, new Callback<DocRequirementResponse>() {
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+			RestClient.getApiServices().sendIssue(accessToken, message, engagementId, "1", new Callback<DocRequirementResponse>() {
 				@Override
 				public void success(DocRequirementResponse docRequirementResponse, Response response) {
 					try {
 						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-						JSONObject jObj;
+						final JSONObject jObj;
 						jObj = new JSONObject(jsonString);
 						if (!jObj.isNull("error")) {
 							String errorMessage = jObj.getString("error");
@@ -173,13 +177,16 @@ public class RideIssueFragment extends Fragment {
 								HomeActivity.logoutUser(activity);
 							}
 						} else {
+							DialogPopup.dismissLoadingDialog();
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								String message = jObj.optString("message","");
+								final String date = jObj.optString("date", "");
 								DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 									@Override
 									public void onClick(View v) {
-
+										getActivity().getSupportFragmentManager().popBackStack(RideIssueFragment.class.getName(), getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+										activity.setTicketState(date);
 									}
 								});
 							}
@@ -187,16 +194,19 @@ public class RideIssueFragment extends Fragment {
 						}
 					} catch (Exception exception) {
 						exception.printStackTrace();
+						DialogPopup.dismissLoadingDialog();
 					}
 				}
 
 				@Override
 				public void failure(RetrofitError error) {
 					Log.i("DocError", error.toString());
+					DialogPopup.dismissLoadingDialog();
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
 		}
 	}
 

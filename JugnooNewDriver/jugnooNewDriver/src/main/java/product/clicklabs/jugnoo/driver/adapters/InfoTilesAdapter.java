@@ -58,6 +58,18 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 		infoTileViewHolder.textViewValueSub.setTypeface(Data.latoRegular(context));
 		infoTileViewHolder.textViewEmpty.setVisibility(View.GONE);
 
+		if(i == 0){
+			infoTileViewHolder.topRlOuter.setVisibility(View.VISIBLE);
+		} else {
+			infoTileViewHolder.topRlOuter.setVisibility(View.GONE);
+		}
+
+		if(itr.getDeepIndex() == 10){
+			infoTileViewHolder.arrowSlider.setVisibility(View.GONE);
+		} else {
+			infoTileViewHolder.arrowSlider.setVisibility(View.VISIBLE);
+		}
+
 		if(itr.getTitle() != null){
 			infoTileViewHolder.textViewHeadText.setText(itr.getTitle());
 		} else {
@@ -130,7 +142,7 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 		protected TextView textViewHeadText, textView1Value, textView1, textView2Value,
 				textView2, textViewValue, textViewValueSub, textViewEmpty;
 		protected int id;
-
+		protected ImageView topRlOuter, arrowSlider;
 		public infoTileViewHolder(View v) {
 			super(v);
 			relative = (RelativeLayout)v.findViewById(R.id.relative);
@@ -149,9 +161,9 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			textViewValueSub = (TextView) v.findViewById(R.id.textViewValueSub);
 			textViewValueSub.setTypeface(Data.latoRegular(context));
 			textViewEmpty = (TextView) v.findViewById(R.id.textViewEmpty);
-
-
-			relative.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));
+			topRlOuter = (ImageView) v.findViewById(R.id.topRlOuter);
+			arrowSlider = (ImageView) v.findViewById(R.id.arrowSlider);
+			relative.setLayoutParams(new RecyclerView.LayoutParams(690, ViewGroup.LayoutParams.WRAP_CONTENT));
 			ASSL.DoMagic(relative);
 		}
 	}

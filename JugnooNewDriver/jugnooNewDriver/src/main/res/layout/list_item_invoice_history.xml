@@ -190,15 +190,15 @@
                     android:singleLine="true"
                     android:text="@string/rupee_zero_zero"
                     android:textColor="@color/grey_light_v2"
-                    android:textSize="32px"/>
+                    android:textSize="34px"/>
 
                 <ImageView
-                    android:layout_width="24px"
-                    android:layout_height="15px"
+                    android:layout_width="21px"
+                    android:layout_height="20px"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="36px"
-                    android:src="@drawable/arrow_icon_normal"/>
+                    android:src="@drawable/arrow_thick_new"/>
 
             </RelativeLayout>
 
@@ -247,7 +247,7 @@
 
     <ImageView
         android:layout_width="700px"
-        android:layout_height="3px"
+        android:layout_height="2px"
         android:layout_marginBottom="2px"
         android:layout_below="@+id/rideHistoryItem"
         android:layout_centerHorizontal="true"

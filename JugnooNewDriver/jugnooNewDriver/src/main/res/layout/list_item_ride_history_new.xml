@@ -7,7 +7,7 @@
               android:orientation="vertical">
 
     <RelativeLayout
-        android:layout_width="600px"
+        android:layout_width="620px"
         android:layout_height="140px"
         android:layout_gravity="center_horizontal"
         android:gravity="center_vertical"
@@ -31,7 +31,7 @@
                 android:gravity="center"
                 android:text="MON"
                 android:textColor="@color/grey_light_v2"
-                android:textSize="32px"/>
+                android:textSize="30px"/>
 
             <RelativeLayout
                 android:id="@+id/relativeBelow"
@@ -56,7 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="45px"
                     android:layout_toRightOf="@+id/textViewInfoText"
-                    android:layout_marginLeft="15px"
+                    android:layout_marginLeft="10px"
                     android:text="@string/status"
                     android:layout_centerVertical="true"
                     android:textColor="@color/black_text_v2"
@@ -84,7 +84,7 @@
                     android:paddingLeft="10px"
                     android:paddingRight="10px"
                     android:text="@string/delivery"
-                    android:layout_marginRight="15px"
+                    android:layout_marginRight="10px"
                     android:background="@drawable/background_dark_grey_rounded_bordered"
                     android:textColor="@color/black_text_v2"
                     android:textSize="30px"/>
@@ -115,7 +115,7 @@
     </RelativeLayout>
 
     <ImageView
-        android:layout_width="620px"
+        android:layout_width="640px"
         android:layout_height="2px"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="4px"

@@ -5,7 +5,7 @@
     android:layout_width="495px"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="@color/blue_black_v2"
+    android:background="@color/black_earnings_bg"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:splitMotionEvents="false">
@@ -27,7 +27,7 @@
                 android:id="@+id/driverImageRL"
                 android:layout_width="match_parent"
                 android:layout_height="200px"
-                android:background="@color/grey_menu_black_v2"
+                android:background="@color/black_top_bar_bg"
                 android:orientation="horizontal">
 
                 <RelativeLayout
@@ -62,7 +62,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/profileRl"
                     android:layout_marginTop="10px"
-                    android:layout_marginLeft="15px"
+                    android:layout_marginLeft="20px"
                     android:orientation="horizontal"
                     >
 
@@ -129,12 +129,12 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_width="23px"
-                    android:layout_height="14px"
+                    android:layout_width="31px"
+                    android:layout_height="19px"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="32px"
-                    android:src="@drawable/arrow_icon_normal"/>
+                    android:src="@drawable/side_menu_white_arrow"/>
 
 
 
@@ -166,7 +166,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/jugnoo_on"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
                 <ImageView
                     android:id="@+id/imageViewAutosOnToggle"
@@ -187,9 +187,10 @@
                 android:splitMotionEvents="false"
                 >
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="450px"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/black_text_v2"/>
 
                 <ImageView
@@ -210,7 +211,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/delivery_on"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
                 <ImageView
                     android:id="@+id/imageViewDeliveryOnToggle"
@@ -267,7 +268,7 @@
                 <ImageView
                     android:id="@+id/imageViewHomeIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/home_v2"
@@ -282,7 +283,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/home"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -290,15 +291,16 @@
                 android:id="@+id/earningsRL"
                 android:layout_width="match_parent"
                 android:layout_height="84px"
+                android:gravity="center_vertical"
                 android:background="@drawable/background_tranparend_red_v2_selector"
                 android:splitMotionEvents="false">
 
                 <ImageView
                     android:id="@+id/imageViewEarningIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5px"
                     android:src="@drawable/earnings_v2"
                     android:tag="mwar"/>
 
@@ -306,12 +308,11 @@
                     android:id="@+id/earningsText"
                     android:layout_width="wrap_content"
                     android:layout_height="44px"
-                    android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imageViewEarningIcon"
                     android:layout_marginLeft="8px"
                     android:text="@string/earnings"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -326,7 +327,7 @@
                 <ImageView
                     android:id="@+id/imageViewInvoicesIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/invoices_v2"
@@ -341,7 +342,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/Invoices"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -355,7 +356,7 @@
                 <ImageView
                     android:id="@+id/imageViewSuperDriverIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/super_driver_v2"
@@ -370,7 +371,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/super_driver"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -415,7 +416,7 @@
                 <ImageView
                     android:id="@+id/imageViewInviteErnIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/invite_n_earn_v2"
@@ -430,12 +431,13 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/invite_earn"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="450px"
                     android:layout_height="2px"
                     android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/black_text_v2"/>
 
             </RelativeLayout>
@@ -533,7 +535,7 @@
                 <ImageView
                     android:id="@+id/imageViewCallIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/call_v2"
@@ -548,7 +550,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/call_us"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -604,7 +606,7 @@
                 <ImageView
                     android:id="@+id/imageViewRateCardIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/rate_card_v2"
@@ -619,7 +621,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/rate_card"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -636,7 +638,7 @@
                 <ImageView
                     android:id="@+id/imageViewLangPrefIcon"
                     android:layout_width="56px"
-                    android:layout_height="35px"
+                    android:layout_height="38px"
                     android:layout_marginLeft="20px"
                     android:layout_centerVertical="true"
                     android:src="@drawable/language_pref_v2"
@@ -651,7 +653,7 @@
                     android:layout_marginLeft="8px"
                     android:text="@string/language_preferences"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
 
             </RelativeLayout>
 
@@ -689,7 +691,7 @@
                     android:layout_marginLeft="42px"
                     android:text="@string/logout"
                     android:textColor="@color/white"
-                    android:textSize="34px"/>
+                    android:textSize="36px"/>
             </RelativeLayout>
 
         </LinearLayout>

@@ -16,6 +16,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.FareStructureInfo;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
 /**
@@ -41,8 +42,8 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 	public void onBindViewHolder(rideInfoViewHolder rideInfoViewHolder, int i) {
 		final FareStructureInfo itr = fareStructureInfos.get(i);
 
-		rideInfoViewHolder.textViewInfoText.setTypeface(Data.latoRegular(context));
-		rideInfoViewHolder.textViewInfoValue.setTypeface(Data.latoRegular(context));
+		rideInfoViewHolder.textViewInfoText.setTypeface(Fonts.mavenRegular(context));
+		rideInfoViewHolder.textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
 
 
 		if(itr.getInfo() != null){
@@ -75,9 +76,9 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 			super(v);
 			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
 			textViewInfoText = (TextView) v.findViewById(R.id.textViewInfoText);
-			textViewInfoText.setTypeface(Data.latoRegular(context));
+			textViewInfoText.setTypeface(Fonts.mavenRegular(context));
 			textViewInfoValue = (TextView) v.findViewById(R.id.textViewInfoValue);
-			textViewInfoValue.setTypeface(Data.latoRegular(context));
+			textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
 
 
 			linearLayoutRideItem.setLayoutParams(new RecyclerView.LayoutParams(720, ViewGroup.LayoutParams.WRAP_CONTENT));

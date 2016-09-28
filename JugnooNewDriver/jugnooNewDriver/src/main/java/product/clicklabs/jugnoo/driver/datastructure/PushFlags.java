@@ -29,7 +29,8 @@ public enum PushFlags {
 	UPDATE_DROP_LOCATION(73),
 	OTP_VERIFIED_BY_CALL(75),
 	SHARING_RIDE_ENDED(74),
-	UPDATE_HEAT_MAP(87);
+	UPDATE_HEAT_MAP(87),
+	SEND_DATA_USAGE(89);
 
 	private int ordinal;
 
