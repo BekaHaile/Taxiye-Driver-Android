@@ -204,22 +204,22 @@ public class Utils {
 
 	public static boolean mockLocationEnabled(Location location) {
 
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
@@ -842,6 +842,23 @@ public class Utils {
 
 	public static String getAbsAmount(Context context, double amount){
 		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+		String showAmount;
+
+		try {
+			if(amount >= 0){
+				showAmount = context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(amount);
+			} else {
+				showAmount = "-"+context.getResources().getString(R.string.rupee)+decimalFormatNoDecimal.format(Math.abs(amount));
+			}
+			return showAmount;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
+	public static String getAbsWithDecimalAmount(Context context, double amount){
+		DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
 		String showAmount;
 
 		try {

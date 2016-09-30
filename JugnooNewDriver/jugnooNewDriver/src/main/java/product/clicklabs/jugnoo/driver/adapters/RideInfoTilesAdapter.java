@@ -52,7 +52,7 @@ public class RideInfoTilesAdapter extends RecyclerView.Adapter<RideInfoTilesAdap
 			rideInfoViewHolder.textViewInfoText.setVisibility(View.GONE);
 		}
 
-		rideInfoViewHolder.textViewInfoValue.setText(Utils.getAbsAmount(context, itr.getValue()));
+		rideInfoViewHolder.textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(context, itr.getValue()));
 
 
 

@@ -112,11 +112,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				if(item.getType() ==3){
 					((ViewHolderRide)holder).textViewType.setVisibility(View.VISIBLE);
 					((ViewHolderRide)holder).textViewType.setText(activity.getResources().getString(R.string.delivery));
-				} else {
-					((ViewHolderRide)holder).textViewType.setVisibility(View.GONE);
-				}
-
-				if(item.getType() ==2){
+				} else if(item.getType() ==2){
 					((ViewHolderRide)holder).textViewType.setVisibility(View.VISIBLE);
 					((ViewHolderRide)holder).textViewType.setText(activity.getResources().getString(R.string.pool));
 				} else {
@@ -195,7 +191,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			} else if(holder instanceof ViewHolderRideParam){
                 final DailyEarningItem param = items.get(position);
                 ((ViewHolderRideParam)holder).textViewInfoText.setText(param.getText());
-                ((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, param.getValue()));
+                ((ViewHolderRideParam)holder).textViewInfoValue.setText(Utils.getAbsWithDecimalAmount(activity, param.getValue()));
 
             }
         } catch (Exception e) {

@@ -85,11 +85,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 		if(itr.getType() ==3){
 			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
 			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.delivery));
-		} else {
-			rideInfoViewHolder.textViewType.setVisibility(View.GONE);
-		}
-
-		if(itr.getType() ==2){
+		} else if(itr.getType() ==2){
 			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
 			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.pool));
 		} else {
