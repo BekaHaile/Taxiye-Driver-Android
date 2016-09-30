@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -36,8 +37,11 @@ import java.io.File;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -473,6 +477,18 @@ public class GCMIntentService extends IntentService {
 											requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 										}
 									}
+									String distanceDry = "";
+									try {
+										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+										DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+										if (dryDistance >= 1000) {
+											distanceDry =  decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
+										} else {
+											distanceDry = decimalFormatNoDecimal.format(dryDistance) + " " + getResources().getString(R.string.m_away);
+										}
+									} catch (Resources.NotFoundException e) {
+										e.printStackTrace();
+									}
 
 									double fareFactor = jObj.optDouble("fare_factor", 1d);
 
@@ -497,14 +513,14 @@ public class GCMIntentService extends IntentService {
 										}
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
 										startRing(this, engagementId);

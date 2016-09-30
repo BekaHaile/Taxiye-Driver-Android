@@ -212,4 +212,15 @@
 
        </RelativeLayout>
 
+
+    <TextView
+        android:id="@+id/textViewNoData"
+        android:layout_width="620px"
+        android:layout_height="45px"
+        android:gravity="center"
+        android:layout_marginTop="30px"
+        android:text="@string/no_rides_currently"
+        android:textColor="@color/grey_ride_detail"
+        android:textSize="30px"/>
+
 </LinearLayout>

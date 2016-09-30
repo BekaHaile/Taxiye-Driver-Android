@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -40,7 +41,7 @@ import retrofit.mime.TypedByteArray;
 
 public class DriverRideHistoryNew extends BaseFragmentActivity {
 
-	LinearLayout linear;
+	RelativeLayout linear;
 
 	Button backBtn;
 	TextView title;
@@ -93,7 +94,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		}
 
 
-		linear = (LinearLayout) findViewById(R.id.linear);
+		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DriverRideHistoryNew.this, linear, 1134, 720, false);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
@@ -154,7 +155,13 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 			textViewInfoDisplay.setVisibility(View.VISIBLE);
 			driverRideHistoryAdapter.notifyDataSetChanged();
 		} else {
-			driverRideHistoryAdapter.setList(rideHistoryItems);
+			if(rideHistoryItems.size() > 0) {
+				driverRideHistoryAdapter.setList(rideHistoryItems);
+			} else {
+				textViewInfoDisplay.setText(getResources().getString(R.string.no_rides_currently));
+				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				driverRideHistoryAdapter.notifyDataSetChanged();
+			}
 		}
 	}
 

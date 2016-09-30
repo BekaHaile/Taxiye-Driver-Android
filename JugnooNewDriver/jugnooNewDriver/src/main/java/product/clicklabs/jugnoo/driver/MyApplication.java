@@ -7,6 +7,7 @@ package product.clicklabs.jugnoo.driver;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -36,6 +37,7 @@ public class MyApplication extends Application {
 
 	private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
+//	private FirebaseAnalytics mFirebaseAnalytics;
 
 	@Override
 	public void onCreate() {
@@ -47,7 +49,27 @@ public class MyApplication extends Application {
 		Pushy.listen(this);
 		initializeServerURLAndRestClient(this);
 
+		// Obtain the FirebaseAnalytics instance.
+//		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
 	}
+
+//	public FirebaseAnalytics getmFirebaseAnalytics() {
+//		if(mFirebaseAnalytics == null) {
+//			mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+//		}
+//		return mFirebaseAnalytics;
+//	}
+//
+//	public void logEvent(String eventText, Bundle bundle) {
+//		if(bundle == null) {
+//			bundle = new Bundle();
+//		}
+//		if(eventText.length()>31) {
+//			eventText.substring(0, 31);
+//		}
+//		getmFirebaseAnalytics().logEvent(eventText, bundle);
+//	}
 
 	public static synchronized MyApplication getInstance() {
 		return mInstance;

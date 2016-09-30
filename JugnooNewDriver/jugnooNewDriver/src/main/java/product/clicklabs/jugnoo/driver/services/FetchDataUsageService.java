@@ -16,10 +16,13 @@ import android.support.annotation.Nullable;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.GZIPOutputStream;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
@@ -140,7 +143,22 @@ public class FetchDataUsageService extends Service {
 			public void run() {
 				try {
 					String dataUsage = Database2.getInstance(ctx).getDataUsage();
-					Response response = RestClient.getApiServices().usageData(Data.userData.accessToken, dataUsage);
+					HashMap<String, String> params = new HashMap<String, String>();
+					Log.e("Usage Data",dataUsage);
+
+					try {
+						params.put("data", dataUsage);
+						params.put("access_token", Data.userData.accessToken);
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+//					TypedByteArray typedFile;
+//					typedFile = new TypedByteArray(Constants.MIME_TYPE, compress(params.toString()));
+
+					Response response = RestClient.getApiServices().usageData(params);
 					String result = new String(((TypedByteArray) response.getBody()).getBytes());
 
 					JSONObject jObj = new JSONObject(result);
@@ -157,5 +175,14 @@ public class FetchDataUsageService extends Service {
 		}).start();
 	}
 
+	public static byte[] compress(String string) throws IOException {
+		ByteArrayOutputStream os = new ByteArrayOutputStream(string.length());
+		GZIPOutputStream gos = new GZIPOutputStream(os);
+		gos.write(string.getBytes());
+		gos.close();
+		byte[] compressed = os.toByteArray();
+		os.close();
+		return compressed;
+	}
 
 }

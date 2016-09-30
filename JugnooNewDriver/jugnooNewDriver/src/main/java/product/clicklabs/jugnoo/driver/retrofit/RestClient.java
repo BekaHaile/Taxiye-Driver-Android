@@ -61,7 +61,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint(Data.SERVER_URL)
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL)
 				;
 
@@ -81,7 +81,7 @@ public class RestClient {
 			RestAdapter.Builder builder = new RestAdapter.Builder()
 					.setEndpoint(url)
 					.setClient(new Ok3Client(getOkHttpClient()))
-//					.setLog(fooLog)
+					.setLog(fooLog)
 					.setLogLevel(RestAdapter.LogLevel.FULL);
 
 			RestAdapter restAdapter = builder.build();
@@ -112,9 +112,9 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint("http://maps.googleapis.com/maps/api")
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
-				;
+
 
 		RestAdapter restAdapter = builder.build();
 		GOOGLE_API_SERVICES = restAdapter.create(GoogleAPIServices.class);
@@ -135,7 +135,7 @@ public class RestClient {
 		RestAdapter.Builder builder = new RestAdapter.Builder()
 				.setEndpoint("https://route.jugnoo.in/route/v1")
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();
@@ -157,7 +157,7 @@ public class RestClient {
 				.setEndpoint("https://marketing-api.jugnoo.in")
 //				.setEndpoint("http://192.168.0.247:8090")
 				.setClient(new Ok3Client(getOkHttpClient()))
-//				.setLog(fooLog)
+				.setLog(fooLog)
 				.setLogLevel(RestAdapter.LogLevel.FULL);
 
 		RestAdapter restAdapter = builder.build();

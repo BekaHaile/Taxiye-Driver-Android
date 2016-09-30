@@ -78,6 +78,7 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		try {
 			Intent intent = getIntent();
 			url = intent.getStringExtra("extras");
+			title.setText(intent.getStringExtra("title"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -707,6 +707,9 @@
 	<string name="fair_complaint">Fare Complaint</string>
 	<string name="in_review">IN REVIEW</string>
 	<string name="pool">Pool Ride</string>
+	<string name="no_invoice_currently">No invoice currently</string>
+	<string name="no_data">No Data</string>
+	<string name="web_view">WEB VIEW</string>
 
 
 	<string-array name="CountryCodes" >

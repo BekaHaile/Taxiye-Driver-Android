@@ -73,10 +73,9 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 
 		if(itr.getStatus().equalsIgnoreCase("Ride Cancelled")){
 			rideInfoViewHolder.textViewStatus.setVisibility(View.VISIBLE);
-			rideInfoViewHolder.textViewStatus.setText("("+activity.getResources().getString(R.string.cancelled)+")");
+			rideInfoViewHolder.textViewStatus.setText(activity.getResources().getString(R.string.cancelled));
 			rideInfoViewHolder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
-			rideInfoViewHolder.textViewInfoText.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
-			rideInfoViewHolder.textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
+
 		} else {
 			rideInfoViewHolder.textViewStatus.setVisibility(View.GONE);
 			rideInfoViewHolder.textViewInfoText.setTextColor(activity.getResources().getColor(R.color.black_text_v2));

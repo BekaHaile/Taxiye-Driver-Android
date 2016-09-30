@@ -19,6 +19,9 @@ public class InvoiceDetailResponseNew {
 	@SerializedName("earnings")
 	@Expose
 	private Double earnings;
+	@SerializedName("invoice_status")
+	@Expose
+	private String invoiceStatus;
 	@SerializedName("earning_params")
 	@Expose
 	private List<EarningParam> earningParams = new ArrayList<EarningParam>();
@@ -30,7 +33,7 @@ public class InvoiceDetailResponseNew {
 	private Double account;
 	@SerializedName("total_distance_travelled")
 	@Expose
-	private Double totalDistanceTravelled;
+	private String totalDistanceTravelled;
 	@SerializedName("total_trips")
 	@Expose
 	private Integer totalTrips;
@@ -72,6 +75,14 @@ public class InvoiceDetailResponseNew {
 	 */
 	public void setEarnings(Double earnings) {
 		this.earnings = earnings;
+	}
+
+	public String getInvoiceStatus() {
+		return invoiceStatus;
+	}
+
+	public void setInvoiceStatus(String invoiceStatus) {
+		this.invoiceStatus = invoiceStatus;
 	}
 
 	/**
@@ -133,7 +144,7 @@ public class InvoiceDetailResponseNew {
 	 * @return
 	 * The totalDistanceTravelled
 	 */
-	public Double getTotalDistanceTravelled() {
+	public String getTotalDistanceTravelled() {
 		return totalDistanceTravelled;
 	}
 
@@ -142,7 +153,7 @@ public class InvoiceDetailResponseNew {
 	 * @param totalDistanceTravelled
 	 * The total_distance_travelled
 	 */
-	public void setTotalDistanceTravelled(Double totalDistanceTravelled) {
+	public void setTotalDistanceTravelled(String totalDistanceTravelled) {
 		this.totalDistanceTravelled = totalDistanceTravelled;
 	}
 

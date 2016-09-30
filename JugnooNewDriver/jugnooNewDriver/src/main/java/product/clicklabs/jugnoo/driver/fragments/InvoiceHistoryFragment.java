@@ -299,7 +299,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                                         invoices.add(invoiceInfo);
                                     }
 
-                                    updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
+                                    updateListData(activity.getResources().getString(R.string.no_invoice_currently), false);
                                 }
                             } catch (Exception exception) {
                                 exception.printStackTrace();

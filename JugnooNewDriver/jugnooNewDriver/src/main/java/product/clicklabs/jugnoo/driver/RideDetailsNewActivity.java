@@ -53,6 +53,8 @@ import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -80,7 +82,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 	DeliveryAddressListAdapter deliveryAddressListAdapter;
 	RideIssueFragment rideIssueFragment;
 
-	ImageView imageViewRequestType;
+	ImageView imageViewRequestType, imageViewSeprator;
 	public static final int MAP_PATH_COLOR = Color.RED;
 	RelativeLayout relativeLayoutConvenienceCharges, relativeLayoutLuggageCharges,
 			relativeLayoutCancelSubsidy, relativeLayoutJugnooCut, relativeWaitingTime;
@@ -169,7 +171,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
 
-		int viewHeight = (int)(65f * ASSL.Yscale()) * extras.getRideParam().size();
+		int viewHeight = (int)(80f * ASSL.Yscale()) * extras.getRideParam().size();
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
 		fareStructureInfos = new ArrayList<>();
@@ -326,7 +328,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		((TextView) findViewById(R.id.waitTimeText)).setTypeface(Fonts.mavenRegular(this));
 
 		imageViewRequestType = (ImageView) findViewById(R.id.imageViewRequestType);
-
+		imageViewSeprator = (ImageView) findViewById(R.id.imageViewSeprator);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -338,7 +340,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		buttonReportIssue.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
+				FlurryEventLogger.event(FlurryEventNames.TRIP_DETAILS_REPORT_FARE_ISSUE);
 				relativeContainer.setVisibility(View.VISIBLE);
 				getSupportFragmentManager().beginTransaction()
 						.setCustomAnimations(R.anim.right_in, R.anim.right_out,R.anim.right_in, R.anim.left_out)
@@ -368,6 +370,9 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 				waitTimeValue.setText( extras.getWaitTime() + " " + getResources().getString(R.string.min));
 			}
 
+			if (extras.getEarning() <= 0) {
+				imageViewSeprator.setVisibility(View.GONE);
+			}
 
 			textViewActualFare.setText(Utils.getAbsAmount(this, extras.getEarning()));
 			textViewActualFareValue.setText(Utils.getAbsAmount(this, extras.getEarning()));

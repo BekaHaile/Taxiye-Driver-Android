@@ -32,6 +32,18 @@
         android:textColor="@color/red_v2"
         android:textSize="84px"/>
 
+    <TextView
+        android:id="@+id/textViewInvoiceStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:singleLine="true"
+        android:layout_marginTop="10px"
+        android:text="@string/success"
+        android:visibility="gone"
+        android:textColor="@color/green_status"
+        android:textSize="30px"/>
+
     <ImageView
         android:layout_width="640px"
         android:layout_height="2px"

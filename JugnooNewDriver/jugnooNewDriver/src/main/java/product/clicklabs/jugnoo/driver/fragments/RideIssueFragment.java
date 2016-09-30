@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Rect;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -44,6 +46,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityRespons
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
@@ -137,6 +141,7 @@ public class RideIssueFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				FlurryEventLogger.event(FlurryEventNames.FARE_ISSUE_SUBMIT);
 				accessToken = getArguments().getString("access_token");
 				engagementId = getArguments().getString("engagement_id");
 				String messageStr = editTextMessage.getText().toString().trim();
@@ -150,6 +155,7 @@ public class RideIssueFragment extends Fragment {
 	}
 
 	public void performBackPressed(){
+		hideKeyboard(activity);
 		activity.performBackPressed();
 	}
 
@@ -210,4 +216,15 @@ public class RideIssueFragment extends Fragment {
 		}
 	}
 
+	public static void hideKeyboard(Context ctx) {
+		InputMethodManager inputManager = (InputMethodManager) ctx
+				.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+		// check if no view has focus:
+		View v = ((Activity) ctx).getCurrentFocus();
+		if (v == null)
+			return;
+
+		inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+	}
 }

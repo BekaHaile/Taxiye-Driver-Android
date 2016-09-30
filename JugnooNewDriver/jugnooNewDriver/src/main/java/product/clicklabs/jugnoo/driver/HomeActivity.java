@@ -133,6 +133,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
+import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -182,7 +183,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView userName, ratingValue, textViewAutosOn;
 	LinearLayout linearLayoutDEI, linearLayout_DEI;
 	RelativeLayout driverImageRL;
-
 	RelativeLayout relativeLayoutAutosOn, relativeLayoutSharingOn, relativeLayoutDeliveryOn;
 	ImageView imageViewAutosOnToggle, imageViewSharingOnToggle, imageViewDeliveryOnToggle;
 
@@ -198,7 +198,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView fareDetailsText, textViewDestination;
 	RelativeLayout relativeLayoutSuperDrivers, relativeLayoutDestination;
 
-	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL;
+	RelativeLayout callUsRl,termsConditionRl, relativeLayoutRateCard, auditRL, earningsRL, homeRl;
 	TextView callUsText, termsConditionText, textViewRateCard, auditText, earningsText, homeText;
 
 	RelativeLayout paytmRechargeRl, paymentsRl;
@@ -516,7 +516,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText = (TextView) findViewById(R.id.callUsText);
 			callUsText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 			callUsText.setText(getResources().getText(R.string.call_us));
-
+			homeRl = (RelativeLayout) findViewById(R.id.homeRl);
 			homeText = (TextView) findViewById(R.id.homeText);
 			homeText.setTypeface(Fonts.mavenRegular(getApplicationContext()));
 
@@ -818,6 +818,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onPanelCollapsed(View panel) {
 					imageViewSliderView.setImageResource(R.drawable.up_arrow_even_sahdow);
 					driverInitialMyLocationBtn.setVisibility(View.VISIBLE);
+//					recyclerViewInfo.smoothScrollToPosition(0);
 				}
 
 				@Override
@@ -862,6 +863,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					drawerLayout.openDrawer(menuLayout);
 					FlurryEventLogger.event(MENU);
 					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
+					if(DriverScreenMode.D_INITIAL == driverScreenMode){
+						FlurryEventLogger.event(FlurryEventNames.HOME_MENU);
+					} else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+						FlurryEventLogger.event(FlurryEventNames.HOME_IN_RIDE_MENU);
+					}
 				}
 			});
 
@@ -874,7 +880,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onDrawerOpened(View drawerView) {
-					slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+					setPannelVisibility(true);
 				}
 
 				@Override
@@ -894,8 +900,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
 						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+						FlurryEventLogger.event(FlurryEventNames.HOME_SLIDEUP_BUTTON);
 					} else {
 						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+						FlurryEventLogger.event(FlurryEventNames.HOME_SLIDEDOWN_BUTTON);
 					}
 				}
 			});
@@ -955,7 +963,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							changeJugnooON(1, false, true);
 						}
-						FlurryEventLogger.event(JUGNOO_ON_OFF);
+						FlurryEventLogger.event(DELIVERY_ON_OFF);
 					}
 				}
 			});
@@ -984,6 +992,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, NotificationCenterActivity.class));
 					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
+					if(DriverScreenMode.D_INITIAL == driverScreenMode){
+						FlurryEventLogger.event(FlurryEventNames.HOME_NOTIFICATION);
+					} else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
+						FlurryEventLogger.event(FlurryEventNames.HOME_IN_RIDE_NOTIFICATION);
+					}
 				}
 			});
 
@@ -1025,6 +1038,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, TriCitySupplyActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				}
+			});
+
+			homeRl.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					drawerLayout.closeDrawer(GravityCompat.START);
 				}
 			});
 
@@ -1674,7 +1694,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 
-		getInfoTilesAsync(HomeActivity.this);
+		if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+			getInfoTilesAsync(HomeActivity.this);
+		}
 
 	}
 
@@ -1708,6 +1730,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("extras", gson.toJson(infoTileResponse.getExtras(), InfoTileResponse.Tile.Extras.class));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_RIDE);
 				} else if (infoTileResponse.getDeepIndex() == 2) {
 					Calendar c = Calendar.getInstance();
 					System.out.println("Current time => " + c.getTime());
@@ -1717,38 +1740,53 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("date", formattedDate);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_DAILY);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_WEB);
 				} else if (infoTileResponse.getDeepIndex() == 4) {
 					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
 				} else if (infoTileResponse.getDeepIndex() == 5) {
 					Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_EARNINGS);
 				} else if (infoTileResponse.getDeepIndex() == 6) {
 					Intent intent = new Intent(HomeActivity.this, ShareActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVITE);
 				} else if (infoTileResponse.getDeepIndex() == 7) {
 					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_NOTIFICATION);
 				} else if (infoTileResponse.getDeepIndex() == 8) {
 					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
 					intent.putExtra("trick_page", 1);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_TIPS);
 				} else if (infoTileResponse.getDeepIndex() == 9) {
 					Intent intent = new Intent(HomeActivity.this, DriverProfileActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_PROFILE);
 				} else if (infoTileResponse.getDeepIndex() == 10) {
+					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+					intent.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
+					HomeActivity.this.startActivity(intent);
+					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_FULFILLMENT);
 				}
 			}
 
@@ -1760,13 +1798,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			DialogPopup.alertPopup(HomeActivity.this, "", message);
 			infoTileResponses.clear();
 			infoTilesAdapter.notifyDataSetChanged();
+			linearLayoutSlidingBottom.setVisibility(View.GONE);
 		} else {
+			if(infoTileResponses.size() ==0){
+				linearLayoutSlidingBottom.setVisibility(View.GONE);
+			}
+
 			try {
 				LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
-				if(tileCount > 0 && tileCount < 4){
-					params.height = tileCount * (int)(250f * ASSL.Yscale());
+
+				if(tileCount > 0 && tileCount <=1){
+					params.height = tileCount * (int)(310f * ASSL.Yscale());
+				} else if (tileCount >= 2 && tileCount <3){
+					params.height = tileCount * (int)(280f * ASSL.Yscale());
+				} else if (tileCount >= 3 && tileCount <4){
+					params.height = tileCount * (int)(272f * ASSL.Yscale());
 				} else {
-					params.height = (int)(950f * ASSL.Yscale());
+					params.height = (int)(980f * ASSL.Yscale());
 				}
 				linearLayoutSlidingBottom.setLayoutParams(params);
 			} catch (Exception e) {
@@ -2154,6 +2202,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							changeJugnooONUIAndInitService();
 							if (jugnooOnFlag == 1) {
 								AGPSRefresh.softRefreshGpsData(HomeActivity.this);
+							} else{
+								Intent intent1 = new Intent(HomeActivity.this, FetchDataUsageService.class);
+								intent1.putExtra("task_id", "2");
+								HomeActivity.this.startService(intent1);
 							}
 							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
 						}
@@ -2456,10 +2508,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							&& customerInfo.getIsDelivery() != 1
 							&& customerInfo.getDropLatLng() != null){
 						latLng = customerInfo.getDropLatLng();
+						FlurryEventLogger.event(FlurryEventNames.RIDE_STARTED_NAVIGATE_BUTTON);
 					}
 					else if(DriverScreenMode.D_ARRIVED == driverScreenMode
 								|| DriverScreenMode.D_START_RIDE == driverScreenMode){
 						latLng = customerInfo.getRequestlLatLng();
+						FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED_NAVIGATE_BUTTON);
 					}
 					if(latLng != null) {
 						Utils.openNavigationIntent(HomeActivity.this, latLng);
@@ -3077,6 +3131,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			showAllRideRequestsOnMap();
 
 			if(DriverScreenMode.D_INITIAL == mode ){
+				slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 			} else {
@@ -3259,7 +3314,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setPannelVisibility(boolean state){
-		if(state){
+		if(state && DriverScreenMode.D_INITIAL == driverScreenMode && infoTileResponses.size() > 0){
+			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 		}else{
 			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
@@ -3310,7 +3366,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			sendToSplash();
 		}
 
-		getInfoTilesAsync(HomeActivity.this);
+		if(DriverScreenMode.D_INITIAL == driverScreenMode) {
+			getInfoTilesAsync(HomeActivity.this);
+		}
 	}
 
 

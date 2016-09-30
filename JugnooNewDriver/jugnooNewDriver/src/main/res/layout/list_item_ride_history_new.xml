@@ -50,31 +50,24 @@
                     android:textColor="@color/black_text_v2"
                     android:textSize="34px"/>
 
-
-                <TextView
-                    android:id="@+id/textViewStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45px"
-                    android:layout_toRightOf="@+id/textViewInfoText"
-                    android:layout_marginLeft="10px"
-                    android:text="@string/status"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/black_text_v2"
-                    android:textSize="34px"/>
-
             </RelativeLayout>
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="vertical">
+
+
             <LinearLayout
                 android:id="@+id/relativeRight"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="right"
-                >
+                android:gravity="right">
 
                 <TextView
                     android:id="@+id/textViewType"
@@ -110,6 +103,22 @@
                     android:layout_marginRight="4px"/>
 
             </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/textViewStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="45px"
+                android:layout_toRightOf="@+id/textViewInfoText"
+                android:text="@string/status"
+                android:layout_marginRight="4px"
+                android:textColor="@color/black_text_v2"
+                android:gravity="center"
+                android:layout_gravity="right"
+                android:textSize="28px"/>
+
+
+        </LinearLayout>
 
 
     </RelativeLayout>

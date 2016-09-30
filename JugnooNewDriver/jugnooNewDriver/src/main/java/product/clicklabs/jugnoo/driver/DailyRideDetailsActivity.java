@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
@@ -32,6 +33,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -43,7 +45,7 @@ import retrofit.mime.TypedByteArray;
 
 public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
-	LinearLayout linear;
+	RelativeLayout linear;
 
 	Button backBtn;
 	TextView title;
@@ -97,7 +99,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		}
 
 
-		linear = (LinearLayout) findViewById(R.id.linear);
+		linear = (RelativeLayout) findViewById(R.id.linear);
 		assl = new ASSL(DailyRideDetailsActivity.this, linear, 1134, 720, false);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
@@ -200,6 +202,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	private void getRidesAsync(String date, final Activity activity) {
 		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().getDailyRidesAsync(date, Data.userData.accessToken,
 					new Callback<DailyEarningResponse>() {
@@ -266,6 +269,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 							}
 						}
 					});
+			} else {
+				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogPopup.dismissLoadingDialog();
@@ -274,6 +280,7 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 
 	private void getInvoiceDetails(final Activity activity) {
 		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().invoiceDetailNew(Data.userData.accessToken, String.valueOf(invoice_id), new Callback<InvoiceDetailResponseNew>() {
 				@Override
@@ -332,6 +339,9 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 					DialogPopup.dismissLoadingDialog();
 				}
 			});
+			} else {
+				DialogPopup.alertPopup(DailyRideDetailsActivity.this, "", Data.CHECK_INTERNET_MSG);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogPopup.dismissLoadingDialog();

@@ -539,9 +539,8 @@ public interface APIServices {
 						   Callback<DocRequirementResponse> cb);
 
 	@FormUrlEncoded
-	@POST("/delivery_details")
-	Response usageData(@Field("access_token") String accessToken,
-						 @Field("usage_data") String usageData);
+	@POST("/upload_data_usage_logs")
+	Response usageData(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
 	@POST("/generate_driver_support_ticket")
