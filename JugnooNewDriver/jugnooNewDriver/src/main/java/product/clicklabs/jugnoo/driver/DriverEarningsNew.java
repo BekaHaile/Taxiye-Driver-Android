@@ -67,7 +67,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 	ImageView imageViewHorizontal7, imageViewPrev, imageViewNext, arrow5, arrow4, arrow3, arrow2, arrow1;
 	ASSL assl;
 	BarChart barChart;
-	int index = 0;
+	int index = 0, maxIndex = 0;
 	Shader textShader;
 	DriverEarningsResponse res;
 
@@ -227,8 +227,9 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 				try {
 					FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD__CHART);
 					if (index >= 0 && index < 5) {
-						if(res.getEarnings().get(index).getEarnings()>0) {
-							getDailyDetails(res.getEarnings().get(index).getDate());
+						int newIndex = maxIndex-index-1;
+						if(res.getEarnings().get(newIndex).getEarnings()>0) {
+							getDailyDetails(res.getEarnings().get(newIndex).getDate());
 						}
 					}
 				} catch (Exception e) {
@@ -415,6 +416,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			ArrayList<BarEntry> entries = new ArrayList<>();
 			ArrayList<String> labels = new ArrayList<String>();
 			int j = 0;
+			maxIndex = driverEarningsResponse.getEarnings().size();
 			boolean graphVisibility = false;
 			for(int i=driverEarningsResponse.getEarnings().size() ; i > 0 ; i-- ){
 				entries.add(new BarEntry(driverEarningsResponse.getEarnings().get(i-1).getEarnings(), j++));

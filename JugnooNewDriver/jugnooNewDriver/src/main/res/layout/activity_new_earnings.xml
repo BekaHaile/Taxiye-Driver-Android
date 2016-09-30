@@ -104,13 +104,22 @@
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutChartData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <com.github.mikephil.charting.charts.BarChart
                     android:id="@+id/chart"
                     android:layout_width="match_parent"
                     android:layout_height="400px"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayoutRandom"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/transparent">
 
                 </RelativeLayout>
 
@@ -126,14 +135,6 @@
                     android:text="@string/no_data"
                     android:textSize="34px"/>
 
-                <RelativeLayout
-                    android:id="@+id/relativelayoutRandom"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/transparent">
-
-                </RelativeLayout>
 
             </RelativeLayout>
 

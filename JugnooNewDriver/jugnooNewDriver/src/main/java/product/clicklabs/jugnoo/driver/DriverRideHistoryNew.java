@@ -33,6 +33,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -186,7 +187,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 
 	private void getRidesAsync(final Activity activity) {
 		try {
-
+			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			RestClient.getApiServices().getDailyRidesAsync(date, Data.userData.accessToken,
 					new Callback<DailyEarningResponse>() {
 						@Override
@@ -195,6 +196,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 								if (activity != null) {
 									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 									JSONObject jObj;
+									DialogPopup.dismissLoadingDialog();
 									jObj = new JSONObject(jsonString);
 									if (!jObj.isNull("error")) {
 										String errorMessage = jObj.getString("error");
@@ -223,8 +225,10 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 								e.printStackTrace();
 								try {
 									updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+									DialogPopup.dismissLoadingDialog();
 								} catch (Exception e1) {
 									e1.printStackTrace();
+									DialogPopup.dismissLoadingDialog();
 								}
 							}
 
@@ -233,8 +237,10 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 						@Override
 						public void failure(RetrofitError error) {
 							try {
+								DialogPopup.dismissLoadingDialog();
 								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							} catch (Exception e) {
+								DialogPopup.dismissLoadingDialog();
 								e.printStackTrace();
 							}
 						}
