@@ -819,6 +819,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					imageViewSliderView.setImageResource(R.drawable.up_arrow_even_sahdow);
 					driverInitialMyLocationBtn.setVisibility(View.VISIBLE);
 //					recyclerViewInfo.smoothScrollToPosition(0);
+					linearLayoutManagerScrollControl.scrollToPositionWithOffset(0, 1);
 				}
 
 				@Override

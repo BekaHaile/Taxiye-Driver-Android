@@ -3,7 +3,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="720px"
                 android:layout_height="1134px"
-                android:background="@drawable/background_white"
+                android:background="@color/white"
                 android:splitMotionEvents="false">
 
     <RelativeLayout

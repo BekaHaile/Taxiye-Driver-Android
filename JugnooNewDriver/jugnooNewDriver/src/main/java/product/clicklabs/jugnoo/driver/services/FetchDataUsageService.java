@@ -164,7 +164,7 @@ public class FetchDataUsageService extends Service {
 					JSONObject jObj = new JSONObject(result);
 					if (jObj.has("flag")) {
 						int flag = jObj.getInt("flag");
-						if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == flag) {
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 							Database2.getInstance(ctx).deleteUsageData();
 						}
 					}
