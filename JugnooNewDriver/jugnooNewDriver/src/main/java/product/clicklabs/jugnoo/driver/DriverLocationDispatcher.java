@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
@@ -133,14 +134,26 @@ public class DriverLocationDispatcher {
 			}
 		}
 		catch (RetrofitError retrofitError){
+			updateDriverLocationFalier(context);
 			Intent intent1 = new Intent(context, FetchDataUsageService.class);
 			intent1.putExtra("task_id", "1");
 			context.startService(intent1);
+
 		}
 		catch (Exception e) {
+			updateDriverLocationFalier(context);
 			Intent intent1 = new Intent(context, FetchDataUsageService.class);
 			intent1.putExtra("task_id", "1");
 			context.startService(intent1);
+			e.printStackTrace();
+		}
+	}
+
+	public void updateDriverLocationFalier(final Context context){
+		try {
+			Thread.sleep(2000);
+			sendLocationToServer(context);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

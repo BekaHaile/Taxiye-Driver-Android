@@ -580,6 +580,21 @@ public class Utils {
 		}
 	}
 
+	public static boolean isBatteryCharging(Context context) {
+		try {
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = context.registerReceiver(null, ifilter);
+			// Are we charging / charged?
+			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+					status == BatteryManager.BATTERY_STATUS_FULL;
+			return isCharging;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
 	public static String getCallDetails(Context context, String phone) {
 		JSONArray callLogs = new JSONArray();
 		try {

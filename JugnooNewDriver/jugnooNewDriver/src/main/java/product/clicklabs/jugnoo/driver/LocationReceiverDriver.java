@@ -66,10 +66,21 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 							}
 						}).start();
 
-						if (location.getAccuracy() > 200) {
-							Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
-							context.stopService(new Intent(context, DriverLocationUpdateService.class));
-							setAlarm(context);
+						if(Utils.isBatteryCharging(context)){
+							//TODO save server fast time
+							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
+							context.startService(new Intent(context, DriverLocationUpdateService.class));
+						}
+						else {
+							if (location.getAccuracy() > 200) {
+								Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
+								context.stopService(new Intent(context, DriverLocationUpdateService.class));
+								setAlarm(context);
+							} else {
+								//TODO save server normal time
+								Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
+								context.startService(new Intent(context, DriverLocationUpdateService.class));
+							}
 						}
 					}
 				}

@@ -37,39 +37,6 @@ public class DriverLocationUpdateService extends Service {
         
     }
 
-	
-    @Override
-    public void onStart(Intent intent, int startId) {
-        try{
-        	String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
-    		if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
-	        	updateServerData(this);
-	    		String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
-	    		if(fast.equalsIgnoreCase(Database2.NO)){
-	    			if(locationFetcherDriver != null){
-	    				locationFetcherDriver.destroy();
-	    				locationFetcherDriver = null;
-	    			}
-	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000));
-	    		}
-	    		else{
-	    			if(locationFetcherDriver != null){
-	    				locationFetcherDriver.destroy();
-	    				locationFetcherDriver = null;
-	    			}
-	    			locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000));
-	    		}
-	            setupLocationUpdateAlarm();
-    		}
-    		else{
-				stopService(new Intent(this, DriverLocationUpdateService.class));
-    		}
-        	
-        } catch(Exception e){
-        	e.printStackTrace();
-        }
-    }
-
 
     public static void updateServerData(final Context context){
     	String SHARED_PREF_NAME = "myPref";
@@ -150,14 +117,32 @@ public class DriverLocationUpdateService extends Service {
     
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-    	
-    	if(Utils.isServiceRunning(this, DriverLocationUpdateService.class)){
-    	}
-    	else{
-    	}
-    	
     	super.onStartCommand(intent, flags, startId);
 		RestClient.setCurrentUrl("");
+
+		try{
+			String driverServiceRun = Database2.getInstance(this).getDriverServiceRun();
+			if(Database2.YES.equalsIgnoreCase(driverServiceRun)){
+				updateServerData(this);
+				String fast = Database2.getInstance(DriverLocationUpdateService.this).getDriverServiceFast();
+				if(fast.equalsIgnoreCase(Database2.NO)){
+					destroyLocationFetcher();
+					locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000));
+				}
+				else{
+					destroyLocationFetcher();
+					locationFetcherDriver = new LocationFetcherDriver(DriverLocationUpdateService.this, Prefs.with(this).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 15000));
+				}
+				setupLocationUpdateAlarm();
+			}
+			else{
+				stopService(new Intent(this, DriverLocationUpdateService.class));
+			}
+
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
     	return Service.START_STICKY;
     }
     
@@ -185,14 +170,16 @@ public class DriverLocationUpdateService extends Service {
     
 
 
+	public void destroyLocationFetcher(){
+		if(locationFetcherDriver != null){
+			locationFetcherDriver.destroy();
+			locationFetcherDriver = null;
+		}
+	}
 
     @Override
     public void onDestroy() {
-        if(locationFetcherDriver != null){
-        	locationFetcherDriver.destroy();
-        	locationFetcherDriver = null;
-        }
-
+		destroyLocationFetcher();
 		if (!Database2.YES.equalsIgnoreCase(Database2.getInstance(this).getDriverServiceRun())) {
 			cancelLocationUpdateAlarm();
 		}
