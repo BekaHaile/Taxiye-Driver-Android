@@ -68,8 +68,13 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 						if(Utils.isBatteryCharging(context)){
 							//TODO save server fast time
-							Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
-							context.startService(new Intent(context, DriverLocationUpdateService.class));
+							if(Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD,120000l)
+									!=  Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING,10000l)) {
+								Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+										Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, 10000l));
+								context.stopService(new Intent(context, DriverLocationUpdateService.class));
+								context.startService(new Intent(context, DriverLocationUpdateService.class));
+							}
 						}
 						else {
 							if (location.getAccuracy() > 200) {
@@ -78,8 +83,13 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 								setAlarm(context);
 							} else {
 								//TODO save server normal time
-								Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 120000);
-								context.startService(new Intent(context, DriverLocationUpdateService.class));
+								if(Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD,120000l)
+										!=  Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING,120000l)) {
+									Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD,
+											Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING,120000l));
+									context.stopService(new Intent(context, DriverLocationUpdateService.class));
+									context.startService(new Intent(context, DriverLocationUpdateService.class));
+								}
 							}
 						}
 					}

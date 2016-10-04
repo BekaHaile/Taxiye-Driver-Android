@@ -46,6 +46,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -309,8 +310,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom;
-	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,textViewHighDemandAreas;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom, relativeLayoutRefreshUSLBar;
+	View viewRefreshUSLBar;
+	ProgressBar progressBarUSL;
+	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
+			textViewHighDemandAreas, textViewRetryUSL;
 	Shader textShader;
 
 	CustomerSwitcher customerSwitcher;
@@ -789,6 +793,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewDriverEarningOnScreenValue.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 			imageViewSliderView = (ImageView)findViewById(R.id.imageViewSliderView);
 
+			relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
+			viewRefreshUSLBar = findViewById(R.id.viewRefreshUSLBar);
+			textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
+			progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
 			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
 			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 			linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
@@ -1181,6 +1189,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 
+
 			menuLayout.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -1246,6 +1255,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+
+			relativeLayoutRefreshUSLBar.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					textViewRetryUSL.setVisibility(View.GONE);
+					progressBarUSL.setVisibility(View.VISIBLE);
+					updateUSL();
+				}
+			});
 
 
 			driverStartRideBtn.setOnClickListener(new OnClickListener() {
@@ -1658,6 +1676,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
+			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
 
 
 			new Handler().postDelayed(new Runnable() {
@@ -1709,6 +1728,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showDriverEarning();
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverUSL = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showRefreshUSLBar();
 				}
 			});
 		}
@@ -1794,6 +1825,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	};
 
+
+	public void updateUSL(){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				if(myLocation != null) {
+					Database2.getInstance(HomeActivity.this).updateDriverCurrentLocation(HomeActivity.this, myLocation);
+				}
+				new DriverLocationDispatcher().sendLocationToServer(HomeActivity.this);
+
+				if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+					new DriverLocationDispatcher().sendLocationToServer(HomeActivity.this);
+				}
+			}
+		}).start();
+	}
+
 	public void updateInfoTileListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
 			DialogPopup.alertPopup(HomeActivity.this, "", message);
@@ -1845,6 +1894,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+
+	public void showRefreshUSLBar(){
+		try {
+			if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode
+					&& Prefs.with(HomeActivity.this).getBoolean(SPLabels.GET_USL_STATUS, false)) {
+
+				viewRefreshUSLBar.setVisibility(View.VISIBLE);
+				textViewRetryUSL.setVisibility(View.VISIBLE);
+				progressBarUSL.setVisibility(View.GONE);
+			} else {
+				viewRefreshUSLBar.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	@Override
@@ -2789,6 +2854,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					showDriverEarning();
+					showRefreshUSLBar();
 
 					try {
 						if (timer != null) {
@@ -3115,7 +3181,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 			if(DriverScreenMode.D_INITIAL != mode){
-//				relativeLayoutCancelRide.setVisibility(View.GONE);
+				viewRefreshUSLBar.setVisibility(View.GONE);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 				driverInformationBtn.setVisibility(View.GONE);
 			}
@@ -3463,6 +3529,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			Database2.getInstance(this).close();
 			unregisterReceiver(broadcastReceiver);
+			unregisterReceiver(broadcastReceiverUSL);
+
 
 			System.gc();
 		} catch (Exception e) {
@@ -3559,7 +3627,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					DriverRequestListAdapter.this.notifyDataSetChanged();
-					handlerRefresh.postDelayed(runnableRefresh, 1000);
+					if(driverRideRequestsList.getVisibility() == View.VISIBLE){
+						handlerRefresh.postDelayed(runnableRefresh, 1000);
+					} else{
+						handlerRefresh.postDelayed(runnableRefresh, 10000);
+					}
 				}
 			};
 			handlerRefresh.postDelayed(runnableRefresh, 1000);
@@ -3599,6 +3671,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
+				viewRefreshUSLBar.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
@@ -3606,6 +3679,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //					setPannelVisibility(true);
 				}
 				showDriverEarning();
+				showRefreshUSLBar();
 			}
 		}
 

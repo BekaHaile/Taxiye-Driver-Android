@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -39,7 +40,11 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 	 */
 	public LocationFetcherDriver(Context context, long requestInterval){
 		this.context = context;
-		this.requestInterval = requestInterval;
+		if(requestInterval > 10000) {
+			this.requestInterval = requestInterval/2l;
+		} else {
+			this.requestInterval = requestInterval;
+		}
 		connect();
 	}
 	

@@ -11,6 +11,23 @@
         android:orientation="vertical"
         android:splitMotionEvents="false">
 
+        <!-- map layout -->
+        <RelativeLayout
+            android:id="@+id/mapLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:splitMotionEvents="false"
+            android:visibility="visible">
+
+            <fragment
+                android:id="@+id/map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+        </RelativeLayout>
+
+
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
             android:id="@+id/slidingLayout"
             xmlns:sothree="http://schemas.android.com/apk/res-auto"
@@ -21,38 +38,13 @@
             sothree:umanoOverlay="true"
             sothree:umanoFadeColor="@color/transparent"
             sothree:umanoPanelHeight="140px"
-            sothree:umanoShadowHeight="0px">
+            sothree:umanoShadowHeight="0px"
+            android:layout_below="@+id/topRlOuter">
 
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <!-- map layout -->
-                <RelativeLayout
-                    android:id="@+id/mapLayout"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:splitMotionEvents="false"
-                    android:visibility="gone">
-
-                    <fragment
-                        android:id="@+id/map"
-                        class="com.google.android.gms.maps.SupportMapFragment"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"/>
-
-
-                </RelativeLayout>
-
-
-                <!-- initial layout-->
-                <include layout="@layout/layout_driver_initial"/>
-
-            </RelativeLayout>
-
+            <!-- initial layout-->
+            <include layout="@layout/layout_driver_initial"/>
 
             <include layout="@layout/layout_home_sliding_menu"/>
-
 
         </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
@@ -75,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5px"
             android:layout_marginRight="5px"
+            android:visibility="visible"
             android:layout_marginTop="130px">
 
             <RelativeLayout
@@ -116,25 +109,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/relativeLayoutCancelRide"
-                android:layout_width="match_parent"
-                android:layout_height="95px"
-                android:layout_alignParentTop="true"
-                android:background="@drawable/background_white"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/textViewCancellationMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:text="@string/cancel_ride_by_customer"
-                    android:textSize="32px"/>
-
-            </RelativeLayout>
-
         </RelativeLayout>
 
         <Button
@@ -145,6 +119,7 @@
             android:layout_below="@+id/relativeLayoutBanner"
             android:layout_marginRight="36px"
             android:layout_marginTop="24px"
+            android:visibility="gone"
             android:background="@drawable/icon_i"
             android:tag="mwar"/>
 
@@ -152,11 +127,10 @@
             android:id="@+id/driverRideRequestsList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/top_bar_height"
+            android:layout_below="@+id/topRlOuter"
             android:divider="@color/transparent"
             android:splitMotionEvents="false"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
         <ImageView

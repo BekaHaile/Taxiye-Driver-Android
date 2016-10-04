@@ -110,6 +110,9 @@ public class DriverLocationDispatcher {
 										Intent intent1 = new Intent(context, FetchDataUsageService.class);
 										intent1.putExtra("task_id", "2");
 										context.startService(intent1);
+										Prefs.with(context).save(SPLabels.GET_USL_STATUS, false);
+										Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+										context.sendBroadcast(refreshUSL);
 										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 									}
 								}
@@ -134,25 +137,45 @@ public class DriverLocationDispatcher {
 			}
 		}
 		catch (RetrofitError retrofitError){
-			updateDriverLocationFalier(context);
-			Intent intent1 = new Intent(context, FetchDataUsageService.class);
-			intent1.putExtra("task_id", "1");
-			context.startService(intent1);
+			try {
+				updateDriverLocationFalier(context);
+				long diff1 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+				if(diff1 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
+					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
+					Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+					context.sendBroadcast(refreshUSL);
+				}
+				Intent intent1 = new Intent(context, FetchDataUsageService.class);
+				intent1.putExtra("task_id", "1");
+				context.startService(intent1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 		}
 		catch (Exception e) {
-			updateDriverLocationFalier(context);
-			Intent intent1 = new Intent(context, FetchDataUsageService.class);
-			intent1.putExtra("task_id", "1");
-			context.startService(intent1);
-			e.printStackTrace();
+			try {
+				updateDriverLocationFalier(context);
+				long diff2 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+				if(diff2 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
+					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
+					Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+					context.sendBroadcast(refreshUSL);
+				}
+				Intent intent1 = new Intent(context, FetchDataUsageService.class);
+				intent1.putExtra("task_id", "1");
+				context.startService(intent1);
+				e.printStackTrace();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	public void updateDriverLocationFalier(final Context context){
 		try {
-			Thread.sleep(2000);
-			sendLocationToServer(context);
+//			Thread.sleep(2000);
+//			sendLocationToServer(context);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -1769,7 +1769,7 @@ public class Database2 {                                                        
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.PUSHY_TOKEN, token);
-			int rowsAffected = database.update(Database2.PUSHY_TOKEN, contentValues, null, null);
+			int rowsAffected = database.update(Database2.TABLE_PUSHY_TOKEN, contentValues, null, null);
 			if(rowsAffected == 0){
 				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
 				return 1;
