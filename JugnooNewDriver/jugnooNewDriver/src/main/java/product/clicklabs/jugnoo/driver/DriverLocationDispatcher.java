@@ -79,7 +79,7 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
 							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
-							nameValuePairs.put("isCharging", String.valueOf(Utils.isBatteryChargingNew(context)));
+							nameValuePairs.put("is_charging", String.valueOf(Utils.isBatteryChargingNew(context)));
 							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
 								nameValuePairs.put("mobile_data_state", String.valueOf(1));
 							}else {

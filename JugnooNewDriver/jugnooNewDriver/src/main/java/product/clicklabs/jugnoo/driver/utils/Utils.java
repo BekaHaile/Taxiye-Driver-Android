@@ -601,7 +601,7 @@ public class Utils {
 		}
 	}
 
-	public static boolean isBatteryChargingNew(Context context) {
+	public static int isBatteryChargingNew(Context context) {
 		try {
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 			Intent batteryStatus = context.registerReceiver(null, ifilter);
@@ -612,10 +612,14 @@ public class Utils {
 			int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
 			boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
 					status == BatteryManager.BATTERY_STATUS_FULL ;
-			return isCharging;
+			if(isCharging){
+				return 1;
+			} else {
+				return 0;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return 0;
 		}
 	}
 

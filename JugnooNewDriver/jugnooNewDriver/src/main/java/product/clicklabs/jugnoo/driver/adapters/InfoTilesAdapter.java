@@ -64,11 +64,11 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			infoTileViewHolder.topRlOuterSlide.setVisibility(View.GONE);
 		}
 
-		if(itr.getDeepIndex() == 10){
-			infoTileViewHolder.arrowSlider.setVisibility(View.GONE);
-		} else {
-			infoTileViewHolder.arrowSlider.setVisibility(View.VISIBLE);
-		}
+//		if(itr.getDeepIndex() == 10){
+//			infoTileViewHolder.arrowSlider.setVisibility(View.GONE);
+//		} else {
+//			infoTileViewHolder.arrowSlider.setVisibility(View.VISIBLE);
+//		}
 
 		if(itr.getTitle() != null){
 			infoTileViewHolder.textViewHeadText.setText(itr.getTitle());
