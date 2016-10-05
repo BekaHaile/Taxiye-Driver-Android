@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
@@ -285,7 +287,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 			textViewCustomerPaid.setTypeface(Fonts.mavenRegular(context));
 
 			textViewBankDeposite = (TextView)itemView.findViewById(R.id.textViewBankDeposite);
-			textViewBankDeposite.setTypeface(Fonts.mavenBold(context));
+			textViewBankDeposite.setTypeface(Data.latoRegular(context), Typeface.BOLD);
 			textViewBankDepositeValue = (TextView)itemView.findViewById(R.id.textViewBankDepositeValue);
 			textViewBankDepositeValue.setTypeface(Fonts.mavenBold(context));
 

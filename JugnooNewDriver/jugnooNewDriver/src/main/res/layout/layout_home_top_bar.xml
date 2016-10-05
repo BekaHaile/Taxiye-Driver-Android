@@ -19,7 +19,7 @@
             android:id="@+id/viewRefreshUSLBar"
             android:layout_width="match_parent"
             android:layout_height="90px"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
         <RelativeLayout

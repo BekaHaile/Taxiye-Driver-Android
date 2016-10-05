@@ -161,18 +161,18 @@
             android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
-            android:layout_marginBottom="24px"
+            android:layout_marginBottom="15px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
             android:layout_width="620px"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
+            android:layout_marginTop="0px">
 
             <TextView
                 android:id="@+id/textViewAccountBalanceText"
                 android:layout_width="440px"
-                android:layout_height="45px"
+                android:layout_height="74px"
                 android:gravity="center_vertical"
                 android:text="@string/bank_deposite"
                 android:textColor="@color/black"
@@ -180,7 +180,7 @@
             <TextView
                 android:id="@+id/textViewAccountBalance"
                 android:layout_width="160px"
-                android:layout_height="wrap_content"
+                android:layout_height="74px"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="0000.00"
@@ -192,7 +192,7 @@
         <ImageView
             android:layout_width="640px"
             android:layout_height="2px"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="12px"
             android:layout_marginBottom="35px"
             android:background="@color/grey_light"/>
 

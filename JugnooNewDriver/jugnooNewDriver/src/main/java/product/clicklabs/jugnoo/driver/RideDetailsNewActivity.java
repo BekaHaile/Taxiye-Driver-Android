@@ -315,7 +315,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		textViewFromValue = (TextView) findViewById(R.id.textViewFromValue);
 		textViewFromValue.setTypeface(Fonts.mavenRegular(this));
 		textViewAccountBalanceText = (TextView) findViewById(R.id.textViewAccountBalanceText);
-		textViewAccountBalanceText.setTypeface(Fonts.mavenBold(this));
+		textViewAccountBalanceText.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 
 		((TextView) findViewById(R.id.dateTimeValue)).setTypeface(Fonts.mavenRegular(this));
 		((TextView) findViewById(R.id.distanceValue)).setTypeface(Fonts.mavenRegular(this));

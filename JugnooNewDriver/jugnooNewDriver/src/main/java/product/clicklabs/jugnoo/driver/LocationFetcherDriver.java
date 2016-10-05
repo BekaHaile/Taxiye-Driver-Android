@@ -40,8 +40,8 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 	 */
 	public LocationFetcherDriver(Context context, long requestInterval){
 		this.context = context;
-		if(requestInterval > 10000) {
-			this.requestInterval = requestInterval/2l;
+		if(requestInterval >= 10000) {
+			this.requestInterval = requestInterval;
 		} else {
 			this.requestInterval = requestInterval;
 		}
@@ -118,6 +118,7 @@ public class LocationFetcherDriver implements GoogleApiClient.ConnectionCallback
 		locationrequest.setInterval(interval);
 		locationrequest.setFastestInterval(interval);
 		locationrequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//		Toast.makeText(context,String.valueOf(interval),Toast.LENGTH_LONG).show();
 	}
 
 

@@ -72,7 +72,7 @@
                 <TextView
                     android:id="@+id/textViewType"
                     android:layout_width="wrap_content"
-                    android:layout_height="45px"
+                    android:layout_height="52px"
                     android:gravity="center"
                     android:paddingLeft="10px"
                     android:paddingRight="10px"

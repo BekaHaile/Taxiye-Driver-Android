@@ -145,7 +145,11 @@ public class RideIssueFragment extends Fragment {
 				accessToken = getArguments().getString("access_token");
 				engagementId = getArguments().getString("engagement_id");
 				String messageStr = editTextMessage.getText().toString().trim();
-				sendIssue(messageStr);
+				if(messageStr.equalsIgnoreCase("")){
+					DialogPopup.alertPopup(activity,"",activity.getResources().getString(R.string.pls_enter_some_msg));
+				}else {
+					sendIssue(messageStr);
+				}
 			}
 		});
 

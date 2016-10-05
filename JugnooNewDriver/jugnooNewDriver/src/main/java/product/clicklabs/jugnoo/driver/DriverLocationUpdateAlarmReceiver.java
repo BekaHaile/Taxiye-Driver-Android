@@ -33,10 +33,8 @@ public class DriverLocationUpdateAlarmReceiver extends BroadcastReceiver {
 						}
 						long currentTime = System.currentTimeMillis();
 
-						Log.writeLogToFile("AlarmReceiver", "Receiver " + DateOperations.getCurrentTime() + " = " + (currentTime - lastTime)
-								+ " hasNet = " + AppStatus.getInstance(context).isOnline(context));
-
 						if (currentTime >= (lastTime + MAX_TIME_BEFORE_LOCATION_UPDATE)) {
+							Database2.getInstance(context).insertUSLLog(Constants.EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN);
 							new Thread(new Runnable() {
 								@Override
 								public void run() {

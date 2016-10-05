@@ -74,6 +74,8 @@ public class FetchDataUsageService extends Service {
 				}
 			} else if (task.equalsIgnoreCase("3")) {
 				sendDataStatToServer();
+			} else if (task.equalsIgnoreCase("4")) {
+				sendUSLDataToServer();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -166,6 +168,42 @@ public class FetchDataUsageService extends Service {
 						int flag = jObj.getInt("flag");
 						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 							Database2.getInstance(ctx).deleteUsageData();
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
+
+
+	public void sendUSLDataToServer() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					String dataUsage = Database2.getInstance(ctx).getUSLLog();
+					HashMap<String, String> params = new HashMap<String, String>();
+					Log.e("Usage Data",dataUsage);
+
+					try {
+						params.put("data", dataUsage);
+						params.put("access_token", Data.userData.accessToken);
+
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					Response response = RestClient.getApiServices().uslData(params);
+					String result = new String(((TypedByteArray) response.getBody()).getBytes());
+
+					JSONObject jObj = new JSONObject(result);
+					if (jObj.has("flag")) {
+						int flag = jObj.getInt("flag");
+						if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+							Database2.getInstance(ctx).deleteUSLLog();
 						}
 					}
 				} catch (Exception e) {

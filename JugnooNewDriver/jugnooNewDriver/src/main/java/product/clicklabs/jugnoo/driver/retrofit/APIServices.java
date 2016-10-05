@@ -543,6 +543,10 @@ public interface APIServices {
 	Response usageData(@FieldMap Map<String, String> params);
 
 	@FormUrlEncoded
+	@POST("/log_usl_calls")
+	Response uslData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
 	@POST("/generate_driver_support_ticket")
 	void sendIssue(@Field("access_token") String accessToken,
 				   @Field("support_feedback_text") String message,

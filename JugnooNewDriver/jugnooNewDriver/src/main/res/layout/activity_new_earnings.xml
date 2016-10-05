@@ -450,7 +450,7 @@
                     android:id="@+id/imageViewRideHistory"
                     android:layout_width="36px"
                     android:layout_height="31px"
-                    android:layout_marginTop="3px"
+                    android:layout_marginTop="12px"
                     android:layout_marginLeft="54px"
                     android:layout_marginRight="26px"
                     android:src="@drawable/ride_history_icon"/>
@@ -459,7 +459,8 @@
                 <TextView
                     android:id="@+id/textViewRideHistory"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55px"
+                    android:gravity="center_vertical"
                     android:layout_toRightOf="@+id/imageViewRideHistory"
                     android:textColor="@color/black_text_v2"
                     android:text="@string/ride_history_cap"

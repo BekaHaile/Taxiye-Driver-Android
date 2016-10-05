@@ -61,10 +61,12 @@ public class DriverLocationDispatcher {
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 								DriverScreenMode.D_INITIAL.getOrdinal());
-						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000);
-						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000);
+						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000)/2l;
+						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000)/2l;
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+						Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_RECEIVED);
+
 						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
 								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
@@ -76,7 +78,8 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
-							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getBatteryPercentage(context)));
+							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
+							nameValuePairs.put("isCharging", String.valueOf(Utils.isBatteryChargingNew(context)));
 							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
 								nameValuePairs.put("mobile_data_state", String.valueOf(1));
 							}else {
@@ -103,6 +106,7 @@ public class DriverLocationDispatcher {
 								if (jObj.has("log")) {
 									String log = jObj.getString("log");
 									if ("Updated".equalsIgnoreCase(log)) {
+										Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_SENT);
 										Prefs.with(context).save(Constants.MOBILE_DATA_STATE, true);
 										Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
 										Database2.getInstance(context).updateDriverLastLocationTime();
@@ -122,10 +126,13 @@ public class DriverLocationDispatcher {
 									String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
 									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 									sendLocationToServer(context);
+									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
+						} else {
+							Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_REJECTED_TIME_DIFF);
 						}
 					}
 				}
@@ -138,6 +145,7 @@ public class DriverLocationDispatcher {
 		}
 		catch (RetrofitError retrofitError){
 			try {
+				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_RETRO);
 				updateDriverLocationFalier(context);
 				long diff1 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 				if(diff1 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
@@ -155,6 +163,7 @@ public class DriverLocationDispatcher {
 		}
 		catch (Exception e) {
 			try {
+				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_GENERIC);
 				updateDriverLocationFalier(context);
 				long diff2 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
 				if(diff2 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {

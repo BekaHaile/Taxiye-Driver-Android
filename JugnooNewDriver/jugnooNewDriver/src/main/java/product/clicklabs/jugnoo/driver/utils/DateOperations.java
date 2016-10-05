@@ -371,7 +371,7 @@ public class DateOperations {
 
 	public static String convertMonthDayViaFormat(String date) {
 		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdfTo = new SimpleDateFormat("MM/dd");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("dd/MM");
 		try {
 			Date myDate = sdfFrom.parse(date);
 			return sdfTo.format(myDate);

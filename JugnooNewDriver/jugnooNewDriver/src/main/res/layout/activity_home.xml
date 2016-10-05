@@ -11,21 +11,7 @@
         android:orientation="vertical"
         android:splitMotionEvents="false">
 
-        <!-- map layout -->
-        <RelativeLayout
-            android:id="@+id/mapLayout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:splitMotionEvents="false"
-            android:visibility="visible">
 
-            <fragment
-                android:id="@+id/map"
-                class="com.google.android.gms.maps.SupportMapFragment"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
-
-        </RelativeLayout>
 
 
         <com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -41,8 +27,32 @@
             sothree:umanoShadowHeight="0px"
             android:layout_below="@+id/topRlOuter">
 
-            <!-- initial layout-->
-            <include layout="@layout/layout_driver_initial"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <!-- map layout -->
+                <RelativeLayout
+                    android:id="@+id/mapLayout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:splitMotionEvents="false"
+                    android:visibility="gone">
+
+                    <fragment
+                        android:id="@+id/map"
+                        class="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"/>
+
+
+                </RelativeLayout>
+
+
+                <!-- initial layout-->
+                <include layout="@layout/layout_driver_initial"/>
+
+            </RelativeLayout>
 
             <include layout="@layout/layout_home_sliding_menu"/>
 

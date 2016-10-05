@@ -21,7 +21,8 @@
             <TextView
                 android:id="@+id/textViewTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="58px"
+                android:gravity="center_vertical"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="@string/fare_issues"

@@ -262,8 +262,9 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, userData.optLong("driver_accepted_state_update_time_period", 12000));
 		Prefs.with(context).save(Constants.SHOW_INVOICE_DETAILS, userData.optInt("show_invoice_details", 0));
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING, userData.optLong("driver_free_state_update_time_period_charging", 10000));
+		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5, userData.optLong("driver_free_state_update_time_period_charging_v5", 10000));
 		Prefs.with(context).save(Constants.FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING, userData.optLong("driver_free_state_update_time_period", 110000));
-		Prefs.with(context).save(Constants.DRIVER_OFFLINE_PERIOD, userData.optLong("driver_offline_period", 1000));
+		Prefs.with(context).save(Constants.DRIVER_OFFLINE_PERIOD, userData.optLong("driver_offline_period", 180000));
 
 
 

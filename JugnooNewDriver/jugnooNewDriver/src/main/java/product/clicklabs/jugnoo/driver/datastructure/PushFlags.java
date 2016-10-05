@@ -30,7 +30,8 @@ public enum PushFlags {
 	OTP_VERIFIED_BY_CALL(75),
 	SHARING_RIDE_ENDED(74),
 	UPDATE_HEAT_MAP(87),
-	SEND_DATA_USAGE(89);
+	SEND_DATA_USAGE(89),
+	SEND_USL_LOG(90);
 
 	private int ordinal;
 
