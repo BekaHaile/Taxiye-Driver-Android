@@ -98,4 +98,5 @@ public class SPLabels {
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
 	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
 
+    public static final String ACCEPT_RIDE_VIA_PUSH = "accept_ride_via_push";
 }

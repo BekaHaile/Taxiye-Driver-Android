@@ -1714,6 +1714,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 
+
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+
+				if(Prefs.with(HomeActivity.this).getBoolean(SPLabels.ACCEPT_RIDE_VIA_PUSH, false)){
+
+				}
+
+			}
+		}, 500);
+
+
+
 		if(DriverScreenMode.D_INITIAL == driverScreenMode) {
 			getInfoTilesAsync(HomeActivity.this);
 		}

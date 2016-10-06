@@ -448,6 +448,22 @@ public class GCMIntentService extends IntentService {
 									entertainRequest = true;
 								}
 
+								if(jObj.optInt("wake_up_lock_enabled",1)==1){
+									if(HomeActivity.activity != null){
+										if(!HomeActivity.activity.hasWindowFocus()){
+											Intent newIntent = new Intent(this, HelpActivity.class);
+											newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+											newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											startActivity(newIntent);
+										}
+									} else {
+										Intent homeScreen = new Intent(this, SplashNewActivity.class);
+										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										startActivity(homeScreen);
+									}
+
+								}
+
 								if(entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
