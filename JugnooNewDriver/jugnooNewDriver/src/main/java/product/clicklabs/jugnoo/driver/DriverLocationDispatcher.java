@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 
@@ -60,10 +61,12 @@ public class DriverLocationDispatcher {
 					if((Math.abs(location.getLatitude()) > LOCATION_TOLERANCE) && (Math.abs(location.getLongitude()) > LOCATION_TOLERANCE)){
 						int screenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 								DriverScreenMode.D_INITIAL.getOrdinal());
-						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000);
-						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000);
+						long freeStateTime = Prefs.with(context).getLong(Constants.FREE_STATE_UPDATE_TIME_PERIOD, 110000)/2l;
+						long acceptedStateTime = Prefs.with(context).getLong(Constants.ACCEPTED_STATE_UPDATE_TIME_PERIOD, 12000)/2l;
 
 						long diff = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+						Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_RECEIVED);
+
 						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
 								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
@@ -75,7 +78,8 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_BEARING, String.valueOf(location.getBearing()));
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
-							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getBatteryPercentage(context)));
+							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
+							nameValuePairs.put("is_charging", String.valueOf(Utils.isBatteryChargingNew(context)));
 							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
 								nameValuePairs.put("mobile_data_state", String.valueOf(1));
 							}else {
@@ -102,6 +106,7 @@ public class DriverLocationDispatcher {
 								if (jObj.has("log")) {
 									String log = jObj.getString("log");
 									if ("Updated".equalsIgnoreCase(log)) {
+										Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_SENT);
 										Prefs.with(context).save(Constants.MOBILE_DATA_STATE, true);
 										Prefs.with(context).save(Constants.POWER_OFF_INITIATED, false);
 										Database2.getInstance(context).updateDriverLastLocationTime();
@@ -109,6 +114,9 @@ public class DriverLocationDispatcher {
 										Intent intent1 = new Intent(context, FetchDataUsageService.class);
 										intent1.putExtra("task_id", "2");
 										context.startService(intent1);
+										Prefs.with(context).save(SPLabels.GET_USL_STATUS, false);
+										Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+										context.sendBroadcast(refreshUSL);
 										FlurryEventLogger.logResponseTime(context, System.currentTimeMillis() - responseTime, FlurryEventNames.UPDATE_DRIVER_LOC_RESPONSE);
 									}
 								}
@@ -118,10 +126,13 @@ public class DriverLocationDispatcher {
 									String deviceTokenNew = new DeviceTokenGenerator(context).forceGenerateDeviceToken(context);
 									Database2.getInstance(context).insertDriverLocData(accessToken, deviceTokenNew, serverUrl);
 									sendLocationToServer(context);
+									Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_DEVICE_TOKEN_RESET);
 								}
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
+						} else {
+							Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_REJECTED_TIME_DIFF);
 						}
 					}
 				}
@@ -133,14 +144,48 @@ public class DriverLocationDispatcher {
 			}
 		}
 		catch (RetrofitError retrofitError){
-			Intent intent1 = new Intent(context, FetchDataUsageService.class);
-			intent1.putExtra("task_id", "1");
-			context.startService(intent1);
+			try {
+				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_RETRO);
+				updateDriverLocationFalier(context);
+				long diff1 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+				if(diff1 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
+					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
+					Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+					context.sendBroadcast(refreshUSL);
+				}
+				Intent intent1 = new Intent(context, FetchDataUsageService.class);
+				intent1.putExtra("task_id", "1");
+				context.startService(intent1);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
 		}
 		catch (Exception e) {
-			Intent intent1 = new Intent(context, FetchDataUsageService.class);
-			intent1.putExtra("task_id", "1");
-			context.startService(intent1);
+			try {
+				Database2.getInstance(context).insertUSLLog(Constants.EVENT_DLD_LOC_FAILED_GENERIC);
+				updateDriverLocationFalier(context);
+				long diff2 = System.currentTimeMillis() - Prefs.with(context).getLong(SPLabels.UPDATE_DRIVER_LOCATION_TIME, 0);
+				if(diff2 > Prefs.with(context).getLong(Constants.DRIVER_OFFLINE_PERIOD, 0)) {
+					Prefs.with(context).save(SPLabels.GET_USL_STATUS, true);
+					Intent refreshUSL = new Intent(Constants.ACTION_REFRESH_USL);
+					context.sendBroadcast(refreshUSL);
+				}
+				Intent intent1 = new Intent(context, FetchDataUsageService.class);
+				intent1.putExtra("task_id", "1");
+				context.startService(intent1);
+				e.printStackTrace();
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
+	public void updateDriverLocationFalier(final Context context){
+		try {
+//			Thread.sleep(2000);
+//			sendLocationToServer(context);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

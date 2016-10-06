@@ -69,18 +69,18 @@
             android:layout_width="640px"
             android:layout_height="2px"
             android:layout_marginTop="24px"
-            android:layout_marginBottom="24px"
+            android:layout_marginBottom="15px"
             android:background="@color/grey_light"/>
 
         <RelativeLayout
             android:layout_width="620px"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10px">
+            android:layout_marginTop="0px">
 
             <TextView
                 android:id="@+id/textViewBankDeposite"
                 android:layout_width="440px"
-                android:layout_height="45px"
+                android:layout_height="74px"
                 android:gravity="center_vertical"
                 android:text="@string/bank_deposite"
                 android:textColor="@color/black"
@@ -88,7 +88,7 @@
             <TextView
                 android:id="@+id/textViewBankDepositeValue"
                 android:layout_width="160px"
-                android:layout_height="wrap_content"
+                android:layout_height="74px"
                 android:layout_alignParentRight="true"
                 android:gravity="center_vertical|right"
                 android:text="0000.00"
@@ -100,14 +100,14 @@
         <ImageView
             android:layout_width="640px"
             android:layout_height="2px"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="12px"
             android:layout_marginBottom="38px"
             android:background="@color/grey_light"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="38px"
+            android:layout_marginBottom="34px"
             android:orientation="horizontal">
 
             <RelativeLayout
@@ -122,7 +122,7 @@
                     android:layout_width="250px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="12px"
+                    android:layout_marginBottom="8px"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:singleLine="true"
@@ -133,7 +133,7 @@
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/rideTimeValueText"
                     android:layout_width="250px"
-                    android:layout_height="38px"
+                    android:layout_height="48px"
                     android:layout_below="@+id/onlineTimeValue"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
@@ -164,7 +164,7 @@
                     android:layout_width="230px"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="12px"
+                    android:layout_marginBottom="8px"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="@string/NA"
@@ -174,7 +174,7 @@
                 <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
                     android:id="@+id/textViewTrips"
                     android:layout_width="225px"
-                    android:layout_height="38px"
+                    android:layout_height="48px"
                     android:layout_below="@+id/textViewTripCount"
                     android:layout_gravity="center_vertical"
                     android:gravity="center"

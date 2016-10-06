@@ -17,6 +17,7 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.LogUSL;
 import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
@@ -172,6 +173,10 @@ public class Database2 {                                                        
 	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
 	private static final String POOL_RIDE_DISCOUNT_FLAG = "pool_ride_discount_flag";
 
+	private static final String TABLE_USL_LOG = "table_usl_log";
+	private static final String LOG_TIMESTAMP = "log_timestamp";
+	private static final String LOG_EVENT = "log_event";
+
 	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
 	private static final String PUSHY_TOKEN = "pushy_token";
 
@@ -323,6 +328,11 @@ public class Database2 {                                                        
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_POOL_DISCOUNT_FLAG + " ("
 				+ POOL_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ POOL_RIDE_DISCOUNT_FLAG + " INTEGER"
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_USL_LOG + " ("
+				+ LOG_TIMESTAMP + " TEXT, "
+				+ LOG_EVENT + " TEXT"
 				+ ");");
 
 
@@ -1769,7 +1779,7 @@ public class Database2 {                                                        
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.PUSHY_TOKEN, token);
-			int rowsAffected = database.update(Database2.PUSHY_TOKEN, contentValues, null, null);
+			int rowsAffected = database.update(Database2.TABLE_PUSHY_TOKEN, contentValues, null, null);
 			if(rowsAffected == 0){
 				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
 				return 1;
@@ -1835,6 +1845,61 @@ public class Database2 {                                                        
 	public void deleteUsageData() {
 		try {
 			database.delete(Database2.TABLE_DATA_USAGE, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public long insertUSLLog(String event) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(LOG_TIMESTAMP, DateOperations.getCurrentTime());
+			contentValues.put(LOG_EVENT, event);
+
+			return database.insert(TABLE_USL_LOG, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public String getUSLLog() {
+		String usageDataStr = "";
+		String template = "time,event";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.LOG_TIMESTAMP, Database2.LOG_EVENT};
+			Cursor cursor = database.query(Database2.TABLE_USL_LOG, columns, null, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.LOG_TIMESTAMP);
+			int i1 = cursor.getColumnIndex(Database2.LOG_EVENT);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					LogUSL logUSL = new LogUSL(cursor.getString(i0),
+							cursor.getString(i1));
+
+					usageDataStr = usageDataStr + logUSL.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				usageDataStr = template + newLine + usageDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return usageDataStr;
+	}
+
+	public void deleteUSLLog() {
+		try {
+			database.delete(Database2.TABLE_USL_LOG, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

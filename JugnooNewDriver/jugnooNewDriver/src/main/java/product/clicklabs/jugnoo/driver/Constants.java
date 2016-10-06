@@ -165,8 +165,27 @@ public interface Constants {
     String DRIVER_RIDE_EARNING = "driver_ride_earning";
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
+    String ACTION_REFRESH_USL = "action_refresh_usl";
 	String MOBILE_DATA_STATE = "mobile_data_state";
-    public static final long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
+
+	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING = "free_state_update_time_period_charging";
+	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING_V5 = "free_state_update_time_period_charging_v5";
+
+	String FREE_STATE_UPDATE_TIME_PERIOD_NON_CHARGING = "free_state_update_time_period_non_charging";
+	String DRIVER_OFFLINE_PERIOD = "driver_offline_period";
+    long PUSHY_REFRESH_INTERVAL_DEFAULT = 60 * 3;
+
+
+	String EVENT_LR_SPEED_20PLUS_RESTART = "LR_SPEED_20PLUS_RESTART";
+	String EVENT_LR_5_LOC_BAD_ACCURACY = "LR_5_LOC_BAD_ACCURACY";
+	String EVENT_LR_LOC_BAD_ACCURACY_RESTART = "LR_LOC_BAD_ACCURACY_RESTART";
+	String EVENT_DLD_LOC_RECEIVED = "DLD_LOC_RECEIVED";
+	String EVENT_DLD_LOC_REJECTED_TIME_DIFF = "DLD_LOC_REJECTED_TIME_DIFF";
+	String EVENT_DLD_LOC_SENT = "DLD_LOC_SENT";
+	String EVENT_DLD_LOC_FAILED_RETRO = "DLD_LOC_FAILED_RETRO";
+	String EVENT_DLD_LOC_FAILED_GENERIC = "DLD_LOC_FAILED_GENERIC";
+	String EVENT_DLD_DEVICE_TOKEN_RESET = "DLD_DEVICE_TOKEN_RESET";
+	String EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN = "DL_ALARM_LOC_NOT_SENT_TILL_3_MIN";
 
 }
 

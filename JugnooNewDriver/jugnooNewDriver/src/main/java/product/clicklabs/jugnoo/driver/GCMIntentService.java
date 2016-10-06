@@ -716,6 +716,11 @@ public class GCMIntentService extends IntentService {
 								intent1.putExtra("task_id", "3");
 								startService(intent1);
 
+							} else if (PushFlags.SEND_USL_LOG.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchDataUsageService.class);
+								intent1.putExtra("task_id", "4");
+								startService(intent1);
+
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
 								Intent synIntent = new Intent(this, SyncMessageService.class);
 								synIntent.putExtra(Constants.KEY_ACCESS_TOKEN, Database2.getInstance(this).getDLDAccessToken());

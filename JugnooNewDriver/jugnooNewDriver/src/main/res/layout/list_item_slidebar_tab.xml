@@ -11,7 +11,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="8px"
-        android:id="@+id/topRlOuter"
+        android:id="@+id/topRlOuterSlide"
         android:background="@drawable/shadow_up"
         android:layout_marginLeft="11px"
         android:layout_marginRight="11px"

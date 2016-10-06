@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:splitMotionEvents="false"
     android:visibility="visible"
-    android:layout_marginTop="@dimen/top_bar_height"
     >
 
     <Button
