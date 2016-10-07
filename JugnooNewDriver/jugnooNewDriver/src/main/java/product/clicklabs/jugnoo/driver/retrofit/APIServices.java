@@ -553,4 +553,9 @@ public interface APIServices {
 				   @Field("engagement_id") String engagementId,
 				   @Field("ticket_type") String ticketType,
 					Callback<DocRequirementResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/update_drop_latlng")
+	void updateDropLatLng(@FieldMap Map<String, String> params,
+						   Callback<InfoTileResponse> callback);
 }

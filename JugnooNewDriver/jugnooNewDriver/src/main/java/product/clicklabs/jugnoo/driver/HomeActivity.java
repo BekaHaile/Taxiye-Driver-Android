@@ -55,6 +55,9 @@ import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -94,6 +97,7 @@ import java.util.concurrent.TimeUnit;
 
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
+import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
 import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
@@ -122,10 +126,12 @@ import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
+import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -167,7 +173,8 @@ import retrofit.mime.TypedByteArray;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
-		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler {
+		GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+		FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler {
 
 
 	private final String TAG = HomeActivity.class.getSimpleName();
@@ -310,11 +317,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
-	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom, relativeLayoutRefreshUSLBar;
+	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom,
+			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
-			textViewHighDemandAreas, textViewRetryUSL;
+			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
 	Shader textShader;
 
 	CustomerSwitcher customerSwitcher;
@@ -399,11 +407,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		openedCustomerInfo = customerInfo;
 	}
 
+	private PlaceSearchListFragment placeSearchListFragment;
+
 	private RelativeLayout relativeLayoutContainer;
 
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
 	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
+	private GoogleApiClient mGoogleApiClient;
+
 
 //	Button distanceReset2;
 
@@ -428,6 +440,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			mapTouchedOnce = false;
 			resumed = false;
 			mapAnimatedToCustomerPath = false;
+
+			mGoogleApiClient = new GoogleApiClient
+					.Builder(this)
+					.addApi(Places.GEO_DATA_API)
+					.addApi(Places.PLACE_DETECTION_API)
+					.addConnectionCallbacks(this)
+					.addOnConnectionFailedListener(this)
+					.build();
 
 			appMode = AppMode.NORMAL;
 
@@ -797,6 +817,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			viewRefreshUSLBar = findViewById(R.id.viewRefreshUSLBar);
 			textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
 			progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
+
+			relativeLayoutEnterDestination = (RelativeLayout) findViewById(R.id.relativeLayoutEnterDestination);
+			textViewEnterDestination= (TextView) findViewById(R.id.textViewEnterDestination);
+			textViewEnterDestination.setTypeface(Data.latoRegular(this));
+
 			relativeLayoutHighDemandAreas = (RelativeLayout) findViewById(R.id.relativeLayoutHighDemandAreas);
 			textViewHighDemandAreas = (TextView) findViewById(R.id.textViewHighDemandAreas);
 			linearLayoutSlidingBottom = (RelativeLayout) findViewById(R.id.linearLayoutSlidingBottom);
@@ -1360,6 +1385,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
+			relativeLayoutEnterDestination.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					relativeLayoutContainer.setVisibility(View.VISIBLE);
+					placeSearchListFragment = new PlaceSearchListFragment(HomeActivity.this, mGoogleApiClient);
+					getSupportFragmentManager().beginTransaction()
+							.add(R.id.relativeLayoutContainer, placeSearchListFragment, PlaceSearchListFragment.class.getName())
+							.addToBackStack(PlaceSearchListFragment.class.getName())
+							.commit();
+				}
+			});
+
 
 			driverEndRideBtn.setOnClickListener(new OnClickListener() {
 
@@ -1718,13 +1755,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		new Handler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
-
 				if(Prefs.with(HomeActivity.this).getBoolean(SPLabels.ACCEPT_RIDE_VIA_PUSH, false)){
-
+					callAndHandleStateRestoreAPI();
+					Prefs.with(HomeActivity.this).save(SPLabels.ACCEPT_RIDE_VIA_PUSH, false);
 				}
-
 			}
-		}, 500);
+		}, 200);
 
 
 
@@ -2839,6 +2875,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
+			relativeLayoutEnterDestination.setVisibility(View.GONE);
 			switch (mode) {
 
 				case D_INITIAL:
@@ -3084,6 +3121,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
 					startRideChronometer(customerInfo);
+					relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
 
 
 					if (map != null) {
@@ -3610,6 +3648,81 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+	}
+
+	public void setBarAddress(String address){
+		relativeLayoutDestination.setVisibility(View.VISIBLE);
+		textViewEnterDestination.setText(address);
+	}
+
+	@Override
+	public void onTextChange(String text) {
+
+	}
+
+	@Override
+	public void onSearchPre() {
+
+	}
+
+	@Override
+	public void onSearchPost() {
+
+	}
+
+	@Override
+	public void onPlaceClick(SearchResultNew autoCompleteSearchResult) {
+
+	}
+
+	@Override
+	public void onPlaceSearchPre() {
+
+	}
+
+	@Override
+	public void onPlaceSearchPost(SearchResultNew searchResult) {
+
+		textViewEnterDestination.setText(searchResult.getAddress());
+		onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
+				searchResult.getLatLng(), searchResult.getAddress());
+//		updateDropLatLng(HomeActivity.this, searchResult.getAddress(),searchResult.getLatLng());
+		if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+			if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+				relativeLayoutContainer.setVisibility(View.GONE);
+				super.onBackPressed();
+			}
+		}
+	}
+
+	@Override
+	public void onPlaceSearchError() {
+		if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+			if(getSupportFragmentManager().getBackStackEntryCount() == 1){
+				relativeLayoutContainer.setVisibility(View.GONE);
+				super.onBackPressed();
+			}
+		}
+	}
+
+	@Override
+	public void onPlaceSaved() {
+
+	}
+
+	@Override
+	public void onConnected(Bundle bundle) {
+
+	}
+
+	@Override
+	public void onConnectionSuspended(int i) {
+
+	}
+
+	@Override
+	public void onConnectionFailed(ConnectionResult connectionResult) {
 
 	}
 
@@ -6001,6 +6114,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			FlurryAgent.init(this, Data.FLURRY_KEY);
 			FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
 			FlurryAgent.onEvent("HomeActivity started");
+			mGoogleApiClient.connect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -6010,6 +6124,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
+		mGoogleApiClient.disconnect();
 	}
 
 
@@ -7372,6 +7487,47 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			public void failure(RetrofitError error) {
 				DialogPopup.dismissLoadingDialog();
 				updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+			}
+		});
+
+
+	}
+
+	private void updateDropLatLng(final Activity activity, final String address, final LatLng latLng) {
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+		params.put("drop_address", address);
+		params.put("drop_latitude", String.valueOf(latLng.latitude));
+		params.put("drop_longitude", String.valueOf(latLng.longitude));
+
+		RestClient.getApiServices().updateDropLatLng(params, new Callback<InfoTileResponse>() {
+			@Override
+			public void success(InfoTileResponse infoTileResponse, Response response) {
+				try {
+					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+					Log.e("Shared rides jsonString", "=" + jsonString);
+					JSONObject jObj;
+					jObj = new JSONObject(jsonString);
+					if (!jObj.isNull("error")) {
+						String errorMessage = jObj.getString("error");
+						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+							HomeActivity.logoutUser(activity);
+						}
+					} else {
+						onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
+								latLng, address);
+
+					}
+				} catch (Exception exception) {
+					exception.printStackTrace();
+				}
+				DialogPopup.dismissLoadingDialog();
+			}
+
+			@Override
+			public void failure(RetrofitError error) {
+				DialogPopup.dismissLoadingDialog();
 			}
 		});
 

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relative"
+    android:layout_width="match_parent"
+    android:layout_height="110px"
+    android:tag="mwar"
+    android:splitMotionEvents="false">
+
+    <ImageView
+        android:id="@+id/imageViewType"
+        android:layout_width="50px"
+        android:layout_height="50px"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20px"
+        android:src="@drawable/ic_work"
+        android:visibility="visible"
+        android:tag="mwar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20px"
+        android:layout_marginRight="20px"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:splitMotionEvents="false"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imageViewType"
+        >
+
+        <TextView
+            android:id="@+id/textViewSearchName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:singleLine="true"
+            android:textColor="@color/text_color_light_selector"
+            android:textSize="30px" />
+
+        <TextView
+            android:id="@+id/textViewSearchAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7px"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/text_color_light"
+            android:textSize="26px"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageViewSep"
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:layout_marginLeft="2px"
+        android:layout_marginRight="2px"
+        android:background="@color/stroke_color_light"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>

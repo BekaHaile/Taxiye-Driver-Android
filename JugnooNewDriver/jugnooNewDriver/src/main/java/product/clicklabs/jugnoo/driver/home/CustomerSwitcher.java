@@ -51,6 +51,7 @@ public class CustomerSwitcher {
 
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
+	String dropAddress;
 
 	public CustomerSwitcher(HomeActivity activity, View rootView) {
 		this.activity = activity;
@@ -145,8 +146,14 @@ public class CustomerSwitcher {
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
 											textViewCustomerPickupAddress)).execute();
+							dropAddress = (String) textViewCustomerPickupAddress.getText();
 						}else {
 							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
+							dropAddress = customerInfo.getDropAddress();
+						}
+						if(customerInfo.getIsPooled() != 1){
+							textViewCustomerPickupAddress.setVisibility(View.GONE);
+							activity.setBarAddress(dropAddress);
 						}
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);

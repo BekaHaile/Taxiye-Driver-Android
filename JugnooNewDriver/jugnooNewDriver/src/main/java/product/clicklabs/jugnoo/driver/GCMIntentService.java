@@ -451,7 +451,7 @@ public class GCMIntentService extends IntentService {
 								if(jObj.optInt("wake_up_lock_enabled",1)==1){
 									if(HomeActivity.activity != null){
 										if(!HomeActivity.activity.hasWindowFocus()){
-											Intent newIntent = new Intent(this, HelpActivity.class);
+											Intent newIntent = new Intent(this, HomeActivity.class);
 											newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 											newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 											startActivity(newIntent);
