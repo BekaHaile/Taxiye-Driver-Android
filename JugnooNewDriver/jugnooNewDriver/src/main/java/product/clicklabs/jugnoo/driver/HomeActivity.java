@@ -3121,8 +3121,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
 					startRideChronometer(customerInfo);
-					relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
 
+					if(customerInfo.getIsPooled() != 1 && customerInfo.getIsDelivery() != 1) {
+						relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
+					}
 
 					if (map != null) {
 						map.clear();
@@ -3143,7 +3145,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					etaTimerRLayout.setVisibility(View.GONE);
-
 
 					driverStartRideMainRl.setVisibility(View.GONE);
 					driverInRideMainRl.setVisibility(View.VISIBLE);
@@ -3684,16 +3685,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onPlaceSearchPost(SearchResultNew searchResult) {
 
-		textViewEnterDestination.setText(searchResult.getAddress());
-		onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
-				searchResult.getLatLng(), searchResult.getAddress());
-//		updateDropLatLng(HomeActivity.this, searchResult.getAddress(),searchResult.getLatLng());
-		if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-			if(getSupportFragmentManager().getBackStackEntryCount() == 1){
-				relativeLayoutContainer.setVisibility(View.GONE);
-				super.onBackPressed();
-			}
-		}
+//		textViewEnterDestination.setText(searchResult.getAddress());
+//		onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
+//				searchResult.getLatLng(), searchResult.getAddress());
+		updateDropLatLng(HomeActivity.this, searchResult.getAddress(), searchResult.getLatLng());
+
 	}
 
 	@Override
@@ -7495,42 +7491,73 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private void updateDropLatLng(final Activity activity, final String address, final LatLng latLng) {
 
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-		params.put("drop_address", address);
-		params.put("drop_latitude", String.valueOf(latLng.latitude));
-		params.put("drop_longitude", String.valueOf(latLng.longitude));
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+				DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put("drop_address", address);
+				params.put("drop_latitude", String.valueOf(latLng.latitude));
+				params.put("drop_longitude", String.valueOf(latLng.longitude));
+				params.put("engagement_id", Data.getCurrentEngagementId());
 
-		RestClient.getApiServices().updateDropLatLng(params, new Callback<InfoTileResponse>() {
-			@Override
-			public void success(InfoTileResponse infoTileResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					Log.e("Shared rides jsonString", "=" + jsonString);
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
+				RestClient.getApiServices().updateDropLatLng(params, new Callback<InfoTileResponse>() {
+					@Override
+					public void success(InfoTileResponse infoTileResponse, Response response) {
+						try {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							Log.e("Shared rides jsonString", "=" + jsonString);
+							JSONObject jObj;
+							jObj = new JSONObject(jsonString);
+							int flag = jObj.getInt("flag");
+							String message = jObj.getString("message");
+							if (!jObj.isNull("error")) {
+								String errorMessage = jObj.getString("error");
+								if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+									HomeActivity.logoutUser(activity);
+								}
+							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag)  {
+								onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
+										latLng, address);
+								if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+									if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+										relativeLayoutContainer.setVisibility(View.GONE);
+										getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+									}
+								}
+							} else {
+								DialogPopup.dismissLoadingDialog();
+								DialogPopup.alertPopupWithListener(activity, "", message, new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+											if (getSupportFragmentManager().getBackStackEntryCount() == 1) {
+												relativeLayoutContainer.setVisibility(View.GONE);
+												getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+											}
+										}
+									}
+								});
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
 						}
-					} else {
-						onDropLocationUpdated(String.valueOf(Data.getCurrentEngagementId()),
-								latLng, address);
-
+						DialogPopup.dismissLoadingDialog();
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
-				DialogPopup.dismissLoadingDialog();
-			}
 
-			@Override
-			public void failure(RetrofitError error) {
-				DialogPopup.dismissLoadingDialog();
-			}
-		});
+					@Override
+					public void failure(RetrofitError error) {
+						DialogPopup.dismissLoadingDialog();
+					}
+				});
 
+			} else {
+				DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			DialogPopup.dismissLoadingDialog();
+		}
 
 	}
 
