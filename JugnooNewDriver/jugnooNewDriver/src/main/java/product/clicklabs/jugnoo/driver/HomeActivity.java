@@ -146,6 +146,7 @@ import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -167,7 +168,7 @@ import retrofit.mime.TypedByteArray;
 
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
-		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler {
+		FlurryEventNames, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents {
 
 
 	private final String TAG = HomeActivity.class.getSimpleName();
@@ -870,7 +871,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					drawerLayout.openDrawer(menuLayout);
-					FlurryEventLogger.event(MENU);
+					FlurryEventLogger.event(FlurryEventNames.MENU);
+					firebaseJugnooDeliveryHomeEvent(FirebaseEvents.MENU);
 					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_MENU_CLICK, null);
 					if(DriverScreenMode.D_INITIAL == driverScreenMode){
 						FlurryEventLogger.event(FlurryEventNames.HOME_MENU);
@@ -910,9 +912,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
 						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 						FlurryEventLogger.event(FlurryEventNames.HOME_SLIDEUP_BUTTON);
+						firebaseJugnooDeliveryHomeEvent(SLIDE_UP_BUTTON);
 					} else {
 						slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 						FlurryEventLogger.event(FlurryEventNames.HOME_SLIDEDOWN_BUTTON);
+						firebaseJugnooDeliveryHomeEvent(SLIDE_DOWN_BUTTON);
 					}
 				}
 			});
@@ -940,8 +944,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.autosAvailable == 1) {
 							changeJugnooON(0, false, false);
+							MyApplication.getInstance().logEvent(HOME_SCREEN+"_"+JUGNOO+"_on", null);
 						} else {
 							changeJugnooON(1, false, false);
+							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
 						}
 						FlurryEventLogger.event(JUGNOO_ON_OFF);
 					}
@@ -969,8 +975,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.getDeliveryAvailable() == 1) {
 							changeJugnooON(0, false, true);
+							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + DELIVERY + "_on", null);
+
 						} else {
 							changeJugnooON(1, false, true);
+							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + DELIVERY + "_off", null);
 						}
 						FlurryEventLogger.event(DELIVERY_ON_OFF);
 					}
@@ -1003,6 +1012,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					NudgeClient.trackEvent(HomeActivity.this, FlurryEventNames.NUDGE_NOTIFICATION_CLICK, null);
 					if(DriverScreenMode.D_INITIAL == driverScreenMode){
 						FlurryEventLogger.event(FlurryEventNames.HOME_NOTIFICATION);
+						firebaseJugnooDeliveryHomeEvent(NOTIFICATION);
 					} else if(DriverScreenMode.D_IN_RIDE == driverScreenMode){
 						FlurryEventLogger.event(FlurryEventNames.HOME_IN_RIDE_NOTIFICATION);
 					}
@@ -1016,7 +1026,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					startActivity(new Intent(HomeActivity.this, DriverProfileActivity.class));
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					FlurryEventLogger.event(INVITE_OPENED);
+					FlurryEventLogger.event(HOME_ITEM_PROFILE);
+					firebaseJugnooDeliveryHomeEvent(FirebaseEvents.MENU+""+ITEM_PROFILE);
 				}
 			});
 
@@ -1204,6 +1215,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
+					MyApplication.getInstance().logEvent(HOME_SCREEN+"_"+WHITE_SCREEN, null);
 					drawerLayout.openDrawer(menuLayout);
 				}
 			});
@@ -1747,10 +1759,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-
 	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
 		@Override
-		public void okClicked(InfoTileResponse.Tile infoTileResponse) {
+		public void okClicked(InfoTileResponse.Tile infoTileResponse, int pos) {
 
 			if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
@@ -1763,6 +1774,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_RIDE);
+					firebaseJugnooDeliveryHomeEvent(ITEM_RIDE+"_"+pos);
 				} else if (infoTileResponse.getDeepIndex() == 2) {
 					Calendar c = Calendar.getInstance();
 					System.out.println("Current time => " + c.getTime());
@@ -1772,6 +1784,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("date", formattedDate);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_DAILY + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_DAILY);
 				} else if (infoTileResponse.getDeepIndex() == 3) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
@@ -1779,38 +1792,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_WEB + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_WEB);
 				} else if (infoTileResponse.getDeepIndex() == 4) {
 					Intent intent = new Intent(HomeActivity.this, PaymentActivity.class);
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_INVOICE + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVOICE);
 				} else if (infoTileResponse.getDeepIndex() == 5) {
 					Intent intent = new Intent(HomeActivity.this, DriverEarningsNew.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_EARNINGS + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_EARNINGS);
 				} else if (infoTileResponse.getDeepIndex() == 6) {
 					Intent intent = new Intent(HomeActivity.this, ShareActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_INVITE + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_INVITE);
 				} else if (infoTileResponse.getDeepIndex() == 7) {
 					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_NOTIFICATION + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_NOTIFICATION);
 				} else if (infoTileResponse.getDeepIndex() == 8) {
 					Intent intent = new Intent(HomeActivity.this, NotificationCenterActivity.class);
 					intent.putExtra("trick_page", 1);
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_TIPS + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_TIPS);
 				} else if (infoTileResponse.getDeepIndex() == 9) {
 					Intent intent = new Intent(HomeActivity.this, DriverProfileActivity.class);
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_PROFILE + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_PROFILE);
 				} else if (infoTileResponse.getDeepIndex() == 10) {
 					Intent intent = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
@@ -1818,6 +1838,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					firebaseJugnooDeliveryHomeEvent(ITEM_FULFILLMENT + "_"+pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_FULFILLMENT);
 				}
 			}
@@ -1841,6 +1862,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			}
 		}).start();
+	}
+
+	public void firebaseJugnooDeliveryHomeEvent(String event){
+		if(Data.userData.autosAvailable == 0 && Data.userData.getDeliveryAvailable() == 0){
+
+			MyApplication.getInstance().logEvent(HOME_SCREEN + "_0_0_" + event, null);
+
+		} else if(Data.userData.autosAvailable == 1 && Data.userData.getDeliveryAvailable() == 0){
+
+			MyApplication.getInstance().logEvent(HOME_SCREEN + "_1_0_" + event, null);
+
+		} else if(Data.userData.autosAvailable == 0 && Data.userData.getDeliveryAvailable() == 1){
+
+			MyApplication.getInstance().logEvent(HOME_SCREEN + "_0_1_" + event, null);
+
+		} else if(Data.userData.autosAvailable == 1 && Data.userData.getDeliveryAvailable() == 1){
+
+			MyApplication.getInstance().logEvent(HOME_SCREEN + "_1_1_" + event, null);
+
+		}
 	}
 
 	public void updateInfoTileListData(String message, boolean errorOccurred) {
