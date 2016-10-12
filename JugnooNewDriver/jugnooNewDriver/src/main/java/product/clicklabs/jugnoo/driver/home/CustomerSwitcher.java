@@ -181,9 +181,9 @@ public class CustomerSwitcher {
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
 								+ " " + customerInfo.getTotalDeliveries());
 						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-						textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
+						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)
 								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ " " + customerInfo.getEstimatedFare());
+								+ " " + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						linearLayoutDeliveryFare.setVisibility(View.GONE);

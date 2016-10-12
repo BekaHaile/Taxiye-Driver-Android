@@ -3893,9 +3893,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestName.setVisibility(View.VISIBLE);
 				holder.textViewRequestName.setText(customerInfo.getName());
 				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-				holder.textViewDeliveryFare.setText(getResources().getString(R.string.fare1)
+				holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
 						+" "+getResources().getString(R.string.rupee)
-						+" "+customerInfo.getEstimatedFare());
+						+" "+customerInfo.getCashOnDelivery());
 			}
 
 
@@ -4063,7 +4063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
-					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0;
+					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0;
 					int totalDeliveries = 0;
 					if(isDelivery == 1){
 						userName = userData.optString(KEY_NAME, "");
@@ -4076,6 +4076,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						address = userData.optString(KEY_ADDRESS, "");
 						totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 						estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+						cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
@@ -4112,7 +4113,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage);
+							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 

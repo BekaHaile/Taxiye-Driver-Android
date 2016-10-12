@@ -124,6 +124,7 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
+    String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
     String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";

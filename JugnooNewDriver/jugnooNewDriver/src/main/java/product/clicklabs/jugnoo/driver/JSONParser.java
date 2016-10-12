@@ -404,7 +404,7 @@ public class JSONParser implements Constants {
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 									vendorMessage = "";
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0;
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0;
 							int totalDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
@@ -420,6 +420,8 @@ public class JSONParser implements Constants {
 								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY,0);
+
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
 								userName = jObjCustomer.optString(KEY_USER_NAME, "");
@@ -457,7 +459,7 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage);
+									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -600,12 +602,13 @@ public class JSONParser implements Constants {
 				int totalDeliveries = jActiveRequest.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 				double estimatedFare = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 				String userName = jActiveRequest.optString(Constants.KEY_NAME, "");
+				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 
 				CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(requestEngagementId),
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, estimatedFare, userName, dryDistance);
+						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
