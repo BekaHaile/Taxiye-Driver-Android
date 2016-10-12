@@ -960,8 +960,15 @@ public class Database2 {                                                        
 					if (rideDataLast != null) {
 						if (Utils.compareDouble(rideDataLast.lat, 0) != 0
 								&& Utils.compareDouble(rideDataLast.lng, 0) != 0) {
-							accDistance = rideDataLast.accDistance + MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+							double currentDistance = MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
 									new LatLng(latitude, longitude));
+							double timeDiff = (Double.parseDouble(t) - (double)rideDataLast.t)/1000d;
+							double speed = currentDistance/timeDiff;
+							if(speed < 15){
+								accDistance = rideDataLast.accDistance + currentDistance;
+							} else{
+								return;
+							}
 						} else if(Utils.compareDouble(rideDataLast.lat, 0) == 0
 								&& Utils.compareDouble(rideDataLast.lng, 0) == 0){
 							rideDataLast = getLastRideData(engagementId, 2);
