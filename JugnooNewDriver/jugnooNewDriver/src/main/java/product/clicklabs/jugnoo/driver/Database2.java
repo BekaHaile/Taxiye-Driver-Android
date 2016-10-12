@@ -1714,6 +1714,14 @@ public class Database2 {                                                        
 		}
 	}
 
+	public void deleteCustomerRideData() {
+		try {
+			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public void insertPoolDiscountFlag(int engagementId, int flag) {
 		try {

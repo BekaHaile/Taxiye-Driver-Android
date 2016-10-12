@@ -128,6 +128,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
+import product.clicklabs.jugnoo.driver.home.EngagementSP;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -944,10 +945,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (userMode == UserMode.DRIVER && driverScreenMode == DriverScreenMode.D_INITIAL) {
 						if (Data.userData.autosAvailable == 1) {
 							changeJugnooON(0, false, false);
-							MyApplication.getInstance().logEvent(HOME_SCREEN+"_"+JUGNOO+"_on", null);
+							resetSharedPrefs();
+							MyApplication.getInstance().logEvent(HOME_SCREEN+"_"+JUGNOO+"_off", null);
 						} else {
 							changeJugnooON(1, false, false);
-							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_off", null);
+							MyApplication.getInstance().logEvent(HOME_SCREEN + "_" + JUGNOO + "_on", null);
 						}
 						FlurryEventLogger.event(JUGNOO_ON_OFF);
 					}
@@ -1963,6 +1965,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
+	public void resetSharedPrefs(){
+		if(Data.userData.autosAvailable == 0 && Data.userData.getDeliveryAvailable() == 0){
+			Prefs.with(this).remove(SP_CUSTOMER_RIDE_DATAS_OBJECT);
+			Prefs.with(this).remove(SPLabels.PERFECT_ACCEPT_RIDE_DATA);
+			Prefs.with(this).remove(SPLabels.PERFECT_CUSTOMER_CONT);
+			Prefs.with(this).remove(EngagementSP.SP_ENGAGEMENTS_ATTACHED);
+			Database2.getInstance(this).deleteCustomerRideData();
+			Database2.getInstance(this).deleteAllCurrentPathItems();
+			Database2.getInstance(this).deleteRideData();
+		}
+	}
+
 	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
@@ -2325,6 +2339,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								HomeActivity.this.startService(intent1);
 							}
 							nudgeJugnooOnOff(latLng.latitude, latLng.longitude);
+							resetSharedPrefs();
 						}
 					}
 					String message = JSONParser.getServerMessage(jObj);
