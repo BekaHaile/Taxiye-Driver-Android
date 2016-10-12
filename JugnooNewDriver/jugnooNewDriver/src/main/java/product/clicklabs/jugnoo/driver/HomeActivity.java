@@ -3036,12 +3036,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					setEtaTimerVisibility(customerInfo);
 					startTimerPathRerouting();
-//					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.dCustLatLng);
-//					startRideAlarmHandler.postDelayed(smilyRunnalble, 5000);
-
-					setEtaTimerVisibility();
-					startCustomerPathUpdateTimer();
-					cancelMapAnimateAndUpdateRideDataTimer();
 					setTextViewRideInstructions();
 					updateCustomers();
 
@@ -3314,15 +3308,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		public void run() {
 			try {
 				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0)) {
-					reachedDestination = true;
-				}
+
 				if (reachedDestination && (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0))) {
-
-
 					DialogPopup.alertPopup(activity, "", "If Customer is with you, than please start ride");
 					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 2, true, true);
 
+				}
+				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0)) {
+					reachedDestination = true;
 				}
 			} catch (Exception e) {
 
