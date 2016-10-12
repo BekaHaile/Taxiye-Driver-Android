@@ -1974,6 +1974,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Database2.getInstance(this).deleteCustomerRideData();
 			Database2.getInstance(this).deleteAllCurrentPathItems();
 			Database2.getInstance(this).deleteRideData();
+			Database2.getInstance(this).deleteDriverCurrentLocation();
 		}
 	}
 
