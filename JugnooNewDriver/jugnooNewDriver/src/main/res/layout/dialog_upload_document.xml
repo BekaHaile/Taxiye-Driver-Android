@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="30px"
-        android:background="@drawable/background_white_rounded_orange_bordered"
+        android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false"
         >
 
