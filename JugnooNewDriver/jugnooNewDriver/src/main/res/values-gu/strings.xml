@@ -657,6 +657,7 @@
     <string name="enter_destination">Enter Destination</string>
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
+    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

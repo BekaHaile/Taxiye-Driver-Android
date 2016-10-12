@@ -3303,18 +3303,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	Handler startRideAlarmHandler = new Handler();
 	boolean reachedDestination = false;
+	boolean play = true;
 	Runnable startRideAlarmRunnalble = new Runnable() {
 		@Override
 		public void run() {
 			try {
 				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-
-				if (reachedDestination && (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0))) {
-					DialogPopup.alertPopup(activity, "", "If Customer is with you, than please start ride");
+				Log.e("start ride aler", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)));
+				Log.e("start ride dis", String.valueOf((int) MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng())));
+				if (reachedDestination && play
+						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
 					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 2, true, true);
-
+					play = false;
 				}
-				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 0)) {
+				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)) {
 					reachedDestination = true;
 				}
 			} catch (Exception e) {
