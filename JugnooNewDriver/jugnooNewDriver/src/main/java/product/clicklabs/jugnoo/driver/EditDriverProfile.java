@@ -30,6 +30,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -108,6 +109,7 @@ public class EditDriverProfile extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE+"_2_"+FirebaseEvents.BACK, null);
 				performBackPressed();
 			}
 		});
@@ -125,6 +127,7 @@ public class EditDriverProfile extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				editTextPhone.setError(null);
+				MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE + "_2_" + FirebaseEvents.CONTACT_EDIT, null);
 				if (editTextPhone.isEnabled()) {
 					String phoneChanged = editTextPhone.getText().toString().trim();
 					if ("".equalsIgnoreCase(phoneChanged)) {

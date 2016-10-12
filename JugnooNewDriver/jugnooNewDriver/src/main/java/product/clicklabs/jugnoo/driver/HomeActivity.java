@@ -1282,6 +1282,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+FirebaseEvents.YES,null);
 					if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
 						startRidePopup(HomeActivity.this, Data.getCurrentCustomerInfo());
 						FlurryEventLogger.event(RIDE_STARTED);
@@ -1310,11 +1311,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
+						firebaseScreenEvent(FirebaseEvents.YES);
 						if (Utils.getBatteryPercentage(HomeActivity.this) >= 10) {
 							DialogPopup.alertPopupTwoButtonsWithListeners(HomeActivity.this, "", getResources().getString(R.string.have_arrived), getResources().getString(R.string.yes), getResources().getString(R.string.no),
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
+											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CONFIRM_YES, null);
 											if (myLocation != null) {
 												try {
 													LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -1340,6 +1343,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 									new OnClickListener() {
 										@Override
 										public void onClick(View v) {
+											MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CONFIRM_NO, null);
 											FlurryEventLogger.event(CONFIRMING_ARRIVE_NO);
 										}
 									}, false, false);
@@ -1365,8 +1369,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startActivity(intent);
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CANCEL, null);
 						FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
 					} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CANCEL, null);
 						FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
 					}
 				}
@@ -1377,6 +1383,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE, null);
 					updateWalletBalance(Data.getCurrentCustomerInfo());
 				}
 			});
@@ -1424,6 +1431,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+FirebaseEvents.SUBMIT,null);
 						final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 						if (DriverScreenMode.D_BEFORE_END_OPTIONS == driverScreenMode) {
 							if (customerInfo != null
@@ -1504,6 +1512,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							if (0 == rating) {
 								DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.please_give_customer));
 							} else {
+								MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+rating,null);
 								saveCustomerRideDataInSP(customerInfo);
 								submitFeedbackToCustomerAsync(HomeActivity.this, customerInfo, rating);
 								MeteringService.clearNotifications(HomeActivity.this);
@@ -1522,6 +1531,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+FirebaseEvents.SKIP,null);
 						saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
 						MeteringService.clearNotifications(HomeActivity.this);
 						Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
@@ -1963,7 +1973,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						.customerInfos.get(driverRequestListAdapter.customerInfos.indexOf
 								(new CustomerInfo(Integer.parseInt(intent.getExtras().getString("engagement_id")))));
 				acceptRequestFunc(customerInfo);
-				FlurryEventLogger.event(RIDE_ACCEPTED);
+				FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
 
 			} else if (type.equalsIgnoreCase("cancel")) {
 
@@ -2582,6 +2592,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void onClick(View v) {
 			if (myLocation != null) {
+				firebaseScreenEvent(FirebaseEvents.LOCATION_BUTTON);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode) {
 					if (map.getCameraPosition().zoom < 12) {
 						map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), 12), MAP_ANIMATION_TIME, null);
@@ -2608,6 +2619,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void onClick(View v) {
 			try {
+				firebaseScreenEvent(FirebaseEvents.NAVIGATE_BUTTON);
 				if (myLocation != null) {
 					LatLng latLng = null;
 					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
@@ -3651,6 +3663,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		int id;
 	}
 
+	public void firebaseScreenEvent(String event){
+		if(DriverScreenMode.D_REQUEST_ACCEPT == HomeActivity.driverScreenMode){
+
+		} else if(DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode){
+			MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+event, null);
+		} else if(DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode){
+			MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+event, null);
+		} else if(DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
+			MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+event, null);
+		}
+	}
+
+
 	class DriverRequestListAdapter extends BaseAdapter {
 		LayoutInflater mInflater;
 		ViewHolderDriverRequest holder;
@@ -3856,9 +3881,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.YES, null);
 						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 						acceptRequestFunc(customerInfo1);
-						FlurryEventLogger.event(RIDE_ACCEPTED);
+						FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -3871,6 +3897,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					try {
 						holder = (ViewHolderDriverRequest) v.getTag();
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED+"_"+holder.id+"_"+FirebaseEvents.NO, null);
 						CustomerInfo customerInfo1 = customerInfos.get(holder.id);
 						rejectRequestFuncCall(customerInfo1);
 						FlurryEventLogger.event(RIDE_CANCELLED);
@@ -5409,6 +5436,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+FirebaseEvents.CONFIRM_YES,null);
 					if (myLocation != null) {
 						dialog.dismiss();
 						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -5440,6 +5468,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			btnCancel.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+FirebaseEvents.CONFIRM_NO,null);
 					dialog.dismiss();
 					FlurryEventLogger.event(START_RIDE_NOT_CONFIRMED);
 				}
@@ -5491,6 +5520,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					@SuppressWarnings("unused")
 					@Override
 					public void onClick(View view) {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE+"_"+FirebaseEvents.CONFIRM_YES, null);
 						if (AppStatus.getInstance(activity).isOnline(activity)) {
 							if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 								if (customerInfo != null
@@ -5516,6 +5546,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				btnCancel.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_END_RIDE+"_"+FirebaseEvents.CONFIRM_NO, null);
 						dialogEndRidePopup.dismiss();
 						FlurryEventLogger.event(END_RIDE_NOT_CONFIRMED);
 					}
@@ -5824,6 +5855,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showAllRideRequestsOnMap();
+					try {
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + Data.getAssignedCustomerInfosListForStatus(
+								EngagementStatus.REQUESTED.getOrdinal()).size(),null);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 				}
 			});
 		}

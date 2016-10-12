@@ -1,0 +1,113 @@
+{
+  "project_info": {
+    "project_number": "506849624961",
+    "firebase_url": "https://arctic-inkwell-580.firebaseio.com",
+    "project_id": "arctic-inkwell-580",
+    "storage_bucket": "arctic-inkwell-580.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506849624961:android:5a3d82fd9622e124",
+        "android_client_info": {
+          "package_name": "product.clicklabs.jugnoo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506849624961-q7iqqpip5qdd41jq1pju1nvnd1v92dbj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "product.clicklabs.jugnoo",
+            "certificate_hash": "607207EECE8C6FB14A6068909B5FE0082F2E5B7B"
+          }
+        },
+        {
+          "client_id": "506849624961-mgqnuam3gm544lo66enlab4it0m6t4qv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "product.clicklabs.jugnoo",
+            "certificate_hash": "6B89AF994589EEB7B8503316150F205B48757209"
+          }
+        },
+        {
+          "client_id": "506849624961-0c2cd90kkgu3h3m4fmevtlvo8hd76a35.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "product.clicklabs.jugnoo",
+            "certificate_hash": "816D0072ADF5C24B11ECE80DA81015F27FDCB172"
+          }
+        },
+        {
+          "client_id": "506849624961-atop5ant5lq2ug5r6iskjcdv59r4vadp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "product.clicklabs.jugnoo",
+            "certificate_hash": "8BD4A99AB767D422D8270DA3EE3D623B3230CE3B"
+          }
+        },
+        {
+          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:506849624961:android:cf09d931973786bf",
+        "android_client_info": {
+          "package_name": "product.clicklabs.jugnoo.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "506849624961-r6ton4i56ebicl1ejq5lq49702u6n5me.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "506849624961-c9bbl632kfgtvqcq2b55rubibcnpnfhg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": ""
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

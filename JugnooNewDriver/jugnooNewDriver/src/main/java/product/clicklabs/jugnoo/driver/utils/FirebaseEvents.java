@@ -8,6 +8,21 @@ public interface FirebaseEvents {
 	// Labels
 	String HOME_SCREEN = "home";
 	String INVITE_AND_EARN = "invite_and_earn";
+	String LANGUAGE = "language";
+	String RATE_CARD = "rate_card";
+	String EARNING = "earning";
+	String DAILY_EARNING = "daily_earning";
+	String TRIP_DETAIL = "trip_detail";
+	String FARE_ISSUE = "fare_issue";
+	String PROFILE_PAGE = "profile_page";
+	String RIDE_ARRIVED = "ride_arrived";
+	String RIDE_START = "ride_start";
+	String RIDE_ACCEPTED = "ride_accepted";
+	String RIDE_RECEIVED = "ride_received";
+	String RATING = "rating";
+	String RIDE_END_RIDE = "ride_end_ride";
+
+
 
 
 	// Events
@@ -36,6 +51,27 @@ public interface FirebaseEvents {
 	String SHARE = "share";
 	String CONFIRM_YES ="confirm_yes";
 	String CONFIRM_NO = "confirm_NO";
+	String CHART = "confirm_NO";
+	String TODAYS_EARNING = "todays_earning";
+	String THIS_WEEK = "this_week";
+	String RIDE_HISTORY = "ride_history";
+	String PREVIOUS = "previous";
+	String NEXT = "next";
+	String TRIP = "trip";
+	String SUBMIT = "submit";
+	String SKIP = "skip";
+	String CARD = "card";
+	String YES = "yes";
+	String NO = "no";
+	String CANCEL ="cancel";
+	String CONFIRMATION_YES = "confirmation_yes";
+	String CONFIRMATION_NO = "confirmation_no";
+	String CONTACT_EDIT = "contact_edit";
+	String CALL_CUSTOMER = "call_customer";
+	String LOCATION_BUTTON = "location_button";
+	String NAVIGATE_BUTTON ="navigate_button";
+
+
 
 
 }

@@ -28,6 +28,7 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -86,6 +87,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.HOME_SCREEN+"_"+
+						FirebaseEvents.LANGUAGE+"_"+FirebaseEvents.BACK,null);
 				performBackPressed();
 			}
 		});
@@ -174,7 +177,7 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			if (convertView == null) {
 				holder = new ViewHolderLanguages();
 				convertView = mInflater.inflate(R.layout.list_item_language, null);
@@ -207,6 +210,8 @@ public class LanguagePrefrencesActivity extends BaseActivity {
 					public void onClick(View v) {
 						holder = (ViewHolderLanguages) v.getTag();
 						Prefs.with(LanguagePrefrencesActivity.this).save(SPLabels.SELECTED_LANGUAGE, languages.get(holder.id).toString());
+						MyApplication.getInstance().logEvent(FirebaseEvents.HOME_SCREEN+"_"+
+								FirebaseEvents.LANGUAGE+"_"+languages.get(holder.id).toString()+"_"+position,null);
 						updateLanguage();
 						conf = getResources().getConfiguration();
 						setPreferredLanguage();
