@@ -613,6 +613,7 @@ public class GCMIntentService extends IntentService {
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "");
+									SoundMediaPlayer.startSound(this, R.raw.telephone_ring_10, 1, true, true);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);
@@ -651,7 +652,7 @@ public class GCMIntentService extends IntentService {
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
-								startRingWithStopHandler(this);
+								startRingWithStopHandler(this, 20000);
 								String message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
@@ -912,7 +913,7 @@ public class GCMIntentService extends IntentService {
 
 	public static CountDownTimer ringStopTimer;
 
-	public static void startRingWithStopHandler(final Context context) {
+	public static void startRingWithStopHandler(final Context context, long time) {
 		try {
 			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -951,7 +952,7 @@ public class GCMIntentService extends IntentService {
 			mediaPlayer.start();
 
 
-			ringStopTimer = new CountDownTimer(20000, 1000) {
+			ringStopTimer = new CountDownTimer(time, 1000) {
 
 				@Override
 				public void onTick(long millisUntilFinished) {

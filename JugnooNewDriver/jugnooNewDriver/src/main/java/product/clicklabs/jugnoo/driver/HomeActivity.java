@@ -18,9 +18,12 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -125,6 +128,7 @@ import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.PromoInfo;
 import product.clicklabs.jugnoo.driver.datastructure.PromotionType;
 import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
+import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
@@ -345,6 +349,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	String waitTime = "", rideTime = "";
 	EndRideData endRideData;
 
+	public static MediaPlayer mediaPlayer;
+	public static Vibrator vibrator;
 
 	public static Location myLocation;
 	public Location lastGPSLocation, lastFusedLocation;
@@ -6025,7 +6031,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 
 					}
-					callAndHandleStateRestoreAPI();
+					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() != flag) {
+						startRing(HomeActivity.this);
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "", getResources().getString(R.string.auto_accept_message), new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								stopRing(true, HomeActivity.this);
+							}
+						});
+					}
+
+						callAndHandleStateRestoreAPI();
 					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() == flag) {
 						setPannelVisibility(true);
 						perfectRidePassengerInfoRl.setVisibility(View.GONE);
@@ -6043,6 +6059,91 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		});
 	}
+
+	public void startRing(Context context) {
+		try {
+
+			stopRing(true, context);
+			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+			if (vibrator.hasVibrator()) {
+				long[] pattern = {0, 1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900,
+						1350, 3900};
+				vibrator.vibrate(pattern, 1);
+			}
+			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}else{
+				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+			}
+
+			mediaPlayer.setLooping(true);
+			mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					try {
+						vibrator.cancel();
+						mediaPlayer.stop();
+						mediaPlayer.reset();
+						mediaPlayer.release();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			mediaPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public CountDownTimer ringStopTimer;
+	public void stopRing(boolean manual, Context context) {
+		boolean stopRing;
+		if (HomeActivity.appInterruptHandler != null) {
+			if (Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()) != null
+					&& Data.getAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal()).size() > 0) {
+				stopRing = false;
+			} else {
+				stopRing = true;
+			}
+		} else {
+			stopRing = true;
+		}
+		if (manual) {
+			stopRing = true;
+		}
+		if (stopRing) {
+			try {
+				if (vibrator != null) {
+					vibrator.cancel();
+				}
+				if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+					mediaPlayer.stop();
+					mediaPlayer.reset();
+					mediaPlayer.release();
+				}
+				if (ringStopTimer != null) {
+					ringStopTimer.cancel();
+				}
+				RingData ringData = Database2.getInstance(context).getRingData("1");
+				long timeDiff = System.currentTimeMillis() - ringData.time;
+				Database2.getInstance(context).updateRingData(ringData.engagement, String.valueOf(timeDiff));
+			} catch (Exception e) {
+			}
+		}
+	}
+
 
 
 	public static void logoutUser(final Activity cont) {

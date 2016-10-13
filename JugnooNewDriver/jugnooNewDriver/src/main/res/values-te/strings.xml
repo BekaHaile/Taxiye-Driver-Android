@@ -719,6 +719,7 @@
     <string name="enter_destination">Enter Destination</string>
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
+    <string name="auto_accept_message">Customer request has been automatically accepted</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
