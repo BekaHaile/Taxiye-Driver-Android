@@ -370,6 +370,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
 	int tileCount = 0;
+	boolean playStartRideAlarm;
 
 
 	AlertDialog gpsDialogAlert;
@@ -3113,7 +3114,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
-					startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
+
+					if(customerInfo.getIsDelivery() != 1) {
+						playStartRideAlarm = true;
+						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
+					}
 
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
@@ -3303,19 +3308,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	Handler startRideAlarmHandler = new Handler();
 	boolean reachedDestination = false;
-	boolean play = true;
 	Runnable startRideAlarmRunnalble = new Runnable() {
 		@Override
 		public void run() {
 			try {
 				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-				Log.e("start ride aler", String.valueOf(Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)));
-				Log.e("start ride dis", String.valueOf((int) MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng())));
-				if (reachedDestination && play
+				if (reachedDestination && playStartRideAlarm
 						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
 					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
-					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 2, true, true);
-					play = false;
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 1, true);
+					playStartRideAlarm = false;
 				}
 				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)) {
 					reachedDestination = true;

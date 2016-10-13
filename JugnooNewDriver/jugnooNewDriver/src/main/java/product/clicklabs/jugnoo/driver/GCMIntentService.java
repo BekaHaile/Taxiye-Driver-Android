@@ -595,7 +595,7 @@ public class GCMIntentService extends IntentService {
 									new DriverTimeoutCheck().timeoutBuffer(this, 1);
 								}
 
-								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true, true);
+								SoundMediaPlayer.startSound(GCMIntentService.this, R.raw.cancellation_ring, 2, true);
 								final String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
