@@ -40,7 +40,7 @@ public class CustomerInfo {
 
 	private int status;
 	private String address, startTime;
-	private double fareFactor;
+	private double fareFactor, cashOnDelivery;
 	private int isPooled;
 
 	private int isDelivery;
@@ -58,7 +58,7 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage){
+						String vendorMessage, double cashOnDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -92,6 +92,7 @@ public class CustomerInfo {
 		this.totalDeliveries = totalDeliveries;
 		this.estimatedFare = estimatedFare;
 		this.vendorMessage = vendorMessage;
+		this.cashOnDelivery = cashOnDelivery;
 	}
 
 
@@ -101,7 +102,7 @@ public class CustomerInfo {
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
-						int totalDeliveries, double estimatedFare, String userName, double dryDistance){
+						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -116,6 +117,7 @@ public class CustomerInfo {
 		this.estimatedFare = estimatedFare;
 		this.name = userName;
 		this.dryDistance =dryDistance;
+		this.cashOnDelivery = cashOnDelivery;
 	}
 
 	public double getDryDistance() {
@@ -369,6 +371,18 @@ public class CustomerInfo {
 
 	public void setEstimatedFare(double estimatedFare) {
 		this.estimatedFare = estimatedFare;
+	}
+
+	public String getCashOnDelivery() {
+		if(cashOnDelivery > 0){
+			return Utils.getDecimalFormatForMoney().format(cashOnDelivery);
+		} else{
+			return "-";
+		}
+	}
+
+	public void setCashOnDelivery(double cashOnDelivery) {
+		this.cashOnDelivery = cashOnDelivery;
 	}
 
 	public String getVendorMessage() {

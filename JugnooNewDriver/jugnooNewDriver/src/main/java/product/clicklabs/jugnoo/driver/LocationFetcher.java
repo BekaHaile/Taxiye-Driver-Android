@@ -209,7 +209,9 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 					googleApiClient.disconnect();
 				}
 			}
-		}catch(Exception e){
+		} catch (StackOverflowError e){
+			Log.e("e", "=" + e.toString());
+		} catch(Exception e){
 			Log.e("e", "=" + e.toString());
 		}
 	}

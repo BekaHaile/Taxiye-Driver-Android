@@ -448,6 +448,22 @@ public class GCMIntentService extends IntentService {
 									entertainRequest = true;
 								}
 
+								if(jObj.optInt("wake_up_lock_enabled",1)==1){
+									if(HomeActivity.activity != null){
+										if(!HomeActivity.activity.hasWindowFocus()){
+											Intent newIntent = new Intent(this, HomeActivity.class);
+											newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+											newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											startActivity(newIntent);
+										}
+									} else {
+										Intent homeScreen = new Intent(this, SplashNewActivity.class);
+										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										startActivity(homeScreen);
+									}
+
+								}
+
 								if(entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
@@ -458,6 +474,8 @@ public class GCMIntentService extends IntentService {
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
+									double cashOnDelivery = jObj.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
+
 									String userName = jObj.optString(Constants.KEY_NAME, "");
 									int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
 
@@ -502,7 +520,7 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance);
+												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId);
@@ -595,6 +613,7 @@ public class GCMIntentService extends IntentService {
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "");
+									SoundMediaPlayer.startSound(this, R.raw.telephone_ring_10, 1, true, true);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);
@@ -633,7 +652,7 @@ public class GCMIntentService extends IntentService {
 
 							} else if (PushFlags.MANUAL_ENGAGEMENT.getOrdinal() == flag) {
 								Database2.getInstance(this).updateDriverManualPatchPushReceived(Database2.YES);
-								startRingWithStopHandler(this);
+								startRingWithStopHandler(this, 20000);
 								String message1 = jObj.getString("message");
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onManualDispatchPushReceived();
@@ -894,7 +913,7 @@ public class GCMIntentService extends IntentService {
 
 	public static CountDownTimer ringStopTimer;
 
-	public static void startRingWithStopHandler(final Context context) {
+	public static void startRingWithStopHandler(final Context context, long time) {
 		try {
 			stopRing(true, context);
 			vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -933,7 +952,7 @@ public class GCMIntentService extends IntentService {
 			mediaPlayer.start();
 
 
-			ringStopTimer = new CountDownTimer(20000, 1000) {
+			ringStopTimer = new CountDownTimer(time, 1000) {
 
 				@Override
 				public void onTick(long millisUntilFinished) {

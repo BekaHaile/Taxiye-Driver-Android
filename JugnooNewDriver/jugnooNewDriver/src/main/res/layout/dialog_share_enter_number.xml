@@ -13,7 +13,7 @@
         android:layout_marginTop="200px"
         android:layout_marginLeft="50px"
         android:layout_marginRight="50px"
-        android:background="@drawable/background_white_rounded_orange_bordered"
+        android:background="@drawable/dialog_background_color"
         android:splitMotionEvents="false" >
 
         <LinearLayout
