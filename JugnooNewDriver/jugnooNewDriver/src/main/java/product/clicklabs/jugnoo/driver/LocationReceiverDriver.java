@@ -71,6 +71,9 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 
 						int currentapiVersion = android.os.Build.VERSION.SDK_INT;
 
+
+
+
 						if(Utils.isBatteryCharging(context)){
 							//TODO save server fast time
 							if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
@@ -92,8 +95,7 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 									setAlarm(context);
 								}
 							}
-						}
-						else {
+						} else {
 							if (location.getAccuracy() > 200) {
 								Log.i(TAG, "onReceive DriverLocationUpdateService restarted location.getAccuracy()="+location.getAccuracy());
 								context.stopService(new Intent(context, DriverLocationUpdateService.class));
@@ -109,6 +111,13 @@ public class LocationReceiverDriver extends BroadcastReceiver {
 									setAlarm(context);
 								}
 							}
+						}
+
+						if((Utils.compareDouble(oldlocation.getLatitude(), location.getLatitude())==0)
+								&& (Utils.compareDouble(oldlocation.getLongitude(), location.getLongitude())==0)){
+							Database2.getInstance(context).insertUSLLog(Constants.EVENT_LRD_STALE_GPS_RESTART_SERVICE);
+							context.stopService(new Intent(context, DriverLocationUpdateService.class));
+							setAlarm(context);
 						}
 					}
 				}

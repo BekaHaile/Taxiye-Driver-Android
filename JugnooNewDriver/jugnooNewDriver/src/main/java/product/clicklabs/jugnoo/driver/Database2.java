@@ -960,8 +960,15 @@ public class Database2 {                                                        
 					if (rideDataLast != null) {
 						if (Utils.compareDouble(rideDataLast.lat, 0) != 0
 								&& Utils.compareDouble(rideDataLast.lng, 0) != 0) {
-							accDistance = rideDataLast.accDistance + MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
+							double currentDistance = MapUtils.distance(new LatLng(rideDataLast.lat, rideDataLast.lng),
 									new LatLng(latitude, longitude));
+							double timeDiff = (Double.parseDouble(t) - (double)rideDataLast.t)/1000d;
+							double speed = currentDistance/timeDiff;
+							if(speed < 15){
+								accDistance = rideDataLast.accDistance + currentDistance;
+							} else{
+								return;
+							}
 						} else if(Utils.compareDouble(rideDataLast.lat, 0) == 0
 								&& Utils.compareDouble(rideDataLast.lng, 0) == 0){
 							rideDataLast = getLastRideData(engagementId, 2);
@@ -1709,6 +1716,14 @@ public class Database2 {                                                        
 	public void deleteCustomerRideDataForEngagement(int engagementId) {
 		try {
 			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deleteCustomerRideData() {
+		try {
+			database.delete(Database2.TABLE_CUSTOMER_RIDE_DATA, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

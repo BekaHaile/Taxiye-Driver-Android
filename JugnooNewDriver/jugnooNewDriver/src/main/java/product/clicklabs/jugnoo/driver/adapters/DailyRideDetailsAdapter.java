@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
@@ -22,6 +23,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -140,6 +142,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					public void onClick(View v) {
 						try {
 							int pos = (int) v.getTag();
+							MyApplication.getInstance().logEvent(FirebaseEvents.DAILY_EARNING+"_"+FirebaseEvents.TRIP,null);
 							callback.onRideClick(pos, items.get(pos).getExtras(), items.get(pos).getDate());
 							notifyDataSetChanged();
 

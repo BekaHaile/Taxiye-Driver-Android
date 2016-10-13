@@ -34,6 +34,7 @@ import org.json.JSONObject;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RideDetailsNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -46,6 +47,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityRespons
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -132,6 +134,7 @@ public class RideIssueFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.FARE_ISSUE+"_"+FirebaseEvents.BACK, null);
 				performBackPressed();
 			}
 		});
@@ -148,6 +151,7 @@ public class RideIssueFragment extends Fragment {
 				if(messageStr.equalsIgnoreCase("")){
 					DialogPopup.alertPopup(activity,"",activity.getResources().getString(R.string.pls_enter_some_msg));
 				}else {
+					MyApplication.getInstance().logEvent(FirebaseEvents.FARE_ISSUE+"_"+FirebaseEvents.SUBMIT, null);
 					sendIssue(messageStr);
 				}
 			}
