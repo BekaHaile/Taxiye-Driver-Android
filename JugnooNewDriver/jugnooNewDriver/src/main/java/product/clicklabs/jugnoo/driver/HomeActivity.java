@@ -4787,6 +4787,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
 				JSONObject jObj;
 				jObj = new JSONObject(jsonString);
+				int flag = jObj.getInt("flag");
 				if (!jObj.isNull("error")) {
 					String errorMessage = jObj.getString("error");
 
@@ -4797,6 +4798,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					driverScreenMode = DriverScreenMode.D_IN_RIDE;
 					startRideChronometer(customerInfo);
+				} else if (ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag) {
+					onEndRideFailure();
 				} else {
 
 					try {
@@ -4869,6 +4872,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void failure(RetrofitError error) {
 			Log.e("error", "=" + error);
+			onEndRideFailure();
+		}
+
+		public void onEndRideFailure(){
 			if(customerInfo.getIsDelivery() != 1) {
 				endRideOffline(activity, url, params, eoRideTimeInMillis, eoWaitTimeInMillis,
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
@@ -4883,6 +4890,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 		}
 	}
+
+
 
 	private void nudgeRideEnd(CustomerInfo customerInfo, double dropLatitude, double dropLongitude, HashMap<String, String> params){
 		try{
