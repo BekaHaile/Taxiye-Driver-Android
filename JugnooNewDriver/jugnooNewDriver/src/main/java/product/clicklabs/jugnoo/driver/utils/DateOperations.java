@@ -368,4 +368,30 @@ public class DateOperations {
 			return convertDate(dateTime);
 		}
 	}
+
+	public static String convertMonthDayViaFormat(String date) {
+		SimpleDateFormat sdfFrom = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdfTo = new SimpleDateFormat("dd/MM");
+		try {
+			Date myDate = sdfFrom.parse(date);
+			return sdfTo.format(myDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return convertDate(date);
+		}
+	}
+
+	public static String convertDateToDay(String date){
+		String day;
+		try {
+			SimpleDateFormat inFormat = new SimpleDateFormat("yyyy-MM-dd");
+			Date newDate = inFormat.parse(date);
+			SimpleDateFormat outFormat = new SimpleDateFormat("EEE");
+			day = outFormat.format(newDate);
+			return day.toUpperCase();
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
 }

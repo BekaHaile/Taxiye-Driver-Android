@@ -5,14 +5,18 @@ import java.util.Map;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditStateResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.AuditTypeResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DailyEarningResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DeliveryDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DestinationDataResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponseNew;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceHistoryResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.NewBookingHistoryRespose;
@@ -23,6 +27,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RateCardResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import retrofit.Callback;
+import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.http.Body;
 import retrofit.http.Field;
@@ -53,6 +58,12 @@ public interface APIServices {
 	@POST("/share_ride_history")
 	void getSharedRidesAsync(@Field("access_token") String accessToken,
 							 Callback<SharedRideResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/v2/booking_history")
+	void getDailyRidesAsync(@Field("engagement_date") String date,
+							@Field("access_token") String accessToken,
+							 Callback<DailyEarningResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/forgot_password_driver")
@@ -274,7 +285,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/update_driver_location")
-	Response updateDriverLocation(@FieldMap Map<String, String> params);
+	Response updateDriverLocation(@FieldMap Map<String, String> params) throws RetrofitError;
 
 
 	@FormUrlEncoded
@@ -362,6 +373,12 @@ public interface APIServices {
 						Callback<InvoiceDetailResponse> callback);
 
 	@FormUrlEncoded
+	@POST("/v2/get_invoice_details\n")
+	void invoiceDetailNew(@Field("access_token") String accessToken,
+					   @Field("invoice_id") String invoiceId,
+					   Callback<InvoiceDetailResponseNew> callback);
+
+	@FormUrlEncoded
 	@POST("/get_wallet_balance_end_ride")
 	void updateWalletBalance(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
@@ -376,6 +393,13 @@ public interface APIServices {
 	void earningDetails(@Field("access_token") String accessToken,
 									   @Field("login_type") String loginType,
 									   Callback<EarningsDetailResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/v2/get_driver_earnings")
+	void earningNewDetails(@Field("access_token") String accessToken,
+						@Field("login_type") String loginType,
+						   @Field("invoice_id") String invoiceId,
+						Callback<DriverEarningsResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/delivery_details")
@@ -469,6 +493,10 @@ public interface APIServices {
 	void oneTimeRegisteration(@FieldMap Map<String, String> params,
 							Callback<RegisterScreenResponse> callback);
 
+	@FormUrlEncoded
+	@POST("/show_tiles")
+	void getInfoTilesAsync(@Field("access_token") String accessToken,
+							 Callback<InfoTileResponse> callback);
 //	@FormUrlEncoded
 	@POST("/driver/push/ack")
 	Response sendPushAckToServerRetro(@Body String data);
@@ -509,4 +537,20 @@ public interface APIServices {
 	@POST("/update_audit_image")
 	void skipImageToServer(@FieldMap Map<String, String> params,
 						   Callback<DocRequirementResponse> cb);
+
+	@FormUrlEncoded
+	@POST("/upload_data_usage_logs")
+	Response usageData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/log_usl_calls")
+	Response uslData(@FieldMap Map<String, String> params);
+
+	@FormUrlEncoded
+	@POST("/generate_driver_support_ticket")
+	void sendIssue(@Field("access_token") String accessToken,
+				   @Field("support_feedback_text") String message,
+				   @Field("engagement_id") String engagementId,
+				   @Field("ticket_type") String ticketType,
+					Callback<DocRequirementResponse> callback);
 }

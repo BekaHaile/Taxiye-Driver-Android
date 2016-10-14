@@ -12,25 +12,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:id="@+id/linearLayoutTo"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10px"
         android:layout_height="wrap_content"
         android:splitMotionEvents="false">
 
+
+
         <ImageView
             android:id="@+id/destination"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="22px"
+            android:layout_height="22px"
+            android:padding="2px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/red_dot_icon"/>
+            android:background="@drawable/end_marker_v2"/>
 
         <TextView
             android:id="@+id/textViewToValue"
-            android:layout_width="wrap_content"
+            android:layout_width="580px"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0px"
-            android:layout_marginLeft="70px"
-            android:text="Elante shjksfjkrhldehkfthlrtewterwtrwtywery"
+            android:layout_marginLeft="22px"
+            android:text="Elante shjksfjkrhldehkfthlrteywery"
             android:textColor="@color/bg_grey_opaque"
-            android:textSize="28px"/>
+            android:textSize="24px"/>
 
     </LinearLayout>
 

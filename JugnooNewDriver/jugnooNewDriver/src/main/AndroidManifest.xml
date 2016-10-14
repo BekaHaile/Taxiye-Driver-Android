@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="257"
-          android:versionName="2.5.7">
+          android:versionCode="259"
+          android:versionName="2.5.9">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -219,6 +219,24 @@
         </activity>
 
         <activity
+            android:name=".DriverEarningsNew"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DailyRideDetailsActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".RideDetailsNewActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
             android:name=".DriverRateCard"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -226,6 +244,12 @@
 
         <activity
             android:name=".HighDemandAreaActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity
+            android:name=".DriverRideHistoryNew"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
         </activity>
@@ -326,6 +350,10 @@
         <service
             android:name=".services.SyncMessageService"
             android:enabled="true"/>
+        <service
+            android:name=".services.FetchDataUsageService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <receiver android:name=".LocationReceiverDriver"/>
         <receiver android:name=".GPSLocationReceiverBackground"/>

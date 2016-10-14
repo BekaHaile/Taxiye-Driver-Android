@@ -13,7 +13,7 @@
         android:layout_height="96px"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:background="@color/menu_black">
+        android:background="@color/black_top_bar_bg">
 
         <TextView
             android:id="@+id/textViewTitle"
@@ -21,18 +21,18 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/PAYMENTS"
+            android:text="@string/Invoices_cap"
             android:textColor="@color/white"
             android:textSize="40px"/>
 
         <ImageView
             android:id="@+id/imageViewBack"
-            android:layout_width="60.7px"
-            android:layout_height="76.9px"
+            android:layout_width="82px"
+            android:layout_height="82px"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10px"
             android:padding="20px"
-            android:src="@drawable/back_white_selector"/>
+            android:background="@drawable/back_btn_selector"/>
     </RelativeLayout>
 
     <ImageView
@@ -46,7 +46,7 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="99px"
-        android:visibility="visible"
+        android:visibility="gone"
         app:pstsIndicatorHeight="7px"
         app:pstsDividerColor="@color/menu_black"
         app:pstsShouldExpand="true"
@@ -56,8 +56,16 @@
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/relativeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </RelativeLayout>
 
 </LinearLayout>

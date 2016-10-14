@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/relative"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:splitMotionEvents="false">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="8px"
+        android:id="@+id/topRlOuterSlide"
+        android:background="@drawable/shadow_up"
+        android:layout_marginLeft="11px"
+        android:layout_marginRight="11px"
+        android:layout_marginTop="8px"
+        />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:layout_marginBottom="2px"
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true"
+        android:background="@drawable/list_white_selector"
+        card_view:cardBackgroundColor="@color/white">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutHead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30px">
+
+            <TextView
+                android:id="@+id/textViewHeadText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24px"
+                android:text="llllllllllllll"
+                android:textColor="@color/grey_light_v2"
+                android:textSize="30px"/>
+
+            <ImageView
+                android:id="@+id/arrowSlider"
+                android:layout_width="23px"
+                android:layout_height="22px"
+                android:layout_marginTop="7px"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="36px"
+                android:src="@drawable/arrow_thick_new"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="38px"
+            android:layout_marginBottom="26px">
+
+            <TextView
+                android:id="@+id/textViewEmpty"
+                android:layout_width="14px"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textViewEmpty">
+
+                <TextView
+                    android:id="@+id/textView1Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24px"
+                    android:text="lll"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="450px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@+id/textView1Value"
+                    android:text="llllllllllllll"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="30px"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relativeLayout1"
+                android:layout_marginTop="4px"
+                android:layout_toRightOf="@+id/textViewEmpty">
+
+                <TextView
+                    android:id="@+id/textView2Value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="24px"
+                    android:text="lll"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="30px"/>
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="450px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10px"
+                    android:layout_toRightOf="@+id/textView2Value"
+                    android:text="llllllllllllll"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="30px"/>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="180px"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15px"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textViewValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="70%"
+                    android:textColor="@color/red_v2"
+                    android:textSize="58px"/>
+
+                <TextView
+                    android:id="@+id/textViewValueSub"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewValue"
+                    android:layout_centerHorizontal="true"
+                    android:text="fulfillment"
+                    android:textColor="@color/red_v2"
+                    android:textSize="24px"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+</RelativeLayout>

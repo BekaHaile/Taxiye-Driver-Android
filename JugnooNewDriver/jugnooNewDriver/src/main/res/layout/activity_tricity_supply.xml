@@ -11,7 +11,7 @@
         android:id="@+id/topBar"
         android:layout_width="720px"
         android:layout_height="96px"
-        android:background="@color/menu_black">
+        android:background="@color/black_top_bar_bg">
 
 
         <TextView

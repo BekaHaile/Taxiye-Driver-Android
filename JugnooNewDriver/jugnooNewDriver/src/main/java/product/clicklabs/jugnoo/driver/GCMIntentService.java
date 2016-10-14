@@ -9,9 +9,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -35,8 +37,11 @@ import java.io.File;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -59,6 +64,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.ApiAcceptRideServices;
 import product.clicklabs.jugnoo.driver.services.DownloadService;
+import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.services.FetchMFileService;
 import product.clicklabs.jugnoo.driver.services.SyncMessageService;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
@@ -211,7 +217,7 @@ public class GCMIntentService extends IntentService {
 			builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			builder.setContentText(message);
 			builder.setTicker(message);
-			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
+//			builder.setVisibility(Notification.VISIBILITY_PUBLIC);
 
 			if (ring) {
 				builder.setLights(Color.GREEN, 500, 500);
@@ -471,6 +477,18 @@ public class GCMIntentService extends IntentService {
 											requestTimeOutMillis = GCMIntentService.REQUEST_TIMEOUT;
 										}
 									}
+									String distanceDry = "";
+									try {
+										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+										DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
+										if (dryDistance >= 1000) {
+											distanceDry =  decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
+										} else {
+											distanceDry = decimalFormatNoDecimal.format(dryDistance) + " " + getResources().getString(R.string.m_away);
+										}
+									} catch (Resources.NotFoundException e) {
+										e.printStackTrace();
+									}
 
 									double fareFactor = jObj.optDouble("fare_factor", 1d);
 
@@ -495,14 +513,14 @@ public class GCMIntentService extends IntentService {
 										}
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
 										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
-										notificationManagerResumeAction(this, getResources().getString(R.string.got_new_request) + "\n" + address, true, engagementId,
+										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
 										startRing(this, engagementId);
@@ -691,6 +709,16 @@ public class GCMIntentService extends IntentService {
 								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchMFileService.class);
 								intent1.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
 								intent1.putExtra("file_id", jObj.getString("engagement_id"));
+								startService(intent1);
+
+							} else if (PushFlags.SEND_DATA_USAGE.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchDataUsageService.class);
+								intent1.putExtra("task_id", "3");
+								startService(intent1);
+
+							} else if (PushFlags.SEND_USL_LOG.getOrdinal() == flag) {
+								Intent intent1 = new Intent(Intent.ACTION_SYNC, null, this, FetchDataUsageService.class);
+								intent1.putExtra("task_id", "4");
 								startService(intent1);
 
 							} else if (PushFlags.SEND_DRIVER_MESSAGES.getOrdinal() == flag) {
@@ -1193,11 +1221,14 @@ public class GCMIntentService extends IntentService {
 				try {
 					final long resposeTime = System.currentTimeMillis();
 					String networkName = getNetworkName(context);
+					Location location = Database2.getInstance(context).getDriverCurrentLocation(context);
 
 					HashMap<String, String> params = new HashMap<String, String>();
 					params.put("uuid", uuid);
 					params.put("timestamp", ackTimeStamp);
 					params.put("network_name", networkName);
+					params.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
+					params.put(Constants.KEY_LONGITUDE, String.valueOf(location.getLongitude()));
 
 					RestClient.getApiServices().sendHeartbeatAckToServerRetro(params, new Callback<RegisterScreenResponse>() {
 						@Override

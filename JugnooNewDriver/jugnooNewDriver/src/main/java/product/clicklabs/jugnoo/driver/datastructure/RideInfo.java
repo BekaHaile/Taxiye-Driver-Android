@@ -91,6 +91,52 @@ public class RideInfo {
 		this.phone = phone;
 	}
 
+
+	public RideInfo(String id, String fromLocation, String toLocation,
+					String fare, String customerPaid, String balance, String subsidy,
+					String distance, String rideTime, String waitTime, String dateTime,
+					int paymentMode, int paymentStatus,
+					String statusString, String convenienceCharges, String luggageCharges, String fareFactorApplied,
+					String fareFactorValue, String acceptSubsidy, String cancelSubsidy, String accountBalance, String actualFare,
+					String type, String driverRideFair, String jugnooCut) {
+		this.id = id;
+		this.fromLocation = fromLocation;
+		this.toLocation = toLocation;
+
+		this.fare = fare;
+		this.customerPaid = customerPaid;
+		this.balance = balance;
+		this.subsidy = subsidy;
+
+
+		this.distance = distance;
+		this.rideTime = rideTime;
+		this.waitTime = waitTime;
+		this.dateTime = dateTime;
+
+		this.couponUsed = couponUsed;
+		this.balance = balance;
+
+		this.paymentMode = paymentMode;
+
+		this.businessId = businessId;
+
+		this.driverPaymentStatus = paymentStatus;
+		this.statusString = statusString;
+
+		this.convenienceCharges = convenienceCharges;
+		this.luggageCharges = luggageCharges;
+		this.fareFactorApplied = fareFactorApplied;
+		this.fareFactorValue = fareFactorValue;
+		this.acceptSubsidy = acceptSubsidy;
+		this.cancelSubsidy = cancelSubsidy;
+		this.accountBalance = accountBalance;
+		this.actualFare = actualFare;
+		this.type = type;
+		this.driverRideFair = driverRideFair;
+		this.jugnooCut = jugnooCut;
+	}
+
 	@Override
 	public String toString() {
 		return id + " " + dateTime;

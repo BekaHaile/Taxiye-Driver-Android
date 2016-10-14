@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.DailyRideDetailsActivity;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.InvoiceDetailsActivity;
@@ -219,8 +220,8 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.textViewInvoiceId.setText(getResources().getString(R.string.Invoice)+": " + invoiceInfo.id);
 				}
 
-				holder.dateTimeValueTo.setText(DateOperations.reverseDate(invoiceInfo.toTime));
-				holder.dateTimeValueFrom.setText(DateOperations.reverseDate(invoiceInfo.fromTime));
+				holder.dateTimeValueTo.setText(DateOperations.convertMonthDayViaFormat(invoiceInfo.toTime));
+				holder.dateTimeValueFrom.setText(DateOperations.convertMonthDayViaFormat(invoiceInfo.fromTime));
 
 				if(invoiceInfo.statusString.equalsIgnoreCase("Success")) {
 					holder.textViewStatusString.setText(getResources().getString(R.string.success));
@@ -235,7 +236,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 					holder.statusImage.setImageResource(R.drawable.rupee_green);
 					holder.textViewStatusString.setTextColor(getResources().getColor(R.color.green_delivery));
 				}
-				holder.textViewInvoiceFare.setText(getResources().getString(R.string.rupee) + " " + Utils.getDecimalFormatForMoney().format(invoiceInfo.fare));
+				holder.textViewInvoiceFare.setText(Utils.getAbsAmount(getActivity(), invoiceInfo.fare));
 
 
 				if(Prefs.with(getActivity()).getInt(Constants.SHOW_INVOICE_DETAILS,0)==1) {
@@ -244,7 +245,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
 						@Override
 						public void onClick(View v) {
 							holder = (ViewHolderDriverRides) v.getTag();
-							Intent intent = new Intent(getActivity(), InvoiceDetailsActivity.class);
+							Intent intent = new Intent(getActivity(), DailyRideDetailsActivity.class);
 							intent.putExtra("invoice_id", invoiceInfo.id);
 							getActivity().startActivity(intent);
 							getActivity().overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -298,7 +299,7 @@ public class InvoiceHistoryFragment extends Fragment implements FlurryEventNames
                                         invoices.add(invoiceInfo);
                                     }
 
-                                    updateListData(activity.getResources().getString(R.string.no_rides_currently), false);
+                                    updateListData(activity.getResources().getString(R.string.no_invoice_currently), false);
                                 }
                             } catch (Exception exception) {
                                 exception.printStackTrace();

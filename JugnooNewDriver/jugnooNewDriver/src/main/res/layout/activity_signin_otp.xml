@@ -3,14 +3,14 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="720px"
                 android:layout_height="1134px"
-                android:background="@drawable/background_white"
+                android:background="@color/white"
                 android:splitMotionEvents="false">
 
     <RelativeLayout
         android:id="@+id/topRl"
         android:layout_width="match_parent"
         android:layout_height="90px"
-        android:background="@color/menu_black"
+        android:background="@color/black_top_bar_bg"
         android:splitMotionEvents="false">
 
         <Button

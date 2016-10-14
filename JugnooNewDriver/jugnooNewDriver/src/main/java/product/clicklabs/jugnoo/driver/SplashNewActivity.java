@@ -148,8 +148,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		FlurryAgent.init(this, Data.FLURRY_KEY);
 
-		long interval = (1000 * Prefs.with(this).getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT));
-		Pushy.setHeartbeatInterval(interval, this);
+		long interval = Prefs.with(this).getLong(SPLabels.PUSHY_REFRESH_INTERVAL, Constants.PUSHY_REFRESH_INTERVAL_DEFAULT);
+		Pushy.setHeartbeatInterval((int) interval, this);
 		Pushy.listen(this);
 
 		setContentView(R.layout.activity_splash_new);

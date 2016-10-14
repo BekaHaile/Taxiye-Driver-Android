@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/relative"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/earnings_caps"
+            android:textColor="@color/white"
+            android:textSize="48px"/>
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topRl"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/black_earnings_bg"
+                android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutPayout"
+                android:layout_width="match_parent"
+                android:layout_height="160px"
+                android:visibility="visible"
+                android:background="@drawable/bg_transparent_blue_black_selector">
+
+                <TextView
+                    android:id="@+id/textViewEstPayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Today_earning"
+                    android:layout_marginLeft="24px"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/white"
+                    android:textSize="36px"/>
+
+
+                <TextView
+                    android:id="@+id/textViewPayOutValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="18px"
+                    android:layout_toLeftOf="@+id/arrow"
+                    android:layout_centerVertical="true"
+                    android:text="Rs. NA"
+                    android:textSize="84px"/>
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="42px"
+                    android:layout_height="25px"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="24px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_black_white_earning"/>
+
+            </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/grey_light_seprator"/>
+
+            <RelativeLayout
+                android:id="@+id/relativelayoutChart"
+                android:layout_width="match_parent"
+                android:layout_height="448px"
+                android:padding="24px">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutChartData"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="400px"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativelayoutRandom"
+                    android:layout_width="40px"
+                    android:layout_height="40px"
+                    android:layout_alignParentTop="true"
+                    android:background="@color/transparent">
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/textViewNoChartData"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    android:layout_marginRight="18px"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/no_data"
+                    android:textSize="34px"/>
+
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="60px"
+                android:orientation="horizontal"
+                android:layout_marginBottom="32px"
+                android:gravity="center"
+                android:layout_marginTop="8px">
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutPrev"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageViewPrev"
+                    android:layout_width="52px"
+                    android:layout_height="52px"
+                    android:layout_centerVertical="true"
+                    android:rotation="180"
+                    android:src="@drawable/arrow_with_padding"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                <TextView
+                    android:id="@+id/textViewInvPeriod"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/this_week_cap"
+                    android:textColor="@color/white"
+                    android:textSize="32px"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutNext"
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/imageViewNext"
+                    android:layout_width="52px"
+                    android:layout_height="52px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/arrow_with_padding"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <!--<ImageView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="2px"-->
+                    <!--android:layout_marginBottom="36px"-->
+                    <!--android:background="@color/grey_dark_less"/>-->
+
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout1"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:layout_marginTop="24px"
+                    android:background="@drawable/list_white_selector"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/textViewDayDateVal1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="54px"
+                        android:text="day, date"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="36px"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="48px">
+
+                        <TextView
+                            android:id="@+id/textViewDailyValue1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="18px"
+                            android:layout_toLeftOf="@+id/arrow1"
+                            android:text="Rs. NA"
+                            android:textColor="@color/black_text_v2"
+                            android:textSize="36px"/>
+
+                        <ImageView
+                            android:id="@+id/arrow1"
+                            android:layout_width="23px"
+                            android:layout_height="21px"
+                            android:layout_marginTop="14px"
+                            android:layout_alignParentRight="true"
+                            android:src="@drawable/arrow_thick_new"/>
+
+                    </RelativeLayout>
+
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
+
+                    <TextView
+                        android:id="@+id/textViewDayDateVal2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="54px"
+                        android:textColor="@color/black_text_v2"
+                        android:text="day, date"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDailyValue2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="18px"
+                        android:textColor="@color/black_text_v2"
+                        android:layout_toLeftOf="@+id/arrow2"
+                        android:text="Rs. NA"
+                        android:textSize="36px"/>
+
+                    <ImageView
+                        android:id="@+id/arrow2"
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14px"
+                        android:layout_marginRight="48px"
+                        android:src="@drawable/arrow_thick_new"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
+
+                    <TextView
+                        android:id="@+id/textViewDayDateVal3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="54px"
+                        android:textColor="@color/black_text_v2"
+                        android:text="day, date"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDailyValue3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="18px"
+                        android:layout_toLeftOf="@+id/arrow3"
+                        android:textColor="@color/black_text_v2"
+                        android:text="Rs. NA"
+                        android:textSize="36px"/>
+
+                    <ImageView
+                        android:id="@+id/arrow3"
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14px"
+                        android:layout_marginRight="48px"
+                        android:src="@drawable/arrow_thick_new"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:visibility="gone"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector">
+
+                    <TextView
+                        android:id="@+id/textViewDayDateVal4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="54px"
+                        android:textColor="@color/black_text_v2"
+                        android:text="day, date"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDailyValue4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="18px"
+                        android:textColor="@color/black_text_v2"
+                        android:layout_toLeftOf="@+id/arrow4"
+                        android:text="Rs. NA"
+                        android:textSize="36px"/>
+
+                    <ImageView
+                        android:id="@+id/arrow4"
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="14px"
+                        android:layout_marginRight="48px"
+                        android:src="@drawable/arrow_thick_new"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="90px"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/list_white_selector"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/textViewDayDateVal5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_text_v2"
+                        android:layout_marginLeft="54px"
+                        android:text="day, date"
+                        android:textSize="36px"/>
+
+                    <TextView
+                        android:id="@+id/textViewDailyValue5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black_text_v2"
+                        android:layout_marginRight="18px"
+                        android:layout_toLeftOf="@+id/arrow5"
+                        android:text="Rs. NA"
+                        android:textSize="36px"/>
+
+                    <ImageView
+                        android:id="@+id/arrow5"
+                        android:layout_width="23px"
+                        android:layout_height="21px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="48px"
+                        android:layout_marginTop="14px"
+                        android:src="@drawable/arrow_thick_new"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="36px"
+                    android:background="@color/grey_light_op_60"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="18px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/grey_default"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/grey_light_op_60"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutRideHistory"
+                android:layout_width="match_parent"
+                android:layout_height="152px"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/list_white_selector"
+                android:gravity="center_vertical">
+
+
+                <ImageView
+                    android:id="@+id/imageViewRideHistory"
+                    android:layout_width="36px"
+                    android:layout_height="31px"
+                    android:layout_marginTop="12px"
+                    android:layout_marginLeft="54px"
+                    android:layout_marginRight="26px"
+                    android:src="@drawable/ride_history_icon"/>
+
+
+                <TextView
+                    android:id="@+id/textViewRideHistory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="55px"
+                    android:gravity="center_vertical"
+                    android:layout_toRightOf="@+id/imageViewRideHistory"
+                    android:textColor="@color/black_text_v2"
+                    android:text="@string/ride_history_cap"
+                    android:textSize="36px"/>
+
+
+                <ImageView
+                    android:layout_width="23px"
+                    android:layout_height="21px"
+                    android:layout_marginTop="14px"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="48px"
+                    android:src="@drawable/arrow_thick_new"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

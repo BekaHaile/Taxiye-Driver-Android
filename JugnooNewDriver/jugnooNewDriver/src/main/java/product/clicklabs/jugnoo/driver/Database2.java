@@ -17,10 +17,12 @@ import java.util.HashMap;
 import product.clicklabs.jugnoo.driver.datastructure.AllNotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.CurrentPathItem;
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
+import product.clicklabs.jugnoo.driver.datastructure.LogUSL;
 import product.clicklabs.jugnoo.driver.datastructure.NotificationData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.RideData;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
+import product.clicklabs.jugnoo.driver.datastructure.UsageData;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapUtils;
@@ -162,9 +164,18 @@ public class Database2 {                                                        
 	private static final String CUSTOMER_RIDE_ENGAGEMENT_ID = "engagement_id";
 
 
+	private static final String TABLE_DATA_USAGE = "table_data_usage";
+	private static final String LOG_TIME = "log_time";
+	private static final String BYTES_RECEIVED = "bytes_received";
+	private static final String BYTES_SENT = "bytes_sent";
+
 	private static final String TABLE_POOL_DISCOUNT_FLAG = "table_pool_discount_flag";
 	private static final String POOL_RIDE_ENGAGEMENT_ID = "pool_ride_engagement_id";
 	private static final String POOL_RIDE_DISCOUNT_FLAG = "pool_ride_discount_flag";
+
+	private static final String TABLE_USL_LOG = "table_usl_log";
+	private static final String LOG_TIMESTAMP = "log_timestamp";
+	private static final String LOG_EVENT = "log_event";
 
 	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
 	private static final String PUSHY_TOKEN = "pushy_token";
@@ -308,9 +319,20 @@ public class Database2 {                                                        
 				+ CUSTOMER_START_RIDE_TIME + " TEXT"
 				+ ");");
 
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_DATA_USAGE + " ("
+				+ LOG_TIME + " TEXT, "
+				+ BYTES_RECEIVED + " TEXT, "
+				+ BYTES_SENT + " TEXT"
+				+ ");");
+
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_POOL_DISCOUNT_FLAG + " ("
 				+ POOL_RIDE_ENGAGEMENT_ID + " INTEGER, "
 				+ POOL_RIDE_DISCOUNT_FLAG + " INTEGER"
+				+ ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_USL_LOG + " ("
+				+ LOG_TIMESTAMP + " TEXT, "
+				+ LOG_EVENT + " TEXT"
 				+ ");");
 
 
@@ -1757,7 +1779,7 @@ public class Database2 {                                                        
 		try {
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.PUSHY_TOKEN, token);
-			int rowsAffected = database.update(Database2.PUSHY_TOKEN, contentValues, null, null);
+			int rowsAffected = database.update(Database2.TABLE_PUSHY_TOKEN, contentValues, null, null);
 			if(rowsAffected == 0){
 				database.insert(Database2.TABLE_PUSHY_TOKEN, null, contentValues);
 				return 1;
@@ -1767,6 +1789,119 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+
+	public long insertDataUsage(String time, String recived, String sent) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(LOG_TIME, time);
+			contentValues.put(BYTES_RECEIVED, recived);
+			contentValues.put(BYTES_SENT, sent);
+
+			return database.insert(TABLE_DATA_USAGE, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public String getDataUsage() {
+		String usageDataStr = "";
+		String template = "time,receive,sent";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.LOG_TIME, Database2.BYTES_RECEIVED, Database2.BYTES_SENT};
+			Cursor cursor = database.query(Database2.TABLE_DATA_USAGE, columns, null, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.LOG_TIME);
+			int i1 = cursor.getColumnIndex(Database2.BYTES_RECEIVED);
+			int i2 = cursor.getColumnIndex(Database2.BYTES_SENT);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					UsageData usageData = new UsageData(cursor.getString(i0),
+							cursor.getString(i1),
+							cursor.getString(i2));
+
+					usageDataStr = usageDataStr + usageData.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				usageDataStr = template + newLine + usageDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return usageDataStr;
+	}
+
+	public void deleteUsageData() {
+		try {
+			database.delete(Database2.TABLE_DATA_USAGE, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public long insertUSLLog(String event) {
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(LOG_TIMESTAMP, DateOperations.getCurrentTime());
+			contentValues.put(LOG_EVENT, event);
+
+			return database.insert(TABLE_USL_LOG, null, contentValues);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
+	}
+
+	public String getUSLLog() {
+		String usageDataStr = "";
+		String template = "time,event";
+		String newLine = "\n";
+		boolean hasValues = false;
+		try {
+			String[] columns = new String[]{Database2.LOG_TIMESTAMP, Database2.LOG_EVENT};
+			Cursor cursor = database.query(Database2.TABLE_USL_LOG, columns, null, null, null, null, null);
+
+			int i0 = cursor.getColumnIndex(Database2.LOG_TIMESTAMP);
+			int i1 = cursor.getColumnIndex(Database2.LOG_EVENT);
+
+			for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+				try {
+					LogUSL logUSL = new LogUSL(cursor.getString(i0),
+							cursor.getString(i1));
+
+					usageDataStr = usageDataStr + logUSL.toString() + newLine;
+					hasValues = true;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (hasValues) {
+				usageDataStr = template + newLine + usageDataStr;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return usageDataStr;
+	}
+
+	public void deleteUSLLog() {
+		try {
+			database.delete(Database2.TABLE_USL_LOG, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

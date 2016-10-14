@@ -14,8 +14,18 @@ public interface FlurryEventNames {
 			CHANGE_PASSWORD_ENTER_EMAIL = "change password enter email",
 			CHANGE_PASSWORD = "change password",
 			MENU = "Menu",
+			NOTIFICATION_MESSAGE ="notification message",
+			EARNINGS_BACK="earnings back",
+			EARNINGS_CARD_TODAYS_EARNING = "earnings_card_todays_earning",
+			EARNINGS_CARD__CHART="earnings_card__chart",
+			EARNINGS_CARD_THIS_WEEK="earnings_card_this_week",
+			EARNINGS_CARD_RIDE_HISTORY="earnings_card_ride_history",
+			TRIP_DETAILS_REPORT_FARE_ISSUE="trip_details_report_fare_issue",
+			FARE_ISSUE_SUBMIT="fare_issue_submit",
+			NOTIFICATION_TIP_TO_EARN ="notification tip to earn",
 			INVITE_OPENED = "Invite screen opened",
 			JUGNOO_ON_OFF = "jugnoo on/off",
+			DELIVERY_ON_OFF = "delivery on/off",
 			FATAFAT_ENABLE = "Fatafat enable",
 			MEALS_ENABLE = "Meals enable",
 			SHARING_ENABLE = "Sharing enable",
@@ -41,6 +51,8 @@ public interface FlurryEventNames {
 			RIDE_ACCEPTED = "Ride accepted",
 			RIDE_CANCELLED = "Ride cancelled",
 			RIDE_CHECKED = "Ride checked",
+			RIDE_ACCEPTED_NAVIGATE_BUTTON = "ride accepted navigate button",
+			RIDE_STARTED_NAVIGATE_BUTTON = "ride started navigate button",
 			RIDE_CHECKED_AND_ACCEPTED = "Ride checked and Accepted",
 			RIDE_CHECKED_AND_CANCELLED = "Ride checked and cancelled",
 			RIDE_CHECKED_AND_NO_ACTION = "Ride checked and no action",
@@ -63,6 +75,8 @@ public interface FlurryEventNames {
 			END_RIDE_CONFIRMED = "End ride confirmed",
 			END_RIDE_NOT_CONFIRMED = "End ride not confirmed",
 			OK_ON_FARE_SCREEN = "OK on Fare screen",
+			RATING_SUBMIT = "rating submit",
+			RATING_SKIP = "rating skip",
 			HEAT_MAP_RESPONSE= "Heat Map Response",
 			PATH_UPLOAD_RESPONSE = "Path Upload Response",
 			UPDATE_DRIVER_LOC_RESPONSE = "Update Driver Loc Response",
@@ -70,6 +84,22 @@ public interface FlurryEventNames {
 			LOGIN_ACCESSTOKEN_RESPONSE= "Login Accesstoken Response",
 			UPDATE_IN_RIDE_DATA_RESPONSE= "Update in Ride Data Response",
 			CUSTOM_VOICE_NOTIFICATION = "Custom Voice Nottification",
+			HOME_IN_RIDE_MENU ="home_in_ride_menu",
+			HOME_IN_RIDE_NOTIFICATION ="home_in_ride_notification",
+			HOME_MENU ="home_menu",
+			HOME_NOTIFICATION ="home notification",
+			HOME_SLIDEUP_BUTTON ="home slideUp button",
+			HOME_SLIDEDOWN_BUTTON ="home slideDown button",
+			HOME_ITEM_RIDE ="home item ride",
+			HOME_ITEM_DAILY ="home item daily",
+			HOME_ITEM_WEB ="home item web",
+			HOME_ITEM_INVOICE ="home item invoice",
+			HOME_ITEM_NOTIFICATION ="home item notification",
+			HOME_ITEM_TIPS ="home item tips",
+			HOME_ITEM_PROFILE ="home item profile",
+			HOME_ITEM_INVITE ="home item invite",
+			HOME_ITEM_EARNINGS ="home item earnings",
+			HOME_ITEM_FULFILLMENT ="home item fulfillment",
 			START_RING_INITIATED = "Start Ring Initiated";
 
 
@@ -100,7 +130,6 @@ public interface FlurryEventNames {
 			NUDGE_NOTIFICATION ="notification",
 			NUDGE_HINTS= "hints"
 					;
-
 
 
 }

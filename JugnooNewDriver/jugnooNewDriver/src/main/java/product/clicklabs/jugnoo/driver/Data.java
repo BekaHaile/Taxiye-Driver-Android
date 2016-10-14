@@ -52,19 +52,7 @@ public class Data {
 	public static final String SHARED_PREF_NAME = "myPref", SETTINGS_SHARED_PREF_NAME = "settingsPref";
 	public static final String SP_ACCESS_TOKEN_KEY = "access_token";
 	public static final String SP_SERVER_LINK = "sp_server_link";
-	
-	
-	
-	
-	
-	
 
-	
-
-	
-	
-	
-	
 	
 	
 	

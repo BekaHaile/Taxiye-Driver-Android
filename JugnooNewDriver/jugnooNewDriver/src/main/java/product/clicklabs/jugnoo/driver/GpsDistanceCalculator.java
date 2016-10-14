@@ -244,6 +244,11 @@ public class GpsDistanceCalculator {
 									e.printStackTrace();
 								}
 							}
+							try {
+								Database2.getInstance(context).updateDriverCurrentLocation(context, location);
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 						GpsDistanceCalculator.this.gpsDistanceUpdater.updateDistanceTime(totalDistance, getElapsedMillis(),
 								getWaitTimeFromSP(context), lastGPSLocation,

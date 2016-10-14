@@ -23,6 +23,8 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.ProfileInfo;
 import retrofit.Callback;
@@ -39,7 +41,7 @@ public class DriverProfileActivity extends BaseActivity {
 
 	TextView textViewDriverName, textViewDriverId, textViewRankCity, textViewRankOverall, textViewMonthlyValue, textViewRidesTakenValue,
 			textViewRidesCancelledValue, textViewRidesMissedValue, textViewOnlineHoursValue, textViewTitleBarDEI, textViewMonthlyText,
-			textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText;
+			textViewRidesTakenText, textViewRidesMissedText, textViewRidesCancelledText, terms;
 
 	ImageView profileImg, imageViewTitleBarDEI;
 
@@ -120,6 +122,10 @@ public class DriverProfileActivity extends BaseActivity {
 
 		textViewRidesCancelledText = (TextView) findViewById(R.id.textViewRidesCancelledText);
 		textViewRidesCancelledText.setTypeface(Data.latoRegular(this));
+
+		terms = (TextView) findViewById(R.id.terms);
+		terms.setTypeface(Data.latoRegular(this));
+
 		textViewRidesCancelledText.setText(getStringText(R.string.rides_cancelled));
 
 
@@ -146,6 +152,14 @@ public class DriverProfileActivity extends BaseActivity {
 //				EditDriverProfile.openProfileInfo = openedProfileInfo;
 				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+			}
+		});
+
+		terms.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(DriverProfileActivity.this, HelpActivity.class));
+				FlurryEventLogger.event(FlurryEventNames.TERMS_OF_USE);
 			}
 		});
 	}

@@ -2,7 +2,10 @@ package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.LinearGradient;
+import android.graphics.Shader;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -25,11 +28,13 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 	LinearLayout relative;
 
 	Button backBtn;
-	TextView textViewTitle;
+	TextView textViewTitle, title;
 
 	ProgressBar progressBar;
 	TextView textViewInfo;
 	WebView webview;
+	String url;
+	Shader textShader;
 
 	@Override
 	protected void onStart() {
@@ -62,6 +67,22 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		progressBar = (ProgressBar) findViewById(R.id.progressBar);
 		textViewInfo = (TextView) findViewById(R.id.textViewInfo);
 		textViewInfo.setTypeface(Data.latoRegular(this));
+
+		title = (TextView) findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(this));
+//		textShader=new LinearGradient(0, 0, 0, 20,
+//				new int[]{getResources().getColor(R.color.gradient_orange_v2), getResources().getColor(R.color.gradient_yellow_v2)},
+//				new float[]{0, 1}, Shader.TileMode.CLAMP);
+//		title.getPaint().setShader(textShader);
+
+		try {
+			Intent intent = getIntent();
+			url = intent.getStringExtra("extras");
+			title.setText(intent.getStringExtra("title"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		backBtn = (Button) findViewById(R.id.backBtn);
 		webview = (WebView) findViewById(R.id.webview);
 		webview.getSettings().setJavaScriptEnabled(true);
@@ -71,7 +92,8 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.setWebViewClient(new MyWebViewClient1());
 
 		if(Database2.getInstance(this).getDLDAccessToken() != null) {
-			webview.loadUrl(Prefs.with(HighDemandAreaActivity.this).getString(Constants.HIGH_DEMAND_WEB_URL, "")+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
+			Log.e("URL", url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
+			webview.loadUrl(url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
 		}
 
 

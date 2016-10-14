@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
+import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
@@ -121,8 +122,10 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 			public void onPageSelected(int position) {
 				if (position == 1) {
 					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_NOTIFICATION, null);
+					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_MESSAGE);
 				} else if (position == 2) {
 					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_HINTS, null);
+					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_TIP_TO_EARN);
 				}
 			}
 

@@ -1,5 +1,7 @@
 package product.clicklabs.jugnoo.driver.retrofit;
 
+import product.clicklabs.jugnoo.driver.retrofit.model.SettleUserDebt;
+import retrofit.Callback;
 import retrofit.client.Response;
 import retrofit.http.GET;
 import retrofit.http.Query;
@@ -16,6 +18,13 @@ public interface GoogleAPIServices {
 						   @Query("sensor") Boolean sensor,
 						   @Query("mode") String mode,
 						   @Query("alternatives") Boolean alternatives);
+
+	@GET("/directions/json")
+	void getDirections(@Query("origin") String originLatLng,
+					   @Query("destination") String destLatLng,
+					   @Query("sensor") Boolean sensor,
+					   @Query("mode") String mode,
+					   @Query("alternatives") Boolean alternatives, Callback<SettleUserDebt> callback);
 
 	// language=EN&sensor=false&alternatives=false
 	@GET("/distancematrix/json")
