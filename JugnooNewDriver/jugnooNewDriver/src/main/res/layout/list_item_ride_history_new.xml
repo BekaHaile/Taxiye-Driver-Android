@@ -72,15 +72,16 @@
                 <TextView
                     android:id="@+id/textViewType"
                     android:layout_width="wrap_content"
-                    android:layout_height="52px"
+                    android:layout_height="36px"
                     android:gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:paddingLeft="10px"
                     android:paddingRight="10px"
-                    android:text="@string/delivery"
-                    android:layout_marginRight="10px"
+                    android:text="@string/delivery_caps"
+                    android:layout_marginRight="16px"
                     android:background="@drawable/background_dark_grey_rounded_bordered"
                     android:textColor="@color/black_text_v2"
-                    android:textSize="30px"/>
+                    android:textSize="20px"/>
 
 
                 <TextView
@@ -96,7 +97,7 @@
                 <ImageView
                     android:id="@+id/imageViewArrow"
                     android:layout_width="26px"
-                    android:layout_height="22px"
+                    android:layout_height="24px"
                     android:src="@drawable/arrow_thick_new"
                     android:layout_marginTop="12px"
                     android:layout_alignParentRight="true"
@@ -111,7 +112,7 @@
                 android:layout_height="45px"
                 android:layout_toRightOf="@+id/textViewInfoText"
                 android:text="@string/status"
-                android:layout_marginRight="4px"
+                android:layout_marginRight="12px"
                 android:textColor="@color/black_text_v2"
                 android:gravity="center"
                 android:layout_gravity="right"

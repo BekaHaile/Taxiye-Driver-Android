@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:minHeight="90px"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@drawable/enter_destination_bg"
                 android:layout_marginTop="5px">
                 

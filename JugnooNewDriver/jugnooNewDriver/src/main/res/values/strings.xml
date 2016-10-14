@@ -573,6 +573,8 @@
 	<string name="deliver">Deliver</string>
 	<string name="Return">Return</string>
 	<string name="delivery">Delivery</string>
+	<string name="delivery_caps">DELIVERY</string>
+
 	<string name="delivery_completed">Delivery Completed</string>
 	<string name="delivery_cancelled">Delivery Cancelled</string>
 
@@ -706,7 +708,7 @@
 	<string name="id">ID</string>
 	<string name="fair_complaint">Fare Complaint</string>
 	<string name="in_review">IN REVIEW</string>
-	<string name="pool">Pool Ride</string>
+	<string name="pool">POOL RIDE</string>
 	<string name="no_invoice_currently">No invoice currently</string>
 	<string name="no_data">No Data</string>
 	<string name="web_view">WEB VIEW</string>
@@ -716,6 +718,7 @@
 	<string name="no_results_found">No Result Found</string>
 	<string name="COD">COD</string>
 	<string name="auto_accept_message">Customer request has been automatically accepted</string>
+	<string name="start_ride_alert">If Customer is with you, than please start ride</string>
 
 
 	<string-array name="CountryCodes" >

@@ -170,6 +170,7 @@ import product.clicklabs.jugnoo.driver.utils.MapUtils;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import product.clicklabs.jugnoo.driver.widgets.LinearLayoutManagerScrollControl;
 import retrofit.Callback;
@@ -346,6 +347,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
 	long fetchHeatMapTime = 0;
+	double startRideAlarmDisplacement;
+	long fetchAllAppTime = 0;
 
 	double totalFare = 0;
 	String waitTime = "", rideTime = "";
@@ -375,6 +378,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	int fareFetchedFromJugnoo = 0;
 	int luggageCountAdded = 0;
 	int tileCount = 0;
+	boolean playStartRideAlarm;
 
 
 	AlertDialog gpsDialogAlert;
@@ -2948,6 +2952,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			try {
+				startRideAlarmHandler.removeCallbacks(startRideAlarmRunnalble);
+				SoundMediaPlayer.stopSound();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			relativeLayoutEnterDestination.setVisibility(View.GONE);
@@ -3180,6 +3190,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
+					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
+
+					if(customerInfo.getIsDelivery() != 1) {
+						playStartRideAlarm = true;
+						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
+					}
+
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
@@ -3190,7 +3207,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_IN_RIDE:
 
 					updateDriverServiceFast("no");
-
+					SoundMediaPlayer.stopSound();
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					setPannelVisibility(false);
@@ -3366,6 +3383,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	Handler startRideAlarmHandler = new Handler();
+	boolean reachedDestination = false;
+	boolean playStartRideAlarmFinal = false;
+	Runnable startRideAlarmRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+				if (reachedDestination && playStartRideAlarmFinal
+						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 100, true);
+					playStartRideAlarmFinal = false;
+				}
+				if (reachedDestination && playStartRideAlarm
+						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 5, true);
+					playStartRideAlarm = false;
+					playStartRideAlarmFinal = true;
+				}
+				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)) {
+					reachedDestination = true;
+				}
+			} catch (Exception e) {
+
+			}
+			startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 2000);
+		}
+	};
 
 
 	public void startMeteringService() {

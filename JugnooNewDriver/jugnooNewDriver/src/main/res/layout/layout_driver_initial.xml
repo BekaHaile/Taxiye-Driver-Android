@@ -66,11 +66,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:background="@color/white_translucent"
+        android:background="@color/black_translucent_level_3"
         android:gravity="center"
         android:text="@string/jugnoo_off"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="44px"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 </RelativeLayout>
