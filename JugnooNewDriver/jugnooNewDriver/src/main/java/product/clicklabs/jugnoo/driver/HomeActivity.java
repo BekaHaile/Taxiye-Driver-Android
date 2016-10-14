@@ -2892,6 +2892,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 					driverInformationBtn.setVisibility(View.GONE);
+					startMeteringService();
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
 						startService(new Intent(this, DriverLocationUpdateService.class));
@@ -6009,7 +6010,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void onChangeStatePushReceived(final int flag, final String engagementId, final String message) {
+	public void onChangeStatePushReceived(final int flag, final String engagementId, final String message, final int playRing) {
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
@@ -6031,7 +6032,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 
 					}
-					if (PushFlags.RIDE_CANCELLED_BY_CUSTOMER.getOrdinal() != flag) {
+					if (playRing == 1) {
 						startRing(HomeActivity.this);
 						DialogPopup.alertPopupWithListener(HomeActivity.this, "", getResources().getString(R.string.auto_accept_message), new OnClickListener() {
 							@Override

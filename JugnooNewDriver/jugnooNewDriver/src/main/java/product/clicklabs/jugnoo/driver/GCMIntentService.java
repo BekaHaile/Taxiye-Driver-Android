@@ -600,7 +600,7 @@ public class GCMIntentService extends IntentService {
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, logMessage);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, logMessage, 0);
 									notificationManagerResume(this, logMessage, true);
 								} else {
 									notificationManager(this, logMessage, true);
@@ -610,10 +610,10 @@ public class GCMIntentService extends IntentService {
 
 								String logMessage = jObj.getString("message");
 								String engagementId = jObj.optString(Constants.KEY_ENGAGEMENT_ID, "0");
+								int playRing = jObj.optInt("play_ring", 0);
 								MyApplication.getInstance().getEngagementSP().removeCustomer(Integer.parseInt(engagementId));
 								if (HomeActivity.appInterruptHandler != null) {
-									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "");
-									SoundMediaPlayer.startSound(this, R.raw.telephone_ring_10, 1, true, true);
+									HomeActivity.appInterruptHandler.onChangeStatePushReceived(flag, engagementId, "", playRing);
 									notificationManagerResume(this, logMessage, false);
 								} else {
 									notificationManager(this, logMessage, false);

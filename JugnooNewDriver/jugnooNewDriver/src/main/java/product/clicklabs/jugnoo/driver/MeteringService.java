@@ -215,7 +215,7 @@ public class MeteringService extends Service {
 					int driverScreenMode = Prefs.with(context).getInt(SPLabels.DRIVER_SCREEN_MODE,
 							DriverScreenMode.D_INITIAL.getOrdinal());
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
-						if (fromGPS) {
+						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
 							String message = context.getResources().getString(R.string.total_distance)
 									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000)
 									+ context.getResources().getString(R.string.km) + " "
