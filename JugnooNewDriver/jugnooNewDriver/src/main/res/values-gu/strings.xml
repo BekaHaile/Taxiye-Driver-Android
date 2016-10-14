@@ -483,6 +483,8 @@
     <string name="current">વર્તમાન</string>
     <string name="get_directions">દિશા-નિર્દેશો મેળવો</string>
     <string name="delivery">ડિલિવરી</string>
+    <string name="delivery_caps">ડિલિવરી</string>
+
     <string name="orders_delivered">ડીલીવરી થઇ ગયી છે </string>
     <string name="orders_returned">ડીલીવરી પાછી આઈ છે </string>
     <string name="rate_your_vendor">તમારા વેન્ડર ને રેટિંગ આપો</string>

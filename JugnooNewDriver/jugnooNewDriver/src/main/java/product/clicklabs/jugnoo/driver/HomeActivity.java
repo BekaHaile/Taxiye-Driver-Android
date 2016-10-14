@@ -2879,6 +2879,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			try {
 				startRideAlarmHandler.removeCallbacks(startRideAlarmRunnalble);
+				SoundMediaPlayer.stopSound();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -3130,7 +3131,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_IN_RIDE:
 
 					updateDriverServiceFast("no");
-
+					SoundMediaPlayer.stopSound();
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					setPannelVisibility(false);
@@ -3308,16 +3309,24 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	Handler startRideAlarmHandler = new Handler();
 	boolean reachedDestination = false;
+	boolean playStartRideAlarmFinal = false;
 	Runnable startRideAlarmRunnalble = new Runnable() {
 		@Override
 		public void run() {
 			try {
 				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+				if (reachedDestination && playStartRideAlarmFinal
+						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 100, true);
+					playStartRideAlarmFinal = false;
+				}
 				if (reachedDestination && playStartRideAlarm
 						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
 					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
-					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.cancellation_ring, 1, true);
+					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 5, true);
 					playStartRideAlarm = false;
+					playStartRideAlarmFinal = true;
 				}
 				if (MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) < Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)) {
 					reachedDestination = true;

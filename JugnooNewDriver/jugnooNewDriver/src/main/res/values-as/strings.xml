@@ -487,6 +487,8 @@
     <string name="deliver">ডেলিভাৰ</string>
     <string name="Return">ওভতিল</string>
     <string name="delivery">ডেলিভাৰি </string>
+    <string name="delivery_caps">ডেলিভাৰি</string>
+
     <string name="resend_OTP">অ.টি.পি আকৌ পঠাওঁক</string>
     <string name="give_missed_call_dialog_text">আমাক এটা মিচ কল দিয়ক আৰু আমি আপোনাৰ পৰিচয় নিচ্চিত কৰিম ।</string>
     <string name="give_misscall_to_verify">নিচ্চিত কৰাৰ বাবে মিচ কল দিয়ক ।</string>

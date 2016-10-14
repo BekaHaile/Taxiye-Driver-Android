@@ -488,6 +488,8 @@
     <string name="current">നിലവിൽ</string>
     <string name="get_directions">ദിശ ലഭിക്കുന്നതിനു</string>
     <string name="delivery">ഡെലിവറി</string>
+    <string name="delivery_caps">ഡെലിവറി</string>
+
     <string name="orders_delivered">ഡെലിവറി ചെയ്ത ഓർഡറുകൾ</string>
     <string name="orders_returned">മടക്കിനൽകിയ ഓർഡറുകൾ </string>
     <string name="rate_your_vendor">നിങ്ങളുടെ വെണ്ടറെ  റേറ്റുചെയ്യുക</string>

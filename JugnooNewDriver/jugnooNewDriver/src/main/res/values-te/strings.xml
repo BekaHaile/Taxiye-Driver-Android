@@ -543,6 +543,8 @@
     <string name="current">ప్రస్తుత</string>
     <string name="get_directions">దిశలను పొందండి</string>
     <string name="delivery">డెలివరీ</string>
+    <string name="delivery_caps">డెలివరీ</string>
+
     <string name="orders_delivered">ఆర్డర్స్ పంపించబడింది</string>
     <string name="orders_returned">ఆర్డర్స్ తిరిగి పంపబడ్డాయి</string>
     <string name="rate_your_vendor">మీ వెండార్ కు రేటింగ్ ఇవ్వండి  </string>

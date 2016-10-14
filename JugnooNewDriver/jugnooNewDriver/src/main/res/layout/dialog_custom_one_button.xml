@@ -68,7 +68,7 @@
                 android:id="@+id/btnOk"
                 android:layout_width="400px"
                 android:layout_height="83px"
-                android:layout_marginBottom="15px"
+                android:layout_marginBottom="32px"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30px"

@@ -488,6 +488,8 @@
     <string name="current">ବର୍ତମାନ୍</string>
     <string name="get_directions">ମାର୍ଗ ଦେଖିବା ପାଇଂ.</string>
     <string name="delivery">ଡେଲିଭେରି.</string>
+    <string name="delivery_caps">ଡେଲିଭେରି</string>
+
     <string name="orders_delivered">ଅର୍ଡର୍ ବିତରଣ ହୋଇଯାଇଛି.</string>
     <string name="orders_returned">ଅର୍ଡର୍ ଫେରେଇ ଦିଆଯାଇଛି.</string>
     <string name="rate_your_vendor">ନିଜ ବିକ୍ରେତା ନ୍କୁ ରେଟିଂ ଦିଅଂନ୍ତୁ.</string>

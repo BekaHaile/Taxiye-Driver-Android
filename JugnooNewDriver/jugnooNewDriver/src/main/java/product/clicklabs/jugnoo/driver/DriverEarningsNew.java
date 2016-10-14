@@ -450,7 +450,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 			XAxis xAxis = barChart.getXAxis();
 			xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-			xAxis.setTextSize(15);
+			xAxis.setTextSize(12);
 			xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
 			YAxis yAxis = barChart.getAxisRight();
 			yAxis.setDrawAxisLine(false);
