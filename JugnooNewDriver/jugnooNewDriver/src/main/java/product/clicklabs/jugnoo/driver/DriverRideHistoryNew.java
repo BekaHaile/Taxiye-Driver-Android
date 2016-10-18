@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
@@ -50,8 +51,10 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 	TextView textViewInfoDisplay;
 	ArrayList<RideHistoryItem> rideHistoryItems = new ArrayList<>();
 	RecyclerView recyclerViewDailyInfo;
+
 	DriverRideHistoryAdapter driverRideHistoryAdapter;
 	Shader textShader;
+	int totalRides = 0;
 	public ASSL assl;
 	int invoice_id = 0;
 	CustomerInfo customerInfo;
@@ -110,7 +113,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		textViewInfoDisplay = (TextView) findViewById(R.id.textViewInfoDisplay);
 		textViewInfoDisplay.setTypeface(Data.latoRegular(this));
 		textViewInfoDisplay.setVisibility(View.GONE);
-
+		totalRides =0;
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -126,7 +129,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		recyclerViewDailyInfo.setItemAnimator(new DefaultItemAnimator());
 
 		rideHistoryItems = new ArrayList<>();
-		driverRideHistoryAdapter = new DriverRideHistoryAdapter(DriverRideHistoryNew.this, rideHistoryItems, new DriverRideHistoryAdapter.Callback() {
+		driverRideHistoryAdapter = new DriverRideHistoryAdapter(DriverRideHistoryNew.this, rideHistoryItems, totalRides, new DriverRideHistoryAdapter.Callback() {
 			@Override
 			public void onRideClick(int position, InfoTileResponse.Tile.Extras extras) {
 				Intent intent = new Intent(DriverRideHistoryNew.this, RideDetailsNewActivity.class);
@@ -135,11 +138,15 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 				DriverRideHistoryNew.this.startActivity(intent);
 				DriverRideHistoryNew.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
+			@Override
+			public void onShowMoreClick() {
+				getRidesAsync(DriverRideHistoryNew.this);
+			}
 		});
 		recyclerViewDailyInfo.setAdapter(driverRideHistoryAdapter);
 
 
-		getRidesAsync( this);
+		getRidesAsync(this);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -157,7 +164,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 			driverRideHistoryAdapter.notifyDataSetChanged();
 		} else {
 			if(rideHistoryItems.size() > 0) {
-				driverRideHistoryAdapter.setList(rideHistoryItems);
+				driverRideHistoryAdapter.setList(rideHistoryItems, totalRides);
 			} else {
 				textViewInfoDisplay.setText(getResources().getString(R.string.no_rides_currently));
 				textViewInfoDisplay.setVisibility(View.VISIBLE);
@@ -188,8 +195,11 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 	private void getRidesAsync(final Activity activity) {
 		try {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().getDailyRidesAsync(date, Data.userData.accessToken,
-					new Callback<DailyEarningResponse>() {
+			HashMap<String, String> params = new HashMap<>();
+			params.put("access_token", Data.userData.accessToken);
+			params.put("start_from", "" + rideHistoryItems.size());
+			params.put("engagement_date", "" + date);
+			RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
 						@Override
 						public void success(DailyEarningResponse dailyEarningResponse, Response response) {
 							try {
@@ -208,7 +218,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 
 									} else {
 										rideHistoryItems.clear();
-
+										totalRides = jObj.optInt("history_size", 10);
 										for (int i = 0; i < dailyEarningResponse.getTrips().size(); i++) {
 
 											rideHistoryItems.add(new RideHistoryItem(dailyEarningResponse.getTrips().get(i).getDate(),

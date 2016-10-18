@@ -47,6 +47,9 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+
+    String KEY_CURRENT_LATITUDE= "current_latitude";
+    String KEY_CURRENT_LONGITUDE= "current_longitude";
     String KEY_ENGAGEMENT_ID = "engagement_id";
     String KEY_CUSTOMER_ID = "customer_id";
     String KEY_GIVEN_RATING = "given_rating";

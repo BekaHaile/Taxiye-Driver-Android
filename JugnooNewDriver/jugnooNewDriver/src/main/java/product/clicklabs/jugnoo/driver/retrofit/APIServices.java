@@ -61,8 +61,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/v2/booking_history")
-	void getDailyRidesAsync(@Field("engagement_date") String date,
-							@Field("access_token") String accessToken,
+	void getDailyRidesAsync(@FieldMap Map<String, String> params,
 							 Callback<DailyEarningResponse> callback);
 
 	@FormUrlEncoded

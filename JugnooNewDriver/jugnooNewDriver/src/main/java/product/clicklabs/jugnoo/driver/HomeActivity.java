@@ -392,6 +392,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static final float HIGH_ACCURACY_ACCURACY_CHECK = 200;  //in meters
 	public CountDownTimer timer = null;
 	public Marker perfectRideMarker = null;
+	public  Marker currentCustomerLocMarker = null;
 
 
 	public static final long MAX_TIME_BEFORE_LOCATION_UPDATE_REBOOT = 10 * 60000; //in milliseconds
@@ -2995,6 +2996,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if (map != null) {
 						map.clear();
 						setAttachedCustomerMarkers();
+						if(currentCustomerLocMarker != null){
+							currentCustomerLocMarker.remove();
+							currentCustomerLocMarker = null;
+						}
+						currentCustomerLocMarker = addCustomerCurrentLocationMarker(map, getOpenedCustomerInfo(), getOpenedCustomerInfo().currentLatLng);
+
 					}
 
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
@@ -3007,7 +3014,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setPannelVisibility(false);
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
-
+					customerLocUpdate();
 					driverStartRideBtn.setVisibility(View.GONE);
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -3075,6 +3082,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					customerCurrentLocationHandler.removeCallbacks(customerCurrentLocationRunnalble);
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
@@ -4070,7 +4078,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
-					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0;
+					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
+							currrentLatitude=0, currrentLongitude=0;
 					int totalDeliveries = 0;
 					if(isDelivery == 1){
 						userName = userData.optString(KEY_NAME, "");
@@ -4094,9 +4103,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						pickupLatitude = jObj.optDouble(KEY_PICKUP_LATITUDE, 0);
 						pickupLongitude = jObj.optDouble(KEY_PICKUP_LONGITUDE, 0);
 						address = userData.optString(KEY_ADDRESS, "");
+						currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+						currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 					}
 
 					LatLng pickuplLatLng = new LatLng(pickupLatitude, pickupLongitude);
+					LatLng currentLatLng = new LatLng(currrentLatitude, currrentLongitude);
+
 					CouponInfo couponInfo = JSONParser.parseCouponInfo(jObj);
 					PromoInfo promoInfo = JSONParser.parsePromoInfo(jObj);
 
@@ -4120,7 +4133,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
+							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -5400,6 +5413,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
 					.createCustomMarkerBitmap(HomeActivity.this, assl, 50f, 69f, R.drawable.passenger)));
 		}
+		return map.addMarker(markerOptions);
+	}
+
+	public Marker addCustomerCurrentLocationMarker(GoogleMap map, CustomerInfo customerInfo, LatLng latLng) {
+		MarkerOptions markerOptions = new MarkerOptions();
+		markerOptions.title(String.valueOf(customerInfo.getEngagementId()));
+		markerOptions.snippet("");
+		markerOptions.position(latLng);
+		markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+					.createCustomMarkerBitmap(HomeActivity.this, assl, 20f, 20f, R.drawable.red_dot_icon)));
 		return map.addMarker(markerOptions);
 	}
 
@@ -6826,6 +6849,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		smilyHandler.postDelayed(smilyRunnalble, 1000);
 	}
 
+
+
+	Handler customerCurrentLocationHandler = new Handler();
+	Runnable customerCurrentLocationRunnalble = new Runnable() {
+		@Override
+		public void run() {
+			try {
+				updateCustomerLocation();
+			} catch (Exception e) {
+
+			}
+			customerCurrentLocationHandler.postDelayed(smilyRunnalble, 60000);
+		}
+	};
+
+	public void customerLocUpdate() {
+		customerCurrentLocationHandler.removeCallbacks(customerCurrentLocationRunnalble);
+		customerCurrentLocationHandler.postDelayed(customerCurrentLocationRunnalble, 1000);
+	}
+
+
+
 	Handler inRideMapZoomHandler = new Handler();
 	Runnable inRideMapZoomRunnable = new Runnable() {
 		@Override
@@ -7663,5 +7708,48 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 
 	}
+
+	public void updateCustomerLocation() {
+		try {
+			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+
+				HashMap<String, String> params = new HashMap<String, String>();
+				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
+
+				Log.i("params", "=" + params);
+
+				RestClient.getApiServices().perfectRideRegionRequest(params, new Callback<RegisterScreenResponse>() {
+					@Override
+					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+						Log.i(TAG, "rateTheCustomer response = " + responseStr);
+						try {
+							JSONObject jObj = new JSONObject(responseStr);
+							int flag = jObj.getInt(KEY_FLAG);
+							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								if(map != null && currentCustomerLocMarker != null){
+									double currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+									double currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+									LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
+									currentCustomerLocMarker.setPosition(currentLAtLng);
+								}
+							}
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+						perfectRideStateRestore();
+					}
+
+					@Override
+					public void failure(RetrofitError error) {
+						Log.e("request fail", error.toString());
+					}
+				});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 }

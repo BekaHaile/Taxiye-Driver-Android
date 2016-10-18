@@ -469,6 +469,8 @@ public class GCMIntentService extends IntentService {
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
 									double latitude = jObj.getDouble(Constants.KEY_LATITUDE);
 									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
+									double currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+									double currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 									String startTime = jObj.getString("start_time");
 									String address = jObj.getString("address");
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
@@ -520,7 +522,8 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
+												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+												new LatLng(currrentLatitude, currrentLongitude));
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId);

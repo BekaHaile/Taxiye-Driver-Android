@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,109 +29,158 @@ import product.clicklabs.jugnoo.driver.utils.Fonts;
 /**
  * Created by aneesh on 10/4/15.
  */
-public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHistoryAdapter.rideInfoViewHolder> {
+public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private ArrayList<RideHistoryItem> rideHistoryItems;
 	private Context context;
 	DriverRideHistoryNew activity;
 	private Callback callback;
+	private static final int TYPE_FOOTER = 2;
+	private int totalRides;
+	private static final int TYPE_ITEM = 1;
 
-
-
-	public DriverRideHistoryAdapter(DriverRideHistoryNew activity, ArrayList<RideHistoryItem> items, Callback callback) {
+	public DriverRideHistoryAdapter(DriverRideHistoryNew activity, ArrayList<RideHistoryItem> items, int totalRides, Callback callback) {
 		this.activity = activity;
 		this.rideHistoryItems = items;
 		this.callback = callback;
+		this.totalRides = totalRides;
 	}
 
-	public void setList(ArrayList<RideHistoryItem> slots){
+	public void setList(ArrayList<RideHistoryItem> slots, int totalRides){
+		this.totalRides = totalRides;
 		this.rideHistoryItems = slots;
 		notifyDataSetChanged();
 	}
 
 	@Override
 	public int getItemCount() {
-		return rideHistoryItems.size();
-	}
-
-	@Override
-	public void onBindViewHolder(rideInfoViewHolder rideInfoViewHolder, int i) {
-		final RideHistoryItem itr = rideHistoryItems.get(i);
-
-		rideInfoViewHolder.textViewInfoText.setTypeface(Fonts.mavenRegular(context));
-		rideInfoViewHolder.textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
-
-
-		rideInfoViewHolder.textViewInfoText.setText(itr.getTime());
-		rideInfoViewHolder.textViewInfoDate.setText(DateOperations.convertDateToDay(itr.getDate()) +", "+
-				DateOperations.convertMonthDayViaFormat(itr.getDate()));
-
-		if(itr.getEarning() >= 0) {
-			rideInfoViewHolder.textViewInfoValue.setText(activity.getResources().getString(R.string.rupee)+ itr.getEarning());
-		} else{
-			rideInfoViewHolder.textViewInfoValue.setText("-"+ activity.getResources().getString(R.string.rupee)+ Math.abs(itr.getEarning()));
-		}
-
-
-		if(itr.getStatus().equalsIgnoreCase("Ride Cancelled")){
-			rideInfoViewHolder.textViewStatus.setVisibility(View.VISIBLE);
-			rideInfoViewHolder.textViewStatus.setText(activity.getResources().getString(R.string.cancelled));
-			rideInfoViewHolder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
-
+		if (rideHistoryItems == null || rideHistoryItems.size() == 0) {
+			return 0;
 		} else {
-			rideInfoViewHolder.textViewStatus.setVisibility(View.GONE);
-			rideInfoViewHolder.textViewInfoText.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
-			rideInfoViewHolder.textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
-		}
-
-		if(itr.getType() ==3){
-			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
-			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.delivery));
-		} else if(itr.getType() ==2){
-			rideInfoViewHolder.textViewType.setVisibility(View.VISIBLE);
-			rideInfoViewHolder.textViewType.setText(activity.getResources().getString(R.string.pool));
-		} else {
-			rideInfoViewHolder.textViewType.setVisibility(View.GONE);
-		}
-
-
-
-
-		rideInfoViewHolder.linearLayoutRideItem.setTag(i);
-		rideInfoViewHolder.linearLayoutRideItem.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				try {
-					int pos = (int) v.getTag();
-					callback.onRideClick(pos, rideHistoryItems.get(pos).getExtras());
-					notifyDataSetChanged();
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			if (totalRides > rideHistoryItems.size()) {
+				return rideHistoryItems.size() + 1;
+			} else {
+				return rideHistoryItems.size();
 			}
-		});
+		}
+	}
+
+	@Override
+	public int getItemViewType(int position) {
+		if (isPositionFooter(position)) {
+			return TYPE_FOOTER;
+		}
+		return TYPE_ITEM;
+	}
+
+	private boolean isPositionFooter(int position) {
+		return position == rideHistoryItems.size();
+	}
+
+	private RideHistoryItem getItem(int position) {
+		if (isPositionFooter(position)) {
+			return null;
+		}
+		return rideHistoryItems.get(position);
+	}
+
+	@Override
+	public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, int i) {
+		if (viewHolder instanceof RideInfoViewHolder) {
+			RideInfoViewHolder holder = (RideInfoViewHolder) viewHolder;
+
+			final RideHistoryItem itr = rideHistoryItems.get(i);
+
+			holder.textViewInfoText.setTypeface(Fonts.mavenRegular(context));
+			holder.textViewInfoValue.setTypeface(Fonts.mavenRegular(context));
+
+
+			holder.textViewInfoText.setText(itr.getTime());
+			holder.textViewInfoDate.setText(DateOperations.convertDateToDay(itr.getDate()) + ", " +
+					DateOperations.convertMonthDayViaFormat(itr.getDate()));
+
+			if (itr.getEarning() >= 0) {
+				holder.textViewInfoValue.setText(activity.getResources().getString(R.string.rupee) + itr.getEarning());
+			} else {
+				holder.textViewInfoValue.setText("-" + activity.getResources().getString(R.string.rupee) + Math.abs(itr.getEarning()));
+			}
+
+
+			if (itr.getStatus().equalsIgnoreCase("Ride Cancelled")) {
+				holder.textViewStatus.setVisibility(View.VISIBLE);
+				holder.textViewStatus.setText(activity.getResources().getString(R.string.cancelled));
+				holder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
+
+			} else {
+				holder.textViewStatus.setVisibility(View.GONE);
+				holder.textViewInfoText.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				holder.textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+			}
+
+			if (itr.getType() == 3) {
+				holder.textViewType.setVisibility(View.VISIBLE);
+				holder.textViewType.setText(activity.getResources().getString(R.string.delivery));
+			} else if (itr.getType() == 2) {
+				holder.textViewType.setVisibility(View.VISIBLE);
+				holder.textViewType.setText(activity.getResources().getString(R.string.pool));
+			} else {
+				holder.textViewType.setVisibility(View.GONE);
+			}
+
+
+			holder.linearLayoutRideItem.setTag(i);
+			holder.linearLayoutRideItem.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					try {
+						int pos = (int) v.getTag();
+						callback.onRideClick(pos, rideHistoryItems.get(pos).getExtras());
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+		}  else if (viewHolder instanceof ViewFooterHolder) {
+			ViewFooterHolder holder = (ViewFooterHolder) viewHolder;
+			holder.relativeLayoutShowMore.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					callback.onShowMoreClick();
+				}
+			});
+		}
 
 
 	}
 
 	@Override
-	public rideInfoViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-		View itemView = LayoutInflater.
-				from(viewGroup.getContext()).
-				inflate(R.layout.list_item_ride_history_new, viewGroup, false);
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+		if (viewType == TYPE_FOOTER) {
+			View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_show_more, viewGroup, false);
 
-		return new rideInfoViewHolder(itemView);
+			RecyclerView.LayoutParams layoutParams = new RecyclerView.LayoutParams(720, RecyclerView.LayoutParams.WRAP_CONTENT);
+			v.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(v);
+			return new ViewFooterHolder(v);
+		} else {
+			View itemView = LayoutInflater.
+					from(viewGroup.getContext()).
+					inflate(R.layout.list_item_ride_history_new, viewGroup, false);
+
+			return new RideInfoViewHolder(itemView);
+		}
 	}
 
-	public class rideInfoViewHolder extends RecyclerView.ViewHolder {
+	public class RideInfoViewHolder extends RecyclerView.ViewHolder {
 		protected LinearLayout linearLayoutRideItem;
 		protected TextView textViewInfoText, textViewInfoValue, textViewStatus, textViewType, textViewInfoDate;
 		protected ImageView imageViewArrow;
 		protected int id;
 
-		public rideInfoViewHolder(View v) {
+		public RideInfoViewHolder(View v) {
 			super(v);
 			linearLayoutRideItem = (LinearLayout)v.findViewById(R.id.linearLayoutRideItem);
 			imageViewArrow = (ImageView)v.findViewById(R.id.imageViewArrow);
@@ -149,8 +200,23 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<DriverRideHis
 		}
 	}
 
+	public class ViewFooterHolder extends RecyclerView.ViewHolder {
+		public RelativeLayout relativeLayoutShowMore;
+		public TextView textViewShowMore;
+
+		public ViewFooterHolder(View convertView) {
+			super(convertView);
+			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
+			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
+			textViewShowMore.setTypeface(Data.latoRegular(context));
+			textViewShowMore.setText(context.getResources().getString(R.string.show_more));
+		}
+	}
+
+
 	public interface Callback{
 		void onRideClick(int position, InfoTileResponse.Tile.Extras extras);
+		void onShowMoreClick();
 	}
 
 }

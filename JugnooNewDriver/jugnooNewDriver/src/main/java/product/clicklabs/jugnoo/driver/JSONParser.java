@@ -404,7 +404,8 @@ public class JSONParser implements Constants {
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 									vendorMessage = "";
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0;
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
+									currrentLatitude =0, currrentLongitude =0;
 							int totalDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
@@ -432,6 +433,8 @@ public class JSONParser implements Constants {
 								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
 								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
 								address = jObjCustomer.optString(KEY_ADDRESS, "");
+								currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
+								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 							}
 
 
@@ -459,7 +462,8 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
+									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
+									new LatLng(currrentLatitude, currrentLongitude));
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -562,6 +566,10 @@ public class JSONParser implements Constants {
 				String requestUserId = jActiveRequest.getString("user_id");
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
+
+				double currrentLatitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LATITUDE);
+				double currrentLongitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 
@@ -608,7 +616,9 @@ public class JSONParser implements Constants {
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
+						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+						new LatLng(currrentLatitude, currrentLongitude));
+
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);

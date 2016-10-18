@@ -25,6 +25,7 @@ public class CustomerInfo {
 	public String phoneNumber;
 	private String name;
 	public LatLng requestlLatLng;
+	public LatLng currentLatLng;
 	private int cachedApiEnabled;
 
 	public String image, rating;
@@ -58,13 +59,14 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.requestlLatLng = requestlLatLng;
+		this.currentLatLng = currentLatLng;
 		this.cachedApiEnabled = cachedApiEnabled;
 
 		this.image = image;
@@ -102,10 +104,12 @@ public class CustomerInfo {
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
-						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery){
+						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
+						LatLng currentLatLng){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
+		this.currentLatLng = currentLatLng;
 		this.startTime = startTime;
 		this.address = address;
 		this.referenceId = referenceId;
@@ -196,6 +200,14 @@ public class CustomerInfo {
 
 	public void setRequestlLatLng(LatLng requestlLatLng) {
 		this.requestlLatLng = requestlLatLng;
+	}
+
+	public LatLng getCurrentLatLng() {
+		return currentLatLng;
+	}
+
+	public void setCurrentLatLng(LatLng currentLatLng) {
+		this.currentLatLng = currentLatLng;
 	}
 
 	public int getEngagementId() {

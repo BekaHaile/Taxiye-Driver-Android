@@ -21,8 +21,10 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.adapters.DailyRideDetailsAdapter;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DailyEarningItem;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
@@ -204,45 +206,46 @@ public class DailyRideDetailsActivity extends BaseFragmentActivity {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
-			RestClient.getApiServices().getDailyRidesAsync(date, Data.userData.accessToken,
-					new Callback<DailyEarningResponse>() {
+				HashMap<String, String> params = new HashMap<>();
+				params.put("access_token", Data.userData.accessToken);
+				params.put("start_from", "" + 0);
+				params.put("engagement_date", "" + date);
+			RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
 						@Override
 						public void success(DailyEarningResponse dailyEarningResponse, Response response) {
 							try {
 								if(activity != null) {
+									DialogPopup.dismissLoadingDialog();
 									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-									JSONObject jObj;
-									jObj = new JSONObject(jsonString);
-									if (!jObj.isNull("error")) {
-										String errorMessage = jObj.getString("error");
-										if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-											HomeActivity.logoutUser(activity);
-										} else {
-											updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true, null, null);
+									JSONObject jObj = new JSONObject(jsonString);
+									int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+									String message = JSONParser.getServerMessage(jObj);
+									if(!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)){
+										if(flag == ApiResponseFlags.ACTION_COMPLETE.getOrdinal()){
+
+											dailyEarningItems.clear();
+											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
+
+											for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
+												dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
+														, dailyEarningResponse.getDailyParam().get(i).getValue(),
+														null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
+											}
+											dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
+
+											for (int i=0; i<dailyEarningResponse.getTrips().size(); i++) {
+												dailyEarningItems.add(new DailyEarningItem(null, 0,dailyEarningResponse.getTrips().get(i).getTime(),
+														dailyEarningResponse.getTrips().get(i).getDate(),
+														dailyEarningResponse.getTrips().get(i).getType(),
+														dailyEarningResponse.getTrips().get(i).getStatus(),
+														dailyEarningResponse.getTrips().get(i).getEarning(),
+														dailyEarningResponse.getTrips().get(i).getExtras(), DailyRideDetailsAdapter.ViewType.RIDE_INFO));
+											}
+
+											updateListData(getResources().getString(R.string.no_rides), false, dailyEarningResponse, null);
+										} else{
+											DialogPopup.alertPopup(activity, "", message);
 										}
-
-									} else {
-										DialogPopup.dismissLoadingDialog();
-										dailyEarningItems.clear();
-										dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_AMNT));
-
-										for (int i=0; i<dailyEarningResponse.getDailyParam().size(); i++) {
-											dailyEarningItems.add(new DailyEarningItem(dailyEarningResponse.getDailyParam().get(i).getText()
-													, dailyEarningResponse.getDailyParam().get(i).getValue(),
-													null, null, 0, null , 0, null, DailyRideDetailsAdapter.ViewType.EARNING_PARAM));
-										}
-										dailyEarningItems.add(new DailyEarningItem(null,0,null,null, 0, null,0,null,DailyRideDetailsAdapter.ViewType.TOTAL_VALUES));
-
-										for (int i=0; i<dailyEarningResponse.getTrips().size(); i++) {
-											dailyEarningItems.add(new DailyEarningItem(null, 0,dailyEarningResponse.getTrips().get(i).getTime(),
-													dailyEarningResponse.getTrips().get(i).getDate(),
-													dailyEarningResponse.getTrips().get(i).getType(),
-													dailyEarningResponse.getTrips().get(i).getStatus(),
-													dailyEarningResponse.getTrips().get(i).getEarning(),
-													dailyEarningResponse.getTrips().get(i).getExtras(), DailyRideDetailsAdapter.ViewType.RIDE_INFO));
-										}
-
-										updateListData(getResources().getString(R.string.no_rides), false, dailyEarningResponse, null);
 									}
 								}
 							} catch (Exception e) {
