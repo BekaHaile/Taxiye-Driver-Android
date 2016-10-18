@@ -3083,6 +3083,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 					customerCurrentLocationHandler.removeCallbacks(customerCurrentLocationRunnalble);
+					if(currentCustomerLocMarker != null){
+						currentCustomerLocMarker.remove();
+						currentCustomerLocMarker = null;
+					}
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
@@ -7716,13 +7720,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
 
-				Log.i("params", "=" + params);
-
-				RestClient.getApiServices().perfectRideRegionRequest(params, new Callback<RegisterScreenResponse>() {
+				RestClient.getApiServices().updateCustomerLocation(params, new Callback<RegisterScreenResponse>() {
 					@Override
 					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						Log.i(TAG, "rateTheCustomer response = " + responseStr);
 						try {
 							JSONObject jObj = new JSONObject(responseStr);
 							int flag = jObj.getInt(KEY_FLAG);
@@ -7737,9 +7738,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} catch (Exception exception) {
 							exception.printStackTrace();
 						}
-						perfectRideStateRestore();
 					}
-
 					@Override
 					public void failure(RetrofitError error) {
 						Log.e("request fail", error.toString());
