@@ -457,7 +457,8 @@ public class GCMIntentService extends IntentService {
 											startActivity(newIntent);
 										}
 									} else {
-										Intent homeScreen = new Intent(this, SplashNewActivity.class);
+										Intent homeScreen = new Intent(this, BlankActivityForDialog.class);
+										homeScreen.putExtra("wakeUp", true);
 										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(homeScreen);
 									}

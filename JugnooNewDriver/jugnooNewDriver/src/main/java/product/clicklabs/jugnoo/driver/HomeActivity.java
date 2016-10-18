@@ -3091,6 +3091,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 
+					Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LATITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().latitude));
+					Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LONGITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().longitude));
+
 					try {
 						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
@@ -3189,6 +3192,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+
 
 					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
 
@@ -4011,7 +4015,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if (distance >= 1000) {
-				holder.textViewRequestDistance.setText("" + decimalFormat.format(distance / 1000) + getResources().getString(R.string.km_away));
+				holder.textViewRequestDistance.setText("" + decimalFormat.format(distance / 1000) +" "+ getResources().getString(R.string.km_away));
 			} else {
 				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
 			}
@@ -4030,8 +4034,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestName.setText(customerInfo.getName());
 				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 				holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
-						+" "+getResources().getString(R.string.rupee)
-						+" "+customerInfo.getCashOnDelivery());
+						+": "+getResources().getString(R.string.rupee)
+						+""+customerInfo.getCashOnDelivery());
 			}
 
 
@@ -6170,6 +6174,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						try {
 							new ApiSendCallLogs().sendCallLogs(HomeActivity.this, Data.userData.accessToken,
 									engagementId, Data.getCustomerInfo(engagementId).getPhoneNumber());
+							stopRing(true, HomeActivity.this);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

@@ -24,13 +24,14 @@ public interface Constants {
 	String JUGNOO_AUDIO = "jugnoo_audio";
 
     long HEAT_MAP_FETCH_DELAY = 120000;
-
+    String ACTION_LOCATION_UPDATE = "jugnoo.ACTION_LOCATION_UPDATE";
     String KEY_RIDE_TIME_SECONDS = "ride_time_seconds";
     String KEY_RIDE_TIME_SECONDS_DB = "ride_time_seconds_db";
     String KEY_WAIT_TIME_SECONDS = "wait_time_seconds";
     String KEY_PICTURE = "picture";
     String KEY_IMAGE = "image";
 
+    String START_RIDE_ALARM_LOCATION_FETCHER_INTERVAL = "start_ride_alarm_location_fetcher_interval";
     String KEY_USER_NAME = "user_name";
     String KEY_EMAIL = "email";
     String KEY_PHONE_NO = "phone_no";
@@ -74,6 +75,10 @@ public interface Constants {
     String KEY_JUGNOO_BALANCE = "jugnoo_balance";
     String KEY_PICKUP_LATITUDE = "pickup_latitude";
     String KEY_PICKUP_LONGITUDE = "pickup_longitude";
+
+    String KEY_PICKUP_LATITUDE_ALARM = "pickup_latitude_alarm";
+    String KEY_PICKUP_LONGITUDE_ALARM = "pickup_longitude_alarm";
+
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
     String KEY_APP_VERSION = "app_version";

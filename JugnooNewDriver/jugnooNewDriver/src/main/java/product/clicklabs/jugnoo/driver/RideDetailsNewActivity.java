@@ -168,8 +168,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
-
-		int viewHeight = (int)(80f * ASSL.Yscale()) * extras.getRideParam().size();
+		int viewHeight = 0;
+		if(extras.getRideParam().size() < 3) {
+			viewHeight = (int) (80f * ASSL.Yscale()) * extras.getRideParam().size();
+		} else {
+			viewHeight = (int) (72f * ASSL.Yscale()) * extras.getRideParam().size();
+		}
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
 		fareStructureInfos = new ArrayList<>();

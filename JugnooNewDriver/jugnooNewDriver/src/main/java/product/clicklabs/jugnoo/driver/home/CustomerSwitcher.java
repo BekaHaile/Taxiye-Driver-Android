@@ -188,7 +188,7 @@ public class CustomerSwitcher {
 						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)
 								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ " " + customerInfo.getCashOnDelivery());
+								+ "" + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						linearLayoutDeliveryFare.setVisibility(View.GONE);

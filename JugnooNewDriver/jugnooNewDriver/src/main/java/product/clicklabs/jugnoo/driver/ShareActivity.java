@@ -62,6 +62,7 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+
 		setContentView(R.layout.activity_share);
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
