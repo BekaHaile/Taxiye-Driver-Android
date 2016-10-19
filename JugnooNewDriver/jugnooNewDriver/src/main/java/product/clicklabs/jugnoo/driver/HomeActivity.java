@@ -3202,7 +3202,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //						playStartRideAlarm = true;
 //						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
 						Prefs.with(this).save(Constants.FLAG_REACHED_PICKUP, false);
-						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, false);
+						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, true);
 						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
 						Intent intent1 = new Intent(HomeActivity.this, StartRideLocationUpdateService.class);
 						HomeActivity.this.startService(intent1);

@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
@@ -220,6 +221,13 @@ public class DriverLocationDispatcher {
 								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementSPData);
 
 								Database2.getInstance(context).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), engagementSPData.getEngagementId());
+
+								Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, false);
+								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, true);
+								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
+								Intent intent1 = new Intent(context, StartRideLocationUpdateService.class);
+								context.startService(intent1);
+								Log.e("startRideAlarmSErvice", "on");
 								Log.writePathLogToFile(engagementSPData.getEngagementId() + "m", "arrived sucessful");
 							}
 							break;

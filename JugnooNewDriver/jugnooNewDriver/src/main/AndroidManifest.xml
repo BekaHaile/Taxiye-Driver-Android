@@ -315,7 +315,10 @@
         </receiver>
 
         <receiver android:name=".home.utils.LocationReceiverBG"/>
-
+        <service
+            android:name=".home.StartRideLocationUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService"/>
         <service

@@ -125,6 +125,7 @@ public class StartRideLocationUpdateService extends Service {
 				LatLng driverONPickupLatLng = new LatLng(latitude, longitude);
 				LatLng pickupLatLng = new LatLng(pickupLat, pickupLong);
 
+				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance", String.valueOf(MapUtils.distance(driverONPickupLatLng, pickupLatLng)));
 				if (Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false) && Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM_FINALLY, false)
 						&& ((int) MapUtils.distance(driverONPickupLatLng, pickupLatLng)
 						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
