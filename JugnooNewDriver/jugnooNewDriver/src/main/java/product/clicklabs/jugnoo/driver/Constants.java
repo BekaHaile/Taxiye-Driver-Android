@@ -198,5 +198,9 @@ public interface Constants {
 	String EVENT_DLD_DEVICE_TOKEN_RESET = "DLD_DEVICE_TOKEN_RESET";
 	String EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN = "DL_ALARM_LOC_NOT_SENT_TILL_3_MIN";
 
+    String PLAY_START_RIDE_ALARM = "play_start_ride_alarm";
+    String PLAY_START_RIDE_ALARM_FINALLY ="play_start_ride_alarm_finally";
+    String FLAG_REACHED_PICKUP ="flag_reached_pickup";
+
 }
 

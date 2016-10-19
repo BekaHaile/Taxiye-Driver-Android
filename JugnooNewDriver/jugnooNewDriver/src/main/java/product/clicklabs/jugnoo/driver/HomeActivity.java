@@ -139,6 +139,7 @@ import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
 import product.clicklabs.jugnoo.driver.home.EngagementSP;
+import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -2954,6 +2955,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 			try {
 				startRideAlarmHandler.removeCallbacks(startRideAlarmRunnalble);
+				stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
 				SoundMediaPlayer.stopSound();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -3197,8 +3199,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
 
 					if(customerInfo.getIsDelivery() != 1) {
-						playStartRideAlarm = true;
-						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
+//						playStartRideAlarm = true;
+//						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
+						Prefs.with(this).save(Constants.FLAG_REACHED_PICKUP, false);
+						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, false);
+						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
+						Intent intent1 = new Intent(HomeActivity.this, StartRideLocationUpdateService.class);
+						HomeActivity.this.startService(intent1);
 					}
 
 					startTimerPathRerouting();
@@ -3212,8 +3219,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					updateDriverServiceFast("no");
 					SoundMediaPlayer.stopSound();
+
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
+					stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
+
 					setPannelVisibility(false);
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
