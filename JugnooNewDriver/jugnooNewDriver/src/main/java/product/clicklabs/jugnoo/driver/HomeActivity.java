@@ -1958,7 +1958,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void updateInfoTileListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
-			DialogPopup.alertPopup(HomeActivity.this, "", message);
+//			DialogPopup.alertPopup(HomeActivity.this, "", message);
 			infoTileResponses.clear();
 			infoTilesAdapter.notifyDataSetChanged();
 			linearLayoutSlidingBottom.setVisibility(View.GONE);
@@ -3587,10 +3587,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		}
 
-		if(driverRequestListAdapter.customerInfos.size() > 0){
-			setPannelVisibility(false);
-		} else {
-			setPannelVisibility(true);
+		try {
+			if(driverRequestListAdapter.customerInfos.size() > 0){
+				setPannelVisibility(false);
+			} else {
+				setPannelVisibility(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		resumed = true;
@@ -4714,7 +4718,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		params.put("last_accurate_longitude", "" + lastAccurateLatLng.longitude);
 		params.put("ride_distance_using_haversine", "" + decimalFormat.format(totalHaversineDistanceInKm));
 
-
 		enteredMeterFare = 0;
 
 		if (customerInfo != null) {
@@ -4968,7 +4971,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			int invalidPool =0;
 
 			try {
-				if(customerInfo.getPoolFare() != null) {
+				if(customerInfo.getPoolFare() != null && customerInfo.getIsPooled() ==1) {
 					LatLng poolDropLatLng = customerInfo.dropLatLng;
 					LatLng actualDropLatng = new LatLng(dropLatitude, dropLongitude);
 					double poolDropDistanceDiff = MapUtils.distance(poolDropLatLng, actualDropLatng);
@@ -7710,40 +7713,44 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	private void getInfoTilesAsync(final Activity activity) {
-		RestClient.getApiServices().getInfoTilesAsync(Data.userData.accessToken, new Callback<InfoTileResponse>() {
-			@Override
-			public void success(InfoTileResponse infoTileResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					Log.e("Shared rides jsonString", "=" + jsonString);
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
+		try {
+			RestClient.getApiServices().getInfoTilesAsync(Data.userData.accessToken, new Callback<InfoTileResponse>() {
+				@Override
+				public void success(InfoTileResponse infoTileResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						Log.e("Shared rides jsonString", "=" + jsonString);
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							} else {
+								updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							}
 						} else {
-							updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
+							infoTileResponses.clear();
+							tileCount = infoTileResponse.getTiles().size();
+							infoTileResponses.addAll((ArrayList<InfoTileResponse.Tile>) infoTileResponse.getTiles());
+							updateInfoTileListData(getResources().getString(R.string.no_rides_currently), false);
 						}
-					} else {
-						infoTileResponses.clear();
-						tileCount = infoTileResponse.getTiles().size();
-						infoTileResponses.addAll((ArrayList<InfoTileResponse.Tile>) infoTileResponse.getTiles());
-						updateInfoTileListData(getResources().getString(R.string.no_rides_currently), false);
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
 					updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 				}
-				DialogPopup.dismissLoadingDialog();
-			}
-
-			@Override
-			public void failure(RetrofitError error) {
-				DialogPopup.dismissLoadingDialog();
-				updateInfoTileListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-			}
-		});
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 	}

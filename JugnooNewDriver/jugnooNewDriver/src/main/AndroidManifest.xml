@@ -280,6 +280,7 @@
                 <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH"/>
             </intent-filter>
         </receiver>
+
         <receiver
             android:name=".IncomingSmsReceiver"
             android:enabled="false">

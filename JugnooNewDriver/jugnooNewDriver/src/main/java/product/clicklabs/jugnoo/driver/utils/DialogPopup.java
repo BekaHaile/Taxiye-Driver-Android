@@ -803,7 +803,11 @@ public class DialogPopup {
 	}
 
 	public static void dialogNewBanner(Activity activity, String message) {
-		dialogBannerNewWithCancelListener(activity, message, null, 7000);
+		try {
+			dialogBannerNewWithCancelListener(activity, message, null, 7000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void dialogBannerNewWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
