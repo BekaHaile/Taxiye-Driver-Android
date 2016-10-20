@@ -3000,7 +3000,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							currentCustomerLocMarker.remove();
 							currentCustomerLocMarker = null;
 						}
-						currentCustomerLocMarker = addCustomerCurrentLocationMarker(map, getOpenedCustomerInfo(), getOpenedCustomerInfo().currentLatLng);
+						currentCustomerLocMarker = addCustomerCurrentLocationMarker(map, Data.getCurrentCustomerInfo());
 
 					}
 
@@ -5418,13 +5418,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		return map.addMarker(markerOptions);
 	}
 
-	public Marker addCustomerCurrentLocationMarker(GoogleMap map, CustomerInfo customerInfo, LatLng latLng) {
+	public Marker addCustomerCurrentLocationMarker(GoogleMap map, CustomerInfo customerInfo) {
 		MarkerOptions markerOptions = new MarkerOptions();
 		markerOptions.title(String.valueOf(customerInfo.getEngagementId()));
 		markerOptions.snippet("");
-		markerOptions.position(latLng);
+		markerOptions.position(customerInfo.currentLatLng);
 		markerOptions.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-					.createCustomMarkerBitmap(HomeActivity.this, assl, 20f, 20f, R.drawable.red_dot_icon)));
+				.createCustomMarkerBitmap(HomeActivity.this, assl, 20f, 20f, R.drawable.red_dot_icon)));
 		return map.addMarker(markerOptions);
 	}
 
@@ -7691,12 +7691,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	public void updateCustomerLocation(double currrentLatitude, double currrentLongitude) {
+	public void updateCustomerLocation(final double currrentLatitude, final double currrentLongitude) {
 		try {
-			if(map != null && currentCustomerLocMarker != null){
-				LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
-				currentCustomerLocMarker.setPosition(currentLAtLng);
-			}
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					if(map != null && currentCustomerLocMarker != null){
+						LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
+						currentCustomerLocMarker.setPosition(currentLAtLng);
+					}
+				}
+			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

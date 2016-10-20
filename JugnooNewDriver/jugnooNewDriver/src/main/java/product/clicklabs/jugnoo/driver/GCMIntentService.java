@@ -689,6 +689,12 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
 								}
+							} else if (PushFlags.UPDATE_CUSTOMER_CURRENT_LOCATION.getOrdinal() == flag) {
+								double dropLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+								double dropLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+								if (HomeActivity.appInterruptHandler != null) {
+									HomeActivity.appInterruptHandler.updateCustomerLocation(dropLatitude, dropLongitude);
+								}
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");
 								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
