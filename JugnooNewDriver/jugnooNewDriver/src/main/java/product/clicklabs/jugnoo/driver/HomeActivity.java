@@ -368,7 +368,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static DriverScreenMode driverScreenMode;
 
 
-	static AppInterruptHandler appInterruptHandler;
+	public static AppInterruptHandler appInterruptHandler;
 
 	static Activity activity;
 
@@ -3201,11 +3201,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() != 1) {
 //						playStartRideAlarm = true;
 //						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
-						Prefs.with(this).save(Constants.FLAG_REACHED_PICKUP, false);
-						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, true);
-						Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
-						Intent intent1 = new Intent(HomeActivity.this, StartRideLocationUpdateService.class);
-						HomeActivity.this.startService(intent1);
+						if(!Utils.isServiceRunning(HomeActivity.this, StartRideLocationUpdateService.class) && !Prefs.with(this).getBoolean(Constants.START_RIDE_ALARM_SERVICE_STATUS, false)) {
+							Prefs.with(this).save(Constants.FLAG_REACHED_PICKUP, false);
+							Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, true);
+							Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
+							Intent intent1 = new Intent(HomeActivity.this, StartRideLocationUpdateService.class);
+							HomeActivity.this.startService(intent1);
+							Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, true);
+						} else{
+							stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
+							Intent intent1 = new Intent(HomeActivity.this, StartRideLocationUpdateService.class);
+							HomeActivity.this.startService(intent1);
+						}
 					}
 
 					startTimerPathRerouting();
@@ -3367,7 +3374,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			}
 
 			if(rideCancelledByCustomer){
-				DialogPopup.dialogNewBanner(HomeActivity.this, cancelationMessage);
+				DialogPopup.dialogNewBanner(HomeActivity.this, cancelationMessage, 7000);
 			}
 			rideCancelledByCustomer = false;
 
@@ -3407,13 +3414,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				LatLng driverONPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 				if (reachedDestination && playStartRideAlarmFinal
 						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
-					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert), 7000);
 					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 100, true);
 					playStartRideAlarmFinal = false;
 				}
 				if (reachedDestination && playStartRideAlarm
 						&& ((int)MapUtils.distance(driverONPickupLatLng, Data.getCurrentCustomerInfo().getRequestlLatLng()) >  Prefs.with(HomeActivity.this).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
-					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert));
+					DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert), 7000);
 					SoundMediaPlayer.startSound(HomeActivity.this, R.raw.start_ride_accept_beep, 5, true);
 					playStartRideAlarm = false;
 					playStartRideAlarmFinal = true;
@@ -6843,6 +6850,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		});
 	}
 
+	@Override
+	public void showStartRidePopup(){
+		 runOnUiThread(new Runnable() {
+			 @Override
+			 public void run() {
+				 DialogPopup.dialogNewBanner(HomeActivity.this, getResources().getString(R.string.start_ride_alert), 10000);
+			 }
+		 });
+	}
 
 	public void driverTimeOutPopup(final Activity activity, long timeoutInterwal) {
 

@@ -18,6 +18,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
@@ -130,12 +131,18 @@ public class StartRideLocationUpdateService extends Service {
 						&& ((int) MapUtils.distance(driverONPickupLatLng, pickupLatLng)
 						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
 					SoundMediaPlayer.startSound(context, R.raw.start_ride_accept_beep, 100, true);
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.showStartRidePopup();
+					}
 					Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
 				}
 				if (Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false) && Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM, false)
 						&& ((int)MapUtils.distance(driverONPickupLatLng, pickupLatLng)
 						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
 					SoundMediaPlayer.startSound(context, R.raw.start_ride_accept_beep, 5, true);
+					if(HomeActivity.appInterruptHandler != null){
+						HomeActivity.appInterruptHandler.showStartRidePopup();
+					}
 					Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, false);
 					Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, true);
 				}

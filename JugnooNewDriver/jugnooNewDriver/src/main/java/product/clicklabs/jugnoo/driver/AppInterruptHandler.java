@@ -46,4 +46,6 @@ public interface AppInterruptHandler {
 
 	void updateCustomers();
 
+	void showStartRidePopup();
+
 }

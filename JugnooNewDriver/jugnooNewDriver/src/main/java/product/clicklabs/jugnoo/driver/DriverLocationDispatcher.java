@@ -222,7 +222,7 @@ public class DriverLocationDispatcher {
 
 								Database2.getInstance(context).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), engagementSPData.getEngagementId());
 
-								Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, false);
+								Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, true);
 								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, true);
 								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
 								Intent intent1 = new Intent(context, StartRideLocationUpdateService.class);
