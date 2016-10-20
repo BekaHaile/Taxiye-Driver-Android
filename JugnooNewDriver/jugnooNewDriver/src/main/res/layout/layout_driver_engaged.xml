@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:splitMotionEvents="false"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <!-- customer info layout -->
     <RelativeLayout
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:minHeight="90px"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/enter_destination_bg"
                 android:layout_marginTop="5px">
                 

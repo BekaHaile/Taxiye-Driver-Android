@@ -347,7 +347,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CustomerRideData customerRideDataGlobal = new CustomerRideData();
 
 	long fetchHeatMapTime = 0;
-	double startRideAlarmDisplacement;
 	long fetchAllAppTime = 0;
 
 	double totalFare = 0;
@@ -3194,7 +3193,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 
-					startRideAlarmDisplacement =  MapUtils.distance(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()), Data.getCurrentCustomerInfo().getRequestlLatLng());
 
 					if(customerInfo.getIsDelivery() != 1) {
 						playStartRideAlarm = true;
@@ -6065,6 +6063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showAllRideRequestsOnMap();
+					drawerLayout.closeDrawer(GravityCompat.START);
 					try {
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + Data.getAssignedCustomerInfosListForStatus(
 								EngagementStatus.REQUESTED.getOrdinal()).size(),null);
