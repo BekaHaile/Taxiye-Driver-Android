@@ -3014,7 +3014,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					setPannelVisibility(false);
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
-					customerLocUpdate();
 					driverStartRideBtn.setVisibility(View.GONE);
 					buttonMarkArrived.setVisibility(View.VISIBLE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
@@ -3082,7 +3081,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					customerCurrentLocationHandler.removeCallbacks(customerCurrentLocationRunnalble);
 					if(currentCustomerLocMarker != null){
 						currentCustomerLocMarker.remove();
 						currentCustomerLocMarker = null;
@@ -6855,26 +6853,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 
-	Handler customerCurrentLocationHandler = new Handler();
-	Runnable customerCurrentLocationRunnalble = new Runnable() {
-		@Override
-		public void run() {
-			try {
-				updateCustomerLocation();
-			} catch (Exception e) {
-
-			}
-			customerCurrentLocationHandler.postDelayed(smilyRunnalble, 60000);
-		}
-	};
-
-	public void customerLocUpdate() {
-		customerCurrentLocationHandler.removeCallbacks(customerCurrentLocationRunnalble);
-		customerCurrentLocationHandler.postDelayed(customerCurrentLocationRunnalble, 1000);
-	}
-
-
-
 	Handler inRideMapZoomHandler = new Handler();
 	Runnable inRideMapZoomRunnable = new Runnable() {
 		@Override
@@ -7713,37 +7691,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	}
 
-	public void updateCustomerLocation() {
+	public void updateCustomerLocation(double currrentLatitude, double currrentLongitude) {
 		try {
-			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
-
-				HashMap<String, String> params = new HashMap<String, String>();
-				params.put(KEY_ACCESS_TOKEN, Data.userData.accessToken);
-
-				RestClient.getApiServices().updateCustomerLocation(params, new Callback<RegisterScreenResponse>() {
-					@Override
-					public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-						String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-						try {
-							JSONObject jObj = new JSONObject(responseStr);
-							int flag = jObj.getInt(KEY_FLAG);
-							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								if(map != null && currentCustomerLocMarker != null){
-									double currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
-									double currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
-									LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
-									currentCustomerLocMarker.setPosition(currentLAtLng);
-								}
-							}
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
-					}
-					@Override
-					public void failure(RetrofitError error) {
-						Log.e("request fail", error.toString());
-					}
-				});
+			if(map != null && currentCustomerLocMarker != null){
+				LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
+				currentCustomerLocMarker.setPosition(currentLAtLng);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
