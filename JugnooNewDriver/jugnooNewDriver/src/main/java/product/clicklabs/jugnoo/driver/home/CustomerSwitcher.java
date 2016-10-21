@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleGeocodeAddress;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
@@ -25,6 +26,7 @@ import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -51,6 +53,7 @@ public class CustomerSwitcher {
 
 	private CustomerInfoAdapter customerInfoAdapter;
 	double distanceRefreshTime = 0;
+	String dropAddress;
 
 	public CustomerSwitcher(HomeActivity activity, View rootView) {
 		this.activity = activity;
@@ -114,10 +117,13 @@ public class CustomerSwitcher {
 					}
 					if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
 						FlurryEventLogger.event(FlurryEventNames.CALLED_CUSTOMER);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CALL_CUSTOMER,null);
 					} else if (DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
 						FlurryEventLogger.event(FlurryEventNames.CALL_CUSTOMER_AFTER_ARRIVING);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
 					} else if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
 						FlurryEventLogger.event(FlurryEventNames.CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CALL_CUSTOMER, null);
 					}
 				} else {
 					Toast.makeText(activity, activity.getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
@@ -145,8 +151,14 @@ public class CustomerSwitcher {
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
 											textViewCustomerPickupAddress)).execute();
+							dropAddress = (String) textViewCustomerPickupAddress.getText();
 						}else {
 							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
+							dropAddress = customerInfo.getDropAddress();
+						}
+						if(customerInfo.getIsPooled() != 1){
+							textViewCustomerPickupAddress.setVisibility(View.GONE);
+							activity.setBarAddress(dropAddress);
 						}
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
@@ -174,9 +186,9 @@ public class CustomerSwitcher {
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
 								+ " " + customerInfo.getTotalDeliveries());
 						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-						textViewDeliveryFare.setText(activity.getResources().getString(R.string.fare)
+						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)
 								+ ": " + activity.getResources().getString(R.string.rupee)
-								+ " " + customerInfo.getEstimatedFare());
+								+ "" + customerInfo.getCashOnDelivery());
 					} else {
 						textViewDeliveryCount.setVisibility(View.GONE);
 						linearLayoutDeliveryFare.setVisibility(View.GONE);

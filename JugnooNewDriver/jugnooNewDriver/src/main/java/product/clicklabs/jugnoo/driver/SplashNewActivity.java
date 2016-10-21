@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
@@ -39,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 import com.flurry.android.FlurryAgent;
@@ -1015,9 +1017,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
 			if(bundleHomePush != null)
 			intent.putExtras(bundleHomePush);
-
+			ActivityCompat.finishAffinity(this);
 			startActivity(intent);
-			finish();
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 		else if(hasFocus && loginFailed){
@@ -1035,15 +1036,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
         ASSL.closeActivity(relative);
         System.gc();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-		public void confirmDebugPasswordPopup(final Activity activity, final DriverDebugOpenMode flag){
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		bundleHomePush = intent.getExtras();
+
+	}
+
+	public void confirmDebugPasswordPopup(final Activity activity, final DriverDebugOpenMode flag){
 
 			try {
 				final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);

@@ -9,9 +9,8 @@ public class SoundMediaPlayer {
 	
 	public static MediaPlayer mediaPlayer;
 	public static int loopCount, runCount;
-    public static boolean cancelRingPlaying;
-    
-	public static void startSound(Context context, int soundFileId, int loopCount, boolean maxSound, boolean cancelRingPlaying){
+
+	public static void startSound(Context context, int soundFileId, int loopCount, boolean maxSound){
 		try {
 			stopSound();
 			if(maxSound){
@@ -22,28 +21,21 @@ public class SoundMediaPlayer {
 			SoundMediaPlayer.runCount = 0;
 			mediaPlayer = MediaPlayer.create(context, soundFileId);
 			mediaPlayer.setOnCompletionListener(new OnCompletionListener() {
-			    @Override
-			    public void onCompletion(MediaPlayer mp) {
+				@Override
+				public void onCompletion(MediaPlayer mp) {
 					try {
 						SoundMediaPlayer.runCount++;
-						if(SoundMediaPlayer.runCount >= SoundMediaPlayer.loopCount){
-                            SoundMediaPlayer.cancelRingPlaying = false;
-                            stopSound();
-                        }
-                        else{
-                            mediaPlayer.start();
-                        }
+						if (SoundMediaPlayer.runCount >= SoundMediaPlayer.loopCount) {
+							stopSound();
+						} else {
+							mediaPlayer.start();
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
-					} finally{
-						mediaPlayer = null;
 					}
 				}
 			});
 			mediaPlayer.start();
-            if(cancelRingPlaying){
-                SoundMediaPlayer.cancelRingPlaying = true;
-            }
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,15 +43,13 @@ public class SoundMediaPlayer {
 	
 	public static void stopSound(){
 		try {
-            if(!SoundMediaPlayer.cancelRingPlaying) {
-                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
-                    mediaPlayer.reset();
-                    mediaPlayer.release();
-                }
-                SoundMediaPlayer.loopCount = 0;
-                SoundMediaPlayer.runCount = 0;
-            }
+			if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+				mediaPlayer.stop();
+				mediaPlayer.reset();
+				mediaPlayer.release();
+			}
+			SoundMediaPlayer.loopCount = 0;
+			SoundMediaPlayer.runCount = 0;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{

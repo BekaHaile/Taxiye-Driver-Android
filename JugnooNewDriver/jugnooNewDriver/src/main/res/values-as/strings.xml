@@ -487,6 +487,8 @@
     <string name="deliver">ডেলিভাৰ</string>
     <string name="Return">ওভতিল</string>
     <string name="delivery">ডেলিভাৰি </string>
+    <string name="delivery_caps">ডেলিভাৰি</string>
+
     <string name="resend_OTP">অ.টি.পি আকৌ পঠাওঁক</string>
     <string name="give_missed_call_dialog_text">আমাক এটা মিচ কল দিয়ক আৰু আমি আপোনাৰ পৰিচয় নিচ্চিত কৰিম ।</string>
     <string name="give_misscall_to_verify">নিচ্চিত কৰাৰ বাবে মিচ কল দিয়ক ।</string>
@@ -657,6 +659,11 @@
     <string name="web_view">WEB VIEW</string>
     <string name="connection_lost">Connection Loast</string>
     <string name="pls_enter_some_msg">Please enter some issue</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="no_results_found">No Result Found</string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
 
 
     <string-array name="CountryCodes" >

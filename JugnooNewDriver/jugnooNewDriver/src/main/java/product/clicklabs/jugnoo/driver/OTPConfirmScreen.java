@@ -241,24 +241,28 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			@Override
 			public void onClick(View v) {
 				if (!"".equalsIgnoreCase(knowlarityMissedCallNumber)) {
-					DialogPopup.alertPopupTwoButtonsWithListeners(OTPConfirmScreen.this, "",
-							getResources().getString(R.string.give_missed_call_dialog_text),
-							getResources().getString(R.string.call_us),
-							getResources().getString(R.string.cancel),
-							new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									layoutResendOtp.setVisibility(View.GONE);
-									Utils.openCallIntent(OTPConfirmScreen.this, knowlarityMissedCallNumber);
-								}
-							},
-							new View.OnClickListener() {
-								@Override
-								public void onClick(View v) {
+					try {
+						DialogPopup.alertPopupTwoButtonsWithListeners(OTPConfirmScreen.this, "",
+								getResources().getString(R.string.give_missed_call_dialog_text),
+								getResources().getString(R.string.call_us),
+								getResources().getString(R.string.cancel),
+								new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										layoutResendOtp.setVisibility(View.GONE);
+										Utils.openCallIntent(OTPConfirmScreen.this, knowlarityMissedCallNumber);
+									}
+								},
+								new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
 
-								}
-							}, false, false
-					);
+									}
+								}, false, false
+						);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		});

@@ -22,7 +22,7 @@ import product.clicklabs.jugnoo.driver.utils.Prefs;
  */
 public class EngagementSP {
 
-	private final String SP_ENGAGEMENTS_ATTACHED = "sp_engagement_attached";
+	public static final String SP_ENGAGEMENTS_ATTACHED = "sp_engagement_attached";
 	private final String EMPTY_JSON_ARRAY = "[]";
 
 	private Context context;

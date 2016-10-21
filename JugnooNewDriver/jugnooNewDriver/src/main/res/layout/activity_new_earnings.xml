@@ -62,7 +62,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/Today_earning"
-                    android:layout_marginLeft="24px"
+                    android:layout_marginLeft="26px"
                     android:layout_centerVertical="true"
                     android:textColor="@color/white"
                     android:textSize="36px"/>
@@ -73,7 +73,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:layout_marginRight="18px"
                     android:layout_toLeftOf="@+id/arrow"
                     android:layout_centerVertical="true"
                     android:text="Rs. NA"
@@ -81,12 +80,12 @@
 
                 <ImageView
                     android:id="@+id/arrow"
-                    android:layout_width="42px"
-                    android:layout_height="25px"
+                    android:layout_width="56px"
+                    android:layout_height="48px"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="24px"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/arrow_black_white_earning"/>
+                    android:src="@drawable/arrow_today_earning_top"/>
 
             </RelativeLayout>
 

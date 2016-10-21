@@ -36,6 +36,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.EventsHolder;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -120,12 +121,14 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 
 			@Override
 			public void onPageSelected(int position) {
-				if (position == 1) {
+				if (position == 0) {
 					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_NOTIFICATION, null);
 					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_MESSAGE);
-				} else if (position == 2) {
+					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.MESSAGE, null);
+				} else if (position == 1) {
 					NudgeClient.trackEvent(NotificationCenterActivity.this, FlurryEventNames.NUDGE_HINTS, null);
 					FlurryEventLogger.event(FlurryEventNames.NOTIFICATION_TIP_TO_EARN);
+					MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION + "_" + FirebaseEvents.TIPS_TO_EARN, null);
 				}
 			}
 
@@ -150,6 +153,17 @@ public class NotificationCenterActivity extends BaseFragmentActivity implements 
 
 	@Override
 	public void onBackPressed() {
+		if(viewPager.getCurrentItem() == 0){
+
+			MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION+"_"+FirebaseEvents.MESSAGE
+					+"_"+FirebaseEvents.BACK, null);
+
+		} else if(viewPager.getCurrentItem() == 1){
+
+			MyApplication.getInstance().logEvent(FirebaseEvents.NOTIFICATION+"_"+FirebaseEvents.TIPS_TO_EARN
+					+"_"+FirebaseEvents.BACK, null);
+
+		}
 		performBackPressed();
 	}
 

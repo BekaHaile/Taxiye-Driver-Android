@@ -716,50 +716,52 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				// TODO Auto-generated method stub
 
 				Log.v("onImageChosen called", "onImageChosen called");
-				if (image != null) {
-					// Use the image
-					// image.getFilePathOriginal();
-					// image.getFileThumbnail();
-					// image.getFileThumbnailSmall();
+				try {
+					if (image != null) {
+						// Use the image
+						// image.getFilePathOriginal();
+						// image.getFileThumbnail();
+						// image.getFileThumbnailSmall();
 
-					BitmapFactory.Options options = new BitmapFactory.Options();
-					options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-					Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
+						BitmapFactory.Options options = new BitmapFactory.Options();
+						options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+						Bitmap bitmap = BitmapFactory.decodeFile(image.getFilePathOriginal(), options);
 
-					Uri uri = Uri.fromFile(new File(image.getFilePathOriginal()));
-					int rotate = getCameraPhotoOrientation(activity, uri, image.getFilePathOriginal());
-					Bitmap rotatedBitmap = null;
-					Matrix rotateMatrix = new Matrix();
-					rotateMatrix.postRotate(rotate);
-					rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
+						Uri uri = Uri.fromFile(new File(image.getFilePathOriginal()));
+						int rotate = getCameraPhotoOrientation(activity, uri, image.getFilePathOriginal());
+						Bitmap rotatedBitmap = null;
+						Matrix rotateMatrix = new Matrix();
+						rotateMatrix.postRotate(rotate);
+						rotatedBitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
 
 
-//					selected_photo.setImageBitmap(bitmap);
-					Bitmap newBitmap = null;
-					if(rotatedBitmap != null) {
-						double oldHeight = rotatedBitmap.getHeight();
-						double oldWidth = rotatedBitmap.getWidth();
+	//					selected_photo.setImageBitmap(bitmap);
+						Bitmap newBitmap = null;
+						if(rotatedBitmap != null) {
+							double oldHeight = rotatedBitmap.getHeight();
+							double oldWidth = rotatedBitmap.getWidth();
 
-						if (oldWidth > oldHeight) {
-							int newHeight = imgPixel;
-							int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
-							newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
-						} else {
-							int newWidth = imgPixel;
-							int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
-							newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+							if (oldWidth > oldHeight) {
+								int newHeight = imgPixel;
+								int newWidth = (int) ((oldWidth / oldHeight) * imgPixel);
+								newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+							} else {
+								int newWidth = imgPixel;
+								int newHeight = (int) ((oldHeight / oldWidth) * imgPixel);
+								newBitmap = getResizedBitmap(rotatedBitmap, newHeight, newWidth);
+							}
+						}
+
+						File f = null;
+						if (newBitmap != null) {
+							f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
+							docs.get(index).isExpended = true;
+							driverDocumentListAdapter.notifyDataSetChanged();
+							uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
 						}
 					}
-
-					File f = null;
-					if (newBitmap != null) {
-						f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
-						docs.get(index).isExpended = true;
-						driverDocumentListAdapter.notifyDataSetChanged();
-						uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
-					}
-
-
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
@@ -767,7 +769,13 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	@Override
 	public void onError(final String reason) {
-		Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+
+		getActivity().runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 

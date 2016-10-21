@@ -44,6 +44,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMarkerView;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -54,7 +55,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView.Listener{
+public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView.Listener, FirebaseEvents{
 
 	LinearLayout  linearLayoutDriverReferral;
 	RelativeLayout relativeLayoutPayout, relativeLayout1, relativeLayout2, relativeLayout3, relativeLayout4, relativeLayout5,
@@ -174,6 +175,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_BACK);
+				MyApplication.getInstance().logEvent(EARNING+"_"+BACK, null);
 				performBackPressed();
 			}
 		});
@@ -182,6 +184,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_THIS_WEEK);
+				MyApplication.getInstance().logEvent(EARNING + "_" + CHART + "_" + PREVIOUS, null);
 				getEarningsDetails(DriverEarningsNew.this, 1);
 			}
 		});
@@ -190,6 +193,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_THIS_WEEK);
+				MyApplication.getInstance().logEvent(EARNING + "_" + CHART + "_" + NEXT, null);
 				getEarningsDetails(DriverEarningsNew.this, 2);
 			}
 		});
@@ -212,6 +216,8 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_TODAYS_EARNING);
+				MyApplication.getInstance().logEvent(EARNING + "_" + TODAYS_EARNING, null);
+
 				Calendar c = Calendar.getInstance();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				String formattedDate = df.format(c.getTime());
@@ -226,6 +232,8 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			public void onClick(View v) {
 				try {
 					FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD__CHART);
+					MyApplication.getInstance().logEvent(EARNING + "_" + CHART+"_"+index, null);
+
 					if (index >= 0 && index < 5) {
 						int newIndex = maxIndex-index-1;
 						if(res.getEarnings().get(newIndex).getEarnings()>0) {
@@ -298,6 +306,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 			@Override
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.EARNINGS_CARD_RIDE_HISTORY);
+				MyApplication.getInstance().logEvent(EARNING + "_" + RIDE_HISTORY, null);
 				Intent intent = new Intent(DriverEarningsNew.this, DriverRideHistoryNew.class);
 				startActivity(intent);
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
@@ -450,7 +459,7 @@ public class DriverEarningsNew extends BaseActivity  implements CustomMarkerView
 
 			XAxis xAxis = barChart.getXAxis();
 			xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-			xAxis.setTextSize(15);
+			xAxis.setTextSize(12);
 			xAxis.setTextColor(getResources().getColor(R.color.white_grey_v2));
 			YAxis yAxis = barChart.getAxisRight();
 			yAxis.setDrawAxisLine(false);

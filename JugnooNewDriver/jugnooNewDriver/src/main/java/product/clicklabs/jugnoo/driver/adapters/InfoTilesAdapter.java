@@ -120,8 +120,13 @@ public class InfoTilesAdapter extends RecyclerView.Adapter<InfoTilesAdapter.info
 			@Override
 			public void onClick(View v) {
 //				infoTileResponses.get((int) v.getTag()).completed = 1;
-				notifyDataSetChanged();
-				infoTilesAdapterHandler.okClicked(infoTileResponses.get((Integer) v.getTag()));
+				try {
+					int pos = (Integer) v.getTag();
+					notifyDataSetChanged();
+					infoTilesAdapterHandler.okClicked(infoTileResponses.get((Integer) v.getTag()), pos);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 

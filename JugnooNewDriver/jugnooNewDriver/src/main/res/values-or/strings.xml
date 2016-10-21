@@ -488,6 +488,8 @@
     <string name="current">ବର୍ତମାନ୍</string>
     <string name="get_directions">ମାର୍ଗ ଦେଖିବା ପାଇଂ.</string>
     <string name="delivery">ଡେଲିଭେରି.</string>
+    <string name="delivery_caps">ଡେଲିଭେରି</string>
+
     <string name="orders_delivered">ଅର୍ଡର୍ ବିତରଣ ହୋଇଯାଇଛି.</string>
     <string name="orders_returned">ଅର୍ଡର୍ ଫେରେଇ ଦିଆଯାଇଛି.</string>
     <string name="rate_your_vendor">ନିଜ ବିକ୍ରେତା ନ୍କୁ ରେଟିଂ ଦିଅଂନ୍ତୁ.</string>
@@ -663,6 +665,11 @@
     <string name="web_view">WEB VIEW</string>
     <string name="connection_lost">Connection Loast</string>
     <string name="pls_enter_some_msg">Please enter some issue</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="no_results_found">No Result Found</string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -23,6 +23,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.BookingHistoryResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -137,6 +138,7 @@ public class DriverProfileActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE+"_"+FirebaseEvents.BACK, null);
 				performBackPressed();
 			}
 		});
@@ -150,6 +152,7 @@ public class DriverProfileActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 //				EditDriverProfile.openProfileInfo = openedProfileInfo;
+				MyApplication.getInstance().logEvent(FirebaseEvents.PROFILE_PAGE+"_1_"+FirebaseEvents.CARD, null);
 				startActivity(new Intent(DriverProfileActivity.this, EditDriverProfile.class));
 				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}

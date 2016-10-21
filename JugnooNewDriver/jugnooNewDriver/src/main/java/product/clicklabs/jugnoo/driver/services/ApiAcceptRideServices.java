@@ -6,15 +6,19 @@ import android.location.Location;
 import org.json.JSONObject;
 import java.util.HashMap;
 
+import product.clicklabs.jugnoo.driver.BlankActivityForDialog;
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
 import product.clicklabs.jugnoo.driver.GCMIntentService;
+import product.clicklabs.jugnoo.driver.SharingRidesActivity;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
@@ -95,7 +99,9 @@ public class ApiAcceptRideServices extends IntentService {
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
-							Intent splashActivity = new Intent(ApiAcceptRideServices.this, SplashNewActivity.class);
+							Prefs.with(ApiAcceptRideServices.this).save(SPLabels.ACCEPT_RIDE_VIA_PUSH, true);
+							Intent splashActivity = new Intent(ApiAcceptRideServices.this, SharingRidesActivity.class);
+							splashActivity.putExtra("wakeUp", true);
 							splashActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							startActivity(splashActivity);
 						}

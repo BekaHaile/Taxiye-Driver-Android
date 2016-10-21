@@ -50,6 +50,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomMapMarkerCreator;
 import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
@@ -167,8 +168,12 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 		llm.setOrientation(LinearLayoutManager.VERTICAL);
 		recyclerViewRideInfo.setLayoutManager(llm);
 		recyclerViewRideInfo.setItemAnimator(new DefaultItemAnimator());
-
-		int viewHeight = (int)(80f * ASSL.Yscale()) * extras.getRideParam().size();
+		int viewHeight = 0;
+		if(extras.getRideParam().size() < 3) {
+			viewHeight = (int) (80f * ASSL.Yscale()) * extras.getRideParam().size();
+		} else {
+			viewHeight = (int) (72f * ASSL.Yscale()) * extras.getRideParam().size();
+		}
 		recyclerViewRideInfo.getLayoutParams().height = viewHeight;
 
 		fareStructureInfos = new ArrayList<>();
@@ -330,6 +335,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.TRIP_DETAIL+"_"+FirebaseEvents.BACK, null);
 				performBackPressed();
 			}
 		});
@@ -339,6 +345,7 @@ public class RideDetailsNewActivity extends BaseFragmentActivity {
 			public void onClick(View v) {
 				FlurryEventLogger.event(FlurryEventNames.TRIP_DETAILS_REPORT_FARE_ISSUE);
 				relativeContainer.setVisibility(View.VISIBLE);
+				MyApplication.getInstance().logEvent(FirebaseEvents.TRIP_DETAIL + "_report_" + FirebaseEvents.FARE_ISSUE, null);
 				getSupportFragmentManager().beginTransaction()
 						.setCustomAnimations(R.anim.right_in, R.anim.right_out,R.anim.right_in, R.anim.left_out)
 						.add(R.id.relativeContainer, rideIssueFragment, RideIssueFragment.class.getName())
