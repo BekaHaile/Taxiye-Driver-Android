@@ -209,7 +209,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 			relativeLayoutShowMore = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutShowMore);
 			textViewShowMore = (TextView) convertView.findViewById(R.id.textViewShowMore);
 			textViewShowMore.setTypeface(Data.latoRegular(context));
-			textViewShowMore.setText(context.getResources().getString(R.string.show_more));
+			textViewShowMore.setText("show more");
 		}
 	}
 

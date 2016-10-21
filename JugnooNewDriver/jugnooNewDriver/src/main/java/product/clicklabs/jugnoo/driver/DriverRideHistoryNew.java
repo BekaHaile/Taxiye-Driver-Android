@@ -117,7 +117,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getRidesAsync(DriverRideHistoryNew.this);
+				getRidesAsync(DriverRideHistoryNew.this, true);
 			}
 		});
 
@@ -140,13 +140,13 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 			}
 			@Override
 			public void onShowMoreClick() {
-				getRidesAsync(DriverRideHistoryNew.this);
+				getRidesAsync(DriverRideHistoryNew.this, false);
 			}
 		});
 		recyclerViewDailyInfo.setAdapter(driverRideHistoryAdapter);
 
 
-		getRidesAsync(this);
+		getRidesAsync(this, true);
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -192,13 +192,18 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		System.gc();
 	}
 
-	private void getRidesAsync(final Activity activity) {
+	private void getRidesAsync(final Activity activity, boolean refresh) {
 		try {
 			DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 			HashMap<String, String> params = new HashMap<>();
 			params.put("access_token", Data.userData.accessToken);
 			params.put("start_from", "" + rideHistoryItems.size());
 			params.put("engagement_date", "" + date);
+
+			if(refresh){
+				rideHistoryItems.clear();
+			}
+
 			RestClient.getApiServices().getDailyRidesAsync(params, new Callback<DailyEarningResponse>() {
 						@Override
 						public void success(DailyEarningResponse dailyEarningResponse, Response response) {
@@ -217,7 +222,6 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 										}
 
 									} else {
-										rideHistoryItems.clear();
 										totalRides = jObj.optInt("history_size", 10);
 										for (int i = 0; i < dailyEarningResponse.getTrips().size(); i++) {
 
