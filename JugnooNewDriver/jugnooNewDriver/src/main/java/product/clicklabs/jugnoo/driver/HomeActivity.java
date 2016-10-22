@@ -133,8 +133,10 @@ import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
 import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
+import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
+import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
@@ -315,9 +317,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	Button reviewSkipBtn;
 
 	ScrollView scrollViewEndRide;
-	LinearLayout linearLayoutEndRideMain;
+	LinearLayout linearLayoutEndRideMain, linearLayoutRide;
 	TextView textViewScroll, textViewNotificationValue, textViewPerfectRideWating;
-
+	MyViewPager deliveryListHorizontal;
 	RelativeLayout relativeLayoutDeliveryOver;
 	TextView textViewDeliveryIsOver, textViewEndRideCustomerName;
 	LinearLayout linearLayoutEndDelivery;
@@ -333,6 +335,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	Shader textShader;
 
 	CustomerSwitcher customerSwitcher;
+	DeliveryInfoTabs deliveryInfoTabs;
 
 
 	// data variables declaration
@@ -845,7 +848,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			recyclerViewInfo.setLayoutManager(linearLayoutManagerScrollControl);
 			recyclerViewInfo.setItemAnimator(new DefaultItemAnimator());
 			linearLayoutSlidingBottom.setBackgroundColor(getResources().getColor(R.color.transparent));
-
+			linearLayoutRide = (LinearLayout) findViewById(R.id.linearLayoutRide);
+			deliveryListHorizontal = (MyViewPager) findViewById(R.id.deliveryListHorizontal);
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
 
@@ -885,6 +889,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 			customerSwitcher = new CustomerSwitcher(this, drawerLayout);
+			deliveryInfoTabs = new DeliveryInfoTabs(this, drawerLayout);
 
 			linearLayoutEndRideMain.getViewTreeObserver().addOnGlobalLayoutListener(new KeyboardLayoutListener(linearLayoutEndRideMain, textViewScroll,
 					new KeyboardLayoutListener.KeyBoardStateHandler() {
@@ -2023,6 +2028,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+
+	public DeliveryInfoTabs getDeliveryInfoTabs() {
+		return deliveryInfoTabs;
+	}
 
 	public void resetSharedPrefs(){
 		if(Data.userData.autosAvailable == 0 && Data.userData.getDeliveryAvailable() == 0){
@@ -3234,6 +3243,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							waitTime);
 
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
+
+					if(customerInfo.getIsDelivery() == 1){
+//						linearLayoutRide.setVisibility(View.GONE);
+						deliveryListHorizontal.setVisibility(View.GONE);
+						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
+					}
 
 
 					driverInitialLayout.setVisibility(View.GONE);

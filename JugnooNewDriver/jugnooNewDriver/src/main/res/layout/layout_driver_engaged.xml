@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:splitMotionEvents="false"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <!-- customer info layout -->
     <RelativeLayout
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/menu_black_btn_normal_rounded">
 
         <TextView
@@ -275,8 +275,19 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="gone"
+            android:visibility="visible"
             >
+
+            <product.clicklabs.jugnoo.driver.dodo.MyViewPager
+                android:id="@+id/deliveryListHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16px"
+                android:clipToPadding="false"
+                android:paddingLeft="40px"
+                android:paddingRight="40px"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -285,6 +296,7 @@
 
             <!-- in ride operations rl-->
             <LinearLayout
+                android:id="@+id/linearLayoutRide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_translucent"
@@ -315,7 +327,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
 
                     <RelativeLayout

@@ -1,0 +1,278 @@
+package product.clicklabs.jugnoo.driver.dodo.adapters;
+
+import android.app.Activity;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import product.clicklabs.jugnoo.driver.Constants;
+import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
+import product.clicklabs.jugnoo.driver.JSONParser;
+import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
+import product.clicklabs.jugnoo.driver.dodo.dialog.DeliveryReturnListDialog;
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
+import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
+import product.clicklabs.jugnoo.driver.utils.AppStatus;
+import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.Utils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
+
+/**
+ * Developer: Rishabh
+ * Dated: 26/08/15.
+ */
+public class DeliveryListAdapter extends PagerAdapter {
+
+    private HomeActivity activity;
+
+    private ArrayList<DeliveryInfo> tasksList;
+    private LayoutInflater layoutInflater;
+	int engagemnetId;
+
+    public DeliveryListAdapter(HomeActivity activity, ArrayList<DeliveryInfo> tasks, int engagemnetId) {
+
+        this.activity = activity;
+        this.tasksList = tasks;
+		this.engagemnetId = engagemnetId;
+        this.layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    @Override
+    public int getCount() {
+        return tasksList.size();
+    }
+
+    @Override
+    public boolean isViewFromObject(View view, Object object) {
+        return object == view;
+    }
+
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+
+        View taskItemView = layoutInflater.inflate(R.layout.layout_task_item, container, false);
+
+		LinearLayout linearLayoutDeliveryItem = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItem);
+		RelativeLayout relativeLayoutCall = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
+        TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
+        TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
+        TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
+		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
+
+		RelativeLayout call = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
+		Button buttonMarkDeliver = (Button) taskItemView.findViewById(R.id.buttonMarkDeliver);
+		Button buttonMarkReturn = (Button) taskItemView.findViewById(R.id.buttonMarkReturn);
+		Button buttonMarkFailed = (Button) taskItemView.findViewById(R.id.buttonMarkFailed);
+
+		call.setTag(position);
+		buttonMarkDeliver.setTag(position);
+		buttonMarkReturn.setTag(position);
+		buttonMarkFailed.setTag(position);
+
+		final DeliveryInfo task = tasksList.get(position);
+
+		textViewCustomerName.setText(task.getCustomerName());
+		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
+
+		textViewListCount.setText(position+1 +"/"+tasksList.size());
+
+		if(task.getAmount() > 0 ){
+			textViewCashCollected.setVisibility(View.VISIBLE);
+			textViewCashCollected.setText(activity.getResources().getString(R.string.take_cash)
+					+ " " + activity.getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
+		} else {
+			textViewCashCollected.setVisibility(View.GONE);
+		}
+
+		taskItemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		ASSL.DoMagic(taskItemView);
+
+
+		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+
+			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
+				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
+				relativeLayoutCall.setBackgroundColor(activity.getResources().getColor(R.color.grey_alpha_66));
+				buttonMarkDeliver.setBackground(activity.getResources().getDrawable(R.drawable.background_grey_alpha_rounded_bordered));
+				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				buttonMarkFailed.setVisibility(View.GONE);
+				buttonMarkReturn.setVisibility(View.GONE);
+			}
+			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
+				relativeLayoutCall.setBackgroundColor(activity.getResources().getColor(R.color.grey_alpha_66));
+				buttonMarkFailed.setBackground(activity.getResources().getDrawable(R.drawable.background_grey_alpha_rounded_bordered));
+				buttonMarkFailed.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				buttonMarkDeliver.setVisibility(View.GONE);
+				buttonMarkReturn.setVisibility(View.GONE);
+			}
+		}
+
+
+
+		call.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					int pos = (int)v.getTag();
+					Utils.openCallIntent(activity, tasksList.get(pos).getCustomerNo());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		buttonMarkDeliver.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				int pos = (int)v.getTag();
+				final DeliveryInfo task = tasksList.get(pos);
+				DialogPopup.alertPopupDeliveryTwoButtonsWithListeners(activity,
+						activity.getResources().getString(R.string.order_id) + ": " + task.getId(),
+						activity.getResources().getString(R.string.take_cash)
+								+ " " + activity.getResources().getString(R.string.rupee)
+								+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
+						task.getCustomerName(), task.getDeliveryAddress(),
+						activity.getResources().getString(R.string.delivery_conf),
+						activity.getResources().getString(R.string.deliver),
+						activity.getResources().getString(R.string.cancel),
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								markDelivered(String.valueOf(engagemnetId), task);
+							}
+						},
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+							}
+						}, false, true);
+			}
+		});
+
+		buttonMarkReturn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+
+		buttonMarkFailed.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				DeliveryReturnListDialog deliveryReturnListDialog = new DeliveryReturnListDialog(activity, engagemnetId, task.getId());
+				deliveryReturnListDialog.deliveryReturnListDialog(activity,
+						activity.getResources().getString(R.string.return_reasons),
+						activity.getResources().getString(R.string.submit),
+						activity.getResources().getString(R.string.cancel), true);
+			}
+		});
+
+        container.addView(taskItemView);
+
+        return taskItemView;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+
+        container.removeView((View) object);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+
+        return POSITION_NONE;
+    }
+
+	public void markDelivered(String engagementId, final DeliveryInfo deliveryInfo) {
+		try {
+			if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
+
+				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+
+				HashMap<String, String> params = new HashMap<>();
+				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
+				params.put(Constants.KEY_ENGAGEMENT_ID, String.valueOf(customerInfo.getEngagementId()));
+				params.put(Constants.KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
+				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
+				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
+				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
+
+				final double distance = activity.getCurrentDeliveryDistance(customerInfo);
+				final long deliveryTime = activity.getCurrentDeliveryTime(customerInfo);
+				final long waitTime = activity.getCurrentDeliveryWaitTime(customerInfo);
+
+				params.put(Constants.KEY_DISTANCE, String.valueOf(distance));
+				params.put(Constants.KEY_RIDE_TIME, String.valueOf(deliveryTime/1000l));
+				params.put(Constants.KEY_WAIT_TIME, String.valueOf(waitTime/1000l));
+
+				RestClient.getApiServices().markDelivered(params,
+						new Callback<RegisterScreenResponse>() {
+							@Override
+							public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+								DialogPopup.dismissLoadingDialog();
+								try {
+									String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+									JSONObject jObj = new JSONObject(jsonString);
+									int flag = jObj.optInt(Constants.KEY_FLAG, ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+									String message = JSONParser.getServerMessage(jObj);
+									if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
+											deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
+											activity.getDeliveryInfoTabs().notifyDatasetchange();
+
+											DialogPopup.alertPopupWithListener(activity, "", message,
+													new View.OnClickListener() {
+														@Override
+														public void onClick(View v) {
+//															activity.onBackPressed();
+														}
+													});
+										} else {
+											DialogPopup.alertPopup(activity, "", message);
+										}
+									}
+								} catch (Exception exception) {
+									exception.printStackTrace();
+								}
+							}
+
+							@Override
+							public void failure(RetrofitError error) {
+								DialogPopup.dismissLoadingDialog();
+							}
+						});
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}

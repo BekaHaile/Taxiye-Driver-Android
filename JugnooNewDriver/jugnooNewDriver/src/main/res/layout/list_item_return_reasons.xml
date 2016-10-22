@@ -8,15 +8,15 @@
 
     <TextView
         android:id="@+id/textViewReturnOption"
-        android:layout_width="600px"
+        android:layout_width="580px"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:padding="25px"
+        android:padding="20px"
         android:layout_marginLeft="20px"
         android:text="Driver is late"
         android:textColor="@color/text_color"
         android:layout_toRightOf="@+id/imageViewReturnOptionCheck"
-        android:textSize="32px"/>
+        android:textSize="28px"/>
 
     <ImageView
         android:id="@+id/imageViewReturnOptionCheck"
