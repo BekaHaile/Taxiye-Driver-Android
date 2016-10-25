@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -184,7 +185,8 @@ import retrofit.mime.TypedByteArray;
 @SuppressLint("DefaultLocale")
 public class HomeActivity extends BaseFragmentActivity implements AppInterruptHandler, LocationUpdate, GPSLocationUpdate,
 		GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-		FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents {
+		FlurryEventNames, SearchListAdapter.SearchListActionsHandler, OnMapReadyCallback, Constants, DisplayPushHandler, FirebaseEvents,
+		ViewPager.OnPageChangeListener{
 
 
 	private final String TAG = HomeActivity.class.getSimpleName();
@@ -645,7 +647,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverCancelRequestBtn.setTypeface(Data.latoRegular(getApplicationContext()));
 			driverRequestAcceptMyLocationBtn = (Button) findViewById(R.id.driverRequestAcceptMyLocationBtn);
 			buttonDriverNavigation = (Button) findViewById(R.id.buttonDriverNavigation);
-			buttonDriverNavigation.setText(getStringText(R.string.click_for_direction));
 
 
 			// Driver engaged layout
@@ -851,6 +852,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			linearLayoutSlidingBottom.setBackgroundColor(getResources().getColor(R.color.transparent));
 			linearLayoutRide = (LinearLayout) findViewById(R.id.linearLayoutRide);
 			deliveryListHorizontal = (MyViewPager) findViewById(R.id.deliveryListHorizontal);
+			deliveryListHorizontal.addOnPageChangeListener(this);
 			infoTileResponses = new ArrayList<>();
 			infoTilesAdapter = new InfoTilesAdapter(this, infoTileResponses, adapterHandler);
 
@@ -2718,6 +2720,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								|| DriverScreenMode.D_START_RIDE == driverScreenMode){
 						latLng = customerInfo.getRequestlLatLng();
 						FlurryEventLogger.event(FlurryEventNames.RIDE_ACCEPTED_NAVIGATE_BUTTON);
+					} else if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+							&& customerInfo.getIsDelivery() == 1){
+						int index = deliveryListHorizontal.getCurrentItem();
+						latLng = customerInfo.getDeliveryInfos().get(index).getLatLng();
 					}
 					if(latLng != null) {
 						Utils.openNavigationIntent(HomeActivity.this, latLng);
@@ -3226,7 +3232,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
 					startRideChronometer(customerInfo);
-
+					setNevigationButtonVisibiltyDelivery(0);
 					if(customerInfo.getIsPooled() != 1 && customerInfo.getIsDelivery() != 1) {
 						relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
 					}
@@ -7862,6 +7868,36 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			deliveryInfoTabs.notifyDatasetchange();
 		}
 
+	}
+
+
+	@Override
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+	}
+
+	@Override
+	public void onPageSelected(int position) {
+		setNevigationButtonVisibiltyDelivery(position);
+	}
+
+	@Override
+	public void onPageScrollStateChanged(int state) {
+
+	}
+
+	public void setNevigationButtonVisibiltyDelivery(int position){
+		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
+				&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+			if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+					== DeliveryStatus.PENDING.getOrdinal()
+					|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+					== DeliveryStatus.RETURN.getOrdinal()){
+				buttonDriverNavigationSetVisibility(View.VISIBLE);
+			} else {
+				buttonDriverNavigationSetVisibility(View.GONE);
+			}
+		}
 	}
 
 }

@@ -93,7 +93,7 @@ public class DeliveryReturnListDialog {
 
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnSubmit);
-			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			btnOk.setTypeface(Data.latoRegular(activity));
 			if(!"".equalsIgnoreCase(okText)){
 				btnOk.setText(okText);
 			}
@@ -236,6 +236,11 @@ public class DeliveryReturnListDialog {
 									deliveryInfo.setCancelReason(reason);
 //									activity.onBackPressed();
 									activity.setDeliveryState(jObj,customerInfo);
+									try {
+										activity.setNevigationButtonVisibiltyDelivery(deliveryInfo.getIndex() - 1);
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
 									activity.getDeliveryInfoTabs().notifyDatasetchange();
 									if(jObj.optInt("status", 0) == 0) {
 										DialogPopup.alertPopupWithListener(activity, "", message,

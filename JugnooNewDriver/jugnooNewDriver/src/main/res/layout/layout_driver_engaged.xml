@@ -554,18 +554,17 @@
 
     <Button
         android:id="@+id/buttonDriverNavigation"
-        android:layout_width="240px"
-        android:layout_height="120px"
+        android:layout_width="120px"
+        android:layout_height="110px"
         android:layout_above="@+id/linearLayoutStartEnd"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="40px"
         android:layout_marginRight="30px"
-        android:background="@drawable/new_orange_direction_btn_selector"
+        android:background="@drawable/new_navigate_button"
         android:tag="mwar"
-        android:text="@string/click_for_direction"
         android:textColor="@color/white"
         android:textSize="28px"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
 </RelativeLayout>

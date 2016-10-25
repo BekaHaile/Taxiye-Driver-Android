@@ -1004,7 +1004,7 @@ public class DialogPopup {
 			}
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			btnOk.setTypeface(Data.latoRegular(activity));
 			if(!"".equalsIgnoreCase(okText)){
 				btnOk.setText(okText);
 			}
@@ -1127,8 +1127,8 @@ public class DialogPopup {
 			}
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
-			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
-			btnOk.setText(activity.getResources().getString(R.string.submit));
+			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setText(activity.getResources().getString(R.string.submit_small));
 
 			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
 			btnCancel.setTypeface(Data.latoRegular(activity));

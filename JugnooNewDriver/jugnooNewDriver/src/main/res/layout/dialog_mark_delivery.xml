@@ -2,9 +2,9 @@
 <FrameLayout android:id="@+id/rv"
              xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="640px"
-             android:layout_marginLeft="40px"
              android:layout_height="1134px"
              android:orientation="vertical"
+             android:layout_gravity="center"
              android:splitMotionEvents="false"
     >
 
@@ -39,7 +39,7 @@
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:text="@string/alert"
-                android:textColor="@color/text_color"
+                android:textColor="@color/black_text_v2"
                 android:textSize="24px"
                 android:layout_marginTop="40px"/>
 
@@ -94,6 +94,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24px"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_marginTop="32px"
                 android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                 android:textColor="@color/black_text_v2"
@@ -148,10 +149,6 @@
                     android:textSize="@dimen/button_text_size"
                     />
             </RelativeLayout>
-
-
-
-
 
         </LinearLayout>
 

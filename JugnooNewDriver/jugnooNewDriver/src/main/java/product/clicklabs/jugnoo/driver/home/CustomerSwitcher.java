@@ -160,6 +160,8 @@ public class CustomerSwitcher {
 							textViewCustomerPickupAddress.setVisibility(View.GONE);
 							activity.setBarAddress(dropAddress);
 						}
+					} else if(customerInfo.getIsDelivery() == 1){
+//						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);

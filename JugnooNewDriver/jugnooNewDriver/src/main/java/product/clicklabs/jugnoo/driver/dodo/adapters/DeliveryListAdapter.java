@@ -77,7 +77,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		LinearLayout linearLayoutDeliveryItem = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItem);
 		RelativeLayout linearLayoutDeliveryItemHeader = (RelativeLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItemHeader);
-		RelativeLayout relativeLayoutCall = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
         TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
@@ -107,7 +106,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 		}
 
 		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
-
 		textViewListCount.setText(position+1 +"/"+tasksList.size());
 
 		if(task.getAmount() > 0 ){
@@ -128,21 +126,24 @@ public class DeliveryListAdapter extends PagerAdapter {
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
 				linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
-				relativeLayoutCall.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
+				call.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
 				buttonMarkDeliver.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
 				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.red_v2));
 				buttonMarkDeliver.setText(activity.getResources().getString(R.string.delivered));
 				buttonMarkDeliver.setEnabled(false);
+				call.setEnabled(false);
 				buttonMarkFailed.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
 			}
 			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
 				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
 				linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
-				relativeLayoutCall.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
+				call.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
 				buttonMarkFailed.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
 				buttonMarkFailed.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				buttonMarkFailed.setText(activity.getResources().getString(R.string.failed));
 				buttonMarkFailed.setEnabled(false);
+				call.setEnabled(false);
 				buttonMarkDeliver.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
 			}
@@ -153,7 +154,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 			textViewCashCollected.setVisibility(View.GONE);
 			textViewListCount.setVisibility(View.GONE);
 			textViewCashCollected.setTextColor(activity.getResources().getColor(R.color.white));
-			relativeLayoutCall.setVisibility(View.GONE);
+			call.setVisibility(View.GONE);
 			buttonMarkFailed.setVisibility(View.GONE);
 			buttonMarkDeliver.setVisibility(View.GONE);
 			buttonMarkReturn.setVisibility(View.VISIBLE);
@@ -295,6 +296,11 @@ public class DeliveryListAdapter extends PagerAdapter {
 											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
 											deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
 											activity.getDeliveryInfoTabs().notifyDatasetchange();
+											try {
+												activity.setNevigationButtonVisibiltyDelivery(deliveryInfo.getIndex());
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 											activity.setDeliveryState(jObj, customerInfo);
 											if(jObj.optInt("status", 0) == 0) {
 												DialogPopup.alertPopupWithListener(activity, "", message,
