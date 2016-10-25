@@ -200,7 +200,7 @@ public class DeliveryReturnListDialog {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 
-				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+				final CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
 
 				HashMap<String, String> params = new HashMap<String, String>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -210,6 +210,7 @@ public class DeliveryReturnListDialog {
 				params.put(Constants.KEY_CANCEL_REASON, reason);
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
+				params.put("app_version", "" + Data.appVersion);
 
 				final double distance = activity.getCurrentDeliveryDistance(customerInfo);
 				final long deliveryTime = activity.getCurrentDeliveryTime(customerInfo);
@@ -234,15 +235,18 @@ public class DeliveryReturnListDialog {
 									deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
 									deliveryInfo.setCancelReason(reason);
 //									activity.onBackPressed();
+									activity.setDeliveryState(jObj,customerInfo);
 									activity.getDeliveryInfoTabs().notifyDatasetchange();
-									DialogPopup.alertPopupWithListener(activity, "", message,
-											new View.OnClickListener() {
-												@Override
-												public void onClick(View v) {
+									if(jObj.optInt("status", 0) == 0) {
+										DialogPopup.alertPopupWithListener(activity, "", message,
+												new View.OnClickListener() {
+													@Override
+													public void onClick(View v) {
 //													activity.onBackPressed();
 
-												}
-											});
+													}
+												});
+									}
 								} else {
 									DialogPopup.alertPopup(activity, "", message);
 								}

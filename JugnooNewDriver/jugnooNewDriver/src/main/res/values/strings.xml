@@ -722,6 +722,14 @@
 	<string name="Reason">Reason</string>
 	<string name="delivery_conf">Are you sure you want to deliver ?</string>
 	<string name="failed">Failed</string>
+	<string name="cash_deposite_conf">Have you deposited cash ?</string>
+	<string name="total">Total</string>
+	<string name="order_summary">Order Summary</string>
+	<string name="return_to_merchant">Return to the Merchant</string>
+	<string name="deposite_cash">Have you deposited cash?</string>
+	<string name="deposite_cash_1">Deposit cash</string>
+	<string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+	<string name="submit_small">Submit</string>
 
 
 	<string-array name="CountryCodes" >

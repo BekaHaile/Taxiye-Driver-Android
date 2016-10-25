@@ -76,11 +76,13 @@ public class DeliveryListAdapter extends PagerAdapter {
         View taskItemView = layoutInflater.inflate(R.layout.layout_task_item, container, false);
 
 		LinearLayout linearLayoutDeliveryItem = (LinearLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItem);
+		RelativeLayout linearLayoutDeliveryItemHeader = (RelativeLayout) taskItemView.findViewById(R.id.linearLayoutDeliveryItemHeader);
 		RelativeLayout relativeLayoutCall = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
         TextView textViewCustomerName = (TextView) taskItemView.findViewById(R.id.textViewCustomerName);
         TextView textViewListCount = (TextView) taskItemView.findViewById(R.id.textViewListCount);
         TextView textViewCustomerDeliveryAddress = (TextView) taskItemView.findViewById(R.id.textViewCustomerDeliveryAddress);
 		TextView textViewCashCollected = (TextView) taskItemView.findViewById(R.id.textViewCashCollected);
+		TextView textViewReturnText = (TextView) taskItemView.findViewById(R.id.textViewReturnText);
 
 		RelativeLayout call = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutCall);
 		Button buttonMarkDeliver = (Button) taskItemView.findViewById(R.id.buttonMarkDeliver);
@@ -94,13 +96,22 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		final DeliveryInfo task = tasksList.get(position);
 
-		textViewCustomerName.setText(task.getCustomerName());
+		if(!"".equalsIgnoreCase(task.getCustomerName())) {
+			textViewReturnText.setVisibility(View.GONE);
+			textViewCustomerName.setVisibility(View.VISIBLE);
+			textViewCustomerName.setText(task.getCustomerName());
+		} else {
+			textViewReturnText.setVisibility(View.VISIBLE);
+			textViewCustomerName.setVisibility(View.GONE);
+			textViewReturnText.setText(activity.getResources().getString(R.string.return_to_merchant));
+		}
+
 		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
 
 		textViewListCount.setText(position+1 +"/"+tasksList.size());
 
 		if(task.getAmount() > 0 ){
-			textViewCashCollected.setVisibility(View.VISIBLE);
+			textViewCashCollected.setVisibility(View.GONE);
 			textViewCashCollected.setText(activity.getResources().getString(R.string.take_cash)
 					+ " " + activity.getResources().getString(R.string.rupee)
 					+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
@@ -116,20 +127,36 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
-				relativeLayoutCall.setBackgroundColor(activity.getResources().getColor(R.color.grey_alpha_66));
-				buttonMarkDeliver.setBackground(activity.getResources().getDrawable(R.drawable.background_grey_alpha_rounded_bordered));
-				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
+				relativeLayoutCall.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
+				buttonMarkDeliver.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
+				buttonMarkDeliver.setTextColor(activity.getResources().getColor(R.color.red_v2));
+				buttonMarkDeliver.setText(activity.getResources().getString(R.string.delivered));
+				buttonMarkDeliver.setEnabled(false);
 				buttonMarkFailed.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
 			}
-			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()){
+			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
 				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
-				relativeLayoutCall.setBackgroundColor(activity.getResources().getColor(R.color.grey_alpha_66));
-				buttonMarkFailed.setBackground(activity.getResources().getDrawable(R.drawable.background_grey_alpha_rounded_bordered));
+				linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
+				relativeLayoutCall.setBackgroundResource(R.drawable.background_grey_alpha_66_rounded_bordered);
+				buttonMarkFailed.setBackgroundResource(R.drawable.background_grey_alpha_rounded_bordered);
 				buttonMarkFailed.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
+				buttonMarkFailed.setEnabled(false);
 				buttonMarkDeliver.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
 			}
+		}
+
+		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
+			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
+			textViewCashCollected.setVisibility(View.GONE);
+			textViewListCount.setVisibility(View.GONE);
+			textViewCashCollected.setTextColor(activity.getResources().getColor(R.color.white));
+			relativeLayoutCall.setVisibility(View.GONE);
+			buttonMarkFailed.setVisibility(View.GONE);
+			buttonMarkDeliver.setVisibility(View.GONE);
+			buttonMarkReturn.setVisibility(View.VISIBLE);
 		}
 
 
@@ -152,7 +179,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				int pos = (int)v.getTag();
 				final DeliveryInfo task = tasksList.get(pos);
 				DialogPopup.alertPopupDeliveryTwoButtonsWithListeners(activity,
-						activity.getResources().getString(R.string.order_id) + ": " + task.getId(),
+						activity.getResources().getString(R.string.delivery_id) + ": " + task.getId(),
 						activity.getResources().getString(R.string.take_cash)
 								+ " " + activity.getResources().getString(R.string.rupee)
 								+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
@@ -178,7 +205,27 @@ public class DeliveryListAdapter extends PagerAdapter {
 		buttonMarkReturn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				int pos = (int)v.getTag();
+				final DeliveryInfo task = tasksList.get(pos);
+				DialogPopup.alertPopupDeliveryReturnWithListeners(activity,
+						activity.getResources().getString(R.string.order_id) + ": " + task.getId(),
+						activity.getResources().getString(R.string.deposite_cash_1)
+								+ " " + activity.getResources().getString(R.string.rupee)
+								+ Utils.getDecimalFormatForMoney().format(task.getAmount()),
+						task.getTotalDelivery(), task.getDelSuccess(), task.getDelFail(),
+						activity.getResources().getString(R.string.deposite_cash),
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								activity.setDeliveryState(null,Data.getCustomerInfo(String.valueOf(engagemnetId)));
+							}
+						},
+						new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
 
+							}
+						}, false, true);
 			}
 		});
 
@@ -187,8 +234,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 			public void onClick(View v) {
 				DeliveryReturnListDialog deliveryReturnListDialog = new DeliveryReturnListDialog(activity, engagemnetId, task.getId());
 				deliveryReturnListDialog.deliveryReturnListDialog(activity,
-						activity.getResources().getString(R.string.return_reasons),
-						activity.getResources().getString(R.string.submit),
+						activity.getResources().getString(R.string.return_reasons_confirmation),
+						activity.getResources().getString(R.string.submit_small),
 						activity.getResources().getString(R.string.cancel), true);
 			}
 		});
@@ -215,7 +262,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, activity.getResources().getString(R.string.loading));
 
-				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+				final CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
 
 				HashMap<String, String> params = new HashMap<>();
 				params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
@@ -224,7 +271,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 				params.put(Constants.KEY_DELIVERY_ID, String.valueOf(deliveryInfo.getId()));
 				params.put(Constants.KEY_LATITUDE, String.valueOf(activity.getMyLocation().getLatitude()));
 				params.put(Constants.KEY_LONGITUDE, String.valueOf(activity.getMyLocation().getLongitude()));
-
+				params.put("app_version", "" + Data.appVersion);
 				final double distance = activity.getCurrentDeliveryDistance(customerInfo);
 				final long deliveryTime = activity.getCurrentDeliveryTime(customerInfo);
 				final long waitTime = activity.getCurrentDeliveryWaitTime(customerInfo);
@@ -248,14 +295,16 @@ public class DeliveryListAdapter extends PagerAdapter {
 											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
 											deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
 											activity.getDeliveryInfoTabs().notifyDatasetchange();
-
-											DialogPopup.alertPopupWithListener(activity, "", message,
-													new View.OnClickListener() {
-														@Override
-														public void onClick(View v) {
+											activity.setDeliveryState(jObj, customerInfo);
+											if(jObj.optInt("status", 0) == 0) {
+												DialogPopup.alertPopupWithListener(activity, "", message,
+														new View.OnClickListener() {
+															@Override
+															public void onClick(View v) {
 //															activity.onBackPressed();
-														}
-													});
+															}
+														});
+											}
 										} else {
 											DialogPopup.alertPopup(activity, "", message);
 										}

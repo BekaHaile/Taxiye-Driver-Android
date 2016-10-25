@@ -32,20 +32,20 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="22px"
                 android:gravity="center"
-                android:text="@string/Reason"
+                android:text="@string/return_reasons_confirmation"
                 android:lineSpacingExtra="10px"
                 android:maxHeight="800px"
                 android:paddingLeft="20px"
                 android:paddingRight="20px"
                 android:textColor="@color/black"
-                android:textSize="42px"
+                android:textSize="36px"
 
                 />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerViewReturnOptions"
                 android:layout_width="match_parent"
-                android:layout_height="560px"
+                android:layout_height="520px"
                 android:layout_marginTop="22px"
                 android:fadeScrollbars="true"
                 android:scrollbars="vertical"/>

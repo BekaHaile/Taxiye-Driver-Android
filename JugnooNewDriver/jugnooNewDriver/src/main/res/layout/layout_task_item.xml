@@ -5,7 +5,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/transparent"
+    card_view:cardBackgroundColor="@android:color/transparent"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     card_view:cardCornerRadius="3dp"
@@ -15,35 +15,49 @@
         android:id="@+id/linearLayoutDeliveryItem"
         android:layout_width="640px"
         android:layout_height="288px"
+        android:background="@color/grey_light_delivery_tab_fill"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/linearLayoutDeliveryItemHeader"
             android:layout_width="match_parent"
             android:layout_height="64px"
-            android:background="@color/white"
-            android:orientation="horizontal">
+            android:background="@color/white">
 
             <TextView
                 android:id="@+id/textViewCustomerName"
                 android:layout_width="448px"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30px"
-                android:layout_gravity="center_vertical"
+                android:layout_centerVertical="true"
                 android:text="@string/NA"
                 android:textSize="28px"
+                android:visibility="visible"
                 android:textColor="@color/black_text_v2"/>
+
+            <TextView
+                android:id="@+id/textViewReturnText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/NA"
+                android:gravity="center"
+                android:textSize="28px"
+                android:visibility="gone"
+                android:textColor="@color/white"/>
 
             <TextView
                 android:id="@+id/textViewListCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="94px"
-                android:layout_gravity="center_vertical"
+                android:layout_alignParentRight="true"
                 android:text="@string/NA"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="28px"
                 android:textSize="28px"
                 android:textColor="@color/black_text_v2"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,8 +75,8 @@
                     android:layout_width="352px"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30px"
-                    android:maxLines="3"
-                    android:textSize="24px"
+                    android:maxLines="4"
+                    android:textSize="26px"
                     android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
                     android:textColor="@color/black_text_v2"
                     />
@@ -74,6 +88,7 @@
                     android:layout_marginLeft="30px"
                     android:textSize="22px"
                     android:layout_marginTop="4px"
+                    android:visibility="gone"
                     android:text="lllllllllllllllllllllllllllllllllllllll"
                     android:textColor="@color/black_text_v2"
                     />

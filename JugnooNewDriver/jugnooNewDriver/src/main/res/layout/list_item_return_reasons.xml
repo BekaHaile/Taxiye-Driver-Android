@@ -3,15 +3,14 @@
     android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="720px"
-    android:layout_height="wrap_content"
+    android:layout_height="64px"
     >
 
     <TextView
         android:id="@+id/textViewReturnOption"
         android:layout_width="580px"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:padding="20px"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="20px"
         android:text="Driver is late"
         android:textColor="@color/text_color"
@@ -20,8 +19,8 @@
 
     <ImageView
         android:id="@+id/imageViewReturnOptionCheck"
-        android:layout_width="36px"
-        android:layout_height="36px"
+        android:layout_width="28px"
+        android:layout_height="28px"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="54px"

@@ -466,6 +466,7 @@ public class JSONParser implements Constants {
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
+								parseReturnDeliveryInfos(jObjCustomer, customerInfo);
 							}
 
 							try {
@@ -731,6 +732,31 @@ public class JSONParser implements Constants {
 		}
 		return deliveryInfos;
 	}
+
+	public static void parseReturnDeliveryInfos(JSONObject jsonObject, CustomerInfo customerInfo) {
+		try {
+			if (jsonObject.getJSONObject("returnObj") != null) {
+				JSONObject jDelivery = jsonObject.getJSONObject("returnObj");
+				DeliveryInfo deliveryInfo = new DeliveryInfo(jDelivery.getInt("order_id"),
+						new LatLng(jDelivery.getDouble(KEY_LATITUDE), jDelivery.getDouble(KEY_LONGITUDE)),
+						jDelivery.getString(KEY_NAME),
+						jDelivery.getString(KEY_ADDRESS),
+						jDelivery.getString(KEY_PHONE),
+						jDelivery.getDouble(KEY_COLLECT_CASH),
+						jDelivery.getInt(KEY_STATUS),
+						jDelivery.optDouble(KEY_DISTANCE, 0),
+						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
+						jDelivery.optLong(KEY_WAIT_TIME, 0),
+						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size());
+				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
+				customerInfo.getDeliveryInfos().add(deliveryInfo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	public static ArrayList<DeliveryReturnOption> parseDeliveryReturnOptions(JSONObject jsonObject){
 		ArrayList<DeliveryReturnOption> deliveryReturnOptions = new ArrayList<>();

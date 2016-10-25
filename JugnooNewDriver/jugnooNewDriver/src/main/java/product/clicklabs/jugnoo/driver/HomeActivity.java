@@ -136,6 +136,7 @@ import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
@@ -2854,7 +2855,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
 							if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
 								totalDelivered++;
-							} else{
+							} else if(deliveryInfo.getStatus() != DeliveryStatus.RETURN.getOrdinal()){
 								totalUndelivered++;
 							}
 						}
@@ -3245,7 +3246,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
 					if(customerInfo.getIsDelivery() == 1){
-//						linearLayoutRide.setVisibility(View.GONE);
+						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
 						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
 					}
@@ -7837,6 +7838,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 			DialogPopup.dismissLoadingDialog();
+		}
+	}
+
+	public void setDeliveryState(JSONObject jsonObject, CustomerInfo customerInfo){
+
+		if(jsonObject != null && customerInfo !=null) {
+			int flag = jsonObject.optInt("status", 0);
+			if (flag == EndDeliveryStatus.RETURN.getOrdinal()) {
+				try {
+					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
+					deliveryInfoTabs.notifyDatasetchange();
+					setDeliveryMarkers();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (flag == EndDeliveryStatus.END.getOrdinal()) {
+				endRideGPSCorrection(customerInfo);
+				deliveryInfoTabs.notifyDatasetchange();
+			}
+		} else if(jsonObject == null && customerInfo !=null){
+			endRideGPSCorrection(customerInfo);
+			deliveryInfoTabs.notifyDatasetchange();
 		}
 
 	}
