@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -89,6 +90,12 @@ public class DeliveryReturnListDialog {
 			returnOptionsListAdapter = new ReturnOptionsListAdapter(activity);
 			recyclerViewReturnOptions.setAdapter(returnOptionsListAdapter);
 
+			if(Data.deliveryReturnOptionList.size() < 10){
+				float heightToSet = (float)Data.deliveryReturnOptionList.size() * 65f;
+				LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) recyclerViewReturnOptions.getLayoutParams();
+				params.height = (int) (heightToSet * ASSL.Yscale());
+				recyclerViewReturnOptions.setLayoutParams(params);
+			}
 
 			Button btnOk = (Button) dialog.findViewById(R.id.btnSubmit);
 			btnOk.setTypeface(Data.latoRegular(activity));

@@ -4036,6 +4036,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestDistance.setText("" + decimalFormatNoDecimal.format(distance) + " " + getResources().getString(R.string.m_away));
 			}
 
+			holder.textViewDeliveryApprox.setVisibility(View.GONE);
 
 			holder.textViewRequestName.setVisibility(View.GONE);
 			holder.textViewRequestDetails.setVisibility(View.GONE);

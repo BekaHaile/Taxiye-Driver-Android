@@ -71,6 +71,7 @@ public class CustomerSwitcher {
 		textViewShowDistance = (TextView) rootView.findViewById(R.id.textViewShowDistance);
 		textViewShowDistance.setTypeface(Fonts.mavenRegular(activity));
 		((TextView) rootView.findViewById(R.id.textViewDeliveryApprox)).setTypeface(Fonts.mavenRegular(activity));
+		rootView.findViewById(R.id.textViewDeliveryApprox).setVisibility(View.GONE);
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
 		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);

@@ -138,6 +138,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 
 		relativeLayoutDeliveredAmnt.setVisibility(View.GONE);
 		relativeLayoutTotalCashCollected.setVisibility(View.GONE);
+		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) buttonMarkFailed.getLayoutParams();
+		params.setMargins((int)(35f*ASSL.Xscale()), 0, 0, 0);
 		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
@@ -164,11 +166,13 @@ public class DeliveryListAdapter extends PagerAdapter {
 				buttonMarkFailed.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
 				buttonMarkFailed.setText(activity.getResources().getString(R.string.failed));
 				buttonMarkFailed.setEnabled(false);
+				params.setMargins(0, 0, 0, 0);
 				call.setEnabled(false);
 				buttonMarkDeliver.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
 			}
 		}
+		buttonMarkFailed.setLayoutParams(params);
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
 			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
