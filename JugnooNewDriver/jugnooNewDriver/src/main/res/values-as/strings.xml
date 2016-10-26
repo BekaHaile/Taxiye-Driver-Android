@@ -675,6 +675,7 @@
     <string name="deposite_cash_1">Deposit cash</string>
     <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
     <string name="submit_small">Submit</string>
+    <string name="total_cash_collected">Total cash collected</string>
 
 
     <string-array name="CountryCodes" >
