@@ -7021,7 +7021,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
 					for (int i = 0; i < markersDelivery.size(); i++) {
-						if(markersDelivery.get(i).getSnippet().equals("return")){
+						if(markersDelivery.get(i).getSnippet().equalsIgnoreCase("return")){
 							builder = new LatLngBounds.Builder();
 							builder.include(markersDelivery.get(i).getPosition());
 						} else{
