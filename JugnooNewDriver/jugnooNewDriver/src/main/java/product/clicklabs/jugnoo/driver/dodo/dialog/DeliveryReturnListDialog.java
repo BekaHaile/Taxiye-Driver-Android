@@ -1,8 +1,6 @@
 package product.clicklabs.jugnoo.driver.dodo.dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Typeface;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,10 +10,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
@@ -24,11 +24,9 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
-import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryListAdapter;
 import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
-import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -241,7 +239,6 @@ public class DeliveryReturnListDialog {
 									} catch (Exception e) {
 										e.printStackTrace();
 									}
-									activity.getDeliveryInfoTabs().notifyDatasetchange();
 									if(jObj.optInt("status", 0) == 0) {
 										DialogPopup.alertPopupWithListener(activity, "", message,
 												new View.OnClickListener() {

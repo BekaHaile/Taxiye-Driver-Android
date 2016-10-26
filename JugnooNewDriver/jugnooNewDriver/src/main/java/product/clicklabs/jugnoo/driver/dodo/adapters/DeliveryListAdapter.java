@@ -1,8 +1,6 @@
 package product.clicklabs.jugnoo.driver.dodo.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +9,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import org.json.JSONObject;
 
@@ -88,6 +85,12 @@ public class DeliveryListAdapter extends PagerAdapter {
 		Button buttonMarkReturn = (Button) taskItemView.findViewById(R.id.buttonMarkReturn);
 		Button buttonMarkFailed = (Button) taskItemView.findViewById(R.id.buttonMarkFailed);
 
+		RelativeLayout relativeLayoutDeliveredAmnt = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutDeliveredAmnt);
+		TextView textViewCashCollectedValue = (TextView) taskItemView.findViewById(R.id.textViewCashCollectedValue);
+
+		RelativeLayout relativeLayoutTotalCashCollected = (RelativeLayout) taskItemView.findViewById(R.id.relativeLayoutTotalCashCollected);
+		TextView textViewTotalCashCollectedValue = (TextView) taskItemView.findViewById(R.id.textViewTotalCashCollectedValue);
+
 		call.setTag(position);
 		buttonMarkDeliver.setTag(position);
 		buttonMarkReturn.setTag(position);
@@ -106,7 +109,17 @@ public class DeliveryListAdapter extends PagerAdapter {
 		}
 
 		textViewCustomerDeliveryAddress.setText(task.getDeliveryAddress());
-		textViewListCount.setText(position+1 +"/"+tasksList.size());
+		int totalDeliveries = 0;
+		double totalCashCollected = 0;
+		for(DeliveryInfo deliveryInfo : tasksList){
+			if(deliveryInfo.getStatus() != DeliveryStatus.RETURN.getOrdinal()){
+				totalDeliveries++;
+			}
+			if(deliveryInfo.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
+				totalCashCollected = totalCashCollected + deliveryInfo.getAmount();
+			}
+		}
+		textViewListCount.setText(position+1 +"/"+totalDeliveries);
 
 		if(task.getAmount() > 0 ){
 			textViewCashCollected.setVisibility(View.GONE);
@@ -121,6 +134,8 @@ public class DeliveryListAdapter extends PagerAdapter {
 		ASSL.DoMagic(taskItemView);
 
 
+		relativeLayoutDeliveredAmnt.setVisibility(View.GONE);
+		relativeLayoutTotalCashCollected.setVisibility(View.GONE);
 		if(task.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
 
 			if(task.getStatus() == DeliveryStatus.COMPLETED.getOrdinal()){
@@ -134,6 +149,10 @@ public class DeliveryListAdapter extends PagerAdapter {
 				call.setEnabled(false);
 				buttonMarkFailed.setVisibility(View.GONE);
 				buttonMarkReturn.setVisibility(View.GONE);
+				relativeLayoutDeliveredAmnt.setVisibility(View.VISIBLE);
+				textViewCashCollectedValue.setText(activity.getResources().getString(R.string.rupee)
+						+ Utils.getDecimalFormatForMoney().format(task.getAmount()));
+				call.setVisibility(View.GONE);
 			}
 			else if(task.getStatus() == DeliveryStatus.CANCELLED.getOrdinal()) {
 				linearLayoutDeliveryItem.setBackgroundColor(activity.getResources().getColor(R.color.grey_light_alpha));
@@ -158,6 +177,9 @@ public class DeliveryListAdapter extends PagerAdapter {
 			buttonMarkFailed.setVisibility(View.GONE);
 			buttonMarkDeliver.setVisibility(View.GONE);
 			buttonMarkReturn.setVisibility(View.VISIBLE);
+			relativeLayoutTotalCashCollected.setVisibility(View.VISIBLE);
+			textViewTotalCashCollectedValue.setText(activity.getResources().getString(R.string.rupee)
+					+ Utils.getDecimalFormatForMoney().format(totalCashCollected));
 		}
 
 
@@ -295,7 +317,6 @@ public class DeliveryListAdapter extends PagerAdapter {
 										if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 											deliveryInfo.setStatus(DeliveryStatus.COMPLETED.getOrdinal());
 											deliveryInfo.setDeliveryValues(distance, deliveryTime, waitTime);
-											activity.getDeliveryInfoTabs().notifyDatasetchange();
 											try {
 												activity.setNevigationButtonVisibiltyDelivery(deliveryInfo.getIndex());
 											} catch (Exception e) {
@@ -330,4 +351,9 @@ public class DeliveryListAdapter extends PagerAdapter {
 			e.printStackTrace();
 		}
 	}
+
+	public ArrayList<DeliveryInfo> getTasksList(){
+		return tasksList;
+	}
+
 }

@@ -10,6 +10,7 @@ import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.adapters.DeliveryListAdapter;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
+import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 
@@ -21,8 +22,6 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 	private MyViewPager deliveryListHorizontal;
 
 	private HomeActivity activity;
-
-	private ArrayList<DeliveryInfo> tasksList;
 
 	public DeliveryInfoTabs(HomeActivity activity, View rootView) {
 		this.activity = activity;
@@ -46,7 +45,6 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 	 * @param tasksList
 	 */
 	public void render(int engagementId, ArrayList<DeliveryInfo> tasksList) {
-		this.tasksList = tasksList;
 		if (tasksList == null) {
 			deliveryListHorizontal.setVisibility(View.GONE);
 			return;
@@ -81,6 +79,20 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 	public void notifyDatasetchange(){
 		if(adapter != null){
 			adapter.notifyDataSetChanged();
+			try {
+				int scrollToIndex = 0;
+				for(int i=0; i< adapter.getTasksList().size(); i++){
+					DeliveryInfo deliveryInfo = adapter.getTasksList().get(i);
+					if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()
+							|| deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
+						scrollToIndex = i;
+						break;
+					}
+				}
+				deliveryListHorizontal.setCurrentItem(scrollToIndex, true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

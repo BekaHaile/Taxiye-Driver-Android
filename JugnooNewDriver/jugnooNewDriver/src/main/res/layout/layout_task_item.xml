@@ -136,9 +136,11 @@
                     android:id="@+id/textViewCashCollectedValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20px"
+                    android:textSize="34px"
                     android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"/>
+                    android:textColor="@color/black_text_v2"
+                    android:layout_centerHorizontal="true"
+                    />
 
                 <TextView
                     android:id="@+id/textViewCashCollectedText"
@@ -146,8 +148,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20px"
+                    android:text="@string/cash_collected"
+                    android:textColor="@color/black_text_v2"
+                    android:layout_centerHorizontal="true"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutTotalCashCollected"
+                android:layout_width="200px"
+                android:layout_height="64px"
+                android:layout_marginLeft="20px"
+                android:visibility="gone"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/textViewTotalCashCollectedValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="34px"
                     android:text="@string/NA"
-                    android:textColor="@color/black_text_v2"/>
+                    android:textColor="@color/black_text_v2"
+                    android:layout_centerHorizontal="true"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewTotalCashCollectedText"
+                    android:layout_below="@+id/textViewTotalCashCollectedValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20px"
+                    android:text="@string/total_cash_collected"
+                    android:textColor="@color/black_text_v2"
+                    android:layout_centerHorizontal="true"
+                    />
             </RelativeLayout>
 
         </LinearLayout>

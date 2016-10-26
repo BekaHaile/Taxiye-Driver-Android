@@ -11,9 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.location.Location;
@@ -41,8 +39,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -81,14 +77,12 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.PicassoTools;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -102,7 +96,6 @@ import java.util.concurrent.TimeUnit;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapter;
 import product.clicklabs.jugnoo.driver.adapters.InfoTilesAdapterHandler;
 import product.clicklabs.jugnoo.driver.adapters.SearchListAdapter;
-import product.clicklabs.jugnoo.driver.adapters.SharingRidesAdapter;
 import product.clicklabs.jugnoo.driver.apis.ApiAcceptRide;
 import product.clicklabs.jugnoo.driver.apis.ApiFetchDriverApps;
 import product.clicklabs.jugnoo.driver.apis.ApiGoogleDirectionWaypoints;
@@ -132,7 +125,6 @@ import product.clicklabs.jugnoo.driver.datastructure.PushFlags;
 import product.clicklabs.jugnoo.driver.datastructure.RingData;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.datastructure.SearchResultNew;
-import product.clicklabs.jugnoo.driver.datastructure.SharingRideData;
 import product.clicklabs.jugnoo.driver.datastructure.UserMode;
 import product.clicklabs.jugnoo.driver.dodo.MyViewPager;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
@@ -147,7 +139,6 @@ import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
-import product.clicklabs.jugnoo.driver.retrofit.model.SharedRideResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
@@ -166,7 +157,6 @@ import product.clicklabs.jugnoo.driver.utils.FlurryEventLogger;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.KeyboardLayoutListener;
-import product.clicklabs.jugnoo.driver.utils.LinearLayoutManagerForResizableRecyclerView;
 import product.clicklabs.jugnoo.driver.utils.LocationInit;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.MapLatLngBoundsCreator;
@@ -176,7 +166,6 @@ import product.clicklabs.jugnoo.driver.utils.PausableChronometer;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
-import product.clicklabs.jugnoo.driver.widgets.LinearLayoutManagerScrollControl;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -7418,7 +7407,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 						}
-						addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
+						if(deliveryInfo.getStatus() != DeliveryStatus.RETURN.getOrdinal()) {
+							addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
+						} else{
+							addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
+						}
 					}
 
 				}
@@ -7861,6 +7854,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			} else if (flag == EndDeliveryStatus.END.getOrdinal()) {
 				endRideGPSCorrection(customerInfo);
+				deliveryInfoTabs.notifyDatasetchange();
+			} else {
 				deliveryInfoTabs.notifyDatasetchange();
 			}
 		} else if(jsonObject == null && customerInfo !=null){
