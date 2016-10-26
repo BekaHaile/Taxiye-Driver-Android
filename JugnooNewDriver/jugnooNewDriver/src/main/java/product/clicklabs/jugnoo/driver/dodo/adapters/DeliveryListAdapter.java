@@ -103,7 +103,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 		if(!"".equalsIgnoreCase(task.getCustomerName())) {
 			textViewReturnText.setVisibility(View.GONE);
 			textViewCustomerName.setVisibility(View.VISIBLE);
-			textViewCustomerName.setText(task.getCustomerName());
+			textViewCustomerName.setText(task.getCustomerName().toUpperCase());
 		} else {
 			textViewReturnText.setVisibility(View.VISIBLE);
 			textViewCustomerName.setVisibility(View.GONE);

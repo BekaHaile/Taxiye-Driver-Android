@@ -3244,6 +3244,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
 						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
+						deliveryInfoTabs.notifyDatasetchange();
 					} else {
 						linearLayoutRide.setVisibility(View.VISIBLE);
 						deliveryListHorizontal.setVisibility(View.GONE);
