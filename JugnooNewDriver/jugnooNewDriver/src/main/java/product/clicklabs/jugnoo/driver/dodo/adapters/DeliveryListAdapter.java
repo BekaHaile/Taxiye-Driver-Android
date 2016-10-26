@@ -2,6 +2,7 @@ package product.clicklabs.jugnoo.driver.dodo.adapters;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -323,14 +325,17 @@ public class DeliveryListAdapter extends PagerAdapter {
 												e.printStackTrace();
 											}
 											activity.setDeliveryState(jObj, customerInfo);
+											Toast toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
+											toast.setGravity(Gravity.CENTER_HORIZONTAL, 0, 0);
+											toast.show();
 											if(jObj.optInt("status", 0) == 0) {
-												DialogPopup.alertPopupWithListener(activity, "", message,
-														new View.OnClickListener() {
-															@Override
-															public void onClick(View v) {
-//															activity.onBackPressed();
-															}
-														});
+//												DialogPopup.alertPopupWithListener(activity, "", message,
+//														new View.OnClickListener() {
+//															@Override
+//															public void onClick(View v) {
+////															activity.onBackPressed();
+//															}
+//														});
 											}
 										} else {
 											DialogPopup.alertPopup(activity, "", message);

@@ -66,6 +66,7 @@
             android:layout_marginTop="12px">
 
             <LinearLayout
+                android:id="@+id/linearLayoutContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -100,8 +101,8 @@
                 android:layout_width="200px"
                 android:layout_height="64px"
                 android:layout_marginLeft="28px"
+                android:layout_marginTop="15px"
                 android:visibility="visible"
-                android:layout_gravity="center_vertical"
                 android:background="@drawable/new_orange_btn_corner_normal">
 
                 <ImageView
@@ -125,12 +126,12 @@
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutDeliveredAmnt"
-                android:layout_width="200px"
+                android:layout_width="235px"
                 android:layout_height="64px"
                 android:layout_marginLeft="20px"
-                android:gravity="center"
+                android:layout_marginTop="15px"
                 android:visibility="gone"
-                android:layout_gravity="center">
+                >
 
                 <TextView
                     android:id="@+id/textViewCashCollectedValue"
@@ -147,7 +148,7 @@
                     android:layout_below="@+id/textViewCashCollectedValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20px"
+                    android:textSize="22px"
                     android:text="@string/cash_collected"
                     android:textColor="@color/black_text_v2"
                     android:layout_centerHorizontal="true"
@@ -156,11 +157,12 @@
 
             <RelativeLayout
                 android:id="@+id/relativeLayoutTotalCashCollected"
-                android:layout_width="200px"
+                android:layout_width="235px"
                 android:layout_height="64px"
                 android:layout_marginLeft="20px"
                 android:visibility="gone"
-                android:layout_gravity="center">
+                android:layout_marginTop="15px"
+                >
 
                 <TextView
                     android:id="@+id/textViewTotalCashCollectedValue"
@@ -177,7 +179,7 @@
                     android:layout_below="@+id/textViewTotalCashCollectedValue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20px"
+                    android:textSize="22px"
                     android:text="@string/total_cash_collected"
                     android:textColor="@color/black_text_v2"
                     android:layout_centerHorizontal="true"
@@ -207,7 +209,7 @@
                 android:layout_width="270px"
                 android:layout_height="64px"
                 android:background="@drawable/new_orange_btn_normal_rounded"
-                android:text="@string/Return"
+                android:text="@string/returned"
                 android:visibility="gone"
                 android:textColor="@drawable/white_color_selector"
                 android:textSize="@dimen/button_text_size"/>

@@ -279,10 +279,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
+                android:layout_marginLeft="45px"
+                android:layout_marginRight="45px"
                 android:layout_marginBottom="25px"
-                android:gravity="center"
                 android:splitMotionEvents="false"
                 >
 
@@ -290,9 +289,6 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="260px"
                     android:layout_height="70px"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_toRightOf="@+id/btnOk"
-                    android:layout_marginLeft="56px"
                     android:background="@drawable/new_menu_black_btn_selector_rounded"
                     android:text="@string/cancel"
                     android:textColor="@drawable/white_color_selector"
@@ -303,12 +299,11 @@
                     android:id="@+id/btnOk"
                     android:layout_width="260px"
                     android:layout_height="70px"
-                    android:padding="2px"
-                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/new_orange_btn_selector_rounded"
                     android:text="@string/ok"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
+                    android:layout_alignParentRight="true"
                     />
             </RelativeLayout>
 

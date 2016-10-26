@@ -3244,6 +3244,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
 						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
+					} else {
+						linearLayoutRide.setVisibility(View.VISIBLE);
+						deliveryListHorizontal.setVisibility(View.GONE);
 					}
 
 
@@ -7015,11 +7018,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if(myLocation!=null) {
 				LatLngBounds.Builder builder = new LatLngBounds.Builder();
-				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
-				for (int i = 0; i < markersCustomers.size(); i++) {
-					builder.include(markersCustomers.get(i).getPosition());
-					break;
+
+				if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+					for (int i = 0; i < markersDelivery.size(); i++) {
+						if(markersDelivery.get(i).getSnippet().equals("return")){
+							builder = new LatLngBounds.Builder();
+							builder.include(markersDelivery.get(i).getPosition());
+						} else{
+							builder.include(markersDelivery.get(i).getPosition());
+						}
+					}
+				} else {
+					for (int i = 0; i < markersCustomers.size(); i++) {
+						builder.include(markersCustomers.get(i).getPosition());
+						break;
+					}
 				}
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
 				int top = (int) (250f * ASSL.Yscale());
@@ -7407,8 +7422,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						} else {
 							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 						}
-						if(deliveryInfo.getStatus() != DeliveryStatus.RETURN.getOrdinal()) {
-							addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
+						if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
+							addDeliveryMarker(addReturnPinMarker(map, latLng));
 						} else{
 							addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
 						}
@@ -7416,10 +7431,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				}
 
-				map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
-								.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
-						(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
-						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
+
+//				map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
+//								.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
+//						(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
+//						(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 				if(latLngs.size() > 1) {
 					new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.new_orange_path),
@@ -7469,6 +7485,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				.anchor(0.5f, 0.9f)
 				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
 						.getTextBitmap(this, assl, text, 20)));
+		return map.addMarker(markerOptions);
+	}
+
+	private Marker addReturnPinMarker(GoogleMap map, LatLng latLng){
+		final MarkerOptions markerOptions = new MarkerOptions()
+				.position(latLng)
+				.title("")
+				.snippet("return")
+				.anchor(0.5f, 0.9f)
+				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
+						.createCustomMarkerBitmap(this, assl, 45f, 71f, R.drawable.ic_return_marker)));
 		return map.addMarker(markerOptions);
 	}
 

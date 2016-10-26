@@ -55,11 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="40px"
-                android:layout_marginLeft="15px"
-                android:layout_marginRight="15px"
+                android:layout_marginLeft="55px"
+                android:layout_marginRight="55px"
                 android:layout_marginBottom="25px"
-                android:layout_gravity="center"
-                android:gravity="center"
                 android:splitMotionEvents="false"
                 >
 
@@ -67,8 +65,6 @@
                     android:id="@+id/btnCancel"
                     android:layout_width="260px"
                     android:layout_height="70px"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="300px"
                     android:text="@string/cancel"
                     android:background="@drawable/new_menu_black_btn_selector_rounded"
                     android:textColor="@drawable/white_color_selector"
@@ -79,12 +75,11 @@
                     android:id="@+id/btnSubmit"
                     android:layout_width="260px"
                     android:layout_height="70px"
-                    android:padding="2px"
-                    android:layout_gravity="center_horizontal"
                     android:background="@drawable/new_orange_btn_selector_rounded"
                     android:text="@string/submit"
                     android:textColor="@drawable/white_color_selector"
                     android:textSize="@dimen/button_text_size"
+                    android:layout_alignParentRight="true"
                     />
             </RelativeLayout>
 

@@ -1,6 +1,5 @@
 package product.clicklabs.jugnoo.driver.home;
 
-import android.content.res.Resources;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
@@ -162,6 +160,7 @@ public class CustomerSwitcher {
 						}
 					} else if(customerInfo.getIsDelivery() == 1){
 //						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
+						textViewCustomerPickupAddress.setVisibility(View.GONE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
