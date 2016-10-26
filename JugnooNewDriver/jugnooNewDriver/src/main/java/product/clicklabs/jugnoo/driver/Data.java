@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.graphics.Typeface;
 import android.util.Base64;
@@ -15,7 +14,6 @@ import com.google.android.gms.maps.model.LatLng;
 import org.json.JSONArray;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -89,7 +87,7 @@ public class Data {
     public static final String DEV_2_SERVER_URL = "https://test.jugnoo.in:8014";
     public static final String DEV_3_SERVER_URL = "https://test.jugnoo.in:8015";
 
-	public static final String DEFAULT_SERVER_URL = DEV_SERVER_URL;
+	public static final String DEFAULT_SERVER_URL = LIVE_SERVER_URL;
 
 
 

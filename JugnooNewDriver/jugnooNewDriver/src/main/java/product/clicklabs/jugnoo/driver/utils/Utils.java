@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,7 +28,6 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
-import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -48,8 +46,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -204,22 +202,22 @@ public class Utils {
 
 	public static boolean mockLocationEnabled(Location location) {
 
-		return false;
-//		try {
-//			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
-//				boolean isMockLocation = false;
-//				if(location != null){
-//					Bundle extras = location.getExtras();
-//					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
-//				}
-//				return isMockLocation;
-//			} else {
-//				return false;
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+//		return false;
+		try {
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
+				boolean isMockLocation = false;
+				if(location != null){
+					Bundle extras = location.getExtras();
+					isMockLocation = extras != null && extras.getBoolean(FusedLocationProviderApi.KEY_MOCK_LOCATION, false);
+				}
+				return isMockLocation;
+			} else {
+				return false;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 
