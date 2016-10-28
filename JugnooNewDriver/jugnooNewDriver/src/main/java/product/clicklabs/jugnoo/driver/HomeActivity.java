@@ -6974,9 +6974,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		@Override
 		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
-			String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
-			Log.i(TAG, "callbackUpdateWalletBalance response = " + responseStr);
-			try {
+		try {
+				String responseStr = new String(((TypedByteArray) response.getBody()).getBytes());
+				Log.i(TAG, "callbackUpdateWalletBalance response = " + responseStr);
 				if(Data.userData.walletUpdateTimeout > (System.currentTimeMillis()-walletUpdateCallTime)) {
 					JSONObject jObj = new JSONObject(responseStr);
 					int flag = jObj.getInt(KEY_FLAG);
