@@ -224,7 +224,7 @@ public class OldOTPConfirmScreen extends BaseActivity implements LocationUpdate 
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		try {
 			if (Data.locationFetcher != null) {
 				Data.locationFetcher.destroy();

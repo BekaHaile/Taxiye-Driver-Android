@@ -17,6 +17,7 @@ import com.flurry.android.FlurryAgent;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 
 /**
@@ -48,8 +49,8 @@ public class GeanieView extends Service {
 
 		windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
 		final WindowManager.LayoutParams paramsA = new WindowManager.LayoutParams(
-				125,
-				85,
+				156,
+				156,
 				WindowManager.LayoutParams.TYPE_PHONE,
 				WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
 				PixelFormat.TRANSLUCENT);
@@ -66,11 +67,18 @@ public class GeanieView extends Service {
 		jugnooHead.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				FlurryAgent.onEvent("Navigation stopped via button");
 				stopSelf();
-				Intent intent = new Intent(GeanieView.this, HomeActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(intent);
+				FlurryAgent.onEvent("Navigation stopped via button");
+				if(HomeActivity.appInterruptHandler != null) {
+					Intent newIntent = new Intent(GeanieView.this, HomeActivity.class);
+					newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+					newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(newIntent);
+				} else {
+					Intent homeScreen = new Intent(GeanieView.this, SplashNewActivity.class);
+					homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					startActivity(homeScreen);
+				}
 			}
 		});
 	}

@@ -362,9 +362,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public static DriverScreenMode driverScreenMode;
 
 
-	static AppInterruptHandler appInterruptHandler;
+	public static AppInterruptHandler appInterruptHandler;
 
-	static Activity activity;
+	public static Activity activity;
 
 	boolean loggedOut = false,
 			zoomedToMyLocation = false,
@@ -3515,6 +3515,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //		GCMIntentService.clearNotifications(getApplicationContext());
 
 		try {
+//			Intent intent = new Intent(HomeActivity.this, GeanieView.class);
+//			startService(intent);
 			if (userMode == UserMode.DRIVER) {
 				if (driverScreenMode != DriverScreenMode.D_IN_RIDE) {
 					destroyFusedLocationFetchers();

@@ -411,7 +411,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	
 	
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		Database2.getInstance(this).checkStartPendingApisService(this);
 		try{
 			Data.locationFetcher.destroy();
