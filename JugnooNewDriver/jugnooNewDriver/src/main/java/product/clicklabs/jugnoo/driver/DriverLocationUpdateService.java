@@ -38,7 +38,7 @@ public class DriverLocationUpdateService extends Service {
     }
 
 
-    public static void updateServerData(final Context context){
+	public static void updateServerData(final Context context){
     	String SHARED_PREF_NAME = "myPref";
     	String SP_ACCESS_TOKEN_KEY = "access_token";
     	String accessToken = "", deviceToken = "", SERVER_URL = "";
@@ -200,11 +200,19 @@ public class DriverLocationUpdateService extends Service {
 		}
         
     }
-    
-    
-	
-	
-	
+
+	@Override
+	public void onTrimMemory(int level) {
+		Database2.getInstance(this).insertUSLLog(Constants.EVENT_DLD_TRIM_MEMORY+"_"+level);
+		super.onTrimMemory(level);
+	}
+
+	@Override
+	public void onLowMemory() {
+		Database2.getInstance(this).insertUSLLog(Constants.EVENT_DLD_LOW_MEMORY);
+		super.onLowMemory();
+	}
+
 	private static int DRIVER_LOCATION_PI_REQUEST_CODE = 111;
 	private static final String SEND_LOCATION = "product.clicklabs.jugnoo.driver.SEND_LOCATION";
 	private static final long ALARM_REPEAT_INTERVAL = 3 * 60000;

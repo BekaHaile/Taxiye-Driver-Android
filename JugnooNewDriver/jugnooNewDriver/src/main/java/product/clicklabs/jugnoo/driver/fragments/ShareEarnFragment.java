@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.MyApplication;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.ShareActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
@@ -37,6 +38,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
@@ -124,6 +126,7 @@ public class ShareEarnFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN+"_"+FirebaseEvents.SHARE, null);
 				confirmCustomerNumberPopup(activity);
 				NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_INVITE_EARN_CLICK, null);
 			}
@@ -187,6 +190,8 @@ public class ShareEarnFragment extends Fragment {
 								customerNumber.setError(getResources().getString(R.string.valid_phone_number));
 							} else {
 								sendReferralMessage(activity, "+91" + code);
+								MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN + "_"
+										+ FirebaseEvents.SHARE+"_"+FirebaseEvents.CONFIRM_YES, null);
 								dialog.dismiss();
 								NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SHARE_OK, null);
 							}
@@ -203,6 +208,8 @@ public class ShareEarnFragment extends Fragment {
 				@Override
 				public void onClick(View v) {
 					NudgeClient.trackEvent(getActivity(), FlurryEventNames.NUDGE_SHARE_CANCEL, null);
+					MyApplication.getInstance().logEvent(FirebaseEvents.INVITE_AND_EARN + "_"
+							+ FirebaseEvents.SHARE + "_" + FirebaseEvents.CONFIRM_NO, null);
 					dialog.dismiss();
 				}
 			});

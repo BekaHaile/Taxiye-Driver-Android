@@ -82,22 +82,11 @@
                             android:textSize="30px"
                             />
 
-                        <!--<ImageView-->
-                        <!--android:id="@+id/imageViewTimeFrom"-->
-                        <!--android:layout_width="30px"-->
-                        <!--android:layout_height="30px"-->
-                        <!--android:layout_centerVertical="true"-->
-                        <!--android:layout_marginLeft="15px"-->
-                        <!--android:layout_toRightOf="@+id/dateTimeTextFrom"-->
-                        <!--android:src="@drawable/date_orange_icon"-->
-                        <!--android:tag="mwar"/>-->
-
                         <TextView
                             android:id="@+id/dateTimeValueFrom"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextFrom"
                             android:singleLine="true"
                             android:text="23/01"
@@ -154,7 +143,6 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5px"
                             android:layout_toRightOf="@+id/dateTimeTextTo"
                             android:singleLine="true"
                             android:text="23/01"

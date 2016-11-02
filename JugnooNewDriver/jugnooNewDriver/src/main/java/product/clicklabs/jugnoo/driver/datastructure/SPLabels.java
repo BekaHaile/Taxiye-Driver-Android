@@ -98,4 +98,12 @@ public class SPLabels {
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
 	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
 
+    public static final String ACCEPT_RIDE_VIA_PUSH = "accept_ride_via_push";
+	public static final String LAST_DESTINATION ="last_destination";
+	public static final String LAST_PICK_UP = "last_pick_up";
+	public static final String ADD_HOME = "add_home";
+	public static final String ADD_WORK = "add_work";
+    public static final String START_RIDE_ALERT_RADIUS = "start_ride_alert_radius";
+    public static final String START_RIDE_ALERT_RADIUS_FINAL = "start_ride_alert_radius_final";
+
 }

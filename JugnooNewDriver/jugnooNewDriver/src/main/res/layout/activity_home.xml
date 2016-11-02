@@ -140,7 +140,7 @@
             android:layout_below="@+id/topRlOuter"
             android:divider="@color/transparent"
             android:splitMotionEvents="false"
-            android:visibility="visible"
+            android:visibility="gone"
             />
 
         <ImageView

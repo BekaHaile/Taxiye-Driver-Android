@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,6 +45,38 @@
                 android:layout_height="6px"
                 android:layout_below="@+id/inRideCustomerInfoRl"
                 android:background="@drawable/shadow_down"/>
+
+            <RelativeLayout
+                android:id="@+id/relativeLayoutEnterDestination"
+                android:layout_width="match_parent"
+                android:minHeight="90px"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                android:background="@drawable/enter_destination_bg"
+                android:layout_marginTop="5px">
+                
+                <ImageView
+                    android:id="@+id/imageViewDot"
+                    android:layout_width="14px"
+                    android:layout_height="14px"
+                    android:layout_marginLeft="29px"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/red_dot_icon"
+                    />
+
+                <TextView
+                    android:id="@+id/textViewEnterDestination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="32px"
+                    android:hint="@string/enter_destination"
+                    android:layout_marginLeft="32px"
+                    android:layout_marginRight="12px"
+                    android:layout_toRightOf="@+id/imageViewDot"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/bg_grey_opaque"/>
+
+            </RelativeLayout>
 
         </LinearLayout>
 
@@ -132,6 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_centerHorizontal="true"
+        android:visibility="gone"
         android:background="@drawable/menu_black_btn_normal_rounded">
 
         <TextView
@@ -198,7 +231,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15px"
             android:splitMotionEvents="false"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/driverStartRideBtn"
@@ -242,7 +275,7 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -282,7 +315,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
 
                     <RelativeLayout

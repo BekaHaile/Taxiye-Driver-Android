@@ -27,7 +27,7 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 
 				if (timeDiff >= 6 * MINUTE) {
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_SIX.getOrdinal());
-					SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true, false);
+					SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true);
 
 					FlurryEventLogger.gpsStatus(context, "Device Restart");
 
