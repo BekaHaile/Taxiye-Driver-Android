@@ -24,13 +24,14 @@ public interface Constants {
 	String JUGNOO_AUDIO = "jugnoo_audio";
 
     long HEAT_MAP_FETCH_DELAY = 120000;
-
+    String ACTION_LOCATION_UPDATE = "jugnoo.ACTION_LOCATION_UPDATE";
     String KEY_RIDE_TIME_SECONDS = "ride_time_seconds";
     String KEY_RIDE_TIME_SECONDS_DB = "ride_time_seconds_db";
     String KEY_WAIT_TIME_SECONDS = "wait_time_seconds";
     String KEY_PICTURE = "picture";
     String KEY_IMAGE = "image";
 
+    String START_RIDE_ALARM_LOCATION_FETCHER_INTERVAL = "start_ride_alarm_location_fetcher_interval";
     String KEY_USER_NAME = "user_name";
     String KEY_EMAIL = "email";
     String KEY_PHONE_NO = "phone_no";
@@ -77,6 +78,10 @@ public interface Constants {
     String KEY_JUGNOO_BALANCE = "jugnoo_balance";
     String KEY_PICKUP_LATITUDE = "pickup_latitude";
     String KEY_PICKUP_LONGITUDE = "pickup_longitude";
+
+    String KEY_PICKUP_LATITUDE_ALARM = "pickup_latitude_alarm";
+    String KEY_PICKUP_LONGITUDE_ALARM = "pickup_longitude_alarm";
+
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
     String KEY_APP_VERSION = "app_version";
@@ -185,11 +190,21 @@ public interface Constants {
 	String EVENT_LR_LOC_BAD_ACCURACY_RESTART = "LR_LOC_BAD_ACCURACY_RESTART";
 	String EVENT_DLD_LOC_RECEIVED = "DLD_LOC_RECEIVED";
 	String EVENT_DLD_LOC_REJECTED_TIME_DIFF = "DLD_LOC_REJECTED_TIME_DIFF";
-	String EVENT_DLD_LOC_SENT = "DLD_LOC_SENT";
-	String EVENT_DLD_LOC_FAILED_RETRO = "DLD_LOC_FAILED_RETRO";
+	String EVENT_DLD_LOW_MEMORY = "DLD_LOW_MEMORY";
+    String EVENT_DLD_TRIM_MEMORY = "DLD_TRIM_MEMORY";
+    String EVENT_DLD_LOC_SENT = "DLD_LOC_SENT";
+
+    String EVENT_DLD_LOC_FAILED_RETRO = "DLD_LOC_FAILED_RETRO";
 	String EVENT_DLD_LOC_FAILED_GENERIC = "DLD_LOC_FAILED_GENERIC";
+	String EVENT_LRD_STALE_GPS_RESTART_SERVICE = "LRD_STALE_GPS_RESTART_SERVICE";
+
 	String EVENT_DLD_DEVICE_TOKEN_RESET = "DLD_DEVICE_TOKEN_RESET";
 	String EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN = "DL_ALARM_LOC_NOT_SENT_TILL_3_MIN";
+
+    String PLAY_START_RIDE_ALARM = "play_start_ride_alarm";
+    String PLAY_START_RIDE_ALARM_FINALLY ="play_start_ride_alarm_finally";
+    String FLAG_REACHED_PICKUP ="flag_reached_pickup";
+	String START_RIDE_ALARM_SERVICE_STATUS = "start_ride_alarm_service_status";
 
 }
 

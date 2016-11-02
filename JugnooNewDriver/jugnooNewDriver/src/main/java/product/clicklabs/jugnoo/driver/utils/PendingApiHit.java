@@ -3,10 +3,12 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Context;
 import android.content.Intent;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Database2;
+import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -37,20 +39,24 @@ public class PendingApiHit {
                 }
                 Log.e(TAG, "response="+response);
                 if(response != null){
-                    Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
-                    Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
-
-                    if(PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)) {
-                        String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-                        JSONObject jObj;
-                        jObj = new JSONObject(jsonString);
-                        Prefs.with(context).save(Constants.DRIVER_RIDE_EARNING, jObj.optString("driver_ride_earning", ""));
-                        Prefs.with(context).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
-
-						Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_RIDE_EARNING);
-						context.sendBroadcast(fetchDocIntent);
-
-
+                    try {
+						if (PendingCall.END_RIDE.getPath().equalsIgnoreCase(pendingAPICall.url)) {
+							String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+							JSONObject jObj = new JSONObject(jsonString);
+							int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+							if (!(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag)) {
+								Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+								Log.e(TAG, "responseto string=" + new String(((TypedByteArray) response.getBody()).getBytes()));
+								Prefs.with(context).save(Constants.DRIVER_RIDE_EARNING, jObj.optString("driver_ride_earning", ""));
+								Prefs.with(context).save(Constants.DRIVER_RIDE_DATE, jObj.optString("driver_ride_date", ""));
+								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_RIDE_EARNING);
+								context.sendBroadcast(fetchDocIntent);
+							}
+						} else {
+							Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+						}
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             }

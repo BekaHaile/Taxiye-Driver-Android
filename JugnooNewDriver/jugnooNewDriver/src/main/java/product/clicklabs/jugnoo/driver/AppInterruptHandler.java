@@ -49,4 +49,6 @@ public interface AppInterruptHandler {
 
 	void updateCustomerLocation(double lat, double lon);
 
+	void showStartRidePopup();
+
 }

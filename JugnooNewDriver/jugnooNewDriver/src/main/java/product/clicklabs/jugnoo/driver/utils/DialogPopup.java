@@ -802,8 +802,8 @@ public class DialogPopup {
 		}
 	}
 
-	public static void dialogNewBanner(Activity activity, String message) {
-		dialogBannerNewWithCancelListener(activity, message, null, 7000);
+	public static void dialogNewBanner(Activity activity, String message, long time) {
+		dialogBannerNewWithCancelListener(activity, message, null, time);
 	}
 
 	public static void dialogBannerNewWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){

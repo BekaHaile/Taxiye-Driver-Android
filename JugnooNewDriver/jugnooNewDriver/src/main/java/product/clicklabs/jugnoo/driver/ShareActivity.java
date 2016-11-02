@@ -16,13 +16,14 @@ import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardActivityRespons
 import product.clicklabs.jugnoo.driver.retrofit.model.LeaderboardResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
+import product.clicklabs.jugnoo.driver.utils.FirebaseEvents;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.NudgeClient;
 import product.clicklabs.jugnoo.driver.widgets.PagerSlidingTabStrip;
 
 
 
-public class ShareActivity extends BaseFragmentActivity implements FlurryEventNames {
+public class ShareActivity extends BaseFragmentActivity implements FlurryEventNames, FirebaseEvents {
 	
 	LinearLayout linearLayoutRoot;
 
@@ -61,6 +62,7 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+
 		setContentView(R.layout.activity_share);
 
 		linearLayoutRoot = (LinearLayout) findViewById(R.id.linearLayoutRoot);
@@ -95,8 +97,10 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 
 			@Override
 			public void onPageSelected(int position) {
-				if(position == 1){
-					NudgeClient.trackEvent(ShareActivity.this, NUDGE_ACTIVITY_CLICK, null);
+				if(position == 0){
+					MyApplication.getInstance().logEvent(INVITE_AND_EARN + "_" + EARN, null);
+				} else if(position == 1){
+					MyApplication.getInstance().logEvent(INVITE_AND_EARN+"_"+ACTIVITY,null);
 				}
 			}
 
@@ -120,6 +124,11 @@ public class ShareActivity extends BaseFragmentActivity implements FlurryEventNa
 	
 	
 	public void performbackPressed(){
+		if(viewPager.getCurrentItem() == 0){
+			MyApplication.getInstance().logEvent(INVITE_AND_EARN+"_"+EARN+"_"+BACK,null);
+		}else if(viewPager.getCurrentItem() == 1){
+			MyApplication.getInstance().logEvent(INVITE_AND_EARN+"_"+ACTIVITY+"_"+BACK,null);
+		}
 		finish();
 		overridePendingTransition(R.anim.left_in, R.anim.left_out);
 	}

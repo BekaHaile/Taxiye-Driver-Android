@@ -30,6 +30,7 @@
 
     <color name="black_translucent">#77000000</color>
     <color name="black_translucent_level_2">#55000000</color>
+    <color name="black_translucent_level_3">#e536363f</color>
 
     <color name="sliding_bottom_bg_color">#F7F7F7</color>
     <color name="theme_color">#FD7945</color>

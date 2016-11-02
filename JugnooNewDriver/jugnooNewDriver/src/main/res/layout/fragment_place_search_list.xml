@@ -110,7 +110,7 @@
                 android:layout_marginBottom="16px"
                 android:layout_marginTop="24px"
                 android:tag="mwar"
-                android:src="@drawable/powered_by_google_light"/>
+                android:src="@drawable/powered_by_google_light_new"/>
 
             <TextView
                 android:id="@+id/textViewScrollSearch"

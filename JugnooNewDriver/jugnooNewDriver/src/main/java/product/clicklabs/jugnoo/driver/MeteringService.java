@@ -217,7 +217,7 @@ public class MeteringService extends Service {
 					if(!(DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)) {
 						if (fromGPS && DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode) {
 							String message = context.getResources().getString(R.string.total_distance)
-									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000)
+									+ " = " + getDecimalFormat().format(Math.abs(distance) / 1000) +" "
 									+ context.getResources().getString(R.string.km) + " "
 									+ "\n" + context.getResources().getString(R.string.ride_time)
 									+ " = " + Utils.getChronoTimeFromMillis(elapsedTime);

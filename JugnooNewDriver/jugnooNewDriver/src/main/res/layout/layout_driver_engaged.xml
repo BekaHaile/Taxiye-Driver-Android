@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:minHeight="90px"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:background="@drawable/enter_destination_bg"
                 android:layout_marginTop="5px">
                 
@@ -230,7 +231,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="15px"
             android:splitMotionEvents="false"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <product.clicklabs.jugnoo.driver.utils.CustomButtonView
                 android:id="@+id/driverStartRideBtn"
@@ -274,7 +275,7 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="visible"
+            android:visibility="gone"
             >
 
             <ImageView
@@ -314,7 +315,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     >
 
                     <RelativeLayout

@@ -32,10 +32,6 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 	private Context context;
 	
 	
-	private static String LOCATION_SP = "location_sp",
-			LOCATION_LAT = "location_lat",
-			LOCATION_LNG = "location_lng";
-	
 	public int priority;
 
 	public LocationFetcher(LocationUpdate locationUpdate, long requestInterval, int priority){
@@ -70,26 +66,17 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 		}, 2000);
 	}
 
-	private synchronized void saveLatLngToSP(double latitude, double longitude){
-		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
-		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString(LOCATION_LAT, ""+latitude);
-		editor.putString(LOCATION_LNG, "" + longitude);
-		editor.commit();
+	private synchronized void saveLatLngToSP(Location location){
+		Database2.getInstance(context).updateDriverCurrentLocation(context, location);
 	}
 
 
 	public static double getSavedLatFromSP(Context context){
-		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
-		String latitude = preferences.getString(LOCATION_LAT, "" + 0);
-		Log.d("saved last lat", "==" + latitude);
-		return Double.parseDouble(latitude);
+		return Database2.getInstance(context).getDriverCurrentLocation(context).getLatitude();
 	}
 
 	public static double getSavedLngFromSP(Context context){
-		SharedPreferences preferences = context.getSharedPreferences(LOCATION_SP, 0);
-		String longitude = preferences.getString(LOCATION_LNG, ""+0);
-		return Double.parseDouble(longitude);
+		return Database2.getInstance(context).getDriverCurrentLocation(context).getLongitude();
 	}
 	
 	
@@ -272,7 +259,7 @@ public class LocationFetcher implements GoogleApiClient.ConnectionCallbacks,Goog
 				if(Utils.compareDouble(location.getLatitude(), 0) != 0 && Utils.compareDouble(location.getLongitude(), 0) != 0){
 					this.location = location;
 					locationUpdate.onLocationChanged(location, priority);
-					saveLatLngToSP(location.getLatitude(), location.getLongitude());
+					saveLatLngToSP(location);
 				}
             }
 			locationUnchecked = location;

@@ -13,6 +13,7 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.Map;
 
@@ -37,7 +38,7 @@ public class MyApplication extends Application {
 
 	private MapLatLngBoundsCreator mapLatLngBoundsCreator;
 
-//	private FirebaseAnalytics mFirebaseAnalytics;
+	private FirebaseAnalytics mFirebaseAnalytics;
 
 	@Override
 	public void onCreate() {
@@ -50,26 +51,26 @@ public class MyApplication extends Application {
 		initializeServerURLAndRestClient(this);
 
 		// Obtain the FirebaseAnalytics instance.
-//		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+		mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
 	}
 
-//	public FirebaseAnalytics getmFirebaseAnalytics() {
-//		if(mFirebaseAnalytics == null) {
-//			mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-//		}
-//		return mFirebaseAnalytics;
-//	}
-//
-//	public void logEvent(String eventText, Bundle bundle) {
-//		if(bundle == null) {
-//			bundle = new Bundle();
-//		}
-//		if(eventText.length()>31) {
-//			eventText.substring(0, 31);
-//		}
-//		getmFirebaseAnalytics().logEvent(eventText, bundle);
-//	}
+	public FirebaseAnalytics getmFirebaseAnalytics() {
+		if(mFirebaseAnalytics == null) {
+			mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+		}
+		return mFirebaseAnalytics;
+	}
+
+	public void logEvent(String eventText, Bundle bundle) {
+		if(bundle == null) {
+			bundle = new Bundle();
+		}
+		if(eventText.length()>31) {
+			eventText.substring(0, 31);
+		}
+		getmFirebaseAnalytics().logEvent(eventText, bundle);
+	}
 
 	public static synchronized MyApplication getInstance() {
 		return mInstance;

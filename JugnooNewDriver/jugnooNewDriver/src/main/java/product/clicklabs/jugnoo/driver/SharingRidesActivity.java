@@ -92,6 +92,12 @@ public class SharingRidesActivity extends BaseActivity {
 		sharedRides.clear();
 		setContentView(R.layout.activity_jugnoo_share_payments);
 
+		if(getIntent().hasExtra("wakeUp")){
+			Intent homeScreen = new Intent(this, SplashNewActivity.class);
+			startActivity(homeScreen);
+			finish();
+		}
+
 		relative = (LinearLayout) findViewById(R.id.relative);
 		new ASSL(this, relative, 1134, 720, false);
 

@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="258"
-          android:versionName="2.5.8">
+          android:versionCode="259"
+          android:versionName="2.5.9">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -313,6 +313,12 @@
                 <action android:name="com.android.vending.INSTALL_REFERRER"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".home.utils.LocationReceiverBG"/>
+        <service
+            android:name=".home.StartRideLocationUpdateService"
+            android:enabled="true"
+            android:exported="true"></service>
 
         <service android:name="com.google.android.gms.analytics.CampaignTrackingService"/>
         <service

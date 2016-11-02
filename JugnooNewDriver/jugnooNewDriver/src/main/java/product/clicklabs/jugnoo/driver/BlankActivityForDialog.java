@@ -1,10 +1,12 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -31,6 +33,12 @@ public class BlankActivityForDialog extends Activity{
                 finish();
             }
         });
+
+        if(getIntent().hasExtra("wakeUp")){
+			Intent homeScreen = new Intent(this, SplashNewActivity.class);
+			startActivity(homeScreen);
+			finish();
+        }
 
         if(getIntent().hasExtra("message1")){
             message = getIntent().getStringExtra("message1");
@@ -71,9 +79,13 @@ public class BlankActivityForDialog extends Activity{
 	public void onBackPressed() {
         super.onBackPressed();
 	}
-	
 
 
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		Toast.makeText(BlankActivityForDialog.this, "Blank", Toast.LENGTH_LONG).show();
+	}
 
 	@Override
 	protected void onDestroy() {

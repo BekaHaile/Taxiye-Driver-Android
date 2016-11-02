@@ -249,6 +249,9 @@ public class JSONParser implements Constants {
 
 		Prefs.with(context).save(KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(userData.optInt("meter_disp_min_threshold", 14)));
 		Prefs.with(context).save(KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(userData.optInt("meter_disp_max_threshold", 200)));
+		Prefs.with(context).save(SPLabels.START_RIDE_ALERT_RADIUS, userData.optInt("start_ride_alert_radius", 200));
+		Prefs.with(context).save(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, userData.optInt("start_ride_alert_radius_final", 400));
+
 		Prefs.with(context).save(Constants.FETCH_APP_API_ENABLED, userData.optInt("fetch_all_driver_app_status", 0));
 		Prefs.with(context).save(Constants.FETCH_APP_API_FREQUENCY, userData.optLong("fetch_all_driver_app_frequency", 0));
 
@@ -421,7 +424,7 @@ public class JSONParser implements Constants {
 								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
-								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY,0);
+								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
