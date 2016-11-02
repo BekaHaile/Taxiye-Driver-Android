@@ -448,21 +448,6 @@ public class GCMIntentService extends IntentService {
 									entertainRequest = true;
 								}
 
-								if(jObj.optInt("wake_up_lock_enabled",1)==1){
-									if(HomeActivity.activity != null){
-										if(!HomeActivity.activity.hasWindowFocus()){
-											Intent newIntent = new Intent(this, HomeActivity.class);
-											newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-											newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-											startActivity(newIntent);
-										}
-									} else {
-										Intent homeScreen = new Intent(this, SplashNewActivity.class);
-										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										startActivity(homeScreen);
-									}
-
-								}
 
 								if(entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
@@ -554,6 +539,25 @@ public class GCMIntentService extends IntentService {
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 									}
+								}
+
+								try {
+									if(jObj.optInt("wake_up_lock_enabled",0)==1){
+										if(HomeActivity.activity != null){
+											if(!HomeActivity.activity.hasWindowFocus()){
+												Intent newIntent = new Intent(this, HomeActivity.class);
+												newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+												newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+												startActivity(newIntent);
+											}
+										} else {
+											Intent homeScreen = new Intent(this, SplashNewActivity.class);
+											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											startActivity(homeScreen);
+										}
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
