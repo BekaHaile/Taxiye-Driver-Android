@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:minHeight="90px"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/enter_destination_bg"
                 android:layout_marginTop="5px">
                 
@@ -164,7 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inRideCustomerInfoRl"
         android:layout_centerHorizontal="true"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@drawable/menu_black_btn_normal_rounded">
 
         <TextView
@@ -204,6 +204,7 @@
         android:id="@+id/linearLayoutStartEnd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/transparent"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
         android:orientation="vertical"
@@ -272,11 +273,23 @@
             android:id="@+id/driverInRideMainRl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/transparent"
             android:gravity="bottom"
             android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:visibility="gone"
+            android:visibility="visible"
             >
+
+            <product.clicklabs.jugnoo.driver.dodo.MyViewPager
+                android:id="@+id/deliveryListHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="16px"
+                android:clipToPadding="false"
+                android:paddingLeft="40px"
+                android:paddingRight="40px"/>
 
             <ImageView
                 android:layout_width="match_parent"
@@ -285,6 +298,7 @@
 
             <!-- in ride operations rl-->
             <LinearLayout
+                android:id="@+id/linearLayoutRide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white_translucent"
@@ -315,7 +329,7 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:splitMotionEvents="false"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     >
 
                     <RelativeLayout
@@ -540,18 +554,17 @@
 
     <Button
         android:id="@+id/buttonDriverNavigation"
-        android:layout_width="240px"
-        android:layout_height="120px"
+        android:layout_width="120px"
+        android:layout_height="110px"
         android:layout_above="@+id/linearLayoutStartEnd"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="40px"
+        android:layout_marginBottom="20px"
         android:layout_marginRight="30px"
-        android:background="@drawable/new_orange_direction_btn_selector"
+        android:background="@drawable/new_navigate_button"
         android:tag="mwar"
-        android:text="@string/click_for_direction"
         android:textColor="@color/white"
         android:textSize="28px"
-        android:visibility="gone"
+        android:visibility="visible"
         />
 
 </RelativeLayout>

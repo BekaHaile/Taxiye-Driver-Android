@@ -6,7 +6,8 @@ package product.clicklabs.jugnoo.driver.dodo.datastructure;
 public enum DeliveryStatus {
     PENDING(0),
     CANCELLED(1),
-    COMPLETED(2)
+    COMPLETED(2),
+    RETURN(3)
     ;
 
     private int ordinal;

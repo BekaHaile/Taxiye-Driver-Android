@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -29,7 +28,6 @@ import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
-import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -48,8 +46,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -933,6 +931,12 @@ public class Utils {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	public static int dpToPx(Context context, float dp) {
+		int temp = (int)dp;
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return Math.round(dp * scale);
 	}
 
 }

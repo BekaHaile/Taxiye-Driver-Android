@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout android:id="@+id/rv"
+             xmlns:android="http://schemas.android.com/apk/res/android"
+             android:layout_width="match_parent"
+             android:layout_height="1134px"
+             android:orientation="vertical"
+             android:layout_gravity="center"
+             android:splitMotionEvents="false"
+    >
+
+    <RelativeLayout
+        android:id="@+id/innerRl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="40px"
+        android:background="@drawable/dialog_background_color"
+        android:splitMotionEvents="false"
+        >
+
+
+        <LinearLayout
+            android:id="@+id/rl1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0px"
+            android:splitMotionEvents="false"
+
+            >
+
+            <TextView
+                android:id="@+id/textViewDeliveryId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:text="@string/alert"
+                android:textColor="@color/black_text_v2"
+                android:textSize="24px"
+                android:layout_marginTop="40px"/>
+
+
+            <TextView
+                android:id="@+id/textViewTakeCash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="22px"
+                android:gravity="center"
+                android:text="@string/take_cash"
+                android:lineSpacingExtra="10px"
+                android:maxHeight="800px"
+                android:paddingLeft="20px"
+                android:paddingRight="20px"
+                android:textColor="@color/black_text_v2"
+                android:textSize="52px"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="54px"
+                android:layout_marginTop="32px"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="520px"
+                    android:layout_height="2px"
+                    android:id="@+id/imageViewHorizontal3"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/grey_light"/>
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/white"
+                    android:paddingLeft="10px"
+                    android:paddingRight="10px"
+                    android:text="@string/NA"
+                    android:textColor="@color/black_text_v2"
+                    android:textSize="30px"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textViewAddress"
+                android:layout_width="452px"
+                android:layout_height="wrap_content"
+                android:textSize="24px"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="28px"
+                android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                android:textColor="@color/black_text_v2"
+                />
+
+            <TextView
+                android:id="@+id/textViewTakeConfMessage"
+                android:layout_width="294px"
+                android:layout_height="wrap_content"
+                android:textSize="32px"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="32px"
+                android:text="@string/delivery_conf"
+                android:textColor="@color/black_text_v2"
+                />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="40px"
+                android:layout_marginLeft="44px"
+                android:layout_marginRight="44px"
+                android:layout_marginBottom="25px"
+                android:splitMotionEvents="false"
+                >
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnCancel"
+                    android:layout_width="260px"
+                    android:layout_height="70px"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    android:text="@string/cancel"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    />
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/btnOk"
+                    android:layout_width="260px"
+                    android:layout_height="70px"
+                    android:background="@drawable/new_orange_btn_selector_rounded"
+                    android:text="@string/ok"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</FrameLayout>

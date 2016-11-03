@@ -1504,7 +1504,11 @@ public class SlidingUpPanelLayout extends ViewGroup {
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
-            out.writeString(mSlideState.toString());
+            try {
+                out.writeString(mSlideState.toString());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         public static final Creator<SavedState> CREATOR =
