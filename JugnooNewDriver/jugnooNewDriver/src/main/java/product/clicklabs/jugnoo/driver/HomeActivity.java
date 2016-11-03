@@ -3238,6 +3238,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							rideTimeChronometer.eclipsedTime,
 							waitTime);
 
+					textViewEnterDestination.setText("");
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 
 					if(customerInfo.getIsDelivery() == 1){
