@@ -3144,9 +3144,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
-
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
-
 
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
@@ -3163,7 +3161,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
 					driverPassengerInfoRl.setVisibility(View.VISIBLE);
-
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
 
@@ -3197,8 +3194,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
-
-
 					if(customerInfo.getIsDelivery() != 1) {
 						playStartRideAlarm = true;
 						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
@@ -3207,9 +3202,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
-
 					break;
-
 
 				case D_IN_RIDE:
 
@@ -7400,9 +7393,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				HashMap<LatLng,Integer> counterMap = new HashMap<>();
 
 				try {
-					LatLng driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-					builder.include(driverLatLng);
-					latLngs.add(driverLatLng);
+//					LatLng driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+//					builder.include(driverLatLng);
+//					latLngs.add(driverLatLng);
 				} catch (Exception e) {}
 
 				latLngs.add(customerInfo.getRequestlLatLng());
@@ -7419,15 +7412,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							counterMap.put(latLng, 1);
 						}
 
-						if (!latLngs.contains(latLng)) {
+						if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
 							latLngs.add(latLng);
 							builder.include(latLng);
-						} else {
-							latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
-						}
-						if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
 							addDeliveryMarker(addReturnPinMarker(map, latLng));
 						} else{
+							if (!latLngs.contains(latLng)) {
+								latLngs.add(latLng);
+								builder.include(latLng);
+							} else {
+								latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
+							}
 							addDeliveryMarker(addDropPinMarker(map, latLng, String.valueOf(deliveryInfo.getIndex() + 1)));
 						}
 					}
