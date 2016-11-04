@@ -679,6 +679,7 @@
     <string name="fair_complaint">ভাড়াৰ অভিযোগ</string>
     <string name="in_review">পর্যালোচনা </string>
     <string name="pool">পুল</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
 
     <string-array name="CountryCodes" >

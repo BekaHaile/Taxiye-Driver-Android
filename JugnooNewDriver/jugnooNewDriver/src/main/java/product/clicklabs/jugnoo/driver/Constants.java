@@ -175,6 +175,8 @@ public interface Constants {
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
+    String ALERT_BATTERY_LOW = "alert_battery_low";
+	String ALERT_CHARGING = "alert_charging";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
 	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING = "free_state_update_time_period_charging";

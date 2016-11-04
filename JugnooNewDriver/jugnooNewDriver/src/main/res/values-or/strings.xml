@@ -685,6 +685,7 @@
     <string name="no_data">କୌଣସି ତଥ୍ୟ ନାହିଁ</string>
     <string name="web_view">ଓଏବ୍ ଦର୍ଶନ</string>
     <string name="connection_lost">ଆପଣ କନେକ୍ଟେଡ୍ ନାହାନ୍ତି!ପୁନର୍ବାର ପ୍ରୟାସ କରିବା ପାଇଁ ଟ୍ୟାପ୍ ରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
