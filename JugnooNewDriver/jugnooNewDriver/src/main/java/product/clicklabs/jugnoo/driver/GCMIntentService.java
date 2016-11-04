@@ -426,6 +426,7 @@ public class GCMIntentService extends IntentService {
 								int perfectRide = jObj.optInt(Constants.KEY_PERFECT_RIDE, 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
 								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
+								int changeRing = jObj.optInt(Constants.KEY_RING_TYPE, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
@@ -510,7 +511,7 @@ public class GCMIntentService extends IntentService {
 												new LatLng(currrentLatitude, currrentLongitude));
 										Data.addCustomerInfo(customerInfo);
 
-										startRing(this, engagementId);
+										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -528,7 +529,7 @@ public class GCMIntentService extends IntentService {
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
-										startRing(this, engagementId);
+										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -831,7 +832,7 @@ public class GCMIntentService extends IntentService {
 		pendingIntent.cancel();
 	}
 
-	public static void startRing(Context context, String engagementId) {
+	public static void startRing(Context context, String engagementId, int ringType) {
 		try {
 
 			stopRing(true, context);
@@ -853,9 +854,17 @@ public class GCMIntentService extends IntentService {
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				if(ringType == 1){
+					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+				}else {
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				}
 			}else{
-				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				if(ringType == 1){
+					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+				}else {
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				}
 			}
 
 			mediaPlayer.setLooping(true);
