@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:id="@+id/linearLayoutLogin"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutSignUpIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="30px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="40px"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="640px"
+            android:layout_height="82px"
+            android:background="@drawable/background_white_rounded_bordered"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:padding="2px">
+
+            <ImageView
+                android:layout_width="27px"
+                android:layout_height="45px"
+                android:layout_gravity="center"
+                android:layout_marginLeft="32px"
+                android:background="@drawable/new_mobile_icon"/>
+
+
+            <AutoCompleteTextView
+                android:id="@+id/emailEt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="2px"
+                android:layout_marginLeft="18px"
+                android:layout_marginRight="2px"
+                android:layout_marginTop="2px"
+                android:background="@drawable/background_white"
+                android:hint="@string/phone_no"
+                android:inputType="textEmailAddress"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="34px"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="470px"
+            android:layout_height="96px"
+            android:layout_marginTop="32px"
+            android:text="@string/GENERATE_OTP"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_theme_alpha_white_stroke_selector"
+            android:textColor="@color/white"
+            android:textSize="@dimen/button_text_size"/>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

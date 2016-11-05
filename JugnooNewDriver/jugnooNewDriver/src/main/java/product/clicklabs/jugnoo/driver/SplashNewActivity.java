@@ -21,13 +21,16 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,11 +64,13 @@ import me.pushy.sdk.Pushy;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CityInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverDebugOpenMode;
+import product.clicklabs.jugnoo.driver.datastructure.EmailRegisterData;
 import product.clicklabs.jugnoo.driver.datastructure.PendingAPICall;
 import product.clicklabs.jugnoo.driver.datastructure.PendingCall;
 import product.clicklabs.jugnoo.driver.datastructure.RegisterOption;
 import product.clicklabs.jugnoo.driver.datastructure.RideInfo;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.datastructure.State;
 import product.clicklabs.jugnoo.driver.oldRegistration.OldRegisterScreen;
 import product.clicklabs.jugnoo.driver.pushyToken.PushyDeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
@@ -99,8 +104,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 
-	LinearLayout relative, linearLayoutAutoStatus, linearLayoutAutoDriverConfirmation, linearLayoutSignUpIn;
-	TextView textViewConfirmationText,textViewStatusText;
+	LinearLayout relative, linearLayoutSignUpIn,
+			linearLayoutLoginSignupButtons, linearLayoutLogin;
+	RelativeLayout relativeLayoutSignup, relativeLayoutScrollStop;
+	RelativeLayout relativeLayoutJugnooLogo, relativeLayoutLS;
 
 	List<String> categories = new ArrayList<>();
 	ImageView imageViewJugnooLogo;
@@ -115,10 +122,36 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	int languagePrefStatus, registerViaTooken = RegisterOption.ONLY_TOOKAN.getOrdinal();
 	Configuration conf;
 
-	Button buttonLogin, buttonRegister, buttonStatusYes, buttonStatusNo, buttonConfirmationYes, buttonConfirmationNo, buttonRegisterTookan;
+	private State state = State.SPLASH_LS;
+
+	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
+	Button buttonLogin, buttonRegister, buttonRegisterTookan;
 	
 	static boolean loginDataFetched = false;
 	boolean loginFailed = false;
+
+	EditText nameEt, phoneNoEt, referralCodeEt;
+	Button signUpBtn;
+	Spinner selectCitySp, autoNumEt, VehicleType;
+
+	TextView textViewTandC;
+	ImageView imageViewTandC;
+
+	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
+	Integer cityposition, vehiclePosition;
+	CityResponse res = new CityResponse();
+	boolean tandc = false;
+	boolean sendToOtpScreen = false;
+
+	public static JSONObject multipleCaseJSON;
+
+	ArrayList<CityResponse.VehicleType> vehicleTypes = new ArrayList<>();
+	ArrayList<CityResponse.City>newCities = new ArrayList<>();
+
+
+	public void resetFlags() {
+		sendToOtpScreen = false;
+	}
 	
 
 	// *****************************Used for flurry work***************//
@@ -173,46 +206,70 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		jugnooTextImg = (ImageView) findViewById(R.id.jugnooTextImg);
 		jugnooTextImg2 = (ImageView) findViewById(R.id.jugnooTextImg2);
 		jugnooTextImgRl.setVisibility(View.GONE);
-
-		linearLayoutAutoStatus = (LinearLayout) findViewById(R.id.linearLayoutAutoStatus);
-		linearLayoutAutoDriverConfirmation = (LinearLayout) findViewById(R.id.linearLayoutAutoDriverConfirmation);
+		relativeLayoutSignup = (RelativeLayout) findViewById(R.id.relativeLayoutSignup);
 		linearLayoutSignUpIn = (LinearLayout) findViewById(R.id.linearLayoutSignUpIn);
 
-		buttonStatusYes = (Button) findViewById(R.id.buttonStatusYes);
-		buttonStatusNo = (Button) findViewById(R.id.buttonStatusNo);
-		buttonConfirmationYes = (Button) findViewById(R.id.buttonConfirmationYes);
-		buttonConfirmationNo = (Button) findViewById(R.id.buttonConfirmationNo);
-
-		textViewConfirmationText = (TextView) findViewById(R.id.textViewConfirmationText);
-		textViewStatusText = (TextView) findViewById(R.id.textViewConfirmationText);
 		selectLanguageLl = (RelativeLayout) findViewById(R.id.selectLanguageLl);
 		spinner = (Spinner) findViewById(R.id.language_spinner);
+		relativeLayoutLS = (RelativeLayout) findViewById(R.id.relativeLayoutLS);
 
-		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-		progressBar1.setVisibility(View.GONE);
-		
+		linearLayoutLoginSignupButtons = (LinearLayout) findViewById(R.id.linearLayoutLoginSignupButtons);
+		linearLayoutLogin = (LinearLayout) findViewById(R.id.linearLayoutLogin);
+//		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+//		progressBar1.setVisibility(View.GONE);
+		viewInitLS = (ImageView) findViewById(R.id.viewInitLS);
+
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		buttonLogin.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-
+		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
+		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		buttonRegisterTookan = (Button) findViewById(R.id.buttonRegisterTookan);
 		buttonRegisterTookan.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
-		
+
+		viewInitJugnoo = (ImageView) findViewById(R.id.viewInitJugnoo);
+		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
+
 		buttonLogin.setVisibility(View.GONE);
 		buttonRegister.setVisibility(View.GONE);
 		buttonRegisterTookan.setVisibility(View.GONE);
-		
-		
+
+		nameEt = (EditText) findViewById(R.id.nameEt);
+		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		referralCodeEt = (EditText) findViewById(R.id.referralCodeEt);
+		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
+		VehicleType = (Spinner) findViewById(R.id.VehicleType);
+		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
+
+		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
+		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
+		TextView textViewTandC;
+
+		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
+		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		getCityAsync();
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
-				finish();
-				overridePendingTransition(R.anim.right_in, R.anim.right_out);
-				FlurryEventLogger.event(LOGIN);
+//				startActivity(new Intent(SplashNewActivity.this, LoginViaOTP.class));
+//				finish();
+//				overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//				FlurryEventLogger.event(LOGIN);
+				changeUIState(State.LOGIN);
+			}
+		});
+
+		textViewTandC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(SplashNewActivity.this, HelpActivity.class));
 			}
 		});
 		
@@ -220,9 +277,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			@Override
 			public void onClick(View v) {
-				linearLayoutSignUpIn.setVisibility(View.GONE);
-				linearLayoutAutoDriverConfirmation.setVisibility(View.GONE);
-				getCityAsync();
+//				linearLayoutSignUpIn.setVisibility(View.GONE);
+				changeUIState(State.SIGNUP);
 			}
 		});
 
@@ -256,33 +312,206 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
-		buttonConfirmationYes.setOnClickListener(new View.OnClickListener() {
+
+		nameEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
 			@Override
-			public void onClick(View v) {
+			public void onFocusChange(View v, boolean hasFocus) {
+				nameEt.setError(null);
 
 			}
 		});
 
-		buttonConfirmationNo.setOnClickListener(new View.OnClickListener() {
+		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				phoneNoEt.setError(null);
+			}
+		});
+
+		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				referralCodeEt.setError(null);
+			}
+		});
+
+
+		signUpBtn.setOnClickListener(new View.OnClickListener() {
+
 			@Override
 			public void onClick(View v) {
+
+				String name = nameEt.getText().toString().trim();
+				if (name.length() > 0) {
+					name = name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+				}
+				String referralCode = referralCodeEt.getText().toString().trim();
+
+//				String autoNum = autoNumEt.getText().toString().trim();
+				String phoneNo = phoneNoEt.getText().toString().trim();
+
+				if ("".equalsIgnoreCase(name)) {
+					nameEt.requestFocus();
+					nameEt.setError("Please enter name");
+				} else {
+					if ("".equalsIgnoreCase(" ")) {
+//						autoNumEt.requestFocus();
+//						autoNumEt.setError("Please enter auto number");
+					} else {
+						if ("".equalsIgnoreCase(phoneNo)) {
+							phoneNoEt.requestFocus();
+							phoneNoEt.setError("Please enter phone number");
+						} else {
+							//TODO remove extra characters phoneNo
+							phoneNo = phoneNo.replace(" ", "");
+							phoneNo = phoneNo.replace("(", "");
+							phoneNo = phoneNo.replace("/", "");
+							phoneNo = phoneNo.replace(")", "");
+							phoneNo = phoneNo.replace("N", "");
+							phoneNo = phoneNo.replace(",", "");
+							phoneNo = phoneNo.replace("*", "");
+							phoneNo = phoneNo.replace(";", "");
+							phoneNo = phoneNo.replace("#", "");
+							phoneNo = phoneNo.replace("-", "");
+							phoneNo = phoneNo.replace(".", "");
+
+							if (phoneNo.length() >= 10) {
+								phoneNo = phoneNo.substring(phoneNo.length() - 10, phoneNo.length());
+								if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+									phoneNoEt.requestFocus();
+									phoneNoEt.setError("Please enter valid phone number");
+								} else {
+									phoneNo = "+91" + phoneNo;
+									if (isPhoneValid(phoneNo)) {
+										if (cityposition != 0) {
+											if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
+												if (vehiclePosition != 0) {
+													if (true) {
+														sendSignupValues(SplashNewActivity.this, name, phoneNo, password, referralCode);
+														FlurryEventLogger.emailSignupClicked(emailId);
+													} else {
+														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
+													}
+												} else {
+													DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_type));
+												}
+											} else {
+												DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_status));
+											}
+										} else {
+											DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_city));
+										}
+
+									} else {
+										phoneNoEt.requestFocus();
+										phoneNoEt.setError("Please enter valid phone number");
+									}
+								}
+							} else {
+								phoneNoEt.requestFocus();
+								phoneNoEt.setError("Please enter valid phone number");
+							}
+						}
+
+					}
+				}
+			}
+
+		});
+
+		try {
+			if (getIntent().hasExtra("back_from_otp")) {
+				nameEt.setText(OTPConfirmScreen.emailRegisterData.name);
+				phoneNoEt.setText(OTPConfirmScreen.emailRegisterData.phoneNo);
+//				autoNumEt.setText(OTPConfirmScreen.emailRegisterData.autoNum);
+				selectCitySp.setSelection(cityposition);
+			}
+			nameEt.setSelection(nameEt.getText().length());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try{
+//			res =  (CityResponse)getIntent().getSerializableExtra("cityResponse");
+			newCities.add(res.new City(0, "Select City"));
+			selectCitySp.setAdapter(new CityArrayAdapter(this, R.layout.spinner_layout, newCities));
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
+
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
+			@Override
+			public void deviceTokenReceived(final String regId) {
+				Data.deviceToken = regId;
+				Log.e("deviceToken in IDeviceTokenReceiver", Data.deviceToken + "..");
+			}
+		});
+
+		selectCitySp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				cityposition = newCities.get(position).getCityId();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
 
 			}
 		});
 
-		buttonStatusYes.setOnClickListener(new View.OnClickListener() {
+
+
+
+		// Spinner Drop down elements
+		List<String> categories = new ArrayList<String>();
+		categories.add(getResources().getString(R.string.vehicle_status));
+		categories.add(getResources().getString(R.string.owned));
+		categories.add(getResources().getString(R.string.rented));
+
+
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+
+		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		autoNumEt.setAdapter(dataAdapter);
+
+		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
-			public void onClick(View v) {
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				vehicleStatus = parent.getItemAtPosition(position).toString();
+				Log.i("YES", "YES");
+
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+				Log.i("NO", "NO");
+			}
+		});
+
+
+
+		vehicleTypes.add(res.new VehicleType("Select Vehicle",0));
+		VehicleType.setAdapter(new VehicyleArrayAdapter(this, R.layout.spinner_layout, vehicleTypes));
+		VehicleType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				vehiclePosition = vehicleTypes.get(position).getVehicleType();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
 
 			}
 		});
 
-		buttonStatusNo.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
 
 		Data.generateKeyHash(SplashNewActivity.this);
 		
@@ -332,13 +561,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
 	}
 
 
 	
 	public void getDeviceToken(){
-	    progressBar1.setVisibility(View.VISIBLE);
+//	    progressBar1.setVisibility(View.VISIBLE);
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
@@ -367,7 +597,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					@Override
 					public void run() {
 						Data.pushyToken = regId;
-					 	checkForTokens();
+						checkForTokens();
 					}
 				});
 			}
@@ -376,7 +606,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 	private void checkForTokens(){
 		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
-			progressBar1.setVisibility(View.GONE);
+//			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
 	}
@@ -423,9 +653,126 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		super.onPause();
 		Database2.getInstance(this).close();
 	}
-	
-	
-	
+
+
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city, final String referralCode) {
+		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+			resetFlags();
+			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
+
+//			RequestParams params = new RequestParams();
+
+			if (Data.locationFetcher != null) {
+				Data.latitude = Data.locationFetcher.getLatitude();
+				Data.longitude = Data.locationFetcher.getLongitude();
+			}
+
+			HashMap<String, String> params = new HashMap<String, String>();
+			params.put("user_name", name);
+			params.put("phone_no", phoneNo);
+//			params.put("auto_num", autoNum);
+			params.put("city", String.valueOf(cityposition));
+			params.put("latitude", "" + Data.latitude);
+			params.put("longitude", "" + Data.longitude);
+			params.put("vehicle_type",""+vehiclePosition);
+			params.put("vehicle_status",vehicleStatus);
+			params.put("device_type", Data.DEVICE_TYPE);
+			params.put("device_name", Data.deviceName);
+			params.put("app_version", "" + Data.appVersion);
+			params.put("os_version", Data.osVersion);
+			params.put("country", Data.country);
+			params.put("client_id", Data.CLIENT_ID);
+			params.put("login_type", Data.LOGIN_TYPE);
+			params.put("pushy_token", Data.pushyToken);
+			params.put("referral_code", ""+referralCode);
+			params.put("device_token", Data.deviceToken);
+			params.put("unique_device_id", Data.uniqueDeviceId);
+
+			if (Utils.isDeviceRooted()) {
+				params.put("device_rooted", "1");
+			} else {
+				params.put("device_rooted", "0");
+			}
+
+			Log.i("register_using_email params", params.toString());
+
+			RestClient.getApiServices().oneTimeRegisteration(params, new Callback<RegisterScreenResponse>() {
+				@Override
+				public void success(RegisterScreenResponse registerScreenResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+
+						if (!SplashNewActivity.checkIfUpdate(jObj, activity)) {
+							int flag = jObj.getInt("flag");
+							String message = JSONParser.getServerMessage(jObj);
+
+							if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
+
+								if (ApiResponseFlags.AUTH_REGISTRATION_FAILURE.getOrdinal() == flag) {
+									DialogPopup.alertPopup(activity, "", message);
+								} else if (ApiResponseFlags.AUTH_ALREADY_REGISTERED.getOrdinal() == flag) {
+									DialogPopup.alertPopup(activity, "", message);
+								} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
+									RegisterScreenResponse data = registerScreenResponse;
+									SplashNewActivity.this.name = name;
+									SplashNewActivity.this.emailId = emailId;
+									SplashNewActivity.this.phoneNo = data.getPhoneNo();
+									SplashNewActivity.this.password = password;
+									SplashNewActivity.this.accessToken = data.getAccessToken();
+
+									sendToOtpScreen = true;
+								} else if (ApiResponseFlags.AUTH_DUPLICATE_REGISTRATION.getOrdinal() == flag) {
+
+									DialogPopup.alertPopup(activity, "", message);
+
+//									RegisterScreen.this.name = name;
+//									RegisterScreen.this.emailId = emailId;
+//									RegisterScreen.this.phoneNo = phoneNo;
+//									RegisterScreen.this.password = password;
+//									RegisterScreen.this.accessToken = "";
+//									parseDataSendToMultipleAccountsScreen(activity, jObj);
+								} else if (ApiResponseFlags.INVALID_ACCESS_TOKEN.getOrdinal() == flag) {
+									onBackPressed();
+
+								} else {
+									DialogPopup.alertPopup(activity, "", message);
+								}
+								DialogPopup.dismissLoadingDialog();
+							}
+						} else {
+							DialogPopup.dismissLoadingDialog();
+						}
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.dismissLoadingDialog();
+					}
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					DialogPopup.dismissLoadingDialog();
+					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				}
+			});
+
+
+		} else {
+			DialogPopup.alertPopup(activity, "", Data.CHECK_INTERNET_MSG);
+		}
+
+	}
+
+
+	public void sendIntentToOtpScreen() {
+		OTPConfirmScreen.intentFromRegister = true;
+		OTPConfirmScreen.emailRegisterData = new EmailRegisterData(name, emailId, phoneNo, password, accessToken, autoNum);
+		startActivity(new Intent(SplashNewActivity.this, OTPConfirmScreen.class));
+		finish();
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
+	}
 	
 	
 	boolean noNetFirstTime = false, noNetSecondTime = false;
@@ -463,7 +810,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			
 			@Override
 			public void run() {
-				progressBar1.setVisibility(View.GONE);
+//				progressBar1.setVisibility(View.GONE);
 				callFirstAttempt();
 			}
 		});
@@ -497,7 +844,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				@Override
 				public void run() {
-					progressBar1.setVisibility(View.VISIBLE);
+//					progressBar1.setVisibility(View.VISIBLE);
 				}
 			});
 	    	stopService(new Intent(context, PushPendingCallsService.class));
@@ -584,7 +931,92 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 
 
+	boolean isPhoneValid(CharSequence phone) {
+		return android.util.Patterns.PHONE.matcher(phone).matches();
+	}
 
+
+
+	public class CityArrayAdapter extends ArrayAdapter<CityResponse.City> {
+		private LayoutInflater inflater;
+		private List<CityResponse.City> data;
+		public CityArrayAdapter(Context context, int resource, List<CityResponse.City> objects) {
+			super(context, resource, objects);
+			data = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return data.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(data.get(position).getCityName());
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
+			return convertView;
+		}
+
+	}
+
+
+	public class VehicyleArrayAdapter extends ArrayAdapter<CityResponse.VehicleType> {
+		private LayoutInflater inflater;
+		private List<CityResponse.VehicleType> dataVehicle;
+		public VehicyleArrayAdapter(Context context, int resource, List<CityResponse.VehicleType> objects) {
+			super(context, resource, objects);
+			dataVehicle = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return dataVehicle.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(dataVehicle.get(position).getVehicleName());
+
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
+
+			return convertView;
+		}
+
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -780,6 +1212,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			buttonRegister.setVisibility(View.VISIBLE);
 		}
 	}
+
+
+	@Override
+	public void onBackPressed() {
+		if (State.LOGIN == state) {
+			changeUIState(State.SPLASH_LS);
+		} else if (State.SIGNUP == state) {
+			changeUIState(State.SPLASH_LS);
+		} else {
+			super.onBackPressed();
+		}
+	}
+
 
 	class AccessTokenDataParseAsync extends AsyncTask<String, Integer, String>{
 		
@@ -1003,6 +1448,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		super.onWindowFocusChanged(hasFocus);
+
+		if (hasFocus && sendToOtpScreen) {
+			sendIntentToOtpScreen();
+		}
 
 		if(hasFocus && noNetFirstTime){
 			noNetFirstTime = false;
@@ -1567,10 +2016,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					if (ApiResponseFlags.ACK_RECEIVED.getOrdinal() == cityResponse.getFlag()) {
 						String errorMessage = jObj.getString("error");
 					} else {
-						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
-						intent.putExtra("cityResponse", cityResponse);
-						startActivity(intent);
-						finish();
+						res = cityResponse;
+						vehicleTypes.clear();
+						newCities.clear();
+						vehicleTypes.addAll(res.getVehicleTypes());
+						newCities.addAll(res.getCities());
+//						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
+//						intent.putExtra("cityResponse", cityResponse);
+//						startActivity(intent);
+//						finish();
 						overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					}
 					DialogPopup.dismissLoadingDialog();
@@ -1688,5 +2142,108 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			e.printStackTrace();
 		}
 	}
+
+	private void changeUIState(State state) {
+		imageViewJugnooLogo.requestFocus();
+		relativeLayoutScrollStop.setVisibility(View.VISIBLE);
+		switch (state) {
+			case SPLASH_INIT:
+				viewInitJugnoo.setVisibility(View.VISIBLE);
+				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
+				viewInitLS.setVisibility(View.VISIBLE);
+
+				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
+
+				relativeLayoutLS.setVisibility(View.VISIBLE);
+				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
+//				linearLayoutNoNet.setVisibility(View.GONE);
+
+				linearLayoutLogin.setVisibility(View.VISIBLE);
+				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				break;
+
+			case SPLASH_LS:
+				viewInitJugnoo.setVisibility(View.GONE);
+				viewInitSplashJugnoo.setVisibility(View.GONE);
+				viewInitLS.setVisibility(View.GONE);
+
+				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
+
+				relativeLayoutLS.setVisibility(View.VISIBLE);
+				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
+//				linearLayoutNoNet.setVisibility(View.GONE);
+
+				linearLayoutLogin.setVisibility(View.VISIBLE);
+				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				break;
+
+			case SPLASH_NO_NET:
+				viewInitJugnoo.setVisibility(View.GONE);
+				viewInitSplashJugnoo.setVisibility(View.VISIBLE);
+				viewInitLS.setVisibility(View.GONE);
+
+				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
+
+				relativeLayoutLS.setVisibility(View.VISIBLE);
+				linearLayoutLoginSignupButtons.setVisibility(View.GONE);
+//				linearLayoutNoNet.setVisibility(View.VISIBLE);
+
+				linearLayoutLogin.setVisibility(View.VISIBLE);
+				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				break;
+
+			case LOGIN:
+				viewInitJugnoo.setVisibility(View.GONE);
+				viewInitSplashJugnoo.setVisibility(View.GONE);
+				viewInitLS.setVisibility(View.GONE);
+
+				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
+
+				relativeLayoutLS.setVisibility(View.GONE);
+				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
+//				linearLayoutNoNet.setVisibility(View.GONE);
+
+				linearLayoutLogin.setVisibility(View.VISIBLE);
+				relativeLayoutSignup.setVisibility(View.GONE);
+				break;
+
+			case SIGNUP:
+				viewInitJugnoo.setVisibility(View.GONE);
+				viewInitSplashJugnoo.setVisibility(View.GONE);
+				viewInitLS.setVisibility(View.GONE);
+
+				relativeLayoutJugnooLogo.setVisibility(View.GONE);
+
+				relativeLayoutLS.setVisibility(View.GONE);
+				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
+//				linearLayoutNoNet.setVisibility(View.GONE);
+
+				linearLayoutLogin.setVisibility(View.GONE);
+				relativeLayoutScrollStop.setVisibility(View.GONE);
+				relativeLayoutSignup.setVisibility(View.VISIBLE);
+//				getAllowedAuthChannels(SplashNewActivity.this);
+				break;
+
+		}
+		this.state = state;
+
+		if(State.SPLASH_INIT == state) {
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getDeviceToken();
+				}
+			}, 500);
+		}
+		else if(State.LOGIN == state){
+			// set login screen values according to intent
+//			setLoginScreenValuesOnCreate();
+		}
+		else if(State.SIGNUP == state) {
+			// set signupscreen values according to intent
+//			setSignupScreenValuesOnCreate();
+		}
+	}
+
 
 }

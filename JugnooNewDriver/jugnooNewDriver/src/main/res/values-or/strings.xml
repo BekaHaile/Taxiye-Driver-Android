@@ -685,6 +685,9 @@
     <string name="no_data">କୌଣସି ତଥ୍ୟ ନାହିଁ</string>
     <string name="web_view">ଓଏବ୍ ଦର୍ଶନ</string>
     <string name="connection_lost">ଆପଣ କନେକ୍ଟେଡ୍ ନାହାନ୍ତି!ପୁନର୍ବାର ପ୍ରୟାସ କରିବା ପାଇଁ ଟ୍ୟାପ୍ ରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
+    <string name="required">required</string>
+    <string name="login_here">Already have an driver account? Login Here</string>
+    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

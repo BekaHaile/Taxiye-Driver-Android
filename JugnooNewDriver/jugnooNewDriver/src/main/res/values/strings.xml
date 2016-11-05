@@ -48,6 +48,8 @@
 	<string name="about_2_text">Rate card</string>
 	<string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
 
+	<string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
+
 
 	<string name="email_id">Email ID</string>
     <string name="confirm_email_id">Confirm Email ID</string>
@@ -732,6 +734,9 @@
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
+	<string name="required">required</string>
+	<string name="login_here">Already have an driver account? Login Here</string>
+	<string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
 
 
 	<string-array name="CountryCodes" >
