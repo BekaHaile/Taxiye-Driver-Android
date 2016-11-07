@@ -707,6 +707,10 @@
     <string name="required">required</string>
     <string name="login_here">Already have an driver account? Login Here</string>
     <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
+    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+    <string name="driver">Driver</string>
+    <string name="register_text">
+        <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
 
 
     <string-array name="CountryCodes" >

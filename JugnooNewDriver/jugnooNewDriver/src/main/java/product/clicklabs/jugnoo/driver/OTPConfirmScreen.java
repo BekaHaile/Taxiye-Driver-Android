@@ -51,8 +51,8 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	ImageView imageViewBack;
 	TextView textViewTitle;
 
-	TextView textViewCounter, textViewOr;
-	EditText editTextOTP, phoneNoEt;
+	TextView textViewCounter, textViewOr, phoneNoEt;
+	EditText editTextOTP;
 	Button buttonVerify, backBtn;
 
 	RelativeLayout relative;
@@ -103,7 +103,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		textViewTitle = (TextView) findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Data.latoRegular(this));
 
-		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+		phoneNoEt = (TextView) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(this));
 		editTextOTP = (EditText) findViewById(R.id.otpEt);
 		editTextOTP.setTypeface(Data.latoRegular(this));
@@ -121,7 +121,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		((TextView) findViewById(R.id.textViewBtnOtpViaCall)).setTypeface(Data.latoRegular(this));
+//		((TextView) findViewById(R.id.textViewBtnOtpViaCall)).setTypeface(Data.latoRegular(this));
 		textViewOr = (TextView) findViewById(R.id.textViewOr);
 		textViewOr.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
@@ -134,13 +134,11 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			if (!(emailRegisterData == null)) {
 				if(!(emailRegisterData.phoneNo == null)) {
 					phoneNoEt.setHint(emailRegisterData.phoneNo);
-					phoneNoEt.setEnabled(false);
 					intentFromRegister=true;
 					generateOTP(emailRegisterData.phoneNo);
 				}
 			} else if(!"".equalsIgnoreCase(phoneNumberToVerify)){
 				phoneNoEt.setHint(phoneNumberToVerify);
-				phoneNoEt.setEnabled(false);
 				try {
 					textViewCounter.setText("0:30");
 					customCountDownTimer.start();
@@ -224,7 +222,6 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			@Override
 			public void onClick(View v) {
 				phoneNoEt.setHint(emailRegisterData.phoneNo);
-				phoneNoEt.setEnabled(false);
 				generateOTP(emailRegisterData.phoneNo);
 				try {
 					textViewCounter.setText("0:30");

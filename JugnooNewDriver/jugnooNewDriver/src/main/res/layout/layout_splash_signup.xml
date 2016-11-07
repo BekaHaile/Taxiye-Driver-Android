@@ -44,7 +44,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="88px"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="64px"
+                        android:layout_marginLeft="72px"
                         android:layout_toLeftOf="@+id/textViewSNameRequired"
                         android:background="#0000"
                         android:digits="@string/digits_characters_numbers"
@@ -98,12 +98,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="88px"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="64px"
+                        android:layout_marginLeft="72px"
                         android:layout_toLeftOf="@+id/textViewSEmailRequired"
                         android:background="#0000"
                         android:gravity="center_vertical"
                         android:hint="@string/phone_number"
-                        android:inputType="textEmailAddress"
+                        android:inputType="number"
+                        android:maxLength="13"
                         android:paddingLeft="20px"
                         android:paddingRight="20px"
                         android:singleLine="true"
@@ -151,7 +152,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="88px"
                         android:layout_centerVertical="true"
-                        android:layout_marginLeft="64px"
+                        android:layout_marginLeft="72px"
                         android:background="#0000"
                         android:gravity="center_vertical"
                         android:hint="@string/referral"
@@ -192,7 +193,7 @@
                         android:id="@+id/selectCitySp"
                         android:layout_width="match_parent"
                         android:layout_height="88px"
-                        android:layout_marginLeft="72px"
+                        android:layout_marginLeft="80px"
                         android:background="@drawable/transparent"
                         android:capitalize="words"
                         android:dropDownSelector="@drawable/arrow_down"
@@ -204,10 +205,10 @@
                         android:textSize="34px"/>
 
                     <ImageView
-                        android:layout_width="32px"
-                        android:layout_height="20px"
+                        android:layout_width="25px"
+                        android:layout_height="16px"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="60px"
+                        android:layout_marginRight="34px"
                         android:layout_marginTop="32px"
                         android:background="@drawable/arrow_down"/>
 
@@ -238,7 +239,7 @@
                         android:id="@+id/VehicleType"
                         android:layout_width="match_parent"
                         android:layout_height="88px"
-                        android:layout_marginLeft="72px"
+                        android:layout_marginLeft="80px"
                         android:background="@drawable/transparent"
                         android:capitalize="words"
                         android:dropDownSelector="@drawable/arrow_down"
@@ -250,10 +251,10 @@
                         android:textSize="34px"/>
 
                     <ImageView
-                        android:layout_width="32px"
-                        android:layout_height="20px"
+                        android:layout_width="25px"
+                        android:layout_height="16px"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="60px"
+                        android:layout_marginRight="34px"
                         android:layout_marginTop="32px"
                         android:background="@drawable/arrow_down"/>
 
@@ -283,7 +284,7 @@
                         android:id="@+id/autoNumEt"
                         android:layout_width="match_parent"
                         android:layout_height="88px"
-                        android:layout_marginLeft="70px"
+                        android:layout_marginLeft="78px"
                         android:background="@drawable/transparent"
                         android:capitalize="words"
                         android:dropDownSelector="@drawable/arrow_down"
@@ -295,10 +296,10 @@
                         android:textSize="34px"/>
 
                     <ImageView
-                        android:layout_width="32px"
-                        android:layout_height="20px"
+                        android:layout_width="25px"
+                        android:layout_height="16px"
                         android:layout_alignParentRight="true"
-                        android:layout_marginRight="60px"
+                        android:layout_marginRight="34px"
                         android:layout_marginTop="32px"
                         android:background="@drawable/arrow_down"/>
 
@@ -322,7 +323,7 @@
 
 
             <TextView
-                android:id="@+id/textViewSTerms"
+                android:id="@+id/textViewRegLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

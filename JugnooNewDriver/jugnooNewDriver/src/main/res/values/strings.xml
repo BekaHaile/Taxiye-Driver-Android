@@ -242,7 +242,7 @@
 
 	<string name="enter_new_phone_no">Enter New Phone Number</string>
 	<string name="enter_fare">ENTER FARE</string>
-	<string name="enter_otp">Enter One Time Password</string>
+	<string name="enter_otp">Enter OTP</string>
 	<string name="email">Email:</string>
 
 	<string name="fare1">Fare :</string>
@@ -735,8 +735,11 @@
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
 	<string name="required">required</string>
-	<string name="login_here">Already have an driver account? Login Here</string>
+	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
 	<string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
+	<string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+	<string name="driver">Driver</string>
+	<string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
 
 
 	<string-array name="CountryCodes" >

@@ -104,8 +104,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private final String TAG = SplashNewActivity.class.getSimpleName();
 
-	LinearLayout relative, linearLayoutSignUpIn,
-			linearLayoutLoginSignupButtons, linearLayoutLogin;
+	LinearLayout relative, linearLayoutSignUpIn, linearLayoutLoginSignupButtons, linearLayoutLogin;
 	RelativeLayout relativeLayoutSignup, relativeLayoutScrollStop;
 	RelativeLayout relativeLayoutJugnooLogo, relativeLayoutLS;
 
@@ -125,23 +124,20 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	private State state = State.SPLASH_LS;
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
-	Button buttonLogin, buttonRegister, buttonRegisterTookan;
+	Button buttonLogin, buttonRegister, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
 	
 	static boolean loginDataFetched = false;
-	boolean loginFailed = false;
 
-	EditText nameEt, phoneNoEt, referralCodeEt;
-	Button signUpBtn;
+	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
-	TextView textViewTandC;
-	ImageView imageViewTandC;
+	TextView textViewLoginRegister, textViewTandC, textViewRegLogin;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
 	CityResponse res = new CityResponse();
-	boolean tandc = false;
-	boolean sendToOtpScreen = false;
+	boolean tandc = false, sendToOtpScreen = false, loginFailed = false;
+
 
 	public static JSONObject multipleCaseJSON;
 
@@ -221,19 +217,25 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
 		buttonLogin.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
+		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
 		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
+		backBtn = (Button) findViewById(R.id.backBtn);
+		backBtn.setVisibility(View.GONE);
 		buttonRegisterTookan = (Button) findViewById(R.id.buttonRegisterTookan);
 		buttonRegisterTookan.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		viewInitJugnoo = (ImageView) findViewById(R.id.viewInitJugnoo);
 		viewInitSplashJugnoo = (ImageView) findViewById(R.id.viewInitSplashJugnoo);
 
-		buttonLogin.setVisibility(View.GONE);
-		buttonRegister.setVisibility(View.GONE);
+		buttonLogin.setVisibility(View.VISIBLE);
+		buttonRegister.setVisibility(View.VISIBLE);
 		buttonRegisterTookan.setVisibility(View.GONE);
 
 		nameEt = (EditText) findViewById(R.id.nameEt);
@@ -242,13 +244,22 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		phoneNoOPTEt = (EditText) findViewById(R.id.phoneNoOPTEt);
+		phoneNoOPTEt.setTypeface(Data.latoRegular(getApplicationContext()));
+
 		autoNumEt = (Spinner) findViewById(R.id.autoNumEt);
 		VehicleType = (Spinner) findViewById(R.id.VehicleType);
 		selectCitySp = (Spinner) findViewById(R.id.selectCitySp);
 
 		signUpBtn = (Button) findViewById(R.id.buttonEmailSignup);
 		signUpBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		TextView textViewTandC;
+		textViewLoginRegister = (TextView) findViewById(R.id.textViewLoginRegister);
+		textViewLoginRegister.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		textViewRegLogin = (TextView) findViewById(R.id.textViewRegLogin);
+		textViewRegLogin.setTypeface(Data.latoRegular(getApplicationContext()));
+
 
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -266,10 +277,27 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+
+
+
 		textViewTandC.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(SplashNewActivity.this, HelpActivity.class));
+			}
+		});
+
+		textViewLoginRegister.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				changeUIState(State.SIGNUP);
+			}
+		});
+
+		textViewRegLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				changeUIState(State.LOGIN);
 			}
 		});
 		
@@ -330,11 +358,26 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		phoneNoOPTEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				phoneNoOPTEt.setError(null);
+			}
+		});
+
 		referralCodeEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				referralCodeEt.setError(null);
+			}
+		});
+
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				onBackPressed();
 			}
 		});
 
@@ -420,6 +463,28 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				}
 			}
 
+		});
+
+		btnGenerateOtp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String phoneNo = phoneNoOPTEt.getText().toString().trim();
+				if ("".equalsIgnoreCase(phoneNo)) {
+					phoneNoOPTEt.requestFocus();
+					phoneNoOPTEt.setError(getResources().getString(R.string.enter_phone_number));
+
+				} else if ((Utils.validPhoneNumber(phoneNo))) {
+					phoneNoOPTEt.setEnabled(false);
+					Intent loginIntent = new Intent(SplashNewActivity.this, LoginViaOTP.class);
+					loginIntent.putExtra("phone_no",phoneNo);
+					startActivity(loginIntent);
+					finish();
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+				} else {
+					phoneNoOPTEt.requestFocus();
+					phoneNoOPTEt.setError(getResources().getString(R.string.enter_phone_number));
+				}
+			}
 		});
 
 		try {
@@ -535,6 +600,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			jugnooTextImgRl.setVisibility(View.VISIBLE);
 			noNetFirstTime = true;
 			getDeviceToken();
+			changeUIState(State.LOGIN);
 		}
 		else{
 			Animation animation = new AlphaAnimation(0, 1);
@@ -1355,6 +1421,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					}
 				}
 			});
+
+
 			
 			
 			btnOk.setOnClickListener(new View.OnClickListener() {
@@ -2160,6 +2228,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				backBtn.setVisibility(View.GONE);
 				break;
 
 			case SPLASH_LS:
@@ -2175,6 +2244,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				backBtn.setVisibility(View.GONE);
 				break;
 
 			case SPLASH_NO_NET:
@@ -2190,6 +2260,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				backBtn.setVisibility(View.GONE);
 				break;
 
 			case LOGIN:
@@ -2205,6 +2276,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.GONE);
+				backBtn.setVisibility(View.VISIBLE);
 				break;
 
 			case SIGNUP:
@@ -2221,6 +2293,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				linearLayoutLogin.setVisibility(View.GONE);
 				relativeLayoutScrollStop.setVisibility(View.GONE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
+				backBtn.setVisibility(View.VISIBLE);
 //				getAllowedAuthChannels(SplashNewActivity.this);
 				break;
 
