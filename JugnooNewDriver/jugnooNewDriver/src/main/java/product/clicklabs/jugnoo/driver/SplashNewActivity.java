@@ -652,6 +652,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	
 	public void getDeviceToken(){
 	    progressBar1.setVisibility(View.VISIBLE);
+		Data.deviceToken = "";
+		Data.pushyToken = "";
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
