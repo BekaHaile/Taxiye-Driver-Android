@@ -211,8 +211,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		linearLayoutLoginSignupButtons = (LinearLayout) findViewById(R.id.linearLayoutLoginSignupButtons);
 		linearLayoutLogin = (LinearLayout) findViewById(R.id.linearLayoutLogin);
-//		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
-//		progressBar1.setVisibility(View.GONE);
+		progressBar1 = (ProgressBar) findViewById(R.id.progressBar1);
+		progressBar1.setVisibility(View.GONE);
 		viewInitLS = (ImageView) findViewById(R.id.viewInitLS);
 
 		buttonLogin = (Button) findViewById(R.id.buttonLogin);
@@ -237,6 +237,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		buttonLogin.setVisibility(View.VISIBLE);
 		buttonRegister.setVisibility(View.VISIBLE);
 		buttonRegisterTookan.setVisibility(View.GONE);
+
+		viewInitJugnoo.setVisibility(View.VISIBLE);
+		viewInitSplashJugnoo.setVisibility(View.VISIBLE);
+		viewInitLS.setVisibility(View.VISIBLE);
 
 		nameEt = (EditText) findViewById(R.id.nameEt);
 		nameEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -264,7 +268,20 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		textViewTandC = (TextView) findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(getApplicationContext()));
 
-		getCityAsync();
+
+		try {
+			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
+			if ("".equalsIgnoreCase(accPair.first)) {
+				getCityAsync();
+				viewInitJugnoo.setVisibility(View.GONE);
+				viewInitSplashJugnoo.setVisibility(View.GONE);
+				viewInitLS.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
 		buttonLogin.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -634,7 +651,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	
 	public void getDeviceToken(){
-//	    progressBar1.setVisibility(View.VISIBLE);
+	    progressBar1.setVisibility(View.VISIBLE);
 		new DeviceTokenGenerator(SplashNewActivity.this).generateDeviceToken(SplashNewActivity.this, new IDeviceTokenReceiver() {
 
 			@Override
@@ -672,7 +689,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 	private void checkForTokens(){
 		if(!"".equalsIgnoreCase(Data.deviceToken) && !"".equalsIgnoreCase(Data.pushyToken)){
-//			progressBar1.setVisibility(View.GONE);
+			progressBar1.setVisibility(View.GONE);
 			pushAPIs(SplashNewActivity.this);
 		}
 	}
@@ -876,7 +893,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			
 			@Override
 			public void run() {
-//				progressBar1.setVisibility(View.GONE);
+				progressBar1.setVisibility(View.GONE);
 				callFirstAttempt();
 			}
 		});
@@ -910,7 +927,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 				@Override
 				public void run() {
-//					progressBar1.setVisibility(View.VISIBLE);
+					progressBar1.setVisibility(View.VISIBLE);
 				}
 			});
 	    	stopService(new Intent(context, PushPendingCallsService.class));
@@ -1127,9 +1144,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		final long responseTime = System.currentTimeMillis();
 		conf = getResources().getConfiguration();
 		if (!"".equalsIgnoreCase(accPair.first)){
-			buttonLogin.setVisibility(View.GONE);
-			buttonRegister.setVisibility(View.GONE);
-			buttonRegisterTookan.setVisibility(View.GONE);
+			linearLayoutLoginSignupButtons.setVisibility(View.GONE);
+			viewInitLS.setVisibility(View.VISIBLE);
+			viewInitSplashJugnoo.setVisibility(View.VISIBLE);
 			if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -1328,6 +1345,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				noNetSecondTime = false;
 				
 				loginDataFetched = true;
+				DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
 				
 			}
 			
@@ -1534,8 +1552,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			Intent intent = new Intent(SplashNewActivity.this, HomeActivity.class);
 			if(bundleHomePush != null)
 			intent.putExtras(bundleHomePush);
-			ActivityCompat.finishAffinity(this);
 			startActivity(intent);
+			ActivityCompat.finishAffinity(this);
 			overridePendingTransition(R.anim.right_in, R.anim.right_out);
 		}
 		else if(hasFocus && loginFailed){

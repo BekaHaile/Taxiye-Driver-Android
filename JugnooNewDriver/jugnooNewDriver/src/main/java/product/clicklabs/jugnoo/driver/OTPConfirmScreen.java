@@ -56,11 +56,11 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	Button buttonVerify, backBtn;
 
 	RelativeLayout relative;
-	ImageView imageViewYellowLoadingBar;
+	ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber;
 	LinearLayout layoutResendOtp, btnReGenerateOtp, btnOtpViaCall, linearLayoutWaiting;
 	String knowlarityMissedCallNumber = "";
 	String phoneNumberToVerify = "";
-
+	public static String OTP_SCREEN_OPEN = null;
 	boolean loginDataFetched = false;
 
 	public static boolean intentFromRegister = false;
@@ -126,19 +126,19 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		textViewOr.setTypeface(Data.latoRegular(this), Typeface.BOLD);
 		((TextView) findViewById(R.id.textViewbtnReGenerateOtp)).setTypeface(Data.latoRegular(this));
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
-
+		imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
 		phoneNumberToVerify = null;
 
 		try {
 			phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
 			if (!(emailRegisterData == null)) {
 				if(!(emailRegisterData.phoneNo == null)) {
-					phoneNoEt.setHint(emailRegisterData.phoneNo);
+					phoneNoEt.setText(emailRegisterData.phoneNo);
 					intentFromRegister=true;
 					generateOTP(emailRegisterData.phoneNo);
 				}
-			} else if(!"".equalsIgnoreCase(phoneNumberToVerify)){
-				phoneNoEt.setHint(phoneNumberToVerify);
+			} else if(!"".equalsIgnoreCase(phoneNumberToVerify)) {
+				phoneNoEt.setText(phoneNumberToVerify);
 				try {
 					textViewCounter.setText("0:30");
 					customCountDownTimer.start();
@@ -147,6 +147,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 					linearLayoutWaiting.setVisibility(View.GONE);
 				}
 				layoutResendOtp.setVisibility(View.GONE);
+				btnReGenerateOtp.setVisibility(View.GONE);
 				editTextOTP.setEnabled(true);
 				linearLayoutWaiting.setVisibility(View.VISIBLE);
 				knowlarityMissedCallNumber = getIntent().getStringExtra(Constants.KNOWLARITY_NO);
@@ -183,9 +184,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
 
-					if(phoneNumberToVerify == null) {
+					if (phoneNumberToVerify == null) {
 						sendSignupValues(OTPConfirmScreen.this, otpCode);
-					} else{
+					} else {
 						sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode);
 					}
 					FlurryEventLogger.otpConfirmClick(otpCode);
@@ -221,7 +222,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 			@Override
 			public void onClick(View v) {
-				phoneNoEt.setHint(emailRegisterData.phoneNo);
+				phoneNoEt.setText(emailRegisterData.phoneNo);
 				generateOTP(emailRegisterData.phoneNo);
 				try {
 					textViewCounter.setText("0:30");
@@ -247,6 +248,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 									@Override
 									public void onClick(View v) {
 										layoutResendOtp.setVisibility(View.GONE);
+										btnReGenerateOtp.setVisibility(View.GONE);
 										Utils.openCallIntent(OTPConfirmScreen.this, knowlarityMissedCallNumber);
 									}
 								},
@@ -264,6 +266,12 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			}
 		});
 
+		imageViewChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				performBackPressed();
+			}
+		});
 
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
@@ -275,7 +283,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			e.printStackTrace();
 		}
 
-
+		OTP_SCREEN_OPEN = "yes";
 		new DeviceTokenGenerator(this).generateDeviceToken(this, new IDeviceTokenReceiver() {
 
 			@Override
@@ -497,6 +505,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 								DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
 								layoutResendOtp.setVisibility(View.GONE);
+								btnReGenerateOtp.setVisibility(View.GONE);
 								editTextOTP.setEnabled(true);
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
 								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "999");
@@ -575,6 +584,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		OTP_SCREEN_OPEN = null;
 		ASSL.closeActivity(relative);
 		System.gc();
 	}
@@ -622,6 +632,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 			} else {
 				btnOtpViaCall.setVisibility(View.VISIBLE);
 				textViewOr.setVisibility(View.VISIBLE);
+				btnReGenerateOtp.setVisibility(View.VISIBLE);
 			}
 			layoutResendOtp.setVisibility(View.VISIBLE);
 		}

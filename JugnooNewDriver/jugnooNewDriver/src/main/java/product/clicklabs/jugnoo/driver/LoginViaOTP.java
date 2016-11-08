@@ -70,6 +70,8 @@ public class LoginViaOTP extends BaseActivity {
 	public static String OTP_SCREEN_OPEN = null;
 	List<String> categories = new ArrayList<>();
 	String phoneNo;
+
+
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
 
 	String enteredEmail = "";

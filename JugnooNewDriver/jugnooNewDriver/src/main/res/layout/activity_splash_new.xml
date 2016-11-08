@@ -72,14 +72,14 @@
     <ImageView
         android:id="@+id/viewInitJugnoo"
         android:layout_width="match_parent"
-        android:layout_height="140px"
-        android:visibility="gone"/>
+        android:layout_height="40px"
+        android:visibility="visible"/>
 
     <ImageView
         android:id="@+id/viewInitSplashJugnoo"
         android:layout_width="match_parent"
         android:layout_height="200px"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 
     <RelativeLayout
@@ -121,13 +121,14 @@
 
         </RelativeLayout>
 
-        <!--<ProgressBar-->
-        <!--android:id="@+id/progressBar1"-->
-        <!--android:layout_width="100px"-->
-        <!--android:layout_height="100px"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginTop="760px"-->
-        <!--/>-->
+        <ProgressBar
+        android:id="@+id/progressBar1"
+        android:layout_width="100px"
+        android:layout_height="100px"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="760px"
+        android:visibility="gone"
+        />
 
     </RelativeLayout>
 
@@ -136,7 +137,7 @@
         android:id="@+id/viewInitLS"
         android:layout_width="match_parent"
         android:layout_height="300px"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 
     <RelativeLayout
