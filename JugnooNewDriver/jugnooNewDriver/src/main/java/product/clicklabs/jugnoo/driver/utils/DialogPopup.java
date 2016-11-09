@@ -842,8 +842,13 @@ public class DialogPopup {
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					//DialogPopup.dismissAlertPopup();
-					dialog.dismiss();
+					try {
+						if(dialog!= null && dialog.isShowing()) {
+							dialog.dismiss();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}, timeToDismiss);
 		} catch (Exception e) {

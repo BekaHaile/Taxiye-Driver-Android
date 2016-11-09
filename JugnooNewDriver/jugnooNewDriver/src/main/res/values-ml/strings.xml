@@ -513,13 +513,12 @@
     <string name="start_the_delivery">റൈഡ് ആരംഭിക്കുക</string>
     <string name="deliver_order_number">ഡെലിവറി ചെയ്യേണ്ട ഓർഡർ നമ്പ %s</string>
     <string name="all_orders_have_been_delivered">എല്ലാ ഡെലിവറികളും എത്തിച്ചു </string>
-    <string name="to_no_colon">To</string>
+
     <string name="no_deliveries_pending">ഡെലിവറികൾ എല്ലാം പൂർത്തിയായി</string>
     <string name="no_deliveries_completed">ഡെലിവറികൾ ഒന്നും പൂർത്തിയായില്ല</string>
     <string name="cash_collected">ക്യാഷ് ശേഖരിച്ചു</string>
-    <string name="auto">Auto</string>
 
-    <string name="s_no">S.No.</string>
+
     <string name="order_no">ഓർഡർ നമ്പർ</string>
     <string name="details">വിവരങ്ങൾ</string>
     <string name="present_near_delivery_location">ഈ ഓർഡർ ഡെലിവറി ചെയ്തു എന്ന്  അടയാളപ്പെടുത്താൻ താങ്കൾ ഡെലിവറി സ്ഥലത്തിനടുത്ത് ഉണ്ടായിരിക്കണം.</string>
@@ -528,11 +527,6 @@
     <string name="delivery_fare">ഡെലിവറിയുടെ ചിലവ്</string>
     <string name="return_subsidy">മടങ്ങി വരവിനുള്ള സബ്സിഡി</string>
     <string name="return_distance">റിട്ടേൺ ദൂരം</string>
-    <string name="delivery_details">DELIVERY DETAILS</string>
-    <string name="please_drop_customer">Please drop %s</string>
-    <string name="please_reach_customer_location">Please reach %s\'s location</string>
-    <string name="please_start_customer_ride">Please start %s\'s ride</string>
-    <string name="uploading">Uploading</string>
 
     <string name="vehicle_status">വാഹനത്തിന്റെ  നില</string>
     <string name="rented">വാടക</string>
@@ -584,20 +578,8 @@
     <string name="total_amount">ഫൈനൽ ഇൻവോയ്സ് തുക</string>
     <string name="this_week">ഈ ആഴ്ച</string>
     <string name="outstanding_amount1">കുടിശ്ശിക ക്രമീകരിച്ചു</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
-    <string name="payment_sent">Payment Sent</string>
-    <string name="estimated_payout">ESTIMATED PAYOUT</string>
-    <string name="this_week_cap">THIS WEEK</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
+
+
     <string name="upload_again">വീണ്ടും അപ്ലോഡുചെയ്യുക</string>
     <string name="self_enroled">സ്വയം എൻറോൾ ചെയ്‌തത്‌ </string>
     <string name="register_via_agent">ഏജൻറ് വഴി രജിസ്റ്റർ ചെയ്യുക</string>
@@ -635,6 +617,33 @@
     <string name="please_submit">ദയവായി സമർപ്പിക്കുക </string>
     <string name="cancel_audit">ഓഡിറ്റ് ക്യാൻസൽ ചെയ്യണം എന്ന് താക്കൾക്ക് ഉറപ്പാണോ?</string>
     <string name="image_upload_failed">ചിത്രം അപ്‌ലോഡ് ചെയ്യാൻ സാധിച്ചില്ല, ദയവായി ഒരിക്കൽകൂടി ശ്രെമിക്കുക.  </string>
+
+
+    <string name="to_no_colon">To</string>
+    <string name="auto">Auto</string>
+    <string name="s_no">S.No.</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="please_reach_customer_location">Please reach %s\'s location</string>
+    <string name="please_start_customer_ride">Please start %s\'s ride</string>
+    <string name="uploading">Uploading</string>
+
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
+    <string name="estimated_payout">ESTIMATED PAYOUT</string>
+    <string name="this_week_cap">THIS WEEK</string>
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+
+
     <string name="estimated_payout_lower">Estimated Payout</string>
     <string name="bank_deposite">Bank Deposite</string>
     <string name="trips">Trips</string>

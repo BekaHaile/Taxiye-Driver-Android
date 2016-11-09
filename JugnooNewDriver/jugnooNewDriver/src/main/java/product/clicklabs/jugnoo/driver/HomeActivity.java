@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Shader;
 import android.graphics.Typeface;
@@ -1198,15 +1199,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-			relativeLayoutSharingRides.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					startActivity(new Intent(HomeActivity.this, SharingRidesActivity.class));
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					FlurryEventLogger.event(SHARING_RIDES_OPENED);
-				}
-			});
-
 			logoutRl.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -1358,8 +1350,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 													CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 													double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
+													double actualDispalcement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
 
-													if (displacement <= DRIVER_START_RIDE_CHECK_METERS) {
+													if (displacement <= DRIVER_START_RIDE_CHECK_METERS || actualDispalcement <= DRIVER_START_RIDE_CHECK_METERS) {
 														buildAlertMessageNoGps();
 														GCMIntentService.clearNotifications(activity);
 														driverMarkArriveRideAsync(activity, driverAtPickupLatLng, customerInfo);
@@ -1955,33 +1948,37 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void updateInfoTileListData(String message, boolean errorOccurred) {
-		if (errorOccurred) {
-//			DialogPopup.alertPopup(HomeActivity.this, "", message);
-			infoTileResponses.clear();
-			infoTilesAdapter.notifyDataSetChanged();
-			linearLayoutSlidingBottom.setVisibility(View.GONE);
-		} else {
-			if(infoTileResponses.size() ==0){
+		try {
+			if (errorOccurred) {
+	//			DialogPopup.alertPopup(HomeActivity.this, "", message);
+				infoTileResponses.clear();
+				infoTilesAdapter.notifyDataSetChanged();
 				linearLayoutSlidingBottom.setVisibility(View.GONE);
-			}
-
-			try {
-				LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
-
-				if(tileCount > 0 && tileCount <=1){
-					params.height = tileCount * (int)(310f * ASSL.Yscale());
-				} else if (tileCount >= 2 && tileCount <3){
-					params.height = tileCount * (int)(280f * ASSL.Yscale());
-				} else if (tileCount >= 3 && tileCount <4){
-					params.height = tileCount * (int)(272f * ASSL.Yscale());
-				} else {
-					params.height = (int)(980f * ASSL.Yscale());
+			} else {
+				if(infoTileResponses.size() ==0){
+					linearLayoutSlidingBottom.setVisibility(View.GONE);
 				}
-				linearLayoutSlidingBottom.setLayoutParams(params);
-			} catch (Exception e) {
-				e.printStackTrace();
+
+				try {
+					LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
+
+					if(tileCount > 0 && tileCount <=1){
+						params.height = tileCount * (int)(310f * ASSL.Yscale());
+					} else if (tileCount >= 2 && tileCount <3){
+						params.height = tileCount * (int)(280f * ASSL.Yscale());
+					} else if (tileCount >= 3 && tileCount <4){
+						params.height = tileCount * (int)(272f * ASSL.Yscale());
+					} else {
+						params.height = (int)(980f * ASSL.Yscale());
+					}
+					linearLayoutSlidingBottom.setLayoutParams(params);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				infoTilesAdapter.notifyDataSetChanged();
 			}
-			infoTilesAdapter.notifyDataSetChanged();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -2961,7 +2958,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			try {
 				startRideAlarmHandler.removeCallbacks(startRideAlarmRunnalble);
 				stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
-				SoundMediaPlayer.stopSound();
+//				SoundMediaPlayer.stopSound();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -3019,6 +3016,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 					cancelTimerPathRerouting();
+					SoundMediaPlayer.stopSound();
 					try {
 
 
@@ -5703,9 +5701,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						dialog.dismiss();
 						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
 						double displacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getRequestlLatLng());
+						double actualDisplacement = MapUtils.distance(driverAtPickupLatLng, customerInfo.getCurrentLatLng());
 
 						if (customerInfo.getIsDelivery() == 1
-								|| displacement <= DRIVER_START_RIDE_CHECK_METERS) {
+								|| displacement <= DRIVER_START_RIDE_CHECK_METERS
+								|| actualDisplacement <= DRIVER_START_RIDE_CHECK_METERS) {
 							buildAlertMessageNoGps();
 
 							GCMIntentService.clearNotifications(activity);
@@ -6117,8 +6117,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showAllRideRequestsOnMap();
-					drawerLayout.closeDrawer(GravityCompat.START);
 					try {
+						drawerLayout.closeDrawer(GravityCompat.START);
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + Data.getAssignedCustomerInfosListForStatus(
 								EngagementStatus.REQUESTED.getOrdinal()).size(),null);
 					} catch (Exception e) {
@@ -6435,7 +6435,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	protected void onStop() {
 		super.onStop();
 		FlurryAgent.onEndSession(this);
-		mGoogleApiClient.disconnect();
+		try {
+			mGoogleApiClient.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -7374,19 +7378,23 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	private void setEndRideButtonState(boolean isDefault){
-		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverEndRideBtn.getLayoutParams();
-		if(isDefault) {
-			params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
-			params.leftMargin = 0;
-			params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-			driverEndRideBtn.setLayoutParams(params);
-			driverEndRideBtn.setBackgroundResource(R.drawable.menu_black_btn_selector);
-		} else{
-			params.width = (int) (getResources().getDimension(R.dimen.button_width_big_extra) * ASSL.Xscale());
-			params.leftMargin = (int) (30f * ASSL.Xscale());
-			params.removeRule(RelativeLayout.CENTER_HORIZONTAL);
-			driverEndRideBtn.setLayoutParams(params);
-			driverEndRideBtn.setBackgroundResource(R.drawable.orange_btn_selector);
+		try {
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverEndRideBtn.getLayoutParams();
+			if(isDefault) {
+				params.width = (int) (getResources().getDimension(R.dimen.button_width_big) * ASSL.Xscale());
+				params.leftMargin = 0;
+				params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+				driverEndRideBtn.setLayoutParams(params);
+				driverEndRideBtn.setBackgroundResource(R.drawable.menu_black_btn_selector);
+			} else{
+				params.width = (int) (getResources().getDimension(R.dimen.button_width_big_extra) * ASSL.Xscale());
+				params.leftMargin = (int) (30f * ASSL.Xscale());
+				params.addRule(RelativeLayout.CENTER_HORIZONTAL, 0);
+				driverEndRideBtn.setLayoutParams(params);
+				driverEndRideBtn.setBackgroundResource(R.drawable.orange_btn_selector);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -7983,6 +7991,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(map != null && currentCustomerLocMarker != null){
 						LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
 						currentCustomerLocMarker.setPosition(currentLAtLng);
+						Data.getCurrentCustomerInfo().setCurrentLatLng(currentLAtLng);
 					}
 				}
 			});

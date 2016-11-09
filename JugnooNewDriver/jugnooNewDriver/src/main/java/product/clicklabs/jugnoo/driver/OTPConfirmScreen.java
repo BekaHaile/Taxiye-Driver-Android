@@ -185,9 +185,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 				String otpCode = editTextOTP.getText().toString().trim();
 				if (otpCode.length() > 0) {
 
-					if(phoneNumberToVerify == null) {
+					if (phoneNumberToVerify == null) {
 						sendSignupValues(OTPConfirmScreen.this, otpCode);
-					} else{
+					} else {
 						sendSignupValuesToEdit(OTPConfirmScreen.this, phoneNumberToVerify, otpCode);
 					}
 					FlurryEventLogger.otpConfirmClick(otpCode);
@@ -223,15 +223,19 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 			@Override
 			public void onClick(View v) {
-				phoneNoEt.setHint(emailRegisterData.phoneNo);
-				phoneNoEt.setEnabled(false);
-				generateOTP(emailRegisterData.phoneNo);
 				try {
-					textViewCounter.setText("0:30");
-					customCountDownTimer.start();
+					phoneNoEt.setHint(emailRegisterData.phoneNo);
+					phoneNoEt.setEnabled(false);
+					generateOTP(emailRegisterData.phoneNo);
+					try {
+						textViewCounter.setText("0:30");
+						customCountDownTimer.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+						linearLayoutWaiting.setVisibility(View.GONE);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					linearLayoutWaiting.setVisibility(View.GONE);
 				}
 			}
 		});
