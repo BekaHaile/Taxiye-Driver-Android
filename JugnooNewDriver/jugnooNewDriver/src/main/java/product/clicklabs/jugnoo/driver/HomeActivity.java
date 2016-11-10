@@ -7303,7 +7303,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				customerSwitcher.updateList();
+				try {
+					customerSwitcher.updateList();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
