@@ -3017,6 +3017,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					cancelTimerPathRerouting();
 					SoundMediaPlayer.stopSound();
+					Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
 					try {
 
 
@@ -3103,6 +3104,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LATITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().latitude));
 					Prefs.with(HomeActivity.this).save(Constants.KEY_PICKUP_LONGITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getRequestlLatLng().longitude));
+					Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getCurrentLatLng().latitude));
+					Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getCurrentLatLng().longitude));
 
 					try {
 						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
@@ -3207,7 +3210,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() != 1) {
 //						playStartRideAlarm = true;
 //						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
-						if(!Utils.isServiceRunning(HomeActivity.this, StartRideLocationUpdateService.class) && !Prefs.with(this).getBoolean(Constants.START_RIDE_ALARM_SERVICE_STATUS, false)) {
+						boolean startRideAlarmStatus = Prefs.with(this).getBoolean(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
+						if(!Utils.isServiceRunning(HomeActivity.this, StartRideLocationUpdateService.class) && !startRideAlarmStatus) {
 							Prefs.with(this).save(Constants.FLAG_REACHED_PICKUP, false);
 							Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM, true);
 							Prefs.with(this).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
@@ -3234,7 +3238,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
-
+					Prefs.with(this).save(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
 					setPannelVisibility(false);
 					rideTimeChronometer.eclipsedTime = customerInfo.getElapsedRideTime(HomeActivity.this);
 					rideTimeChronometer.setText(Utils.getChronoTimeFromMillis(rideTimeChronometer.eclipsedTime));
@@ -7992,10 +7996,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					if(map != null && currentCustomerLocMarker != null){
-						LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
-						currentCustomerLocMarker.setPosition(currentLAtLng);
-						Data.getCurrentCustomerInfo().setCurrentLatLng(currentLAtLng);
+					try {
+						if(map != null && currentCustomerLocMarker != null){
+							LatLng currentLAtLng = new LatLng(currrentLatitude, currrentLongitude);
+							currentCustomerLocMarker.setPosition(currentLAtLng);
+							Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+							Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
+							Data.getCurrentCustomerInfo().setCurrentLatLng(currentLAtLng);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			});

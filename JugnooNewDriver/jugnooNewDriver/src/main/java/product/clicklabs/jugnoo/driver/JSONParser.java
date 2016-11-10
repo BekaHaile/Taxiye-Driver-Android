@@ -438,6 +438,8 @@ public class JSONParser implements Constants {
 								address = jObjCustomer.optString(KEY_ADDRESS, "");
 								currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
 								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 							}
 
 
@@ -573,6 +575,8 @@ public class JSONParser implements Constants {
 
 				double currrentLatitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LATITUDE);
 				double currrentLongitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+				Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+				Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
