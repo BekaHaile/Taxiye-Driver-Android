@@ -15,8 +15,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
+import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -937,6 +939,19 @@ public class Utils {
 		int temp = (int)dp;
 		final float scale = context.getResources().getDisplayMetrics().density;
 		return Math.round(dp * scale);
+	}
+
+	public static Shader textColorGradient(Context context, TextView textView){
+		textView.measure(0, 0);
+		int mWidth = textView.getMeasuredWidth();
+		Shader shader;
+		Shader.TileMode tile_mode = Shader.TileMode.CLAMP; // or TileMode.REPEAT;
+		LinearGradient lin_grad = new LinearGradient(0, 0, (int)(mWidth/1.3), 0,
+				context.getResources().getColor(R.color.theme_color_start),
+				context.getResources().getColor(R.color.theme_color_end), tile_mode);
+		shader = lin_grad;
+
+		return shader;
 	}
 
 }

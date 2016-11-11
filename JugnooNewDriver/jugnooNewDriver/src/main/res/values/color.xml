@@ -162,5 +162,9 @@
     <color name="text_color">#2F221B</color>
     <color name="text_color_light">#992F221B</color>
 
+    <color name="theme_color_start">#FC644F</color>
+    <color name="theme_color_end">#FF9339</color>
+
+
 
 </resources>

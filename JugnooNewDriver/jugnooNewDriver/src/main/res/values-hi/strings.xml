@@ -742,6 +742,7 @@
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
+	<string name="chat">Chat</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
