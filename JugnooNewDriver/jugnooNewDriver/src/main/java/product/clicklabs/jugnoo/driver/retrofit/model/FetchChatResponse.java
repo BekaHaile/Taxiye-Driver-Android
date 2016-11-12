@@ -24,7 +24,7 @@ public class FetchChatResponse {
 	private List<ChatHistory> chatHistory = new ArrayList<ChatHistory>();
 	@SerializedName("suggestions")
 	@Expose
-	private List<Object> suggestions = new ArrayList<Object>();
+	private List<Suggestion> suggestions = new ArrayList<Suggestion>();
 	@SerializedName("status")
 	@Expose
 	private Integer status;
@@ -88,7 +88,7 @@ public class FetchChatResponse {
 	 * @return
 	 * The suggestions
 	 */
-	public List<Object> getSuggestions() {
+	public List<Suggestion> getSuggestions() {
 		return suggestions;
 	}
 
@@ -97,9 +97,10 @@ public class FetchChatResponse {
 	 * @param suggestions
 	 * The suggestions
 	 */
-	public void setSuggestions(List<Object> suggestions) {
+	public void setSuggestions(List<Suggestion> suggestions) {
 		this.suggestions = suggestions;
 	}
+
 
 	/**
 	 *
@@ -204,6 +205,54 @@ public class FetchChatResponse {
 		 */
 		public void setIsSender(Integer isSender) {
 			this.isSender = isSender;
+		}
+
+	}
+
+	public class Suggestion {
+
+		@SerializedName("suggestion_id")
+		@Expose
+		private Integer suggestionId;
+		@SerializedName("suggestion")
+		@Expose
+		private String suggestion;
+
+
+		/**
+		 *
+		 * @return
+		 * The suggestionId
+		 */
+		public Integer getSuggestionId() {
+			return suggestionId;
+		}
+
+		/**
+		 *
+		 * @param suggestionId
+		 * The suggestion_id
+		 */
+		public void setSuggestionId(Integer suggestionId) {
+			this.suggestionId = suggestionId;
+		}
+
+		/**
+		 *
+		 * @return
+		 * The suggestion
+		 */
+		public String getSuggestion() {
+			return suggestion;
+		}
+
+		/**
+		 *
+		 * @param suggestion
+		 * The suggestion
+		 */
+		public void setSuggestion(String suggestion) {
+			this.suggestion = suggestion;
 		}
 
 	}

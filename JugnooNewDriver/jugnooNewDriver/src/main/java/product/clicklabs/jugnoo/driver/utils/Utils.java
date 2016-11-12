@@ -27,6 +27,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.CallLog;
@@ -952,6 +953,18 @@ public class Utils {
 		shader = lin_grad;
 
 		return shader;
+	}
+
+	public static String getActivityName(Context context){
+		String mPackageName = "";
+		ActivityManager mActivityManager =(ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+		if(Build.VERSION.SDK_INT > 20){
+			mPackageName = mActivityManager.getRunningAppProcesses().get(0).processName;
+		}
+		else{
+			mPackageName = mActivityManager.getRunningTasks(1).get(0).topActivity.getPackageName();
+		}
+		return mPackageName;
 	}
 
 }

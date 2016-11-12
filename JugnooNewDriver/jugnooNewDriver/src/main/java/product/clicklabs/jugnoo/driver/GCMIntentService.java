@@ -26,6 +26,7 @@ import android.os.PowerManager.WakeLock;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -50,6 +51,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import product.clicklabs.jugnoo.driver.chat.ChatActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
@@ -762,6 +764,16 @@ public class GCMIntentService extends IntentService {
 								fetchDocIntent.putExtra("access_token", Database2.getInstance(this).getDLDAccessToken());
 								sendBroadcast(fetchDocIntent);
 
+							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
+								String name = Utils.getActivityName(this);
+
+								if(!name.equalsIgnoreCase(this.getPackageName())
+										|| Data.context == null || !(Data.context instanceof ChatActivity)){
+									String chatMessage = jObj.getJSONObject("message").optString("chat_message", "");
+									notificationManagerCustomID(this, title, chatMessage, PROMOTION_ID, ChatActivity.class, null);
+								} else {
+									// Nothing
+								}
 							} else if (PushFlags.SHARING_RIDE_ENDED.getOrdinal() == flag) {
 								SharingRideData sharingRideData = new SharingRideData(jObj.getString("engagement_id"),
 										jObj.getString("transaction_time"),

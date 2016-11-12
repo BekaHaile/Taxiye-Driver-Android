@@ -560,13 +560,4 @@ public interface APIServices {
 	void updateDropLatLng(@FieldMap Map<String, String> params,
 						   Callback<InfoTileResponse> callback);
 
-	@FormUrlEncoded
-	@POST("/chat/v1/fetch_chat")
-	void fetchChat(@FieldMap Map<String, String> params,
-						  Callback<FetchChatResponse> callback);
-
-	@FormUrlEncoded
-	@POST("/update_drop_latlng")
-	void postChat(@FieldMap Map<String, String> params,
-				   Callback<FetchChatResponse> callback);
 }
