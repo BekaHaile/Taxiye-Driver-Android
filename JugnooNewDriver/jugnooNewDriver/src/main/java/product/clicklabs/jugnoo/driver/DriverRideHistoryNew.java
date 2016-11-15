@@ -117,6 +117,7 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 		textViewInfoDisplay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				textViewInfoDisplay.setVisibility(View.GONE);
 				getRidesAsync(DriverRideHistoryNew.this, true);
 			}
 		});
@@ -159,9 +160,13 @@ public class DriverRideHistoryNew extends BaseFragmentActivity {
 
 	public void updateListData(String message, boolean errorOccurred) {
 		if (errorOccurred) {
-			textViewInfoDisplay.setText(message);
-			textViewInfoDisplay.setVisibility(View.VISIBLE);
-			driverRideHistoryAdapter.notifyDataSetChanged();
+			if(rideHistoryItems.size() > 0) {
+				DialogPopup.alertPopup(DriverRideHistoryNew.this,"",message);
+			} else {
+				textViewInfoDisplay.setText(message);
+				textViewInfoDisplay.setVisibility(View.VISIBLE);
+				driverRideHistoryAdapter.notifyDataSetChanged();
+			}
 		} else {
 			if(rideHistoryItems.size() > 0) {
 				driverRideHistoryAdapter.setList(rideHistoryItems, totalRides);

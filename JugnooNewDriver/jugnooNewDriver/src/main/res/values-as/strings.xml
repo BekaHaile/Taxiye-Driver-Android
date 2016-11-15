@@ -639,11 +639,11 @@
     <string name="no_data">No Data</string>
     <string name="web_view">WEB VIEW</string>
     <string name="connection_lost">Connection Loast</string>
-    <string name="pls_enter_some_msg">Please enter some issue</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="pls_enter_some_msg">অনুগ্ৰহ কৰি কিছু সমস্যা লিখক</string>
+    <string name="enter_destination">গন্তব্য স্থান লিখক</string>
+    <string name="no_results_found">একো পৰিণাম পোৱা নাই</string>
+    <string name="COD">চি অো দি</string>
+    <string name="auto_accept_message">গ্ৰাহকৰ অনুৰোধ অটমেটিকলি একচেপ্ত কৰা হৈছে</string>
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
     <string name="Reason">Reason</string>
     <string name="delivery_conf">Are you sure you want to deliver ?</string>

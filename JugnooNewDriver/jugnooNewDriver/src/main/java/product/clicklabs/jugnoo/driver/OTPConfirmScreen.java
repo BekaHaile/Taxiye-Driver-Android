@@ -222,14 +222,20 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 			@Override
 			public void onClick(View v) {
-				phoneNoEt.setText(emailRegisterData.phoneNo);
-				generateOTP(emailRegisterData.phoneNo);
+
 				try {
-					textViewCounter.setText("0:30");
-					customCountDownTimer.start();
+					phoneNoEt.setHint(emailRegisterData.phoneNo);
+					phoneNoEt.setEnabled(false);
+					generateOTP(emailRegisterData.phoneNo);
+					try {
+						textViewCounter.setText("0:30");
+						customCountDownTimer.start();
+					} catch (Exception e) {
+						e.printStackTrace();
+						linearLayoutWaiting.setVisibility(View.GONE);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-					linearLayoutWaiting.setVisibility(View.GONE);
 				}
 			}
 		});

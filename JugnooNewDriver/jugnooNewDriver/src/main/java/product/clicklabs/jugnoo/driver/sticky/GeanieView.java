@@ -42,6 +42,7 @@ public class GeanieView extends Service {
 
 		Pair<String, String> accPair = JSONParser.getAccessTokenPair(GeanieView.this);
 		if (!"".equalsIgnoreCase(accPair.first)) {
+
 			FlurryAgent.init(this, Data.FLURRY_KEY);
 			FlurryAgent.onStartSession(this, Data.FLURRY_KEY);
 			FlurryAgent.onEvent("Navigation started");

@@ -81,6 +81,8 @@ public interface Constants {
 
     String KEY_PICKUP_LATITUDE_ALARM = "pickup_latitude_alarm";
     String KEY_PICKUP_LONGITUDE_ALARM = "pickup_longitude_alarm";
+    String KEY_CURRENT_LATITUDE_ALARM = "current_latitude_alarm";
+    String KEY_CURRENT_LONGITUDE_ALARM = "current_longitude_alarm";
 
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";

@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -120,17 +121,29 @@ public class StartRideLocationUpdateService extends Service {
 				double longitude = intent.getDoubleExtra(Constants.KEY_LONGITUDE, 0);
 				Log.i(TAG, "customonReceive lat=" + latitude + ", lng=" + longitude);
 
-				double pickupLat = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_PICKUP_LATITUDE_ALARM,""));
-				double pickupLong = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_PICKUP_LONGITUDE_ALARM,""));
+				double pickupLat = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_PICKUP_LATITUDE_ALARM, ""));
+				double pickupLong = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_PICKUP_LONGITUDE_ALARM, ""));
+
+				double currentLat = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_CURRENT_LATITUDE_ALARM,""));
+				double currentLong = Double.parseDouble(Prefs.with(context).getString(Constants.KEY_CURRENT_LONGITUDE_ALARM,""));
 
 				LatLng driverONPickupLatLng = new LatLng(latitude, longitude);
 				LatLng pickupLatLng = new LatLng(pickupLat, pickupLong);
+				LatLng currentLatLng = new LatLng(currentLat, currentLong);
 
-				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance", String.valueOf(MapUtils.distance(driverONPickupLatLng, pickupLatLng)));
+				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance",
+						String.valueOf(MapUtils.distance(driverONPickupLatLng, pickupLatLng)));
+				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance",
+						String.valueOf(MapUtils.distance(driverONPickupLatLng, currentLatLng)));
+
+
+
 				if (Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false) && Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM_FINALLY, false)
 						&& ((int) MapUtils.distance(driverONPickupLatLng, pickupLatLng)
+						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))
+						&& ((int) MapUtils.distance(driverONPickupLatLng, currentLatLng)
 						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS_FINAL, 400))) {
-					SoundMediaPlayer.startSound(context, R.raw.start_ride_accept_beep, 100, true);
+					SoundMediaPlayer.startSound(context, R.raw.start_ride_accept_beep, 15, true);
 					if(HomeActivity.appInterruptHandler != null){
 						HomeActivity.appInterruptHandler.showStartRidePopup();
 					}
@@ -138,6 +151,8 @@ public class StartRideLocationUpdateService extends Service {
 				}
 				if (Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false) && Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM, false)
 						&& ((int)MapUtils.distance(driverONPickupLatLng, pickupLatLng)
+						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))
+						&& ((int)MapUtils.distance(driverONPickupLatLng, currentLatLng)
 						>  Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200))) {
 					SoundMediaPlayer.startSound(context, R.raw.start_ride_accept_beep, 5, true);
 					if(HomeActivity.appInterruptHandler != null){
@@ -147,10 +162,17 @@ public class StartRideLocationUpdateService extends Service {
 					Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, true);
 				}
 				if (MapUtils.distance(driverONPickupLatLng, pickupLatLng)
+						< Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)
+						|| MapUtils.distance(driverONPickupLatLng, currentLatLng)
 						< Prefs.with(context).getInt(SPLabels.START_RIDE_ALERT_RADIUS, 200)) {
 					Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, true);
+					Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, true);
 				}
 
+				boolean a = Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false);
+				boolean b = Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM, false);
+				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance",
+						String.valueOf(a) + " "+String.valueOf(b));
 
 			} catch (Exception e){
 				e.printStackTrace();

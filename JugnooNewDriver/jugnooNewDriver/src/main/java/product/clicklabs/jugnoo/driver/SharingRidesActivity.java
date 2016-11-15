@@ -109,7 +109,7 @@ public class SharingRidesActivity extends BaseActivity {
 		swipeRefreshLayoutShareRides.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 			@Override
 			public void onRefresh() {
-				getSharedRidesAsync(SharingRidesActivity.this);
+//				getSharedRidesAsync(SharingRidesActivity.this);
 			}
 		});
 
@@ -134,7 +134,7 @@ public class SharingRidesActivity extends BaseActivity {
 			@Override
 			public void run() {
 				DialogPopup.showLoadingDialog(SharingRidesActivity.this, getResources().getString(R.string.loading));
-				getSharedRidesAsync(SharingRidesActivity.this);
+//				getSharedRidesAsync(SharingRidesActivity.this);
 			}
 		});
 
@@ -165,52 +165,56 @@ public class SharingRidesActivity extends BaseActivity {
 	}
 
 	private void getSharedRidesAsync(final Activity activity) {
-		swipeRefreshLayoutShareRides.setRefreshing(true);
-		RestClient.getApiServices().getSharedRidesAsync(Data.userData.accessToken, new Callback<SharedRideResponse>() {
-			@Override
-			public void success(SharedRideResponse sharedRideResponse, Response response) {
-				try {
-					String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
-					Log.e("Shared rides jsonString", "="+jsonString);
-					JSONObject jObj;
-					jObj = new JSONObject(jsonString);
-					if (!jObj.isNull("error")) {
-						String errorMessage = jObj.getString("error");
-						if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
-							HomeActivity.logoutUser(activity);
-						} else {
-							updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-						}
-					} else {
-						sharedRides.clear();
-						String completedEngagementIds = Prefs.with(activity).getString(SPLabels.SHARING_ENGAGEMENTS_COMPLETED, "");
-						List<String> arr = Arrays.asList(completedEngagementIds.split(","));
-						for (int i = 0; i < sharedRideResponse.getBookingData().size(); i++) {
-							SharedRideResponse.BookingData data = sharedRideResponse.getBookingData().get(i);
-							SharingRideData rideInfo = new SharingRideData(data.getSharingEngagementId(), data.getTransactionTime(),
-									data.getPhoneNo(), data.getActualFare(), data.getPaidInCash(), data.getAccountBalance());
-							if(arr.contains(rideInfo.sharingEngagementId)){
-								rideInfo.completed = 1;
+		try {
+			swipeRefreshLayoutShareRides.setRefreshing(true);
+			RestClient.getApiServices().getSharedRidesAsync(Data.userData.accessToken, new Callback<SharedRideResponse>() {
+				@Override
+				public void success(SharedRideResponse sharedRideResponse, Response response) {
+					try {
+						String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+						Log.e("Shared rides jsonString", "="+jsonString);
+						JSONObject jObj;
+						jObj = new JSONObject(jsonString);
+						if (!jObj.isNull("error")) {
+							String errorMessage = jObj.getString("error");
+							if (Data.INVALID_ACCESS_TOKEN.equalsIgnoreCase(errorMessage.toLowerCase())) {
+								HomeActivity.logoutUser(activity);
+							} else {
+								updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 							}
-							sharedRides.add(rideInfo);
+						} else {
+							sharedRides.clear();
+							String completedEngagementIds = Prefs.with(activity).getString(SPLabels.SHARING_ENGAGEMENTS_COMPLETED, "");
+							List<String> arr = Arrays.asList(completedEngagementIds.split(","));
+							for (int i = 0; i < sharedRideResponse.getBookingData().size(); i++) {
+								SharedRideResponse.BookingData data = sharedRideResponse.getBookingData().get(i);
+								SharingRideData rideInfo = new SharingRideData(data.getSharingEngagementId(), data.getTransactionTime(),
+										data.getPhoneNo(), data.getActualFare(), data.getPaidInCash(), data.getAccountBalance());
+								if(arr.contains(rideInfo.sharingEngagementId)){
+									rideInfo.completed = 1;
+								}
+								sharedRides.add(rideInfo);
+							}
+							updateListData(getResources().getString(R.string.no_rides_currently), false);
 						}
-						updateListData(getResources().getString(R.string.no_rides_currently), false);
+					} catch (Exception exception) {
+						exception.printStackTrace();
+						updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 					}
-				} catch (Exception exception) {
-					exception.printStackTrace();
+					swipeRefreshLayoutShareRides.setRefreshing(false);
+					DialogPopup.dismissLoadingDialog();
+				}
+
+				@Override
+				public void failure(RetrofitError error) {
+					swipeRefreshLayoutShareRides.setRefreshing(false);
+					DialogPopup.dismissLoadingDialog();
 					updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
 				}
-				swipeRefreshLayoutShareRides.setRefreshing(false);
-				DialogPopup.dismissLoadingDialog();
-			}
-
-			@Override
-			public void failure(RetrofitError error) {
-				swipeRefreshLayoutShareRides.setRefreshing(false);
-				DialogPopup.dismissLoadingDialog();
-				updateListData(getResources().getString(R.string.error_occured_tap_to_retry), true);
-			}
-		});
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
 	}

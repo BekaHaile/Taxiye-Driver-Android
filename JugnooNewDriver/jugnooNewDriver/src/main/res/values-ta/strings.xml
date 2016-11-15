@@ -606,13 +606,6 @@
     <string name="present_near_delivery_location">இந்த ஆடர் ஒப்படைக்க பட்டது என்று உறுதி செய்வதற்கு, நீங்கள் ஒப்படைக்க வேண்டிய இடத்திற்கு அருகில் இருக்க வேண்டும் </string>"
     <string name="success">வெற்றி</string>
     <string name="outstanding_amount">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
-    <string name="delivery_fare">Delivery Fare</string>
-    <string name="return_subsidy">Return Subsidy</string>
-    <string name="return_distance">Return Distance</string>
-    <string name="delivery_details">DELIVERY DETAILS</string>
-    <string name="please_drop_customer">Please drop %s</string>
-    <string name="please_reach_customer_location">Please reach %s\'s location</string>
-    <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="uploading">பதிவேற்ற</string>
 
     <string name="vehicle_status">வாகன நிலை</string>
@@ -665,24 +658,12 @@
     <string name="total_amount">இறுதி விலைப்பட்டியல் தொகை</string>
     <string name="this_week">இந்த வாரம்</string>
     <string name="outstanding_amount1">நிலுவையில் உள்ள தொகை சரி செய்ய பட்டது </string>
-    <string name="self_enroled">Self Enroled</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
-    <string name="payment_sent">Payment Sent</string>
+
     <string name="estimated_payout">கணக்கிடப்பட்ட பணம்</string>
     <string name="this_week_cap">இந்த வாரம்</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
-    <string name="upload_Documents">பதிவேற்ற ஆவணங்கள்</string>
 
-    <string name="optional_brack">(Optional)</string>
+
+    <string name="upload_Documents">பதிவேற்ற ஆவணங்கள்</string>
     <string name="name_cant_empty">பெயர் வெறுமையாக இருக்க முடியாது</string>
     <string name="deletion_confirmation">நீங்கள் படத்தை நீக்க வேண்டும் என்று உறுதியாக இருக்கிறீர்களா?</string>
 
@@ -749,6 +730,30 @@
     <string name="web_view">இணையதள காட்சி </string>
     <string name="connection_lost">நீங்கள் தொடர்பில்  இல்லை. மீண்டும் முயற்சிக்க, இங்கே தட்டவும்.</string>
     <string name="pls_enter_some_msg">தயவு செய்து பிரச்சினை நுழைக்க</string>
+
+    <string name="self_enroled">Self Enroled</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
+    <string name="delivery_fare">Delivery Fare</string>
+    <string name="return_subsidy">Return Subsidy</string>
+    <string name="return_distance">Return Distance</string>
+    <string name="delivery_details">DELIVERY DETAILS</string>
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="please_reach_customer_location">Please reach %s\'s location</string>
+    <string name="please_start_customer_ride">Please start %s\'s ride</string>
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+
+    <string name="optional_brack">(Optional)</string>
+
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
     <string name="Reason">Reason</string>
     <string name="delivery_conf">Are you sure you want to deliver ?</string>

@@ -588,27 +588,9 @@
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
 
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
-    <string name="payment_sent">Payment Sent</string>
+
     <string name="estimated_payout">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
     <string name="this_week_cap">ଏଇ ସପ୍ତାହ</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
-    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
-    <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
-    <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
 
 
     <string name="upload_again">ଆଉଥରେ ଅପ୍-ଲୋଡ୍ କରନ୍ତୁ</string>
@@ -641,25 +623,8 @@
     <string name="cancel_audit">ଆପଣ ନିସ୍ଚିତ ଅଛନ୍ତି କି ଯାଂଚ୍ କ୍ୟାନ୍-ସଲ୍ କରିବା ପାଇଁ</string>
     <string name="image_upload_failed">ଫଟୋ ଅପ୍-ଲୋଡ୍ ଫେଲ୍, ପୁଣିଥରେ ଚେସ୍ଟା କରନ୍ତୁ</string>
     <string name="earnings_caps">ରୋଜଗାର</string>
-    <string name="pls_enter_some_msg">Please enter some issue</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
-    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
-    <string name="Reason">Reason</string>
-    <string name="delivery_conf">Are you sure you want to deliver ?</string>
-    <string name="failed">Failed</string>
-    <string name="cash_deposite_conf">Have you deposited cash ?</string>
-    <string name="total">Total</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="return_to_merchant">Return to the Merchant</string>
-    <string name="deposite_cash">Have you deposited cash?</string>
-    <string name="deposite_cash_1">Deposit cash</string>
-    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-    <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
-    <string name="fail">Fail</string>
+
+
 
     <string name="estimated_payout_lower">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
     <string name="bank_deposite">ବ୍ୟାଂକ୍ ଜମା</string>
@@ -692,6 +657,48 @@
     <string name="driver">Driver</string>
     <string name="register_text">
         <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
+
+
+    <string name="self_enroled">Self Enroled</string>
+    <string name="upload_Documents">Upload Documents</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
+
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
+    <string name="optional_brack">(Optional)</string>
+    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+    <string name="pls_enter_some_msg">Please enter some issue</string>
+    <string name="enter_destination">Enter Destination</string>
+    <string name="no_results_found">No Result Found</string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="Reason">Reason</string>
+    <string name="delivery_conf">Are you sure you want to deliver ?</string>
+    <string name="failed">Failed</string>
+    <string name="cash_deposite_conf">Have you deposited cash ?</string>
+    <string name="total">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="return_to_merchant">Return to the Merchant</string>
+    <string name="deposite_cash">Have you deposited cash?</string>
+    <string name="deposite_cash_1">Deposit cash</string>
+    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+    <string name="submit_small">Submit</string>
+    <string name="total_cash_collected">Total cash collected</string>
+    <string name="fail">Fail</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
