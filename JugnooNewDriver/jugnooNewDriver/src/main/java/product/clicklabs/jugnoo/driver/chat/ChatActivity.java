@@ -107,7 +107,11 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		chatSuggestionAdapter = new ChatSuggestionAdapter(this, chatSuggestions,  new ChatSuggestionAdapter.Callback() {
 			@Override
 			public void onSuggestionClick(int position, FetchChatResponse.Suggestion suggestion) {
-
+				if(suggestion.getSuggestionId() != null) {
+					sendChat(suggestion.getSuggestion(), suggestion.getSuggestionId());
+				}else {
+					sendChat(suggestion.getSuggestion(), -1);
+				}
 			}
 		});
 		recyclerViewChatOptions.setAdapter(chatSuggestionAdapter);
@@ -116,7 +120,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_DONE) {
-					sendChat();
+					if(input.getText().length() >0) {
+						sendChat(input.getText().toString().trim(), -1);
+					}
 					return true;
 				}
 				return false;
@@ -164,7 +170,9 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 				performBackPressed();
 				break;
 			case R.id.action_send:
-				sendChat();
+				if(input.getText().length() >0) {
+					sendChat(input.getText().toString().trim(), -1);
+				}
 				break;
 
 		}
@@ -200,9 +208,8 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
 
 	// sends the message to server and display it
-	private void sendChat() {
+	private void sendChat(String inputText, int id) {
 		//hideKeyboard(input);
-		String inputText = input.getText().toString().trim();
 		Calendar time = Calendar.getInstance();
 		try {
 			if (!(inputText.isEmpty())) {
@@ -218,7 +225,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
 				// scroll to the last message
 				recyclerViewChat.scrollToPosition(position);
-				postChat(ChatActivity.this, inputText);
+				postChat(ChatActivity.this, inputText, id);
 				input.setText("");
 			}
 		} catch (Exception e) {
@@ -304,7 +311,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void postChat(final Activity activity, final String message) {
+    private void postChat(final Activity activity, final String message, final int id) {
 
         try {
             if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
@@ -313,6 +320,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 params.put("login_type", "1");
                 params.put("engagement_id", Data.getCurrentEngagementId());
                 params.put("message", message);
+				params.put("suggestion_id", ""+id);
 
                 RestClient.getChatAckApiServices().postChat(params, new Callback<FetchChatResponse>() {
 					@Override
@@ -327,7 +335,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-								if(handler != null && loadDiscussion != null) {
+								if (handler != null && loadDiscussion != null) {
 									handler.removeCallbacks(loadDiscussion);
 								}
 								fetchChat(ChatActivity.this);

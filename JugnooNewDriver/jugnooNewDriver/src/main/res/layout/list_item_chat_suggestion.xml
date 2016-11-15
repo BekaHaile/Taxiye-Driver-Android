@@ -4,9 +4,7 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:orientation="vertical"
-              android:background="@drawable/white_bg"
               android:padding="4px"
-              android:layout_marginLeft="24px"
               android:splitMotionEvents="false">
 
     <LinearLayout
@@ -14,7 +12,14 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_white_more_rounded_black_bordered"
         android:orientation="vertical"
-        android:padding="20px"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="9px"
+        android:layout_marginRight="9px"
+        android:paddingLeft="22px"
+        android:paddingRight="22px"
+        android:paddingTop="12px"
+        android:paddingBottom="14px"
         android:splitMotionEvents="false" >
 
         <TextView
@@ -22,8 +27,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="yes"
+            android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="40px"
+            android:textSize="32px"
             />
     </LinearLayout>
 

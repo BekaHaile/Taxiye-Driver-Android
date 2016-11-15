@@ -64,7 +64,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				chatViewHolder.layoutMe.setVisibility(View.VISIBLE);
 
 				chatViewHolder.chatTextMe.setText(chatHistory.getMessage());
-				chatViewHolder.chatTimeMe.setText(chatHistory.getCreatedAt());
+				chatViewHolder.chatTimeMe.setText(DateOperations.utcToLocalTZ(chatHistory.getCreatedAt()));
 			/*Picasso.with(context).
 					load(chat.getImage()).
 					transform(new CircleTransform()).
@@ -74,7 +74,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				chatViewHolder.layoutMe.setVisibility(View.GONE);
 
 				chatViewHolder.chatTextYou.setText(chatHistory.getMessage());
-				chatViewHolder.chatTimeYou.setText(chatHistory.getCreatedAt());
+				chatViewHolder.chatTimeYou.setText(DateOperations.utcToLocalTZ(chatHistory.getCreatedAt()));
 				if(!"".equalsIgnoreCase(Data.userData.userImage)) {
 					float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
 					Picasso.with(context).

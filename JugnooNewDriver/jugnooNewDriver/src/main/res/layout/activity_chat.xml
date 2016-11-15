@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/relative"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/chat_background">
 
     <RelativeLayout
         android:id="@+id/topBar"
@@ -32,7 +33,10 @@
         android:id="@+id/recyclerViewChatOptions"
         android:layout_width="match_parent"
         android:layout_above="@+id/rlInput"
-        android:layout_height="95px"
+        android:layout_centerVertical="true"
+        android:layout_height="80px"
+        android:layout_marginTop="18px"
+        android:layout_marginBottom="6px"
         android:splitMotionEvents="false"
         android:visibility="visible"
         />

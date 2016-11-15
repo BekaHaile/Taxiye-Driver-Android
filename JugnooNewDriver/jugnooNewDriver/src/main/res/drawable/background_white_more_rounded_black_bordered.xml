@@ -2,11 +2,11 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="rectangle" >
 
-    <solid android:color="@color/transparent"/>
+    <solid android:color="@color/chat__suggestion_background"/>
     <corners android:radius="32px"/>
     <stroke
         android:width="2px"
-        android:color="@color/black"
+        android:color="@color/black_text_v2"
         />
 
 </shape>
