@@ -22,6 +22,7 @@ import android.util.Pair;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -109,6 +111,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	RelativeLayout relativeLayoutJugnooLogo, relativeLayoutLS;
 
 	List<String> categories = new ArrayList<>();
+	List<String> vehicleStatusCategories = new ArrayList<String>();
 	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl, selectLanguageLl;
@@ -125,7 +128,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
 	Button buttonLogin, buttonRegister, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
-	
+
 	static boolean loginDataFetched = false;
 
 	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt;
@@ -367,6 +370,38 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		spinner.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				return false;
+			}
+		});
+
+		VehicleType.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				return false;
+			}
+		});
+
+		autoNumEt.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				return false;
+			}
+		});
+
+		selectCitySp.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				hideKeyboard();
+				return false;
+			}
+		});
+
 		phoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -380,6 +415,15 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onFocusChange(View v, boolean hasFocus) {
 				phoneNoOPTEt.setError(null);
+			}
+		});
+
+		phoneNoOPTEt.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
+				btnGenerateOtp.performClick();
+				return true;
 			}
 		});
 
@@ -499,7 +543,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				} else {
 					phoneNoOPTEt.requestFocus();
-					phoneNoOPTEt.setError(getResources().getString(R.string.enter_phone_number));
+					phoneNoOPTEt.setError(getResources().getString(R.string.enter_valid_phone_number));
 				}
 			}
 		});
@@ -551,18 +595,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 
 		// Spinner Drop down elements
-		List<String> categories = new ArrayList<String>();
-		categories.add(getResources().getString(R.string.vehicle_status));
-		categories.add(getResources().getString(R.string.owned));
-		categories.add(getResources().getString(R.string.rented));
+
+		vehicleStatusCategories.add(getResources().getString(R.string.vehicle_status));
+		vehicleStatusCategories.add(getResources().getString(R.string.owned));
+		vehicleStatusCategories.add(getResources().getString(R.string.rented));
 
 
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
+		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, vehicleStatusCategories);
 
 		dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-		autoNumEt.setAdapter(dataAdapter);
 
+//		autoNumEt.setAdapter(dataAdapter);
+		autoNumEt.setAdapter(new VehicleStatusArrayAdapter(this, R.layout.spinner_layout, vehicleStatusCategories));
 		autoNumEt.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -1061,6 +1106,44 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	}
 
+	public class VehicleStatusArrayAdapter extends ArrayAdapter<String> {
+		private LayoutInflater inflater;
+		private List<String> data;
+		public VehicleStatusArrayAdapter(Context context, int resource, List<String> objects) {
+			super(context, resource, objects);
+			data = objects;
+			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		}
+
+
+		@Override
+		public int getCount() {
+			return data.size();
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		@Override
+		public View getDropDownView(int position, View convertView, ViewGroup parent) {
+			return getSpinnerView(position);
+		}
+
+		View getSpinnerView(int position){
+			View convertView = inflater.inflate(R.layout.spinner_layout, null);
+
+			TextView textViewCity  = (TextView) convertView.findViewById(R.id.textViewCity);
+			textViewCity.setText(vehicleStatusCategories.get(position));
+			AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(360, 80);
+			convertView.setLayoutParams(layoutParams);
+
+			ASSL.DoMagic(convertView);
+			return convertView;
+		}
+
+	}
 
 	public class VehicyleArrayAdapter extends ArrayAdapter<CityResponse.VehicleType> {
 		private LayoutInflater inflater;
@@ -1301,13 +1384,37 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	@Override
 	public void onBackPressed() {
-		if (State.LOGIN == state) {
-			changeUIState(State.SPLASH_LS);
-		} else if (State.SIGNUP == state) {
-			changeUIState(State.SPLASH_LS);
-		} else {
-			super.onBackPressed();
+		try {
+			hideKeyboard();
+			if (State.LOGIN == state) {
+				changeUIState(State.SPLASH_LS);
+			} else if (State.SIGNUP == state) {
+				changeUIState(State.SPLASH_LS);
+
+			} else {
+				super.onBackPressed();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+
+	public void hideKeyboard(){
+		View view = this.getCurrentFocus();
+		if (view != null) {
+			InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+		}
+	}
+
+	public void resetFields(){
+		phoneNoOPTEt.setText("");
+		nameEt.setText("");
+		phoneNoEt.setText("");
+		referralCodeEt.setText("");
+		selectCitySp.setSelection(0);
+		VehicleType.setSelection(0);
+		autoNumEt.setSelection(0);
 	}
 
 
@@ -2297,6 +2404,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.GONE);
 				backBtn.setVisibility(View.VISIBLE);
+				resetFields();
 				break;
 
 			case SIGNUP:
@@ -2314,6 +2422,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				relativeLayoutScrollStop.setVisibility(View.GONE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
 				backBtn.setVisibility(View.VISIBLE);
+				resetFields();
 //				getAllowedAuthChannels(SplashNewActivity.this);
 				break;
 

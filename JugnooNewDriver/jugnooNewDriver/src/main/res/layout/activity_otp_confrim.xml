@@ -191,6 +191,7 @@
                     android:gravity="center"
                     android:hint="@string/enter_otp"
                     android:inputType="number"
+                    android:maxLength="10"
                     android:paddingLeft="20px"
                     android:paddingRight="20px"
                     android:textColor="@color/black_text_v2"
@@ -423,7 +424,7 @@
 
                 <ImageView
                     android:layout_width="35px"
-                    android:layout_height="26px"
+                    android:layout_height="34px"
                     android:layout_marginRight="16px"
                     android:src="@drawable/miss_call_icon"
                     android:tag="mwar" />
