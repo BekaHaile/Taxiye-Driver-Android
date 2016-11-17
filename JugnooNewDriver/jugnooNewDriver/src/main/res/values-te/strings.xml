@@ -695,6 +695,7 @@
     <string name="no_data">సమాచారం లేదు</string>
     <string name="web_view">వెబ్ వీక్షణ</string>
     <string name="connection_lost">మీరు కనెక్ట్ కాలేదు. మళ్లీ ప్రయత్నించడానికి ఇక్కడ నొక్కండి.</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
     <string name="upload_again">Upload Again</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>

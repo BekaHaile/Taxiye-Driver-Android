@@ -690,6 +690,7 @@
     <string name="upload_Documents"> દસ્તાવેજો અપલોડ કરો</string>
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

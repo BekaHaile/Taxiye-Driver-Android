@@ -40,6 +40,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -321,8 +323,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom,
-			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination;
-	View viewRefreshUSLBar;
+			relativeLayoutRefreshUSLBar, relativeLayoutBatteryLow, relativeLayoutEnterDestination;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
 			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
@@ -822,7 +823,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewSliderView = (ImageView)findViewById(R.id.imageViewSliderView);
 
 			relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
-			viewRefreshUSLBar = findViewById(R.id.viewRefreshUSLBar);
+			relativeLayoutBatteryLow = (RelativeLayout) findViewById(R.id.relativeLayoutBatteryLow);
+
 			textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
 			progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
 
@@ -1739,6 +1741,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
 			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
+			HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
+			HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
 
 
 			new Handler().postDelayed(new Runnable() {
@@ -1815,6 +1819,30 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showRefreshUSLBar();
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverLowBattery = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showLowBatteryAlert(true);
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverIsCharging = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showLowBatteryAlert(false);
 				}
 			});
 		}
@@ -2008,11 +2036,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode
 					&& Prefs.with(HomeActivity.this).getBoolean(SPLabels.GET_USL_STATUS, false)) {
 
-				viewRefreshUSLBar.setVisibility(View.VISIBLE);
 				textViewRetryUSL.setVisibility(View.VISIBLE);
 				progressBarUSL.setVisibility(View.GONE);
+				if(relativeLayoutRefreshUSLBar.getVisibility() == View.GONE) {
+					relativeLayoutRefreshUSLBar.setVisibility(View.VISIBLE);
+					Animation animation = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+					relativeLayoutRefreshUSLBar.startAnimation(animation);
+				}
 			} else {
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void showLowBatteryAlert(boolean visibility){
+		try {
+			if(visibility) {
+				if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode
+						&& Utils.isBatteryChargingNew(HomeActivity.this) == 0
+						&& Double.parseDouble(Utils.getActualBatteryPer(HomeActivity.this)) < 20d) {
+					if(relativeLayoutBatteryLow.getVisibility() == View.GONE) {
+						relativeLayoutBatteryLow.setVisibility(View.VISIBLE);
+						Animation animation = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+						relativeLayoutBatteryLow.startAnimation(animation);
+					}
+				} else {
+					relativeLayoutBatteryLow.setVisibility(View.GONE);
+				}
+			} else {
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2996,6 +3051,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					showDriverEarning();
 					showRefreshUSLBar();
+					showLowBatteryAlert(true);
 
 					try {
 						if (timer != null) {
@@ -3367,7 +3423,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 			if(DriverScreenMode.D_INITIAL != mode){
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
+
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 				driverInformationBtn.setVisibility(View.GONE);
 			}
@@ -3752,7 +3810,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Database2.getInstance(this).close();
 			unregisterReceiver(broadcastReceiver);
 			unregisterReceiver(broadcastReceiverUSL);
-
+			unregisterReceiver(broadcastReceiverLowBattery);
+			unregisterReceiver(broadcastReceiverIsCharging);
 
 			System.gc();
 		} catch (Exception e) {
@@ -3976,7 +4035,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
@@ -3985,6 +4045,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				showDriverEarning();
 				showRefreshUSLBar();
+				showLowBatteryAlert(true);
 			}
 		}
 

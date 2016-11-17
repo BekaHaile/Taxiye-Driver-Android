@@ -728,7 +728,6 @@
 	<string name="cash_deposite_conf">Have you deposited cash ?</string>
 	<string name="total">Total</string>
 
-
 	<string name="order_summary">ऑर्डर सारांश</string>
 	<string name="return_to_merchant">मर्चेंट पर लौटें</string>
 	<string name="deposite_cash">क्या आपने नकदी जमा कर दिया है?</string>
@@ -752,7 +751,7 @@
 	<string name="upload_Documents">अपलोड दस्तावेज</string>
 	<string name="spinner_owned">Owned</string>
 	<string name="spinner_rented">Rented</string>
-
+	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>
