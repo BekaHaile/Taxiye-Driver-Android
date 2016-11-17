@@ -20,7 +20,7 @@
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
-
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
 
@@ -588,27 +588,9 @@
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
 
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
-    <string name="payment_sent">Payment Sent</string>
-    <string name="estimated_payout">ESTIMATED PAYOUT</string>
-    <string name="this_week_cap">THIS WEEK</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
-    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
-    <string name="optional_brack">(Optional)</string>
-    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
-    <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
+    <string name="estimated_payout">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
+    <string name="this_week_cap">ଏଇ ସପ୍ତାହ</string>
 
 
     <string name="upload_again">ଆଉଥରେ ଅପ୍-ଲୋଡ୍ କରନ୍ତୁ</string>
@@ -640,36 +622,85 @@
     <string name="please_submit">ଦୟାକରି ଦାଖଲ କରନ୍ତୁ</string>
     <string name="cancel_audit">ଆପଣ ନିସ୍ଚିତ ଅଛନ୍ତି କି ଯାଂଚ୍ କ୍ୟାନ୍-ସଲ୍ କରିବା ପାଇଁ</string>
     <string name="image_upload_failed">ଫଟୋ ଅପ୍-ଲୋଡ୍ ଫେଲ୍, ପୁଣିଥରେ ଚେସ୍ଟା କରନ୍ତୁ</string>
-    <string name="estimated_payout_lower">Estimated Payout</string>
-    <string name="bank_deposite">Bank Deposite</string>
-    <string name="trips">Trips</string>
-    <string name="home">Home</string>
-    <string name="duration">Duration</string>
-    <string name="daily_earnings">DAILY EARNINGS</string>
-    <string name="Invoices_cap">INVOICES</string>
-    <string name="Today_earning">TODAY\'S EARNING</string>
-    <string name="daily_breakup">DAILY BREAKUP</string>
-    <string name="trip_earning">TRIP EARNINGS</string>
-    <string name="earnings_caps">EARNINGS</string>
-    <string name="trip_details">TRIP DETAILS</string>
-    <string name="fare_issues">FARE ISSUES</string>
-    <string name="req_text">If there was an issue with ride fare, please let us know.</string>
-    <string name="type_issue">Type your issue here</string>
-    <string name="report_issue">REPORT FARE ISSUES</string>
-    <string name="id">ID</string>
-    <string name="fair_complaint">Fare Complaint</string>
-    <string name="in_review">IN REVIEW</string>
-    <string name="pool">Pool</string>
-    <string name="no_invoice_currently">No Invoice Currently</string>
-    <string name="no_data">No Data</string>
-    <string name="web_view">WEB VIEW</string>
-    <string name="connection_lost">Connection Loast</string>
+    <string name="earnings_caps">ରୋଜଗାର</string>
+
+
+
+    <string name="estimated_payout_lower">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
+    <string name="bank_deposite">ବ୍ୟାଂକ୍ ଜମା</string>
+    <string name="trips">ଭଡ଼ା ଗୁଡ଼ିକ</string>
+    <string name="home">ଘର</string>
+    <string name="duration">ବ୍ୟବଧାନ</string>
+    <string name="daily_earnings">ଦୈନିକ ରୋଜଗାର</string>
+    <string name="Invoices_cap">ଚାଲାଣ ଗୁଡ଼ିକ</string>
+    <string name="Today_earning">ଆଜିର ରୋଜଗାର</string>
+    <string name="daily_breakup">ଦୈନିକ ବିବରଣି</string>
+    <string name="trip_earning">ଭଡ଼ାରୁ ରୋଜଗାର</string>
+
+    <string name="trip_details">ଭଡ଼ା ବିବରଣି</string>
+    <string name="fare_issues">ଭଡ଼ା ପଇସା ସମସ୍ୟା </string>
+    <string name="req_text">ଯଦି ଭଡ଼ା ପଇସା ପାଇଁ କୌଣସି ସମସ୍ୟା ଅଛି,ତାହେଲେ ଆମକୁ ଜଣାନ୍ତୁ</string>
+    <string name="type_issue">ଆପଣଂକର ସମସ୍ୟା ଏଠାରେ ଲେଖନ୍ତୁ</string>
+    <string name="report_issue">ଭଡ଼ା  ପଇସା ପାଇଁ ଅଭିଜୋଗ କରନ୍ତୁ</string>
+    <string name="id">ଆଇଡି</string>
+    <string name="fair_complaint">ଭଡ଼ା ପଇସା ଅଭିଯୋଗ</string>
+    <string name="in_review">ସମିଖ୍ୟା ରେ</string>
+    <string name="pool">ପୁଲ୍</string>
+    <string name="no_invoice_currently">ବର୍ତମାନ୍ କୌଣସି ଚାଲାଣ ନାହିଁ</string>
+    <string name="no_data">କୌଣସି ତଥ୍ୟ ନାହିଁ</string>
+    <string name="web_view">ଓଏବ୍ ଦର୍ଶନ</string>
+    <string name="connection_lost">ଆପଣ କନେକ୍ଟେଡ୍ ନାହାନ୍ତି!ପୁନର୍ବାର ପ୍ରୟାସ କରିବା ପାଇଁ ଟ୍ୟାପ୍ ରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
+    <string name="required">required</string>
+    <string name="login_here">Already have an driver account? Login Here</string>
+    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
+    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+    <string name="driver">Driver</string>
+    <string name="register_text">
+        <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
+
+
+    <string name="self_enroled">Self Enroled</string>
+    <string name="upload_Documents">Upload Documents</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
+
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+    <string name="non_jugnoo_auto_branding">Non Jugnoo Auto Branding</string>
+    <string name="optional_brack">(Optional)</string>
+    <string name="non_jugnoo_auto_audit">NON JUGNOO AUTO AUDIT</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
     <string name="pls_enter_some_msg">Please enter some issue</string>
     <string name="enter_destination">Enter Destination</string>
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="Reason">Reason</string>
+    <string name="delivery_conf">Are you sure you want to deliver ?</string>
+    <string name="failed">Failed</string>
+    <string name="cash_deposite_conf">Have you deposited cash ?</string>
+    <string name="total">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="return_to_merchant">Return to the Merchant</string>
+    <string name="deposite_cash">Have you deposited cash?</string>
+    <string name="deposite_cash_1">Deposit cash</string>
+    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+    <string name="submit_small">Submit</string>
+    <string name="total_cash_collected">Total cash collected</string>
+    <string name="fail">Fail</string>
+    <string name="spinner_owned">Owned</string>
+    <string name="spinner_rented">Rented</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

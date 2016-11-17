@@ -49,106 +49,242 @@
 
         <LinearLayout
             android:id="@+id/etLayout"
-            android:layout_width="648px"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/jugnooLogoBig"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="72px"
             android:background="@drawable/transparent"
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:splitMotionEvents="false">
 
-            <RelativeLayout
-                android:layout_width="640px"
-                android:layout_height="82px"
-                android:background="@drawable/transparent"
-                android:gravity="center_horizontal"
-                android:padding="2px">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_light_dark"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="visible">
 
-                <ImageView
-                    android:id="@+id/imageViewPhoneIcon"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="6px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="15px"
-                    android:background="@drawable/phone_icon"/>
-
-                <AutoCompleteTextView
-                    android:id="@+id/phoneNoEt"
-                    android:layout_toRightOf="@+id/imageViewPhoneIcon"
+                <LinearLayout
+                    android:id="@+id/linearLayoutTopDefault"
                     android:layout_width="match_parent"
-                    android:layout_height="72px"
-                    android:layout_marginLeft="38px"
-                    android:layout_marginRight="2px"
-                    android:layout_marginTop="2px"
-                    android:background="@drawable/background_white"
-                    android:hint="@string/phone_number"
-                    android:inputType="number"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="34px"/>
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/otpHelpText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="30px"
+                        android:text="@string/nl_otp_please_enter_otp"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_32" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="20px"
+                        android:layout_marginBottom="20px"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
 
 
-                <ImageView
-                    android:layout_width="550px"
-                    android:layout_height="2px"
-                    android:layout_marginRight="5px"
-                    android:layout_marginLeft="0px"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/phoneNoEt"
-                    android:background="@color/black"/>
+                        <TextView
+                            android:id="@+id/phoneNoEt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:text=""
+                            android:textColor="@color/black_text_v2"
+                            android:textSize="@dimen/text_size_32" />
 
-            </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/imageViewSep"
+                            android:layout_width="2px"
+                            android:layout_height="35px"
+                            android:layout_marginLeft="10px"
+                            android:background="@color/stroke_color_light" />
 
-            <RelativeLayout
+                        <ImageView
+                            android:id="@+id/imageViewChangePhoneNumber"
+                            android:layout_width="58px"
+                            android:layout_height="58px"
+                            android:padding="15px"
+                            android:src="@drawable/ic_otp_edit_number_selector"
+                            android:tag="mwar"
+                            android:visibility="visible" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="@color/stroke_color_light" />
+
+            <!--<RelativeLayout-->
+                <!--android:layout_width="640px"-->
+                <!--android:layout_height="82px"-->
+                <!--android:background="@drawable/transparent"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:padding="2px">-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewPhoneIcon"-->
+                    <!--android:layout_width="40px"-->
+                    <!--android:layout_height="40px"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginLeft="6px"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginBottom="15px"-->
+                    <!--android:background="@drawable/phone_icon"/>-->
+
+                <!--<AutoCompleteTextView-->
+                    <!--android:id="@+id/phoneNoEt"-->
+                    <!--android:layout_toRightOf="@+id/imageViewPhoneIcon"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="72px"-->
+                    <!--android:layout_marginLeft="38px"-->
+                    <!--android:layout_marginRight="2px"-->
+                    <!--android:layout_marginTop="2px"-->
+                    <!--android:background="@drawable/background_white"-->
+                    <!--android:hint="@string/phone_number"-->
+                    <!--android:inputType="number"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="34px"/>-->
+
+
+                <!--<ImageView-->
+                    <!--android:layout_width="550px"-->
+                    <!--android:layout_height="2px"-->
+                    <!--android:layout_marginRight="5px"-->
+                    <!--android:layout_marginLeft="0px"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_below="@+id/phoneNoEt"-->
+                    <!--android:background="@color/black"/>-->
+
+            <!--</RelativeLayout>-->
+
+            <LinearLayout
                 android:id="@+id/otpETextLLayout"
-                android:layout_width="640px"
-                android:layout_height="82px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="72px"
-                android:background="@drawable/transparent"
+                android:orientation="vertical"
                 android:padding="2px">
-
-                <ImageView
-                    android:id="@+id/imageViewOtpIcon"
-                    android:layout_width="40px"
-                    android:layout_height="40px"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="6px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="15px"
-                    android:background="@drawable/otp_icon"/>
 
 
                 <EditText
                     android:id="@+id/otpEt"
-                    android:layout_toRightOf="@+id/imageViewOtpIcon"
-                    android:layout_width="match_parent"
-                    android:layout_height="74px"
-                    android:layout_marginLeft="38px"
-                    android:layout_marginRight="2px"
-                    android:layout_marginTop="2px"
-                    android:background="@color/transparent"
-                    android:hint="@string/otp"
+                    android:layout_width="410px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="#0000"
+                    android:gravity="center"
+                    android:hint="@string/enter_otp"
                     android:inputType="number"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="34px"/>
-
+                    android:maxLength="10"
+                    android:paddingLeft="20px"
+                    android:paddingRight="20px"
+                    android:textColor="@color/black_text_v2"
+                    android:textColorHint="@color/grey_light"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/text_size_32"
+                    android:paddingTop="15px"
+                    android:paddingBottom="15px"/>
 
                 <ImageView
-                    android:layout_below="@id/otpEt"
-                    android:layout_width="550px"
+                    android:layout_width="410px"
                     android:layout_height="2px"
-                    android:layout_marginRight="5px"
-                    android:layout_marginLeft="0px"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/black"/>
+                    android:layout_gravity="center_horizontal"
+                    android:src="@color/red_v2" />
 
-            </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/btnReGenerateOtp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="12px"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textViewbtnReGenerateOtp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/resend_OTP"
+                        android:textColor="@color/new_orange"
+                        android:textSize="24px"
+                        android:visibility="visible"/>
+
+                    <ImageView
+                        android:id="@+id/imgBtnReGenerateOtp"
+                        android:layout_width="140px"
+                        android:layout_height="1px"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@color/red_v2"
+                        android:textColor="@drawable/white_color_selector"
+                        android:visibility="visible"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!--<RelativeLayout-->
+                <!--android:id="@+id/otpETextLLayout"-->
+                <!--android:layout_width="640px"-->
+                <!--android:layout_height="82px"-->
+                <!--android:layout_marginTop="72px"-->
+                <!--android:background="@drawable/transparent"-->
+                <!--android:padding="2px">-->
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageViewOtpIcon"-->
+                    <!--android:layout_width="40px"-->
+                    <!--android:layout_height="40px"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginLeft="6px"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_marginBottom="15px"-->
+                    <!--android:background="@drawable/otp_icon"/>-->
+
+
+                <!--<EditText-->
+                    <!--android:id="@+id/otpEt"-->
+                    <!--android:layout_toRightOf="@+id/imageViewOtpIcon"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="74px"-->
+                    <!--android:layout_marginLeft="38px"-->
+                    <!--android:layout_marginRight="2px"-->
+                    <!--android:layout_marginTop="2px"-->
+                    <!--android:background="@color/transparent"-->
+                    <!--android:hint="@string/otp"-->
+                    <!--android:inputType="number"-->
+                    <!--android:singleLine="true"-->
+                    <!--android:textColor="@color/black"-->
+                    <!--android:textSize="34px"/>-->
+
+
+                <!--<ImageView-->
+                    <!--android:layout_below="@id/otpEt"-->
+                    <!--android:layout_width="550px"-->
+                    <!--android:layout_height="2px"-->
+                    <!--android:layout_marginRight="5px"-->
+                    <!--android:layout_marginLeft="0px"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:background="@color/black"/>-->
+
+            <!--</RelativeLayout>-->
         </LinearLayout>
 
         <LinearLayout
@@ -219,11 +355,11 @@
 
         <Button
             android:id="@+id/verifyOtp"
-            android:layout_width="648px"
+            android:layout_width="404px"
             android:layout_height="90px"
-            android:layout_marginTop="98px"
+            android:layout_marginTop="48px"
             android:background="@drawable/orange_btn_selector"
-            android:text="@string/verify_me"
+            android:text="@string/submit"
             android:textColor="@drawable/white_color_selector"
             android:textSize="@dimen/button_text_size"
             android:visibility="visible"/>
@@ -232,79 +368,77 @@
             android:id="@+id/layoutResendOtp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72px"
+            android:layout_marginTop="52px"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:splitMotionEvents="false"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:visibility="visible">
 
-            <LinearLayout
-                android:id="@+id/btnReGenerateOtp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginRight="104px">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/btnReGenerateOtp"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical"-->
+                <!--android:layout_marginRight="104px">-->
 
-                <ImageView
-                    android:id="@+id/imgBtnReGenerateOtp"
-                    android:layout_width="90px"
-                    android:layout_height="90px"
-                    android:background="@drawable/resend_otp"
-                    android:text="@string/resend_OTP"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    android:layout_gravity="center_horizontal"
-                    android:visibility="visible"/>
+                <!--<ImageView-->
+                    <!--android:id="@+id/imgBtnReGenerateOtp"-->
+                    <!--android:layout_width="90px"-->
+                    <!--android:layout_height="90px"-->
+                    <!--android:background="@drawable/resend_otp"-->
+                    <!--android:text="@string/resend_OTP"-->
+                    <!--android:textColor="@drawable/white_color_selector"-->
+                    <!--android:textSize="@dimen/button_text_size"-->
+                    <!--android:layout_gravity="center_horizontal"-->
+                    <!--android:visibility="visible"/>-->
 
-                <TextView
-                    android:id="@+id/textViewbtnReGenerateOtp"
-                    android:layout_width="175px"
-                    android:layout_height="wrap_content"
-                    android:text="@string/resend_OTP"
-                    android:gravity="center"
-                    android:textColor="@color/new_orange"
-                    android:textSize="32px"
-                    android:visibility="visible"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/textViewbtnReGenerateOtp"-->
+                    <!--android:layout_width="175px"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/resend_OTP"-->
+                    <!--android:gravity="center"-->
+                    <!--android:textColor="@color/new_orange"-->
+                    <!--android:textSize="32px"-->
+                    <!--android:visibility="visible"/>-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
             <TextView
                 android:id="@+id/textViewOr"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="32px"
-                android:layout_gravity="center_vertical"
-                android:text="@string/or"/>
-
+                android:layout_gravity="center"
+                android:text="@string/or"
+                android:textSize="32px"/>
 
             <LinearLayout
                 android:id="@+id/btnOtpViaCall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="104px">
+                android:layout_width="404px"
+                android:layout_height="@dimen/button_height"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="25px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/imgBtnOtpViaCall"
-                    android:layout_width="90px"
-                    android:layout_height="90px"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/miss_call_icon"
-                    android:textColor="@drawable/white_color_selector"
-                    android:textSize="@dimen/button_text_size"
-                    android:visibility="visible"/>
+                    android:layout_width="35px"
+                    android:layout_height="34px"
+                    android:layout_marginRight="16px"
+                    android:src="@drawable/miss_call_icon"
+                    android:tag="mwar" />
 
                 <TextView
-                    android:id="@+id/textViewBtnOtpViaCall"
-                    android:layout_width="180px"
+                    android:id="@+id/textViewGiveAMissedCall"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/new_orange"
-                    android:text="@string/give_misscall_to_verify"
-                    android:textSize="30px"
-                    android:visibility="visible"/>
-
+                    android:text="@string/miss_call_otp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red_v2"
+                    android:textSize="@dimen/text_size_30" />
             </LinearLayout>
+
 
 
 

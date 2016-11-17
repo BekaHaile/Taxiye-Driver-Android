@@ -62,8 +62,7 @@
             android:layout_height="720px"
             android:layout_marginTop="30px"
             android:fadeScrollbars="true"
-            android:scrollbars="vertical"
-            />
+            android:scrollbars="vertical"/>
 
         <Button
             android:id="@+id/buttonSubmit"

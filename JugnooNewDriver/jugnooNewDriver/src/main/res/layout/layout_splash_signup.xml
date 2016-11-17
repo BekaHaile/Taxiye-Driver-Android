@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/relativeLayoutSignup"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="464px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30px"
+                android:layout_marginRight="30px"
+                android:layout_marginTop="80px"
+                android:background="@drawable/background_white_shadow"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_name_v3"
+                        android:tag="mhar"/>
+
+                    <EditText
+                        android:id="@+id/nameEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="72px"
+                        android:layout_toLeftOf="@+id/textViewSNameRequired"
+                        android:background="#0000"
+                        android:digits="@string/digits_characters_numbers"
+                        android:gravity="center_vertical"
+                        android:hint="@string/name"
+                        android:inputType="textNoSuggestions"
+                        android:maxLength="50"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textColor="@color/black_text_v2"
+                        android:textColorHint="@color/grey_dark_less"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_size_34"
+                        />
+
+                    <TextView
+                        android:id="@+id/textViewSNameRequired"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30px"
+                        android:text="@string/required"
+                        android:textColor="@color/grey_dark_less"
+                        android:textSize="@dimen/text_size_22"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_phone_v3"
+                        android:tag="mhar"/>
+
+                    <EditText
+                        android:id="@+id/phoneNoEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="72px"
+                        android:layout_toLeftOf="@+id/textViewSEmailRequired"
+                        android:background="#0000"
+                        android:gravity="center_vertical"
+                        android:hint="@string/phone_number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textColor="@color/black_text_v2"
+                        android:textColorHint="@color/grey_dark_less"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_size_34"/>
+
+                    <TextView
+                        android:id="@+id/textViewSEmailRequired"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30px"
+                        android:text="@string/required"
+                        android:textColor="@color/grey_dark_less"
+                        android:textSize="@dimen/text_size_22"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/iconReferral"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_referral_v3"
+                        android:tag="mhar"/>
+
+
+                    <EditText
+                        android:id="@+id/referralCodeEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="72px"
+                        android:background="#0000"
+                        android:gravity="center_vertical"
+                        android:hint="@string/referral"
+                        android:maxLength="10"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textColor="@color/black_text_v2"
+                        android:textColorHint="@color/grey_dark_less"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_size_34"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageViewCity"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_city_v3"
+                        android:tag="mhar"/>
+
+                    <Spinner
+                        android:id="@+id/selectCitySp"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_marginLeft="80px"
+                        android:background="@drawable/transparent"
+                        android:capitalize="words"
+                        android:dropDownSelector="@drawable/arrow_down"
+                        android:hint="@string/auto_number"
+                        android:paddingLeft="0px"
+                        android:singleLine="true"
+                        android:spinnerMode="dropdown"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="25px"
+                        android:layout_height="16px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="34px"
+                        android:layout_marginTop="32px"
+                        android:background="@drawable/arrow_down"/>
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageViewVehicleType"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_vehicle_v3"
+                        android:tag="mhar"/>
+
+                    <Spinner
+                        android:id="@+id/VehicleType"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_marginLeft="80px"
+                        android:background="@drawable/transparent"
+                        android:capitalize="words"
+                        android:dropDownSelector="@drawable/arrow_down"
+                        android:hint="@string/auto_number"
+                        android:paddingLeft="0px"
+                        android:singleLine="true"
+                        android:spinnerMode="dropdown"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="25px"
+                        android:layout_height="16px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="34px"
+                        android:layout_marginTop="32px"
+                        android:background="@drawable/arrow_down"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/imageViewAutoNum"
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_owners_v3"
+                        android:tag="mhar"/>
+
+                    <Spinner
+                        android:id="@+id/autoNumEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_marginLeft="78px"
+                        android:background="@drawable/transparent"
+                        android:capitalize="words"
+                        android:dropDownSelector="@drawable/arrow_down"
+                        android:hint="@string/auto_number"
+                        android:paddingLeft="0px"
+                        android:singleLine="true"
+                        android:spinnerMode="dropdown"
+                        android:textColor="@color/black_text_v2"
+                        android:textSize="34px"/>
+
+                    <ImageView
+                        android:layout_width="25px"
+                        android:layout_height="16px"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="34px"
+                        android:layout_marginTop="32px"
+                        android:background="@drawable/arrow_down"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/buttonEmailSignup"
+                android:layout_width="271px"
+                android:layout_height="97px"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="40px"
+                android:background="@drawable/button_theme_alpha_white_stroke_selector"
+                android:text="@string/sign_up"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_34"/>
+
+
+            <TextView
+                android:id="@+id/textViewRegLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20px"
+                android:text="@string/login_here"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_26"/>
+
+            <TextView
+                android:id="@+id/textViewTandC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/i_accept_new"
+                android:textColor="@color/white"
+                android:layout_marginTop="220px"
+                android:layout_toRightOf="@+id/imageViewTandC"
+                android:textSize="28px"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutScrollStop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        ></RelativeLayout>
+
+</RelativeLayout>

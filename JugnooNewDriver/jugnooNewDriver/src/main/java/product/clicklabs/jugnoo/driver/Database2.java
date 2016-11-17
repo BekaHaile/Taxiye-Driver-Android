@@ -765,8 +765,6 @@ public class Database2 {                                                        
 	}
 
 
-
-
 	public String getDriverManualPatchPushReceived() {
 		try {
 			String[] columns = new String[]{Database2.DRIVER_MANUAL_PATCH_PUSH_RECEIVED};

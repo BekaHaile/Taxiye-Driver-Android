@@ -12,6 +12,9 @@ import android.graphics.drawable.AnimationDrawable;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,6 +26,7 @@ import android.widget.TextView;
 
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.dodo.adapters.ReturnOptionsListAdapter;
 
 public class DialogPopup {
 
@@ -802,12 +806,8 @@ public class DialogPopup {
 		}
 	}
 
-	public static void dialogNewBanner(Activity activity, String message) {
-		try {
-			dialogBannerNewWithCancelListener(activity, message, null, 7000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void dialogNewBanner(Activity activity, String message, long time) {
+		dialogBannerNewWithCancelListener(activity, message, null, time);
 	}
 
 	public static void dialogBannerNewWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
@@ -842,8 +842,13 @@ public class DialogPopup {
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					//DialogPopup.dismissAlertPopup();
-					dialog.dismiss();
+					try {
+						if(dialog!= null && dialog.isShowing()) {
+							dialog.dismiss();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}, timeToDismiss);
 		} catch (Exception e) {
@@ -851,5 +856,325 @@ public class DialogPopup {
 		}
 	}
 
+
+	public static void alertPopupListnTwoButtonsWithListeners(Activity activity, String title, String message, String okText, String canceltext,
+														 final View.OnClickListener listenerPositive, final View.OnClickListener listenerNegative, final boolean cancelable, final boolean showTitle) {
+		try {
+			dismissAlertPopup();
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_delivery_return_reason);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancelable);
+			dialog.setCanceledOnTouchOutside(cancelable);
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textHead);
+			textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage);
+			textMessage.setTypeface(Data.latoRegular(activity));
+
+			RecyclerView recyclerViewReturnOptions;
+			ReturnOptionsListAdapter returnOptionsListAdapter;
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textHead.setText(title);
+			textMessage.setText(message);
+
+			recyclerViewReturnOptions = (RecyclerView) dialog.findViewById(R.id.recyclerViewReturnOptions);
+			recyclerViewReturnOptions.setLayoutManager(new LinearLayoutManager(activity));
+			recyclerViewReturnOptions.setItemAnimator(new DefaultItemAnimator());
+			recyclerViewReturnOptions.setHasFixedSize(false);
+			returnOptionsListAdapter = new ReturnOptionsListAdapter(activity);
+			recyclerViewReturnOptions.setAdapter(returnOptionsListAdapter);
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+			btnOk.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+			if(!"".equalsIgnoreCase(okText)){
+				btnOk.setText(okText);
+			}
+
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
+			if(!"".equalsIgnoreCase(canceltext)){
+				btnCancel.setText(canceltext);
+			}
+
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+					listenerPositive.onClick(view);
+				}
+			});
+
+			btnCancel.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					listenerNegative.onClick(v);
+				}
+			});
+
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (cancelable) {
+						dismissAlertPopup();
+					}
+				}
+			});
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public static void alertPopupDeliveryTwoButtonsWithListeners(Activity activity, String deliveryId, String collectCash, String name, String address, String message , String okText, String canceltext,
+														 final View.OnClickListener listenerPositive, final View.OnClickListener listenerNegative, final boolean cancelable, final boolean showTitle) {
+		try {
+			dismissAlertPopup();
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_mark_delivery);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancelable);
+			dialog.setCanceledOnTouchOutside(cancelable);
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textViewDeliveryId);
+			textHead.setTypeface(Data.latoRegular(activity));
+
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textViewTakeCash);
+			textMessage.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+
+			TextView textViewName = (TextView) dialog.findViewById(R.id.textViewName);
+			textViewName.setTypeface(Data.latoRegular(activity));
+
+			TextView textViewAddress = (TextView) dialog.findViewById(R.id.textViewAddress);
+			textViewAddress.setTypeface(Data.latoRegular(activity));
+
+			TextView textViewTakeConfMessage = (TextView) dialog.findViewById(R.id.textViewTakeConfMessage);
+			textViewTakeConfMessage.setTypeface(Data.latoRegular(activity));
+
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textHead.setText(deliveryId);
+			textMessage.setText(collectCash);
+			textViewName.setText(name);
+			textViewAddress.setText(address);
+			textViewTakeConfMessage.setText(message);
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+			btnOk.setTypeface(Data.latoRegular(activity));
+			if(!"".equalsIgnoreCase(okText)){
+				btnOk.setText(okText);
+			}
+
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
+			if(!"".equalsIgnoreCase(canceltext)){
+				btnCancel.setText(canceltext);
+			}
+
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+					listenerPositive.onClick(view);
+				}
+			});
+
+			btnCancel.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					listenerNegative.onClick(v);
+				}
+			});
+
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (cancelable) {
+						dismissAlertPopup();
+					}
+				}
+			});
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+	public static void alertPopupDeliveryReturnWithListeners(Activity activity, String deliveryId, String collectCash,
+															 int total, int delivered, int failed, String message,
+															 final View.OnClickListener listenerPositive,
+															 final View.OnClickListener listenerNegative,
+															 final boolean cancelable, final boolean showTitle) {
+		try {
+			dismissAlertPopup();
+			dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);
+			dialog.getWindow().getAttributes().windowAnimations = R.style.Animations_LoadingDialogFade;
+			dialog.setContentView(R.layout.dialog_mark_delivery_return);
+
+			FrameLayout frameLayout = (FrameLayout) dialog.findViewById(R.id.rv);
+			new ASSL(activity, frameLayout, 1134, 720, true);
+
+			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
+			layoutParams.dimAmount = 0.6f;
+			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+			dialog.setCancelable(cancelable);
+			dialog.setCanceledOnTouchOutside(cancelable);
+
+			TextView textHead = (TextView) dialog.findViewById(R.id.textViewDeliveryId);
+			textHead.setTypeface(Data.latoRegular(activity));
+			TextView textViewTotalDelivery = (TextView) dialog.findViewById(R.id.textViewTotalDelivery);
+			textViewTotalDelivery.setTypeface(Data.latoRegular(activity));
+			TextView textViewTotalDeliveryValue = (TextView) dialog.findViewById(R.id.textViewTotalDeliveryValue);
+			textViewTotalDeliveryValue.setTypeface(Data.latoRegular(activity));
+
+			TextView textViewTotalDelivered = (TextView) dialog.findViewById(R.id.textViewTotalDelivered);
+			textViewTotalDelivered.setTypeface(Data.latoRegular(activity));
+			TextView textViewTotalDeliveredValue = (TextView) dialog.findViewById(R.id.textViewTotalDeliveredValue);
+			textViewTotalDeliveredValue.setTypeface(Data.latoRegular(activity));
+			TextView textViewTotalReturned = (TextView) dialog.findViewById(R.id.textViewTotalReturned);
+			textViewTotalReturned.setTypeface(Data.latoRegular(activity));
+			TextView textViewTotalReturnedValue = (TextView) dialog.findViewById(R.id.textViewTotalReturnedValue);
+			textViewTotalReturnedValue.setTypeface(Data.latoRegular(activity));
+
+
+			TextView textMessage = (TextView) dialog.findViewById(R.id.textViewTakeCash);
+			textMessage.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
+
+			TextView textViewSummaryText = (TextView) dialog.findViewById(R.id.textViewSummaryText);
+			textViewSummaryText.setTypeface(Data.latoRegular(activity));
+
+			TextView textViewTakeConfMessage = (TextView) dialog.findViewById(R.id.textViewTakeConfMessage);
+			textViewTakeConfMessage.setTypeface(Data.latoRegular(activity));
+
+			textMessage.setMovementMethod(new ScrollingMovementMethod());
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
+
+			textHead.setText(deliveryId);
+			textMessage.setText(collectCash);
+			textViewSummaryText.setText(activity.getResources().getString(R.string.order_summary));
+
+			textViewTotalDeliveryValue.setText(""+total);
+			textViewTotalDeliveredValue.setText(""+delivered);
+			textViewTotalReturnedValue.setText(""+failed);
+
+
+			textViewTakeConfMessage.setText(message);
+
+			if(showTitle){
+				textHead.setVisibility(View.VISIBLE);
+			}
+			else{
+				textHead.setVisibility(View.GONE);
+			}
+
+			Button btnOk = (Button) dialog.findViewById(R.id.btnOk);
+			btnOk.setTypeface(Data.latoRegular(activity));
+			btnOk.setText(activity.getResources().getString(R.string.submit_small));
+
+			Button btnCancel = (Button) dialog.findViewById(R.id.btnCancel);
+			btnCancel.setTypeface(Data.latoRegular(activity));
+			btnCancel.setText(activity.getResources().getString(R.string.cancel));
+
+			btnOk.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					dialog.dismiss();
+					listenerPositive.onClick(view);
+				}
+			});
+
+			btnCancel.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					dialog.dismiss();
+					listenerNegative.onClick(v);
+				}
+			});
+
+
+			dialog.findViewById(R.id.rl1).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+				}
+			});
+
+
+			dialog.findViewById(R.id.rv).setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if (cancelable) {
+						dismissAlertPopup();
+					}
+				}
+			});
+
+			dialog.show();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 }

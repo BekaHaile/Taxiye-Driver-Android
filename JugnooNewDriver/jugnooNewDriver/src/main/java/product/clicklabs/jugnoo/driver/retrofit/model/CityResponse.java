@@ -86,6 +86,11 @@ public class CityResponse implements Serializable {
 		@Expose
 		private String cityName;
 
+		public City(Integer cityId, String cityName) {
+			this.cityId = cityId;
+			this.cityName = cityName;
+		}
+
 		/**
 		 *
 		 * @return
@@ -132,6 +137,12 @@ public class CityResponse implements Serializable {
 		@SerializedName("vehicle_type")
 		@Expose
 		private Integer vehicleType;
+
+
+		public VehicleType(String vehicleName, Integer vehicleType) {
+			this.vehicleName = vehicleName;
+			this.vehicleType = vehicleType;
+		}
 
 		/**
 		 *

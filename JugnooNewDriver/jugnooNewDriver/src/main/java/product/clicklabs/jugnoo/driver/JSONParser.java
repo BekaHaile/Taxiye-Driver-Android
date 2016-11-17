@@ -407,7 +407,8 @@ public class JSONParser implements Constants {
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 									vendorMessage = "";
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0;
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
+									currrentLatitude =0, currrentLongitude =0;
 							int totalDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
@@ -435,6 +436,10 @@ public class JSONParser implements Constants {
 								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
 								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
 								address = jObjCustomer.optString(KEY_ADDRESS, "");
+								currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
+								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 							}
 
 
@@ -462,10 +467,12 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
+									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
+									new LatLng(currrentLatitude, currrentLongitude));
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
+								parseReturnDeliveryInfos(jObjCustomer, customerInfo);
 							}
 
 							try {
@@ -565,6 +572,12 @@ public class JSONParser implements Constants {
 				String requestUserId = jActiveRequest.getString("user_id");
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
+
+				double currrentLatitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LATITUDE);
+				double currrentLongitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+				Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+				Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
+
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 
@@ -611,7 +624,9 @@ public class JSONParser implements Constants {
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
+						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+						new LatLng(currrentLatitude, currrentLongitude));
+
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);
@@ -731,6 +746,31 @@ public class JSONParser implements Constants {
 		}
 		return deliveryInfos;
 	}
+
+	public static void parseReturnDeliveryInfos(JSONObject jsonObject, CustomerInfo customerInfo) {
+		try {
+			if (jsonObject.getJSONObject("returnObj") != null) {
+				JSONObject jDelivery = jsonObject.getJSONObject("returnObj");
+				DeliveryInfo deliveryInfo = new DeliveryInfo(jDelivery.getInt("order_id"),
+						new LatLng(jDelivery.getDouble(KEY_LATITUDE), jDelivery.getDouble(KEY_LONGITUDE)),
+						jDelivery.getString(KEY_NAME),
+						jDelivery.getString(KEY_ADDRESS),
+						jDelivery.getString(KEY_PHONE),
+						jDelivery.getDouble(KEY_COLLECT_CASH),
+						jDelivery.getInt(KEY_STATUS),
+						jDelivery.optDouble(KEY_DISTANCE, 0),
+						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
+						jDelivery.optLong(KEY_WAIT_TIME, 0),
+						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size());
+				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
+				customerInfo.getDeliveryInfos().add(deliveryInfo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 
 	public static ArrayList<DeliveryReturnOption> parseDeliveryReturnOptions(JSONObject jsonObject){
 		ArrayList<DeliveryReturnOption> deliveryReturnOptions = new ArrayList<>();

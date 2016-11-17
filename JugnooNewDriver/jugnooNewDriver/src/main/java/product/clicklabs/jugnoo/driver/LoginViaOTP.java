@@ -58,10 +58,10 @@ public class LoginViaOTP extends BaseActivity {
 
 	LinearLayout linearLayoutWaiting, otpETextLLayout, selectLanguageLl, layoutResendOtp, mainLoginLinear, mainLinear, btnReGenerateOtp, btnOtpViaCall;
 	RelativeLayout relative;
-	EditText phoneNoEt, otpEt;
-	Button backBtn, btnGenerateOtp, loginViaOtp, btnLogin;
-	ImageView imageViewYellowLoadingBar;
-	TextView textViewCounter, textViewOr;
+	EditText otpEt;
+	Button backBtn, loginViaOtp, btnLogin;
+	ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber;
+	TextView textViewCounter, textViewOr,textViewOtpNumber;
 	String selectedLanguage = "";
 	int languagePrefStatus;
 	Configuration conf;
@@ -69,6 +69,8 @@ public class LoginViaOTP extends BaseActivity {
 	Spinner spinner;
 	public static String OTP_SCREEN_OPEN = null;
 	List<String> categories = new ArrayList<>();
+	String phoneNo;
+
 
 	String phoneNoOfLoginAccount = "", accessToken = "", otpErrorMsg = "";
 
@@ -99,7 +101,7 @@ public class LoginViaOTP extends BaseActivity {
 		super.onNewIntent(intent);
 	}
 
-
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 
 		fetchLanguageList();
@@ -110,11 +112,12 @@ public class LoginViaOTP extends BaseActivity {
 
 		relative = (RelativeLayout) findViewById(R.id.relative);
 		new ASSL(LoginViaOTP.this, relative, 1134, 720, false);
+		phoneNo = getIntent().getStringExtra("phone_no");
 
-		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
-		phoneNoEt.setHint(getStringText(R.string.phone_number));
-		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
-		phoneNoEt.setEnabled(true);
+//		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
+//		phoneNoEt.setHint(getStringText(R.string.phone_number));
+//		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+//		phoneNoEt.setEnabled(true);
 		otpEt = (EditText) findViewById(R.id.otpEt);
 		otpEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		otpEt.setEnabled(false);
@@ -128,8 +131,8 @@ public class LoginViaOTP extends BaseActivity {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(getApplicationContext()));
-		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
-		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
+//		btnGenerateOtp = (Button) findViewById(R.id.btnGenerateOtp);
+//		btnGenerateOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
 
 		btnOtpViaCall = (LinearLayout) findViewById(R.id.btnOtpViaCall);
@@ -137,17 +140,35 @@ public class LoginViaOTP extends BaseActivity {
 		btnLogin = (Button) findViewById(R.id.btnLogin);
 		btnLogin.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		imageViewChangePhoneNumber = (ImageView) findViewById(R.id.imageViewChangePhoneNumber);
+
 		loginViaOtp = (Button) findViewById(R.id.loginViaOtp);
 		loginViaOtp.setTypeface(Data.latoRegular(getApplicationContext()));
 		spinner = (Spinner) findViewById(R.id.language_spinner);
 		imageViewYellowLoadingBar = (ImageView) findViewById(R.id.imageViewYellowLoadingBar);
 		textViewCounter = (TextView) findViewById(R.id.textViewCounter);
 		textViewCounter.setTypeface(Data.latoRegular(getApplicationContext()));
-
+		textViewOtpNumber = (TextView) findViewById(R.id.textViewOtpNumber);
+		textViewOtpNumber.setTypeface(Data.latoRegular(getApplicationContext()));
 		textViewOr = (TextView) findViewById(R.id.textViewOr);
 		textViewOr.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
+
+		try {
+
+			if(getIntent().hasExtra("phone_no") && getIntent().hasExtra("otp")){
+				otpEt.setText(getIntent().getStringExtra("otp"));
+				otpEt.setSelection(otpEt.getText().length());
+				textViewOtpNumber.setText(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
+				loginViaOtp.performClick();
+			} else if (getIntent().hasExtra("phone_no")) {
+				generateOTP(phoneNo);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		backBtn.setOnClickListener(new View.OnClickListener() {
 
@@ -164,38 +185,40 @@ public class LoginViaOTP extends BaseActivity {
 			}
 		});
 
-		btnGenerateOtp.setOnClickListener(new View.OnClickListener() {
+//		btnGenerateOtp.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				String phoneNo = phoneNoEt.getText().toString().trim();
+//				if ("".equalsIgnoreCase(phoneNo)) {
+//					phoneNoEt.requestFocus();
+//					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
+//
+//				} else if ((Utils.validPhoneNumber(phoneNo))) {
+//					phoneNoEt.setEnabled(false);
+//					generateOTP(phoneNo);
+//				} else {
+//					phoneNoEt.requestFocus();
+//					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
+//				}
+//			}
+//		});
+
+		textViewOtpNumber.setText(phoneNo);
+
+		btnReGenerateOtp.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String phoneNo = phoneNoEt.getText().toString().trim();
-				if ("".equalsIgnoreCase(phoneNo)) {
-					phoneNoEt.requestFocus();
-					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
-
-				} else if ((Utils.validPhoneNumber(phoneNo))) {
-					phoneNoEt.setEnabled(false);
+				if ((Utils.validPhoneNumber(phoneNo))) {
 					generateOTP(phoneNo);
-				} else {
-					phoneNoEt.requestFocus();
-					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
 				}
 			}
 		});
 
 
-		btnReGenerateOtp.setOnClickListener(new View.OnClickListener() {
+		imageViewChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				String phoneNo = phoneNoEt.getText().toString().trim();
-				if ("".equalsIgnoreCase(phoneNo)) {
-					phoneNoEt.requestFocus();
-					phoneNoEt.setError(getResources().getString(R.string.enter_phone_number));
-				} else if ((Utils.validPhoneNumber(phoneNo))) {
-					generateOTP(phoneNo);
-				} else {
-					phoneNoEt.requestFocus();
-					phoneNoEt.setError(getResources().getString(R.string.valid_phone_number));
-				}
+				performbackPressed();
 			}
 		});
 
@@ -213,6 +236,7 @@ public class LoginViaOTP extends BaseActivity {
 								public void onClick(View v) {
 									btnLogin.setVisibility(View.VISIBLE);
 									layoutResendOtp.setVisibility(View.GONE);
+									btnReGenerateOtp.setVisibility(View.GONE);
 									Utils.openCallIntent(LoginViaOTP.this, knowlarityMissedCallNumber);
 								}
 							},
@@ -234,7 +258,7 @@ public class LoginViaOTP extends BaseActivity {
 			public void onClick(View v) {
 				String otpCode = otpEt.getText().toString().trim();
 				if (otpCode.length() > 0) {
-					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNoEt.getText()), "", otpCode);
+					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNo), "", otpCode);
 				} else {
 					otpEt.requestFocus();
 					otpEt.setError(getResources().getString(R.string.code_empty));
@@ -247,9 +271,10 @@ public class LoginViaOTP extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
-					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNoEt.getText()), "", "99999");
+					sendLoginValues(LoginViaOTP.this, "", "+91" + String.valueOf(phoneNo), "", "99999");
 			}
 		});
+
 
 		otpEt.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -362,11 +387,11 @@ public class LoginViaOTP extends BaseActivity {
 							int flag = jObj.getInt("flag");
 							if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 								DialogPopup.dialogBanner(LoginViaOTP.this, message);
-								btnGenerateOtp.setVisibility(View.GONE);
+//								btnGenerateOtp.setVisibility(View.GONE);
 								layoutResendOtp.setVisibility(View.GONE);
+								btnReGenerateOtp.setVisibility(View.GONE);
 								btnLogin.setVisibility(View.GONE);
 								loginViaOtp.setVisibility(View.VISIBLE);
-								otpETextLLayout.setBackgroundResource(R.drawable.background_white_rounded_orange_bordered);
 								otpEt.setEnabled(true);
 								linearLayoutWaiting.setVisibility(View.VISIBLE);
 								knowlarityMissedCallNumber = jObj.optString("knowlarity_missed_call_number", "");
@@ -379,11 +404,21 @@ public class LoginViaOTP extends BaseActivity {
 									linearLayoutWaiting.setVisibility(View.GONE);
 								}
 							} else {
-								DialogPopup.alertPopup(LoginViaOTP.this, "", message);
+								DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", message, new View.OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										performbackPressed();
+									}
+								});
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
-							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG, new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									performbackPressed();
+								}
+							});
 						}
 
 					}
@@ -391,11 +426,21 @@ public class LoginViaOTP extends BaseActivity {
 					@Override
 					public void failure(RetrofitError error) {
 						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG, new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								performbackPressed();
+							}
+						});
 					}
 				});
 			} else {
-				DialogPopup.alertPopup(LoginViaOTP.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.CHECK_INTERNET_MSG, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						performbackPressed();
+					}
+				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -640,7 +685,7 @@ public class LoginViaOTP extends BaseActivity {
 		intent.putExtra("no_anim", "yes");
 		startActivity(intent);
 		finish();
-		overridePendingTransition(R.anim.left_in, R.anim.left_out);
+		overridePendingTransition(R.anim.right_in, R.anim.right_out);
 	}
 
 	public void showLanguagePreference() {
@@ -724,7 +769,6 @@ public class LoginViaOTP extends BaseActivity {
 			selection = "date>?";
 			cursor = LoginViaOTP.this.getContentResolver().query(uri, null, selection, selectionArgs, null);
 
-
 			if (cursor != null) {
 				for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
 					String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
@@ -750,7 +794,7 @@ public class LoginViaOTP extends BaseActivity {
 									try {
 										otpEt.setText(otp);
 										otpEt.setSelection(otpEt.getText().length());
-										phoneNoEt.setText(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
+										textViewOtpNumber.setText(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
 										loginViaOtp.performClick();
 										break;
 									} catch (Exception e) {

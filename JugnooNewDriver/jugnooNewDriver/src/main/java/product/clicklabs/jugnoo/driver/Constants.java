@@ -48,6 +48,9 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+
+    String KEY_CURRENT_LATITUDE= "current_latitude";
+    String KEY_CURRENT_LONGITUDE= "current_longitude";
     String KEY_ENGAGEMENT_ID = "engagement_id";
     String KEY_CUSTOMER_ID = "customer_id";
     String KEY_GIVEN_RATING = "given_rating";
@@ -78,6 +81,8 @@ public interface Constants {
 
     String KEY_PICKUP_LATITUDE_ALARM = "pickup_latitude_alarm";
     String KEY_PICKUP_LONGITUDE_ALARM = "pickup_longitude_alarm";
+    String KEY_CURRENT_LATITUDE_ALARM = "current_latitude_alarm";
+    String KEY_CURRENT_LONGITUDE_ALARM = "current_longitude_alarm";
 
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
@@ -197,6 +202,11 @@ public interface Constants {
 
 	String EVENT_DLD_DEVICE_TOKEN_RESET = "DLD_DEVICE_TOKEN_RESET";
 	String EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN = "DL_ALARM_LOC_NOT_SENT_TILL_3_MIN";
+
+    String PLAY_START_RIDE_ALARM = "play_start_ride_alarm";
+    String PLAY_START_RIDE_ALARM_FINALLY ="play_start_ride_alarm_finally";
+    String FLAG_REACHED_PICKUP ="flag_reached_pickup";
+	String START_RIDE_ALARM_SERVICE_STATUS = "start_ride_alarm_service_status";
 
 }
 

@@ -85,6 +85,7 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
                     JSONObject jObj = new JSONObject(jsonString);
                     int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
                     lastLogId = jObj.optInt("last_log_id", 0);
+					updateWalletBalance(jObj);
                     Prefs.with(context).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + lastLogId);
                     if (ApiResponseFlags.DISTANCE_RESET.getOrdinal() == flag) {
                         try {
@@ -118,26 +119,23 @@ public class UploadInRideDataReceiver extends BroadcastReceiver {
         pendingIntent.cancel();
     }
 
-//    public void updateWalletBalance(JSONObject jsonObject) {
-//		try {
-//			JSONArray jsonArray = jsonObject.getJSONArray("aaaa");
-//			for (int i = 0; i < jsonArray.length(); i++) {
-//				int engagementId = jsonArray.getJSONObject(i).get("engagement_id");
-//				String walletBalance = String.valueOf(0);
-//				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
-//				if (customerInfo != null) {
-//					if (walletBalance != null) {
-//						double newBalance = Double.parseDouble(walletBalance);
-//						if (newBalance > -1) {
-//							customerInfo.setJugnooBalance(newBalance);
-//						}
-//					}
-//				}
-//			}
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+    public void updateWalletBalance(JSONObject jsonObject) {
+		try {
+			JSONArray jsonArray = jsonObject.getJSONArray("balance_array");
+			for (int i = 0; i < jsonArray.length(); i++) {
+				int engagementId = jsonArray.getJSONObject(i).getInt("engagement_id");
+				double walletBalance = jsonArray.getJSONObject(i).getInt("wallet_balance");
+				CustomerInfo customerInfo = Data.getCustomerInfo(String.valueOf(engagementId));
+				if (customerInfo != null) {
+                    if (walletBalance > -1) {
+                        customerInfo.setJugnooBalance(walletBalance);
+                    }
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 }

@@ -61,8 +61,7 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/v2/booking_history")
-	void getDailyRidesAsync(@Field("engagement_date") String date,
-							@Field("access_token") String accessToken,
+	void getDailyRidesAsync(@FieldMap Map<String, String> params,
 							 Callback<DailyEarningResponse> callback);
 
 	@FormUrlEncoded
@@ -307,6 +306,11 @@ public interface APIServices {
 	@POST("/make_driver_eligible_for_pr")
 	void perfectRideRegionRequest(@FieldMap Map<String, String> params,
 						 Callback<RegisterScreenResponse> callback);
+
+	@FormUrlEncoded
+	@POST("/make_driver_eligible_for_pr")
+	void updateCustomerLocation(@FieldMap Map<String, String> params,
+								  Callback<RegisterScreenResponse> callback);
 
 	@FormUrlEncoded
 	@POST("/acknowledge_manual_engagement")

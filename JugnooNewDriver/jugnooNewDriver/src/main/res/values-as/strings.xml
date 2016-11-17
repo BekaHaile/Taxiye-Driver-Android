@@ -18,7 +18,7 @@
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
-
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
 
@@ -585,8 +585,8 @@
     <string name="outstanding_amount1">আগৰ বাকি এদজাষ্ট কৰা হল</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
-    <string name="estimated_payout">ESTIMATED PAYOUT</string>
-    <string name="this_week_cap">THIS WEEK</string>
+    <string name="estimated_payout">আনুমানিক পৰিশোধ</string>
+    <string name="this_week_cap">এই সপ্তাহ</string>
     <string name="ride_history_cap">RIDE HISTORY</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
     <string name="high_demand_areas">Click here to know high demand areas</string>
@@ -634,36 +634,59 @@
     <string name="please_submit">অনুুগ্ৰহ কৰি জমা কৰক</string>
     <string name="cancel_audit">আপোনি বাস্তৱত নিৰীক্ষণ বাতিল কৰিব খোজে নে ?</string>
     <string name="image_upload_failed">চবি আপলোড বিফল হল, পূণৰ চেষ্টা কৰক</string>
-    <string name="estimated_payout_lower">Estimated Payout</string>
-    <string name="bank_deposite">Bank Deposite</string>
-    <string name="trips">Trips</string>
-    <string name="home">Home</string>
-    <string name="duration">Duration</string>
-    <string name="daily_earnings">DAILY EARNINGS</string>
-    <string name="Invoices_cap">INVOICES</string>
-    <string name="Today_earning">TODAY\'S EARNING</string>
-    <string name="daily_breakup">DAILY BREAKUP</string>
-    <string name="trip_earning">TRIP EARNINGS</string>
-    <string name="earnings_caps">EARNINGS</string>
-    <string name="trip_details">TRIP DETAILS</string>
-    <string name="fare_issues">FARE ISSUES</string>
-    <string name="req_text">If there was an issue with ride fare, please let us know.</string>
-    <string name="type_issue">Type your issue here</string>
-    <string name="report_issue">REPORT FARE ISSUES</string>
-    <string name="id">ID</string>
-    <string name="fair_complaint">Fare Complaint</string>
-    <string name="in_review">IN REVIEW</string>
-    <string name="pool">Pool</string>
+    <string name="earnings_caps">উপাৰ্জন</string>
     <string name="no_invoice_currently">No Invoice Currently</string>
     <string name="no_data">No Data</string>
     <string name="web_view">WEB VIEW</string>
     <string name="connection_lost">Connection Loast</string>
-    <string name="pls_enter_some_msg">Please enter some issue</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="pls_enter_some_msg">অনুগ্ৰহ কৰি কিছু সমস্যা লিখক</string>
+    <string name="enter_destination">গন্তব্য স্থান লিখক</string>
+    <string name="no_results_found">একো পৰিণাম পোৱা নাই</string>
+    <string name="COD">চি অো দি</string>
+    <string name="auto_accept_message">গ্ৰাহকৰ অনুৰোধ অটমেটিকলি একচেপ্ত কৰা হৈছে</string>
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="Reason">Reason</string>
+    <string name="delivery_conf">Are you sure you want to deliver ?</string>
+    <string name="failed">Failed</string>
+    <string name="cash_deposite_conf">Have you deposited cash ?</string>
+    <string name="total">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="return_to_merchant">Return to the Merchant</string>
+    <string name="deposite_cash">Have you deposited cash?</string>
+    <string name="deposite_cash_1">Deposit cash</string>
+    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+    <string name="submit_small">Submit</string>
+    <string name="total_cash_collected">Total cash collected</string>
+    <string name="fail">Fail</string>
+
+    <string name="estimated_payout_lower">আনুমানিক পৰিশোধ</string>
+    <string name="bank_deposite">বেংকত জমা</string>
+    <string name="trips">ভ্ৰমণ</string>
+    <string name="home">হোম</string>
+    <string name="duration">স্থিতিকাল</string>
+    <string name="daily_earnings">দৈনিক আদায়</string>
+    <string name="Invoices_cap">চালান</string>
+    <string name="Today_earning">আজিৰ আদায়</string>
+    <string name="daily_breakup">দৈনিক ব্ৰেকআপ</string>
+    <string name="trip_earning">ভ্ৰমণৰ আদায়</string>
+
+    <string name="trip_details">ভ্ৰমণৰ বিস্তাৰ</string>
+    <string name="fare_issues">ভাড়াৰ সমস্যা</string>
+    <string name="req_text">যদি ভাড়া লৈ সমস্যা পাইছে, তেন্তে আমাক জনাব</string>
+    <string name="type_issue">আপোনাৰ সমস্যা ইয়াত লিখক </string>
+    <string name="report_issue">ভাড়াৰ সমস্যা জনাওঁক</string>
+    <string name="id">আইদি</string>
+    <string name="fair_complaint">ভাড়াৰ অভিযোগ</string>
+    <string name="in_review">পর্যালোচনা </string>
+    <string name="pool">পুল</string>
+    <string name="required">required</string>
+    <string name="login_here">Already have an driver account? Login Here</string>
+    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
+    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+    <string name="driver">Driver</string>
+    <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
+    <string name="spinner_owned">Owned</string>
+    <string name="spinner_rented">Rented</string>
 
 
     <string-array name="CountryCodes" >
