@@ -22,7 +22,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
-                android:layout_marginTop="90px"
+                android:layout_marginTop="80px"
                 android:background="@drawable/background_white_shadow"
                 android:orientation="vertical">
 

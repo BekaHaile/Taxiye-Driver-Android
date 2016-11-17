@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -83,6 +84,7 @@ import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.CustomAppLauncher;
+import product.clicklabs.jugnoo.driver.utils.DateOperations;
 import product.clicklabs.jugnoo.driver.utils.DeviceTokenGenerator;
 import product.clicklabs.jugnoo.driver.utils.DeviceUniqueID;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
@@ -112,6 +114,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	List<String> categories = new ArrayList<>();
 	List<String> vehicleStatusCategories = new ArrayList<String>();
+
 	ImageView imageViewJugnooLogo;
 	
 	RelativeLayout jugnooTextImgRl, selectLanguageLl;
@@ -294,6 +297,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 //				FlurryEventLogger.event(LOGIN);
 				changeUIState(State.LOGIN);
+				if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 900000)
+						&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
+					fetchMessages();
+				}
 			}
 		});
 
@@ -310,7 +317,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		textViewLoginRegister.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				changeUIState(State.SIGNUP);
+				if(AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+					changeUIState(State.SIGNUP);
+				}  else {
+					DialogPopup.alertPopup(SplashNewActivity.this, "", Data.CHECK_INTERNET_MSG);
+				}
 			}
 		});
 
@@ -326,7 +337,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			@Override
 			public void onClick(View v) {
 //				linearLayoutSignUpIn.setVisibility(View.GONE);
-				changeUIState(State.SIGNUP);
+				if(AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
+					changeUIState(State.SIGNUP);
+				}  else {
+					DialogPopup.alertPopup(SplashNewActivity.this, "", Data.CHECK_INTERNET_MSG);
+				}
 			}
 		});
 
@@ -491,8 +506,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 									phoneNo = "+91" + phoneNo;
 									if (isPhoneValid(phoneNo)) {
 										if (cityposition != 0) {
-											if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
-												if (vehiclePosition != 0) {
+											if (vehiclePosition != 0) {
+												if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 													if (true) {
 														sendSignupValues(SplashNewActivity.this, name, phoneNo, password, referralCode);
 														FlurryEventLogger.emailSignupClicked(emailId);
@@ -500,10 +515,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
 													}
 												} else {
-													DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_type));
+													DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_status));
 												}
 											} else {
-												DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_status));
+												DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_vehicle_type));
 											}
 										} else {
 											DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_valid_city));
@@ -596,6 +611,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		// Spinner Drop down elements
 
+		vehicleStatusCategories.clear();
 		vehicleStatusCategories.add(getResources().getString(R.string.vehicle_status));
 		vehicleStatusCategories.add(getResources().getString(R.string.owned));
 		vehicleStatusCategories.add(getResources().getString(R.string.rented));
@@ -1386,6 +1402,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	public void onBackPressed() {
 		try {
 			hideKeyboard();
+			resetFields();
 			if (State.LOGIN == state) {
 				changeUIState(State.SPLASH_LS);
 			} else if (State.SIGNUP == state) {
@@ -1409,9 +1426,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	public void resetFields(){
 		phoneNoOPTEt.setText("");
+		phoneNoOPTEt.setError(null);
 		nameEt.setText("");
+		nameEt.setError(null);
 		phoneNoEt.setText("");
+		phoneNoEt.setError(null);
 		referralCodeEt.setText("");
+		referralCodeEt.setError(null);
 		selectCitySp.setSelection(0);
 		VehicleType.setSelection(0);
 		autoNumEt.setSelection(0);
@@ -2394,7 +2415,6 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
-
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.GONE);
@@ -2408,10 +2428,10 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				break;
 
 			case SIGNUP:
+				getCityAsync();
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
-
 				relativeLayoutJugnooLogo.setVisibility(View.GONE);
 
 				relativeLayoutLS.setVisibility(View.GONE);
@@ -2446,6 +2466,74 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //			setSignupScreenValuesOnCreate();
 		}
 	}
+
+
+	public void fetchMessages() {
+
+		try {
+			Uri uri = Uri.parse("content://sms/inbox");
+			String[] selectionArgs;
+			String selection;
+			Cursor cursor;
+
+			selectionArgs = new String[]{Long.toString(System.currentTimeMillis() - 900000)};
+			selection = "date>?";
+			cursor = SplashNewActivity.this.getContentResolver().query(uri, null, selection, selectionArgs, null);
+
+			if (cursor != null) {
+				for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+					String body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
+					String sender = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+					try {
+						String date = DateOperations.getTimeStampUTCFromMillis(Long
+								.parseLong(cursor.getString(cursor.getColumnIndexOrThrow("date"))));
+						if (body.toLowerCase().contains("jugnoo")) {
+							String otp = "";
+							String message = body;
+
+							if (message.toLowerCase().contains("paytm")) {
+								otp = message.split("\\ ")[0];
+							} else {
+								String[] arr = message.split("and\\ it\\ is\\ valid\\ till\\ ");
+								String[] arr2 = arr[0].split("Dear\\ Driver\\,\\ Your\\ Jugnoo\\ One\\ Time\\ Password\\ is\\ ");
+								otp = arr2[1];
+								otp = otp.replaceAll("\\ ", "");
+							}
+
+							if (Utils.checkIfOnlyDigits(otp)) {
+								if (!"".equalsIgnoreCase(otp)) {
+									try {
+										phoneNoOPTEt.setText(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
+										phoneNoOPTEt.setEnabled(false);
+										Intent loginIntent = new Intent(SplashNewActivity.this, LoginViaOTP.class);
+										loginIntent.putExtra("phone_no",phoneNo);
+										loginIntent.putExtra("otp",otp);
+										startActivity(loginIntent);
+										finish();
+										overridePendingTransition(R.anim.right_in, R.anim.right_out);
+										btnGenerateOtp.performClick();
+										break;
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+
+								}
+							}
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+			if (cursor != null) {
+				cursor.close();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 
 }

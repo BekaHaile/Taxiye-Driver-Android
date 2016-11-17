@@ -156,9 +156,16 @@ public class LoginViaOTP extends BaseActivity {
 		selectedLanguage = Prefs.with(LoginViaOTP.this).getString(SPLabels.SELECTED_LANGUAGE, "");
 
 		try {
-			if (getIntent().hasExtra("phone_no")) {
+
+			if(getIntent().hasExtra("phone_no") && getIntent().hasExtra("otp")){
+				otpEt.setText(getIntent().getStringExtra("otp"));
+				otpEt.setSelection(otpEt.getText().length());
+				textViewOtpNumber.setText(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, ""));
+				loginViaOtp.performClick();
+			} else if (getIntent().hasExtra("phone_no")) {
 				generateOTP(phoneNo);
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -406,7 +413,12 @@ public class LoginViaOTP extends BaseActivity {
 							}
 						} catch (Exception e) {
 							e.printStackTrace();
-							DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+							DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG, new View.OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									performbackPressed();
+								}
+							});
 						}
 
 					}
@@ -414,11 +426,21 @@ public class LoginViaOTP extends BaseActivity {
 					@Override
 					public void failure(RetrofitError error) {
 						DialogPopup.dismissLoadingDialog();
-						DialogPopup.alertPopup(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG);
+						DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.SERVER_ERROR_MSG, new View.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								performbackPressed();
+							}
+						});
 					}
 				});
 			} else {
-				DialogPopup.alertPopup(LoginViaOTP.this, "", Data.CHECK_INTERNET_MSG);
+				DialogPopup.alertPopupWithListener(LoginViaOTP.this, "", Data.CHECK_INTERNET_MSG, new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						performbackPressed();
+					}
+				});
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -39,7 +39,6 @@
     <string name="rupee_500">\u20B9 500</string>
     <string name="generated_on">Generated On:</string>
     <string name="share">Share</string>
-    <string name="no_language_to_select">Language Option Not Available</string>
     <string name="JUGNOO">JUGNOO</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="rupee_zero_zero">\u20B9 0000.00</string>
@@ -459,9 +458,7 @@
     <string name="enter_customer_phone_no">ગ્રાહકનો ફોન નંબર દાખલ કરો</string>
     <string name="invoice_detail">ભરન નિ જાનકારિ</string>
     <string name="ride_complete">સવારી પૂર્ણ </string>
-    <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">O.T.P. ફરી મોકલો</string>
-    <string name="miss_call_otp">Give a Miss Call</string>
     <string name="give_missed_call_dialog_text">અમને તમે મિસ્સ કોલ કરો અને અમે તમારી ઓળખ ની ચકાસણી કરીશું</string>
     <string name="give_misscall_to_verify">અમને મિસ્સ કોલ આપો અને અમે તમારી ઓળખ ચકાસું</string>
     <string name="please_press_here">કૃપા કરીને અહીં દબાવો</string>
@@ -579,8 +576,6 @@
     <string name="total_amount">અંતિમ ભરતિયું રકમ</string>
     <string name="this_week">આ અઠવાડિયે</string>
     <string name="outstanding_amount1">બાદ બાકી થઇ ગયું </string>
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">અંદાજિત ચૂકવણી</string>
@@ -656,7 +651,7 @@
     <string name="high_demand_areas">Click here to know high demand areas</string>
     <string name="high_demad">High Demand Areas</string>
     <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="i_accept">I accept <u>Terms &amp; Condition</u></string>
     <string name="select_tandc">Please select Terms and Conditions</string>
     <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
     <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
@@ -672,21 +667,29 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="return_to_merchant">Return to the Merchant</string>
-    <string name="deposite_cash">Have you deposited cash?</string>
-    <string name="deposite_cash_1">Deposit cash</string>
-    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-    <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
-    <string name="fail">Fail</string>
-    <string name="required">required</string>
-    <string name="login_here">Already have an driver account? Login Here</string>
-    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
-    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-    <string name="driver">Driver</string>
-    <string name="register_text">
-        <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
+
+    <string name="order_summary">ઓર્ડર સારાંશ</string>
+    <string name="return_to_merchant">મર્ચન્ટ પાસે પાછા ફરો</string>
+    <string name="deposite_cash">તમે રોકડ જમા કરી છે?</string>
+    <string name="deposite_cash_1">ડિપોઝિટ રોકડ</string>
+    <string name="return_reasons_confirmation">નિષ્ફળ ડિલિવરી માટે કારણ પસંદ કરો</string>
+    <string name="submit_small">સબમિટ</string>
+    <string name="total_cash_collected">કુલ રોકડ એકત્રિત</string>
+    <string name="fail">નિષ્ફળ</string>
+    <string name="required">જરૂરી</string>
+    <string name="login_here">પહેલેથી જ ડ્રાઈવર એકાઉન્ટ છે? <u> લૉગિન અહીં </u></string>
+    <string name="i_accept_new">સાઇન અપ દ્વારા તમે સંમત છો અમારા <u>ઉપયોગની શરતો માટે </u></string>
+    <string name="nl_otp_please_enter_otp">ક્રુપા કરી તમારો વન પાસવર્ડ દાખલ કરો</string>
+    <string name="driver">ડ્રાઈવર</string>
+    <string name="register_text">ડ્રાઈવર એકાઉન્ટ નથી? <u>અહીં નોંધણી કરો</u></string>
+
+    <string name="no_language_to_select">ભાષા વિકલ્પ ઉપલબ્ધ નથી</string>
+    <string name="no_not_verified">ફોન નંબર ચકાસણી કરી નથી</string>
+    <string name="miss_call_otp">એક મિસ કોલ આપો </string>
+    <string name="self_enroled">સ્વયં એન્રોલ્લ</string>
+    <string name="upload_Documents"> દસ્તાવેજો અપલોડ કરો</string>
+    <string name="spinner_owned">Owned</string>
+    <string name="spinner_rented">Rented</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

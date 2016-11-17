@@ -703,13 +703,6 @@
 	<string name="this_week_cap">इस सप्ताह</string>
 	<string name="ride_history_cap">सवारी इतिहास</string>
 
-	<string name="no_language_to_select">Language Option Not Available</string>
-	<string name="no_not_verified">Phone Number not verified</string>
-	<string name="miss_call_otp">Give a Miss Call</string>
-	<string name="uploading">Uploading</string>
-
-	<string name="self_enroled">Self Enroled</string>
-	<string name="upload_Documents">Upload Documents</string>
 	<string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
 	<string name="payment_sent">Payment Sent</string>
 	<string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
@@ -734,20 +727,31 @@
 	<string name="failed">Failed</string>
 	<string name="cash_deposite_conf">Have you deposited cash ?</string>
 	<string name="total">Total</string>
-	<string name="order_summary">Order Summary</string>
-	<string name="return_to_merchant">Return to the Merchant</string>
-	<string name="deposite_cash">Have you deposited cash?</string>
-	<string name="deposite_cash_1">Deposit cash</string>
-	<string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-	<string name="submit_small">Submit</string>
-	<string name="total_cash_collected">Total cash collected</string>
-	<string name="fail">Fail</string>
-	<string name="required">required</string>
-	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
-	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
-	<string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-	<string name="driver">Driver</string>
-	<string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
+
+
+	<string name="order_summary">ऑर्डर सारांश</string>
+	<string name="return_to_merchant">मर्चेंट पर लौटें</string>
+	<string name="deposite_cash">क्या आपने नकदी जमा कर दिया है?</string>
+	<string name="deposite_cash_1">जमा नकद</string>
+	<string name="return_reasons_confirmation">विफल वितरण के लिए एक कारण का चयन करें</string>
+	<string name="submit_small">जमा करें</string>
+	<string name="total_cash_collected">कुल नकदी एकत्र</string>
+	<string name="fail">असफल</string>
+	<string name="required">अपेक्षित</string>
+	<string name="login_here">क्या पहले से ही एक ड्राइवर खाता है? <u>लॉगिन यहाँ</u></string>
+	<string name="i_accept_new">साइनअप के द्वारा  आप सहमत है हमारे  <u>इस्तेमाल की शर्तें</u></string>
+	<string name="nl_otp_please_enter_otp">अपना वन टाइम पासवर्ड दर्ज करें, भेजा गया </string>
+	<string name="driver">चालक</string>
+	<string name="register_text">एक ड्राइवर खाता नहीं है? <u>यहाँ रजिस्टर करें</u></string>
+
+	<string name="no_language_to_select">भाषा विकल्प उपलब्ध नहीं</string>
+	<string name="no_not_verified">फोन नंबर सत्यापित नहीं</string>
+	<string name="miss_call_otp">एक मिस कॉल दे</string>
+	<string name="uploading">अपलोड हो रहा </string>
+	<string name="self_enroled">स्व नामांकित</string>
+	<string name="upload_Documents">अपलोड दस्तावेज</string>
+	<string name="spinner_owned">Owned</string>
+	<string name="spinner_rented">Rented</string>
 
 
 	<string-array name="CountryCodes" >

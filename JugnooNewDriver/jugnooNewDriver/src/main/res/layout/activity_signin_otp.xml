@@ -189,7 +189,7 @@
                 <EditText
                     android:id="@+id/otpEt"
                     android:layout_width="410px"
-                    android:layout_height="wrap_content"
+                    android:layout_height="72px"
                     android:layout_gravity="center_horizontal"
                     android:background="#0000"
                     android:gravity="center"
