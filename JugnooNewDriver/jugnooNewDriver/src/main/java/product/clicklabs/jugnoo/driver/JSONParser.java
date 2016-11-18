@@ -7,8 +7,6 @@ import android.util.Pair;
 
 import com.google.android.gms.maps.model.LatLng;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -348,9 +346,6 @@ public class JSONParser implements Constants {
 	public String getUserStatus(Context context, String accessToken) {
 		String returnResponse = "";
 		try {
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-			nameValuePairs.add(new BasicNameValuePair("access_token", accessToken));
-
 			Response response = RestClient.getApiServices().getUserStatusRetro(accessToken);
 			String result = new String(((TypedByteArray) response.getBody()).getBytes());
 

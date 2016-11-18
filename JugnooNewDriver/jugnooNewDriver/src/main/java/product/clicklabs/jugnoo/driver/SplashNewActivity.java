@@ -12,8 +12,10 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -121,7 +123,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ImageView jugnooTextImg, jugnooTextImg2;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
-
+	boolean secondtime = false;
 	Spinner spinner;
 	String selectedLanguage;
 	int languagePrefStatus, registerViaTooken = RegisterOption.ONLY_TOOKAN.getOrdinal();
@@ -304,8 +306,25 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		Intent intent = new Intent();
+		String packageName = SplashNewActivity.this.getPackageName();
+		PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		if(currentapiVersion >= Build.VERSION_CODES.M) {
+			if (pm.isIgnoringBatteryOptimizations(packageName))
+				intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+			else {
+				intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+				intent.setData(Uri.parse("package:" + packageName));
+			}
+			SplashNewActivity.this.startActivity(intent);
+		}
 
 
+
+
+
+		batteryOptimizer(SplashNewActivity.this);
 
 		textViewTandC.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -770,6 +789,22 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		if(secondtime) {
+			String packageName = SplashNewActivity.this.getPackageName();
+			PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
+			int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+			if (currentapiVersion >= Build.VERSION_CODES.M) {
+				if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+					Intent newIntent = getIntent();
+					finish();
+					startActivity(newIntent);
+				}
+			}
+		}
+		secondtime = true;
+
+		batteryOptimizer(SplashNewActivity.this);
 		
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		if(resp != ConnectionResult.SUCCESS){
@@ -798,6 +833,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		super.onPause();
 		Database2.getInstance(this).close();
+	}
+
+
+	public void batteryOptimizer(Context context){
+
 	}
 
 

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 
-import org.apache.http.protocol.ResponseServer;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
