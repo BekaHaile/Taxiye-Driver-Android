@@ -407,6 +407,7 @@ public class JSONParser implements Constants {
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 									vendorMessage = "";
+							int forceEndDelivery =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
 							int totalDeliveries = 0;
@@ -424,6 +425,7 @@ public class JSONParser implements Constants {
 								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 
 							} else {
@@ -468,7 +470,7 @@ public class JSONParser implements Constants {
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-									new LatLng(currrentLatitude, currrentLongitude));
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));

@@ -426,6 +426,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private final double FIX_ZOOM_DIAGONAL = 200;
 	private GoogleApiClient mGoogleApiClient;
 
+	DialogPopup endDelivery = new DialogPopup();
+
 
 //	Button distanceReset2;
 
@@ -1743,7 +1745,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
 			HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
 			HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
-
+			HomeActivity.this.registerReceiver(broadcastReceiverCancelEndDeliveryPopup, new IntentFilter(Constants.DISMISS_END_DELIVERY_POPUP));
 
 			new Handler().postDelayed(new Runnable() {
 				@Override
@@ -1843,6 +1845,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showLowBatteryAlert(false);
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverCancelEndDeliveryPopup = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, final Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if(endDelivery != null && callbackEndDelivery != null) {
+							String response = intent.getStringExtra("response");
+							callbackEndDelivery.success(response);
+							endDelivery.dismissAlertPopup();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 		}
@@ -3304,6 +3326,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
 					}
 
+					if(customerInfo.forceEndDelivery == 1){
+						try {
+							endRideGPSCorrection(customerInfo);
+							deliveryInfoTabs.notifyDatasetchange();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
 					if (map != null) {
 						map.clear();
 						setAttachedCustomerMarkers();
@@ -3812,6 +3843,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			unregisterReceiver(broadcastReceiverUSL);
 			unregisterReceiver(broadcastReceiverLowBattery);
 			unregisterReceiver(broadcastReceiverIsCharging);
+			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 
 			System.gc();
 		} catch (Exception e) {
@@ -4309,6 +4341,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
+					int ForceEndDelivery = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
 					int totalDeliveries = 0;
@@ -4325,6 +4358,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 						cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -4364,7 +4398,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng);
+							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -4861,13 +4895,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 		} else {
 			if(customerInfo.getIsDelivery() == 1) {
-				RestClient.getApiServices().endDelivery(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+				RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
 						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			} else{
 				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
 						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			}
 		}
+	}
+
+	private CallbackEndRide callbackEndDelivery;
+	private CallbackEndRide getCallbackEndDelivery(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude,
+												   double dropLongitude, HashMap<String, String> params, long eoRideTimeInMillis,
+												   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB){
+		if(callbackEndDelivery == null) {
+			callbackEndDelivery = new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude,
+					params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
+		}
+
+		return callbackEndDelivery;
 	}
 
 	private class CallbackEndRide<RegisterScreenResponse> implements Callback<RegisterScreenResponse>{
@@ -4896,7 +4942,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 			try {
-				String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+				success(new String(((TypedByteArray) response.getBody()).getBytes()));
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+
+		public void success(String jsonString) {
+			try {
 				JSONObject jObj;
 				jObj = new JSONObject(jsonString);
 				int flag = jObj.getInt("flag");
@@ -4993,12 +5046,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
 						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 			} else{
-				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+//				endDelivery.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", false, false);
+
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
 					driverScreenMode = DriverScreenMode.D_IN_RIDE;
 					startRideChronometer(customerInfo);
 				}
 				DialogPopup.dismissLoadingDialog();
+
+				Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
 			}
 		}
 	}
@@ -8041,13 +8098,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setNevigationButtonVisibiltyDelivery(int position){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
 				&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-			if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-					== DeliveryStatus.PENDING.getOrdinal()
-					|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-					== DeliveryStatus.RETURN.getOrdinal()){
-				buttonDriverNavigationSetVisibility(View.VISIBLE);
-			} else {
-				buttonDriverNavigationSetVisibility(View.GONE);
+			try {
+				if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+						== DeliveryStatus.PENDING.getOrdinal()
+						|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+						== DeliveryStatus.RETURN.getOrdinal()){
+					buttonDriverNavigationSetVisibility(View.VISIBLE);
+				} else {
+					buttonDriverNavigationSetVisibility(View.GONE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}

@@ -643,6 +643,7 @@ public class LoginViaOTP extends BaseActivity {
 								JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 								Intent intent = new Intent(LoginViaOTP.this, DriverDocumentActivity.class);
 								intent.putExtra("access_token",jObj.getString("access_token"));
+								Utils.enableReceiver(LoginViaOTP.this, IncomingSmsReceiver.class, false);
 								startActivity(intent);
 							} else {
 								DialogPopup.alertPopup(activity, "", message);

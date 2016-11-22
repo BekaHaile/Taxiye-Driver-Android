@@ -136,6 +136,7 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
+    String KEY_END_DELIVERY_FORCED = "end_delivery_forced";
     String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
     String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
@@ -181,6 +182,7 @@ public interface Constants {
     String ACTION_REFRESH_USL = "action_refresh_usl";
     String ALERT_BATTERY_LOW = "alert_battery_low";
 	String ALERT_CHARGING = "alert_charging";
+	String DISMISS_END_DELIVERY_POPUP = "dismiss_end_delivery_popup";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
 	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING = "free_state_update_time_period_charging";

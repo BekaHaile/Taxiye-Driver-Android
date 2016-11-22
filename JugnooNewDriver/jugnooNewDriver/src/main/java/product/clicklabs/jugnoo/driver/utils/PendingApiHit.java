@@ -52,8 +52,19 @@ public class PendingApiHit {
 								Intent fetchDocIntent = new Intent(Constants.ACTION_UPDATE_RIDE_EARNING);
 								context.sendBroadcast(fetchDocIntent);
 							}
-						} else {
+						} else if (PendingCall.END_DELIVERY.getPath().equalsIgnoreCase(pendingAPICall.url)) {
+                            String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+                            JSONObject jObj = new JSONObject(jsonString);
+                            int flag = jObj.optInt("flag", ApiResponseFlags.ACTION_COMPLETE.getOrdinal());
+                            if (!(ApiResponseFlags.SHOW_ERROR_MESSAGE.getOrdinal() == flag)) {
+                                Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+                                Intent dismisspopup = new Intent(Constants.DISMISS_END_DELIVERY_POPUP);
+								dismisspopup.putExtra("response", jsonString);
+                                context.sendBroadcast(dismisspopup);
+                            }
+                        } else {
 							Database2.getInstance(context).deletePendingAPICall(pendingAPICall.id);
+
 						}
                     } catch (Exception e) {
                         e.printStackTrace();
