@@ -872,13 +872,13 @@ public class GCMIntentService extends IntentService {
 			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
 				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 				}else {
 					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 				}
 			}else{
 				if(ringType == 1){
-					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 				}else {
 					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
 				}

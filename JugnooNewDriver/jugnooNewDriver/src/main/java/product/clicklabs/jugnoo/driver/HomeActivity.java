@@ -2887,7 +2887,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverScreenMode = Data.getCurrentState();
 			mode = driverScreenMode;
 
-			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 
 			initializeFusedLocationFetchers();
 
@@ -3328,8 +3328,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if(customerInfo.forceEndDelivery == 1){
 						try {
-							endRideGPSCorrection(customerInfo);
-							deliveryInfoTabs.notifyDatasetchange();
+							DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
+							new Handler().postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									DialogPopup.dismissLoadingDialog();
+									endRideGPSCorrection(customerInfo);
+									deliveryInfoTabs.notifyDatasetchange();
+								}
+							}, 5000);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -4367,7 +4374,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
 						pickupLatitude = jObj.optDouble(KEY_PICKUP_LATITUDE, 0);
 						pickupLongitude = jObj.optDouble(KEY_PICKUP_LONGITUDE, 0);
-						address = userData.optString(KEY_ADDRESS, "");
+						address = userData.getString(KEY_ADDRESS);
+						Log.e("address", address);
 						currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
 						currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 					}
@@ -6118,6 +6126,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					});
 				} catch (Exception e) {
 					e.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
+					driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+							flagDistanceTravelled, customerInfo);
 				}
 
 			}

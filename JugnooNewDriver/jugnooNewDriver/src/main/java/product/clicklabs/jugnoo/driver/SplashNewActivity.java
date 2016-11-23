@@ -679,6 +679,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			noNetFirstTime = true;
 			getDeviceToken();
 			changeUIState(State.LOGIN);
+			if(getIntent().hasExtra("number")){
+				phoneNoOPTEt.setText(getIntent().getStringExtra("number"));
+			}
 		}
 		else{
 			Animation animation = new AlphaAnimation(0, 1);
@@ -1405,6 +1408,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			resetFields();
 			if (State.LOGIN == state) {
 				changeUIState(State.SPLASH_LS);
+
 			} else if (State.SIGNUP == state) {
 				changeUIState(State.SPLASH_LS);
 
@@ -2383,7 +2387,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
-
+				selectLanguageLl.setVisibility(View.VISIBLE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.VISIBLE);
@@ -2415,6 +2419,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
+				selectLanguageLl.setVisibility(View.GONE);
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
 
 				relativeLayoutLS.setVisibility(View.GONE);
@@ -2429,6 +2434,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 			case SIGNUP:
 				getCityAsync();
+				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);

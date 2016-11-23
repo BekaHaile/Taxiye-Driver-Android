@@ -53,7 +53,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	TextView textViewCounter, textViewOr, phoneNoEt;
 	EditText editTextOTP;
-	Button buttonVerify, backBtn;
+	Button buttonVerify, backBtn, btnLogin;
 
 	RelativeLayout relative;
 	ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber;
@@ -113,6 +113,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(this));
+
+		btnLogin = (Button) findViewById(R.id.btnLogin);
+		btnLogin.setTypeface(Data.latoRegular(this));
 
 		layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
 		btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
@@ -254,6 +257,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 									@Override
 									public void onClick(View v) {
 										layoutResendOtp.setVisibility(View.GONE);
+										btnLogin.setVisibility(View.VISIBLE);
 //										btnReGenerateOtp.setVisibility(View.GONE);
 										Utils.openCallIntent(OTPConfirmScreen.this, knowlarityMissedCallNumber);
 									}
@@ -269,6 +273,13 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 						e.printStackTrace();
 					}
 				}
+			}
+		});
+
+		btnLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendSignupValues(OTPConfirmScreen.this, "99999");
 			}
 		});
 
@@ -379,6 +390,8 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
+										btnLogin.setVisibility(View.GONE);
+										layoutResendOtp.setVisibility(View.VISIBLE);
 									} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
 										JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 										Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
@@ -512,6 +525,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 								}
 
 								DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
+								btnLogin.setVisibility(View.GONE);
 								layoutResendOtp.setVisibility(View.GONE);
 								btnReGenerateOtp.setVisibility(View.GONE);
 								editTextOTP.setEnabled(true);

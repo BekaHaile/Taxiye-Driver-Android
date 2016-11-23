@@ -218,7 +218,13 @@ public class LoginViaOTP extends BaseActivity {
 		imageViewChangePhoneNumber.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				performbackPressed();
+				Prefs.with(LoginViaOTP.this).save(SPLabels.REQUEST_LOGIN_OTP_FLAG, "false");
+				Intent intent = new Intent(LoginViaOTP.this, SplashNewActivity.class);
+				intent.putExtra("no_anim", "yes");
+				intent.putExtra("number",phoneNo);
+				startActivity(intent);
+				finish();
+				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 			}
 		});
 
