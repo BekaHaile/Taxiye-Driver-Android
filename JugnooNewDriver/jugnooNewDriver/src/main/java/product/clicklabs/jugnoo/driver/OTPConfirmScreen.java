@@ -393,10 +393,10 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 										btnLogin.setVisibility(View.GONE);
 										layoutResendOtp.setVisibility(View.VISIBLE);
 									} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+										Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
 										JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 										Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
-										intent.putExtra("access_token",jObj.getString("access_token"));
-										Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
+										intent.putExtra("access_token", jObj.getString("access_token"));
 										startActivity(intent);
 									} else{
 										DialogPopup.alertPopup(activity, "", message);

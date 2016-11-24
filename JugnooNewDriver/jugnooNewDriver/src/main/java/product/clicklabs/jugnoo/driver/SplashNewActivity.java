@@ -1679,7 +1679,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 		else if(hasFocus && noNetSecondTime){
 			noNetSecondTime = false;
-			finish();
+//			finish();
 		}
 		else if(hasFocus && loginDataFetched){
 			loginDataFetched = false;
