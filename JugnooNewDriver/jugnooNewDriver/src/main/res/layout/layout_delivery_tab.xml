@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:background="@color/grey_light"
+                android:gravity="center_horizontal">
+
+
+    <!--<android.support.v4.view.ViewPager-->
+
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvMessage"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        card_view:cardCornerRadius="3dp"
+        card_view:cardUseCompatPadding="true">
+
+        <TextView
+            android:id="@+id/tvMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Please wait..."
+            android:textSize="20px"/>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvPathDetails"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="640px"
+        android:layout_height="144dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:visibility="visible"
+        card_view:cardCornerRadius="3dp"
+        card_view:cardUseCompatPadding="true"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="64px"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30px"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/NA"
+                    android:textSize="28px"
+                    android:textColor="@color/black_text_v2"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="494px"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/NA"
+                    android:textSize="28px"
+                    android:textColor="@color/black_text_v2"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="110px"
+                android:orientation="horizontal"
+                android:layout_marginTop="18px">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="352px"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:maxLines="3"
+                        android:textSize="20px"
+                        android:text="lllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll"
+                        android:textColor="@color/black_text_v2"
+                        />
+
+                    <TextView
+                        android:layout_width="352px"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="30px"
+                        android:textSize="20px"
+                        android:text="lllllllllllllllllllllllllllllllllllllll"
+                        android:textColor="@color/black_text_v2"
+                        />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutCall"
+                    android:layout_width="200px"
+                    android:layout_height="64px"
+                    android:layout_marginLeft="20px"
+                    android:visibility="visible"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/new_orange_btn_corner_normal">
+
+                    <ImageView
+                        android:id="@+id/driverCallIcon"
+                        android:layout_width="40px"
+                        android:layout_height="40px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15px"
+                        android:src="@drawable/call_icon_selector"/>
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                        android:id="@+id/textViewCall"
+                        android:layout_width="130px"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="85px"
+                        android:text="@string/call"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="42px"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutDeliveredAmnt"
+                    android:layout_width="200px"
+                    android:layout_height="64px"
+                    android:layout_marginLeft="20px"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_gravity="center">
+
+                    <TextView
+                        android:id="@+id/textViewCashCollectedValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20px"
+                        android:text="@string/NA"
+                        android:textColor="@color/black_text_v2"/>
+
+                    <TextView
+                        android:id="@+id/textViewCashCollectedText"
+                        android:layout_below="@+id/textViewCashCollectedValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20px"
+                        android:text="@string/NA"
+                        android:textColor="@color/black_text_v2"/>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/buttonMarkDeliver"
+                    android:layout_width="270px"
+                    android:layout_height="64px"
+                    android:background="@drawable/new_orange_btn_normal_rounded"
+                    android:text="@string/arrived"
+                    android:visibility="visible"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/buttonMarkReturn"
+                    android:layout_width="270px"
+                    android:layout_height="64px"
+                    android:background="@drawable/new_orange_btn_normal_rounded"
+                    android:text="@string/Return"
+                    android:visibility="gone"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="@dimen/button_text_size"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                    android:id="@+id/buttonMarkFailed"
+                    android:layout_width="270px"
+                    android:layout_height="64px"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="40px"
+                    android:visibility="visible"
+                    android:background="@drawable/new_menu_black_btn_selector_rounded"
+                    android:text="@string/cancel"
+                    android:textColor="@drawable/white_color_selector"
+                    android:textSize="32px"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+</RelativeLayout>

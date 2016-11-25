@@ -13,7 +13,7 @@ public class DeliveryInfo {
 	private String deliveryAddress;
 	private String customerNo;
 	private double amount;
-	private int status;
+	private int status, totalDelivery, delSuccess, delFail;
 
 	private double distance = 0;
 	private long deliveryTime = System.currentTimeMillis();
@@ -36,6 +36,12 @@ public class DeliveryInfo {
 		this.waitTime = waitTime * 1000l;
 		this.cancelReason = cancelReason;
 		this.index = index;
+	}
+
+	public void setReturnData(int totalDelivery, int delSuccess, int delFail){
+		this.totalDelivery = totalDelivery;
+		this.delSuccess= delSuccess;
+		this.delFail = delFail;
 	}
 
 	public DeliveryInfo(int id) {
@@ -153,5 +159,29 @@ public class DeliveryInfo {
 
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public int getDelFail() {
+		return delFail;
+	}
+
+	public void setDelFail(int delFail) {
+		this.delFail = delFail;
+	}
+
+	public int getDelSuccess() {
+		return delSuccess;
+	}
+
+	public void setDelSuccess(int delSuccess) {
+		this.delSuccess = delSuccess;
+	}
+
+	public int getTotalDelivery() {
+		return totalDelivery;
+	}
+
+	public void setTotalDelivery(int totalDelivery) {
+		this.totalDelivery = totalDelivery;
 	}
 }
