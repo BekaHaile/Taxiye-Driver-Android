@@ -313,7 +313,7 @@ public class LoginViaOTP extends BaseActivity {
 		OTP_SCREEN_OPEN = "yes";
 		Prefs.with(LoginViaOTP.this).save(SPLabels.LOGIN_VIA_OTP_STATE, true);
 
-		if(System.currentTimeMillis() < (Prefs.with(LoginViaOTP.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 900000)
+		if(System.currentTimeMillis() < (Prefs.with(LoginViaOTP.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
 				&&(!"".equalsIgnoreCase(Prefs.with(LoginViaOTP.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
 			fetchMessages();
 		}
@@ -630,7 +630,10 @@ public class LoginViaOTP extends BaseActivity {
 								DialogPopup.alertPopup(activity, "", message);
 //								mainLinear.setVisibility(View.VISIBLE);
 								layoutResendOtp.setVisibility(View.VISIBLE);
+								customCountDownTimer.cancel();
 								btnLogin.setVisibility(View.GONE);
+								linearLayoutWaiting.setVisibility(View.GONE);
+								btnReGenerateOtp.setVisibility(View.VISIBLE);
 								otpEt.setText("");
 							} else if (ApiResponseFlags.AUTH_VERIFICATION_REQUIRED.getOrdinal() == flag) {
 								DialogPopup.alertPopup(activity, "", getResources().getString(R.string.no_not_verified));
@@ -772,7 +775,7 @@ public class LoginViaOTP extends BaseActivity {
 			String selection;
 			Cursor cursor;
 
-			selectionArgs = new String[]{Long.toString(System.currentTimeMillis() - 900000)};
+			selectionArgs = new String[]{Long.toString(System.currentTimeMillis() - 600000)};
 			selection = "date>?";
 			cursor = LoginViaOTP.this.getContentResolver().query(uri, null, selection, selectionArgs, null);
 

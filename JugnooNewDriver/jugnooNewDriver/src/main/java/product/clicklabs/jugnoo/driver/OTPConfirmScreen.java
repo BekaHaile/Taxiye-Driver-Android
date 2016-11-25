@@ -85,7 +85,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		if (intent.hasExtra("message")) {
 			retrieveOTPFromSMS(intent);
 		} else if (intent.hasExtra("otp")) {
-			retrieveOTPFromPush(intent);
+//			retrieveOTPFromPush(intent);
 		}
 		super.onNewIntent(intent);
 	}
@@ -392,6 +392,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 										DialogPopup.alertPopup(activity, "", message);
 										btnLogin.setVisibility(View.GONE);
 										layoutResendOtp.setVisibility(View.VISIBLE);
+										customCountDownTimer.cancel();
+										linearLayoutWaiting.setVisibility(View.GONE);
+										btnReGenerateOtp.setVisibility(View.VISIBLE);
 									} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
 										Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
 										JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
@@ -502,7 +505,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", phoneNo);
 				params.put("login_type", "1");
-				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
+//				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
 				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 
 				RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {

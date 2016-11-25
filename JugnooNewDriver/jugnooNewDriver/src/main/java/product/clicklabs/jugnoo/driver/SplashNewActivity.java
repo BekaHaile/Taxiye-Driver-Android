@@ -296,10 +296,17 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 //				finish();
 //				overridePendingTransition(R.anim.right_in, R.anim.right_out);
 //				FlurryEventLogger.event(LOGIN);
-				changeUIState(State.LOGIN);
-				if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 900000)
-						&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
-					fetchMessages();
+
+				try {
+					if(System.currentTimeMillis() < (Prefs.with(SplashNewActivity.this).getLong(SPLabels.DRIVER_LOGIN_TIME,0) + 600000)
+							&&(!"".equalsIgnoreCase(Prefs.with(SplashNewActivity.this).getString(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, "")))){
+						fetchMessages();
+					} else{
+						changeUIState(State.LOGIN);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					changeUIState(State.LOGIN);
 				}
 			}
 		});
@@ -2263,7 +2270,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	public void showLanguagePreference() {
 
-		if (languagePrefStatus == 1) {
+		if (languagePrefStatus == 1 && State.SPLASH_LS == state) {
 			selectLanguageLl.setVisibility(View.VISIBLE);
 		} else {
 			selectLanguageLl.setVisibility(View.GONE);
@@ -2518,13 +2525,21 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 										finish();
 										overridePendingTransition(R.anim.right_in, R.anim.right_out);
 										btnGenerateOtp.performClick();
+										changeUIState(State.LOGIN);
 										break;
 									} catch (Exception e) {
 										e.printStackTrace();
+										changeUIState(State.LOGIN);
 									}
 
+								} else {
+									changeUIState(State.LOGIN);
 								}
+							} else {
+								changeUIState(State.LOGIN);
 							}
+						} else {
+							changeUIState(State.LOGIN);
 						}
 
 					} catch (Exception e) {
@@ -2534,6 +2549,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 			if (cursor != null) {
 				cursor.close();
+				changeUIState(State.LOGIN);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
