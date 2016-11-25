@@ -3801,7 +3801,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setBarAddress(String address){
-		relativeLayoutDestination.setVisibility(View.VISIBLE);
+//		relativeLayoutDestination.setVisibility(View.VISIBLE);
 		textViewEnterDestination.setText(address);
 	}
 
