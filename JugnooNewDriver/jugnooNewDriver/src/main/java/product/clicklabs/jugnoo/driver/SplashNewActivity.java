@@ -310,18 +310,17 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		String packageName = SplashNewActivity.this.getPackageName();
 		PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
 		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-		if(currentapiVersion >= Build.VERSION_CODES.M) {
-			if (pm.isIgnoringBatteryOptimizations(packageName))
-				intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
-			else {
-				intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
-				intent.setData(Uri.parse("package:" + packageName));
+		try {
+			if(currentapiVersion >= Build.VERSION_CODES.M) {
+				if (!pm.isIgnoringBatteryOptimizations(packageName)){
+					intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+					intent.setData(Uri.parse("package:" + packageName));
+					SplashNewActivity.this.startActivity(intent);
+				}
 			}
-			SplashNewActivity.this.startActivity(intent);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-
-
 
 
 		batteryOptimizer(SplashNewActivity.this);
@@ -791,15 +790,19 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		}
 
 		if(secondtime) {
-			String packageName = SplashNewActivity.this.getPackageName();
-			PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
-			int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-			if (currentapiVersion >= Build.VERSION_CODES.M) {
-				if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-					Intent newIntent = getIntent();
-					finish();
-					startActivity(newIntent);
+			try {
+				String packageName = SplashNewActivity.this.getPackageName();
+				PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
+				int currentapiVersion = Build.VERSION.SDK_INT;
+				if (currentapiVersion >= Build.VERSION_CODES.M) {
+					if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+						Intent newIntent = getIntent();
+						finish();
+						startActivity(newIntent);
+					}
 				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		secondtime = true;
