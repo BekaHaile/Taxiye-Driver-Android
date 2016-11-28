@@ -328,7 +328,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
 			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
 	Shader textShader;
-
+	double fixDeliveryDistance = -1;
 	CustomerSwitcher customerSwitcher;
 	DeliveryInfoTabs deliveryInfoTabs;
 
@@ -2878,6 +2878,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
 							.getDistance(HomeActivity.this), HomeActivity.this) / 1000.0);
 					String kmsStr = "";
+
+					try {
+						if (fixDeliveryDistance > -1 && customerInfo.getIsDelivery()==1) {
+							totalDistanceInKm = fixDeliveryDistance;
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
+					}
+
 					if (totalDistanceInKm > 1) {
 						kmsStr = getResources().getString(R.string.kms);
 					} else {
@@ -3881,7 +3890,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setBarAddress(String address){
-		relativeLayoutDestination.setVisibility(View.VISIBLE);
+//		relativeLayoutDestination.setVisibility(View.VISIBLE);
 		textViewEnterDestination.setText(address);
 	}
 
@@ -4916,9 +4925,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					try {
 						totalFare = jObj.getDouble("fare");
+						if(customerInfo.getIsDelivery() ==1) {
+							fixDeliveryDistance = jObj.getDouble("distance_travelled");
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						totalFare = 0;
+						fixDeliveryDistance = -1;
 					}
 
 					endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
