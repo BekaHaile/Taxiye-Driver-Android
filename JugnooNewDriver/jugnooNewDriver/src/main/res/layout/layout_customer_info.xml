@@ -24,16 +24,16 @@
             android:textSize="36px"
             android:visibility="visible"/>
 
-        <TextView
-            android:id="@+id/textViewCustomerPickupAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_marginTop="12px"
-            android:text="@string/NA"
-            android:textColor="@color/bg_grey_opaque"
-            android:textSize="30px"
-            android:visibility="visible"/>
+        <!--<TextView-->
+            <!--android:id="@+id/textViewCustomerPickupAddress"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:layout_marginTop="12px"-->
+            <!--android:text="@string/NA"-->
+            <!--android:textColor="@color/bg_grey_opaque"-->
+            <!--android:textSize="30px"-->
+            <!--android:visibility="visible"/>-->
 
         <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
             android:id="@+id/textViewDeliveryCount"
@@ -59,30 +59,30 @@
         android:layout_centerVertical="true"
         >
 
-        <RelativeLayout
-            android:id="@+id/relativeLayoutCall"
-            android:layout_width="180px"
-            android:layout_height="70px"
-            android:background="@drawable/new_orange_btn_corner_normal">
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/relativeLayoutCall"-->
+            <!--android:layout_width="180px"-->
+            <!--android:layout_height="70px"-->
+            <!--android:background="@drawable/new_orange_btn_corner_normal">-->
 
-            <ImageView
-                android:id="@+id/driverCallIcon"
-                android:layout_width="45px"
-                android:layout_height="45px"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15px"
-                android:src="@drawable/call_icon_selector"/>
+            <!--<ImageView-->
+                <!--android:id="@+id/driverCallIcon"-->
+                <!--android:layout_width="45px"-->
+                <!--android:layout_height="45px"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="15px"-->
+                <!--android:src="@drawable/call_icon_selector"/>-->
 
-            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-                android:id="@+id/textViewCall"
-                android:layout_width="130px"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="75px"
-                android:text="@string/call"
-                android:textColor="@drawable/white_color_selector"
-                android:textSize="42px"/>
-        </RelativeLayout>
+            <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+                <!--android:id="@+id/textViewCall"-->
+                <!--android:layout_width="130px"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="75px"-->
+                <!--android:text="@string/call"-->
+                <!--android:textColor="@drawable/white_color_selector"-->
+                <!--android:textSize="42px"/>-->
+        <!--</RelativeLayout>-->
 
         <LinearLayout
             android:id="@+id/linearLayoutDeliveryFare"

@@ -777,6 +777,8 @@
         <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
+    <string name="select">Select</string>
+    <string name="select_customer">Select Customer</string>
 
 
     <string-array name="CountryCodes" >
