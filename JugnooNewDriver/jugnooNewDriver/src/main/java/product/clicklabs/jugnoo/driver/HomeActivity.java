@@ -4924,12 +4924,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private CallbackEndRide callbackEndDelivery;
 	private CallbackEndRide getCallbackEndDelivery(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude,
 												   double dropLongitude, HashMap<String, String> params, long eoRideTimeInMillis,
-												   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB){
-		if(callbackEndDelivery == null) {
-			callbackEndDelivery = new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude,
-					params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
-		}
-
+												   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB) {
+		callbackEndDelivery = new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude,
+				params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 		return callbackEndDelivery;
 	}
 
