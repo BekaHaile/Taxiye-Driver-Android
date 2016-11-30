@@ -439,10 +439,20 @@
                     android:textSize="@dimen/text_size_30" />
             </LinearLayout>
 
-
-
-
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="404px"
+            android:layout_height="90px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="28px"
+            android:layout_marginTop="84px"
+            android:background="@drawable/background_white_rounded_orange_bordered"
+            android:text="@string/login"
+            android:textColor="@color/red_v2"
+            android:textSize="@dimen/button_text_size"
+            android:visibility="gone"/>
 
 
     </LinearLayout>
