@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/relative"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/transparent"
     android:layout_width="match_parent"
@@ -11,7 +12,7 @@
         android:id="@+id/relativeLayoutCard1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="35px"
         android:layout_marginBottom="40px"
         android:layout_marginRight="8dp"
         android:layout_marginTop="64px">
@@ -41,7 +42,7 @@
                     android:layout_marginTop="32px">
 
                     <ImageView
-                        android:id="@+id/imageViewDote1"
+                        android:id="@+id/imageViewDote"
                         android:layout_width="16px"
                         android:layout_height="16px"
                         android:layout_marginLeft="12px"
@@ -49,20 +50,22 @@
                         android:layout_centerVertical="true"/>
 
                     <TextView
-                        android:id="@+id/textViewCustome1Name"
+                        android:id="@+id/textViewCustomer1Name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16px"
-                        android:layout_toRightOf="@+id/imageViewDote1"
+                        android:textSize="32px"
+                        android:layout_toRightOf="@+id/imageViewDote"
                         android:text="@string/NA"/>
 
                 </RelativeLayout>
 
 
                 <TextView
-                    android:id="@+id/textViewCustome1Address"
+                    android:id="@+id/textViewCustomer1Address"
                     android:layout_width="525px"
                     android:layout_height="wrap_content"
+                    android:textSize="27px"
                     android:layout_marginLeft="48px"
                     android:layout_marginTop="28px"
                     android:layout_marginBottom="32px"
@@ -82,9 +85,9 @@
                     android:gravity="center">
 
                     <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonSelect1"
+                        android:id="@+id/buttonSelect"
                         android:layout_width="236px"
-                        android:layout_height="64px"
+                        android:layout_height="70px"
                         android:background="@drawable/new_orange_btn_normal_rounded"
                         android:text="@string/select"
                         android:visibility="visible"
@@ -93,9 +96,9 @@
 
 
                     <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonCancel1"
+                        android:id="@+id/buttonCancel"
                         android:layout_width="236px"
-                        android:layout_height="64px"
+                        android:layout_height="70px"
                         android:layout_marginLeft="35px"
                         android:visibility="visible"
                         android:background="@drawable/new_menu_black_btn_selector_rounded"
@@ -113,24 +116,36 @@
 
 
     <ImageView
+        android:id="@+id/imageViewVerticalLine"
         android:layout_width="3px"
-        android:layout_height="300px"
-        android:layout_marginLeft="45px"
+        android:layout_height="124px"
         android:background="@color/black_varient"
-        android:layout_above="@+id/imageViewHorizontalLineNew"/>
+        android:visibility="visible"
+        />
 
+    <ImageView
+        android:id="@+id/imageViewVerticalLine1"
+        android:layout_width="3px"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/imageViewHorizontalLineNew"
+        android:layout_above="@+id/imageViewFakeBottom"
+        android:background="@color/black_varient"
+        />
+
+    <!--android:layout_alignBottom="@+id/imageViewHorizontalLineNew"-->
 
     <ImageView
         android:id="@+id/imageViewHorizontalLineNew"
         android:layout_width="53px"
         android:layout_height="3px"
-        android:layout_marginLeft="45px"
+        android:layout_marginTop="121px"
         android:background="@color/black_varient"/>
 
     <ImageView
         android:id="@+id/imageViewFakeBottom"
         android:layout_below="@+id/relativeLayoutCard1"
-        android:layout_width="1px"
+        android:background="@color/black_varient"
+        android:layout_width="2px"
         android:layout_height="1px"/>
 
 </RelativeLayout>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/relativeLayoutRoot"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout android:id="@+id/relativeLayoutRoot"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
     <RelativeLayout
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="90px"
         android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false" >
+        android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/backBtn"
@@ -19,7 +19,7 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
-            android:tag="mwar" />
+            android:tag="mwar"/>
 
         <TextView
             android:id="@+id/title"
@@ -29,304 +29,72 @@
             android:gravity="center"
             android:text="@string/select_customer"
             android:textColor="@color/white"
-            android:textSize="40px" />
+            android:textSize="40px"/>
 
 
     </RelativeLayout>
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="784px"
-        android:layout_marginTop="72px"
-        android:layout_below="@+id/topRl">
+        android:layout_height="804px"
+        android:layout_below="@+id/topRl"
+        android:layout_marginTop="72px">
 
         <ImageView
             android:layout_width="750px"
             android:layout_height="match_parent"
             android:layout_marginLeft="-330px"
-            android:src="@drawable/dotted"
-            android:layerType="software" />
-
+            android:layerType="software"
+            android:src="@drawable/dotted"/>
 
         <ImageView
             android:layout_width="20px"
             android:layout_height="20px"
             android:layout_marginLeft="36px"
+            android:layout_marginTop="9px"
             android:src="@drawable/circle_grey"/>
 
         <ImageView
             android:layout_width="20px"
             android:layout_height="20px"
-            android:layout_marginLeft="37px"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="9px"
+            android:layout_marginLeft="37px"
             android:src="@drawable/circle_grey"/>
 
-        <ImageView
-            android:layout_width="3px"
-            android:layout_height="240px"
-            android:layout_marginLeft="45px"
-            android:background="@color/black_varient"
-            android:layout_marginTop="119.5px"/>
-
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutCard1"
+        <TextView
+            android:id="@+id/textViewPoolStart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="64px">
+            android:textSize="32px"
+            android:textColor="@color/black_text_v2"
+            android:text="@string/pool_start"
+            android:layout_marginLeft="72px"/>
 
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textViewPoolStart"
+            android:layout_above="@+id/textViewPoolEnd"
+            android:layout_marginLeft="45px"
+            android:splitMotionEvents="false">
+        </android.support.v7.widget.RecyclerView>
 
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card1"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        <TextView
+            android:id="@+id/textViewPoolEnd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            card_view:cardBackgroundColor="@android:color/transparent"
-            card_view:cardCornerRadius="3dp"
-            card_view:cardUseCompatPadding="true">
-            
-            
-            <LinearLayout
-                android:id="@+id/linearLayoutCard1"
-                android:layout_width="604px"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_white_rounded_orange_bordered"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32px">
-
-                    <ImageView
-                        android:id="@+id/imageViewDote1"
-                        android:layout_width="16px"
-                        android:layout_height="16px"
-                        android:layout_marginLeft="12px"
-                        android:src="@drawable/green_dot_icon"
-                        android:layout_centerVertical="true"/>
-
-                    <TextView
-                        android:id="@+id/textViewCustome1Name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16px"
-                        android:layout_toRightOf="@+id/imageViewDote1"
-                        android:text="@string/NA"
-                        />
-
-                </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/textViewCustome1Address"
-                    android:layout_width="525px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="48px"
-                    android:layout_marginTop="28px"
-                    android:layout_marginBottom="32px"
-                    android:layout_toRightOf="@+id/imageViewDote1"
-                    android:text="@string/NA"
-                    />
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutSelection1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"
-                    android:layout_marginBottom="32px"
-                    android:visibility="visible"
-                    android:gravity="center"
-                    >
-
-                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonSelect1"
-                        android:layout_width="236px"
-                        android:layout_height="64px"
-                        android:background="@drawable/new_orange_btn_normal_rounded"
-                        android:text="@string/select"
-                        android:visibility="visible"
-                        android:textColor="@drawable/white_color_selector"
-                        android:textSize="@dimen/button_text_size"/>
-
-
-                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonCancel1"
-                        android:layout_width="236px"
-                        android:layout_height="64px"
-                        android:layout_marginLeft="35px"
-                        android:visibility="visible"
-                        android:background="@drawable/new_menu_black_btn_selector_rounded"
-                        android:text="@string/cancel"
-                        android:textColor="@drawable/white_color_selector"
-                        android:textSize="32px"/>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-            </android.support.v7.widget.CardView>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/relativeLayoutCard2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/relativeLayoutCard1"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="64px">
-
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card2"
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:cardBackgroundColor="@android:color/transparent"
-            card_view:cardCornerRadius="3dp"
-            card_view:cardUseCompatPadding="true">
-
-
-            <LinearLayout
-                android:id="@+id/linearLayoutCard2"
-                android:layout_width="604px"
-                android:layout_height="wrap_content"
-                android:padding="1px"
-                android:background="@drawable/background_grey_alpha_rounded_bordered"
-                android:orientation="vertical">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="32px">
-
-                    <ImageView
-                        android:id="@+id/imageViewDote2"
-                        android:layout_width="16px"
-                        android:layout_height="16px"
-                        android:layout_marginLeft="12px"
-                        android:src="@drawable/red_dot_icon"
-                        android:layout_centerVertical="true"/>
-
-                    <TextView
-                        android:id="@+id/textViewCustome2Name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16px"
-                        android:layout_toRightOf="@+id/imageViewDote2"
-                        android:text="@string/NA"
-                        />
-
-                </RelativeLayout>
-
-
-                <TextView
-                    android:id="@+id/textViewCustome2Address"
-                    android:layout_width="525px"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="48px"
-                    android:layout_marginTop="28px"
-                    android:layout_marginBottom="32px"
-                    android:layout_toRightOf="@+id/imageViewDote1"
-                    android:text="@string/NA"
-                    />
-
-
-                <LinearLayout
-                    android:id="@+id/linearLayoutSelection2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="30px"
-                    android:layout_marginRight="30px"
-                    android:layout_marginBottom="32px"
-                    android:visibility="gone"
-                    android:gravity="center">
-
-                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonSelect2"
-                        android:layout_width="236px"
-                        android:layout_height="64px"
-                        android:background="@drawable/new_orange_btn_normal_rounded"
-                        android:text="@string/select"
-                        android:visibility="visible"
-                        android:textColor="@drawable/white_color_selector"
-                        android:textSize="@dimen/button_text_size"/>
-
-
-                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
-                        android:id="@+id/buttonCancel2"
-                        android:layout_width="236px"
-                        android:layout_height="64px"
-                        android:layout_marginLeft="35px"
-                        android:visibility="visible"
-                        android:background="@drawable/new_menu_black_btn_selector_rounded"
-                        android:text="@string/cancel"
-                        android:textColor="@drawable/white_color_selector"
-                        android:textSize="32px"/>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        </RelativeLayout>
-
-
-
-        <ImageView
-            android:layout_width="53px"
-            android:layout_height="3px"
-            android:layout_marginLeft="45px"
-            android:background="@color/black_varient"
-            android:layout_marginTop="119px"/>
-
-        <ImageView
-            android:layout_width="54px"
-            android:layout_height="3px"
-            android:layout_marginLeft="45px"
-            android:background="@color/black_varient"
-            android:layout_marginTop="358px"/>
-
-        <ImageView
-            android:id="@+id/imageViewExpended"
-            android:layout_width="3px"
-            android:layout_height="336px"
-            android:layout_marginLeft="45px"
-            android:visibility="visible"
-            android:background="@color/black_varient"
-            android:layout_marginTop="119.5px"/>
-
-        <ImageView
-            android:id="@+id/imageViewExpendedSide"
-            android:layout_width="54px"
-            android:layout_height="3px"
-            android:layout_marginLeft="45px"
-            android:visibility="visible"
-            android:background="@color/black_varient"
-            android:layout_marginTop="454px"/>
+            android:textSize="32px"
+            android:textColor="@color/black_text_v2"
+            android:layout_alignParentBottom="true"
+            android:text="@string/pool_stop"
+            android:layout_marginLeft="72px"/>
 
 
     </RelativeLayout>
-
 
 
 </RelativeLayout>

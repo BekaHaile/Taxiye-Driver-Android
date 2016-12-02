@@ -752,6 +752,9 @@
     <string name="spinner_rented">Rented</string>
     <string name="select">Select</string>
     <string name="select_customer">Select Customer</string>
+    <string name="collect_cash">Collect Cash</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
 
 
     <string-array name="CountryCodes" >

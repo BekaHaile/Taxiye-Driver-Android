@@ -4,6 +4,9 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +21,13 @@ import com.flurry.android.FlurryAgent;
 import org.json.JSONObject;
 
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.home.adapters.CustomerInfoAdapter;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
@@ -39,37 +45,20 @@ import retrofit.mime.TypedByteArray;
 public class SwitchCustomerFragment extends Fragment {
 
 	private RelativeLayout relativeLayoutRoot;
-	private LinearLayout linearLayoutCard2, linearLayoutCard1;
+	private Button backBtn;
 
-	private TextView textViewCustome1Name, textViewCustome1Address, textViewCustome2Name, textViewCustome2Address;
-	private Button backBtn, buttonSelect1, buttonCancel1, buttonSelect2, buttonCancel2;
-	private ImageView imageViewDote1, imageViewDote2, imageViewExpended, imageViewExpendedSide;
+	private RecyclerView recyclerViewCustomer;
 
 	private View rootView;
-	private FragmentActivity activity;
-
-	@Override
-	public void onStart() {
-		super.onStart();
-		FlurryAgent.init(activity, Data.FLURRY_KEY);
-		FlurryAgent.onStartSession(activity, Data.FLURRY_KEY);
-		FlurryAgent.onEvent(SwitchCustomerFragment.class.getSimpleName() + " started");
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
-		FlurryAgent.onEndSession(activity);
-	}
-
+	private HomeActivity activity;
+	private CustomerInfoAdapter customerInfoAdapter;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		rootView = inflater.inflate(R.layout.fragment_earnings_new, container, false);
+		rootView = inflater.inflate(R.layout.fragment_switch_ride, container, false);
 
 
-		activity = getActivity();
-
+		activity = (HomeActivity) getActivity();
 		relativeLayoutRoot = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutRoot);
 		try {
 			if (relativeLayoutRoot != null) {
@@ -79,32 +68,35 @@ public class SwitchCustomerFragment extends Fragment {
 			e.printStackTrace();
 		}
 
-		linearLayoutCard1 = (LinearLayout) rootView.findViewById(R.id.linearLayoutCard1);
-		linearLayoutCard2 = (LinearLayout) rootView.findViewById(R.id.linearLayoutCard2);
-
-
 		backBtn = (Button) rootView.findViewById(R.id.backBtn);
-		buttonSelect1 = (Button) rootView.findViewById(R.id.buttonSelect1);
-		buttonCancel1 = (Button) rootView.findViewById(R.id.buttonCancel1);
-		buttonSelect2 = (Button) rootView.findViewById(R.id.buttonSelect2);
-		buttonCancel2 = (Button) rootView.findViewById(R.id.buttonCancel2);
-
-		imageViewDote1 = (ImageView) rootView.findViewById(R.id.imageViewDote1);
-		imageViewDote2 = (ImageView) rootView.findViewById(R.id.imageViewDote2);
-		imageViewExpended = (ImageView) rootView.findViewById(R.id.imageViewExpended);
-		imageViewExpendedSide = (ImageView) rootView.findViewById(R.id.imageViewExpendedSide);
-
-		textViewCustome1Name = (TextView) rootView.findViewById(R.id.textViewCustome1Name);
-		textViewCustome1Name.setTypeface(Data.latoRegular(activity));
-		textViewCustome1Address = (TextView) rootView.findViewById(R.id.textViewCustome1Address);
-		textViewCustome1Address.setTypeface(Data.latoRegular(activity));
-
-		textViewCustome2Name = (TextView) rootView.findViewById(R.id.textViewCustome2Name);
-		textViewCustome2Name.setTypeface(Data.latoRegular(activity));
-		textViewCustome2Address = (TextView) rootView.findViewById(R.id.textViewCustome2Address);
-		textViewCustome2Address.setTypeface(Data.latoRegular(activity));
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				activity.onBackPressed();
+			}
+		});
 
 
+		recyclerViewCustomer = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomer);
+		recyclerViewCustomer.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+		recyclerViewCustomer.setItemAnimator(new DefaultItemAnimator());
+		recyclerViewCustomer.setHasFixedSize(false);
+
+		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
+			@Override
+			public void onClick(int position, CustomerInfo customerInfo) {
+				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
+				activity.switchDriverScreen(HomeActivity.driverScreenMode);
+				activity.onBackPressed();
+			}
+
+			@Override
+			public void onCancelClick(int position, CustomerInfo customerInfo) {
+				activity.onBackPressed();
+			}
+
+		});
+		recyclerViewCustomer.setAdapter(customerInfoAdapter);
 
 		try {
 		} catch (Exception e) {
