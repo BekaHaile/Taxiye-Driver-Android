@@ -44,7 +44,7 @@ public class CustomerSwitcher {
 
 	private RecyclerView recyclerViewCustomersLinked;
 
-	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
+	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount, textViewCustomerAddressInRide,
 			textViewDeliveryFare, textViewShowDistance;
 	private RelativeLayout relativeLayoutCall;
 	private LinearLayout linearLayoutDeliveryFare;
@@ -64,6 +64,8 @@ public class CustomerSwitcher {
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		textViewCustomerAddressInRide = (TextView) rootView.findViewById(R.id.textViewCustomerAddressInRide);
+		textViewCustomerAddressInRide.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
 		textViewDeliveryCount.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryFare = (TextView) rootView.findViewById(R.id.textViewDeliveryFare);
@@ -87,6 +89,11 @@ public class CustomerSwitcher {
 			public void onClick(int position, CustomerInfo customerInfo) {
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
 				activity.switchDriverScreen(HomeActivity.driverScreenMode);
+			}
+
+			@Override
+			public void onCancelClick(int position, CustomerInfo customerInfo) {
+
 			}
 
 		});
@@ -146,24 +153,30 @@ public class CustomerSwitcher {
 							&& customerInfo.getDropLatLng() != null) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						textViewCustomerAddressInRide.setVisibility(View.VISIBLE);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-											textViewCustomerPickupAddress)).execute();
+											textViewCustomerPickupAddress, textViewCustomerAddressInRide)).execute();
 							dropAddress = (String) textViewCustomerPickupAddress.getText();
+//							textViewCustomerAddressInRide.setText(dropAddress);
 						}else {
 							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
+							textViewCustomerAddressInRide.setText(customerInfo.getDropAddress());
 							dropAddress = customerInfo.getDropAddress();
 						}
 						if(customerInfo.getIsPooled() != 1){
 							textViewCustomerPickupAddress.setVisibility(View.GONE);
+							textViewCustomerAddressInRide.setVisibility(View.GONE);
 							activity.setBarAddress(dropAddress);
 						}
 					} else if(customerInfo.getIsDelivery() == 1){
 //						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						textViewCustomerAddressInRide.setVisibility(View.GONE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						textViewCustomerAddressInRide.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
 					}
 					updateDistanceOnLocationChanged();
@@ -178,7 +191,7 @@ public class CustomerSwitcher {
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-										textViewCustomerPickupAddress)).execute();
+										textViewCustomerPickupAddress, null)).execute();
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
@@ -202,7 +215,7 @@ public class CustomerSwitcher {
 				textViewCustomerName.setVisibility(View.VISIBLE);
 			} else {
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.GONE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -296,16 +309,22 @@ public class CustomerSwitcher {
 	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback {
 
 		private int engagementId;
-		private TextView textView;
+		private TextView textView, textView1;
 
-		public CustomGoogleGeocodeCallback(int engagementId, TextView textView) {
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView, TextView textView1) {
 			this.engagementId = engagementId;
 			this.textView = textView;
+			if(textView1 !=null) {
+				this.textView1 = textView1;
+			}
 		}
 
 		@Override
 		public void onPre() {
 			textView.setText("");
+			if(textView1 !=null) {
+				textView1.setText("");
+			}
 		}
 
 		@Override
@@ -313,6 +332,9 @@ public class CustomerSwitcher {
 			try {
 				Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
 				textView.setText(address);
+				if(textView1 !=null) {
+					textView1.setText(address);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -48,6 +48,8 @@
 	<string name="about_2_text">Rate card</string>
 	<string name="about_3_text">First 2 kms: Rs.30\nAfter 2 kms: Rs. 10/km\nWaiting time: Rs.1.5/min after 15 minutes.</string>
 
+	<string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
+
 
 	<string name="email_id">Email ID</string>
     <string name="confirm_email_id">Confirm Email ID</string>
@@ -240,7 +242,7 @@
 
 	<string name="enter_new_phone_no">Enter New Phone Number</string>
 	<string name="enter_fare">ENTER FARE</string>
-	<string name="enter_otp">Enter One Time Password</string>
+	<string name="enter_otp">Enter OTP</string>
 	<string name="email">Email:</string>
 
 	<string name="fare1">Fare :</string>
@@ -578,7 +580,7 @@
 	<string name="delivery_completed">Delivery Completed</string>
 	<string name="delivery_cancelled">Delivery Cancelled</string>
 
-	<string name="miss_call_otp">Give a Miss Call</string>
+	<string name="miss_call_otp">Give a Missed Call</string>
 	<string name="give_missed_call_dialog_text">Give us a missed call and we will verify your
 		identity
 	</string>
@@ -616,9 +618,9 @@
 	<string name="return_subsidy">Return Subsidy</string>
 	<string name="return_distance">Return Distance</string>
 	<string name="delivery_details">DELIVERY DETAILS</string>
-	<string name="please_drop_customer">Please drop %s</string>
-	<string name="please_reach_customer_location">Please reach %s\'s location</string>
-	<string name="please_start_customer_ride">Please start %s\'s ride</string>
+	<string name="please_drop_customer">Drop %s</string>
+	<string name="please_reach_customer_location">Reach %s\'s location</string>
+	<string name="please_start_customer_ride">Start %s\'s ride</string>
 	<string name="uploading">UPLOADING</string>
 	<string name="before_ride">BEFORE RIDE</string>
 	<string name="in_ride_rate">IN RIDE</string>
@@ -733,6 +735,19 @@
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
 	<string name="chat">Chat</string>
+	<string name="required">required</string>
+	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
+	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
+	<string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+	<string name="driver">Driver</string>
+	<string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
+	<string name="spinner_owned">Owned</string>
+	<string name="spinner_rented">Rented</string>
+	<string name="select">Select</string>
+	<string name="select_customer">Select Customer</string>
+	<string name="collect_cash">Collect Cash</string>
+	<string name="pool_start">Pool Start</string>
+	<string name="pool_stop">Pool Stop</string>
 
 
 	<string-array name="CountryCodes" >

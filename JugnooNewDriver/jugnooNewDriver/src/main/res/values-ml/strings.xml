@@ -20,7 +20,7 @@
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
-
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
 
@@ -688,6 +688,19 @@
     <string name="total_cash_collected">Total cash collected</string>
     <string name="fail">Fail</string>
     <string name="chat">Chat</string>
+    <string name="required">required</string>
+    <string name="login_here">Already have an driver account? Login Here</string>
+    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
+    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
+    <string name="driver">Driver</string>
+    <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
+    <string name="spinner_owned">Owned</string>
+    <string name="spinner_rented">Rented</string>
+    <string name="select">Select</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="collect_cash">Collect Cash</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -30,6 +30,7 @@
 
 
     <color name="black_translucent">#77000000</color>
+    <color name="jet_black">#000000</color>
     <color name="black_translucent_level_2">#55000000</color>
     <color name="black_translucent_level_3">#e536363f</color>
 
@@ -39,6 +40,7 @@
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
     <color name="blue_status">#338ffc</color>
+    <color name="blue_polyline">#54a9ff</color>
 
 
     <color name="transparent">#0000</color>

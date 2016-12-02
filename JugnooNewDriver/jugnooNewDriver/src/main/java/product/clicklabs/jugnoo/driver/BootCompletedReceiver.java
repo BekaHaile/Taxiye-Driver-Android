@@ -15,6 +15,7 @@ import product.clicklabs.jugnoo.driver.utils.Log;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
 
+
     final static String TAG = "BootCompletedReceiver";
 
     @Override

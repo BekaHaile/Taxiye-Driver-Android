@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -134,6 +135,7 @@ public class StartRideLocationUpdateService extends Service {
 						String.valueOf(MapUtils.distance(driverONPickupLatLng, pickupLatLng)));
 				product.clicklabs.jugnoo.driver.utils.Log.e("startRideAlarmSErvice distance",
 						String.valueOf(MapUtils.distance(driverONPickupLatLng, currentLatLng)));
+
 
 
 				if (Prefs.with(context).getBoolean(Constants.FLAG_REACHED_PICKUP, false) && Prefs.with(context).getBoolean(Constants.PLAY_START_RIDE_ALARM_FINALLY, false)
