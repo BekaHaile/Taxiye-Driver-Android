@@ -670,7 +670,6 @@
     <string name="image_upload_failed">ఫోటో సరిగ్గా రాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
     <string name="earnings_caps">సంపాదన</string>
 
-
     <string name="estimated_payout_lower"> చెల్లింపునకు అంచనా</string>
     <string name="bank_deposite">బ్యాంక్ ధరావతు</string>
     <string name="trips">ట్రిప్స్</string>
@@ -695,8 +694,30 @@
     <string name="no_data">సమాచారం లేదు</string>
     <string name="web_view">వెబ్ వీక్షణ</string>
     <string name="connection_lost">మీరు కనెక్ట్ కాలేదు. మళ్లీ ప్రయత్నించడానికి ఇక్కడ నొక్కండి.</string>
-    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
+    <string name="order_summary">కొనుగోలు వివరణ</string>
+    <string name="return_to_merchant">వ్యాపారికి తిరిగి ఇవ్వడం</string>
+    <string name="deposite_cash">మీరు నగదు జమ చేశారు?</string>
+    <string name="deposite_cash_1">నగదు ఖాతాలో జమ చేయు మొత్తము</string>
+    <string name="return_reasons_confirmation">విఫలమైంది డెలివరీ కోసం కారణాన్ని ఎంచుకోండి</string>
+    <string name="submit_small">సమర్పించండి</string>
+    <string name="total_cash_collected">మొత్తం నగదు సేకరించిన</string>
+    <string name="fail">ఓడిపోవు</string>
+    <string name="required">అవసరం</string>
+    <string name="login_here">ఇక్కడ లాగిన్</string>
+    <string name="i_accept_new">సైన్ అప్ మీరు మా <u>ఉపయోగ నిబంధనలు</u> అంగీకరిస్తున్నారు</string>
+    <string name="nl_otp_please_enter_otp">పంపిన మీ వన్ టైమ్ పాస్వర్డ్ నమోదు చేయండి</string>
+    <string name="driver">డ్రైవర్</string>
+    <string name="register_text">డ్రైవర్ ఖాతా లేదు? <u>ఇక్కడ నమోదు</u></string>
+
+    <string name="no_language_to_select">భాషా ఎంపిక అందుబాటులో లేదు</string>
+    <string name="no_not_verified">ఫోన్ నంబర్ ధృవీకరించబడలేదు</string>
+    <string name="miss_call_otp">ఒక మిస్ కాల్ లో ఇవ్వండి</string>
+    <string name="uploading">అప్లోడ్ అవుతోంది</string>
+    <string name="self_enroled">నేనే దాఖలు అయినది </string>
+    <string name="upload_Documents">పత్రాలు ఎక్కించిన</string>
+
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
     <string name="upload_again">Upload Again</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
@@ -727,28 +748,6 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
-
-    <string name="order_summary">కొనుగోలు వివరణ</string>
-    <string name="return_to_merchant">వ్యాపారికి తిరిగి ఇవ్వడం</string>
-    <string name="deposite_cash">మీరు నగదు జమ చేశారు?</string>
-    <string name="deposite_cash_1">నగదు ఖాతాలో జమ చేయు మొత్తము</string>
-    <string name="return_reasons_confirmation">విఫలమైంది డెలివరీ కోసం కారణాన్ని ఎంచుకోండి</string>
-    <string name="submit_small">సమర్పించండి</string>
-    <string name="total_cash_collected">మొత్తం నగదు సేకరించిన</string>
-    <string name="fail">ఓడిపోవు</string>
-    <string name="required">అవసరం</string>
-    <string name="login_here">ఇక్కడ లాగిన్</string>
-    <string name="i_accept_new">సైన్ అప్ మీరు మా <u>ఉపయోగ నిబంధనలు</u> అంగీకరిస్తున్నారు</string>
-    <string name="nl_otp_please_enter_otp">పంపిన మీ వన్ టైమ్ పాస్వర్డ్ నమోదు చేయండి</string>
-    <string name="driver">డ్రైవర్</string>
-    <string name="register_text">డ్రైవర్ ఖాతా లేదు? <u>ఇక్కడ నమోదు</u></string>
-
-    <string name="no_language_to_select">భాషా ఎంపిక అందుబాటులో లేదు</string>
-    <string name="no_not_verified">ఫోన్ నంబర్ ధృవీకరించబడలేదు</string>
-    <string name="miss_call_otp">ఒక మిస్ కాల్ లో ఇవ్వండి</string>
-    <string name="uploading">అప్లోడ్ అవుతోంది</string>
-    <string name="self_enroled">నేనే దాఖలు అయినది </string>
-    <string name="upload_Documents">పత్రాలు ఎక్కించిన</string>
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
 

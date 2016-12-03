@@ -13,5 +13,4 @@ public interface DirectionAPIService {
 	@GET("/driving/{query}")
 	Response getDistance(@Path("query") String originLatLng);
 
-
 }
