@@ -60,7 +60,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
     private TextView textViewTitle;
     private ImageView imageViewBack;
 	private EditText input;
-	private int position = 0;
+	private int position = 0, engagementId = 0;
 	private ImageView send;
 
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
@@ -81,6 +81,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
         relative = (RelativeLayout) findViewById(R.id.relative);
         new ASSL(this, relative, 1134, 720, false);
+
+		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
+			engagementId = getIntent().getIntExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(Data.getCurrentEngagementId()));
+		}
 
 		sdf = new SimpleDateFormat("hh:mm a");
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
@@ -263,7 +267,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
                 params.put("login_type", "1");
-                params.put("engagement_id", Data.getCurrentEngagementId());
+                params.put("engagement_id", String.valueOf(engagementId));
 
                 RestClient.getChatAckApiServices().fetchChat(params, new Callback<FetchChatResponse>() {
 					@Override
@@ -318,7 +322,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put(Constants.KEY_ACCESS_TOKEN, Data.userData.accessToken);
                 params.put("login_type", "1");
-                params.put("engagement_id", Data.getCurrentEngagementId());
+                params.put("engagement_id", String.valueOf(engagementId));
                 params.put("message", message);
 				params.put("suggestion_id", ""+id);
 
