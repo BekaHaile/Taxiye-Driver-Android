@@ -5,7 +5,8 @@
 
     <color name="white_dark">#AFAFAF</color>
     <color name="white_dark1">#EFEFEF</color>
-
+    <color name="chat_background">#eaeaea</color>
+    <color name="chat__suggestion_background">#fdfdfc</color>
 
     <color name="black">#202020</color>
     <color name="black_light">#505050</color>
@@ -163,6 +164,10 @@
 
     <color name="text_color">#2F221B</color>
     <color name="text_color_light">#992F221B</color>
+
+    <color name="theme_color_start">#FC644F</color>
+    <color name="theme_color_end">#FF9339</color>
+
 
 
 </resources>

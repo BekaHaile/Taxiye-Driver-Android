@@ -679,6 +679,8 @@
     <string name="fair_complaint">ভাড়াৰ অভিযোগ</string>
     <string name="in_review">পর্যালোচনা </string>
     <string name="pool">পুল</string>
+    <string name="chat">Chat</string>
+
     <string name="required">required</string>
     <string name="login_here">Already have an driver account? Login Here</string>
     <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>

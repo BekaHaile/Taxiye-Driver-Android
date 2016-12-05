@@ -5,8 +5,8 @@
 
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          android:versionCode="263"
-          android:versionName="2.6.3">
+          android:versionCode="265"
+          android:versionName="2.6.5">
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -256,6 +256,11 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".chat.ChatActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+        </activity>
 
         <service
             android:name="product.clicklabs.jugnoo.driver.DriverLocationUpdateService"

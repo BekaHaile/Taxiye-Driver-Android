@@ -667,6 +667,7 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
+    <string name="chat">Chat</string>
 
     <string name="order_summary">ઓર્ડર સારાંશ</string>
     <string name="return_to_merchant">મર્ચન્ટ પાસે પાછા ફરો</string>

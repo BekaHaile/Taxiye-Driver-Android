@@ -726,6 +726,7 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
+    <string name="chat">Chat</string>
 
     <string name="order_summary">కొనుగోలు వివరణ</string>
     <string name="return_to_merchant">వ్యాపారికి తిరిగి ఇవ్వడం</string>

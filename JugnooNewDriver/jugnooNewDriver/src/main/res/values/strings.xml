@@ -734,6 +734,7 @@
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
+	<string name="chat">Chat</string>
 	<string name="required">required</string>
 	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
 	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>

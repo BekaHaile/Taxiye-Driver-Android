@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -135,8 +136,8 @@ public class Data {
 			country = "", deviceName = "", osVersion = "", uniqueDeviceId = "";
 	public static String pushyToken = "";
 	public static int appVersion;
-	
-	
+
+	public static Activity context = null;
 	
 	public static ArrayList<CancelOption> cancelOptionsList;
 	public static ArrayList<DeliveryReturnOption> deliveryReturnOptionList;
