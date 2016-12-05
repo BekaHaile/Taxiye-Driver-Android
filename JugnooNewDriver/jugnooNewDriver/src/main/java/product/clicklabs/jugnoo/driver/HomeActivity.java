@@ -331,6 +331,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
 	Shader textShader;
 	double fixDeliveryDistance = -1;
+	double fixedDeliveryWaitTime = -1;
 	CustomerSwitcher customerSwitcher;
 	DeliveryInfoTabs deliveryInfoTabs;
 
@@ -3002,8 +3003,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					String kmsStr = "";
 
 					try {
-						if (fixDeliveryDistance > -1 && customerInfo.getIsDelivery()==1) {
-							totalDistanceInKm = fixDeliveryDistance;
+						if ( customerInfo.getIsDelivery()==1) {
+
+							if(fixDeliveryDistance > -1) {
+								totalDistanceInKm = fixDeliveryDistance;
+							}
+
+							if(fixedDeliveryWaitTime > -1){
+								waitTime = String.valueOf(fixedDeliveryWaitTime);
+								reviewWaitTimeRl.setVisibility(View.VISIBLE);
+								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
+							}
 						}
 					} catch (Resources.NotFoundException e) {
 						e.printStackTrace();
@@ -5119,11 +5129,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						totalFare = jObj.getDouble("fare");
 						if(customerInfo.getIsDelivery() ==1) {
 							fixDeliveryDistance = jObj.getDouble("distance_travelled");
+							fixedDeliveryWaitTime = jObj.getDouble("fix_wait_time");
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						totalFare = 0;
 						fixDeliveryDistance = -1;
+						fixedDeliveryWaitTime = -1;
 					}
 
 					endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
