@@ -53,7 +53,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 	TextView textViewCounter, textViewOr, phoneNoEt;
 	EditText editTextOTP;
-	Button buttonVerify, backBtn;
+	Button buttonVerify, backBtn, btnLogin;
 
 	RelativeLayout relative;
 	ImageView imageViewYellowLoadingBar, imageViewChangePhoneNumber;
@@ -85,7 +85,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		if (intent.hasExtra("message")) {
 			retrieveOTPFromSMS(intent);
 		} else if (intent.hasExtra("otp")) {
-			retrieveOTPFromPush(intent);
+//			retrieveOTPFromPush(intent);
 		}
 		super.onNewIntent(intent);
 	}
@@ -94,7 +94,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_otp_confrim);
-
+		Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, true);
 		loginDataFetched = false;
 
 		relative = (RelativeLayout) findViewById(R.id.relative);
@@ -114,6 +114,9 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setTypeface(Data.latoRegular(this));
 
+		btnLogin = (Button) findViewById(R.id.btnLogin);
+		btnLogin.setTypeface(Data.latoRegular(this));
+
 		layoutResendOtp = (LinearLayout) findViewById(R.id.layoutResendOtp);
 		btnReGenerateOtp = (LinearLayout) findViewById(R.id.btnReGenerateOtp);
 		btnOtpViaCall = (LinearLayout) findViewById(R.id.btnOtpViaCall);
@@ -131,8 +134,8 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 
 		try {
 			phoneNumberToVerify = getIntent().getStringExtra(Constants.PHONE_NO_VERIFY);
-			if (!(emailRegisterData == null)) {
-				if(!(emailRegisterData.phoneNo == null)) {
+			if (emailRegisterData != null) {
+				if(emailRegisterData.phoneNo != null) {
 					phoneNoEt.setText(emailRegisterData.phoneNo);
 					intentFromRegister=true;
 					generateOTP(emailRegisterData.phoneNo);
@@ -254,7 +257,8 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 									@Override
 									public void onClick(View v) {
 										layoutResendOtp.setVisibility(View.GONE);
-										btnReGenerateOtp.setVisibility(View.GONE);
+										btnLogin.setVisibility(View.VISIBLE);
+//										btnReGenerateOtp.setVisibility(View.GONE);
 										Utils.openCallIntent(OTPConfirmScreen.this, knowlarityMissedCallNumber);
 									}
 								},
@@ -269,6 +273,13 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 						e.printStackTrace();
 					}
 				}
+			}
+		});
+
+		btnLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				sendSignupValues(OTPConfirmScreen.this, "99999");
 			}
 		});
 
@@ -379,10 +390,16 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 										DialogPopup.alertPopup(activity, "", message);
 									} else if (ApiResponseFlags.AUTH_LOGIN_FAILURE.getOrdinal() == flag) {
 										DialogPopup.alertPopup(activity, "", message);
+										btnLogin.setVisibility(View.GONE);
+										layoutResendOtp.setVisibility(View.VISIBLE);
+										customCountDownTimer.cancel();
+										linearLayoutWaiting.setVisibility(View.GONE);
+										btnReGenerateOtp.setVisibility(View.VISIBLE);
 									} else if(ApiResponseFlags.UPLOAD_DOCCUMENT.getOrdinal() == flag){
+										Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
 										JSONParser.saveAccessToken(activity, jObj.getString("access_token"));
 										Intent intent = new Intent(OTPConfirmScreen.this, DriverDocumentActivity.class);
-										intent.putExtra("access_token",jObj.getString("access_token"));
+										intent.putExtra("access_token", jObj.getString("access_token"));
 										startActivity(intent);
 									} else{
 										DialogPopup.alertPopup(activity, "", message);
@@ -440,6 +457,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 									DialogPopup.dialogBanner(activity, error);
 								} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
 									String message = jObj.getString("message");
+									Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
 									DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
 										@Override
 										public void onClick(View v) {
@@ -487,7 +505,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 				HashMap<String, String> params = new HashMap<>();
 				params.put("phone_no", phoneNo);
 				params.put("login_type", "1");
-				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
+//				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_PHONE_NUMBER, phoneNo);
 				Prefs.with(OTPConfirmScreen.this).save(SPLabels.DRIVER_LOGIN_TIME, System.currentTimeMillis());
 
 				RestClient.getApiServices().generateOtp(params, new Callback<RegisterScreenResponse>() {
@@ -510,6 +528,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 								}
 
 								DialogPopup.dialogBanner(OTPConfirmScreen.this, message);
+								btnLogin.setVisibility(View.GONE);
 								layoutResendOtp.setVisibility(View.GONE);
 								btnReGenerateOtp.setVisibility(View.GONE);
 								editTextOTP.setEnabled(true);
@@ -590,6 +609,7 @@ public class OTPConfirmScreen extends BaseActivity implements LocationUpdate {
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+		Utils.enableReceiver(OTPConfirmScreen.this, IncomingSmsReceiverReg.class, false);
 		OTP_SCREEN_OPEN = null;
 		ASSL.closeActivity(relative);
 		System.gc();

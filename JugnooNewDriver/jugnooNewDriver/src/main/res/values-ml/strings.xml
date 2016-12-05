@@ -670,6 +670,7 @@
     <string name="connection_lost">Connection Loast</string>
     <string name="pls_enter_some_msg">Please enter some issue</string>
     <string name="enter_destination">Enter Destination</string>
+
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
@@ -701,6 +702,7 @@
     <string name="collect_cash">Collect Cash</string>
     <string name="pool_start">Pool Start</string>
     <string name="pool_stop">Pool Stop</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

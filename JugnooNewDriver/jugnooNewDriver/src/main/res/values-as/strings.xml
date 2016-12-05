@@ -524,10 +524,7 @@
     <string name="uploaded">আপলোড কৰা হল</string>
     <string name="rejected">নাকচ কৰা হল</string>
     <string name="verified">ভেৰিফাইদ</string>
-    <string name="auto">Auto</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
+
 
     <string name="cash_collected">নগদ লোৱা হল</string>
     <string name="s_no">ক্ৰমিক  নং</string>
@@ -536,7 +533,7 @@
     <string name="present_near_delivery_location">আপোনাৰ অৰ্দাৰ ডেলিভাৰ মাৰ্ক কৰিবলৈ আপুনি ডেলিভাৰি লকেচনৰ কাষত থাকিব লাগিব ।</string>
     <string name="success">সফল</string>
     <string name="outstanding_amount">আগৰ বাকি এদজাষ্ট কৰা হল</string>
-    <string name="please_drop_customer">Please drop %s</string>
+
     <string name="please_reach_customer_location">Please reach %s\'s location</string>
     <string name="please_start_customer_ride">Please start %s\'s ride</string>
     <string name="delivery_fare">ডেলিভাৰিৰ ভাড়া</string>
@@ -547,8 +544,7 @@
 
     <string name="auto_number">অটৰ নম্বৰ</string>
     <string name="Choose_one">পছন্দ</string>
-    <string name="is_rented">I have a rented auto.</string>
-    <string name="is_owned">I own my auto.</string>
+
 
     <string name="Documents">নথিপত্ৰ</string>
     <string name="Document_type">নথিপত্ৰ টাইপ</string>
@@ -587,16 +583,6 @@
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">আনুমানিক পৰিশোধ</string>
     <string name="this_week_cap">এই সপ্তাহ</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept"><![CDATA[I accept <u> Terms &amp; Condition</u>]]></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
     <string name="self_enroled">স্বয়ং ভর্তি</string>
     <string name="upload_Documents">নথিপত্ৰ আপলোড কৰক</string>
 
@@ -606,7 +592,6 @@
     <string name="upload_again">আকৌ আপলোড কৰক</string>
     <string name="register_via_agent">এজেণ্টৰ দ্বাৰাই ৰেজিষ্টাৰ কৰক</string>
     <string name="last_trip_earning">ড্ৰাইভাৰ যনৰ বিগত যাত্রাৰ আদায়</string>
-
 
     <string name="audit_lower">নিৰীক্ষা</string>
     <string name="self_audit">স্বয়ং নিৰীক্ষা</string>
@@ -635,29 +620,12 @@
     <string name="cancel_audit">আপোনি বাস্তৱত নিৰীক্ষণ বাতিল কৰিব খোজে নে ?</string>
     <string name="image_upload_failed">চবি আপলোড বিফল হল, পূণৰ চেষ্টা কৰক</string>
     <string name="earnings_caps">উপাৰ্জন</string>
-    <string name="no_invoice_currently">No Invoice Currently</string>
-    <string name="no_data">No Data</string>
-    <string name="web_view">WEB VIEW</string>
-    <string name="connection_lost">Connection Loast</string>
+
     <string name="pls_enter_some_msg">অনুগ্ৰহ কৰি কিছু সমস্যা লিখক</string>
     <string name="enter_destination">গন্তব্য স্থান লিখক</string>
     <string name="no_results_found">একো পৰিণাম পোৱা নাই</string>
     <string name="COD">চি অো দি</string>
     <string name="auto_accept_message">গ্ৰাহকৰ অনুৰোধ অটমেটিকলি একচেপ্ত কৰা হৈছে</string>
-    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
-    <string name="Reason">Reason</string>
-    <string name="delivery_conf">Are you sure you want to deliver ?</string>
-    <string name="failed">Failed</string>
-    <string name="cash_deposite_conf">Have you deposited cash ?</string>
-    <string name="total">Total</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="return_to_merchant">Return to the Merchant</string>
-    <string name="deposite_cash">Have you deposited cash?</string>
-    <string name="deposite_cash_1">Deposit cash</string>
-    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-    <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
-    <string name="fail">Fail</string>
 
     <string name="estimated_payout_lower">আনুমানিক পৰিশোধ</string>
     <string name="bank_deposite">বেংকত জমা</string>
@@ -681,6 +649,47 @@
     <string name="pool">পুল</string>
     <string name="chat">Chat</string>
 
+    <string name="auto">Auto</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
+
+    <string name="please_drop_customer">Please drop %s</string>
+    <string name="is_rented">I have a rented auto.</string>
+    <string name="is_owned">I own my auto.</string>
+
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u>Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+
+    <string name="no_invoice_currently">No Invoice Currently</string>
+    <string name="no_data">No Data</string>
+    <string name="web_view">WEB VIEW</string>
+    <string name="connection_lost">Connection Loast</string>
+
+    <string name="start_ride_alert">If Customer is with you, than please start ride</string>
+    <string name="Reason">Reason</string>
+    <string name="delivery_conf">Are you sure you want to deliver ?</string>
+    <string name="failed">Failed</string>
+    <string name="cash_deposite_conf">Have you deposited cash ?</string>
+    <string name="total">Total</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="return_to_merchant">Return to the Merchant</string>
+    <string name="deposite_cash">Have you deposited cash?</string>
+    <string name="deposite_cash_1">Deposit cash</string>
+    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
+    <string name="submit_small">Submit</string>
+    <string name="total_cash_collected">Total cash collected</string>
+    <string name="fail">Fail</string>
+
+
     <string name="required">required</string>
     <string name="login_here">Already have an driver account? Login Here</string>
     <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
@@ -694,6 +703,7 @@
     <string name="collect_cash">Collect Cash</string>
     <string name="pool_start">Pool Start</string>
     <string name="pool_stop">Pool Stop</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
 
     <string-array name="CountryCodes" >

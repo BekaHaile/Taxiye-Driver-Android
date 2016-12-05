@@ -115,6 +115,8 @@ public interface Constants {
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
+	String KEY_RING_TYPE = "ring_type";
+
     String KEY_DISTANCE_TRAVELLED_LOG = "distance_travelled_log";
     String KEY_IS_CACHED = "is_cached";
     String KEY_PR_DISTANCE = "pr_distance";
@@ -134,6 +136,7 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
+    String KEY_END_DELIVERY_FORCED = "end_delivery_forced";
     String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
     String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
@@ -177,6 +180,9 @@ public interface Constants {
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
+    String ALERT_BATTERY_LOW = "alert_battery_low";
+	String ALERT_CHARGING = "alert_charging";
+	String DISMISS_END_DELIVERY_POPUP = "dismiss_end_delivery_popup";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
 	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING = "free_state_update_time_period_charging";

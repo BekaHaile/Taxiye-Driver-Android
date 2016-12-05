@@ -748,6 +748,7 @@
 	<string name="collect_cash">Collect Cash</string>
 	<string name="pool_start">Pool Start</string>
 	<string name="pool_stop">Pool Stop</string>
+	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
 
 	<string-array name="CountryCodes" >

@@ -722,14 +722,13 @@
 
 
 	<string name="start_ride_alert">If Customer is with you, than please start ride</string>
-	<string name="Reason">Reason</string>
-	<string name="delivery_conf">Are you sure you want to deliver ?</string>
-	<string name="failed">Failed</string>
-	<string name="cash_deposite_conf">Have you deposited cash ?</string>
-	<string name="total">Total</string>
 	<string name="chat">Chat</string>
 
-
+	<string name="Reason">कारण</string>
+	<string name="delivery_conf">क्या आप वाकई वितरित करना चाहते हैं?</string>
+	<string name="failed">असफल</string>
+	<string name="cash_deposite_conf">क्या आपने नकदी जमा कर दिया है?</string>
+	<string name="total">कुल</string>
 	<string name="order_summary">ऑर्डर सारांश</string>
 	<string name="return_to_merchant">मर्चेंट पर लौटें</string>
 	<string name="deposite_cash">क्या आपने नकदी जमा कर दिया है?</string>
@@ -758,7 +757,7 @@
 	<string name="collect_cash">Collect Cash</string>
 	<string name="pool_start">Pool Start</string>
 	<string name="pool_stop">Pool Stop</string>
-
+	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

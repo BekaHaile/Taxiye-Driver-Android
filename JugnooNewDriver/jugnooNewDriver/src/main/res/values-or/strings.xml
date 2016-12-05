@@ -457,7 +457,6 @@
     <string name="share">ସେୟାର୍</string>
     <string name="phone_no_cnt_be_empty">ଫୋନ ନମ୍ବର ସ୍ତାନ ଟି ଖାଲି ରଖନ୍ତୁ ନାହିଁ  </string>
 
-    <string name="no_language_to_select">Language Option Not Available</string>
     <string name="enter_some_amount">ଦୟାକରି କିଛି ପଇସା ଲେଖନ୍ତୁ</string>
     <string name="enter_less_amount">ଦୟାକରି କମ ପଇସା ଲେଖନ୍ତୁ </string>
     <string name="enter_valid_amount">ଦୟାକରି କିଛି ବୈଧ ରାସୀ ଜମା କରନ୍ତୁ </string>
@@ -465,12 +464,10 @@
     <string name="ride_complete">ରାଇଡ୍ ଶେଷ ହୋଇସାରିଛି</string>
     <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ଓଟିପି ଆଉଥରେ ପଠାଯିବ.</string>
-    <string name="miss_call_otp">Give a Miss Call</string>
+
     <string name="give_missed_call_dialog_text">ଆମକୁ ଗୋଟେ ମିସକଲ ଦିଅନ୍ତୁ ଅମେ ଅପଣଂକ ପରିଚୟ ଜାନ୍ଚ କରିବୁ</string>
     <string name="give_misscall_to_verify">ଜାଂଚ୍ ପାଇଁ ଆମକୁ ମିସ୍-କଲ୍ ଦିଅନ୍ତୁ</string>
     <string name="please_press_here">ଦୟାକରି ଏହିଠାରେ ଟିପନ୍ତୁ.</string>
-
-
 
     <string name="return_reasons">ଫେରସ୍ତ ର କାରଣ</string>
     <string name="Returned">ଫେରସ୍ତ</string>
@@ -560,7 +557,6 @@
     <string name="Submit">ଜମା କରନ୍ତୁ</string>
     <string name="owner">ମାଲିକ</string>
     <string name="approval_pending">ଅନୁମୋଦନ ପୁର୍ଣ ହୋଇନାହି</string>
-
     <string name="applicable_after">%1$s କି.ମି. ପରେ ଲାଗୁ</string>
 
     <string name="rejection_reason">ରିଜେକ୍ଟ କରିବାର କାରଣ</string>
@@ -572,7 +568,6 @@
     <string name="base_fare">ବେସ୍ ଫେୟାର୍</string>
     <string name="time_per_min">ସମୟ (ମିନିଟ୍ ପ୍ରତି)</string>
     <string name="per_min">(ମିନିଟ୍ ପ୍ରତି)</string>
-
     <string name="driver_to_customer">ଡ୍ରାଇଭର୍ ଠାରୁ କସ୍ଟମର୍ କୁ</string>
     <string name="driver_to_driver">ଡ୍ରାଇଭର୍ ଠାରୁ ଡ୍ରାଇଭର୍ କୁ</string>
     <string name="rate_card">ରେଟ୍ କାର୍ଡ୍</string>
@@ -587,8 +582,6 @@
     <string name="total_amount">ଅଂତିମ ଚଲାଣ୍ ରାଶି</string>
     <string name="this_week">ଏଇ ସପ୍ତାହ</string>
     <string name="outstanding_amount1">ରହିଯାଇଥିବା ରାଶି ଆଡ୍-ଜଷ୍ଟ୍ କରି ଦିଆ ଯାଇଛି</string>
-
-
     <string name="estimated_payout">ଅନୁମାନଜନକ ଭଡ଼ା ପଇସା</string>
     <string name="this_week_cap">ଏଇ ସପ୍ତାହ</string>
 
@@ -596,7 +589,6 @@
     <string name="upload_again">ଆଉଥରେ ଅପ୍-ଲୋଡ୍ କରନ୍ତୁ</string>
     <string name="register_via_agent">ଏଜେନ୍ଟ୍ ଜରିଆରେ ରେଜିଷ୍ଟର୍ </string>
     <string name="last_trip_earning">ଶେଷ ଟ୍ରିପ୍ ରେ ଡ୍ରାଇଭରନ୍କ ଭଡା. </string>
-
     <string name="audit_lower">ଯାନ୍ଚ୍</string>
     <string name="self_audit">ନିଜେ ଯାନ୍ଚ୍ କରନ୍ତୁ</string>
     <string name="front">ସାମ୍ନାକୁ</string>
@@ -650,17 +642,19 @@
     <string name="no_data">କୌଣସି ତଥ୍ୟ ନାହିଁ</string>
     <string name="web_view">ଓଏବ୍ ଦର୍ଶନ</string>
     <string name="connection_lost">ଆପଣ କନେକ୍ଟେଡ୍ ନାହାନ୍ତି!ପୁନର୍ବାର ପ୍ରୟାସ କରିବା ପାଇଁ ଟ୍ୟାପ୍ ରେ କ୍ଲିକ୍ କରନ୍ତୁ</string>
-    <string name="required">required</string>
-    <string name="login_here">Already have an driver account? Login Here</string>
-    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
-    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-    <string name="driver">Driver</string>
-    <string name="register_text">
-        <![CDATA[Don’t have an driver account? <u>Register Here</u>]]></string>
+
+    <string name="no_language_to_select">ଭାଷା ଚୟନ ଉପଲବ୍ଧ ନାହିଁ</string>
+    <string name="miss_call_otp">ଗୋଟିଏ ମିସ୍ କଲ୍ ଦିଅନ୍ତୁ</string>
+    <string name="required">ଦରକାର୍</string>
+    <string name="login_here">ପୁର୍ବରୁ ଡ୍ରାଇଭର୍ ଆକାଉଣ୍ଟ୍ ଅଛି ?<u> ଲଗ୍-ଇନ୍ କରନ୍ତୁ</u></string>
+    <string name="i_accept_new">ସାଇନ୍-ଅପ୍ ହେବା  ଦ୍ୱାରା ଆପଣ ସହମତ ଆମର <u>ବ୍ୟବହାରର ସର୍ତ୍ତାବଳୀ ସହ</u></string>
+    <string name="nl_otp_please_enter_otp">ଦୟାକରି ପଠାଯାଇଥିବା ଓଟିପି କୁ ଲେଖନ୍ତୁ</string>
+    <string name="driver">ଡ୍ରାଇଭର୍</string>
+    <string name="register_text">ଡ୍ରାଇଭର୍ ଆକାଉଣ୍ଟ୍ ନାହିଁ? <u>ଏଠାରେ ରେଜିସ୍ଟର୍ କରନ୍ତୁ</u></string>
 
 
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
+    <string name="self_enroled">ନିଜେ ଜୋଡ଼ିହେବା</string>
+    <string name="upload_Documents">ଡକ୍ୟୁମେଣ୍ଟ୍ ଅପ୍-ଲୋଡ଼୍</string>
     <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
     <string name="payment_sent">Payment Sent</string>
 
@@ -680,11 +674,12 @@
     <string name="name_cant_empty">Name can\'t be empty</string>
     <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
 
-    <string name="pls_enter_some_msg">Please enter some issue</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+    <string name="pls_enter_some_msg">ଦୟାକରି କିଛି ସମସ୍ୟା ଲେଖନ୍ତୁ</string>
+    <string name="enter_destination">ଲଖ୍ୟସ୍ତଳ ଲେଖନ୍ତୁ</string>
+    <string name="no_results_found">କୌଣସି ଉତର ମିଳୁନାହିଁ</string>
+    <string name="COD">চি অো দি</string>
+    <string name="auto_accept_message">গ্ৰাহকৰ অনুৰোধ অটমেটিকলি একচেপ্ত কৰা হৈছে</string>
+
     <string name="start_ride_alert">If Customer is with you, than please start ride</string>
     <string name="Reason">Reason</string>
     <string name="delivery_conf">Are you sure you want to deliver ?</string>
@@ -707,6 +702,7 @@
     <string name="collect_cash">Collect Cash</string>
     <string name="pool_start">Pool Start</string>
     <string name="pool_stop">Pool Stop</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

@@ -37,7 +37,7 @@ public class CustomerInfo {
 	public int meterFareApplicable;
 	public int getJugnooFareEnabled;
 	public int luggageChargesApplicable;
-	public int waitingChargesApplicable;
+	public int waitingChargesApplicable, forceEndDelivery;
 
 	private int status;
 	private String address, startTime;
@@ -59,7 +59,7 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -95,6 +95,7 @@ public class CustomerInfo {
 		this.estimatedFare = estimatedFare;
 		this.vendorMessage = vendorMessage;
 		this.cashOnDelivery = cashOnDelivery;
+		this.forceEndDelivery = forceEndDelivery;
 	}
 
 

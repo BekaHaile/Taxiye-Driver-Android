@@ -40,6 +40,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -322,13 +324,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewOrdersDeliveredValue, textViewOrdersReturnedValue;
 
 	RelativeLayout relativeLayoutLastRideEarning, relativeLayoutHighDemandAreas, linearLayoutSlidingBottom,
-			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer;
+			relativeLayoutRefreshUSLBar, relativeLayoutEnterDestination, relativeLayoutSelectCustomer, relativeLayoutBatteryLow;
 	View viewRefreshUSLBar;
 	ProgressBar progressBarUSL;
 	TextView textViewDriverEarningOnScreen, textViewDriverEarningOnScreenDate, textViewDriverEarningOnScreenValue,
 			textViewHighDemandAreas, textViewRetryUSL, textViewEnterDestination;
 	Shader textShader;
-
+	double fixDeliveryDistance = -1;
 	CustomerSwitcher customerSwitcher;
 	DeliveryInfoTabs deliveryInfoTabs;
 
@@ -425,6 +427,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
 	private GoogleApiClient mGoogleApiClient;
+
+	DialogPopup endDelivery = new DialogPopup();
 
 
 //	Button distanceReset2;
@@ -830,7 +834,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			imageViewSliderView = (ImageView)findViewById(R.id.imageViewSliderView);
 
 			relativeLayoutRefreshUSLBar = (RelativeLayout) findViewById(R.id.relativeLayoutRefreshUSLBar);
-			viewRefreshUSLBar = findViewById(R.id.viewRefreshUSLBar);
+			relativeLayoutBatteryLow = (RelativeLayout) findViewById(R.id.relativeLayoutBatteryLow);
+
 			textViewRetryUSL = (TextView) findViewById(R.id.textViewRetryUSL);
 			progressBarUSL = (ProgressBar) findViewById(R.id.progressBarUSL);
 
@@ -1838,7 +1843,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			HomeActivity.this.registerReceiver(broadcastReceiver, new IntentFilter(Constants.ACTION_UPDATE_RIDE_EARNING));
 			HomeActivity.this.registerReceiver(broadcastReceiverUSL, new IntentFilter(Constants.ACTION_REFRESH_USL));
-
+			HomeActivity.this.registerReceiver(broadcastReceiverLowBattery, new IntentFilter(Constants.ALERT_BATTERY_LOW));
+			HomeActivity.this.registerReceiver(broadcastReceiverIsCharging, new IntentFilter(Constants.ALERT_CHARGING));
+			HomeActivity.this.registerReceiver(broadcastReceiverCancelEndDeliveryPopup, new IntentFilter(Constants.DISMISS_END_DELIVERY_POPUP));
 
 			new Handler().postDelayed(new Runnable() {
 				@Override
@@ -1914,6 +1921,50 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					showRefreshUSLBar();
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverLowBattery = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showLowBatteryAlert(true);
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverIsCharging = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					showLowBatteryAlert(false);
+				}
+			});
+		}
+	};
+
+	BroadcastReceiver broadcastReceiverCancelEndDeliveryPopup = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, final Intent intent) {
+			HomeActivity.this.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if(endDelivery != null && callbackEndDelivery != null) {
+							String response = intent.getStringExtra("response");
+							callbackEndDelivery.success(response);
+							endDelivery.dismissAlertPopup();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 		}
@@ -2107,11 +2158,38 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode
 					&& Prefs.with(HomeActivity.this).getBoolean(SPLabels.GET_USL_STATUS, false)) {
 
-				viewRefreshUSLBar.setVisibility(View.VISIBLE);
 				textViewRetryUSL.setVisibility(View.VISIBLE);
 				progressBarUSL.setVisibility(View.GONE);
+				if(relativeLayoutRefreshUSLBar.getVisibility() == View.GONE) {
+					relativeLayoutRefreshUSLBar.setVisibility(View.VISIBLE);
+					Animation animation = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+					relativeLayoutRefreshUSLBar.startAnimation(animation);
+				}
 			} else {
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void showLowBatteryAlert(boolean visibility){
+		try {
+			if(visibility) {
+				if (DriverScreenMode.D_INITIAL == HomeActivity.driverScreenMode
+						&& Utils.isBatteryChargingNew(HomeActivity.this) == 0
+						&& Double.parseDouble(Utils.getActualBatteryPer(HomeActivity.this)) < 20d) {
+					if(relativeLayoutBatteryLow.getVisibility() == View.GONE) {
+						relativeLayoutBatteryLow.setVisibility(View.VISIBLE);
+						Animation animation = AnimationUtils.loadAnimation(this, R.anim.translate_down);
+						relativeLayoutBatteryLow.startAnimation(animation);
+					}
+				} else {
+					relativeLayoutBatteryLow.setVisibility(View.GONE);
+				}
+			} else {
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -2909,7 +2987,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			driverScreenMode = Data.getCurrentState();
 			mode = driverScreenMode;
 
-			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+			final CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 
 			initializeFusedLocationFetchers();
 
@@ -2922,6 +3000,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
 							.getDistance(HomeActivity.this), HomeActivity.this) / 1000.0);
 					String kmsStr = "";
+
+					try {
+						if (fixDeliveryDistance > -1 && customerInfo.getIsDelivery()==1) {
+							totalDistanceInKm = fixDeliveryDistance;
+						}
+					} catch (Resources.NotFoundException e) {
+						e.printStackTrace();
+					}
+
 					if (totalDistanceInKm > 1) {
 						kmsStr = getResources().getString(R.string.kms);
 					} else {
@@ -3110,6 +3197,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					showDriverEarning();
 					showRefreshUSLBar();
+					showLowBatteryAlert(true);
 
 					try {
 						if (timer != null) {
@@ -3373,6 +3461,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						relativeLayoutEnterDestination.setVisibility(View.VISIBLE);
 					}
 
+					if(customerInfo.forceEndDelivery == 1){
+						try {
+							DialogPopup.showLoadingDialog(HomeActivity.this, getResources().getString(R.string.loading));
+							new Handler().postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									DialogPopup.dismissLoadingDialog();
+									endRideGPSCorrection(customerInfo);
+									deliveryInfoTabs.notifyDatasetchange();
+								}
+							}, 5000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+
 					if (map != null) {
 						map.clear();
 						setAttachedCustomerMarkers();
@@ -3500,7 +3604,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			}
 			if(DriverScreenMode.D_INITIAL != mode){
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
+
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
 				driverInformationBtn.setVisibility(View.GONE);
 			}
@@ -3885,7 +3991,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Database2.getInstance(this).close();
 			unregisterReceiver(broadcastReceiver);
 			unregisterReceiver(broadcastReceiverUSL);
-
+			unregisterReceiver(broadcastReceiverLowBattery);
+			unregisterReceiver(broadcastReceiverIsCharging);
+			unregisterReceiver(broadcastReceiverCancelEndDeliveryPopup);
 
 			System.gc();
 		} catch (Exception e) {
@@ -3955,7 +4063,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setBarAddress(String address){
-		relativeLayoutDestination.setVisibility(View.VISIBLE);
+//		relativeLayoutDestination.setVisibility(View.VISIBLE);
 		textViewEnterDestination.setText(address);
 	}
 
@@ -4109,7 +4217,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				relativeLayoutHighDemandAreas.setVisibility(View.GONE);
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN);
 				relativeLayoutLastRideEarning.setVisibility(View.GONE);
-				viewRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutRefreshUSLBar.setVisibility(View.GONE);
+				relativeLayoutBatteryLow.setVisibility(View.GONE);
 			} else {
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
@@ -4118,6 +4227,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				showDriverEarning();
 				showRefreshUSLBar();
+				showLowBatteryAlert(true);
 			}
 		}
 
@@ -4381,6 +4491,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
+					int ForceEndDelivery = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
 					int totalDeliveries = 0;
@@ -4397,6 +4508,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 						cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -4405,7 +4517,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						jugnooBalance = userData.optDouble(KEY_JUGNOO_BALANCE, 0);
 						pickupLatitude = jObj.optDouble(KEY_PICKUP_LATITUDE, 0);
 						pickupLongitude = jObj.optDouble(KEY_PICKUP_LONGITUDE, 0);
-						address = userData.optString(KEY_ADDRESS, "");
+						address = userData.getString(KEY_ADDRESS);
+						Log.e("address", address);
 						currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
 						currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 					}
@@ -4436,7 +4549,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng);
+							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -4933,13 +5046,22 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 		} else {
 			if(customerInfo.getIsDelivery() == 1) {
-				RestClient.getApiServices().endDelivery(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
+				RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
 						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			} else{
 				RestClient.getApiServices().autoEndRideAPIRetro(params, new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
 						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			}
 		}
+	}
+
+	private CallbackEndRide callbackEndDelivery;
+	private CallbackEndRide getCallbackEndDelivery(CustomerInfo customerInfo, double totalHaversineDistanceInKm, double dropLatitude,
+												   double dropLongitude, HashMap<String, String> params, long eoRideTimeInMillis,
+												   long eoWaitTimeInMillis, String url, double totalDistanceFromLogInMeter, long rideTimeInMillisFromDB) {
+		callbackEndDelivery = new CallbackEndRide(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude,
+				params, eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
+		return callbackEndDelivery;
 	}
 
 	private class CallbackEndRide<RegisterScreenResponse> implements Callback<RegisterScreenResponse>{
@@ -4968,7 +5090,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		@Override
 		public void success(RegisterScreenResponse registerScreenResponse, Response response) {
 			try {
-				String jsonString = new String(((TypedByteArray) response.getBody()).getBytes());
+				success(new String(((TypedByteArray) response.getBody()).getBytes()));
+			} catch (Exception exception) {
+				exception.printStackTrace();
+			}
+		}
+
+		public void success(String jsonString) {
+			try {
 				JSONObject jObj;
 				jObj = new JSONObject(jsonString);
 				int flag = jObj.getInt("flag");
@@ -4988,9 +5117,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					try {
 						totalFare = jObj.getDouble("fare");
+						if(customerInfo.getIsDelivery() ==1) {
+							fixDeliveryDistance = jObj.getDouble("distance_travelled");
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 						totalFare = 0;
+						fixDeliveryDistance = -1;
 					}
 
 					endRideData = JSONParser.parseEndRideData(jObj, String.valueOf(customerInfo.getEngagementId()), totalFare);
@@ -5065,12 +5198,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						customerInfo, dropLatitude, dropLongitude, enteredMeterFare, luggageCountAdded,
 						totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 			} else{
-				DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+//				endDelivery.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
+				endDelivery.alertPopup(activity, "", "Delivery will be ended shortly", false, false);
+
 				if (DriverScreenMode.D_BEFORE_END_OPTIONS != driverScreenMode) {
 					driverScreenMode = DriverScreenMode.D_IN_RIDE;
 					startRideChronometer(customerInfo);
 				}
 				DialogPopup.dismissLoadingDialog();
+
+				Database2.getInstance(activity).insertPendingAPICall(activity, url, params);
 			}
 		}
 	}
@@ -6133,6 +6270,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					});
 				} catch (Exception e) {
 					e.printStackTrace();
+					DialogPopup.dismissLoadingDialog();
+					driverEndRideAsync(activity, source, destination.latitude, destination.longitude,
+							flagDistanceTravelled, customerInfo);
 				}
 
 			}
@@ -8126,13 +8266,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public void setNevigationButtonVisibiltyDelivery(int position){
 		if(DriverScreenMode.D_IN_RIDE == driverScreenMode
 				&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
-			if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-					== DeliveryStatus.PENDING.getOrdinal()
-					|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
-					== DeliveryStatus.RETURN.getOrdinal()){
-				buttonDriverNavigationSetVisibility(View.VISIBLE);
-			} else {
-				buttonDriverNavigationSetVisibility(View.GONE);
+			try {
+				if( Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+						== DeliveryStatus.PENDING.getOrdinal()
+						|| Data.getCurrentCustomerInfo().getDeliveryInfos().get(position).getStatus()
+						== DeliveryStatus.RETURN.getOrdinal()){
+					buttonDriverNavigationSetVisibility(View.VISIBLE);
+				} else {
+					buttonDriverNavigationSetVisibility(View.GONE);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
