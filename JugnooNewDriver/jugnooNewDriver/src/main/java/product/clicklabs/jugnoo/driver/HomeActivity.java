@@ -7884,11 +7884,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if(distance - totalDistanceFromLogInMeter < 100){
 			distance = totalDistanceFromLogInMeter;
 		}
-		for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
-			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
-				distance = distance - deliveryInfo.getDistance();
-			}
-		}
+//		for(DeliveryInfo deliveryInfo : customerInfo.getDeliveryInfos()){
+//			if(deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+//				distance = distance - deliveryInfo.getDistance();
+//			}
+//		}
 		return distance;
 	}
 
