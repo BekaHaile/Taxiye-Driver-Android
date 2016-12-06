@@ -3667,7 +3667,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 					try {
-						if (driverScreenMode == DriverScreenMode.D_ARRIVED
+						if ((driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE)
 								&& Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 0) == 1
 								&& customerInfoCheck.getIsDelivery() != 1 && customerInfoCheck.getIsPooled() != 1) {
 							rlChatDriver.setVisibility(View.VISIBLE);
