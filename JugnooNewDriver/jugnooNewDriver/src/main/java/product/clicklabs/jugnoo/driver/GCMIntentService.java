@@ -763,12 +763,16 @@ public class GCMIntentService extends IntentService {
 								sendBroadcast(fetchDocIntent);
 
 							} else if(PushFlags.CHAT_MESSAGE.getOrdinal() == flag){
-								String name = Utils.getActivityName(this);
+								String name = "";
 
 								if(!name.equalsIgnoreCase(this.getPackageName())
 										|| Data.context == null || !(Data.context instanceof ChatActivity)){
 									String chatMessage = jObj.getJSONObject("message").optString("chat_message", "");
+									Prefs.with(this).save(Constants.KEY_CHAT_COUNT , Prefs.with(this).getInt(Constants.KEY_CHAT_COUNT, 0) + 1);
 									notificationManagerCustomID(this, title, chatMessage, PROMOTION_ID, ChatActivity.class, null);
+									Intent setChatCount = new Intent(Constants.ALERT_CHARGING);
+									setChatCount.putExtra("type", 1);
+									sendBroadcast(setChatCount);
 								} else {
 									// Nothing
 								}

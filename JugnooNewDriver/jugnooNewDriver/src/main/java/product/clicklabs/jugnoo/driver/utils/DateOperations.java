@@ -164,7 +164,25 @@ public class DateOperations {
 			return dateTime;
 		}
 	}
-	
+
+
+
+	public static String utcToLocalTZAMPM(String utcTime) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		try {
+			utcTime = utcTime.replace("T", " ");
+			utcTime = utcTime.split("\\.")[0];
+			Date myDate = simpleDateFormat.parse(utcTime);
+			String localDate = sdf.format(myDate);
+			return getTimeAMPM(localDate);
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			return utcTime;
+		}
+	}
+
 	
 	public static String getTimeAMPM(String dateTime){
 		try{

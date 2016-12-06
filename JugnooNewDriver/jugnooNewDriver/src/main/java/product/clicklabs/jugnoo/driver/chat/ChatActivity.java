@@ -43,6 +43,7 @@ import product.clicklabs.jugnoo.driver.utils.BaseActivity;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
+import product.clicklabs.jugnoo.driver.utils.Prefs;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -102,7 +103,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		chatResponse = new ArrayList<>();
 		chatAdapter = new ChatAdapter(this, chatResponse);
 		recyclerViewChat.setAdapter(chatAdapter);
-
+		Prefs.with(ChatActivity.this).save(Constants.KEY_CHAT_COUNT, 0);
 		recyclerViewChatOptions = (RecyclerView) findViewById(R.id.recyclerViewChatOptions);
 		recyclerViewChatOptions.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 		recyclerViewChatOptions.setItemAnimator(new DefaultItemAnimator());

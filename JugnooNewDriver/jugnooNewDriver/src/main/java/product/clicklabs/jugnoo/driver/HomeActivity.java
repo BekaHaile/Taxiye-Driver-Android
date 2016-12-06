@@ -306,10 +306,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	TextView textViewEndRideLuggageCount;
 
 	LinearLayout endRideInfoRl;
-	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn;
+	TextView jugnooRideOverText, takeFareText, textViewDeliveryOn, tvChatCount;
 
 	Button reviewSubmitBtn, btnHelp, btnChatHead;
-	RelativeLayout relativeLayoutRateCustomer, topRlOuter;
+	RelativeLayout relativeLayoutRateCustomer, topRlOuter, rlChatDriver;
 	RatingBar ratingBarFeedback, ratingBarFeedbackSide;
 	Button reviewSkipBtn;
 
@@ -557,6 +557,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsText.setText(getResources().getText(R.string.call_us));
 
 			btnChatHead = (Button) findViewById(R.id.btnChatHead);
+			rlChatDriver = (RelativeLayout) findViewById(R.id.rlChatDriver);
+			tvChatCount = (TextView) findViewById(R.id.tvChatCount);
 //			btnChat1 = (Button) findViewById(R.id.btnChat1);
 //			btnChat2 = (Button) findViewById(R.id.btnChat2);
 
@@ -1140,26 +1142,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-//						ArrayList<CustomerInfo> customerEngChat = Data.getAssignedCustomerInfosListForEngagedStatus();
-//						if (customerEngChat.size() > 1) {
-//
-//							if(relativeLayoutSelectCustomer.getVisibility() == View.GONE) {
-//								btnChatHead.setBackgroundResource(R.drawable.chat_icon_eng_clicked);
-//								relativeLayoutSelectCustomer.setVisibility(View.VISIBLE);
-//								btnChat1.setText(customerEngChat.get(0).getName());
-//								btnChat2.setText(customerEngChat.get(1).getName());
-//							} else {
-//								btnChatHead.setBackground(getResources().getDrawable(R.drawable.chat_icon_eng));
-//								relativeLayoutSelectCustomer.setVisibility(View.GONE);
-//							}
-//
-//						} else {
-//							relativeLayoutSelectCustomer.setVisibility(View.GONE);
-//							Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
-//							chatIntent.putExtra("engagement_id", Data.getCurrentEngagementId());
-//							startActivity(chatIntent);
-//							overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//						}
 						Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
 						chatIntent.putExtra("engagement_id", Data.getCurrentEngagementId());
 						startActivity(chatIntent);
@@ -1170,35 +1152,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-//			btnChat1.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					try {
-//						relativeLayoutSelectCustomer.setVisibility(View.GONE);
-//						Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
-//						chatIntent.putExtra("engagement_id", Data.getAssignedCustomerInfosListForEngagedStatus().get(0).engagementId);
-//						startActivity(chatIntent);
-//						overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
-//
-//			btnChat2.setOnClickListener(new OnClickListener() {
-//				@Override
-//				public void onClick(View v) {
-//					try {
-//						relativeLayoutSelectCustomer.setVisibility(View.GONE);
-//						Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
-//						chatIntent.putExtra("engagement_id", Data.getAssignedCustomerInfosListForEngagedStatus().get(1).engagementId);
-//						startActivity(chatIntent);
-//						overridePendingTransition(R.anim.right_in, R.anim.right_out);
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
-//				}
-//			});
 
 			btnHelp.setOnClickListener(new OnClickListener() {
 				@Override
@@ -1941,11 +1894,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	BroadcastReceiver broadcastReceiverIsCharging = new BroadcastReceiver() {
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(Context context, final Intent intent) {
 			HomeActivity.this.runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					showLowBatteryAlert(false);
+					int flag = intent.getIntExtra("type", -1);
+					if(flag ==1){
+						tvChatCount.setVisibility(View.VISIBLE);
+						tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 1)));
+					} else {
+						showLowBatteryAlert(false);
+					}
 				}
 			});
 		}
@@ -3175,6 +3134,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			relativeLayoutEnterDestination.setVisibility(View.GONE);
 			topRlOuter.setVisibility(View.VISIBLE);
+
+
+			showChatButton();
+
 			switch (mode) {
 
 				case D_INITIAL:
@@ -3185,8 +3148,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
 					driverInformationBtn.setVisibility(View.GONE);
+					Prefs.with(HomeActivity.this).save(KEY_CHAT_COUNT, 0);
 					startMeteringService();
-					btnChatHead.setVisibility(View.GONE);
 					setDriverServiceRunOnOnlineBasis();
 					if (checkIfDriverOnline()) {
 						startService(new Intent(this, DriverLocationUpdateService.class));
@@ -3323,10 +3286,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					Prefs.with(HomeActivity.this).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(Data.getCurrentCustomerInfo().getCurrentLatLng().longitude));
 
 
-					if(customerInfo.getIsDelivery() !=1 && customerInfo.getIsPooled() !=1){
-						btnChatHead.setVisibility(View.VISIBLE);
-					}
-
 					try {
 						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
 
@@ -3373,7 +3332,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 					setCustomerInstruction(customerInfo);
-					btnChatHead.setVisibility(View.GONE);
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
 					topRlOuter.setVisibility(View.GONE);
 					driverInitialLayout.setVisibility(View.GONE);
@@ -3457,7 +3415,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					updateDriverServiceFast("no");
 					SoundMediaPlayer.stopSound();
-					btnChatHead.setVisibility(View.GONE);
 					Database2.getInstance(HomeActivity.this).updateDriverServiceRun(Database2.NO);
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					stopService(new Intent(HomeActivity.this, StartRideLocationUpdateService.class));
@@ -3585,7 +3542,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				case D_RIDE_END:
 
 					updateDriverServiceFast("no");
-					btnChatHead.setVisibility(View.GONE);
 					setDriverServiceRunOnOnlineBasis();
 					stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 					startService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
@@ -3702,6 +3658,39 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 2000);
 		}
 	};
+
+
+	private void showChatButton() {
+		try {
+			final CustomerInfo customerInfoCheck = Data.getCurrentCustomerInfo();
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if (driverScreenMode == DriverScreenMode.D_ARRIVED
+								&& Prefs.with(HomeActivity.this).getInt(SPLabels.CHAT_ENABLED, 0) == 1
+								&& customerInfoCheck.getIsDelivery() != 1 && customerInfoCheck.getIsPooled() != 1) {
+							rlChatDriver.setVisibility(View.VISIBLE);
+							if (Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 0) > 0) {
+								tvChatCount.setVisibility(View.VISIBLE);
+								tvChatCount.setText(String.valueOf(Prefs.with(HomeActivity.this).getInt(KEY_CHAT_COUNT, 0)));
+							} else {
+								tvChatCount.setVisibility(View.GONE);
+								Prefs.with(HomeActivity.this).save(KEY_CHAT_COUNT, 0);
+							}
+						} else {
+							rlChatDriver.setVisibility(View.GONE);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	public void startMeteringService() {
@@ -3881,7 +3870,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		showChatButton();
 		resumed = true;
 		language = Locale.getDefault().getLanguage();
 		long timediff = System.currentTimeMillis() - fetchHeatMapTime;

@@ -619,7 +619,7 @@
 	<string name="return_distance">Return Distance</string>
 	<string name="delivery_details">DELIVERY DETAILS</string>
 	<string name="please_drop_customer">Drop %s</string>
-	<string name="please_reach_customer_location">Reach %s\'s location</string>
+	<string name="please_reach_customer_location">Pickup %s</string>
 	<string name="please_start_customer_ride">Start %s\'s ride</string>
 	<string name="uploading">UPLOADING</string>
 	<string name="before_ride">BEFORE RIDE</string>

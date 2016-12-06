@@ -245,7 +245,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15px"
-            android:layout_marginTop="24px"
+            android:layout_marginTop="12px"
             android:layout_gravity="center_horizontal"
             android:splitMotionEvents="false"
             android:visibility="visible">
@@ -802,7 +802,7 @@
         android:layout_above="@+id/linearLayoutStartEnd"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="20px"
-        android:layout_marginRight="30px"
+        android:layout_marginRight="38px"
         android:background="@drawable/new_navigate_button"
         android:tag="mwar"
         android:textColor="@color/white"
@@ -810,13 +810,38 @@
         android:visibility="visible"
         />
 
-    <Button
-        android:id="@+id/btnChatHead"
-        android:layout_width="144px"
-        android:layout_height="144px"
+
+    <RelativeLayout
+        android:id="@+id/rlChatDriver"
+        android:layout_width="149px"
+        android:layout_height="149px"
+        android:layout_marginLeft="12px"
         android:layout_above="@+id/linearLayoutStartEnd"
-        android:layout_marginLeft="24px"
-        android:background="@drawable/chat_icon_eng"/>
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btnChatHead"
+            android:layout_width="144px"
+            android:layout_height="144px"
+            android:background="@drawable/chat_icon_eng"/>
+
+        <TextView
+            android:id="@+id/tvChatCount"
+            android:layout_width="35px"
+            android:layout_height="35px"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16px"
+            android:layout_marginTop="16px"
+            android:text="3"
+            android:textColor="@color/theme_color"
+            android:textSize="@dimen/text_size_24"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@drawable/circle_white_stroke_theme"/>
+
+    </RelativeLayout>
+
+
 
 
 </RelativeLayout>

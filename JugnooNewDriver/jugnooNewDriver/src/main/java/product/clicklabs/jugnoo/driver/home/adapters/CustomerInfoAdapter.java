@@ -15,6 +15,7 @@ import android.widget.TextView;
 import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Utils;
@@ -53,7 +54,20 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         CustomerInfo customerInfo = getItem(position);
         ViewHolder holder = (ViewHolder) viewHolder;
         holder.relative.setTag(position);
-        holder.textViewCustomer1Name.setText(customerInfo.getName());
+		String text = "";
+
+		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+			text = activity.getResources().getString(R.string.please_drop_customer,
+					customerInfo.getName());
+		} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
+			text = activity.getResources().getString(R.string.please_reach_customer_location,
+					customerInfo.getName());
+		} else if (customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+			text = activity.getResources().getString(R.string.please_start_customer_ride,
+					customerInfo.getName());
+		}
+		holder.textViewCustomer1Name.setText(text);
+
 		holder.textViewCustomer1Address.setText(customerInfo.getAddress());
 
         holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
@@ -106,6 +120,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 		} else if(position == getItemCount()-1){
 			holder.imageViewVerticalLine.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine1.setVisibility(View.GONE);
+			holder.imageViewDote.setBackgroundResource(R.drawable.red_dot_icon);
 		} else {
 			holder.imageViewVerticalLine.setVisibility(View.VISIBLE);
 			holder.imageViewVerticalLine1.setVisibility(View.VISIBLE);
