@@ -50,6 +50,18 @@
                     android:layout_alignParentRight="true"
                     android:text="@string/change"/>
 
+                <Button
+                    android:id="@+id/btnCallVendor"
+                    android:background="@drawable/background_white_rounded_bordered"
+                    android:layout_width="120px"
+                    android:layout_height="45px"
+                    android:textSize="24px"
+                    android:layout_marginRight="28px"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    android:text="@string/call"/>
+
             </RelativeLayout>
 
 

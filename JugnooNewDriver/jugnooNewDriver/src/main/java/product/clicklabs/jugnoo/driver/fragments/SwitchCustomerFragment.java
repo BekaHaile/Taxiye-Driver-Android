@@ -86,6 +86,7 @@ public class SwitchCustomerFragment extends Fragment {
 			@Override
 			public void onClick(int position, CustomerInfo customerInfo) {
 				Data.setCurrentEngagementId(String.valueOf(customerInfo.getEngagementId()));
+				activity.changeCustomerState(false);
 				activity.switchDriverScreen(HomeActivity.driverScreenMode);
 				activity.onBackPressed();
 			}
