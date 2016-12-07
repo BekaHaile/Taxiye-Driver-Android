@@ -46,7 +46,7 @@ public class CustomerSwitcher {
 
 	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount, textViewCustomerAddressInRide,
 			textViewDeliveryFare, textViewShowDistance;
-	private RelativeLayout relativeLayoutCall;
+	private RelativeLayout relativeLayoutCall, relativeLayoutCall1;
 	private LinearLayout linearLayoutDeliveryFare;
 
 	private CustomerInfoAdapter customerInfoAdapter;
@@ -76,6 +76,7 @@ public class CustomerSwitcher {
 		rootView.findViewById(R.id.textViewDeliveryApprox).setVisibility(View.GONE);
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
+		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
@@ -99,9 +100,47 @@ public class CustomerSwitcher {
 		});
 
 
+
 		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String callPhoneNumber = "";
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if (customerInfo != null) {
+					callPhoneNumber = customerInfo.phoneNumber;
+				}
+				if (!"".equalsIgnoreCase(callPhoneNumber)) {
+					Utils.openCallIntent(activity, callPhoneNumber);
+					try {
+						JSONObject map = new JSONObject();
+						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
+						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
+						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALLED_CUSTOMER);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALL_CUSTOMER_AFTER_ARRIVING);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					}
+				} else {
+					Toast.makeText(activity, activity.getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+
+		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -341,6 +380,16 @@ public class CustomerSwitcher {
 		}
 	}
 
+
+	public void setCallButton(){
+		if(Data.getCurrentCustomerInfo() != null){
+			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
+				relativeLayoutCall1.setVisibility(View.VISIBLE);
+			}else {
+				relativeLayoutCall1.setVisibility(View.GONE);
+			}
+		}
+	}
 
 	public void updateList() {
 		customerInfoAdapter.notifyList();

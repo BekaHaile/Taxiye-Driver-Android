@@ -3146,7 +3146,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			relativeLayoutLastRideEarning.setVisibility(View.GONE);
 			relativeLayoutEnterDestination.setVisibility(View.GONE);
 			topRlOuter.setVisibility(View.VISIBLE);
-
+			customerSwitcher.setCallButton();
 
 			showChatButton();
 
@@ -3394,7 +3394,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						e.printStackTrace();
 					}
 
-					if(customerInfo.getIsDelivery() != 1) {
+					if(customerInfo.getIsDelivery() != 1 && customerInfo.getIsPooled() != 1) {
 //						playStartRideAlarm = true;
 //						startRideAlarmHandler.postDelayed(startRideAlarmRunnalble, 5000);
 						boolean startRideAlarmStatus = Prefs.with(this).getBoolean(Constants.START_RIDE_ALARM_SERVICE_STATUS, false);
@@ -4750,6 +4750,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				});
 			} catch (Exception e) {
 				e.printStackTrace();
+				DialogPopup.dismissLoadingDialog();
 			}
 
 
@@ -7614,15 +7615,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 					textViewRideInstructions.setVisibility(View.VISIBLE);
+					textViewRideInstructions.setText(customerInfo.getName());
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 						if(customerInfo.getDeliveryInfos().get(i).getStatus()
 								== DeliveryStatus.PENDING.getOrdinal()){
-							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
-									String.valueOf(i+1)));
+//							textViewRideInstructions.setText(getResources().getString(R.string.deliver_order_number,
+//									String.valueOf(i+1)));
 							return;
 						}
 					}
-					textViewRideInstructions.setText(getResources().getString(R.string.all_orders_have_been_delivered));
+//					textViewRideInstructions.setText(getResources().getString(R.string.all_orders_have_been_delivered));
 				}
 			}
 //			else if(customerInfo.getIsPooled() != 1){
