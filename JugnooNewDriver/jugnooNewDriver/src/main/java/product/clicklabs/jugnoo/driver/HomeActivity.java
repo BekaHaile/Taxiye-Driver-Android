@@ -424,7 +424,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	private PlaceSearchListFragment placeSearchListFragment;
 
 	private RelativeLayout relativeLayoutContainer;
-
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
 	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
@@ -7375,12 +7374,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						builder.include(markersCustomers.get(i).getPosition());
 						break;
 					}
+					if(polylineCustomersPath != null){
+						for (LatLng latLng : polylineCustomersPath.getPoints()) {
+							builder.include(latLng);
+						}
+					}
 				}
 				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (250f * ASSL.Yscale());
-				int bottom = (int) (370f * ASSL.Yscale());
+				int top = (int) (102f * ASSL.Yscale());
+				int bottom = (int) (344f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
 			}
@@ -7398,10 +7402,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					builder.include(markersCustomers.get(i).getPosition());
 					break;
 				}
-				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
+				if(polylineCustomersPath != null){
+					for (LatLng latLng : polylineCustomersPath.getPoints()) {
+						builder.include(latLng);
+					}
+				}
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 80);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (400f * ASSL.Yscale());
-				int bottom = (int) (250f * ASSL.Yscale());
+				int top = (int) (112f * ASSL.Yscale());
+				int bottom = (int) (400f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
 			}
@@ -8080,6 +8089,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							@Override
 							public void polylineOptionGenerated(PolylineOptions polylineOptions) {
 								polylineOptionsCustomersPath = polylineOptions;
+
 							}
 
 							@Override
@@ -8090,6 +8100,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										polylineCustomersPath.remove();
 									}
 									polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
+									arrivedOrStartStateZoom();
 								}
 							}
 						}).execute();
