@@ -701,13 +701,19 @@ public class GpsDistanceCalculator {
 
 	public static synchronized long getWaitTimeFromSP(Context context) {
 
-		long waitTimeFromSP = Long.parseLong(Prefs.with(context).getString(SPLabels.WAIT_TIME, "0"));
-		long waitTimeFromDB = Long.parseLong(Database2.getInstance(context).getWaitTimeFromDB());
+		try {
+			long waitTimeFromSP = Long.parseLong(Prefs.with(context).getString(SPLabels.WAIT_TIME, "0"));
+			Log.e("invalid long",Database2.getInstance(context).getWaitTimeFromDB());
+			long waitTimeFromDB = Long.parseLong(Database2.getInstance(context).getWaitTimeFromDB());
 
-		if (waitTimeFromDB >= waitTimeFromSP) {
-			return waitTimeFromDB;
-		} else {
-			return waitTimeFromSP;
+			if (waitTimeFromDB >= waitTimeFromSP) {
+				return waitTimeFromDB;
+			} else {
+				return waitTimeFromSP;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 

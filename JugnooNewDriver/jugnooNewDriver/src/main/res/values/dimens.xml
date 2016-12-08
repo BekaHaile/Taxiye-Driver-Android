@@ -59,8 +59,8 @@
     <dimen name="top_bar_height">98px</dimen>
 
     <dimen name="button_width_big">400px</dimen>
-    <dimen name="button_width_big_new">240px</dimen>
-    <dimen name="button_width_big_extra_new">270px</dimen>
+    <dimen name="button_width_big_new">295px</dimen>
+    <dimen name="button_width_big_extra_new">305px</dimen>
     <dimen name="button_height">90px</dimen>
     <dimen name="button_width_big_extra">430px</dimen>
     <dimen name="button_width_small">200px</dimen>
