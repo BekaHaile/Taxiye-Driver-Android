@@ -2948,7 +2948,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					|| mode == DriverScreenMode.D_START_RIDE
 					|| mode == DriverScreenMode.D_IN_RIDE)) {
 				map.clear();
-				ArrayList<CustomerInfo> customerInfosList = setAttachedCustomerMarkers();
+				ArrayList<CustomerInfo> customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
 				if (customerInfosList.size() > 0 && sortCustomerState) {
 					Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
 				} else {
@@ -5905,7 +5905,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
 									setDeliveryMarkers();
 								} else {
-									setAttachedCustomerMarkers();
+									setAttachedCustomerMarkers(false);
 								}
 							}
 						});
@@ -5915,7 +5915,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			};
 
-			timerPathRerouting.scheduleAtFixedRate(timerTaskPathRerouting, 1000, 60000);
+			timerPathRerouting.scheduleAtFixedRate(timerTaskPathRerouting, 1000, 30000);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -7039,7 +7039,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			Data.getCustomerInfo(engagementId).setDropLatLng(dropLatLng);
 			Data.getCustomerInfo(engagementId).setDropAddress(dropAddress);
 			customerSwitcher.setCustomerData(Integer.parseInt(engagementId));
-			setAttachedCustomerMarkers();
+			setAttachedCustomerMarkers(true);
 			setInRideZoom();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -7409,7 +7409,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 80);
 				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-				int top = (int) (112f * ASSL.Yscale());
+				int top = (int) (169f * ASSL.Yscale());
 				int bottom = (int) (400f * ASSL.Yscale());
 				map.setPadding(0, top, 0, bottom);
 				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
@@ -7952,7 +7952,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		textViewRideInstructions.setText(text);
 	}
 
-	private ArrayList<CustomerInfo> setAttachedCustomerMarkers(){
+	private ArrayList<CustomerInfo> setAttachedCustomerMarkers(final boolean sortList){
 		ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
 		try {
 			clearCustomerMarkers();
@@ -7998,6 +7998,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							rhsLatLng = rhs.getRequestlLatLng();
 						}
 
+						if(!sortList && (lhs.getStatus() == rhs.getStatus())){
+							if(lhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())){
+								return -1;
+							} else if(rhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())){
+								return 1;
+							}
+						}
 						if (driverLatLngFinal != null && lhsLatLng != null && rhsLatLng != null) {
 							double distanceLhs = MapUtils.distance(driverLatLngFinal, lhsLatLng);
 							double distanceRhs = MapUtils.distance(driverLatLngFinal, rhsLatLng);
@@ -8074,7 +8081,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 			if(latLngs.size() > 1) {
-				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), true,
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
 						new ApiGoogleDirectionWaypoints.Callback() {
 							@Override
 							public void onPre() {

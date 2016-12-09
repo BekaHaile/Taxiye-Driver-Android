@@ -32,7 +32,6 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 		latLngInit = latLngs.get(0);
 		if(sortArray) {
 			Collections.sort(latLngs, new Comparator<LatLng>() {
-
 				@Override
 				public int compare(LatLng lhs, LatLng rhs) {
 					if (latLngInit != null) {

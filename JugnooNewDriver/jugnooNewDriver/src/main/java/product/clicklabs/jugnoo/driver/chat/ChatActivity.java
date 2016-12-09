@@ -198,6 +198,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
+
 		Data.context = null;
 		try {
 			if(handler != null){
@@ -284,6 +285,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 							if (!jObj.isNull("error")) {
 								String errorMessage = jObj.getString("error");
 							} else if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
+								Prefs.with(ChatActivity.this).save(Constants.KEY_CHAT_COUNT, 0);
 								chatResponse.clear();
 								chatSuggestions.clear();
 								chatResponse.addAll(fetchChat.getChatHistory());
