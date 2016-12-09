@@ -36,7 +36,11 @@ public class DialogPopup {
 	}
 	
 	public static Dialog dialog;
-	public static void alertPopup(Activity activity, String title, String message) {
+	public static void alertPopup(Activity activity, String title, String message){
+		alertPopup(activity, title, message, false, true);
+	}
+
+	public static void alertPopup(Activity activity, String title, String message, boolean cancellable, boolean okVisible) {
 		try {
 			dismissAlertPopup();
 			if("".equalsIgnoreCase(title)){
@@ -53,15 +57,15 @@ public class DialogPopup {
 			WindowManager.LayoutParams layoutParams = dialog.getWindow().getAttributes();
 			layoutParams.dimAmount = 0.6f;
 			dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-			dialog.setCancelable(false);
-			dialog.setCanceledOnTouchOutside(false);
+			dialog.setCancelable(cancellable);
+			dialog.setCanceledOnTouchOutside(cancellable);
 			
 			
 			TextView textHead = (TextView) dialog.findViewById(R.id.textHead); textHead.setTypeface(Data.latoRegular(activity), Typeface.BOLD);
 			TextView textMessage = (TextView) dialog.findViewById(R.id.textMessage); textMessage.setTypeface(Data.latoRegular(activity));
 
 			textMessage.setMovementMethod(new ScrollingMovementMethod());
-			textMessage.setMaxHeight((int)(800.0f*ASSL.Yscale()));
+			textMessage.setMaxHeight((int) (800.0f * ASSL.Yscale()));
 			
 			textHead.setText(title);
 			textMessage.setText(message);
@@ -69,7 +73,7 @@ public class DialogPopup {
 			textHead.setVisibility(View.GONE);
 			
 			Button btnOk = (Button) dialog.findViewById(R.id.btnOk); btnOk.setTypeface(Data.latoRegular(activity));
-			
+			btnOk.setVisibility(okVisible ? View.VISIBLE : View.GONE);
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -806,12 +810,8 @@ public class DialogPopup {
 		}
 	}
 
-	public static void dialogNewBanner(Activity activity, String message) {
-		try {
-			dialogBannerNewWithCancelListener(activity, message, null, 7000);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void dialogNewBanner(Activity activity, String message, long time) {
+		dialogBannerNewWithCancelListener(activity, message, null, time);
 	}
 
 	public static void dialogBannerNewWithCancelListener(Activity activity, String message, final View.OnClickListener onClickListener, long timeToDismiss){
@@ -846,8 +846,13 @@ public class DialogPopup {
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					//DialogPopup.dismissAlertPopup();
-					dialog.dismiss();
+					try {
+						if(dialog!= null && dialog.isShowing()) {
+							dialog.dismiss();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}, timeToDismiss);
 		} catch (Exception e) {

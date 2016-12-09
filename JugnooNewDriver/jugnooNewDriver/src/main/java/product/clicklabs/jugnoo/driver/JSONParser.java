@@ -407,7 +407,9 @@ public class JSONParser implements Constants {
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 									vendorMessage = "";
-							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0;
+							int forceEndDelivery =0;
+							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
+									currrentLatitude =0, currrentLongitude =0;
 							int totalDeliveries = 0;
 							if(isDelivery == 1){
 								JSONObject userData = jObjCustomer.optJSONObject(KEY_USER_DATA);
@@ -423,6 +425,7 @@ public class JSONParser implements Constants {
 								totalDeliveries = userData.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 								estimatedFare = userData.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
+								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
 
 							} else {
@@ -435,6 +438,10 @@ public class JSONParser implements Constants {
 								pickupLatitude = jObjCustomer.optDouble(KEY_PICKUP_LATITUDE, 0);
 								pickupLongitude = jObjCustomer.optDouble(KEY_PICKUP_LONGITUDE, 0);
 								address = jObjCustomer.optString(KEY_ADDRESS, "");
+								currrentLatitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LATITUDE);
+								currrentLongitude = jObjCustomer.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+								Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+								Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
 							}
 
 
@@ -462,7 +469,8 @@ public class JSONParser implements Constants {
 									referenceId, userName, phoneNo, new LatLng(pickupLatitude, pickupLongitude), cachedApiEnabled,
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
-									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery);
+									isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -566,6 +574,12 @@ public class JSONParser implements Constants {
 				String requestUserId = jActiveRequest.getString("user_id");
 				double requestLatitude = jActiveRequest.getDouble("pickup_latitude");
 				double requestLongitude = jActiveRequest.getDouble("pickup_longitude");
+
+				double currrentLatitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LATITUDE);
+				double currrentLongitude = jActiveRequest.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+				Prefs.with(context).save(Constants.KEY_CURRENT_LATITUDE_ALARM, String.valueOf(currrentLatitude));
+				Prefs.with(context).save(Constants.KEY_CURRENT_LONGITUDE_ALARM, String.valueOf(currrentLongitude));
+
 				String requestAddress = jActiveRequest.getString("pickup_location_address");
 				double dryDistance = jActiveRequest.optDouble(Constants.KEY_DRY_DISTANCE, 0);
 
@@ -612,7 +626,9 @@ public class JSONParser implements Constants {
 						Integer.parseInt(requestUserId), new LatLng(requestLatitude, requestLongitude),
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery,
-						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
+						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+						new LatLng(currrentLatitude, currrentLongitude));
+
 				Data.addCustomerInfo(customerInfo);
 
 				Log.i("inserter in db", "insertDriverRequest = " + requestEngagementId);

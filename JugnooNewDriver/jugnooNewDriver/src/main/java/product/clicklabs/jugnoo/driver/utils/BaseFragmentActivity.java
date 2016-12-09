@@ -14,6 +14,7 @@ import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 
 /**
  * Created by aneeshbansal on 09/05/16.
@@ -28,8 +29,24 @@ public class BaseFragmentActivity extends FragmentActivity {
 
 	@Override
 	protected void onResume() {
+		Data.appMinimized = false;
+		stopService(new Intent(this, GeanieView.class));
 		super.onResume();
 		checkIfUserDataNull();
+	}
+
+	@Override
+	protected void onPause() {
+		Data.appMinimized = true;
+		super.onPause();
+	}
+
+	@Override
+	protected void onStop() {
+		if(Data.appMinimized){
+			startService(new Intent(this, GeanieView.class));
+		}
+		super.onStop();
 	}
 
 	public boolean checkIfUserDataNull() {

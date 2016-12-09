@@ -18,6 +18,7 @@ import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.EngagementStatus;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
+import product.clicklabs.jugnoo.driver.home.StartRideLocationUpdateService;
 import product.clicklabs.jugnoo.driver.home.models.EngagementSPData;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
@@ -70,7 +71,6 @@ public class DriverLocationDispatcher {
 						if ((screenMode == DriverScreenMode.D_INITIAL.getOrdinal() && diff >= freeStateTime)
 								|| (screenMode == DriverScreenMode.D_ARRIVED.getOrdinal() && diff >= acceptedStateTime)) {
 
-
 							HashMap<String, String> nameValuePairs = new HashMap<>();
 							nameValuePairs.put(Constants.KEY_ACCESS_TOKEN, accessToken);
 							nameValuePairs.put(Constants.KEY_LATITUDE, String.valueOf(location.getLatitude()));
@@ -79,6 +79,10 @@ public class DriverLocationDispatcher {
 							nameValuePairs.put(Constants.KEY_DEVICE_TOKEN, deviceToken);
 							nameValuePairs.put("pushy_token", pushyToken);
 							nameValuePairs.put("battery_percentage", String.valueOf(Utils.getActualBatteryPer(context)));
+							if(Double.parseDouble(Utils.getActualBatteryPer(context)) < 20d && Utils.isBatteryChargingNew(context) == 0){
+								Intent batteryLow = new Intent(Constants.ALERT_BATTERY_LOW);
+								context.sendBroadcast(batteryLow);
+							}
 							nameValuePairs.put("is_charging", String.valueOf(Utils.isBatteryChargingNew(context)));
 							if(Prefs.with(context).getBoolean(Constants.MOBILE_DATA_STATE, true)) {
 								nameValuePairs.put("mobile_data_state", String.valueOf(1));
@@ -220,6 +224,13 @@ public class DriverLocationDispatcher {
 								MyApplication.getInstance().getEngagementSP().updateEngagementSPData(engagementSPData);
 
 								Database2.getInstance(context).insertRideData("0.0", "0.0", "" + System.currentTimeMillis(), engagementSPData.getEngagementId());
+
+								Prefs.with(context).save(Constants.FLAG_REACHED_PICKUP, true);
+								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM, true);
+								Prefs.with(context).save(Constants.PLAY_START_RIDE_ALARM_FINALLY, false);
+								Intent intent1 = new Intent(context, StartRideLocationUpdateService.class);
+								context.startService(intent1);
+								Log.e("startRideAlarmSErvice", "on");
 								Log.writePathLogToFile(engagementSPData.getEngagementId() + "m", "arrived sucessful");
 							}
 							break;

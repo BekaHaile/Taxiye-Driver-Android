@@ -36,6 +36,7 @@ public interface AppInterruptHandler {
     public void addPathNew(ArrayList<CurrentPathItem> currentPathItems);
 
 	void handleCancelRideSuccess(String engagementId);
+
 	void handleCancelRideFailure(String message);
 
 	void markArrivedInterrupt(LatLng latLng, int engagementId);
@@ -45,5 +46,9 @@ public interface AppInterruptHandler {
 	void fetchHeatMapDataCall(Context context);
 
 	void updateCustomers();
+
+	void updateCustomerLocation(double lat, double lon);
+
+	void showStartRidePopup();
 
 }

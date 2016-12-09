@@ -202,9 +202,9 @@ public class GCMIntentService extends IntentService {
 			Log.v("message", "," + message);
 
 			Intent notificationIntent = new Intent();
-			if(HomeActivity.appInterruptHandler == null){
+			if (HomeActivity.appInterruptHandler == null) {
 				notificationIntent.setClass(context, SplashNewActivity.class);
-			} else{
+			} else {
 				notificationIntent.setClass(context, HomeActivity.class);
 			}
 
@@ -248,7 +248,7 @@ public class GCMIntentService extends IntentService {
 
 			} else {
 
-				if(perfectRide == 1) {
+				if (perfectRide == 1) {
 					Intent intentAccKill = new Intent(context, SplashNewActivity.class);
 					intentAccKill.putExtra("type", "accept");
 					intentAccKill.putExtra("engagement_id", engagementId);
@@ -265,7 +265,7 @@ public class GCMIntentService extends IntentService {
 					intentAccKill.putExtra(Constants.KEY_IS_POOLED, isPooled);
 					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY, isDelivery);
 					intentAccKill.putExtra("user_id", userId);
-					Log.i("accceptRideGCM Logs", ""+ engagementId + " " + userId + " " + referenceId);
+					Log.i("accceptRideGCM Logs", "" + engagementId + " " + userId + " " + referenceId);
 					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 					PendingIntent pendingIntentAccept = PendingIntent.getService(context, 1, intentAccKill, PendingIntent.FLAG_UPDATE_CURRENT);
 					builder.addAction(R.drawable.tick_30_px, "Accept", pendingIntentAccept);
@@ -315,7 +315,7 @@ public class GCMIntentService extends IntentService {
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(title);
-			if(bitmap == null) {
+			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
 				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
@@ -344,7 +344,7 @@ public class GCMIntentService extends IntentService {
 
 	@SuppressWarnings("deprecation")
 	public static void notificationManagerCustomIDAudit(Context context, String title, String message, int notificationId,
-												   Class notifClass, Bitmap bitmap) {
+														Class notifClass, Bitmap bitmap) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -359,7 +359,7 @@ public class GCMIntentService extends IntentService {
 			NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 			builder.setAutoCancel(true);
 			builder.setContentTitle(title);
-			if(bitmap == null) {
+			if (bitmap == null) {
 				builder.setStyle(new NotificationCompat.BigTextStyle().bigText(message));
 			} else {
 				builder.setStyle(new NotificationCompat.BigPictureStyle().bigPicture(bitmap)
@@ -426,50 +426,33 @@ public class GCMIntentService extends IntentService {
 								int perfectRide = jObj.optInt(Constants.KEY_PERFECT_RIDE, 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
 								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
+								int changeRing = jObj.optInt(Constants.KEY_RING_TYPE, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
-								if(1 == perfectRide
+								if (1 == perfectRide
 										&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
-										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
-								}
-								else if(1 == isPooled
-										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+								} else if (1 == isPooled
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
-								}
-								else if(1 == isDelivery
-										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+								} else if (1 == isDelivery
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
-								}
-								else if(0 == perfectRide && 0 == isPooled
+								} else if (0 == perfectRide && 0 == isPooled
 										&& (DriverScreenMode.D_INITIAL.getOrdinal() == driverScreenMode)
-										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")){
+										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
 									entertainRequest = true;
 								}
 
-								if(jObj.optInt("wake_up_lock_enabled",1)==1){
-									if(HomeActivity.activity != null){
-										if(!HomeActivity.activity.hasWindowFocus()){
-											Intent newIntent = new Intent(this, HomeActivity.class);
-											newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-											newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-											startActivity(newIntent);
-										}
-									} else {
-										Intent homeScreen = new Intent(this, BlankActivityForDialog.class);
-										homeScreen.putExtra("wakeUp", true);
-										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-										startActivity(homeScreen);
-									}
-
-								}
-
-								if(entertainRequest) {
+								if (entertainRequest) {
 									String engagementId = jObj.getString(Constants.KEY_ENGAGEMENT_ID);
 									String userId = jObj.optString(Constants.KEY_USER_ID, "0");
 									double latitude = jObj.getDouble(Constants.KEY_LATITUDE);
 									double longitude = jObj.getDouble(Constants.KEY_LONGITUDE);
+									double currrentLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+									double currrentLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
 									String startTime = jObj.getString("start_time");
 									String address = jObj.getString("address");
 									double dryDistance = jObj.optDouble(Constants.KEY_DRY_DISTANCE, 0);
@@ -501,7 +484,7 @@ public class GCMIntentService extends IntentService {
 										DecimalFormat decimalFormat = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
 										DecimalFormat decimalFormatNoDecimal = new DecimalFormat("#", new DecimalFormatSymbols(Locale.ENGLISH));
 										if (dryDistance >= 1000) {
-											distanceDry =  decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
+											distanceDry = decimalFormat.format(dryDistance / 1000) + getResources().getString(R.string.km_away);
 										} else {
 											distanceDry = decimalFormatNoDecimal.format(dryDistance) + " " + getResources().getString(R.string.m_away);
 										}
@@ -521,10 +504,11 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery);
+												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+												new LatLng(currrentLatitude, currrentLongitude));
 										Data.addCustomerInfo(customerInfo);
 
-										startRing(this, engagementId);
+										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -542,7 +526,7 @@ public class GCMIntentService extends IntentService {
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
 												isPooled, isDelivery);
-										startRing(this, engagementId);
+										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 
 										if (jObj.optInt("penalise_driver_timeout", 0) == 1) {
@@ -552,6 +536,25 @@ public class GCMIntentService extends IntentService {
 										RequestTimeoutTimerTask requestTimeoutTimerTask = new RequestTimeoutTimerTask(this, engagementId);
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 									}
+								}
+
+								try {
+									if (jObj.optInt("wake_up_lock_enabled", 0) == 1) {
+										if (HomeActivity.activity != null) {
+											if (!HomeActivity.activity.hasWindowFocus()) {
+												Intent newIntent = new Intent(this, HomeActivity.class);
+												newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+												newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+												startActivity(newIntent);
+											}
+										} else {
+											Intent homeScreen = new Intent(this, SplashNewActivity.class);
+											homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+											startActivity(homeScreen);
+										}
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
 
 							} else if (PushFlags.REQUEST_CANCELLED.getOrdinal() == flag) {
@@ -626,15 +629,15 @@ public class GCMIntentService extends IntentService {
 
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
-								if("".equalsIgnoreCase(picture)){
+								if ("".equalsIgnoreCase(picture)) {
 									picture = jObj.optString(Constants.KEY_IMAGE, "");
 								}
-								if(!"".equalsIgnoreCase(picture)){
+								if (!"".equalsIgnoreCase(picture)) {
 									new BigImageNotifAsync(title, message1, picture).execute();
-								} else{
+								} else {
 									notificationManagerCustomID(this, title, message1, PROMOTION_ID, SplashNewActivity.class, null);
 								}
-								if(sendAck) {
+								if (sendAck) {
 									sendMarketPushAckToServer(this, campainId, currentTimeUTC);
 								}
 
@@ -642,12 +645,12 @@ public class GCMIntentService extends IntentService {
 								String message1 = jObj.getString("message");
 
 								String picture = jObj.optString(Constants.KEY_PICTURE, "");
-								if("".equalsIgnoreCase(picture)){
+								if ("".equalsIgnoreCase(picture)) {
 									picture = jObj.optString(Constants.KEY_IMAGE, "");
 								}
-								if(!"".equalsIgnoreCase(picture)){
+								if (!"".equalsIgnoreCase(picture)) {
 									new BigImageNotifAsync(title, message1, picture).execute();
-								} else{
+								} else {
 									notificationManagerCustomIDAudit(this, title, message1, PROMOTION_ID, SelfAuditActivity.class, null);
 								}
 
@@ -687,9 +690,15 @@ public class GCMIntentService extends IntentService {
 								if (HomeActivity.appInterruptHandler != null) {
 									HomeActivity.appInterruptHandler.onDropLocationUpdated(engagementId, new LatLng(dropLatitude, dropLongitude), dropAddress);
 								}
+							} else if (PushFlags.UPDATE_CUSTOMER_CURRENT_LOCATION.getOrdinal() == flag) {
+								double dropLatitude = jObj.getDouble(Constants.KEY_CURRENT_LATITUDE);
+								double dropLongitude = jObj.getDouble(Constants.KEY_CURRENT_LONGITUDE);
+								if (HomeActivity.appInterruptHandler != null) {
+									HomeActivity.appInterruptHandler.updateCustomerLocation(dropLatitude, dropLongitude);
+								}
 							} else if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
 								String otp = jObj.getString("message");
-								if(LoginViaOTP.OTP_SCREEN_OPEN != null) {
+								if (OTPConfirmScreen.OTP_SCREEN_OPEN != null) {
 									Intent otpConfirmScreen = new Intent(this, OTPConfirmScreen.class);
 									otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 									otpConfirmScreen.putExtra("otp", otp);
@@ -784,6 +793,26 @@ public class GCMIntentService extends IntentService {
 					GcmBroadcastReceiver.completeWakefulIntent(intent);
 
 				}
+			} else if (!"".equalsIgnoreCase(intent.getExtras().getString("message", ""))) {
+				try {
+					String message = intent.getExtras().getString("message");
+					JSONObject jObj = new JSONObject(message);
+					Log.i("push_notification", String.valueOf(jObj));
+					int flag = jObj.getInt(Constants.KEY_FLAG);
+					String title = jObj.optString(Constants.KEY_TITLE, "Jugnoo");
+					if (PushFlags.OTP_VERIFIED_BY_CALL.getOrdinal() == flag) {
+						String otp = jObj.getString("message");
+						if (OTPConfirmScreen.OTP_SCREEN_OPEN != null) {
+							Intent otpConfirmScreen = new Intent(this, OTPConfirmScreen.class);
+							otpConfirmScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+							otpConfirmScreen.putExtra("otp", otp);
+							startActivity(otpConfirmScreen);
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -820,7 +849,7 @@ public class GCMIntentService extends IntentService {
 		pendingIntent.cancel();
 	}
 
-	public static void startRing(Context context, String engagementId) {
+	public static void startRing(Context context, String engagementId, int ringType) {
 		try {
 
 			stopRing(true, context);
@@ -840,11 +869,19 @@ public class GCMIntentService extends IntentService {
 				vibrator.vibrate(pattern, 1);
 			}
 			AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+			if (Data.DEFAULT_SERVER_URL.equalsIgnoreCase(Data.LIVE_SERVER_URL)) {
 				am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
-				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				if(ringType == 1){
+					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+				}else {
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				}
 			}else{
-				mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				if(ringType == 1){
+					mediaPlayer = MediaPlayer.create(context, R.raw.delivery_ring);
+				}else {
+					mediaPlayer = MediaPlayer.create(context, R.raw.telephone_ring);
+				}
 			}
 
 			mediaPlayer.setLooping(true);
@@ -1043,7 +1080,7 @@ public class GCMIntentService extends IntentService {
 
 			if (tryToSave && !"".equalsIgnoreCase(message1)) {
 				String picture = jObj.optString(Constants.KEY_PICTURE, "");
-				if("".equalsIgnoreCase(picture)){
+				if ("".equalsIgnoreCase(picture)) {
 					picture = jObj.optString(Constants.KEY_IMAGE, "");
 				}
 
@@ -1275,7 +1312,6 @@ public class GCMIntentService extends IntentService {
 	//context.sendBroadcast(new Intent("com.google.android.intent.action.MCS_HEARTBEAT"));
 
 
-
 	private void flurryEventForRequestPush(String engagementId, int driverScreenMode) {
 		if (DriverScreenMode.D_INITIAL.getOrdinal() != driverScreenMode
 				&& DriverScreenMode.D_REQUEST_ACCEPT.getOrdinal() != driverScreenMode
@@ -1290,7 +1326,7 @@ public class GCMIntentService extends IntentService {
 		private Bitmap bitmap = null;
 		private String title, message, picture;
 
-		public BigImageNotifAsync(String title, String message, String picture){
+		public BigImageNotifAsync(String title, String message, String picture) {
 			this.picture = picture;
 			this.title = title;
 			this.message = message;
@@ -1307,7 +1343,7 @@ public class GCMIntentService extends IntentService {
 			try {
 				URL url = new URL(picture);
 				bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			return bitmap;
@@ -1317,14 +1353,14 @@ public class GCMIntentService extends IntentService {
 		protected void onPostExecute(Bitmap result) {
 			// execution of result of Long time consuming operation
 			try {
-				if(result == null){
+				if (result == null) {
 					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
 							null);
-				} else{
+				} else {
 					notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
 							result);
 				}
-			}catch (Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 				notificationManagerCustomID(GCMIntentService.this, title, message, PROMOTION_ID, SplashNewActivity.class,
 						null);

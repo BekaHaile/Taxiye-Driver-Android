@@ -160,7 +160,7 @@ public class ChangePhoneBeforeOTPActivity extends BaseActivity {
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
 	}
 

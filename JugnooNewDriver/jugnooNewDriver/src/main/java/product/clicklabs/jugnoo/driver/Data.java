@@ -158,6 +158,8 @@ public class Data {
     public static ArrayList<PreviousAccountInfo> previousAccountInfoList = new ArrayList<>();
 
 	public static JSONArray blockAppPackageNameList;
+
+	public static boolean appMinimized = false;
 	
 	
 	

@@ -11,11 +11,11 @@
 
         <ImageView
             android:id="@+id/chathead_img"
-            android:layout_width="125px"
-            android:layout_height="85px"
+            android:layout_width="156px"
+            android:layout_height="156px"
             android:tag="mwar"
             android:paddingRight="40px"
-            android:src="@drawable/auto_head_main_selector" />
+            android:src="@drawable/jugnoo_fab" />
     </AbsoluteLayout>
 
 

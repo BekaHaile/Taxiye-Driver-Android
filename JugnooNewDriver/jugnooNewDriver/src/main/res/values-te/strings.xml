@@ -19,7 +19,7 @@
     <!-- 8B:D4:A9:9A:B7:67:D4:22:D8:27:0D:A3:EE:3D:62:3B:32:30:CE:3B -->
 
     <string name="google_maps_browser_key">AIzaSyAPIQoWfHI2iRZkSV8jU4jT_b9Qth4vMdY</string>
-
+    <string name="digits_characters_numbers">ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.\\ </string>
 
 
 
@@ -515,11 +515,7 @@
     <string name="enter_less_amount">తక్కువ మొత్తంలో నమోదు చేయండి</string>
     <string name="enter_valid_amount">చెల్లుబాటు అయ్యే మొత్తాన్ని నమోదు చేయండి</string>
     <string name="JUGNOO">JUGNOO</string>
-    <string name="no_language_to_select">Language Option Not Available</string>
     <string name="ride_complete">రైడ్ పూర్తయింది</string>
-    <string name="no_not_verified">Phone Number not verified</string>
-
-    <string name="miss_call_otp">Give a Miss Call</string>
 
 
     <string name="give_missed_call_dialog_text">మాకు ఒక మిస్డ్ కాల్ ఇవ్వండి మేము మీ గుర్తింపుని ద్రువికరిస్తాము</string>
@@ -588,7 +584,6 @@
     <string name="return_subsidy">రిటర్న్ సబ్సిడీ</string>
     <string name="return_distance">రిటర్న్ దూరం</string>
     <string name="delivery_details">డెలివరీ వివరాలు</string>
-    <string name="uploading">Uploading</string>
 
 
     <string name="vehicle_status">వాహనం స్థితి</string>
@@ -640,29 +635,9 @@
     <string name="total_amount">ఫైనల్ ఇన్వాయిస్ మొత్తం</string>
     <string name="this_week">ఈ వారం</string>
     <string name="outstanding_amount1">బాకీ మొత్తం సర్దుబాటు చేయబడింది</string>
-    <string name="upload_again">Upload Again</string>
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
-    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
-    <string name="payment_sent">Payment Sent</string>
-    <string name="estimated_payout">ESTIMATED PAYOUT</string>
-    <string name="this_week_cap">THIS WEEK</string>
-    <string name="ride_history_cap">RIDE HISTORY</string>
-    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
-    <string name="high_demand_areas">Click here to know high demand areas</string>
-    <string name="high_demad">High Demand Areas</string>
-    <string name="referral_code">Referral Code</string>
-    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
-    <string name="select_tandc">Please select Terms and Conditions</string>
-    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
-    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
-    <string name="select_valid_city">Please select valid City</string>
 
-    <string name="optional_brack">(Optional)</string>
-    <string name="name_cant_empty">Name can\'t be empty</string>
-    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
-
-
+    <string name="estimated_payout"> చెల్లింపునకు అంచనా</string>
+    <string name="this_week_cap">ఈ వారం</string>
     <string name="register_via_agent">ఏజెంట్ ద్వారా నమోదు</string>
     <string name="last_trip_earning">గత రైడ్ నగదు</string>
 
@@ -693,30 +668,54 @@
     <string name="please_submit">సబ్మిట చెయ్యండి</string>
     <string name="cancel_audit">మీరు ఆడిట్ను రద్దు చెయ్యాలని అనుకుంటున్నారా?</string>
     <string name="image_upload_failed">ఫోటో సరిగ్గా రాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
-    <string name="estimated_payout_lower">Estimated Payout</string>
-    <string name="bank_deposite">Bank Deposite</string>
-    <string name="trips">Trips</string>
-    <string name="home">Home</string>
-    <string name="duration">Duration</string>
-    <string name="daily_earnings">DAILY EARNINGS</string>
-    <string name="Invoices_cap">INVOICES</string>
-    <string name="Today_earning">TODAY\'S EARNING</string>
-    <string name="daily_breakup">DAILY BREAKUP</string>
-    <string name="trip_earning">TRIP EARNINGS</string>
-    <string name="earnings_caps">EARNINGS</string>
-    <string name="trip_details">TRIP DETAILS</string>
-    <string name="fare_issues">FARE ISSUES</string>
-    <string name="req_text">If there was an issue with ride fare, please let us know.</string>
-    <string name="type_issue">Type your issue here</string>
-    <string name="report_issue">REPORT FARE ISSUES</string>
-    <string name="id">ID</string>
-    <string name="fair_complaint">Fare Complaint</string>
-    <string name="in_review">IN REVIEW</string>
-    <string name="pool">Pool</string>
-    <string name="no_invoice_currently">No Invoice Currently</string>
-    <string name="no_data">No Data</string>
-    <string name="web_view">WEB VIEW</string>
-    <string name="connection_lost">Connection Loast</string>
+    <string name="earnings_caps">సంపాదన</string>
+
+
+    <string name="estimated_payout_lower"> చెల్లింపునకు అంచనా</string>
+    <string name="bank_deposite">బ్యాంక్ ధరావతు</string>
+    <string name="trips">ట్రిప్స్</string>
+    <string name="home">ఇళ్లు</string>
+    <string name="duration">కాలపరిమానం</string>
+    <string name="daily_earnings">రోజువారీ సంపాదన</string>
+    <string name="Invoices_cap">ఇన్వాయిస్లు</string>
+    <string name="Today_earning">నేటి సంపాదన</string>
+    <string name="daily_breakup">రోజువారీ వేర్పాటు</string>
+    <string name="trip_earning">ట్రిప్ సంపాదనలు</string>
+
+    <string name="trip_details">పర్యటన వివరాలన్నీ</string>
+    <string name="fare_issues">ఛార్జీల సమస్యలు</string>
+    <string name="req_text">రైడ్ ఛార్జీల ఏ రకమైన సమస్య ఉంది ఉంటే, దయచేసి మాకు తెలియజేయండి</string>
+    <string name="type_issue">మీ సమస్య టైప్  చేయి ఇచ్చట</string>
+    <string name="report_issue"> ఛార్జీల సమస్యలు నివేదిక</string>
+    <string name="id">గుర్తింపు ఆధారము</string>
+    <string name="fair_complaint">ఫేర్ ఫిర్యాదు</string>
+    <string name="in_review">సమీక్షలో</string>
+    <string name="pool">కొలను</string>
+    <string name="no_invoice_currently">ప్రస్తుతం ఇన్వాయిస్  లేదు</string>
+    <string name="no_data">సమాచారం లేదు</string>
+    <string name="web_view">వెబ్ వీక్షణ</string>
+    <string name="connection_lost">మీరు కనెక్ట్ కాలేదు. మళ్లీ ప్రయత్నించడానికి ఇక్కడ నొక్కండి.</string>
+    <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+
+    <string name="upload_again">Upload Again</string>
+    <string name="diffrential_pricing_rate">After %1$s Km, distance charge will be \u20B9 %2$s/Km</string>
+    <string name="payment_sent">Payment Sent</string>
+
+    <string name="ride_history_cap">RIDE HISTORY</string>
+    <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
+    <string name="high_demand_areas">Click here to know high demand areas</string>
+    <string name="high_demad">High Demand Areas</string>
+    <string name="referral_code">Referral Code</string>
+    <string name="i_accept">I accept <u> Terms &amp; Condition</u></string>
+    <string name="select_tandc">Please select Terms and Conditions</string>
+    <string name="select_valid_vehicle_type">Please select valid Vehicle Type</string>
+    <string name="select_valid_vehicle_status">Please select valid Vehicle Status</string>
+    <string name="select_valid_city">Please select valid City</string>
+
+    <string name="optional_brack">(Optional)</string>
+    <string name="name_cant_empty">Name can\'t be empty</string>
+    <string name="deletion_confirmation">Are you sure, you want to delete image ?</string>
+
     <string name="pls_enter_some_msg">Please enter some issue</string>
     <string name="enter_destination">Enter Destination</string>
     <string name="no_results_found">No Result Found</string>
@@ -728,14 +727,30 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="return_to_merchant">Return to the Merchant</string>
-    <string name="deposite_cash">Have you deposited cash?</string>
-    <string name="deposite_cash_1">Deposit cash</string>
-    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-    <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
-    <string name="fail">Fail</string>
+
+    <string name="order_summary">కొనుగోలు వివరణ</string>
+    <string name="return_to_merchant">వ్యాపారికి తిరిగి ఇవ్వడం</string>
+    <string name="deposite_cash">మీరు నగదు జమ చేశారు?</string>
+    <string name="deposite_cash_1">నగదు ఖాతాలో జమ చేయు మొత్తము</string>
+    <string name="return_reasons_confirmation">విఫలమైంది డెలివరీ కోసం కారణాన్ని ఎంచుకోండి</string>
+    <string name="submit_small">సమర్పించండి</string>
+    <string name="total_cash_collected">మొత్తం నగదు సేకరించిన</string>
+    <string name="fail">ఓడిపోవు</string>
+    <string name="required">అవసరం</string>
+    <string name="login_here">ఇక్కడ లాగిన్</string>
+    <string name="i_accept_new">సైన్ అప్ మీరు మా <u>ఉపయోగ నిబంధనలు</u> అంగీకరిస్తున్నారు</string>
+    <string name="nl_otp_please_enter_otp">పంపిన మీ వన్ టైమ్ పాస్వర్డ్ నమోదు చేయండి</string>
+    <string name="driver">డ్రైవర్</string>
+    <string name="register_text">డ్రైవర్ ఖాతా లేదు? <u>ఇక్కడ నమోదు</u></string>
+
+    <string name="no_language_to_select">భాషా ఎంపిక అందుబాటులో లేదు</string>
+    <string name="no_not_verified">ఫోన్ నంబర్ ధృవీకరించబడలేదు</string>
+    <string name="miss_call_otp">ఒక మిస్ కాల్ లో ఇవ్వండి</string>
+    <string name="uploading">అప్లోడ్ అవుతోంది</string>
+    <string name="self_enroled">నేనే దాఖలు అయినది </string>
+    <string name="upload_Documents">పత్రాలు ఎక్కించిన</string>
+    <string name="spinner_owned">Owned</string>
+    <string name="spinner_rented">Rented</string>
 
 
     <string-array name="CountryCodes" >

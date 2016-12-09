@@ -48,6 +48,9 @@ public interface Constants {
 
     String KEY_LATITUDE = "latitude";
     String KEY_LONGITUDE = "longitude";
+
+    String KEY_CURRENT_LATITUDE= "current_latitude";
+    String KEY_CURRENT_LONGITUDE= "current_longitude";
     String KEY_ENGAGEMENT_ID = "engagement_id";
     String KEY_CUSTOMER_ID = "customer_id";
     String KEY_GIVEN_RATING = "given_rating";
@@ -78,6 +81,8 @@ public interface Constants {
 
     String KEY_PICKUP_LATITUDE_ALARM = "pickup_latitude_alarm";
     String KEY_PICKUP_LONGITUDE_ALARM = "pickup_longitude_alarm";
+    String KEY_CURRENT_LATITUDE_ALARM = "current_latitude_alarm";
+    String KEY_CURRENT_LONGITUDE_ALARM = "current_longitude_alarm";
 
     String KEY_DEVICE_NAME = "device_name";
     String KEY_IMEI = "imei";
@@ -110,6 +115,8 @@ public interface Constants {
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
+	String KEY_RING_TYPE = "ring_type";
+
     String KEY_DISTANCE_TRAVELLED_LOG = "distance_travelled_log";
     String KEY_IS_CACHED = "is_cached";
     String KEY_PR_DISTANCE = "pr_distance";
@@ -129,6 +136,7 @@ public interface Constants {
     String KEY_TOTAL_DELIVERIES = "total_deliveries";
     String KEY_ESTIMATED_FARE = "estimated_fare";
     String KEY_VENDOR_MESSAGE = "vendor_message";
+    String KEY_END_DELIVERY_FORCED = "end_delivery_forced";
     String KEY_TOTAL_CASH_TO_COLLECT_DELIVERY = "total_cash_to_collect_delivery";
     String KNOWLARITY_NO = "knowlarity_no";
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
@@ -172,6 +180,9 @@ public interface Constants {
     String DRIVER_RIDE_DATE = "driver_ride_date";
     String ACTION_UPDATE_RIDE_EARNING = "action_update_ride_earning";
     String ACTION_REFRESH_USL = "action_refresh_usl";
+    String ALERT_BATTERY_LOW = "alert_battery_low";
+	String ALERT_CHARGING = "alert_charging";
+	String DISMISS_END_DELIVERY_POPUP = "dismiss_end_delivery_popup";
 	String MOBILE_DATA_STATE = "mobile_data_state";
 
 	String FREE_STATE_UPDATE_TIME_PERIOD_CHARGING = "free_state_update_time_period_charging";
@@ -197,6 +208,11 @@ public interface Constants {
 
 	String EVENT_DLD_DEVICE_TOKEN_RESET = "DLD_DEVICE_TOKEN_RESET";
 	String EVENT_DL_ALARM_LOC_NOT_SENT_TILL_3_MIN = "DL_ALARM_LOC_NOT_SENT_TILL_3_MIN";
+
+    String PLAY_START_RIDE_ALARM = "play_start_ride_alarm";
+    String PLAY_START_RIDE_ALARM_FINALLY ="play_start_ride_alarm_finally";
+    String FLAG_REACHED_PICKUP ="flag_reached_pickup";
+	String START_RIDE_ALARM_SERVICE_STATUS = "start_ride_alarm_service_status";
 
 }
 
