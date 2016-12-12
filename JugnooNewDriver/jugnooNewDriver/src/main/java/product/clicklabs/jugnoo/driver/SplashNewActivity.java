@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -328,6 +329,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 
 
 		batteryOptimizer(SplashNewActivity.this);
@@ -1264,12 +1266,29 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					finish();
 				}
 			}
+
+			if(!isSystemAlertPermissionGranted(SplashNewActivity.this)){
+				requestSystemAlertPermission(SplashNewActivity.this, 23);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	public static void requestSystemAlertPermission(Activity context, int requestCode) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+			return;
+		final String packageName = context.getPackageName();
+		final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
+		context.startActivityForResult(intent, requestCode);
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	public static boolean isSystemAlertPermissionGranted(Context context) {
+		final boolean result = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
+		return result;
+	}
 	
 	public void callFirstAttempt(){
 		runOnUiThread(new Runnable() {

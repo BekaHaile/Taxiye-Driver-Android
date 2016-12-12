@@ -58,22 +58,27 @@ public class GeanieView extends Service {
 				convertView = inflater.inflate(R.layout.chathead, null);
 				jugnooHead = (ImageView) convertView.findViewById(R.id.chathead_img);
 
-				windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-				final WindowManager.LayoutParams paramsA = new WindowManager.LayoutParams(
-						156,
-						156,
-						WindowManager.LayoutParams.TYPE_PHONE,
-						WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-						PixelFormat.TRANSLUCENT);
+				try {
+					windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+					final WindowManager.LayoutParams paramsA = new WindowManager.LayoutParams(
+							156,
+							156,
+							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+							PixelFormat.TRANSLUCENT);
 
-				paramsA.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
+					paramsA.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
 //		paramsA.x = 610;
 //		paramsA.y = 450;
 
-				windowManager.addView(convertView, paramsA);
-				new ASSL(this, 1134, 720, true);
-				ASSL.DoMagic(convertView);
-				windowManager.updateViewLayout(convertView, convertView.getLayoutParams());
+					windowManager.addView(convertView, paramsA);
+					new ASSL(this, 1134, 720, true);
+					ASSL.DoMagic(convertView);
+					windowManager.updateViewLayout(convertView, convertView.getLayoutParams());
+
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 
 				jugnooHead.setOnClickListener(new View.OnClickListener() {
 					@Override

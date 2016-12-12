@@ -1442,16 +1442,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
-					intent.putExtra(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
-					startActivity(intent);
-					overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CANCEL, null);
-						FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
-					} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
-						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CANCEL, null);
-						FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+					try {
+						Intent intent = new Intent(HomeActivity.this, RideCancellationActivity.class);
+						intent.putExtra(KEY_ENGAGEMENT_ID, Data.getCurrentEngagementId());
+						startActivity(intent);
+						overridePendingTransition(R.anim.right_in, R.anim.right_out);
+						if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED+"_"+FirebaseEvents.CANCEL, null);
+							FlurryEventLogger.event(CANCELED_BEFORE_ARRIVING);
+						} else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+							MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED+"_"+FirebaseEvents.CANCEL, null);
+							FlurryEventLogger.event(RIDE_CANCELLED_AFTER_ARRIVING);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 			});
