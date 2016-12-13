@@ -137,7 +137,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	static boolean loginDataFetched = false;
 
-	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt;
+	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
 	TextView textViewLoginRegister, textViewTandC, textViewRegLogin;
@@ -257,6 +257,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		referralCodeEt.setTypeface(Data.latoRegular(getApplicationContext()));
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		alternatePhoneNoEt  = (EditText) findViewById(R.id.alternatePhoneNoEt);
+		alternatePhoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		phoneNoOPTEt = (EditText) findViewById(R.id.phoneNoOPTEt);
 		phoneNoOPTEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -452,6 +455,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		alternatePhoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				alternatePhoneNoEt.setError(null);
+			}
+		});
+
 		phoneNoOPTEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -498,6 +509,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 //				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
+				String altPhoneNo = alternatePhoneNoEt.getText().toString().trim();
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
@@ -536,7 +548,20 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 											if (vehiclePosition != 0) {
 												if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 													if (true) {
-														sendSignupValues(SplashNewActivity.this, name, phoneNo, password, referralCode);
+
+														if(!"".equalsIgnoreCase(altPhoneNo)) {
+															if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
+																alternatePhoneNoEt.requestFocus();
+																alternatePhoneNoEt.setError("Please enter valid phone number");
+															}
+															altPhoneNo = "+91"+altPhoneNo;
+														}
+
+														if(isPhoneValid(altPhoneNo)){
+															sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
+														}else {
+															sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
+														}
 														FlurryEventLogger.emailSignupClicked(emailId);
 													} else {
 														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
@@ -856,7 +881,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 
 
-	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city, final String referralCode) {
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String altPhoneNo, final String city, final String referralCode) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -871,6 +896,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
+			params.put("alt_phone_no", altPhoneNo);
 //			params.put("auto_num", autoNum);
 			params.put("city", String.valueOf(cityposition));
 			params.put("latitude", "" + Data.latitude);
