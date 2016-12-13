@@ -17,7 +17,6 @@ import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;

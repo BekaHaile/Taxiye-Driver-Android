@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/remove_relativelayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutCloseInner"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:background="@drawable/shadow_up">
+
+    </RelativeLayout>
+
+    <AbsoluteLayout
+        android:id="@+id/absoluteLayoutClose"
+        android:layout_width="match_parent"
+        android:layout_height="200px"
+        android:layout_centerHorizontal="true"
+        android:animateLayoutChanges="true">
+
+        <ImageView
+            android:id="@+id/remove_img"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:layout_x="310px"
+            android:layout_y="50px"
+            android:tag="mwar"
+            android:background="@drawable/remove" />
+
+    </AbsoluteLayout>
+
+</RelativeLayout>
