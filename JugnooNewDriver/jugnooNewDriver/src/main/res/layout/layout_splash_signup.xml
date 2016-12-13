@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="464px"
+                android:layout_height="548px"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
@@ -115,6 +115,58 @@
 
                     <TextView
                         android:id="@+id/textViewSEmailRequired"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30px"
+                        android:text="@string/required"
+                        android:textColor="@color/grey_dark_less"
+                        android:textSize="@dimen/text_size_22"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="30px"
+                        android:layout_height="30px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="36px"
+                        android:src="@drawable/icon_phone_v3"
+                        android:tag="mhar"/>
+
+                    <EditText
+                        android:id="@+id/alternatePhoneNoEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="72px"
+                        android:layout_toLeftOf="@+id/alterTextViewSEmailRequired"
+                        android:background="#0000"
+                        android:gravity="center_vertical"
+                        android:hint="@string/alter_phone_number"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textColor="@color/black_text_v2"
+                        android:textColorHint="@color/grey_dark_less"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_size_34"/>
+
+                    <TextView
+                        android:id="@+id/alterTextViewSEmailRequired"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"

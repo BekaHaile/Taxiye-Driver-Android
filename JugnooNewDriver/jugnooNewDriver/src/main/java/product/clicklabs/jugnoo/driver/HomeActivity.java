@@ -5983,7 +5983,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			btnOk.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START+"_"+FirebaseEvents.CONFIRM_YES,null);
+					MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CONFIRM_YES, null);
 					if (myLocation != null) {
 						dialog.dismiss();
 						LatLng driverAtPickupLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
@@ -6340,16 +6340,29 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (userMode == UserMode.DRIVER) {
 
+				if(map != null){
+					map.clear();
+				}
+
 				for(Marker marker : requestMarkers){
 					marker.remove();
 				}
 				requestMarkers.clear();
-
-				drawHeatMapData(heatMapResponseGlobal);
+				boolean showHeatMap = true;
 				ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForStatus(
 						EngagementStatus.REQUESTED.getOrdinal());
 
 				if (customerInfos.size() > 0) {
+
+					for (int i = 0; i < customerInfos.size(); i++) {
+						if(customerInfos.get(i).getIsDelivery() == 1){
+							showHeatMap =false;
+						}
+					}
+
+					if(showHeatMap){
+						drawHeatMapData(heatMapResponseGlobal);
+					}
 
 					for (int i = 0; i < customerInfos.size(); i++) {
 						requestMarkers.add(addCustomerPickupMarker(map, customerInfos.get(i), customerInfos.get(i).requestlLatLng));
@@ -6369,6 +6382,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					});
 
 				}
+
 				driverRequestListAdapter.setResults(customerInfos);
 
 				if(driverScreenMode == DriverScreenMode.D_INITIAL && myLocation != null && requestMarkers.size() == 1){
@@ -6410,7 +6424,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					try {
 						drawerLayout.closeDrawer(GravityCompat.START);
 						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_RECEIVED + "_" + Data.getAssignedCustomerInfosListForStatus(
-								EngagementStatus.REQUESTED.getOrdinal()).size(),null);
+								EngagementStatus.REQUESTED.getOrdinal()).size(), null);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -6450,10 +6464,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							switchDriverScreen(driverScreenMode);
 							DialogPopup.alertPopup(HomeActivity.this, "", getResources().getString(R.string.user_cancel_request));
 						}
-					} else if(driverScreenMode == DriverScreenMode.D_IN_RIDE){
+					} else if (driverScreenMode == DriverScreenMode.D_IN_RIDE) {
 						setPannelVisibility(false);
 						removePRMarkerAndRefreshList();
-					} else if(driverScreenMode == DriverScreenMode.D_INITIAL){
+					} else if (driverScreenMode == DriverScreenMode.D_INITIAL) {
 						setPannelVisibility(true);
 					}
 				}
