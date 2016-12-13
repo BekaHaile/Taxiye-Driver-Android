@@ -459,11 +459,11 @@ public class GeanieView extends Service {
 		final int x = x_cord_now;
 		product.clicklabs.jugnoo.driver.utils.Log.e("xcordleft", String.valueOf(x));
 		final long start = System.currentTimeMillis();
-		new CountDownTimer(500, 1) {
+		new CountDownTimer(280, 1) {
 			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
 			public void onTick(long t) {
-				long step = (500 - t);
+				long step = (280 - t);
 				Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    "+step+"    "+x+"     "+t));
 				Log.e("bounceValueLeft", String.valueOf((int) (x-step)));
 				mParams.x = (int) (double) bounceValue(step, x);
@@ -476,12 +476,13 @@ public class GeanieView extends Service {
 			}
 
 			public void onFinish() {
+				Log.e("param x before finish", String.valueOf(mParams.x));
 				mParams.x = 0;
 				windowManager.updateViewLayout(convertView, mParams);
 
 				saveGenieParams(mParams);
 
-				updateAnimLayoutParams();
+//				updateAnimLayoutParams();
 				Log.v("timeTaken", "left " + (System.currentTimeMillis() - start));
 			}
 		}.start();
@@ -493,11 +494,11 @@ public class GeanieView extends Service {
 		final int x = x_cord_now;
 		product.clicklabs.jugnoo.driver.utils.Log.e("xcordright", String.valueOf(x));
 		final long start = System.currentTimeMillis();
-		new CountDownTimer(500, 1) {
+		new CountDownTimer(280, 1) {
 			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
 			public void onTick(long t) {
-				long step = (500 - t);
+				long step = (280 - t);
 
 				Log.e("bounceValueright", String.valueOf((int) (double) bounceValue(step, x) + "    "+step+"    "+x));
 				Log.e("bounceright_convert", String.valueOf(convertView.getWidth()));
@@ -513,12 +514,14 @@ public class GeanieView extends Service {
 			}
 
 			public void onFinish() {
+				Log.e("param x before finish", String.valueOf(mParams.x));
 				mParams.x = szWindow.x - convertView.getWidth();
+				Log.e("param x after finish", String.valueOf(mParams.x));
 				windowManager.updateViewLayout(convertView, mParams);
 
 				saveGenieParams(mParams);
 
-				updateAnimLayoutParams();
+//				updateAnimLayoutParams();
 				Log.v("timeTaken", "right " + (System.currentTimeMillis() - start));
 			}
 		}.start();
