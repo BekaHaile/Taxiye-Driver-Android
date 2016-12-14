@@ -553,13 +553,16 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 															if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
 																alternatePhoneNoEt.requestFocus();
 																alternatePhoneNoEt.setError("Please enter valid phone number");
+															} else {
+																altPhoneNo = "+91"+altPhoneNo;
+																if (isPhoneValid(altPhoneNo)) {
+																	sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
+																} else {
+																	alternatePhoneNoEt.requestFocus();
+																	alternatePhoneNoEt.setError("Please enter valid phone number");
+																}
 															}
-															altPhoneNo = "+91"+altPhoneNo;
-														}
-
-														if(isPhoneValid(altPhoneNo)){
-															sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
-														}else {
+														} else {
 															sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
 														}
 														FlurryEventLogger.emailSignupClicked(emailId);
