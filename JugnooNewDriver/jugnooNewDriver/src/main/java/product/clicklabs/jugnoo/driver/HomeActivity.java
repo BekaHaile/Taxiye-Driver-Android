@@ -1144,6 +1144,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					try {
 						Intent chatIntent = new Intent(HomeActivity.this, ChatActivity.class);
 						chatIntent.putExtra("engagement_id", Data.getCurrentEngagementId());
+						chatIntent.putExtra("user_image", Data.getCurrentCustomerInfo().image);
 						startActivity(chatIntent);
 						overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					} catch (Exception e) {

@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
+import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -63,7 +64,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	private EditText input;
 	private int position = 0, engagementId = 0;
 	private ImageView send;
-
+	private String userImage;
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
 	ChatAdapter chatAdapter;
 	ChatSuggestionAdapter chatSuggestionAdapter;
@@ -85,6 +86,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 
 		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
 			engagementId = getIntent().getIntExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(Data.getCurrentEngagementId()));
+			userImage = getIntent().getStringExtra("user_image");
 		}
 
 		sdf = new SimpleDateFormat("hh:mm a");
@@ -101,7 +103,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		recyclerViewChat.setHasFixedSize(true);
 		recyclerViewChat.setItemAnimator(new DefaultItemAnimator());
 		chatResponse = new ArrayList<>();
-		chatAdapter = new ChatAdapter(this, chatResponse);
+		chatAdapter = new ChatAdapter(this, chatResponse, userImage);
 		recyclerViewChat.setAdapter(chatAdapter);
 		Prefs.with(ChatActivity.this).save(Constants.KEY_CHAT_COUNT, 0);
 		recyclerViewChatOptions = (RecyclerView) findViewById(R.id.recyclerViewChatOptions);
@@ -271,6 +273,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
                 params.put("login_type", "1");
                 params.put("engagement_id", String.valueOf(engagementId));
 
+
                 RestClient.getChatAckApiServices().fetchChat(params, new Callback<FetchChatResponse>() {
 					@Override
 					public void success(FetchChatResponse fetchChat, Response response) {
@@ -290,6 +293,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatSuggestions.clear();
 								chatResponse.addAll(fetchChat.getChatHistory());
 								Collections.reverse(chatResponse);
+
 								chatSuggestions.addAll(fetchChat.getSuggestions());
 								chatSuggestionAdapter.notifyDataSetChanged();
 								chatAdapter.notifyDataSetChanged();

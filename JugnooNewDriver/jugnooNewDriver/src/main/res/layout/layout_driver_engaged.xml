@@ -333,7 +333,7 @@
 
                         <TextView
                             android:id="@+id/textViewCustomerName"
-                            android:layout_width="448px"
+                            android:layout_width="638px"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30px"
                             android:layout_centerVertical="true"
