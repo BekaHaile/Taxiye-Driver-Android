@@ -71,41 +71,30 @@ public class GeanieView extends Service {
 				FlurryAgent.onEvent("Navigation started");
 
 
-
-
-				LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
-				convertView = inflater.inflate(R.layout.chathead, null);
-
-				removeView = (RelativeLayout) inflater.inflate(R.layout.remove, null);
-				WindowManager.LayoutParams paramRemove = new WindowManager.LayoutParams(
-						WindowManager.LayoutParams.MATCH_PARENT,
-						WindowManager.LayoutParams.WRAP_CONTENT,
-						WindowManager.LayoutParams.TYPE_PHONE,
-						WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-						PixelFormat.TRANSLUCENT);
-
-				paramRemove.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
-//				jugnooHead = (ImageView) convertView.findViewById(R.id.chathead_img);
-				removeImg = (ImageView) removeView.findViewById(R.id.remove_img);
-
-				removeView.setVisibility(View.GONE);
-				relativeLayoutCloseInner = (RelativeLayout) removeView.findViewById(R.id.relativeLayoutCloseInner);
-				absoluteLayoutClose = (AbsoluteLayout) removeView.findViewById(R.id.absoluteLayoutClose);
-				removeImg = (ImageView) removeView.findViewById(R.id.remove_img);
-
 				try {
+					LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+					convertView = inflater.inflate(R.layout.chathead, null);
+
+					removeView = (RelativeLayout) inflater.inflate(R.layout.remove, null);
+					WindowManager.LayoutParams paramRemove = new WindowManager.LayoutParams(
+							WindowManager.LayoutParams.MATCH_PARENT,
+							WindowManager.LayoutParams.WRAP_CONTENT,
+							WindowManager.LayoutParams.TYPE_PHONE,
+							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+							PixelFormat.TRANSLUCENT);
+
+					paramRemove.gravity = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+//				jugnooHead = (ImageView) convertView.findViewById(R.id.chathead_img);
+					removeImg = (ImageView) removeView.findViewById(R.id.remove_img);
+
+					removeView.setVisibility(View.GONE);
+					relativeLayoutCloseInner = (RelativeLayout) removeView.findViewById(R.id.relativeLayoutCloseInner);
+					absoluteLayoutClose = (AbsoluteLayout) removeView.findViewById(R.id.absoluteLayoutClose);
+					removeImg = (ImageView) removeView.findViewById(R.id.remove_img);
+
+
 					windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-//					final WindowManager.LayoutParams paramsA = new WindowManager.LayoutParams(
-//							156,
-//							156,
-//							WindowManager.LayoutParams.TYPE_PHONE,
-//							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-//							PixelFormat.TRANSLUCENT);
-//
-//					paramsA.gravity = Gravity.CENTER_VERTICAL | Gravity.RIGHT;
-//		paramsA.x = 610;
-//		paramsA.y = 450;
 					WindowManager.LayoutParams paramsNew = new WindowManager.LayoutParams(
 							WindowManager.LayoutParams.WRAP_CONTENT,
 							WindowManager.LayoutParams.WRAP_CONTENT,
@@ -121,28 +110,26 @@ public class GeanieView extends Service {
 					ASSL.DoMagic(convertView);
 					windowManager.updateViewLayout(convertView, convertView.getLayoutParams());
 
+					windowManager.addView(removeView, paramRemove);
+					ASSL.DoMagic(removeView);
+
+					windowManager.updateViewLayout(removeView, removeView.getLayoutParams());
+					AbsoluteLayout.LayoutParams imageViewCloseParams = (AbsoluteLayout.LayoutParams) removeImg.getLayoutParams();
+					imageViewCloseParams.x = (int) (310 * ASSL.Xscale());
+					imageViewCloseParams.y = (int) (50 * ASSL.Yscale());
+					absoluteLayoutClose.updateViewLayout(removeImg, imageViewCloseParams);
+					removeView.setVisibility(View.GONE);
+
+
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+						windowManager.getDefaultDisplay().getSize(szWindow);
+					} else {
+						int w = windowManager.getDefaultDisplay().getWidth();
+						int h = windowManager.getDefaultDisplay().getHeight();
+						szWindow.set(w, h);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
-				}
-
-				windowManager.addView(removeView, paramRemove);
-				ASSL.DoMagic(removeView);
-
-				windowManager.updateViewLayout(removeView, removeView.getLayoutParams());
-				AbsoluteLayout.LayoutParams imageViewCloseParams = (AbsoluteLayout.LayoutParams) removeImg.getLayoutParams();
-				imageViewCloseParams.x = (int) (310 * ASSL.Xscale());
-				imageViewCloseParams.y = (int) (50 * ASSL.Yscale());
-				absoluteLayoutClose.updateViewLayout(removeImg, imageViewCloseParams);
-				removeView.setVisibility(View.GONE);
-
-
-
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					windowManager.getDefaultDisplay().getSize(szWindow);
-				} else {
-					int w = windowManager.getDefaultDisplay().getWidth();
-					int h = windowManager.getDefaultDisplay().getHeight();
-					szWindow.set(w, h);
 				}
 
 
@@ -422,7 +409,7 @@ public class GeanieView extends Service {
 
 
 	@Override
-	public void onDestroy(){
+	public void onDestroy() {
 		FlurryAgent.onEndSession(this);
 		try {
 			windowManager.removeViewImmediate(convertView);
@@ -464,8 +451,8 @@ public class GeanieView extends Service {
 
 			public void onTick(long t) {
 				long step = (280 - t);
-				Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    "+step+"    "+x+"     "+t));
-				Log.e("bounceValueLeft", String.valueOf((int) (x-step)));
+				Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    " + step + "    " + x + "     " + t));
+				Log.e("bounceValueLeft", String.valueOf((int) (x - step)));
 				mParams.x = (int) (double) bounceValue(step, x);
 //				int xPraram = (int) (x - step);
 //				if(xPraram >= 0){
@@ -500,16 +487,7 @@ public class GeanieView extends Service {
 			public void onTick(long t) {
 				long step = (280 - t);
 
-				Log.e("bounceValueright", String.valueOf((int) (double) bounceValue(step, x) + "    "+step+"    "+x));
-				Log.e("bounceright_convert", String.valueOf(convertView.getWidth()));
-				Log.e("szWindow", String.valueOf(szWindow.x));
-				Log.e("paramX", String.valueOf( szWindow.x + (int) (double
-						) bounceValue(step, x) - convertView.getWidth()));
-				Log.e("paramXNEW", String.valueOf( szWindow.x + (int) (x-step)- convertView.getWidth()));
-
-//				mParams.x = szWindow.x - (int) (x-step)- convertView.getWidth();
-				mParams.x =  szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
-//				mParams.x = szWindow.x + (int) finalBonce(step, x);
+				mParams.x = szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
 				windowManager.updateViewLayout(convertView, mParams);
 			}
 

@@ -3293,7 +3293,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							currentCustomerLocMarker.remove();
 							currentCustomerLocMarker = null;
 						}
-						currentCustomerLocMarker = addCustomerCurrentLocationMarker(map, Data.getCurrentCustomerInfo());
+
+						if(customerInfo.getIsPooled() != 1) {
+							currentCustomerLocMarker = addCustomerCurrentLocationMarker(map, Data.getCurrentCustomerInfo());
+						}
 
 					}
 

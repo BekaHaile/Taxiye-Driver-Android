@@ -35,16 +35,16 @@
             <!--android:textSize="30px"-->
             <!--android:visibility="visible"/>-->
 
-        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-            android:id="@+id/textViewDeliveryCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_30"
-            android:text="@string/delivery_numbers"
-            android:textColor="@color/text_color"
-            android:layout_marginTop="12px"
-            android:visibility="visible"
-            />
+        <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+            <!--android:id="@+id/textViewDeliveryCount"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="@dimen/text_size_30"-->
+            <!--android:text="@string/delivery_numbers"-->
+            <!--android:textColor="@color/text_color"-->
+            <!--android:layout_marginTop="12px"-->
+            <!--android:visibility="visible"-->
+            <!--/>-->
 
     </LinearLayout>
 
@@ -112,16 +112,16 @@
         </LinearLayout>
 
 
-        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
-            android:id="@+id/textViewShowDistance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8px"
-            android:text="@string/NA"
-            android:textColor="@color/black"
-            android:textSize="@dimen/text_size_28"
-            android:visibility="visible"
-            />
+        <!--<product.clicklabs.jugnoo.driver.utils.CustomTextVeiw-->
+            <!--android:id="@+id/textViewShowDistance"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="8px"-->
+            <!--android:text="@string/NA"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:textSize="@dimen/text_size_28"-->
+            <!--android:visibility="visible"-->
+            <!--/>-->
 
 
     </LinearLayout>
