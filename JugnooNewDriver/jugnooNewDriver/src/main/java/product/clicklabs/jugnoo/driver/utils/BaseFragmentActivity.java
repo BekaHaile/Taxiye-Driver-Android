@@ -3,8 +3,12 @@ package product.clicklabs.jugnoo.driver.utils;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
+import android.view.Window;
+import android.view.WindowManager;
 
 import java.util.Locale;
 
@@ -25,6 +29,7 @@ public class BaseFragmentActivity extends FragmentActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		updateLanguage();
+		updateStatusBar();
 	}
 
 	@Override
@@ -128,5 +133,19 @@ public class BaseFragmentActivity extends FragmentActivity {
 			return strEng;
 		}
 		return str;
+	}
+
+	public void updateStatusBar(){
+		try {
+			int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+			if(currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+				Window window = BaseFragmentActivity.this.getWindow();
+				window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+				window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				window.setStatusBarColor(ContextCompat.getColor(BaseFragmentActivity.this, R.color.status_bar));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

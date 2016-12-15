@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,6 +21,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -1936,14 +1939,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	};
 
 
-
 	InfoTilesAdapterHandler adapterHandler = new InfoTilesAdapterHandler() {
 		@Override
 		public void okClicked(InfoTileResponse.Tile infoTileResponse, int pos) {
 
-			if(slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+			if (slidingUpPanelLayout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED) {
 				slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-			}else {
+			} else {
 
 				if (infoTileResponse.getDeepIndex() == 1) {
 					Intent intent = new Intent(HomeActivity.this, RideDetailsNewActivity.class);
@@ -1952,7 +1954,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_RIDE);
-					firebaseJugnooDeliveryHomeEvent(ITEM_RIDE+"_"+pos);
+					firebaseJugnooDeliveryHomeEvent(ITEM_RIDE + "_" + pos);
 				} else if (infoTileResponse.getDeepIndex() == 2) {
 					Calendar c = Calendar.getInstance();
 					System.out.println("Current time => " + c.getTime());
@@ -2016,8 +2018,26 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					intent.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
 					HomeActivity.this.startActivity(intent);
 					HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
-					firebaseJugnooDeliveryHomeEvent(ITEM_FULFILLMENT + "_"+pos);
+					firebaseJugnooDeliveryHomeEvent(ITEM_FULFILLMENT + "_" + pos);
 					FlurryEventLogger.event(FlurryEventNames.HOME_ITEM_FULFILLMENT);
+				} else if (infoTileResponse.getDeepIndex() == 11) {
+					try {
+						String finalUrl = String.valueOf(infoTileResponse.getExtras().getRedirectUrl())
+								+ "?access_token=" + Database2.getInstance(HomeActivity.this).getDLDAccessToken();
+						Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(finalUrl));
+						i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						i.setPackage("com.android.chrome");
+						startActivity(i);
+					} catch (ActivityNotFoundException e) {
+						// Chrome is not installed
+						Intent intent1 = new Intent(HomeActivity.this, HighDemandAreaActivity.class);
+						intent1.putExtra("title", String.valueOf(infoTileResponse.getTitle()));
+						intent1.putExtra("extras", String.valueOf(infoTileResponse.getExtras().getRedirectUrl()));
+						HomeActivity.this.startActivity(intent1);
+						HomeActivity.this.overridePendingTransition(R.anim.right_in, R.anim.right_out);
+					} catch (Exception e) {
+
+					}
 				}
 			}
 
@@ -6341,9 +6361,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (userMode == UserMode.DRIVER) {
 
-				if(map != null){
-					map.clear();
-				}
+//				if(map != null){
+//					map.clear();
+//				}
 
 				for(Marker marker : requestMarkers){
 					marker.remove();

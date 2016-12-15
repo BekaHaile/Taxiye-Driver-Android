@@ -92,7 +92,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		sdf = new SimpleDateFormat("hh:mm a");
         textViewTitle = (TextView) findViewById(R.id.textViewTitle);
         textViewTitle.setTypeface(Data.latoRegular(this));
-        textViewTitle.getPaint().setShader(Utils.textColorGradient(this, textViewTitle));
+//        textViewTitle.getPaint().setShader(Utils.textColorGradient(this, textViewTitle));
         imageViewBack = (ImageView) findViewById(R.id.imageViewBack); imageViewBack.setOnClickListener(this);
 
 		input = (EditText) findViewById(R.id.input);
@@ -295,7 +295,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								Collections.reverse(chatResponse);
 
 								chatSuggestions.addAll(fetchChat.getSuggestions());
+								if(fetchChat.getSuggestions().size() > 0){
+									recyclerViewChatOptions.setVisibility(View.VISIBLE);
+								} else {
+									recyclerViewChatOptions.setVisibility(View.GONE);
+								}
 								chatSuggestionAdapter.notifyDataSetChanged();
+
 								chatAdapter.notifyDataSetChanged();
 								recyclerViewChat.scrollToPosition(chatAdapter.getItemCount() - 1);
 								//updateListData(getResources().getString(R.string.add_cash), false);

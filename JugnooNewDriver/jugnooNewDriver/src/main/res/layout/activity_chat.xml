@@ -41,7 +41,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewChatOptions"
         android:layout_width="match_parent"
-        android:layout_above="@+id/rlInput"
+        android:layout_above="@+id/shadowUp"
         android:layout_centerVertical="true"
         android:layout_height="80px"
         android:layout_marginTop="18px"
@@ -55,6 +55,14 @@
         android:layout_height="6px"
         android:background="@drawable/shadow_down"
         android:layout_below="@+id/topBar"/>
+
+    <ImageView
+        android:id="@+id/shadowUp"
+        android:layout_width="match_parent"
+        android:layout_height="6px"
+        android:layout_marginTop="8px"
+        android:background="@drawable/shadow_up_light"
+        android:layout_above="@+id/rlInput"/>
 
     <RelativeLayout
         android:id="@+id/rlInput"

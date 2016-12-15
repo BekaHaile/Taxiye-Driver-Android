@@ -1533,6 +1533,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		nameEt.setError(null);
 		phoneNoEt.setText("");
 		phoneNoEt.setError(null);
+		alternatePhoneNoEt.setText("");
+		alternatePhoneNoEt.setError(null);
 		referralCodeEt.setText("");
 		referralCodeEt.setError(null);
 		selectCitySp.setSelection(0);
