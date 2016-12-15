@@ -237,7 +237,7 @@ public class CustomerSwitcher {
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
-						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
+						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 								+ " " + customerInfo.getTotalDeliveries());
 						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)

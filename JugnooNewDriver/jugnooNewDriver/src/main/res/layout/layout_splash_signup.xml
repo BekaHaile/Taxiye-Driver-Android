@@ -151,7 +151,6 @@
                         android:layout_height="88px"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="72px"
-                        android:layout_toLeftOf="@+id/alterTextViewSEmailRequired"
                         android:background="#0000"
                         android:gravity="center_vertical"
                         android:hint="@string/alter_phone_number"
@@ -165,16 +164,6 @@
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/text_size_34"/>
 
-                    <TextView
-                        android:id="@+id/alterTextViewSEmailRequired"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="30px"
-                        android:text="@string/required"
-                        android:textColor="@color/grey_dark_less"
-                        android:textSize="@dimen/text_size_22"/>
 
                 </RelativeLayout>
 

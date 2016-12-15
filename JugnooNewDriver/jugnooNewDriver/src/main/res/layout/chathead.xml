@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/chathead_relativelayout"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<RelativeLayout android:id="@+id/chathead_relativelayout"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-    <AbsoluteLayout
-        android:id="@+id/absoluteLayoutChatHead"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/chathead_img"
-            android:layout_width="156px"
-            android:layout_height="156px"
-            android:tag="mwar"
-            android:paddingRight="40px"
-            android:src="@drawable/jugnoo_fab" />
-    </AbsoluteLayout>
+    <ImageView
+        android:id="@+id/chathead_img"
+        android:layout_width="136px"
+        android:layout_height="136px"
+        android:src="@drawable/jugnoo_fab"
+        android:tag="mwar"/>
 
 
 </RelativeLayout>

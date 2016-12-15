@@ -26,12 +26,12 @@
             <RelativeLayout
                 android:id="@+id/relativeLayoutInRideIns"
                 android:layout_width="match_parent"
-                android:layout_height="88px"
-                android:background="@color/jet_black">
+                android:layout_height="90px"
+                android:background="@color/black_top_bar_bg">
 
                 <TextView
                     android:id="@+id/textViewRideInstructions"
-                    android:layout_width="wrap_content"
+                    android:layout_width="440px"
                     android:layout_height="wrap_content"
                     android:text="@string/NA"
                     android:textColor="@color/white"
@@ -49,6 +49,19 @@
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:text="@string/change"/>
+
+                <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                    android:id="@+id/textViewDeliveryCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_30"
+                    android:text="@string/delivery_numbers"
+                    android:textColor="@color/white"
+                    android:layout_marginRight="28px"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="gone"
+                    />
 
                 <RelativeLayout
                     android:id="@+id/relativeLayoutCall1"
@@ -333,7 +346,7 @@
 
                         <TextView
                             android:id="@+id/textViewCustomerName"
-                            android:layout_width="448px"
+                            android:layout_width="490px"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="30px"
                             android:layout_centerVertical="true"
@@ -341,6 +354,19 @@
                             android:textSize="32px"
                             android:visibility="visible"
                             android:textColor="@color/black_text_v2"/>
+
+                        <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
+                            android:id="@+id/textViewShowDistance"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="28px"
+                            android:layout_centerVertical="true"
+                            android:text="@string/NA"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/text_size_28"
+                            android:layout_alignParentRight="true"
+                            android:visibility="visible"
+                            />
 
 
                     </RelativeLayout>

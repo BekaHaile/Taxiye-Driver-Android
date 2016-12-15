@@ -29,10 +29,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
 	private ArrayList<FetchChatResponse.ChatHistory> chatHistories;
 	private Context context;
+	private String image;
 
-	public ChatAdapter(Context context, ArrayList<FetchChatResponse.ChatHistory> chatHistories) {
+	public ChatAdapter(Context context, ArrayList<FetchChatResponse.ChatHistory> chatHistories, String image) {
 		this.chatHistories = chatHistories;
 		this.context = context;
+		this.image = image;
 	}
 
 	@Override
@@ -78,7 +80,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				if(!"".equalsIgnoreCase(Data.userData.userImage)) {
 					float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
 					Picasso.with(context).
-							load(Data.userData.userImage)
+							load(image)
 							.placeholder(R.drawable.ring)
 							.transform(new CircleTransform())
 							.resize((int) (130f * minRatio), (int) (130f * minRatio)).centerCrop()
