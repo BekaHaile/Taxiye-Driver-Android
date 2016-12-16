@@ -256,6 +256,10 @@ public class CustomerSwitcher {
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
 				textViewCustomerName.setVisibility(View.VISIBLE);
 			}
+			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
+				textViewShowDistance.setText("");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

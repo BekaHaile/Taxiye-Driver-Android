@@ -2368,7 +2368,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());
 						driverPerfectRidePassengerName.setText(customerName);
 						perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
-						driverPassengerInfoRl.setVisibility(View.GONE);
+						driverPassengerInfoRl.setVisibility(View.VISIBLE);
 						GCMIntentService.clearNotifications(getApplicationContext());
 						driverRequestListAdapter.setResults(Data.getAssignedCustomerInfosListForStatus(
 								EngagementStatus.REQUESTED.getOrdinal()));
@@ -3309,7 +3309,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.VISIBLE);
 					perfectRidePassengerInfoRl.setVisibility(View.GONE);
-					driverPassengerInfoRl.setVisibility(View.VISIBLE);
 					setPannelVisibility(false);
 					driverStartRideMainRl.setVisibility(View.VISIBLE);
 					driverInRideMainRl.setVisibility(View.GONE);
@@ -4630,7 +4629,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		if (Data.nextPickupLatLng != null) {
 			driverPerfectRidePassengerName.setText(Data.nextCustomerName);
 			perfectRidePassengerInfoRl.setVisibility(View.VISIBLE);
-			driverPassengerInfoRl.setVisibility(View.GONE);
+			driverPassengerInfoRl.setVisibility(View.VISIBLE);
 			MarkerOptions markerOptions = new MarkerOptions();
 			markerOptions.title("next_pickup_marker");
 			markerOptions.position(Data.nextPickupLatLng);
@@ -7387,7 +7386,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		public void run() {
 			if (myLocation != null) {
 				if(driverScreenMode == DriverScreenMode.D_IN_RIDE) {
-					inRideZoom();
+					if (!Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").contains(" ")) {
+						inPerfectRideZoom();
+					} else{
+						inRideZoom();
+					}
+
 				} else if(driverScreenMode == DriverScreenMode.D_ARRIVED || driverScreenMode == DriverScreenMode.D_START_RIDE){
 					arrivedOrStartStateZoom();
 				}
@@ -7434,6 +7438,45 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			e.printStackTrace();
 		}
 	}
+
+	public void inPerfectRideZoom(){
+		try {
+			if(myLocation!=null) {
+				LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+				if(Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+					for (int i = 0; i < markersDelivery.size(); i++) {
+						if(markersDelivery.get(i).getSnippet().equalsIgnoreCase("return")){
+							builder = new LatLngBounds.Builder();
+							builder.include(markersDelivery.get(i).getPosition());
+						} else{
+							builder.include(markersDelivery.get(i).getPosition());
+						}
+					}
+				} else {
+					for (int i = 0; i < markersCustomers.size(); i++) {
+						builder.include(markersCustomers.get(i).getPosition());
+						break;
+					}
+					if(polylineCustomersPath != null){
+						for (LatLng latLng : polylineCustomersPath.getPoints()) {
+							builder.include(latLng);
+						}
+					}
+				}
+				builder.include(new LatLng(myLocation.getLatitude(), myLocation.getLongitude()));
+				LatLngBounds bounds = MapLatLngBoundsCreator.createBoundsWithMinDiagonal(builder, 100);
+				final float minScaleRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+				int top = (int) (222f * ASSL.Yscale());
+				int bottom = (int) (344f * ASSL.Yscale());
+				map.setPadding(0, top, 0, bottom);
+				map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, (int) (80 * minScaleRatio)), 300, null);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	public void arrivedOrStartStateZoom(){
 		try {

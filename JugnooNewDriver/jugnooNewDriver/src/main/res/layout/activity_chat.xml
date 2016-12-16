@@ -18,6 +18,7 @@
             android:layout_centerInParent="true"
             android:text="@string/chat"
             android:layout_toRightOf="@+id/imageViewBack"
+            android:layout_marginRight="12px"
             android:textColor="@color/white"
             android:layout_marginLeft="10px"
             android:textSize="40px" />

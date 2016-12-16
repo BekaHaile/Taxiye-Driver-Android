@@ -115,6 +115,80 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/perfectRidePassengerInfoRl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_translucent"
+                android:orientation="vertical"
+                android:splitMotionEvents="false"
+                android:visibility="visible">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="108px"
+                    android:background="@drawable/perfect_ride_call_bakgrnd">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="100px"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/driverPerfectRidePassengerName"
+                            android:layout_width="380px"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:text=""
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="42px"/>
+
+                        <TextView
+                            android:id="@+id/textViewPerfectRideWating"
+                            android:layout_width="450px"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10px"
+                            android:gravity="center_vertical"
+                            android:text="@string/customer_waiting"
+                            android:textColor="@color/bg_grey_opaque"
+                            android:textSize="32px"
+                            android:visibility="visible"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="30px"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:id="@+id/perfectRidePassengerCallRl"
+                            android:layout_width="78px"
+                            android:layout_height="78px"
+                            android:background="@drawable/round_call_button">
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <!--<ImageView-->
+                    <!--android:id="@+id/customerInfoLine2"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="6px"-->
+                    <!--android:layout_below="@+id/inRideCustomerInfoRl"-->
+                    <!--android:background="@drawable/shadow_down"/>-->
+
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/customerInfoLine"
                 android:layout_width="match_parent"
@@ -126,80 +200,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/perfectRidePassengerInfoRl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_translucent"
-            android:orientation="vertical"
-            android:splitMotionEvents="false"
-            android:visibility="gone">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="108px"
-                android:layout_marginTop="20px"
-                android:background="@drawable/perfect_ride_call_bakgrnd">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="100px"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/driverPerfectRidePassengerName"
-                        android:layout_width="380px"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:singleLine="true"
-                        android:text=""
-                        android:textColor="@color/bg_grey_opaque"
-                        android:textSize="42px"/>
-
-                    <TextView
-                        android:id="@+id/textViewPerfectRideWating"
-                        android:layout_width="450px"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="10px"
-                        android:gravity="center_vertical"
-                        android:text="@string/customer_waiting"
-                        android:textColor="@color/bg_grey_opaque"
-                        android:textSize="32px"
-                        android:visibility="visible"/>
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="30px"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/perfectRidePassengerCallRl"
-                        android:layout_width="78px"
-                        android:layout_height="78px"
-                        android:background="@drawable/round_call_button">
-
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-            <ImageView
-                android:id="@+id/customerInfoLine2"
-                android:layout_width="match_parent"
-                android:layout_height="6px"
-                android:layout_below="@+id/inRideCustomerInfoRl"
-                android:background="@drawable/shadow_down"/>
-
-        </LinearLayout>
 
     </RelativeLayout>
 
@@ -249,7 +250,8 @@
         android:id="@+id/btnHelp"
         android:layout_width="108px"
         android:layout_height="108px"
-        android:layout_marginTop="94px"
+        android:layout_below="@+id/inRideCustomerInfoRl"
+        android:layout_marginTop="8px"
         android:layout_marginLeft="18px"
         android:background="@drawable/help_in_ride_icon"/>
 
@@ -823,7 +825,8 @@
         android:layout_height="80px"
         android:layout_alignParentRight="true"
         android:layout_marginRight="18px"
-        android:layout_marginTop="104px"
+        android:layout_below="@+id/inRideCustomerInfoRl"
+        android:layout_marginTop="18px"
         android:background="@drawable/new_my_loc_button"
         android:tag="mwar"
         />
