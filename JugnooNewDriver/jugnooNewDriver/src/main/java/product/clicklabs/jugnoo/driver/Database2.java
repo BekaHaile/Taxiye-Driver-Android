@@ -180,6 +180,9 @@ public class Database2 {                                                        
 	private static final String TABLE_PUSHY_TOKEN = "table_pushy_token";
 	private static final String PUSHY_TOKEN = "pushy_token";
 
+	private static final String TABLE_WAIT_TIME = "table_wait_time";
+	private static final String WAIT_TIME = "wait_time";
+
 
 	/**
 	 * Creates and opens database for the application use
@@ -338,6 +341,9 @@ public class Database2 {                                                        
 
 		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_PUSHY_TOKEN + " ("
 				+ PUSHY_TOKEN + " TEXT" + ");");
+
+		database.execSQL(" CREATE TABLE IF NOT EXISTS " + TABLE_WAIT_TIME + " ("
+				+ WAIT_TIME + " TEXT" + ");");
 
 	}
 
@@ -1802,6 +1808,49 @@ public class Database2 {                                                        
 		} catch (Exception e) {
 			e.printStackTrace();
 			return 0;
+		}
+	}
+
+	public String getWaitTimeFromDB(){
+		try {
+			String [] colums = new String[] {Database2.WAIT_TIME};
+			Cursor cursor = database.query(Database2.TABLE_WAIT_TIME, colums, null, null, null, null, null);
+			if(cursor.getCount() > 0){
+				cursor.moveToFirst();
+				String token = cursor.getString(cursor.getColumnIndex(Database2.WAIT_TIME));
+				return token;
+			} else {
+				return "";
+			}
+		} catch (Exception e) {
+			return "";
+		}
+	}
+
+
+	public int updateWaitTime(String time){
+
+		try {
+			ContentValues contentValues = new ContentValues();
+			contentValues.put(Database2.WAIT_TIME, time);
+			int rowsAffected = database.update(Database2.TABLE_WAIT_TIME, contentValues, null, null);
+			if(rowsAffected == 0){
+				database.insert(Database2.TABLE_WAIT_TIME, null, contentValues);
+				return 1;
+			} else {
+				return rowsAffected;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
+
+	public void deleteWaitTimeData() {
+		try {
+			database.delete(Database2.TABLE_WAIT_TIME, null, null);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

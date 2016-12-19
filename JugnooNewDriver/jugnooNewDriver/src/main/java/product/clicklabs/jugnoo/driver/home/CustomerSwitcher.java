@@ -44,9 +44,9 @@ public class CustomerSwitcher {
 
 	private RecyclerView recyclerViewCustomersLinked;
 
-	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount,
+	private TextView textViewCustomerName, textViewCustomerPickupAddress, textViewDeliveryCount, textViewCustomerAddressInRide,
 			textViewDeliveryFare, textViewShowDistance;
-	private RelativeLayout relativeLayoutCall;
+	private RelativeLayout relativeLayoutCall, relativeLayoutCall1;
 	private LinearLayout linearLayoutDeliveryFare;
 
 	private CustomerInfoAdapter customerInfoAdapter;
@@ -64,6 +64,8 @@ public class CustomerSwitcher {
 		textViewCustomerName.setTypeface(Fonts.mavenRegular(activity));
 		textViewCustomerPickupAddress = (TextView) rootView.findViewById(R.id.textViewCustomerPickupAddress);
 		textViewCustomerPickupAddress.setTypeface(Fonts.mavenRegular(activity));
+		textViewCustomerAddressInRide = (TextView) rootView.findViewById(R.id.textViewCustomerAddressInRide);
+		textViewCustomerAddressInRide.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryCount = (TextView) rootView.findViewById(R.id.textViewDeliveryCount);
 		textViewDeliveryCount.setTypeface(Fonts.mavenRegular(activity));
 		textViewDeliveryFare = (TextView) rootView.findViewById(R.id.textViewDeliveryFare);
@@ -74,6 +76,7 @@ public class CustomerSwitcher {
 		rootView.findViewById(R.id.textViewDeliveryApprox).setVisibility(View.GONE);
 
 		relativeLayoutCall = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall);
+		relativeLayoutCall1 = (RelativeLayout) rootView.findViewById(R.id.relativeLayoutCall1);
 		linearLayoutDeliveryFare = (LinearLayout) rootView.findViewById(R.id.linearLayoutDeliveryFare);
 
 		recyclerViewCustomersLinked = (RecyclerView) rootView.findViewById(R.id.recyclerViewCustomersLinked);
@@ -89,12 +92,55 @@ public class CustomerSwitcher {
 				activity.switchDriverScreen(HomeActivity.driverScreenMode);
 			}
 
+			@Override
+			public void onCancelClick(int position, CustomerInfo customerInfo) {
+
+			}
+
 		});
+
 
 
 		recyclerViewCustomersLinked.setAdapter(customerInfoAdapter);
 
 		relativeLayoutCall.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				String callPhoneNumber = "";
+				CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+				if (customerInfo != null) {
+					callPhoneNumber = customerInfo.phoneNumber;
+				}
+				if (!"".equalsIgnoreCase(callPhoneNumber)) {
+					Utils.openCallIntent(activity, callPhoneNumber);
+					try {
+						JSONObject map = new JSONObject();
+						map.put(Constants.KEY_CUSTOMER_PHONE_NO, callPhoneNumber);
+						map.put(Constants.KEY_ENGAGEMENT_ID, customerInfo.getEngagementId());
+						map.put(Constants.KEY_CUSTOMER_ID, customerInfo.getUserId());
+						NudgeClient.trackEvent(activity, FlurryEventNames.NUDGE_CALL_USER, map);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					if (DriverScreenMode.D_ARRIVED == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALLED_CUSTOMER);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ACCEPTED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_START_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CALL_CUSTOMER_AFTER_ARRIVING);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_ARRIVED + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					} else if (DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode) {
+						FlurryEventLogger.event(FlurryEventNames.CUSTOMER_CALLED_WHEN_RIDE_IN_PROGRESS);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RIDE_START + "_" + FirebaseEvents.CALL_CUSTOMER, null);
+					}
+				} else {
+					Toast.makeText(activity, activity.getResources().getString(R.string.some_error_occured), Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+
+
+		relativeLayoutCall1.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -146,24 +192,30 @@ public class CustomerSwitcher {
 							&& customerInfo.getDropLatLng() != null) {
 						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.VISIBLE);
+						textViewCustomerAddressInRide.setVisibility(View.VISIBLE);
 						if(customerInfo.getDropAddress().equalsIgnoreCase("")){
 							new ApiGoogleGeocodeAddress(activity, customerInfo.getDropLatLng(), true,
 									new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-											textViewCustomerPickupAddress)).execute();
+											textViewCustomerPickupAddress, textViewCustomerAddressInRide)).execute();
 							dropAddress = (String) textViewCustomerPickupAddress.getText();
+//							textViewCustomerAddressInRide.setText(dropAddress);
 						}else {
 							textViewCustomerPickupAddress.setText(customerInfo.getDropAddress());
+							textViewCustomerAddressInRide.setText(customerInfo.getDropAddress());
 							dropAddress = customerInfo.getDropAddress();
 						}
 						if(customerInfo.getIsPooled() != 1){
 							textViewCustomerPickupAddress.setVisibility(View.GONE);
+							textViewCustomerAddressInRide.setVisibility(View.GONE);
 							activity.setBarAddress(dropAddress);
 						}
 					} else if(customerInfo.getIsDelivery() == 1){
 //						activity.buttonDriverNavigationSetVisibility(View.VISIBLE);
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						textViewCustomerAddressInRide.setVisibility(View.GONE);
 					} else {
 						textViewCustomerPickupAddress.setVisibility(View.GONE);
+						textViewCustomerAddressInRide.setVisibility(View.GONE);
 						activity.buttonDriverNavigationSetVisibility(View.GONE);
 					}
 					updateDistanceOnLocationChanged();
@@ -178,14 +230,14 @@ public class CustomerSwitcher {
 					if (customerInfo.getAddress().equalsIgnoreCase("")) {
 						new ApiGoogleGeocodeAddress(activity, customerInfo.getRequestlLatLng(), true,
 								new CustomGoogleGeocodeCallback(customerInfo.getEngagementId(),
-										textViewCustomerPickupAddress)).execute();
+										textViewCustomerPickupAddress, null)).execute();
 					} else {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 					updateDistanceOnLocationChanged();
 					if (customerInfo.getIsDelivery() == 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
-						textViewDeliveryCount.setText(activity.getResources().getString(R.string.delivery_numbers)
+						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 								+ " " + customerInfo.getTotalDeliveries());
 						linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
 						textViewDeliveryFare.setText(activity.getResources().getString(R.string.COD)
@@ -202,8 +254,12 @@ public class CustomerSwitcher {
 				textViewCustomerName.setVisibility(View.VISIBLE);
 			} else {
 				recyclerViewCustomersLinked.setVisibility(View.VISIBLE);
-				textViewCustomerName.setVisibility(View.GONE);
+				textViewCustomerName.setVisibility(View.VISIBLE);
 			}
+			if(DriverScreenMode.D_ARRIVED != HomeActivity.driverScreenMode){
+				textViewShowDistance.setText("");
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -296,16 +352,22 @@ public class CustomerSwitcher {
 	class CustomGoogleGeocodeCallback implements ApiGoogleGeocodeAddress.Callback {
 
 		private int engagementId;
-		private TextView textView;
+		private TextView textView, textView1;
 
-		public CustomGoogleGeocodeCallback(int engagementId, TextView textView) {
+		public CustomGoogleGeocodeCallback(int engagementId, TextView textView, TextView textView1) {
 			this.engagementId = engagementId;
 			this.textView = textView;
+			if(textView1 !=null) {
+				this.textView1 = textView1;
+			}
 		}
 
 		@Override
 		public void onPre() {
 			textView.setText("");
+			if(textView1 !=null) {
+				textView1.setText("");
+			}
 		}
 
 		@Override
@@ -313,12 +375,25 @@ public class CustomerSwitcher {
 			try {
 				Data.getCustomerInfo(String.valueOf(engagementId)).setAddress(address);
 				textView.setText(address);
+				if(textView1 !=null) {
+					textView1.setText(address);
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
+
+	public void setCallButton(){
+		if(Data.getCurrentCustomerInfo() != null){
+			if(Data.getCurrentCustomerInfo().getIsDelivery() ==1 && DriverScreenMode.D_IN_RIDE == HomeActivity.driverScreenMode){
+				relativeLayoutCall1.setVisibility(View.VISIBLE);
+			}else {
+				relativeLayoutCall1.setVisibility(View.GONE);
+			}
+		}
+	}
 
 	public void updateList() {
 		customerInfoAdapter.notifyList();

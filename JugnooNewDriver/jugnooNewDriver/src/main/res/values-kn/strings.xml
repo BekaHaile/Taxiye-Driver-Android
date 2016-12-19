@@ -482,10 +482,8 @@
     <string name="JUGNOO">JUGNOO</string>
     <string name="recharge_amount_for_customer">You are recharging \u20B9 %1$s for customer with paytm account on %2$s </string>
     <string name="ride_complete">ಸವಾರಿ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
-    <string name="no_not_verified">Phone Number not verified</string>
     <string name="resend_OTP">ಓ ಟಿ ಪಿ ಮರುಕಳುಹಿಸಿ.</string>
-    <string name="start_the_delivery">Start the ride</string>
-    <string name="miss_call_otp">Give a Miss Call</string>
+
     <string name="give_missed_call_dialog_text">ದಯವಿಟ್ಟು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ, ನಾವು ನಿಮ್ಮ ಓ.ಟಿ.ಪಿ ಕೋಡ್  ಬಗ್ಗೆ ತಿಳಿಸುತ್ತೇವೆ.</string>
     <string name="give_misscall_to_verify">ಪರಿಶೀಲಿಸಲು ಮಿಸ್ ಕಾಲ್ ಮಾಡಿ</string>
     <string name="please_press_here">ದಯವಿಟ್ಟು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ</string>
@@ -597,7 +595,6 @@
     <string name="applicable_after">ನಂತರ ಅನ್ವಯ ವಾಗುವ %1$s Kms</string>
     <string name="distance_per_km">ದೂರ\n(ಪ್ರತಿ ನಿಮಿಷಕ್ಕೆ )</string>
     <string name="per_km">(ಪ್ರತಿ km ಗೆ )</string>
-    <string name="delivery_off">Delivery OFF</string>
 
     <string name="Yesterday">ನಿನ್ನೆ</string>
     <string name="ride_money">ಸವಾರಿಯ ಒಟ್ಟು ಮೊತ್ತ </string>
@@ -605,8 +602,7 @@
     <string name="this_week">ಈ ವಾರ</string>
     <string name="outstanding_amount1">ಮಹೋನ್ನತ ಹೊಂದಾಣಿಕೆ ಮಾಡಲಾಗಿದೆ </string>
 
-    <string name="self_enroled">Self Enroled</string>
-    <string name="upload_Documents">Upload Documents</string>
+
     <string name="diffrential_pricing_rate">%1$s ಕಿಲೋಮೀಟರ್  ನಂತರ, ಪ್ರತಿ ಕಿಲೋಮೀಟರಿಗೆ ರೂ. \u20B9 %2$s ಸಿಗುತ್ತದೆ</string>
     <string name="payment_sent">Payment Sent</string>
     <string name="estimated_payout">ಪಾವತಿಸಿದ ಅಂದಾಜು </string>
@@ -642,10 +638,7 @@
     <string name="please_submit">ದಯವಿಟ್ಟು ಸಲ್ಲಿಸಿ</string>
     <string name="cancel_audit">ನೀವು ಆಡಿಟ್ ರದ್ದು ಮಾಡಲು ಬಯಸುವಿರಾ?</string>
     <string name="image_upload_failed">ಫೋಟೋ  ಅಪ್ಲೋಡ್ ವಿಫಲವಾಗಿದೆ , ದಯವಿಟ್ಟು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+
     <string name="earnings_caps">ಸಂಪಾದನೆ</string>
 
     <string name="no_invoice_currently">ಯಾವುದೇ ಸರಕುಪಟ್ಟಿ ಇಲ್ಲ</string>
@@ -675,6 +668,36 @@
     <string name="in_review">ವಿಮರ್ಶೆಯಲ್ಲಿ</string>
     <string name="pool">ಪೂಲ್</string>
 
+
+    <string name="no_not_verified">ಫೋನ್ ಸಂಖ್ಯೆ ಪರಿಶೀಲಿಸಿಲ್ಲ</string>
+    <string name="start_the_delivery">Start the ride</string>
+    <string name="miss_call_otp">ಒಂದು ಮಿಸ್ ಕಾಲ್ ಕೊಡಿ  </string>
+    <string name="delivery_off">Delivery OFF</string>
+    <string name="self_enroled">ಸ್ವಯಂ ನೋಂದಣಿ</string>
+    <string name="upload_Documents">ಡಾಕ್ಯುಮೆಂಟ್ಸ್ ಅಪ್ಲೋಡ್</string>
+
+    <string name="enter_destination">ಗಮ್ಯಸ್ಥಾನ ನಮೂದಿಸಿ</string>
+    <string name="no_results_found">ಫಲಿತಾಂಶ ಕಂಡುಬಂದಿಲ್ಲ</string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message">ಗ್ರಾಹಕ ವಿನಂತಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸ್ವೀಕರಿಸಲಾಗಿದೆ</string>
+
+
+    <string name="order_summary">ಆರ್ಡರ್ ನ ಸಾರಾಂಶ</string>
+    <string name="return_to_merchant">ಮರ್ಚೆಂಟ್ ಗೆ  ಹಿಂತಿರುಗಿಸಿ </string>
+    <string name="deposite_cash">ನೀವು ನಗದು ಠೇವಣಿ ಮಾಡಿದ್ದೀರಾ?</string>
+    <string name="deposite_cash_1">ನಗದು ಠೇವಣಿ ಮಾಡಲಾಗಿದೆ </string>
+    <string name="return_reasons_confirmation">ವಿತರಣೆ ವಿಫಲವಾಗಿದ್ದಕ್ಕೆ ಈ  ಕಾರಣ ಆಯ್ಕೆ ಮಾಡಿ </string>
+    <string name="submit_small">ಸಲ್ಲಿಸಿ</string>
+    <string name="total_cash_collected">ಒಟ್ಟು ನಗದು ಸಂಗ್ರಹಿಸಿದೆ</string>
+    <string name="fail">ವಿಫಲ</string>
+    <string name="required">ಅಗತ್ಯವಿದೆ </string>
+    <string name="login_here">ಈಗಾಗಲೇ ಚಾಲಕ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ? ಲಾಗಿನ್ ಮಾಡಿ </string>
+    <string name="i_accept_new">ಸೈನ್ ಅಪ್ ಮೂಲಕ ನೀವು ನಮ್ಮ ನಿಯಮಗಳನ್ನು  ತಿಳಿಯಬಹುದು</string>
+    <string name="nl_otp_please_enter_otp">ನಿಮ್ಮ ಒಂದು ಟೈಮ್ ಪಾಸ್ವರ್ಡ್ ಕಳುಹಿಸಲಾಗಿದೆ ದಯವಿಟ್ಟು ನಮೂದಿಸಿ </string>
+    <string name="driver">ಚಾಲಕ</string>
+    <string name="register_text">ಚಾಲಕ ಖಾತೆ ಹೊಂದಿಲ್ಲವೇ?  ಇಲ್ಲಿ ಖಾತೆ ನೋಂದಣಿ ಮಾಡಿ </string>
+
+
     <string name="ride_history_cap">RIDE HISTORY</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
     <string name="high_demand_areas">Click here to know high demand areas</string>
@@ -697,23 +720,17 @@
     <string name="failed">Failed</string>
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
-    <string name="order_summary">Order Summary</string>
-    <string name="return_to_merchant">Return to the Merchant</string>
-    <string name="deposite_cash">Have you deposited cash?</string>
-    <string name="deposite_cash_1">Deposit cash</string>
-    <string name="return_reasons_confirmation">Select a reason for failed delivery</string>
-    <string name="submit_small">Submit</string>
-    <string name="total_cash_collected">Total cash collected</string>
-    <string name="fail">Fail</string>
-    <string name="required">required</string>
-    <string name="login_here">Already have an driver account? Login Here</string>
-    <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
-    <string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
-    <string name="driver">Driver</string>
-    <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
+    <string name="chat">Chat</string>
+    <string name="select">Select</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="collect_cash">Collect Cash</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
+
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+    <string name="alter_phone_number">Alternate Phone Number</string>
 
 
     <string-array name="CountryCodes" >

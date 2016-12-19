@@ -722,6 +722,8 @@
 
 
 	<string name="start_ride_alert">If Customer is with you, than please start ride</string>
+	<string name="chat">Chat</string>
+
 	<string name="Reason">कारण</string>
 	<string name="delivery_conf">क्या आप वाकई वितरित करना चाहते हैं?</string>
 	<string name="failed">असफल</string>
@@ -750,7 +752,13 @@
 	<string name="upload_Documents">अपलोड दस्तावेज</string>
 	<string name="spinner_owned">Owned</string>
 	<string name="spinner_rented">Rented</string>
+	<string name="select">Select</string>
+	<string name="select_customer">Select Customer</string>
+	<string name="collect_cash">Collect Cash</string>
+	<string name="pool_start">Pool Start</string>
+	<string name="pool_stop">Pool Stop</string>
 	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+	<string name="alter_phone_number">Alternate Phone Number</string>
 
 	<string-array name="CountryCodes" >
 <item>93,AF</item>

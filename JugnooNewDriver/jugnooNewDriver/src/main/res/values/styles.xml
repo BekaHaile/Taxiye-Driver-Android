@@ -56,5 +56,25 @@
         <item name="android:shadowRadius">1</item>
     </style>
 
+    <style name="title">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:textSize">40px</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="back_image">
+        <item name="android:layout_width">60.7px</item>
+        <item name="android:layout_height">76.9px</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:padding">20px</item>
+        <item name="android:src">@drawable/ic_back_selector</item>
+        <item name="android:layout_marginLeft">10px</item>
+        <item name="android:tag">mwar</item>
+    </style>
+
+
 
 </resources>

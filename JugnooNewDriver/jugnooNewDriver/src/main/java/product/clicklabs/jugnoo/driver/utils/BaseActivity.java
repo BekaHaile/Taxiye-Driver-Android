@@ -10,14 +10,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.Locale;
 
 import product.clicklabs.jugnoo.driver.ChangePhoneBeforeOTPActivity;
 import product.clicklabs.jugnoo.driver.Data;
-import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.LoginViaOTP;
 import product.clicklabs.jugnoo.driver.MultipleAccountsActivity;
 import product.clicklabs.jugnoo.driver.OTPConfirmScreen;
@@ -39,6 +44,7 @@ public class BaseActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		updateLanguage();
+		updateStatusBar();
     }
 
 	@Override
@@ -201,4 +207,17 @@ public class BaseActivity extends Activity {
 	}
 
 
+	public void updateStatusBar(){
+		try {
+			int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+			if(currentapiVersion >= Build.VERSION_CODES.LOLLIPOP) {
+				Window window = BaseActivity.this.getWindow();
+				window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+				window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+				window.setStatusBarColor(ContextCompat.getColor(BaseActivity.this, R.color.status_bar));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

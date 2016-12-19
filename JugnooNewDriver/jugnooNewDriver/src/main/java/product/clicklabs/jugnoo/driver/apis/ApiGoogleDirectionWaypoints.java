@@ -32,7 +32,6 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 		latLngInit = latLngs.get(0);
 		if(sortArray) {
 			Collections.sort(latLngs, new Comparator<LatLng>() {
-
 				@Override
 				public int compare(LatLng lhs, LatLng rhs) {
 					if (latLngInit != null) {
@@ -91,7 +90,7 @@ public class ApiGoogleDirectionWaypoints extends AsyncTask<String, Integer, Stri
 				try {
 					if (callback.showPath()) {
 						PolylineOptions polylineOptions = new PolylineOptions();
-						polylineOptions.width(ASSL.Xscale() * 5).color(pathColor).geodesic(true);
+						polylineOptions.width(ASSL.Xscale() * 8).color(pathColor).geodesic(true);
 						for (int z = 0; z < list.size(); z++) {
 							polylineOptions.add(list.get(z));
 						}

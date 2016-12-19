@@ -5,11 +5,12 @@
 
     <color name="white_dark">#AFAFAF</color>
     <color name="white_dark1">#EFEFEF</color>
-
+    <color name="chat_background">#eaeaea</color>
+    <color name="chat__suggestion_background">#fdfdfc</color>
 
     <color name="black">#202020</color>
     <color name="black_light">#505050</color>
-
+    <color name="status_bar">#141720</color>
     <color name="black_grey">#575757</color>
 
     <color name="black_text_shop">#1C1C1C</color>
@@ -29,6 +30,7 @@
 
 
     <color name="black_translucent">#77000000</color>
+    <color name="jet_black">#000000</color>
     <color name="black_translucent_level_2">#55000000</color>
     <color name="black_translucent_level_3">#e536363f</color>
 
@@ -38,6 +40,7 @@
     <color name="black_text_grey">#4C4C4C</color>
     <color name="leaderboard_activity_text_color">#9D9D9D</color>
     <color name="blue_status">#338ffc</color>
+    <color name="blue_polyline">#54a9ff</color>
 
 
     <color name="transparent">#0000</color>
@@ -161,6 +164,10 @@
 
     <color name="text_color">#2F221B</color>
     <color name="text_color_light">#992F221B</color>
+
+    <color name="theme_color_start">#FC644F</color>
+    <color name="theme_color_end">#FF9339</color>
+
 
 
 </resources>
