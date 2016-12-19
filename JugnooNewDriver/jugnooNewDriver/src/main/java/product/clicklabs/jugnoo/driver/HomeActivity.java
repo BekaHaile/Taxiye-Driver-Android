@@ -3364,6 +3364,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if(polylineCustomersPath != null){
 							polylineCustomersPath.remove();
 						}
+						polylineCustomersPath = null;
 					}
 					setCustomerInstruction(customerInfo);
 					customerSwitcher.setCustomerData(Integer.parseInt(Data.getCurrentEngagementId()));
@@ -4568,6 +4569,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int waitingChargesApplicable = jObj.optInt("waiting_charges_applicable", 0);
 					Prefs.with(HomeActivity.this).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObj.optLong("eta", 0));
 					int cachedApiEnabled = jObj.optInt(KEY_CACHED_API_ENABLED, 0);
+					Prefs.with(activity).save(SPLabels.CHAT_ENABLED,jObj.optInt("chat_enabled",0));
 					int isPooled = jObj.optInt(KEY_IS_POOLED, 0);
 
 					Data.clearAssignedCustomerInfosListForStatus(EngagementStatus.REQUESTED.getOrdinal());

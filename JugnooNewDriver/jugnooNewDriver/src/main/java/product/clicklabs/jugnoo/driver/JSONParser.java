@@ -244,7 +244,7 @@ public class JSONParser implements Constants {
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS, userData.optInt("self_audit_button_status", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_STATUS_POPUP, userData.optInt("self_audit_popup_status", 0));
 		Prefs.with(context).save(SPLabels.SET_AUDIT_POPUP_STRING, userData.optString("self_audit_popup_message", ""));
-		Prefs.with(context).save(SPLabels.CHAT_ENABLED, userData.optInt("chat_enabled", 1));
+//		Prefs.with(context).save(SPLabels.CHAT_ENABLED, userData.optInt("chat_enabled", 1));
 		Prefs.with(context).save(KEY_SP_METER_DISP_MIN_THRESHOLD, String.valueOf(userData.optInt("meter_disp_min_threshold", 14)));
 		Prefs.with(context).save(KEY_SP_METER_DISP_MAX_THRESHOLD, String.valueOf(userData.optInt("meter_disp_max_threshold", 200)));
 		Prefs.with(context).save(SPLabels.START_RIDE_ALERT_RADIUS, userData.optInt("start_ride_alert_radius", 200));
@@ -447,6 +447,7 @@ public class JSONParser implements Constants {
 								Prefs.with(context).save(SPLabels.CURRENT_ETA, System.currentTimeMillis() + jObjCustomer.optLong("eta", 0));
 							}
 
+							Prefs.with(context).save(SPLabels.CHAT_ENABLED,jObjCustomer.optInt("chat_enabled",0));
 							int meterFareApplicable = jObjCustomer.optInt("meter_fare_applicable", 0);
 							int getJugnooFareEnabled = jObjCustomer.optInt("get_jugnoo_fare_enabled", 1);
 							int luggageChargesApplicable = jObjCustomer.optInt("luggage_charges_applicable", 0);
