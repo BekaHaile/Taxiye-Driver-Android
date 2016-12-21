@@ -1507,7 +1507,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
-					getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
+					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
+					if(customerInfo.getIsPooled() ==1){
+						getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
+					} else if(customerInfo.getIsDelivery() ==1){
+						if(anyDeliveriesUnchecked(customerInfo)){
+							getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+									getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+									DeliveryStatus.PENDING);
+						} else{
+							getTransactionUtils().openDeliveryInfoListFragment(HomeActivity.this,
+									getRelativeLayoutContainer(), customerInfo.getEngagementId(),
+									DeliveryStatus.COMPLETED);
+						}
+					}
+
 				}
 			});
 
@@ -2911,6 +2925,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		}
 	}
 
+	public int getDeliveryPos(){
+		int index = deliveryListHorizontal.getCurrentItem();
+		return index;
+	}
+
+	public void setDeliveryPos(int index){
+		deliveryListHorizontal.setCurrentItem(index);
+		deliveryInfoTabs.notifyDatasetchange(false);
+	}
+
 
 	public void setUserData() {
 		try {
@@ -3472,7 +3496,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								public void run() {
 									DialogPopup.dismissLoadingDialog();
 									endRideGPSCorrection(finalCustomerInfo);
-									deliveryInfoTabs.notifyDatasetchange();
+									deliveryInfoTabs.notifyDatasetchange(true);
 								}
 							}, 5000);
 						} catch (Exception e) {
@@ -3499,12 +3523,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						linearLayoutRide.setVisibility(View.GONE);
 						deliveryListHorizontal.setVisibility(View.GONE);
 						deliveryInfoTabs.render(customerInfo.getEngagementId(), customerInfo.getDeliveryInfos());
-						deliveryInfoTabs.notifyDatasetchange();
+						deliveryInfoTabs.notifyDatasetchange(true);
 					} else {
 						linearLayoutRide.setVisibility(View.VISIBLE);
 						deliveryListHorizontal.setVisibility(View.GONE);
 					}
-
 
 					driverInitialLayout.setVisibility(View.GONE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
@@ -3515,6 +3538,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					driverInRideMainRl.setVisibility(View.VISIBLE);
 					if(customerInfo.getIsDelivery() == 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
+						changeButton.setVisibility(View.VISIBLE);
 					} else{
 						linearLayoutRideValues.setVisibility(View.VISIBLE);
 					}
@@ -8348,20 +8372,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			if (flag == EndDeliveryStatus.RETURN.getOrdinal()) {
 				try {
 					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
-					deliveryInfoTabs.notifyDatasetchange();
+					deliveryInfoTabs.notifyDatasetchange(true);
 					setDeliveryMarkers();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else if (flag == EndDeliveryStatus.END.getOrdinal()) {
 				endRideGPSCorrection(customerInfo);
-				deliveryInfoTabs.notifyDatasetchange();
+				deliveryInfoTabs.notifyDatasetchange(true);
 			} else {
-				deliveryInfoTabs.notifyDatasetchange();
+				deliveryInfoTabs.notifyDatasetchange(true);
 			}
 		} else if(jsonObject == null && customerInfo !=null){
 			endRideGPSCorrection(customerInfo);
-			deliveryInfoTabs.notifyDatasetchange();
+			deliveryInfoTabs.notifyDatasetchange(true);
 		}
 
 	}

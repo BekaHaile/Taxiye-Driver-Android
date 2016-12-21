@@ -76,20 +76,22 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 
 	}
 
-	public void notifyDatasetchange(){
-		if(adapter != null){
+	public void notifyDatasetchange(boolean state) {
+		if (adapter != null) {
 			adapter.notifyDataSetChanged();
 			try {
-				int scrollToIndex = 0;
-				for(int i=0; i< adapter.getTasksList().size(); i++){
-					DeliveryInfo deliveryInfo = adapter.getTasksList().get(i);
-					if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()
-							|| deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()){
-						scrollToIndex = i;
-						break;
+				if (state) {
+					int scrollToIndex = 0;
+					for (int i = 0; i < adapter.getTasksList().size(); i++) {
+						DeliveryInfo deliveryInfo = adapter.getTasksList().get(i);
+						if (deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()
+								|| deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+							scrollToIndex = i;
+							break;
+						}
 					}
+					deliveryListHorizontal.setCurrentItem(scrollToIndex, true);
 				}
-				deliveryListHorizontal.setCurrentItem(scrollToIndex, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

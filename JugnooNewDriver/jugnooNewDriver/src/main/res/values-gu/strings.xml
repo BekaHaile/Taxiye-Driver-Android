@@ -705,6 +705,8 @@
     <string name="pool_stop">Pool Stop</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
     <string name="alter_phone_number">Alternate Phone Number</string>
+    <string name="delivery_start">Delivery Start</string>
+    <string name="delivery_stop">Delivery Stop</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

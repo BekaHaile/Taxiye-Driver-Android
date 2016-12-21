@@ -1,129 +1,186 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rootLinear"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_grey_light_selector"
-    android:orientation="vertical">
+<RelativeLayout android:id="@+id/rootLinear"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/transparent"
+                android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/linearLayoutMain"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="28px"
-        android:layout_marginTop="28px"
-        android:layout_marginBottom="28px"
-        android:layout_marginRight="38px"
-        android:orientation="vertical">
 
-        <LinearLayout
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageViewVerticalLine"-->
+            <!--android:layout_width="5px"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="43px"-->
+            <!--android:layout_alignTop="@+id/viewSep"-->
+            <!--android:layout_above="@+id/imageViewFakeBottom"-->
+            <!--android:background="@color/grey_light_delivery"-->
+            <!--/>-->
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutOrderNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:id="@+id/textViewOrderId"
-                android:layout_width="160px"
-                android:layout_height="wrap_content"
-                android:text="@string/order_no"
-                android:textColor="@color/new_orange"
-                android:textSize="@dimen/text_size_30"
-                />
+            android:layout_marginLeft="30px"
+            android:layout_marginTop="74px">
+
+            <ImageView
+                android:id="@+id/imageViewStatusCircle"
+                android:layout_width="30px"
+                android:layout_height="30px"
+                android:background="@drawable/circle_delivery_grey"/>
 
             <TextView
                 android:id="@+id/textViewOrderIdValue"
-                android:layout_width="280px"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10px"
-                android:text="00000000000"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_30"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10px"
-            >
-            <TextView
-                android:id="@+id/textViewCustomerName"
-                android:layout_width="160px"
-                android:layout_height="wrap_content"
-                android:text="@string/to_no_colon"
-                android:textColor="@color/new_orange"
-                android:textSize="@dimen/text_size_30"
-                />
-
-            <TextView
-                android:id="@+id/textViewCustomerNameValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10px"
-                android:text="Aneesh"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_30"
-                />
-        </LinearLayout>
+                android:layout_centerInParent="true"
+                android:text="0"
+                android:textColor="@color/white"
+                android:textSize="22px"/>
 
-        <LinearLayout
+        </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/imageViewFakeBottom"
+        android:layout_width="1px"
+        android:layout_height="1px"
+        android:layout_below="@+id/relativeLayoutCard1"
+        android:background="@color/black_varient"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24px"
+        android:layout_marginLeft="26px"
+        android:layout_toRightOf="@+id/relativeLayoutOrderNo"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24px">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10px"
-            >
-            <TextView
-                android:id="@+id/textViewCustomerDeliveryAddress"
-                android:layout_width="160px"
+            card_view:cardBackgroundColor="@android:color/transparent"
+            card_view:cardCornerRadius="3dp"
+            card_view:cardUseCompatPadding="true">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCard1"
+                android:layout_width="604px"
                 android:layout_height="wrap_content"
-                android:text="@string/address"
-                android:textColor="@color/new_orange"
-                android:textSize="@dimen/text_size_30"
-                />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewCustomerDeliveryAddressValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10px"
-                android:text="Madhya Marg, 28B, Sector 28, Chandigarh"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/text_size_30"
-                />
-        </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="22px"
+                    android:layout_marginTop="28px">
 
-    </LinearLayout>
+                    <TextView
+                        android:id="@+id/textViewCustomerNameValue"
+                        android:layout_width="390px"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/imageViewDote"
+                        android:text="@string/NA"
+                        android:textSize="32px"/>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="23px">
+
+                        <TextView
+                            android:id="@+id/textViewOrderStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginTop="20px"
+                            android:layout_toLeftOf="@+id/imageViewStatus"
+                            android:gravity="center"
+                            android:text="Delivered"
+                            android:paddingRight="10px"
+                            android:textColor="@color/green_delivery"
+                            android:textSize="24px"/>
+
+                        <ImageView
+                            android:id="@+id/imageViewStatus"
+                            android:layout_width="20px"
+                            android:layout_height="20px"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@drawable/delivery_green_tick"
+                            />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/textViewOrderStatus"
-        android:layout_width="206px"
-        android:layout_height="58px"
-        android:text="Delivered"
-        android:textColor="@color/green_delivery"
-        android:layout_alignParentRight="true"
-        android:textSize="@dimen/text_size_30"
-        android:background="@drawable/bg_white_dark1_r"
-        android:gravity="center"
-        android:layout_marginTop="20px"
-        android:layout_marginRight="30px"
-        />
+                <TextView
+                    android:id="@+id/textViewCustomerDeliveryAddressValue"
+                    android:layout_width="525px"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32px"
+                    android:layout_marginLeft="22px"
+                    android:layout_marginTop="22px"
+                    android:layout_toRightOf="@+id/imageViewDote1"
+                    android:text="@string/NA"
+                    android:textSize="27px"/>
 
-    <ImageView
-        android:layout_width="60px"
-        android:layout_height="60px"
-        android:background="@drawable/back_inv_btn_selector"
-        android:rotation="180"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        />
 
-    <ImageView
+                <LinearLayout
+                    android:id="@+id/linearLayoutSelection1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32px"
+                    android:layout_marginLeft="20px"
+                    android:layout_marginRight="20px"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                        android:id="@+id/buttonSelect"
+                        android:layout_width="256px"
+                        android:layout_height="70px"
+                        android:background="@drawable/new_orange_btn_normal_rounded"
+                        android:text="@string/select"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="@dimen/button_text_size"
+                        android:visibility="visible"/>
+
+
+                    <product.clicklabs.jugnoo.driver.utils.CustomButtonView
+                        android:id="@+id/buttonCancel"
+                        android:layout_width="256px"
+                        android:layout_height="70px"
+                        android:layout_marginLeft="40px"
+                        android:background="@drawable/new_menu_black_btn_selector_rounded"
+                        android:text="@string/cancel"
+                        android:textColor="@drawable/white_color_selector"
+                        android:textSize="32px"
+                        android:visibility="visible"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/viewSep"
         android:layout_width="match_parent"
-        android:layout_height="6px"
-        android:background="@drawable/shadow_down"
-        android:layout_below="@+id/linearLayoutMain"/>
+        android:layout_height="1px"/>
+
 
 </RelativeLayout>

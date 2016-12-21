@@ -70,6 +70,9 @@ public class DeliveryInfosListFragment extends Fragment {
 		currentLLayout = (LinearLayout) rootView.findViewById(R.id.currentLLayout);
 		completedLLayout = (LinearLayout) rootView.findViewById(R.id.completedLLayout);
 
+		currentLLayout.setVisibility(View.GONE);
+		completedLLayout.setVisibility(View.GONE);
+
 		textViewCompleted = (TextView) rootView.findViewById(R.id.textViewCompleted);
 		textViewCompleted.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
 		textViewCurrent = (TextView) rootView.findViewById(R.id.textViewCurrent);
@@ -113,9 +116,14 @@ public class DeliveryInfosListFragment extends Fragment {
 				deliveryInfos,
 				new DeliveryInfoAdapter.Callback() {
 					@Override
-					public void onClick(int position, DeliveryInfo deliveryInfo) {
-						activity.getTransactionUtils().openMarkDeliveryFragment(activity,
-								activity.getRelativeLayoutContainer(), engagementId, deliveryInfo.getId());
+					public void onClick(int position) {
+						activity.setDeliveryPos(position);
+						activity.onBackPressed();
+					}
+
+					@Override
+					public void onCancelClick(int position) {
+						activity.onBackPressed();
 					}
 				});
 
@@ -133,8 +141,8 @@ public class DeliveryInfosListFragment extends Fragment {
 		try {
 			String message = Data.getCustomerInfo(String.valueOf(engagementId)).getVendorMessage();
 			textViewMerchantMessage.setVisibility(View.GONE);
-			if(!"".equalsIgnoreCase(message)){
-				textViewMerchantMessage.setVisibility(View.VISIBLE);
+			if (!"".equalsIgnoreCase(message)) {
+				textViewMerchantMessage.setVisibility(View.GONE);
 				textViewMerchantMessage.setText(message);
 			}
 		} catch (Exception e) {
@@ -146,40 +154,41 @@ public class DeliveryInfosListFragment extends Fragment {
 	}
 
 
-	private void updateList(DeliveryStatus deliveryStatus){
+	private void updateList(DeliveryStatus deliveryStatus) {
 		try {
 			deliveryInfos.clear();
-			for(DeliveryInfo deliveryInfo : Data.getCustomerInfo(String.valueOf(engagementId)).getDeliveryInfos()){
-				if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
-						&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
-					deliveryInfos.add(deliveryInfo);
-				} else if(deliveryStatus.getOrdinal() != DeliveryStatus.PENDING.getOrdinal()
-						&& deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
-					deliveryInfos.add(deliveryInfo);
-				}
+			for (DeliveryInfo deliveryInfo : Data.getCustomerInfo(String.valueOf(engagementId)).getDeliveryInfos()) {
+				deliveryInfos.add(deliveryInfo);
+// if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()
+//						&& deliveryInfo.getStatus() == DeliveryStatus.PENDING.getOrdinal()) {
+//					deliveryInfos.add(deliveryInfo);
+//				} else if(deliveryStatus.getOrdinal() != DeliveryStatus.PENDING.getOrdinal()
+//						&& deliveryInfo.getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+//					deliveryInfos.add(deliveryInfo);
+//				}
 			}
 			deliveryInfoAdapter.notifyDataSetChanged();
 
 			textViewPlaceholderMessage.setVisibility(View.GONE);
-			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()){
-				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
-				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
-				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
-				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
-				if(deliveryInfos.size() == 0){
-					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
-					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_pending));
-				}
-			} else{
-				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
-				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
-				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
-				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
-				if(deliveryInfos.size() == 0){
-					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
-					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_completed));
-				}
-			}
+//			if(deliveryStatus.getOrdinal() == DeliveryStatus.PENDING.getOrdinal()){
+//				textViewCurrent.setTextColor(getResources().getColor(R.color.new_orange));
+//				textViewCompleted.setTextColor(getResources().getColor(R.color.text_color));
+//				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.new_orange));
+//				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.transparent));
+//				if(deliveryInfos.size() == 0){
+//					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
+//					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_pending));
+//				}
+//			} else{
+//				textViewCurrent.setTextColor(getResources().getColor(R.color.text_color));
+//				textViewCompleted.setTextColor(getResources().getColor(R.color.new_orange));
+//				imageViewCurrent.setBackgroundColor(getResources().getColor(R.color.transparent));
+//				imageViewCompleted.setBackgroundColor(getResources().getColor(R.color.new_orange));
+//				if(deliveryInfos.size() == 0){
+//					textViewPlaceholderMessage.setVisibility(View.VISIBLE);
+//					textViewPlaceholderMessage.setText(activity.getResources().getString(R.string.no_deliveries_completed));
+//				}
+//			}
 			deliveryStatusOpened = deliveryStatus;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -192,13 +201,13 @@ public class DeliveryInfosListFragment extends Fragment {
 		super.onHiddenChanged(hidden);
 		try {
 			if (!hidden) {
-				if(deliveryStatusOpened == DeliveryStatus.PENDING
+				if (deliveryStatusOpened == DeliveryStatus.PENDING
 						&& deliveryInfos.size() == 1
-						&& deliveryInfos.get(0).getStatus() != DeliveryStatus.PENDING.getOrdinal()){
+						&& deliveryInfos.get(0).getStatus() != DeliveryStatus.PENDING.getOrdinal()) {
 					deliveryStatusOpened = DeliveryStatus.COMPLETED;
 				}
 				updateList(deliveryStatusOpened);
-            }
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
