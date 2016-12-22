@@ -118,12 +118,12 @@ public class DeliveryInfosListFragment extends Fragment {
 					@Override
 					public void onClick(int position) {
 						activity.setDeliveryPos(position);
-						activity.onBackPressed();
+						backPress();
 					}
 
 					@Override
 					public void onCancelClick(int position) {
-						activity.onBackPressed();
+						backPress();
 					}
 				});
 
@@ -132,7 +132,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		buttonBack.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				activity.onBackPressed();
+				backPress();
 			}
 		});
 
@@ -151,6 +151,20 @@ public class DeliveryInfosListFragment extends Fragment {
 
 
 		return rootView;
+	}
+
+	public void backPress(){
+		try {
+			if(deliveryInfos != null) {
+				for (int i = 0; i < deliveryInfos.size(); i++) {
+					deliveryInfos.get(i).setSate(false);
+				}
+			}
+			activity.onBackPressed();
+		} catch (Exception e) {
+			e.printStackTrace();
+			activity.onBackPressed();
+		}
 	}
 
 

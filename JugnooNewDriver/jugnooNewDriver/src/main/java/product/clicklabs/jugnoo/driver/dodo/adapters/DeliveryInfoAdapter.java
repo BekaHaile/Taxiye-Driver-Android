@@ -53,7 +53,13 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
             final DeliveryInfo deliveryInfo = getItem(position);
 
             holder.textViewOrderIdValue.setText(String.valueOf(deliveryInfo.getIndex() + 1));
-            holder.textViewCustomerNameValue.setText(deliveryInfo.getCustomerName());
+
+			if(deliveryInfo.getCustomerName().equalsIgnoreCase("")){
+				holder.textViewCustomerNameValue.setText(activity.getResources().getString(R.string.return_to_merchant));
+			} else {
+				holder.textViewCustomerNameValue.setText(deliveryInfo.getCustomerName());
+			}
+
             holder.textViewCustomerDeliveryAddressValue.setText(deliveryInfo.getDeliveryAddress());
 
             holder.textViewOrderStatus.setVisibility(View.VISIBLE);
@@ -89,6 +95,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
                 }
                 else{
                     holder.textViewOrderStatus.setVisibility(View.GONE);
+					holder.imageViewStatus.setVisibility(View.GONE);
                 }
             }
 

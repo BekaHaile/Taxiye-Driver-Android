@@ -17,16 +17,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.R;
 
 @SuppressWarnings("static-access")
 public class CustomMapMarkerCreator {
-	
 
-	public static Bitmap createPinMarkerBitmap(Activity activity, ASSL assl){
+
+	public static Bitmap createPinMarkerBitmap(Activity activity, ASSL assl) {
 		float scale = Math.min(assl.Xscale(), assl.Yscale());
-		int width = (int)(40.0f * scale);
-		int height = (int)(63.0f * scale);
+		int width = (int) (40.0f * scale);
+		int height = (int) (63.0f * scale);
 		Bitmap mDotMarkerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(mDotMarkerBitmap);
 		Drawable shape = activity.getResources().getDrawable(R.drawable.pin_ball);
@@ -35,10 +36,10 @@ public class CustomMapMarkerCreator {
 		return mDotMarkerBitmap;
 	}
 
-	public static Bitmap createCustomMarkerBitmap(Activity activity, ASSL assl, float originalWidth, float originalHeight, int drawableId){
+	public static Bitmap createCustomMarkerBitmap(Activity activity, ASSL assl, float originalWidth, float originalHeight, int drawableId) {
 		float scale = Math.min(assl.Xscale(), assl.Yscale());
-		int width = (int)(originalWidth * scale);
-		int height = (int)(originalHeight * scale);
+		int width = (int) (originalWidth * scale);
+		int height = (int) (originalHeight * scale);
 		Bitmap mDotMarkerBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(mDotMarkerBitmap);
 		Drawable shape = activity.getResources().getDrawable(drawableId);
@@ -48,10 +49,9 @@ public class CustomMapMarkerCreator {
 	}
 
 
-
 	public static Marker addTextMarkerToMap(final Context context, final GoogleMap map,
-						  final LatLng location, final String text, final int padding,
-						  final int fontSize) {
+											final LatLng location, final String text, final int padding,
+											final int fontSize) {
 		Marker marker = null;
 
 		if (context == null || map == null || location == null || text == null
@@ -68,7 +68,7 @@ public class CustomMapMarkerCreator {
 
 		final Rect boundsText = new Rect();
 
-			final Paint paintText = textView.getPaint();
+		final Paint paintText = textView.getPaint();
 		paintText.getTextBounds(text, 0, textView.length(), boundsText);
 		paintText.setTextAlign(Paint.Align.CENTER);
 		paintText.setStyle(Paint.Style.STROKE);
@@ -98,42 +98,97 @@ public class CustomMapMarkerCreator {
 				.icon(BitmapDescriptorFactory.fromBitmap(bmpText))
 				.anchor(0.5f, 1);
 
-		 marker = map.addMarker(markerOptions);
+		marker = map.addMarker(markerOptions);
 		marker.setTitle("");
 
 		return marker;
 	}
 
 
-	public static Bitmap getTextBitmap(final Context context, ASSL assl, String text, final int fontSize) {
+	public static Bitmap getTextBitmap(final Context context, ASSL assl, String text, final int fontSize, final int iconType) {
 		float scale = Math.min(assl.Xscale(), assl.Yscale());
 		final TextView textView = new TextView(context);
 		textView.setText(text);
 		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, (int) (scale * (float) fontSize));
+		textView.setTypeface(Data.latoHeavy(context));
 
 		final Rect boundsText = new Rect();
 
+		if (iconType == 0) {
 
-		int width = (int)(69.0f * 0.80 * scale);
-		int height = (int)(92.0f * 0.80 * scale);
+			int width = (int) (86.0f * .80 * scale);
+			int height = (int) (97.0f * .80 * scale);
 
-		final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-		final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
+			final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+			final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
 
-		final Paint paint = textView.getPaint();
-		paint.getTextBounds(text, 0, textView.length(), boundsText);
-		paint.setTextAlign(Paint.Align.CENTER);
-		paint.setColor(Color.WHITE);
+			final Paint paint = textView.getPaint();
+			paint.getTextBounds(text, 0, textView.length(), boundsText);
+			paint.setTextAlign(Paint.Align.CENTER);
+			paint.setColor(Color.BLACK);
 
-		final Canvas canvasText = new Canvas(bmpText);
+			final Canvas canvasText = new Canvas(bmpText);
 
-		Drawable shape = context.getResources().getDrawable(R.drawable.ic_red_pin);
-		shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
-		shape.draw(canvasText);
+			Drawable shape = context.getResources().getDrawable(R.drawable.delivery_black_pin);
+			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
+			shape.draw(canvasText);
 
-		canvasText.drawText(text, canvasText.getWidth() / 2, (28f*assl.Yscale()), paint);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 4, (33f * assl.Yscale()), paint);
+			return bmpText;
 
-		return bmpText;
+		} else if(iconType == 2) {
+
+			int width = (int) (86.0f * 1.0 * scale);
+			int height = (int) (97.0f * 1.0 * scale);
+
+			final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+			final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
+
+			final Paint paint = textView.getPaint();
+			paint.getTextBounds(text, 0, textView.length(), boundsText);
+			paint.setTextAlign(Paint.Align.CENTER);
+
+			final Canvas canvasText = new Canvas(bmpText);
+			Drawable shape;
+
+			shape = context.getResources().getDrawable(R.drawable.delivery_orange_pin);
+			paint.setColor(Color.RED);
+
+
+			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
+			shape.draw(canvasText);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 5, (38f * assl.Yscale()), paint);
+			return bmpText;
+
+		} else {
+
+			int width = (int) (86.0f * .80 * scale);
+			int height = (int) (97.0f * .80 * scale);
+
+			final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+			final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
+
+			final Paint paint = textView.getPaint();
+			paint.getTextBounds(text, 0, textView.length(), boundsText);
+			paint.setTextAlign(Paint.Align.CENTER);
+
+			final Canvas canvasText = new Canvas(bmpText);
+			Drawable shape;
+			if (iconType == 1) {
+				shape = context.getResources().getDrawable(R.drawable.delivery_black_pin);
+				paint.setColor(Color.BLACK);
+			} else {
+				shape = context.getResources().getDrawable(R.drawable.delivery_faded_black_pin);
+				paint.setColor(Color.GRAY);
+			}
+
+			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
+			shape.draw(canvasText);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 4, (33f * assl.Yscale()), paint);
+			return bmpText;
+		}
+
+
 	}
 
 }

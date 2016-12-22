@@ -69,6 +69,7 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 	@Override
 	public void onPageSelected(int position) {
 		Log.e(TAG, "onPageSelected: " + position);
+		activity.setDeliveryPos(position);
 	}
 
 	@Override
@@ -91,6 +92,7 @@ public class DeliveryInfoTabs implements ViewPager.OnPageChangeListener {
 						}
 					}
 					deliveryListHorizontal.setCurrentItem(scrollToIndex, true);
+					activity.setDeliveryPos(scrollToIndex);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
