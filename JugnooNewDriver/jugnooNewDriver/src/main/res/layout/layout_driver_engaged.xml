@@ -74,8 +74,8 @@
 
                     <ImageView
                         android:id="@+id/driverCallIcon1"
-                        android:layout_width="28px"
-                        android:layout_height="28px"
+                        android:layout_width="24px"
+                        android:layout_height="24px"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15px"
                         android:src="@drawable/call_icon"/>
@@ -493,11 +493,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/transparent"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="16px"
-                android:clipToPadding="false"
-                android:paddingLeft="40px"
-                android:paddingRight="40px"/>
+                android:layout_alignParentBottom="true"/>
 
             <ImageView
                 android:layout_width="match_parent"

@@ -116,8 +116,8 @@ public class CustomMapMarkerCreator {
 
 		if (iconType == 0) {
 
-			int width = (int) (86.0f * .80 * scale);
-			int height = (int) (97.0f * .80 * scale);
+			int width = (int)(69.0f * 0.80 * scale);
+			int height = (int)(92.0f * 0.80 * scale);
 
 			final Bitmap.Config conf = Bitmap.Config.ARGB_8888;
 			final Bitmap bmpText = Bitmap.createBitmap(width, height, conf);
@@ -125,15 +125,14 @@ public class CustomMapMarkerCreator {
 			final Paint paint = textView.getPaint();
 			paint.getTextBounds(text, 0, textView.length(), boundsText);
 			paint.setTextAlign(Paint.Align.CENTER);
-			paint.setColor(Color.BLACK);
+			paint.setColor(Color.WHITE);
 
 			final Canvas canvasText = new Canvas(bmpText);
-
-			Drawable shape = context.getResources().getDrawable(R.drawable.delivery_black_pin);
+			Drawable shape = context.getResources().getDrawable(R.drawable.ic_red_pin);
 			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
 			shape.draw(canvasText);
 
-			canvasText.drawText(text, (canvasText.getWidth() / 2) - 4, (33f * assl.Yscale()), paint);
+			canvasText.drawText(text, canvasText.getWidth() / 2, (28f*assl.Yscale()), paint);
 			return bmpText;
 
 		} else if(iconType == 2) {
@@ -157,7 +156,7 @@ public class CustomMapMarkerCreator {
 
 			shape.setBounds(0, 0, bmpText.getWidth(), bmpText.getHeight());
 			shape.draw(canvasText);
-			canvasText.drawText(text, (canvasText.getWidth() / 2) - 5, (38f * assl.Yscale()), paint);
+			canvasText.drawText(text, (canvasText.getWidth() / 2) - 5.5f, (40f * assl.Yscale()), paint);
 			return bmpText;
 
 		} else {

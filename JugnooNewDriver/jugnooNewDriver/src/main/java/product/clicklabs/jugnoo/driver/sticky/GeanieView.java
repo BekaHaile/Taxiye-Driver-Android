@@ -325,23 +325,27 @@ public class GeanieView extends Service {
 	}
 
 	private void resetGeniePostion(int x_cord_now) {
-		int w = convertView.getWidth();
+		try {
+			int w = convertView.getWidth();
 
-		if (convertView.getVisibility() == View.VISIBLE) {
-//			convertView.setVisibility(View.GONE);
-//			clearAnims();
-//			clearAnims2();
-		}
+			if (convertView.getVisibility() == View.VISIBLE) {
+	//			convertView.setVisibility(View.GONE);
+	//			clearAnims();
+	//			clearAnims2();
+			}
 
-		if (x_cord_now == 0 || x_cord_now == szWindow.x - w) {
+			if (x_cord_now == 0 || x_cord_now == szWindow.x - w) {
 
-		} else if (x_cord_now + w / 2 <= szWindow.x / 2) {
-			isLeft = true;
-			moveToLeft(x_cord_now);
+			} else if (x_cord_now + w / 2 <= szWindow.x / 2) {
+				isLeft = true;
+				moveToLeft(x_cord_now);
 
-		} else if (x_cord_now + w / 2 > szWindow.x / 2) {
-			isLeft = false;
-			moveToRight(x_cord_now);
+			} else if (x_cord_now + w / 2 > szWindow.x / 2) {
+				isLeft = false;
+				moveToRight(x_cord_now);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -450,27 +454,35 @@ public class GeanieView extends Service {
 			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
 			public void onTick(long t) {
-				long step = (280 - t);
-				Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    " + step + "    " + x + "     " + t));
-				Log.e("bounceValueLeft", String.valueOf((int) (x - step)));
-				mParams.x = (int) (double) bounceValue(step, x);
+				try {
+					long step = (280 - t);
+					Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    " + step + "    " + x + "     " + t));
+					Log.e("bounceValueLeft", String.valueOf((int) (x - step)));
+					mParams.x = (int) (double) bounceValue(step, x);
 //				int xPraram = (int) (x - step);
 //				if(xPraram >= 0){
 //					mParams.x = xPraram;
 //				}
 
-				windowManager.updateViewLayout(convertView, mParams);
+					windowManager.updateViewLayout(convertView, mParams);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 			public void onFinish() {
-				Log.e("param x before finish", String.valueOf(mParams.x));
-				mParams.x = 0;
-				windowManager.updateViewLayout(convertView, mParams);
+				try {
+					Log.e("param x before finish", String.valueOf(mParams.x));
+					mParams.x = 0;
+					windowManager.updateViewLayout(convertView, mParams);
 
-				saveGenieParams(mParams);
+					saveGenieParams(mParams);
 
 //				updateAnimLayoutParams();
-				Log.v("timeTaken", "left " + (System.currentTimeMillis() - start));
+					Log.v("timeTaken", "left " + (System.currentTimeMillis() - start));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}.start();
 
@@ -485,22 +497,30 @@ public class GeanieView extends Service {
 			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
 			public void onTick(long t) {
-				long step = (280 - t);
+				try {
+					long step = (280 - t);
 
-				mParams.x = szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
-				windowManager.updateViewLayout(convertView, mParams);
+					mParams.x = szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
+					windowManager.updateViewLayout(convertView, mParams);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 
 			public void onFinish() {
-				Log.e("param x before finish", String.valueOf(mParams.x));
-				mParams.x = szWindow.x - convertView.getWidth();
-				Log.e("param x after finish", String.valueOf(mParams.x));
-				windowManager.updateViewLayout(convertView, mParams);
+				try {
+					Log.e("param x before finish", String.valueOf(mParams.x));
+					mParams.x = szWindow.x - convertView.getWidth();
+					Log.e("param x after finish", String.valueOf(mParams.x));
+					windowManager.updateViewLayout(convertView, mParams);
 
-				saveGenieParams(mParams);
+					saveGenieParams(mParams);
 
 //				updateAnimLayoutParams();
-				Log.v("timeTaken", "right " + (System.currentTimeMillis() - start));
+					Log.v("timeTaken", "right " + (System.currentTimeMillis() - start));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}.start();
 

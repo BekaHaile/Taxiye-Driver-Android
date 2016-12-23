@@ -3497,7 +3497,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					if (map != null) {
-						addStartMarker();
+						if(customerInfo.getIsDelivery() == 1) {
+							double slatitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LATITUDE, "0"));
+							double slongitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
+							addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
+						} else {
+							addStartMarker();
+						}
 					}
 
 					setCustomerInstruction(customerInfo);
