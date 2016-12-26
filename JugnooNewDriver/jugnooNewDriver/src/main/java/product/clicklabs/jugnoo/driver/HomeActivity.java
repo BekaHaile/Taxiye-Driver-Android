@@ -4995,12 +4995,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
 
 		double totalDistanceFromLogInMeter = 0;
-		try {
-			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
+
 		double totalDistance = customerInfo
 				.getTotalDistance(customerRideDataGlobal.getDistance(HomeActivity.this), HomeActivity.this);
 		double totalDistanceInKm = Math.abs(totalDistance / 1000.0);
@@ -5010,6 +5005,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 		long rideTimeInMillis = customerInfo.getElapsedRideTime(HomeActivity.this);
 		long rideTimeInMillisFromDB = Database2.getInstance(activity).getCustomerElapsedRideTime(customerInfo.getEngagementId());
+		long startTime = Database2.getInstance(activity).getCustomerStartRideTime(customerInfo.getEngagementId());
+		try {
+//			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+			totalDistanceFromLogInMeter = Database2.getInstance(activity).checkRideData(customerInfo.getEngagementId(), startTime);
+			Log.e("totalDistanceFromLogInMeter", String.valueOf(totalDistanceFromLogInMeter));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		double totalDistanceFromLog = Math.abs(totalDistanceFromLogInMeter / 1000.0);
 
 		long customerWaitTimeMillis = customerInfo
 				.getTotalWaitTime(customerRideDataGlobal.getWaitTime(), HomeActivity.this);
@@ -8085,7 +8089,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	public double getCurrentDeliveryDistance(CustomerInfo customerInfo){
 		double totalDistanceFromLogInMeter = 0;
 		try {
-			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+			long startTime = Database2.getInstance(activity).getCustomerStartRideTime(customerInfo.getEngagementId());
+//			totalDistanceFromLogInMeter = Database2.getInstance(activity).getLastRideData(customerInfo.getEngagementId(), 1).accDistance;
+			totalDistanceFromLogInMeter = Database2.getInstance(activity).
+					checkRideData(customerInfo.getEngagementId(), startTime);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -39,10 +39,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-/**
- * Developer: Rishabh
- * Dated: 26/08/15.
- */
+
 public class DeliveryListAdapter extends PagerAdapter {
 
     private HomeActivity activity;

@@ -933,7 +933,7 @@ public class Database2 {                                                        
 					RideData rideData = new RideData(cursor.getInt(i0),
 							Double.parseDouble(cursor.getString(i1)),
 							Double.parseDouble(cursor.getString(i2)),
-							Long.parseLong(cursor.getString(i3)),
+							cursor.getLong(i3),
 							cursor.getDouble(i4));
 
 					rideDataStr = rideDataStr + rideData.toString() + newLine;
@@ -993,7 +993,7 @@ public class Database2 {                                                        
 			ContentValues contentValues = new ContentValues();
 			contentValues.put(Database2.RIDE_DATA_LAT, lat);
 			contentValues.put(Database2.RIDE_DATA_LNG, lng);
-			contentValues.put(Database2.RIDE_DATA_T, t);
+			contentValues.put(Database2.RIDE_DATA_T, Long.parseLong(t));
 			contentValues.put(Database2.RIDE_DATA_ENGAGEMENT_ID, engagementId);
 			contentValues.put(Database2.RIDE_DATA_ACC_DISTANCE, accDistance);
 			database.insert(Database2.TABLE_RIDE_DATA, null, contentValues);
@@ -1029,11 +1029,43 @@ public class Database2 {                                                        
 			RideData rideData = new RideData(cursor.getInt(i0),
 					Double.parseDouble(cursor.getString(i1)),
 					Double.parseDouble(cursor.getString(i2)),
-					Long.parseLong(cursor.getString(i3)),
+					cursor.getLong(i3),
 					cursor.getDouble(i4));
 			return rideData;
 		}
 		return null;
+	}
+
+
+	public double checkRideData(int engagementId, long starTime) {
+		boolean containsZero = false;
+		double startDistance = 0;
+		double acctualDistance = 0;
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_RIDE_DATA
+				+ " WHERE " + RIDE_DATA_ENGAGEMENT_ID + "=" + engagementId
+				+ " ORDER BY " + RIDE_DATA_I, null);
+		int i0 = cursor.getColumnIndex(Database2.RIDE_DATA_I);
+		int i1 = cursor.getColumnIndex(Database2.RIDE_DATA_LAT);
+		int i2 = cursor.getColumnIndex(Database2.RIDE_DATA_LNG);
+		int i3 = cursor.getColumnIndex(Database2.RIDE_DATA_T);
+		int i4 = cursor.getColumnIndex(Database2.RIDE_DATA_ACC_DISTANCE);
+
+		for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+			if (Double.parseDouble(cursor.getString(i1)) == 0 && Double.parseDouble(cursor.getString(i2)) == 0) {
+				containsZero = true;
+				break;
+			}
+			if (starTime >= cursor.getLong(i3)) {
+				startDistance = cursor.getDouble(i4);
+			}
+		}
+		if (!containsZero) {
+			cursor.moveToLast();
+			acctualDistance = cursor.getDouble(i4) - startDistance;
+			return acctualDistance;
+		} else {
+			return getLastRideData(engagementId, 1).accDistance;
+		}
 	}
 
 	public long getFirstRideDataTime(int engagementId){
@@ -1053,7 +1085,7 @@ public class Database2 {                                                        
 			if(cursor1.moveToFirst()){
 				return System.currentTimeMillis() - Long.parseLong(cursor1.getString(i31));
 			} else{
-				return System.currentTimeMillis() - Long.parseLong(cursor.getString(i3));
+				return System.currentTimeMillis() - cursor.getLong(i3);
 			}
 		}
 		return 0;
@@ -1716,6 +1748,15 @@ public class Database2 {                                                        
 		return 0;
 	}
 
+	public long getCustomerStartRideTime(int engagementId){
+		Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_CUSTOMER_RIDE_DATA
+				+ " WHERE " + CUSTOMER_RIDE_ENGAGEMENT_ID + "=" + engagementId, null);
+		int i0 = cursor.getColumnIndex(Database2.CUSTOMER_START_RIDE_TIME);
+		if(cursor.moveToFirst()){
+			return Long.parseLong(cursor.getString(i0));
+		}
+		return 0;
+	}
 
 	public void deleteCustomerRideDataForEngagement(int engagementId) {
 		try {
