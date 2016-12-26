@@ -325,23 +325,27 @@ public class GeanieView extends Service {
 	}
 
 	private void resetGeniePostion(int x_cord_now) {
-		int w = convertView.getWidth();
+		try {
+			int w = convertView.getWidth();
 
-		if (convertView.getVisibility() == View.VISIBLE) {
-//			convertView.setVisibility(View.GONE);
-//			clearAnims();
-//			clearAnims2();
-		}
+			if (convertView.getVisibility() == View.VISIBLE) {
+	//			convertView.setVisibility(View.GONE);
+	//			clearAnims();
+	//			clearAnims2();
+			}
 
-		if (x_cord_now == 0 || x_cord_now == szWindow.x - w) {
+			if (x_cord_now == 0 || x_cord_now == szWindow.x - w) {
 
-		} else if (x_cord_now + w / 2 <= szWindow.x / 2) {
-			isLeft = true;
-			moveToLeft(x_cord_now);
+			} else if (x_cord_now + w / 2 <= szWindow.x / 2) {
+				isLeft = true;
+				moveToLeft(x_cord_now);
 
-		} else if (x_cord_now + w / 2 > szWindow.x / 2) {
-			isLeft = false;
-			moveToRight(x_cord_now);
+			} else if (x_cord_now + w / 2 > szWindow.x / 2) {
+				isLeft = false;
+				moveToRight(x_cord_now);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -443,66 +447,87 @@ public class GeanieView extends Service {
 
 	private void moveToLeft(int x_cord_now) {
 
-		final int x = x_cord_now;
-		product.clicklabs.jugnoo.driver.utils.Log.e("xcordleft", String.valueOf(x));
-		final long start = System.currentTimeMillis();
-		new CountDownTimer(280, 1) {
-			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
+		try {
+			final int x = x_cord_now;
+			product.clicklabs.jugnoo.driver.utils.Log.e("xcordleft", String.valueOf(x));
+			final long start = System.currentTimeMillis();
+			new CountDownTimer(280, 1) {
+				WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
-			public void onTick(long t) {
-				long step = (280 - t);
-				Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    " + step + "    " + x + "     " + t));
-				Log.e("bounceValueLeft", String.valueOf((int) (x - step)));
-				mParams.x = (int) (double) bounceValue(step, x);
-//				int xPraram = (int) (x - step);
-//				if(xPraram >= 0){
-//					mParams.x = xPraram;
-//				}
+				public void onTick(long t) {
+					try {
+						long step = (280 - t);
+						Log.e("bounceValueLeft", String.valueOf((int) (double) bounceValue(step, x) + "    " + step + "    " + x + "     " + t));
+						Log.e("bounceValueLeft", String.valueOf((int) (x - step)));
+						mParams.x = (int) (double) bounceValue(step, x);
+	//				int xPraram = (int) (x - step);
+	//				if(xPraram >= 0){
+	//					mParams.x = xPraram;
+	//				}
 
-				windowManager.updateViewLayout(convertView, mParams);
-			}
+						windowManager.updateViewLayout(convertView, mParams);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 
-			public void onFinish() {
-				Log.e("param x before finish", String.valueOf(mParams.x));
-				mParams.x = 0;
-				windowManager.updateViewLayout(convertView, mParams);
+				public void onFinish() {
+					try {
+						Log.e("param x before finish", String.valueOf(mParams.x));
+						mParams.x = 0;
+						windowManager.updateViewLayout(convertView, mParams);
 
-				saveGenieParams(mParams);
+						saveGenieParams(mParams);
 
-//				updateAnimLayoutParams();
-				Log.v("timeTaken", "left " + (System.currentTimeMillis() - start));
-			}
-		}.start();
+	//				updateAnimLayoutParams();
+						Log.v("timeTaken", "left " + (System.currentTimeMillis() - start));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
 
 	private void moveToRight(int x_cord_now) {
-		final int x = x_cord_now;
-		product.clicklabs.jugnoo.driver.utils.Log.e("xcordright", String.valueOf(x));
-		final long start = System.currentTimeMillis();
-		new CountDownTimer(280, 1) {
-			WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
+		try {
+			final int x = x_cord_now;
+			product.clicklabs.jugnoo.driver.utils.Log.e("xcordright", String.valueOf(x));
+			final long start = System.currentTimeMillis();
+			new CountDownTimer(280, 1) {
+				WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) convertView.getLayoutParams();
 
-			public void onTick(long t) {
-				long step = (280 - t);
+				public void onTick(long t) {
+					try {
+						long step = (280 - t);
+						mParams.x = szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
+						windowManager.updateViewLayout(convertView, mParams);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 
-				mParams.x = szWindow.x + (int) (double) bounceValue(step, x) - convertView.getWidth();
-				windowManager.updateViewLayout(convertView, mParams);
-			}
-
-			public void onFinish() {
-				Log.e("param x before finish", String.valueOf(mParams.x));
-				mParams.x = szWindow.x - convertView.getWidth();
-				Log.e("param x after finish", String.valueOf(mParams.x));
-				windowManager.updateViewLayout(convertView, mParams);
-
-				saveGenieParams(mParams);
-
-//				updateAnimLayoutParams();
-				Log.v("timeTaken", "right " + (System.currentTimeMillis() - start));
-			}
-		}.start();
+				public void onFinish() {
+					try {
+						Log.e("param x before finish", String.valueOf(mParams.x));
+						mParams.x = szWindow.x - convertView.getWidth();
+						Log.e("param x after finish", String.valueOf(mParams.x));
+						windowManager.updateViewLayout(convertView, mParams);
+						saveGenieParams(mParams);
+						//				updateAnimLayoutParams();
+						Log.v("timeTaken", "right " + (System.currentTimeMillis() - start));
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
