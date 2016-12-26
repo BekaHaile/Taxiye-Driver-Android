@@ -2107,23 +2107,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else {
 				if(infoTileResponses.size() ==0){
 					linearLayoutSlidingBottom.setVisibility(View.GONE);
-				}
+				} else {
 
-				try {
-					LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
+					try {
+						LayoutParams params = linearLayoutSlidingBottom.getLayoutParams();
 
-					if(tileCount > 0 && tileCount <=1){
-						params.height = tileCount * (int)(310f * ASSL.Yscale());
-					} else if (tileCount >= 2 && tileCount <3){
-						params.height = tileCount * (int)(280f * ASSL.Yscale());
-					} else if (tileCount >= 3 && tileCount <4){
-						params.height = tileCount * (int)(272f * ASSL.Yscale());
-					} else {
-						params.height = (int)(980f * ASSL.Yscale());
+						if (tileCount > 0 && tileCount <= 1) {
+							params.height = tileCount * (int) (310f * ASSL.Yscale());
+						} else if (tileCount >= 2 && tileCount < 3) {
+							params.height = tileCount * (int) (280f * ASSL.Yscale());
+						} else if (tileCount >= 3 && tileCount < 4) {
+							params.height = tileCount * (int) (272f * ASSL.Yscale());
+						} else {
+							params.height = (int) (980f * ASSL.Yscale());
+						}
+						linearLayoutSlidingBottom.setLayoutParams(params);
+
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					linearLayoutSlidingBottom.setLayoutParams(params);
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				infoTilesAdapter.notifyDataSetChanged();
 			}
@@ -3893,6 +3895,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void setPannelVisibility(boolean state){
 		if(state && DriverScreenMode.D_INITIAL == driverScreenMode && infoTileResponses.size() > 0){
+
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 		}else{
@@ -3959,7 +3962,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 //		GCMIntentService.clearNotifications(getApplicationContext());
 
-		try {
+		try{
 //			Intent intent = new Intent(HomeActivity.this, GeanieView.class);
 //			startService(intent);
 			if (userMode == UserMode.DRIVER) {
@@ -4279,7 +4282,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
 					relativeLayoutHighDemandAreas.setVisibility(View.GONE);
-//					setPannelVisibility(true);
+					setPannelVisibility(true);
 				}
 				showDriverEarning();
 				showRefreshUSLBar();
