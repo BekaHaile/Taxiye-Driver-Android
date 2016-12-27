@@ -879,6 +879,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reCreateDeliveryMarkers = true;
 
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
@@ -1652,10 +1653,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void onClick(View v) {
 					try {
-						MyApplication.getInstance().logEvent(FirebaseEvents.RATING+"_"+FirebaseEvents.SKIP,null);
+						MyApplication.getInstance().logEvent(FirebaseEvents.RATING + "_" + FirebaseEvents.SKIP,null);
 						saveCustomerRideDataInSP(Data.getCurrentCustomerInfo());
 						MeteringService.clearNotifications(HomeActivity.this);
 						Data.removeCustomerInfo(Integer.parseInt(Data.getCurrentEngagementId()), EngagementStatus.ENDED.getOrdinal());
+
 						driverScreenMode = DriverScreenMode.D_INITIAL;
 						switchDriverScreen(driverScreenMode);
 						FlurryEventLogger.event(OK_ON_FARE_SCREEN);
@@ -3197,6 +3199,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					updateDriverServiceFast("no");
 					setPannelVisibility(true);
 					getInfoTilesAsync(HomeActivity.this);
+
+					new Handler().postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							setPannelVisibility(true);
+						}
+					}, 2000);
+
+
+
 					driverInitialLayout.setVisibility(View.VISIBLE);
 					driverRequestAcceptLayout.setVisibility(View.GONE);
 					driverEngagedLayout.setVisibility(View.GONE);
@@ -3894,8 +3906,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	public void setPannelVisibility(boolean state){
-		if(state && DriverScreenMode.D_INITIAL == driverScreenMode && infoTileResponses.size() > 0){
 
+		if(state && DriverScreenMode.D_INITIAL == driverScreenMode && infoTileResponses.size() > 0){
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
 			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 		}else{
@@ -4282,7 +4294,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				driverRideRequestsList.setVisibility(View.GONE);
 				if(DriverScreenMode.D_INITIAL == driverScreenMode){
 					relativeLayoutHighDemandAreas.setVisibility(View.GONE);
-					setPannelVisibility(true);
+//					setPannelVisibility(true);
 				}
 				showDriverEarning();
 				showRefreshUSLBar();
@@ -5650,6 +5662,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								} catch(Exception e){
 									e.printStackTrace();
 								}
+
 
 							} else {
 							}
