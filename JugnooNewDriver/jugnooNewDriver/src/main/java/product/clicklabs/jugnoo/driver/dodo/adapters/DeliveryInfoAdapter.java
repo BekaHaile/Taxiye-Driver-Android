@@ -56,6 +56,7 @@ public class DeliveryInfoAdapter extends RecyclerView.Adapter<DeliveryInfoAdapte
 
 			if(deliveryInfo.getCustomerName().equalsIgnoreCase("")){
 				holder.textViewCustomerNameValue.setText(activity.getResources().getString(R.string.return_to_merchant));
+                holder.textViewOrderIdValue.setText("R");
 			} else {
 				holder.textViewCustomerNameValue.setText(deliveryInfo.getCustomerName());
 			}
