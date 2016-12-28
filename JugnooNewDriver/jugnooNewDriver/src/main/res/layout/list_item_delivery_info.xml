@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30px"
-            android:layout_marginTop="74px">
+            android:layout_marginTop="68px">
 
             <ImageView
                 android:id="@+id/imageViewStatusCircle"
@@ -73,6 +73,7 @@
             <LinearLayout
                 android:id="@+id/linearLayoutCard1"
                 android:layout_width="604px"
+                android:background="@drawable/background_white_rounded_orange_bordered"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 

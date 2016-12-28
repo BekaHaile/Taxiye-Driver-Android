@@ -787,6 +787,8 @@
     <string name="alter_phone_number">Alternate Phone Number</string>
     <string name="delivery_start">Delivery Start</string>
     <string name="delivery_stop">Delivery Stop</string>
+    <string name="delivery_end">Delivery End</string>
+    <string name="select_delivery">Select Delivery</string>
 
 
     <string-array name="CountryCodes" >

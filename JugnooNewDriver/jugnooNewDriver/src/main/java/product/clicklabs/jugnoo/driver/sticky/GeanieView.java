@@ -171,7 +171,8 @@ public class GeanieView extends Service {
 						switch (event.getAction()) {
 							case MotionEvent.ACTION_DOWN:
 								time_start = System.currentTimeMillis();
-								handler_longClick.postDelayed(runnable_longClick, 500);
+								handler_longClick.removeCallbacks(runnable_longClick);
+								handler_longClick.postDelayed(runnable_longClick, 400);
 
 								remove_img_width = removeImg.getLayoutParams().width;
 								remove_img_height = removeImg.getLayoutParams().height;
@@ -297,10 +298,12 @@ public class GeanieView extends Service {
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(newIntent);
+										stopSelf();
 									} else {
 										Intent homeScreen = new Intent(GeanieView.this, SplashNewActivity.class);
 										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(homeScreen);
+										stopSelf();
 									}
 
 

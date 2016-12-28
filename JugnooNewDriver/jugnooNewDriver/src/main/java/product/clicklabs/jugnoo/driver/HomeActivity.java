@@ -3548,7 +3548,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					driverStartRideMainRl.setVisibility(View.GONE);
 					driverInRideMainRl.setVisibility(View.VISIBLE);
-					if(customerInfo.getIsDelivery() == 1){
+					if(customerInfo.getIsDelivery() == 1 && customerInfo.getDeliveryInfos().size() > 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
 						changeButton.setVisibility(View.VISIBLE);
 					} else{
@@ -7969,7 +7969,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						if(deliveryInfo.getStatus() == DeliveryStatus.RETURN.getOrdinal()) {
 							latLngs.add(latLng);
 							builder.include(latLng);
-							addDeliveryMarker(addReturnPinMarker(map, latLng));
+							addDeliveryMarker(addDropPinMarker(map, latLng, "R", 2));
 						} else{
 
 							if(-1 == Prefs.with(HomeActivity.this).getInt(SPLabels.DELIVERY_IN_PROGRESS, -1)) {
@@ -8079,7 +8079,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				.snippet("return")
 				.anchor(0.5f, 0.9f)
 				.icon(BitmapDescriptorFactory.fromBitmap(CustomMapMarkerCreator
-						.createCustomMarkerBitmap(this, assl, 45f, 71f, R.drawable.ic_return_marker)));
+						.createCustomMarkerBitmap(this, assl, 53f, 69f, R.drawable.blue_delivery_marker_burne)));
 		return map.addMarker(markerOptions);
 	}
 

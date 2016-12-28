@@ -164,7 +164,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/text_size_30"
-            android:text="@string/delivery_stop"
+            android:text="@string/delivery_end"
             android:textColor="@color/text_color_light"
             android:layout_marginLeft="10px"
             android:layout_alignParentBottom="true"

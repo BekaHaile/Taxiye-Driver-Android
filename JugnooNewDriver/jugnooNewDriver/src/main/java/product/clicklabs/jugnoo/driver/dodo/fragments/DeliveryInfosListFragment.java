@@ -84,7 +84,7 @@ public class DeliveryInfosListFragment extends Fragment {
 		buttonBack = (Button) rootView.findViewById(R.id.buttonBack);
 		textViewTitle = (TextView) rootView.findViewById(R.id.textViewTitle);
 		textViewTitle.setTypeface(Fonts.mavenRegular(activity), Typeface.BOLD);
-		textViewTitle.setText(activity.getResources().getString(R.string.deliveries));
+		textViewTitle.setText(activity.getResources().getString(R.string.select_delivery));
 
 		textViewMerchantMessage = (TextView) rootView.findViewById(R.id.textViewMerchantMessage);
 		textViewMerchantMessage.setTypeface(Fonts.mavenRegular(activity));
