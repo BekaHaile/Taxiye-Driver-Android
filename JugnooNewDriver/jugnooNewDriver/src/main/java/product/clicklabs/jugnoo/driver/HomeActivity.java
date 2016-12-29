@@ -879,7 +879,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			reCreateDeliveryMarkers = true;
 
 			slidingUpPanelLayout.setPanelHeight((int) (140f * ASSL.Yscale()));
-			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+				}
+			}, 5000);
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
 				@Override
 				public void onPanelSlide(View panel, float slideOffset) {
