@@ -3474,8 +3474,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						}
 					}
 
-
-
 					startTimerPathRerouting();
 					setTextViewRideInstructions();
 					updateCustomers();
@@ -3521,7 +3519,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							double slongitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
 							addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
 						} else {
-							addStartMarker();
+							if(customerInfo.getIsPooled() != 1) {
+								addStartMarker();
+							}
 						}
 					}
 

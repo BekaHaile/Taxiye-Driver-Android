@@ -11,14 +11,14 @@
     <LinearLayout
         android:id="@+id/linearLayoutDeliveryItem"
         android:layout_width="match_parent"
-        android:layout_height="308px"
+        android:layout_height="316px"
         android:background="@color/grey_light_delivery_tab_fill"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/linearLayoutDeliveryItemHeader"
             android:layout_width="match_parent"
-            android:layout_height="72px"
+            android:layout_height="76px"
             android:background="@color/white">
 
             <TextView
@@ -39,7 +39,7 @@
                 android:layout_centerVertical="true"
                 android:text="@string/NA"
                 android:gravity="center"
-                android:textSize="28px"
+                android:textSize="32px"
                 android:visibility="gone"
                 android:textColor="@color/black_text_v2"/>
 
