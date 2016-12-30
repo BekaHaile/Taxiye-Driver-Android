@@ -8,21 +8,21 @@
 
 
 
-        <!--<ImageView-->
-            <!--android:id="@+id/imageViewVerticalLine"-->
-            <!--android:layout_width="5px"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="43px"-->
-            <!--android:layout_alignTop="@+id/viewSep"-->
-            <!--android:layout_above="@+id/imageViewFakeBottom"-->
-            <!--android:background="@color/grey_light_delivery"-->
-            <!--/>-->
+        <ImageView
+            android:id="@+id/imageViewVerticalLine"
+            android:layout_width="6px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="42px"
+            android:layout_alignTop="@+id/viewSep"
+            android:layout_above="@+id/imageViewFakeBottom"
+            android:background="@color/grey_light_delivery"
+            />
 
         <RelativeLayout
             android:id="@+id/relativeLayoutOrderNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30px"
+            android:layout_marginLeft="29px"
             android:layout_marginTop="68px">
 
             <ImageView

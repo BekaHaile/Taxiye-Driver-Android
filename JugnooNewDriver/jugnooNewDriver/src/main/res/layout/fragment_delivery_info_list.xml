@@ -93,9 +93,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="20px"
-        android:layout_marginBottom="32px">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/textViewPlaceholderMessage"
@@ -108,68 +106,16 @@
             android:visibility="gone"
             />
 
-        <ImageView
-            android:id="@+id/imageViewDeliveryline2"
-            android:layout_above="@+id/imageViewDeliverycircle2"
-            android:layout_width="6px"
-            android:layout_height="929px"
-            android:layout_marginLeft="42px"
-            android:background="@color/grey_light_delivery"/>
-
-        <ImageView
-            android:id="@+id/imageViewDeliverycircle"
-            android:layout_width="22px"
-            android:layout_height="22px"
-            android:layout_marginLeft="34px"
-            android:layout_marginTop="9px"
-            android:src="@drawable/delivery_list_icon"/>
-
-        <TextView
-            android:id="@+id/textViewDeliveryStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_30"
-            android:text="@string/delivery_start"
-            android:textColor="@color/text_color_light"
-            android:layout_marginLeft="10px"
-            android:layout_toRightOf="@+id/imageViewDeliverycircle"
-            android:visibility="visible"
-            />
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerViewDeliveryInfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/imageViewDeliverycircle"
-            android:layout_marginTop="20px"
-            android:layout_marginBottom="80px"
             android:fadeScrollbars="true"
             android:scrollbars="vertical"
-            android:splitMotionEvents="false"
-            >
+            android:splitMotionEvents="false">
         </android.support.v7.widget.RecyclerView>
 
-        <ImageView
-            android:id="@+id/imageViewDeliverycircle2"
-            android:layout_width="22px"
-            android:layout_height="22px"
-            android:layout_marginLeft="34px"
-            android:layout_marginBottom="9px"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/delivery_list_icon"/>
 
-        <TextView
-            android:id="@+id/textViewDeliveryStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_30"
-            android:text="@string/delivery_end"
-            android:textColor="@color/text_color_light"
-            android:layout_marginLeft="10px"
-            android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/imageViewDeliverycircle2"
-            android:visibility="visible"/>
 
     </RelativeLayout>
 
