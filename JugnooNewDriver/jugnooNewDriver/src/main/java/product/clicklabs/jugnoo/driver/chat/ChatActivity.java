@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RideDetailsNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
@@ -35,6 +36,7 @@ import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -45,6 +47,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -71,6 +74,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	private FetchChatResponse fetchChatResponse;
 	private SimpleDateFormat sdf;
 	private final String LOGIN_TYPE = "1";
+	public static String CHAT_SCREEN_OPEN = null;
 	private Handler handler = new Handler();
 	private Handler myHandler=new Handler();
 	ArrayList<FetchChatResponse.ChatHistory> chatResponse = new ArrayList<>();
@@ -144,6 +148,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		if(Data.getCurrentCustomerInfo() != null) {
 			textViewTitle.setText(Data.getCurrentCustomerInfo().getName());
 		}
+		CHAT_SCREEN_OPEN = "yes";
     }
 
 	Runnable loadDiscussion=new Runnable() {
@@ -188,8 +193,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	public void onResume(){
 		super.onResume();
+		CHAT_SCREEN_OPEN = "yes";
 		Data.context = ChatActivity.this;
+	}
 
+	@Override
+	public void onPause(){
+		CHAT_SCREEN_OPEN = null;
+		super.onPause();
 	}
 
     public void performBackPressed() {
@@ -200,7 +211,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
+		CHAT_SCREEN_OPEN = null;
 		Data.context = null;
 		try {
 			if(handler != null){
@@ -293,7 +304,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatSuggestions.clear();
 								chatResponse.addAll(fetchChat.getChatHistory());
 								Collections.reverse(chatResponse);
-
+								if(fetchChat.getChatHistory().size() > Prefs.with(activity).getInt(SPLabels.CHAT_SIZE,0) && CHAT_SCREEN_OPEN != null){
+									SoundMediaPlayer.startSound(activity, R.raw.whats_app_shat_sound, 1, true);
+								}
+								Prefs.with(activity).save(SPLabels.CHAT_SIZE, fetchChat.getChatHistory().size());
 								chatSuggestions.addAll(fetchChat.getSuggestions());
 								if(fetchChat.getSuggestions().size() > 0){
 									recyclerViewChatOptions.setVisibility(View.VISIBLE);
