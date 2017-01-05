@@ -736,7 +736,7 @@
 	<string name="fail">Fail</string>
 	<string name="chat">CHAT</string>
 	<string name="required">required</string>
-	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
+	<string name="login_here">Already have a driver account? <u>Login Here</u></string>
 	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
 	<string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
 	<string name="driver">Driver</string>
@@ -754,6 +754,9 @@
 	<string name="delivery_stop">Delivery Stop</string>
 	<string name="delivery_end">Delivery End</string>
 	<string name="select_delivery">Select Delivery</string>
+	<string name="reg_as_driver"><u>Register as a Jugnoo DRIVER</u></string>
+	<string name="driver_app">DRIVER APPLICATION</string>
+	<string name="register_as_driver">Register as DRIVER</string>
 
 
 	<string-array name="CountryCodes" >

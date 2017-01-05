@@ -709,6 +709,9 @@
     <string name="delivery_stop">Delivery Stop</string>
     <string name="delivery_end">Delivery End</string>
     <string name="select_delivery">Select Delivery</string>
+    <string name="reg_as_driver">Register as a Jugnoo DRIVER</string>
+    <string name="driver_app">DRIVER APPLICATION</string>
+    <string name="register_as_driver">Register as DRIVER</string>
 
 
     <string-array name="CountryCodes" >
