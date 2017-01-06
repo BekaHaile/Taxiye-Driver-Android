@@ -1,6 +1,8 @@
 package product.clicklabs.jugnoo.driver;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.LinearGradient;
 import android.graphics.Shader;
@@ -17,10 +19,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.flurry.android.FlurryAgent;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.BaseFragmentActivity;
 import product.clicklabs.jugnoo.driver.utils.FlurryEventNames;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import retrofit.client.Response;
+import retrofit.mime.TypedByteArray;
 
 
 public class HighDemandAreaActivity extends BaseFragmentActivity implements FlurryEventNames {
@@ -92,8 +103,18 @@ public class HighDemandAreaActivity extends BaseFragmentActivity implements Flur
 		webview.setWebViewClient(new MyWebViewClient1());
 
 		if(Database2.getInstance(this).getDLDAccessToken() != null) {
-			Log.e("URL", url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
-			webview.loadUrl(url+"?access_token="+Database2.getInstance(this).getDLDAccessToken());
+			Log.e("URL", url + "?access_token=" + Database2.getInstance(this).getDLDAccessToken());
+			String finalUrl = url+"?access_token="+Database2.getInstance(this).getDLDAccessToken();
+			webview.loadUrl(finalUrl);
+
+			PackageManager pm = getPackageManager();
+			try {
+				PackageInfo pi = pm.getPackageInfo("com.google.android.webview", 0);
+				Log.d("version name: ", pi.versionName);
+				Log.d("version code: " , String.valueOf(pi.versionCode));
+			} catch (PackageManager.NameNotFoundException e) {
+				Log.e("notFound","Android System WebView is not found");
+			}
 		}
 
 

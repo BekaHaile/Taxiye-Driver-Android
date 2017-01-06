@@ -518,10 +518,7 @@
     <string name="uploaded">અપલોડેડ </string>
     <string name="rejected">ફગાવી</string>
     <string name="verified">ચકાસણી</string>
-    <string name="auto">Auto</string>
-    <string name="Messages">Messages</string>
-    <string name="Hints">Hints</string>
-    <string name="tricks">Tricks To Earn</string>
+
 
     <string name="cash_collected">કેશ લીધું છે </string>
     <string name="s_no">સ. ન.</string>
@@ -613,10 +610,7 @@
     <string name="please_submit">સબમિટ કરો</string>
     <string name="cancel_audit"> શું તમે ઓડિટ રદ કરવા માંગો છો?</string>
     <string name="image_upload_failed">છબી અપલોડ નિષ્ફળ, ફરીથી પ્રયત્ન કરો</string>
-    <string name="enter_destination">Enter Destination</string>
-    <string name="no_results_found">No Result Found</string>
-    <string name="COD">COD</string>
-    <string name="auto_accept_message">Customer request has been automatically accepted</string>
+
     <string name="earnings_caps">કમાણી</string>
 
     <string name="no_invoice_currently">કોઈ ભરતિયું હાલમાં નથી </string>
@@ -646,6 +640,39 @@
     <string name="in_review">સમીક્ષામાં</string>
     <string name="pool">સામુહિક</string>
 
+    <string name="chat">Chat</string>
+
+    <string name="order_summary">ઓર્ડર સારાંશ</string>
+    <string name="return_to_merchant">મર્ચન્ટ પાસે પાછા ફરો</string>
+    <string name="deposite_cash">તમે રોકડ જમા કરી છે?</string>
+    <string name="deposite_cash_1">ડિપોઝિટ રોકડ</string>
+    <string name="return_reasons_confirmation">નિષ્ફળ ડિલિવરી માટે કારણ પસંદ કરો</string>
+    <string name="submit_small">સબમિટ</string>
+    <string name="total_cash_collected">કુલ રોકડ એકત્રિત</string>
+    <string name="fail">નિષ્ફળ</string>
+    <string name="required">જરૂરી</string>
+    <string name="login_here">પહેલેથી જ ડ્રાઈવર એકાઉન્ટ છે? <u> લૉગિન અહીં </u></string>
+    <string name="i_accept_new">સાઇન અપ દ્વારા તમે સંમત છો અમારા <u>ઉપયોગની શરતો માટે </u></string>
+    <string name="nl_otp_please_enter_otp">ક્રુપા કરી તમારો વન પાસવર્ડ દાખલ કરો</string>
+    <string name="driver">ડ્રાઈવર</string>
+    <string name="register_text">ડ્રાઈવર એકાઉન્ટ નથી? <u>અહીં નોંધણી કરો</u></string>
+
+    <string name="no_language_to_select">ભાષા વિકલ્પ ઉપલબ્ધ નથી</string>
+    <string name="no_not_verified">ફોન નંબર ચકાસણી કરી નથી</string>
+    <string name="miss_call_otp">એક મિસ કોલ આપો </string>
+    <string name="self_enroled">સ્વયં એન્રોલ્લ</string>
+    <string name="upload_Documents"> દસ્તાવેજો અપલોડ કરો</string>
+
+    <string name="auto">Auto</string>
+    <string name="Messages">Messages</string>
+    <string name="Hints">Hints</string>
+    <string name="tricks">Tricks To Earn</string>
+
+    <string name="enter_destination">લક્ષ્યસ્થાન દાખલ કરો</string>
+    <string name="no_results_found">કોઈ પરિણામ મળ્યા નથી </string>
+    <string name="COD">COD</string>
+    <string name="auto_accept_message">ગ્રાહક ની  વિનંતી આપોઆપ સ્વીકારવામાં આવી છે </string>
+
     <string name="ride_history_cap">RIDE HISTORY</string>
     <string name="cancel_ride_by_customer">Customer has cancelled the ride</string>
     <string name="high_demand_areas">Click here to know high demand areas</string>
@@ -668,29 +695,16 @@
     <string name="cash_deposite_conf">Have you deposited cash ?</string>
     <string name="total">Total</string>
 
-    <string name="order_summary">ઓર્ડર સારાંશ</string>
-    <string name="return_to_merchant">મર્ચન્ટ પાસે પાછા ફરો</string>
-    <string name="deposite_cash">તમે રોકડ જમા કરી છે?</string>
-    <string name="deposite_cash_1">ડિપોઝિટ રોકડ</string>
-    <string name="return_reasons_confirmation">નિષ્ફળ ડિલિવરી માટે કારણ પસંદ કરો</string>
-    <string name="submit_small">સબમિટ</string>
-    <string name="total_cash_collected">કુલ રોકડ એકત્રિત</string>
-    <string name="fail">નિષ્ફળ</string>
-    <string name="required">જરૂરી</string>
-    <string name="login_here">પહેલેથી જ ડ્રાઈવર એકાઉન્ટ છે? <u> લૉગિન અહીં </u></string>
-    <string name="i_accept_new">સાઇન અપ દ્વારા તમે સંમત છો અમારા <u>ઉપયોગની શરતો માટે </u></string>
-    <string name="nl_otp_please_enter_otp">ક્રુપા કરી તમારો વન પાસવર્ડ દાખલ કરો</string>
-    <string name="driver">ડ્રાઈવર</string>
-    <string name="register_text">ડ્રાઈવર એકાઉન્ટ નથી? <u>અહીં નોંધણી કરો</u></string>
 
-    <string name="no_language_to_select">ભાષા વિકલ્પ ઉપલબ્ધ નથી</string>
-    <string name="no_not_verified">ફોન નંબર ચકાસણી કરી નથી</string>
-    <string name="miss_call_otp">એક મિસ કોલ આપો </string>
-    <string name="self_enroled">સ્વયં એન્રોલ્લ</string>
-    <string name="upload_Documents"> દસ્તાવેજો અપલોડ કરો</string>
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
+    <string name="select">Select</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="collect_cash">Collect Cash</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+    <string name="alter_phone_number">Alternate Phone Number</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

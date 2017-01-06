@@ -670,6 +670,7 @@
     <string name="connection_lost">Connection Loast</string>
     <string name="pls_enter_some_msg">Please enter some issue</string>
     <string name="enter_destination">Enter Destination</string>
+
     <string name="no_results_found">No Result Found</string>
     <string name="COD">COD</string>
     <string name="auto_accept_message">Customer request has been automatically accepted</string>
@@ -687,6 +688,7 @@
     <string name="submit_small">Submit</string>
     <string name="total_cash_collected">Total cash collected</string>
     <string name="fail">Fail</string>
+    <string name="chat">Chat</string>
     <string name="required">required</string>
     <string name="login_here">Already have an driver account? Login Here</string>
     <string name="i_accept_new">By Signing up you agree to our Terms of Use</string>
@@ -695,7 +697,13 @@
     <string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
     <string name="spinner_owned">Owned</string>
     <string name="spinner_rented">Rented</string>
+    <string name="select">Select</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="collect_cash">Collect Cash</string>
+    <string name="pool_start">Pool Start</string>
+    <string name="pool_stop">Pool Stop</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+    <string name="alter_phone_number">Alternate Phone Number</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

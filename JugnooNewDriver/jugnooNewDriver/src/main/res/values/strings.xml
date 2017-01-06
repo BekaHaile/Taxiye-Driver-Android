@@ -618,9 +618,9 @@
 	<string name="return_subsidy">Return Subsidy</string>
 	<string name="return_distance">Return Distance</string>
 	<string name="delivery_details">DELIVERY DETAILS</string>
-	<string name="please_drop_customer">Please drop %s</string>
-	<string name="please_reach_customer_location">Please reach %s\'s location</string>
-	<string name="please_start_customer_ride">Please start %s\'s ride</string>
+	<string name="please_drop_customer">Drop %s</string>
+	<string name="please_reach_customer_location">Pickup %s</string>
+	<string name="please_start_customer_ride">Start %s\'s ride</string>
 	<string name="uploading">UPLOADING</string>
 	<string name="before_ride">BEFORE RIDE</string>
 	<string name="in_ride_rate">IN RIDE</string>
@@ -734,6 +734,7 @@
 	<string name="submit_small">Submit</string>
 	<string name="total_cash_collected">Total cash collected</string>
 	<string name="fail">Fail</string>
+	<string name="chat">CHAT</string>
 	<string name="required">required</string>
 	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
 	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
@@ -742,7 +743,13 @@
 	<string name="register_text">Don’t have an driver account? <u>Register Here</u></string>
 	<string name="spinner_owned">Owned</string>
 	<string name="spinner_rented">Rented</string>
+	<string name="select">Select</string>
+	<string name="select_customer">Select Customer</string>
+	<string name="collect_cash">Collect Cash</string>
+	<string name="pool_start">Pool Start</string>
+	<string name="pool_stop">Pool Stop</string>
 	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
+	<string name="alter_phone_number">Alternate Phone Number</string>
 
 
 	<string-array name="CountryCodes" >

@@ -23,12 +23,14 @@ public class RestClient {
 	private static DirectionAPIService DISTANCE_API_SERVICE;
 	private static GoogleAPIServices GOOGLE_API_SERVICES;
 	private static PushAckAPIService PUSH_ACK_API_SERVICE;
+	private static ChatAckAPIService CHAT_ACK_API_SERVICE;
 
 	static {
 		setupRestClient();
 		setupGoogleAPIRestClient();
 		setupDistanceAPIRestClient();
 		setupPushAckAPIRestClient();
+		setupChatAPIRestClient();
 	}
 
 	private static OkHttpClient getOkHttpClient(){
@@ -165,5 +167,27 @@ public class RestClient {
 
 	public static PushAckAPIService getPushAckApiServices() {
 		return PUSH_ACK_API_SERVICE;
+	}
+
+	public static void setupChatAPIRestClient() {
+
+		RestAdapter.Log fooLog = new RestAdapter.Log() {
+			@Override public void log(String message) {
+			}
+		};
+
+		RestAdapter.Builder builder = new RestAdapter.Builder()
+//				.setEndpoint("https://test.jugnoo.in:8095")
+				.setEndpoint("https://prod-autos-api.jugnoo.in:4010")
+				.setClient(new Ok3Client(getOkHttpClient()))
+				.setLog(fooLog)
+				.setLogLevel(RestAdapter.LogLevel.FULL);
+
+		RestAdapter restAdapter = builder.build();
+		CHAT_ACK_API_SERVICE = restAdapter.create(ChatAckAPIService.class);
+	}
+
+	public static ChatAckAPIService getChatAckApiServices() {
+		return CHAT_ACK_API_SERVICE;
 	}
 }

@@ -214,5 +214,7 @@ public interface Constants {
     String FLAG_REACHED_PICKUP ="flag_reached_pickup";
 	String START_RIDE_ALARM_SERVICE_STATUS = "start_ride_alarm_service_status";
 
+    String KEY_CHAT_COUNT = "chat_count";
+
 }
 

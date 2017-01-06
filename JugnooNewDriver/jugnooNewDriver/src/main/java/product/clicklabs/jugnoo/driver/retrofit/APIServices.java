@@ -13,6 +13,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.CityResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverEarningsResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.DriverLeaderBoard;
 import product.clicklabs.jugnoo.driver.retrofit.model.EarningsDetailResponse;
+import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InvoiceDetailResponse;
@@ -33,15 +34,11 @@ import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
-import retrofit.http.Query;
-import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
-import retrofit.mime.TypedInput;
 
 /**
  * Created by aneeshbansal on 08/09/15.
@@ -562,4 +559,5 @@ public interface APIServices {
 	@POST("/update_drop_latlng")
 	void updateDropLatLng(@FieldMap Map<String, String> params,
 						   Callback<InfoTileResponse> callback);
+
 }

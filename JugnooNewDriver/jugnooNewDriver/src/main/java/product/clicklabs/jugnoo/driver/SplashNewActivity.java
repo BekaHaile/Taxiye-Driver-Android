@@ -1,5 +1,6 @@
 package product.clicklabs.jugnoo.driver;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,8 +13,10 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -121,7 +124,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	ImageView jugnooTextImg, jugnooTextImg2;
 	ArrayList<CityInfo> cities = new ArrayList<>();
 	ProgressBar progressBar1;
-
+	boolean secondtime = false;
 	Spinner spinner;
 	String selectedLanguage;
 	int languagePrefStatus, registerViaTooken = RegisterOption.ONLY_TOOKAN.getOrdinal();
@@ -134,7 +137,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	static boolean loginDataFetched = false;
 
-	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt;
+	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
 	TextView textViewLoginRegister, textViewTandC, textViewRegLogin;
@@ -255,6 +258,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		phoneNoEt = (EditText) findViewById(R.id.phoneNoEt);
 		phoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
+		alternatePhoneNoEt  = (EditText) findViewById(R.id.alternatePhoneNoEt);
+		alternatePhoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+
 		phoneNoOPTEt = (EditText) findViewById(R.id.phoneNoOPTEt);
 		phoneNoOPTEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
@@ -311,8 +317,25 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		Intent intent = new Intent();
+		String packageName = SplashNewActivity.this.getPackageName();
+		PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
+		int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+		try {
+			if(currentapiVersion >= Build.VERSION_CODES.M) {
+				if (!pm.isIgnoringBatteryOptimizations(packageName)){
+					intent.setAction(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+					intent.setData(Uri.parse("package:" + packageName));
+					SplashNewActivity.this.startActivity(intent);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 
+
+		batteryOptimizer(SplashNewActivity.this);
 
 		textViewTandC.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -432,6 +455,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		alternatePhoneNoEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				alternatePhoneNoEt.setError(null);
+			}
+		});
+
 		phoneNoOPTEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -478,6 +509,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 //				String autoNum = autoNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
+				String altPhoneNo = alternatePhoneNoEt.getText().toString().trim();
 
 				if ("".equalsIgnoreCase(name)) {
 					nameEt.requestFocus();
@@ -516,7 +548,23 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 											if (vehiclePosition != 0) {
 												if (!vehicleStatus.equalsIgnoreCase(getResources().getString(R.string.vehicle_status))) {
 													if (true) {
-														sendSignupValues(SplashNewActivity.this, name, phoneNo, password, referralCode);
+
+														if(!"".equalsIgnoreCase(altPhoneNo)) {
+															if (altPhoneNo.charAt(0) == '0' || altPhoneNo.charAt(0) == '1' || altPhoneNo.contains("+") || altPhoneNo.length() < 10) {
+																alternatePhoneNoEt.requestFocus();
+																alternatePhoneNoEt.setError("Please enter valid phone number");
+															} else {
+																altPhoneNo = "+91"+altPhoneNo;
+																if (isPhoneValid(altPhoneNo)) {
+																	sendSignupValues(SplashNewActivity.this, name, phoneNo, altPhoneNo, password, referralCode);
+																} else {
+																	alternatePhoneNoEt.requestFocus();
+																	alternatePhoneNoEt.setError("Please enter valid phone number");
+																}
+															}
+														} else {
+															sendSignupValues(SplashNewActivity.this, name, phoneNo, "", password, referralCode);
+														}
 														FlurryEventLogger.emailSignupClicked(emailId);
 													} else {
 														DialogPopup.alertPopup(SplashNewActivity.this, "", getResources().getString(R.string.select_tandc));
@@ -780,6 +828,26 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		if(secondtime) {
+			try {
+				String packageName = SplashNewActivity.this.getPackageName();
+				PowerManager pm = (PowerManager) SplashNewActivity.this.getSystemService(Context.POWER_SERVICE);
+				int currentapiVersion = Build.VERSION.SDK_INT;
+				if (currentapiVersion >= Build.VERSION_CODES.M) {
+					if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+						Intent newIntent = getIntent();
+						finish();
+						startActivity(newIntent);
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		secondtime = true;
+
+		batteryOptimizer(SplashNewActivity.this);
 		
 		int resp = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
 		if(resp != ConnectionResult.SUCCESS){
@@ -811,7 +879,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	}
 
 
-	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String city, final String referralCode) {
+	public void batteryOptimizer(Context context){
+
+	}
+
+
+	public void sendSignupValues(final Activity activity, final String name, final String phoneNo, final String altPhoneNo, final String city, final String referralCode) {
 		if (AppStatus.getInstance(getApplicationContext()).isOnline(getApplicationContext())) {
 			resetFlags();
 			DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -826,6 +899,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			HashMap<String, String> params = new HashMap<String, String>();
 			params.put("user_name", name);
 			params.put("phone_no", phoneNo);
+			params.put("alt_phone_no", altPhoneNo);
 //			params.put("auto_num", autoNum);
 			params.put("city", String.valueOf(cityposition));
 			params.put("latitude", "" + Data.latitude);
@@ -1221,12 +1295,29 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					finish();
 				}
 			}
+
+			if(!isSystemAlertPermissionGranted(SplashNewActivity.this)){
+				requestSystemAlertPermission(SplashNewActivity.this, 23);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	public static void requestSystemAlertPermission(Activity context, int requestCode) {
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
+			return;
+		final String packageName = context.getPackageName();
+		final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + packageName));
+		context.startActivityForResult(intent, requestCode);
+	}
+
+	@TargetApi(Build.VERSION_CODES.M)
+	public static boolean isSystemAlertPermissionGranted(Context context) {
+		final boolean result = Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(context);
+		return result;
+	}
 	
 	public void callFirstAttempt(){
 		runOnUiThread(new Runnable() {
@@ -1442,6 +1533,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		nameEt.setError(null);
 		phoneNoEt.setText("");
 		phoneNoEt.setError(null);
+		alternatePhoneNoEt.setText("");
+		alternatePhoneNoEt.setError(null);
 		referralCodeEt.setText("");
 		referralCodeEt.setError(null);
 		selectCitySp.setSelection(0);

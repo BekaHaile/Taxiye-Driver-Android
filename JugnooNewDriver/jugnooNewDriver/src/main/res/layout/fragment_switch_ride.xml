@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/relativeLayoutRoot"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false">
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar"/>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/select_customer"
+            android:textColor="@color/white"
+            android:textSize="40px"/>
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="804px"
+        android:layout_below="@+id/topRl"
+        android:layout_marginTop="72px">
+
+        <ImageView
+            android:layout_width="750px"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-330px"
+            android:layerType="software"
+            android:src="@drawable/dotted"/>
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_marginLeft="36px"
+            android:layout_marginTop="9px"
+            android:src="@drawable/circle_grey"/>
+
+        <ImageView
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="9px"
+            android:layout_marginLeft="37px"
+            android:src="@drawable/circle_grey"/>
+
+        <TextView
+            android:id="@+id/textViewPoolStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32px"
+            android:textColor="@color/black_text_v2"
+            android:text="@string/pool_start"
+            android:layout_marginLeft="72px"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerViewCustomer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/textViewPoolStart"
+            android:layout_above="@+id/textViewPoolEnd"
+            android:layout_marginLeft="45px"
+            android:splitMotionEvents="false">
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/textViewPoolEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="32px"
+            android:textColor="@color/black_text_v2"
+            android:layout_alignParentBottom="true"
+            android:text="@string/pool_stop"
+            android:layout_marginLeft="72px"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

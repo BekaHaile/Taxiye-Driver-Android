@@ -382,6 +382,7 @@ public class GpsDistanceCalculator {
 			speedCounter++;
 		} else{
 			double speedAvg = accumulativeSpeed / speedCounter;
+
 			if(speedAvg < 1.4){
 				long waitTime = getWaitTimeFromSP(context) + WAITING_WINDOW_TIME_MILLIS;
 				saveWaitTimeToSP(context, waitTime);
@@ -695,10 +696,25 @@ public class GpsDistanceCalculator {
 
 	public static synchronized void saveWaitTimeToSP(Context context, long waitTime) {
 		Prefs.with(context).save(SPLabels.WAIT_TIME, "" + waitTime);
+		Database2.getInstance(context).updateWaitTime(String.valueOf(waitTime));
 	}
 
 	public static synchronized long getWaitTimeFromSP(Context context) {
-		return Long.parseLong(Prefs.with(context).getString(SPLabels.WAIT_TIME, "0"));
+
+		try {
+			long waitTimeFromSP = Long.parseLong(Prefs.with(context).getString(SPLabels.WAIT_TIME, "0"));
+			Log.e("invalid long",Database2.getInstance(context).getWaitTimeFromDB());
+			long waitTimeFromDB = Long.parseLong(Database2.getInstance(context).getWaitTimeFromDB());
+
+			if (waitTimeFromDB >= waitTimeFromSP) {
+				return waitTimeFromDB;
+			} else {
+				return waitTimeFromSP;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 	public static synchronized void saveTrackingToSP(Context context, int tracking) {
