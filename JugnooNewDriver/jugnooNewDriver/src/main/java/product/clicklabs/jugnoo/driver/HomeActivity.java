@@ -882,7 +882,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			new Handler().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+					try {
+						if(DriverScreenMode.D_INITIAL == driverScreenMode ) {
+							slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}, 5000);
 			slidingUpPanelLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -3029,7 +3035,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							}
 
 							if(fixedDeliveryWaitTime > -1){
-								waitTime = String.valueOf(fixedDeliveryWaitTime);
+								waitTime = String.valueOf(decimalFormatNoDecimal.format(fixedDeliveryWaitTime));
 								reviewWaitTimeRl.setVisibility(View.VISIBLE);
 								imageViewEndRideWaitSep.setVisibility(View.VISIBLE);
 							}
@@ -6933,6 +6939,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 													Data.getCurrentEngagementId(),
 													Prefs.with(HomeActivity.this).getString(SPLabels.PERFECT_CUSTOMER_ID, " "));
 										}
+
+
 									}
 								});
 							}
@@ -6943,6 +6951,15 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						public void run() {
 							DialogPopup.dismissLoadingDialog();
 							switchDriverScreen(driverScreenMode);
+//							try {
+//								if(Data.getCurrentCustomerInfo() != null){
+//									if(Data.getCurrentCustomerInfo().getDeliveryInfos().size()>0){
+//										setDeliveryPos(getDeliveryPos());
+//									}
+//								}
+//							} catch (Exception e) {
+//								e.printStackTrace();
+//							}
 						}
 					});
 				}

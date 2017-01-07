@@ -738,6 +738,7 @@
     <string name="reg_as_driver">Register as a Jugnoo DRIVER</string>
     <string name="driver_app">DRIVER APPLICATION</string>
     <string name="register_as_driver">Register as DRIVER</string>
+    <string name="distance_lower">distance</string>
 
 
     <string-array name="CountryCodes" >

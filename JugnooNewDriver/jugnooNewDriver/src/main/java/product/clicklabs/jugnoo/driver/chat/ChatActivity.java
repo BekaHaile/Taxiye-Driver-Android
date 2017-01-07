@@ -10,13 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONObject;
 
@@ -36,6 +39,7 @@ import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
 import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
@@ -91,6 +95,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
 			engagementId = getIntent().getIntExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(Data.getCurrentEngagementId()));
 			userImage = getIntent().getStringExtra("user_image");
+		} else{
+			try {
+				engagementId = Integer.parseInt(Data.getCurrentEngagementId());
+				userImage = Data.getCurrentCustomerInfo().image;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		sdf = new SimpleDateFormat("hh:mm a");
@@ -149,7 +160,17 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			textViewTitle.setText(Data.getCurrentCustomerInfo().getName());
 		}
 		CHAT_SCREEN_OPEN = "yes";
-    }
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					hideSoftKeyboard();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}, 100);
+	}
 
 	Runnable loadDiscussion=new Runnable() {
 		@Override
@@ -172,6 +193,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			chatAdapter.notifyDataSetChanged();
 		} else {
 			chatAdapter.notifyDataSetChanged();
+		}
+	}
+
+	public void hideSoftKeyboard() {
+		if(getCurrentFocus()!=null) {
+			InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+			inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
 		}
 	}
 

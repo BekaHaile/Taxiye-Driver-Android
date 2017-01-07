@@ -54,7 +54,7 @@ public class DriverRateCard extends BaseActivity {
 	TextView title;
 	TextView textViewPickupChargesValues, textViewBaseFareValue, textViewDistancePKmValue, textViewPickupChargesCond,
 			textViewTimePKmValue, textViewDtoCValue, textViewDtoDValue, textViewDtoC, textViewDtoD, textViewDriverReferral,
-			textViewDriverReferralValue, textViewDifferentialPricingEnable;
+			textViewDriverReferralValue, textViewDifferentialPricingEnable, textViewPickupChargesCondStar;
 	ImageView imageViewHorizontal7;
 
 	@Override
@@ -96,6 +96,8 @@ public class DriverRateCard extends BaseActivity {
 		textViewDtoCValue.setTypeface(Fonts.mavenRegular(this));
 		textViewDtoDValue = (TextView) findViewById(R.id.textViewDtoDValue);
 		textViewDtoDValue.setTypeface(Fonts.mavenRegular(this));
+		textViewPickupChargesCondStar = (TextView) findViewById(R.id.textViewPickupChargesCondStar);
+		textViewPickupChargesCondStar.setTypeface(Fonts.mavenRegular(this));
 
 		textViewDtoC = (TextView) findViewById(R.id.textViewDtoC);
 		textViewDtoC.setTypeface(Fonts.mavenRegular(this));
@@ -169,8 +171,15 @@ public class DriverRateCard extends BaseActivity {
 
 			textViewPickupChargesValues.setText(getResources().getString(R.string.rupee)
 					+ rateCardResponse.getRates().getPickupCharges());
-			textViewPickupChargesCond.setText(getResources().getString(R.string.applicable_after,
-					rateCardResponse.getRates().getPickupChargesThreshold()));
+
+			if(rateCardResponse.getRates().getPickupChargesThreshold() > 0){
+				textViewPickupChargesCond.setText(getResources().getString(R.string.applicable_after,
+						String.valueOf(rateCardResponse.getRates().getPickupChargesThreshold())));
+				textViewPickupChargesCondStar.setText("*");
+			} else {
+				textViewPickupChargesCond.setVisibility(View.GONE);
+				textViewPickupChargesCondStar.setVisibility(View.GONE);
+			}
 
 			textViewBaseFareValue.setText(getResources().getString(R.string.rupee)
 					+ rateCardResponse.getRates().getBaseFare());
