@@ -785,6 +785,8 @@
     <string name="pool_stop">Pool Stop</string>
     <string name="battery_low">Battery level is low. Please plugin to a power source.</string>
     <string name="alter_phone_number">Alternate Phone Number</string>
+    <string name="reset">Reset</string>
+    <string name="unable_to_capture_signature">unable to capture signature</string>
 
 
     <string-array name="CountryCodes" >
