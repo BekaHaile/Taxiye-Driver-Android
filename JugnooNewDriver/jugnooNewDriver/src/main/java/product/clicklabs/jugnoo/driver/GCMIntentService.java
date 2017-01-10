@@ -356,8 +356,8 @@ public class GCMIntentService extends IntentService {
 
 			NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 			Log.v("message", "," + message);
-			Intent notificationIntent = new Intent(context, notifClass);
 
+			Intent notificationIntent = new Intent(context, notifClass);
 			notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			PendingIntent intent = PendingIntent.getActivity(context, 0, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 

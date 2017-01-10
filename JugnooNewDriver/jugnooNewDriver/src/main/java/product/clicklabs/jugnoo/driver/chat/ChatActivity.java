@@ -34,6 +34,7 @@ import product.clicklabs.jugnoo.driver.Data;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RideDetailsNewActivity;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
@@ -74,6 +75,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	private String userImage;
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
 	ChatAdapter chatAdapter;
+	boolean appOpen = true;
 	ChatSuggestionAdapter chatSuggestionAdapter;
 	private FetchChatResponse fetchChatResponse;
 	private SimpleDateFormat sdf;
@@ -97,6 +99,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 			userImage = getIntent().getStringExtra("user_image");
 		} else{
 			try {
+				appOpen =false;
 				engagementId = Integer.parseInt(Data.getCurrentEngagementId());
 				userImage = Data.getCurrentCustomerInfo().image;
 			} catch (Exception e) {
@@ -159,6 +162,18 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		if(Data.getCurrentCustomerInfo() != null) {
 			textViewTitle.setText(Data.getCurrentCustomerInfo().getName());
 		}
+
+		if(Data.getCurrentCustomerInfo() == null){
+			if(HomeActivity.activity == null){
+				Intent homeScreen = new Intent(this, SplashNewActivity.class);
+				homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(homeScreen);
+			}
+
+			performBackPressed();
+		}
+
+
 		CHAT_SCREEN_OPEN = "yes";
 		new Handler().postDelayed(new Runnable() {
 			@Override
