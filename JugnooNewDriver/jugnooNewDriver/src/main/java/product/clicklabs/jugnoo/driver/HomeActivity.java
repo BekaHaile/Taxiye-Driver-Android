@@ -7773,16 +7773,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(customerInfo.getIsDelivery() == 1) {
 				textViewRideInstructions.setVisibility(View.GONE);
+				RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) textViewRideInstructions.getLayoutParams();
 //				textViewRideInstructionsInRide.setVisibility(View.GONE);
 				if (DriverScreenMode.D_ARRIVED == driverScreenMode) {
+					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, 0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.arrive_at_pickup_location));
 				}
 				else if (DriverScreenMode.D_START_RIDE == driverScreenMode) {
+					layoutParams.setMargins((int)(18f*ASSL.Xscale()), 0, 0, 0);
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(getResources().getString(R.string.start_the_delivery));
 				}
 				else if (DriverScreenMode.D_IN_RIDE == driverScreenMode) {
+					layoutParams.setMargins((int)(54f*ASSL.Xscale()), 0, 0, (int)(5f*ASSL.Yscale()));
 					textViewRideInstructions.setVisibility(View.VISIBLE);
 					textViewRideInstructions.setText(customerInfo.getName());
 					for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
@@ -7795,6 +7799,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 //					textViewRideInstructions.setText(getResources().getString(R.string.all_orders_have_been_delivered));
 				}
+				textViewRideInstructions.setLayoutParams(layoutParams);
 			}
 //			else if(customerInfo.getIsPooled() != 1){
 //				textViewRideInstructions.setVisibility(View.GONE);
