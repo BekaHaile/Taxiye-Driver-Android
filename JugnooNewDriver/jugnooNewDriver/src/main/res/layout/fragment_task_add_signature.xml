@@ -1,8 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+<RelativeLayout
+    android:id="@+id/relativeLayoutRoot"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <RelativeLayout
+        android:id="@+id/topRl"
+        android:layout_width="match_parent"
+        android:layout_height="90px"
+        android:background="@color/black_top_bar_bg"
+        android:splitMotionEvents="false" >
+
+        <Button
+            android:id="@+id/backBtn"
+            android:layout_width="82px"
+            android:layout_height="82px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/back_btn_selector"
+            android:tag="mwar" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="@string/i_accept_abv"
+            android:textColor="@color/white"
+            android:textSize="48px" />
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -10,30 +39,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="16dp"
+        android:layout_margin="35px"
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="572px"
+            android:layout_height="78px"
+            android:layout_gravity="center_horizontal"
+            android:hint="@string/type_your_name"
+            android:paddingLeft="12px"
+            android:background="@drawable/background_white_red_v2_bordered"/>
+
+
+        <RelativeLayout
+            android:layout_width="572px"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10px"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="38px">
+
+            <TextView
+                android:id="@+id/textViewTandC"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/i_accept"
+                android:textColor="@color/black"
+                android:layout_marginRight="4px"
+                android:layout_toRightOf="@+id/imageViewTandC"
+                android:textSize="34px"/>
+
+
+            <ImageView
+                android:id="@+id/imageViewTandC"
+                android:layout_width="36px"
+                android:layout_height="36px"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="32px"
+                android:src="@drawable/option_checked_orange"
+                android:tag="mwar"
+            />
+
+        </RelativeLayout>
+
+
         <Button
             android:id="@+id/btnAction"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
+            android:layout_width="300px"
+            android:layout_height="78px"
             android:background="@drawable/orange_btn_selector"
-            android:text="@string/update"
+            android:text="@string/submit"
             android:textAllCaps="false"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="48px"
             android:textColor="@color/white"
             android:textSize="32px"/>
 
-        <Button
-            android:id="@+id/btnReset"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/button_height"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/reset"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="32px"/>
+
     </LinearLayout>
 
 
@@ -42,10 +106,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@id/llControls"
-        android:layout_margin="16dp"
+        android:layout_margin="32px"
+        android:layout_below="@+id/topRl"
         android:background="@color/white"
-        android:elevation="8dp"
-        card_view:cardCornerRadius="5dp">
+        android:elevation="16px"
+        card_view:cardCornerRadius="2px">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -56,12 +121,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
+
                 <View
                     android:id="@+id/vSignaturePadPlaceholder"
-                    android:layout_width="118dp"
-                    android:layout_height="121dp"
+                    android:layout_width="236px"
+                    android:layout_height="242px"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/white_bg"/>
+                    android:background="@drawable/pen_icon"/>
 
                 <com.github.gcacace.signaturepad.views.SignaturePad
                     android:id="@+id/spSignaturePad"
@@ -69,6 +136,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:penColor="@android:color/black"/>
+
+
+                <Button
+                    android:id="@+id/btnReset"
+                    android:layout_width="104px"
+                    android:layout_height="49px"
+                    android:background="@drawable/background_white_red_v2_bordered"
+                    android:layout_alignParentRight="true"
+                    android:textColor="@color/red_v2"
+                    android:text="@string/clear"
+                    android:textSize="32px"/>
+
             </RelativeLayout>
 
             <RelativeLayout
@@ -106,15 +185,15 @@
         android:visibility="gone">
 
         <View
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:background="@drawable/white_bg"/>
+            android:layout_width="48px"
+            android:layout_height="48px"
+            android:background="@drawable/pen_icon"/>
 
         <TextView
             android:id="@+id/tvPlaceholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10px"
             android:text="@string/NA"
             android:textColor="@color/black_text_alpha"
             android:textSize="28px"/>

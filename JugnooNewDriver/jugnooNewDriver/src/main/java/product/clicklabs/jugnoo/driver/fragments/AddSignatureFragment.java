@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -33,13 +35,16 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HelpActivity;
 import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.JSONParser;
 import product.clicklabs.jugnoo.driver.R;
+import product.clicklabs.jugnoo.driver.RegisterScreen;
 import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.DocRequirementResponse;
+import product.clicklabs.jugnoo.driver.utils.ASSL;
 import product.clicklabs.jugnoo.driver.utils.AppStatus;
 import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Log;
@@ -64,20 +69,23 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
     private HomeActivity activity;
 
-    private Button btnReset;
+    private Button btnReset, backBtn;
     private Button btnAction;
 
-    private TextView tvInformation;
-    private ImageView imgSignaturePreview;
+    private TextView tvInformation, textViewTandC, title;
+    private ImageView imgSignaturePreview, imageViewTandC;
 
     private SignaturePad spSignaturePad;
     private View vSignaturePadPlaceholder;
 
-    private RelativeLayout rlSignaturePreview;
+    private RelativeLayout rlSignaturePreview, relativeLayoutRoot;
     private RelativeLayout rlSignaturePadHolder;
 
     private String image;
     private View rlPlaceholder;
+
+    EditText editTextName;
+	boolean tandc;
 
     private File acknowledgementImage;
 
@@ -109,6 +117,15 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
         activity = (HomeActivity) getActivity();
 
+		relativeLayoutRoot = (RelativeLayout) parentView.findViewById(R.id.relativeLayoutRoot);
+		try {
+			if (relativeLayoutRoot != null) {
+				new ASSL(activity, relativeLayoutRoot, 1134, 720, false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
         btnAction = (Button) parentView.findViewById(iAction);
         btnAction.setTypeface(Data.latoRegular(activity));
         btnAction.setOnClickListener(this);
@@ -117,12 +134,22 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         btnReset.setTypeface(Data.latoRegular(activity));
         btnReset.setOnClickListener(this);
 
+		backBtn = (Button) parentView.findViewById(R.id.backBtn);
+
+		title = (TextView) parentView.findViewById(R.id.title);
+		title.setTypeface(Data.latoRegular(activity));
+
         tvInformation = (TextView) parentView.findViewById(R.id.tvInformation);
         tvInformation.setTypeface(Data.latoRegular(activity));
 
-        imgSignaturePreview = (ImageView) parentView.findViewById(R.id.imgSignaturePreview);
+		textViewTandC = (TextView) parentView.findViewById(R.id.textViewTandC);
+		textViewTandC.setTypeface(Data.latoRegular(activity));
 
+        imgSignaturePreview = (ImageView) parentView.findViewById(R.id.imgSignaturePreview);
+		imageViewTandC = (ImageView) parentView.findViewById(R.id.imageViewTandC);
         vSignaturePadPlaceholder = parentView.findViewById(R.id.vSignaturePadPlaceholder);
+		editTextName = (EditText) parentView.findViewById(R.id.editTextName);
+
 
         spSignaturePad = (SignaturePad) parentView.findViewById(R.id.spSignaturePad);
         spSignaturePad.setOnSignedListener(this);
@@ -134,6 +161,33 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         rlPlaceholder = parentView.findViewById(R.id.rlPlaceholder);
         TextView tvPlaceholder = (TextView) parentView.findViewById(R.id.tvPlaceholder);
         tvPlaceholder.setTypeface(Data.latoRegular(activity));
+
+		textViewTandC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(activity, HelpActivity.class));
+			}
+		});
+
+		imageViewTandC.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if(tandc){
+					imageViewTandC.setImageResource(R.drawable.option_unchecked);
+					tandc = false;
+				} else {
+					imageViewTandC.setImageResource(R.drawable.option_checked_orange);
+					tandc = true;
+				}
+			}
+		});
+
+		backBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				backPress();
+			}
+		});
 
     }
 
@@ -245,8 +299,8 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
      * Method to verify whether the User has signed
      */
     private void verifyAndSendUserSignature() {
-        if (!hasUserSigned) {
-            Toast.makeText(activity, R.string.i_accept_new, Toast.LENGTH_LONG).show();
+        if (!tandc) {
+            Toast.makeText(activity, R.string.select_tandc, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -327,10 +381,8 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     /**
      * Method to go back to details
      */
-    private void goBackToDetails() {
-
-        if (!isHidden())
-            activity.onBackPressed();
+    private void backPress() {
+		activity.onBackPressed();
     }
 
 
@@ -378,7 +430,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         fos.flush();
         fos.close();
 
-		uploadPicToServer(activity, acknowledgementImage);
+//		uploadPicToServer(activity, acknowledgementImage);
     }
 
 //    @Override

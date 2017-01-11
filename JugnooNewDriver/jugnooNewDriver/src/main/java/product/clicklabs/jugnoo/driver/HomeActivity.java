@@ -1137,7 +1137,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 //					FlurryEventLogger.event(CALL_US);
 //					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
-
+					drawerLayout.closeDrawer(GravityCompat.START);
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
 					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);

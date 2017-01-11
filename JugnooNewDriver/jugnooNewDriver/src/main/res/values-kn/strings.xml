@@ -733,6 +733,9 @@
     <string name="alter_phone_number">Alternate Phone Number</string>
     <string name="reset">Reset</string>
     <string name="unable_to_capture_signature">unable to capture signature</string>
+    <string name="clear">Clear</string>
+    <string name="type_your_name">Type your name</string>
+    <string name="i_accept_abv"><![CDATA[ACCEPT T &amp; C]]></string>
 
 
     <string-array name="CountryCodes" >
