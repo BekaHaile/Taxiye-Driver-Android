@@ -1,6 +1,7 @@
 package product.clicklabs.jugnoo.driver.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -323,13 +324,14 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     private void uploadPicToServer(final Activity activity, File photoFile) {
         try {
             if (AppStatus.getInstance(activity).isOnline(activity)) {
+				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
                 DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("access_token", Data.userData.accessToken);
 
                 TypedFile typedFile;
                 typedFile = new TypedFile(Constants.MIME_TYPE, photoFile);
-                RestClient.getApiServices().uploadImageToServer(typedFile, params, new retrofit.Callback<DocRequirementResponse>() {
+                RestClient.getApiServices().uploadSignatureToServer(typedFile, params, new retrofit.Callback<DocRequirementResponse>() {
                     @Override
                     public void success(DocRequirementResponse docRequirementResponse, Response response) {
                         try {
@@ -356,17 +358,26 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
                             } else {
                                 DialogPopup.dismissLoadingDialog();
                             }
+							clearSignaturePad();
+//							backPress();
+
                         } catch (Exception exception) {
                             exception.printStackTrace();
                             DialogPopup.alertPopup(activity, "", Data.SERVER_ERROR_MSG);
                             DialogPopup.dismissLoadingDialog();
+							clearSignaturePad();
+//							backPress();
                         }
                         DialogPopup.dismissLoadingDialog();
+						clearSignaturePad();
+//						backPress();
                     }
 
                     @Override
                     public void failure(RetrofitError error) {
                         DialogPopup.dismissLoadingDialog();
+						clearSignaturePad();
+//						backPress();
                     }
                 });
             } else {
@@ -414,11 +425,13 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         acknowledgementImage = new File(activity.getFilesDir(), "task_signature.png");
 
         Bitmap bImage = spSignaturePad.getSignatureBitmap();
-
+		File f = null;
         if (bImage == null) {
             Toast.makeText(activity, R.string.unable_to_capture_signature, Toast.LENGTH_SHORT).show();
             return;
-        }
+        } else {
+			f = compressToFile(getActivity(), bImage, Bitmap.CompressFormat.JPEG, 100);
+		}
 
         // Convert bitmap to byte array
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -430,7 +443,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         fos.flush();
         fos.close();
 
-//		uploadPicToServer(activity, acknowledgementImage);
+		uploadPicToServer(activity, f);
     }
 
 //    @Override
@@ -504,4 +517,23 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     public boolean isUploading() {
         return uploading;
     }
+
+	private static File compressToFile(Context context, Bitmap src, Bitmap.CompressFormat format,
+									   int quality) {
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		src.compress(format, quality, os);
+		File f = new File(context.getExternalCacheDir(), "temp" + ".jpg");
+		try {
+			f.createNewFile();
+			byte[] bitmapdata = os.toByteArray();
+
+			FileOutputStream fos = new FileOutputStream(f);
+			fos.write(bitmapdata);
+			fos.flush();
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return f;
+	}
 }

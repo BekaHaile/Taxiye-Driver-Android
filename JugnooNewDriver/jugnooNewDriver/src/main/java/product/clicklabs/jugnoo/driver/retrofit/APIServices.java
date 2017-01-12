@@ -468,6 +468,12 @@ public interface APIServices {
 							 @PartMap Map<String, String> params,
 							 Callback<DocRequirementResponse> cb);
 
+	@Multipart
+	@POST("/upload_signature_document")
+	void uploadSignatureToServer(@Part("image") TypedFile image,
+							 @PartMap Map<String, String> params,
+							 Callback<DocRequirementResponse> cb);
+
 	@FormUrlEncoded
 	@POST("/delete_document")
 	void deleteImage(@FieldMap Map<String, String> params,
