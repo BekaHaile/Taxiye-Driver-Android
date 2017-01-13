@@ -18,7 +18,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="548px"
+                android:layout_height="646px"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="30px"
                 android:layout_marginRight="30px"
@@ -166,6 +166,46 @@
 
 
                 </RelativeLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="2px"
+                    android:layout_margin="2px"
+                    android:src="@color/grey_light"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:layout_width="50px"
+                        android:layout_height="50px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="26px"
+                        android:src="@drawable/vehicle_img_grey"
+                        android:tag="mhar"/>
+
+                    <EditText
+                        android:id="@+id/vehicleNumEt"
+                        android:layout_width="match_parent"
+                        android:layout_height="88px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="72px"
+                        android:background="#0000"
+                        android:gravity="center_vertical"
+                        android:hint="@string/vehicle_number"
+                        android:paddingLeft="20px"
+                        android:paddingRight="20px"
+                        android:singleLine="true"
+                        android:textColor="@color/black_text_v2"
+                        android:textColorHint="@color/grey_dark_less"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/text_size_34"/>
+
+
+                </RelativeLayout>
+
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -380,7 +420,7 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/i_accept_new"
                 android:textColor="@color/white"
-                android:layout_marginTop="180px"
+                android:layout_marginTop="100px"
                 android:layout_toRightOf="@+id/imageViewTandC"
                 android:textSize="28px"/>
 

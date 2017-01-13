@@ -12,13 +12,14 @@
    <LinearLayout
        android:id="@+id/currentCompetedLLayout"
        android:layout_width="match_parent"
-       android:layout_height="90px"
+       android:layout_height="wrap_content"
        android:orientation="horizontal">
 
        <LinearLayout
            android:id="@+id/currentLLayout"
            android:layout_width="360px"
            android:layout_height="match_parent"
+           android:visibility="gone"
            android:orientation="vertical">
 
            <TextView
@@ -47,6 +48,7 @@
            android:layout_width="360px"
            android:layout_height="match_parent"
            android:orientation="vertical"
+           android:visibility="gone"
            android:gravity="center_horizontal">
 
            <product.clicklabs.jugnoo.driver.utils.CustomTextVeiw
@@ -78,6 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="98px"
         android:textSize="32px"
+        android:visibility="gone"
         android:text="message from vendor"
         android:gravity="center"/>
 
@@ -109,9 +112,10 @@
             android:layout_height="match_parent"
             android:fadeScrollbars="true"
             android:scrollbars="vertical"
-            android:splitMotionEvents="false"
-            >
+            android:splitMotionEvents="false">
         </android.support.v7.widget.RecyclerView>
+
+
 
     </RelativeLayout>
 

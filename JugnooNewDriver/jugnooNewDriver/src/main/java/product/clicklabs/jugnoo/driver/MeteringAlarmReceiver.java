@@ -3,6 +3,7 @@ package product.clicklabs.jugnoo.driver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.ActivityCompat;
 
 import product.clicklabs.jugnoo.driver.datastructure.GpsState;
@@ -27,7 +28,13 @@ public class MeteringAlarmReceiver extends BroadcastReceiver {
 
 				if (timeDiff >= 6 * MINUTE) {
 					Database2.getInstance(context).updateGpsState(GpsState.GREATER_SIX.getOrdinal());
-					SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true);
+
+					SharedPreferences preferences = context.getSharedPreferences(Data.SETTINGS_SHARED_PREF_NAME, 0);
+					if(preferences.getString(Data.SP_SERVER_LINK, Data.DEFAULT_SERVER_URL).equalsIgnoreCase(Data.LIVE_SERVER_URL)){
+						SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, true);
+					} else {
+						SoundMediaPlayer.startSound(context, R.raw.cancellation_ring, 4, false);
+					}
 
 					FlurryEventLogger.gpsStatus(context, "Device Restart");
 

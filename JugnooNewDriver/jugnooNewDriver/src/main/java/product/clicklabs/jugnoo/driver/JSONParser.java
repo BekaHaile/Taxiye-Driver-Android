@@ -736,7 +736,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), i);
+						jDelivery.optString(KEY_CANCEL_REASON, ""), i, false);
 				deliveryInfos.add(deliveryInfo);
 			}
 		} catch (Exception e) {
@@ -759,7 +759,7 @@ public class JSONParser implements Constants {
 						jDelivery.optDouble(KEY_DISTANCE, 0),
 						jDelivery.optLong(KEY_RIDE_TIME, System.currentTimeMillis()),
 						jDelivery.optLong(KEY_WAIT_TIME, 0),
-						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size());
+						jDelivery.optString(KEY_CANCEL_REASON, ""), customerInfo.getDeliveryInfos().size(), false);
 				deliveryInfo.setReturnData(jDelivery.getInt("total_delivery"), jDelivery.getInt("delivery_success"), jDelivery.getInt("delivery_fail"));
 				customerInfo.getDeliveryInfos().add(deliveryInfo);
 			}

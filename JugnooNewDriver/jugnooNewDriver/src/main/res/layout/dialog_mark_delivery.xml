@@ -60,9 +60,10 @@
                 android:textSize="52px"/>
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="620px"
                 android:layout_height="54px"
                 android:layout_marginTop="32px"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center">
 
                 <ImageView
@@ -80,6 +81,7 @@
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:background="@color/white"
+                    android:singleLine="true"
                     android:paddingLeft="10px"
                     android:paddingRight="10px"
                     android:text="@string/NA"
