@@ -114,6 +114,7 @@ public interface Constants {
     String KEY_CANCEL_REASON = "cancel_reason";
     String EMPTY_OBJECT = "{}";
     String KEY_IS_DELIVERY = "is_delivery";
+	String KEY_IS_DELIVERY_POOL = "is_delivery_pool";
     String KEY_DISTANCE_TRAVELLED = "distance_travelled";
 	String KEY_RING_TYPE = "ring_type";
 
@@ -142,6 +143,7 @@ public interface Constants {
     String ACCEPTED_STATE_UPDATE_TIME_PERIOD = "accepted_state_update_time_period";
     String FREE_STATE_UPDATE_TIME_PERIOD = "free_state_update_time_period";
     String KEY_RING_COUNT = "ring_count";
+	String KEY_RIDE_TYPE = "ride_type";
 
 	String HIGH_DEMAND_WEB_URL = "high_demand_web_url";
 

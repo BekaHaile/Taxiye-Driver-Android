@@ -1521,7 +1521,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
 					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-					if(customerInfo.getIsPooled() ==1){
+					if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
 						getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
 					} else if(customerInfo.getIsDelivery() ==1){
 						if(anyDeliveriesUnchecked(customerInfo)){
@@ -3187,7 +3187,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				ArrayList<CustomerInfo> customerEngCount = Data.getAssignedCustomerInfosListForEngagedStatus();
-				if (customerEngCount.size() > 1 && customerInfo.getIsPooled() ==1) {
+				if (customerEngCount.size() > 1 ) {
 					changeButton.setVisibility(View.VISIBLE);
 				} else {
 					changeButton.setVisibility(View.GONE);
@@ -4392,7 +4392,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			holder.textViewRequestName.setVisibility(View.GONE);
 			holder.textViewRequestDetails.setVisibility(View.GONE);
 			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
-			if(customerInfo.getIsDelivery() == 1){
+			if(customerInfo.getIsDelivery() == 1 ){
 				if(customerInfo.getTotalDeliveries() > 0) {
 					holder.textViewRequestDetails.setVisibility(View.VISIBLE);
 					holder.textViewRequestDetails.setText(getResources().getString(R.string.delivery_numbers)
@@ -4510,6 +4510,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
+			if(customerInfo.getIsDeliveryPool() ==1){
+				params.put(KEY_RIDE_TYPE,"4");
+			}
 
 			Log.i("request", String.valueOf(params));
 
@@ -4570,6 +4573,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int referenceId = jObj.optInt(KEY_REFERENCE_ID, 0);
 
 					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
+					int isDeliveryPool = 0;
+					if(jObj.optInt(KEY_RIDE_TYPE,0)==4){
+						isDeliveryPool =1;
+					}
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
@@ -4632,7 +4639,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
+							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -4711,6 +4718,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
+			if(customerInfo.getIsDeliveryPool() ==1){
+				params.put(KEY_RIDE_TYPE,"4");
+			}
 
 			RestClient.getApiServices().driverRejectRequestRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -6490,11 +6500,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	@Override
-	public void onNewRideRequest(int perfectRide, int isPooled) {
+	public void onNewRideRequest(int perfectRide, int isPooled, int isDelivery) {
 		if (driverScreenMode == DriverScreenMode.D_INITIAL
 				|| driverScreenMode == DriverScreenMode.D_RIDE_END
 				|| perfectRide == 1
-				|| isPooled == 1) {
+				|| isPooled == 1
+				|| isDelivery == 1) {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {

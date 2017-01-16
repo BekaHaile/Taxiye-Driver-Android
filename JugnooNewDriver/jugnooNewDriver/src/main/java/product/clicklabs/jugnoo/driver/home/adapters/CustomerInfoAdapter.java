@@ -56,19 +56,39 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         holder.relative.setTag(position);
 		String text = "";
 
+		holder.textViewDeliveryName.setVisibility(View.GONE);
+
 		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-			text = activity.getResources().getString(R.string.please_drop_customer,
-					customerInfo.getName());
+			if(customerInfo.getIsDeliveryPool() ==1){
+				text = activity.getResources().getString(R.string.please_drop_customer_delivery,
+						customerInfo.getName());
+				holder.textViewDeliveryName.setVisibility(View.VISIBLE);
+				holder.textViewDeliveryName.setText(customerInfo.getDeliveryInfos().get(0).getCustomerName());
+			} else {
+				text = activity.getResources().getString(R.string.please_drop_customer,
+						customerInfo.getName());
+			}
 		} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
 			text = activity.getResources().getString(R.string.please_reach_customer_location,
 					customerInfo.getName());
 		} else if (customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
-			text = activity.getResources().getString(R.string.please_start_customer_ride,
-					customerInfo.getName());
+			if(customerInfo.getIsDeliveryPool() ==1){
+				text = activity.getResources().getString(R.string.please_start_customer_delivery,
+						customerInfo.getName());
+			} else {
+				text = activity.getResources().getString(R.string.please_start_customer_ride,
+						customerInfo.getName());
+			}
 		}
 		holder.textViewCustomer1Name.setText(text);
 
-		holder.textViewCustomer1Address.setText(customerInfo.getAddress());
+
+
+		if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal() && customerInfo.getIsDeliveryPool() ==1) {
+			holder.textViewCustomer1Address.setText(customerInfo.getDeliveryInfos().get(0).getDeliveryAddress());
+		} else {
+			holder.textViewCustomer1Address.setText(customerInfo.getAddress());
+		}
 
         holder.relative.setBackgroundColor(activity.getResources().getColor(R.color.transparent));
         if(Data.getCurrentEngagementId().equalsIgnoreCase(String.valueOf(customerInfo.getEngagementId()))&& (getItemCount() >1)){
@@ -147,7 +167,7 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        public TextView textViewCustomer1Name, textViewCustomer1Address;
+        public TextView textViewCustomer1Name, textViewCustomer1Address, textViewDeliveryName;
 		public LinearLayout linearLayoutCard1, linearLayoutSelection1;
         public RelativeLayout relative;
         public ImageView imageViewDote, imageViewHorizontalLineNew, imageViewVerticalLine, imageViewFakeBottom, imageViewVerticalLine1;
@@ -156,6 +176,10 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             super(convertView);
 			textViewCustomer1Name = (TextView) convertView.findViewById(R.id.textViewCustomer1Name);
 			textViewCustomer1Name.setTypeface(Fonts.mavenRegular(context), Typeface.BOLD);
+
+			textViewDeliveryName = (TextView) convertView.findViewById(R.id.textViewDeliveryName);
+			textViewDeliveryName.setTypeface(Fonts.mavenRegular(context));
+
 			textViewCustomer1Address = (TextView) convertView.findViewById(R.id.textViewCustomer1Address);
 			textViewCustomer1Address.setTypeface(Fonts.mavenRegular(context));
 

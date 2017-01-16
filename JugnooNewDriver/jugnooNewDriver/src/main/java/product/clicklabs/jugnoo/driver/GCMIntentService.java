@@ -195,7 +195,7 @@ public class GCMIntentService extends IntentService {
 	@SuppressWarnings("deprecation")
 	public static void notificationManagerResumeAction(Context context, String message, boolean ring, String engagementId,
 													   int referenceId, String userId, int perfectRide,
-													   int isPooled, int isDelivery) {
+													   int isPooled, int isDelivery, int isDeliveryPool) {
 
 		try {
 			long when = System.currentTimeMillis();
@@ -267,6 +267,7 @@ public class GCMIntentService extends IntentService {
 					intentAccKill.putExtra("referrence_id", referenceId);
 					intentAccKill.putExtra(Constants.KEY_IS_POOLED, isPooled);
 					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY, isDelivery);
+					intentAccKill.putExtra(Constants.KEY_IS_DELIVERY_POOL, isDeliveryPool);
 					intentAccKill.putExtra("user_id", userId);
 					Log.i("accceptRideGCM Logs", "" + engagementId + " " + userId + " " + referenceId);
 					intentAccKill.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -479,10 +480,14 @@ public class GCMIntentService extends IntentService {
 								int perfectRide = jObj.optInt(Constants.KEY_PERFECT_RIDE, 0);
 								int isPooled = jObj.optInt(Constants.KEY_IS_POOLED, 0);
 								int isDelivery = jObj.optInt(Constants.KEY_IS_DELIVERY, 0);
+								int isDeliveryPool = 0;
 								int changeRing = jObj.optInt(Constants.KEY_RING_TYPE, 0);
 								int driverScreenMode = Prefs.with(this).getInt(SPLabels.DRIVER_SCREEN_MODE,
 										DriverScreenMode.D_INITIAL.getOrdinal());
 								boolean entertainRequest = false;
+								if(jObj.optInt(Constants.KEY_RIDE_TYPE,0) == 4){
+									isDeliveryPool =1;
+								}
 								if (1 == perfectRide
 										&& DriverScreenMode.D_IN_RIDE.getOrdinal() == driverScreenMode
 										&& Prefs.with(GCMIntentService.this).getString(SPLabels.PERFECT_ACCEPT_RIDE_DATA, " ").equalsIgnoreCase(" ")) {
@@ -557,7 +562,7 @@ public class GCMIntentService extends IntentService {
 										CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
-												isPooled, isDelivery, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
+												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
 												new LatLng(currrentLatitude, currrentLongitude));
 										Data.addCustomerInfo(customerInfo);
 
@@ -571,14 +576,14 @@ public class GCMIntentService extends IntentService {
 										requestTimeoutTimerTask.startTimer(requestTimeOutMillis);
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
-												isPooled, isDelivery);
-										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled);
+												isPooled, isDelivery, isDeliveryPool);
+										HomeActivity.appInterruptHandler.onNewRideRequest(perfectRide, isPooled, isDelivery);
 
 										Log.e("referenceId", "=" + referenceId);
 									} else {
 										notificationManagerResumeAction(this, address + "\n" + distanceDry, true, engagementId,
 												referenceId, userId, perfectRide,
-												isPooled, isDelivery);
+												isPooled, isDelivery, isDeliveryPool);
 										startRing(this, engagementId, changeRing);
 										flurryEventForRequestPush(engagementId, driverScreenMode);
 

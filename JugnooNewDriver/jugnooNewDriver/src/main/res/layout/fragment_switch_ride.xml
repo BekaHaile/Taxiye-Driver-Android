@@ -37,14 +37,14 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="804px"
+        android:layout_height="884px"
         android:layout_below="@+id/topRl"
         android:layout_marginTop="72px">
 
         <ImageView
-            android:layout_width="750px"
+            android:layout_width="820px"
             android:layout_height="match_parent"
-            android:layout_marginLeft="-330px"
+            android:layout_marginLeft="-365px"
             android:layerType="software"
             android:src="@drawable/dotted"/>
 
