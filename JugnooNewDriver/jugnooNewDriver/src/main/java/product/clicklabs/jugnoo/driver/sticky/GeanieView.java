@@ -102,8 +102,18 @@ public class GeanieView extends Service {
 							WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
 							PixelFormat.TRANSLUCENT);
 					paramsNew.gravity = Gravity.TOP | Gravity.LEFT;
-					paramsNew.x = 0;
-					paramsNew.y = 100;
+					try {
+						int[] par = GeniePositonsSaver.readGenieParams(GeanieView.this);
+						if (par != null) {
+							paramsNew.x = par[0];
+							paramsNew.y = par[1];
+						} else {
+							paramsNew.x = 0;
+							paramsNew.y = 100;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 
 					windowManager.addView(convertView, paramsNew);
 					new ASSL(this, 1134, 720, true);
@@ -161,7 +171,8 @@ public class GeanieView extends Service {
 						switch (event.getAction()) {
 							case MotionEvent.ACTION_DOWN:
 								time_start = System.currentTimeMillis();
-								handler_longClick.postDelayed(runnable_longClick, 500);
+								handler_longClick.removeCallbacks(runnable_longClick);
+								handler_longClick.postDelayed(runnable_longClick, 400);
 
 								remove_img_width = removeImg.getLayoutParams().width;
 								remove_img_height = removeImg.getLayoutParams().height;
@@ -181,68 +192,63 @@ public class GeanieView extends Service {
 								float diff = Math.max(x_diff_move, y_diff_move);
 
 								if (diff > Math.abs(5)) {
-									if (convertView.getVisibility() == View.VISIBLE) {
-//										convertView.setVisibility(View.GONE);
-//										clearAnims();
-//										clearAnims2();
-									}
-								}
 
-								x_cord_Destination = x_init_margin + x_diff_move;
-								y_cord_Destination = y_init_margin + y_diff_move;
+									x_cord_Destination = x_init_margin + x_diff_move;
+									y_cord_Destination = y_init_margin + y_diff_move;
 
-								if (isLongclick) {
+									if (isLongclick) {
 
-									// 1. We need to clear the animations first.
+										// 1. We need to clear the animations first.
 //									clearAnims();
 //									clearAnims2();
-									// 2. We check if the chat head is in the range of trash icon or not.
-									int x_bound_left = (szWindow.x - removeImg.getWidth()) / 2 - (int) (ASSL.Xscale() * 20);
-									int x_bound_right = (szWindow.x + removeImg.getWidth()) / 2 + (int) (ASSL.Xscale() * 20);
+										// 2. We check if the chat head is in the range of trash icon or not.
+										int x_bound_left = (szWindow.x - removeImg.getWidth()) / 2 - (int) (ASSL.Xscale() * 20);
+										int x_bound_right = (szWindow.x + removeImg.getWidth()) / 2 + (int) (ASSL.Xscale() * 20);
 
-									int y_bound_top = szWindow.y - (removeImg.getHeight() + getStatusBarHeight()) - (int) (ASSL.Yscale() * 200);
+										int y_bound_top = szWindow.y - (removeImg.getHeight() + getStatusBarHeight()) - (int) (ASSL.Yscale() * 200);
 
-									if ((x_cord_Destination >= x_bound_left && x_cord_Destination <= x_bound_right) && y_cord_Destination >= y_bound_top) {
-										inBounded = true;
-										Log.d("Chat head is now", "Inbounded");
+										if ((x_cord_Destination >= x_bound_left && x_cord_Destination <= x_bound_right) && y_cord_Destination >= y_bound_top) {
+											inBounded = true;
+											Log.d("Chat head is now", "Inbounded");
 
-										// this is working perfectly fine
-										layoutParams.x = (szWindow.x - convertView.getWidth()) / 2;
-										layoutParams.y = szWindow.y - (removeImg.getHeight() + getStatusBarHeight() + getStatusBarHeight());
-
-
-										final AbsoluteLayout.LayoutParams param_remove = (AbsoluteLayout.LayoutParams) removeImg.getLayoutParams();
-										param_remove.height = (int) (remove_img_height * 1.5);
-										param_remove.width = (int) (remove_img_width * 1.5);
-
-										int x_cord_remove = (int) (((szWindow.x - (remove_img_width + remove_img_width / 2)) / 2));
-										int y_cord_remove = (int) (absoluteLayoutClose.getHeight() / 2 - remove_img_height);
-										param_remove.x = x_cord_remove;
-										param_remove.y = y_cord_remove;
-										absoluteLayoutClose.updateViewLayout(removeImg, param_remove);
+											// this is working perfectly fine
+											layoutParams.x = (szWindow.x - convertView.getWidth()) / 2;
+											layoutParams.y = szWindow.y - (removeImg.getHeight() + getStatusBarHeight() + getStatusBarHeight());
 
 
-										// chak de phatte !
+											final AbsoluteLayout.LayoutParams param_remove = (AbsoluteLayout.LayoutParams) removeImg.getLayoutParams();
+											param_remove.height = (int) (remove_img_height * 1.5);
+											param_remove.width = (int) (remove_img_width * 1.5);
 
-										removeImg.setVisibility(View.VISIBLE);
+											int x_cord_remove = (int) (((szWindow.x - (remove_img_width + remove_img_width / 2)) / 2));
+											int y_cord_remove = (int) (absoluteLayoutClose.getHeight() / 2 - remove_img_height);
+											param_remove.x = x_cord_remove;
+											param_remove.y = y_cord_remove;
+											absoluteLayoutClose.updateViewLayout(removeImg, param_remove);
 
 
-										windowManager.updateViewLayout(convertView, layoutParams);
-										break;
-									} else {
-										inBounded = false;
-										removeImg.getLayoutParams().height = remove_img_height;
-										removeImg.getLayoutParams().width = remove_img_width;
+											// chak de phatte !
 
-										moveCloseView(x_cord_Destination, y_cord_Destination);
+											removeImg.setVisibility(View.VISIBLE);
+
+
+											windowManager.updateViewLayout(convertView, layoutParams);
+											break;
+										} else {
+											inBounded = false;
+											removeImg.getLayoutParams().height = remove_img_height;
+											removeImg.getLayoutParams().width = remove_img_width;
+
+											moveCloseView(x_cord_Destination, y_cord_Destination);
+										}
+
 									}
 
+									layoutParams.x = x_cord_Destination;
+									layoutParams.y = y_cord_Destination;
+
+									windowManager.updateViewLayout(convertView, layoutParams);
 								}
-
-								layoutParams.x = x_cord_Destination;
-								layoutParams.y = y_cord_Destination;
-
-								windowManager.updateViewLayout(convertView, layoutParams);
 
 								break;
 							case MotionEvent.ACTION_UP:
@@ -292,10 +298,12 @@ public class GeanieView extends Service {
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 										newIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(newIntent);
+										stopSelf();
 									} else {
 										Intent homeScreen = new Intent(GeanieView.this, SplashNewActivity.class);
 										homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 										startActivity(homeScreen);
+										stopSelf();
 									}
 
 

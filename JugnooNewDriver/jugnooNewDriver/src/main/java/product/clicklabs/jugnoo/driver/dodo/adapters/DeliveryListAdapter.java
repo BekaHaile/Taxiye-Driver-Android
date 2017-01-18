@@ -39,10 +39,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedByteArray;
 
-/**
- * Developer: Rishabh
- * Dated: 26/08/15.
- */
+
 public class DeliveryListAdapter extends PagerAdapter {
 
     private HomeActivity activity;
@@ -175,7 +172,7 @@ public class DeliveryListAdapter extends PagerAdapter {
 		buttonMarkFailed.setLayoutParams(params);
 
 		if(task.getStatus() == DeliveryStatus.RETURN.getOrdinal()){
-			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
+//			linearLayoutDeliveryItemHeader.setBackgroundColor(activity.getResources().getColor(R.color.red_v2));
 			textViewCashCollected.setVisibility(View.GONE);
 			textViewListCount.setVisibility(View.GONE);
 			textViewCashCollected.setTextColor(activity.getResources().getColor(R.color.white));

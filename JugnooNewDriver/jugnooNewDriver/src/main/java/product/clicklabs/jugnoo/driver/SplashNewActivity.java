@@ -133,14 +133,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	private State state = State.SPLASH_LS;
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
-	Button buttonLogin, buttonRegister, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
+	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
 
 	static boolean loginDataFetched = false;
 
-	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt;
+	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt, vehicleNumEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
-	TextView textViewLoginRegister, textViewTandC, textViewRegLogin;
+	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, buttonRegister, textViewRegDriver;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
@@ -232,8 +232,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
-		buttonRegister = (Button) findViewById(R.id.buttonRegister);
+		buttonRegister = (TextView) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		textViewRegDriver = (TextView) findViewById(R.id.textViewRegDriver);
+		textViewRegDriver.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		backBtn = (Button) findViewById(R.id.backBtn);
 		backBtn.setVisibility(View.GONE);
@@ -260,6 +263,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		alternatePhoneNoEt  = (EditText) findViewById(R.id.alternatePhoneNoEt);
 		alternatePhoneNoEt.setTypeface(Data.latoRegular(getApplicationContext()));
+
+		vehicleNumEt  = (EditText) findViewById(R.id.vehicleNumEt);
+		vehicleNumEt.setTypeface(Data.latoRegular(getApplicationContext()));
 
 		phoneNoOPTEt = (EditText) findViewById(R.id.phoneNoOPTEt);
 		phoneNoOPTEt.setTypeface(Data.latoRegular(getApplicationContext()));
@@ -463,6 +469,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 			}
 		});
 
+		vehicleNumEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				vehicleNumEt.setError(null);
+			}
+		});
+
 		phoneNoOPTEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 
 			@Override
@@ -507,7 +521,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				}
 				String referralCode = referralCodeEt.getText().toString().trim();
 
-//				String autoNum = autoNumEt.getText().toString().trim();
+				String autoNum = vehicleNumEt.getText().toString().trim();
 				String phoneNo = phoneNoEt.getText().toString().trim();
 				String altPhoneNo = alternatePhoneNoEt.getText().toString().trim();
 
@@ -515,9 +529,9 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
 				} else {
-					if ("".equalsIgnoreCase(" ")) {
-//						autoNumEt.requestFocus();
-//						autoNumEt.setError("Please enter auto number");
+					if ("".equalsIgnoreCase(autoNum)) {
+						vehicleNumEt.requestFocus();
+						vehicleNumEt.setError("Please enter vehicle number");
 					} else {
 						if ("".equalsIgnoreCase(phoneNo)) {
 							phoneNoEt.requestFocus();
@@ -1533,6 +1547,8 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		nameEt.setError(null);
 		phoneNoEt.setText("");
 		phoneNoEt.setError(null);
+		vehicleNumEt.setText("");
+		vehicleNumEt.setError(null);
 		alternatePhoneNoEt.setText("");
 		alternatePhoneNoEt.setError(null);
 		referralCodeEt.setText("");
@@ -2473,7 +2489,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				viewInitLS.setVisibility(View.VISIBLE);
 
 				relativeLayoutJugnooLogo.setVisibility(View.VISIBLE);
-
+				textViewRegDriver.setVisibility(View.GONE);
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
@@ -2493,7 +2509,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
-
+				textViewRegDriver.setVisibility(View.GONE);
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
 				backBtn.setVisibility(View.GONE);
@@ -2509,7 +2525,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				relativeLayoutLS.setVisibility(View.VISIBLE);
 				linearLayoutLoginSignupButtons.setVisibility(View.GONE);
 //				linearLayoutNoNet.setVisibility(View.VISIBLE);
-
+				textViewRegDriver.setVisibility(View.GONE);
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);
 				backBtn.setVisibility(View.GONE);
@@ -2525,7 +2541,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				relativeLayoutLS.setVisibility(View.GONE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
-
+				textViewRegDriver.setVisibility(View.GONE);
 				linearLayoutLogin.setVisibility(View.VISIBLE);
 				relativeLayoutSignup.setVisibility(View.GONE);
 				backBtn.setVisibility(View.VISIBLE);
@@ -2543,7 +2559,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				relativeLayoutLS.setVisibility(View.GONE);
 				linearLayoutLoginSignupButtons.setVisibility(View.VISIBLE);
 //				linearLayoutNoNet.setVisibility(View.GONE);
-
+				textViewRegDriver.setVisibility(View.VISIBLE);
 				linearLayoutLogin.setVisibility(View.GONE);
 				relativeLayoutScrollStop.setVisibility(View.GONE);
 				relativeLayoutSignup.setVisibility(View.VISIBLE);

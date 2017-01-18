@@ -625,7 +625,7 @@
 	<string name="before_ride">BEFORE RIDE</string>
 	<string name="in_ride_rate">IN RIDE</string>
 	<string name="referral_rate">REFERRAL</string>
-	<string name="pickup_charges">Pickup Charges</string>
+	<string name="pickup_charges">Pickup Charges </string>
 	<string name="base_fare">Base Fare</string>
 	<string name="distance_per_km">Distance\n(Per Km)</string>
 	<string name="time_per_min">Time\n(per min)</string>
@@ -736,7 +736,7 @@
 	<string name="fail">Fail</string>
 	<string name="chat">CHAT</string>
 	<string name="required">required</string>
-	<string name="login_here">Already have an driver account? <u>Login Here</u></string>
+	<string name="login_here">Already have a driver account? <u>Login Here</u></string>
 	<string name="i_accept_new">By Signing up you agree to our <u>Terms of Use</u></string>
 	<string name="nl_otp_please_enter_otp">Please enter your One Time Password sent to</string>
 	<string name="driver">Driver</string>
@@ -750,6 +750,14 @@
 	<string name="pool_stop">Pool Stop</string>
 	<string name="battery_low">Battery level is low. Please plugin to a power source.</string>
 	<string name="alter_phone_number">Alternate Phone Number</string>
+	<string name="delivery_start">Delivery Start</string>
+	<string name="delivery_stop">Delivery Stop</string>
+	<string name="delivery_end">Delivery End</string>
+	<string name="select_delivery">Select Delivery</string>
+	<string name="reg_as_driver"><u>Register as a Jugnoo DRIVER</u></string>
+	<string name="driver_app">DRIVER APPLICATION</string>
+	<string name="register_as_driver">Register as DRIVER</string>
+	<string name="distance_lower">Distance</string>
 
 
 	<string-array name="CountryCodes" >
