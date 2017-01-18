@@ -52,6 +52,7 @@ public class SwitchCustomerFragment extends Fragment {
 	private View rootView;
 	private HomeActivity activity;
 	private CustomerInfoAdapter customerInfoAdapter;
+	private TextView title;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +82,13 @@ public class SwitchCustomerFragment extends Fragment {
 		recyclerViewCustomer.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
 		recyclerViewCustomer.setItemAnimator(new DefaultItemAnimator());
 		recyclerViewCustomer.setHasFixedSize(false);
+
+		title = (TextView) rootView.findViewById(R.id.title);
+		if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+			title.setText(activity.getResources().getString(R.string.select_merchant));
+		} else {
+			title.setText(activity.getResources().getString(R.string.select_customer));
+		}
 
 		customerInfoAdapter = new CustomerInfoAdapter(activity, new CustomerInfoAdapter.Callback() {
 			@Override

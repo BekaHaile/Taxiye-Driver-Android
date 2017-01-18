@@ -64,7 +64,8 @@ public class ApiAcceptRide {
 					params.put("imei", DeviceUniqueID.getUniqueId(activity));
 					params.put("app_version", "" + Utils.getAppVersion(activity));
 					params.put("is_accepting_perfect_ride", String.valueOf(perfectRide));
-					params.put("ride_type","4");
+
+
 
 					if (!"".equalsIgnoreCase(referenceId)) {
 						params.put("reference_id", referenceId);

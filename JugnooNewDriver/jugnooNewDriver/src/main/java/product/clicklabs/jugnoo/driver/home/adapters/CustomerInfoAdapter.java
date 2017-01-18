@@ -69,8 +69,13 @@ public class CustomerInfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 						customerInfo.getName());
 			}
 		} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
-			text = activity.getResources().getString(R.string.please_reach_customer_location,
-					customerInfo.getName());
+			if(customerInfo.getIsDeliveryPool() ==1){
+				text = activity.getResources().getString(R.string.please_reach_customer_delivery,
+						customerInfo.getName());
+			} else {
+				text = activity.getResources().getString(R.string.please_reach_customer_location,
+						customerInfo.getName());
+			}
 		} else if (customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
 			if(customerInfo.getIsDeliveryPool() ==1){
 				text = activity.getResources().getString(R.string.please_start_customer_delivery,

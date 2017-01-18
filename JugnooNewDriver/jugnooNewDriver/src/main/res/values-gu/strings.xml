@@ -715,6 +715,8 @@
     <string name="distance_lower">distance</string>
     <string name="please_drop_customer_delivery">End %s\'s delivery</string>
     <string name="please_start_customer_delivery">Start %s\'s delivery</string>
+    <string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
+    <string name="select_merchant">Select Merchant</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>
