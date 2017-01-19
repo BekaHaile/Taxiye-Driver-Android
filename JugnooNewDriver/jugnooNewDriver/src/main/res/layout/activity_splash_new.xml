@@ -99,35 +99,35 @@
         android:id="@+id/relativeLayoutJugnooLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="140px"
         android:splitMotionEvents="false">
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"
-            android:layout_width="340px"
-            android:layout_height="280px"
+            android:layout_width="250px"
+            android:layout_height="264px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/jugnoo_white_logo"
+            android:background="@drawable/new_jugnoo_spalsh_logo"
             android:tag="mwar"
             android:visibility="visible"/>
 
         <RelativeLayout
             android:id="@+id/jugnooTextImgRl"
-            android:layout_width="390px"
+            android:layout_width="290px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="140px"
+            android:layout_marginTop="190px"
             android:tag="mwar">
 
             <ImageView
                 android:id="@+id/jugnooTextImg"
-                android:layout_width="379px"
-                android:layout_height="136px"
+                android:layout_width="279px"
+                android:layout_height="86px"
                 android:tag="mwar"/>
 
             <ImageView
                 android:id="@+id/jugnooTextImg2"
-                android:layout_width="90px"
+                android:layout_width="70px"
                 android:layout_height="90px"
                 android:src="@drawable/transparent"
                 />
