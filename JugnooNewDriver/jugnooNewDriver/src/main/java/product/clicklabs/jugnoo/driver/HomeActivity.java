@@ -3565,6 +3565,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1 && customerInfo.getDeliveryInfos().size() > 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
 						changeButton.setVisibility(View.VISIBLE);
+						if(customerInfo.getIsDeliveryPool() == 1
+								&& Data.getAssignedCustomerInfosListForEngagedStatus().size() < 2){
+							changeButton.setVisibility(View.GONE);
+						}
 					} else{
 						linearLayoutRideValues.setVisibility(View.VISIBLE);
 					}
