@@ -7,7 +7,7 @@
     android:layout_below="@+id/topRlOuter"
     android:animateLayoutChanges="true"
     android:splitMotionEvents="false"
-    android:visibility="visible">
+    android:visibility="gone">
 
 
     <ScrollView

@@ -3010,7 +3010,20 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} else {
 					sortCustomerState = true;
 				}
+
+				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+					ArrayList<CustomerInfo> customerInfosListPool = Data.getAssignedCustomerInfosListForEngagedStatus();
+					if(mode == DriverScreenMode.D_IN_RIDE && customerInfosListPool.size() >1){
+						for(int i=0; i < customerInfosListPool.size();i++){
+							if(customerInfosListPool.get(i).getStatus() == EngagementStatus.ACCEPTED.getOrdinal() ||
+									customerInfosListPool.get(i).getStatus() == EngagementStatus.ARRIVED.getOrdinal() ){
+								Data.setCurrentEngagementId(String.valueOf(customerInfosListPool.get(i).getEngagementId()));
+							}
+						}
+					}
+				}
 			}
+
 			driverScreenMode = Data.getCurrentState();
 			mode = driverScreenMode;
 
@@ -3022,7 +3035,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (endRideData != null) {
 					mapLayout.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
-
+					scrollViewEndRide.smoothScrollTo(0, 0);
 
 					double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
 							.getDistance(HomeActivity.this), HomeActivity.this) / 1000.0);
@@ -3138,7 +3151,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else if (mode == DriverScreenMode.D_BEFORE_END_OPTIONS) {
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
-
+				scrollViewEndRide.smoothScrollTo(0, 0);
 				editTextEnterMeterFare.setText("");
 
 				endRideInfoRl.setVisibility(View.GONE);
@@ -8544,6 +8557,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
 					deliveryInfoTabs.notifyDatasetchange(true);
 					setDeliveryMarkers();
+
+					if(customerInfo.getIsDeliveryPool()==1) {
+						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+						if (customerEnfagementInfos1.size() > 1) {
+							if (customerInfo.engagementId == customerEnfagementInfos1.get(0).getEngagementId()) {
+								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(1).getEngagementId()));
+							} else {
+								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(0).getEngagementId()));
+							}
+							changeCustomerState(false);
+							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+							switchDriverScreen(driverScreenMode);
+						}
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
