@@ -96,7 +96,9 @@ public class SPLabels {
 	public static final String SET_AUDIT_STATUS = "set_audit_status";
     public static final String GET_USL_STATUS = "get_usl_status";
 	public static final String SET_AUDIT_STATUS_POPUP = "set_audit_status_popup";
+	public static final String DIGITAL_SIGNATURE_POPUP_STATUS = "digital_signature_popup_status";
 	public static final String SET_AUDIT_POPUP_STRING = "set_audit_popup_string";
+	public static final String SET_DIGITAL_SIGNATURE_POPUP_STRING = "set_digital_signature_popup_string";
 
     public static final String ACCEPT_RIDE_VIA_PUSH = "accept_ride_via_push";
 	public static final String LAST_DESTINATION ="last_destination";

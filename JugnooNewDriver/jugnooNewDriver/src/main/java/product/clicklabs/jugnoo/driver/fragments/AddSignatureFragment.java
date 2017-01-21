@@ -136,7 +136,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         btnReset.setOnClickListener(this);
 
 		backBtn = (Button) parentView.findViewById(R.id.backBtn);
-
+		backBtn.setVisibility(View.GONE);
 		title = (TextView) parentView.findViewById(R.id.title);
 		title.setTypeface(Data.latoRegular(activity));
 
@@ -430,7 +430,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
             Toast.makeText(activity, R.string.unable_to_capture_signature, Toast.LENGTH_SHORT).show();
             return;
         } else {
-			f = compressToFile(getActivity(), bImage, Bitmap.CompressFormat.JPEG, 100);
+			f = compressToFile(getActivity(), bImage, Bitmap.CompressFormat.JPEG, 80);
 		}
 
         // Convert bitmap to byte array
@@ -443,7 +443,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         fos.flush();
         fos.close();
 
-		uploadPicToServer(activity, f);
+		uploadPicToServer(activity, acknowledgementImage);
     }
 
 //    @Override
