@@ -736,6 +736,7 @@
     <string name="clear">Clear</string>
     <string name="type_your_name">Type your name</string>
     <string name="i_accept_abv"><![CDATA[ACCEPT T &amp; C]]></string>
+    <string name="your_sig_here">YOUR SIGNATURE HERE</string>
 
 
     <string-array name="CountryCodes" >

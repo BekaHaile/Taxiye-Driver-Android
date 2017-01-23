@@ -49,6 +49,7 @@
             android:layout_height="78px"
             android:layout_gravity="center_horizontal"
             android:hint="@string/type_your_name"
+            android:inputType="textCapCharacters"
             android:paddingLeft="12px"
             android:background="@drawable/background_white_red_v2_bordered"/>
 
@@ -123,12 +124,15 @@
 
 
 
-                <View
+                <TextView
                     android:id="@+id/vSignaturePadPlaceholder"
-                    android:layout_width="236px"
-                    android:layout_height="242px"
+                    android:layout_width="550px"
+                    android:layout_height="150px"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/pen_icon"/>
+                    android:textSize="64px"
+                    android:gravity="center"
+                    android:textColor="@color/grey_dark_less"
+                    android:text="@string/your_sig_here"/>
 
                 <com.github.gcacace.signaturepad.views.SignaturePad
                     android:id="@+id/spSignaturePad"
@@ -146,6 +150,7 @@
                     android:layout_alignParentRight="true"
                     android:textColor="@color/red_v2"
                     android:text="@string/clear"
+                    android:visibility="gone"
                     android:textSize="32px"/>
 
             </RelativeLayout>

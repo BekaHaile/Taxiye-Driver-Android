@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,10 +57,6 @@ import retrofit.mime.TypedFile;
 import retrofit.mime.TypedString;
 
 
-/**
- * Developer: Rishabh
- * Dated: 06/09/15.
- */
 public class AddSignatureFragment extends Fragment implements View.OnClickListener,
         SignaturePad.OnSignedListener, View.OnTouchListener {
 
@@ -77,7 +74,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     private ImageView imgSignaturePreview, imageViewTandC;
 
     private SignaturePad spSignaturePad;
-    private View vSignaturePadPlaceholder;
+    private TextView vSignaturePadPlaceholder;
 
     private RelativeLayout rlSignaturePreview, relativeLayoutRoot;
     private RelativeLayout rlSignaturePadHolder;
@@ -148,7 +145,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
         imgSignaturePreview = (ImageView) parentView.findViewById(R.id.imgSignaturePreview);
 		imageViewTandC = (ImageView) parentView.findViewById(R.id.imageViewTandC);
-        vSignaturePadPlaceholder = parentView.findViewById(R.id.vSignaturePadPlaceholder);
+        vSignaturePadPlaceholder = (TextView) parentView.findViewById(R.id.vSignaturePadPlaceholder);
 		editTextName = (EditText) parentView.findViewById(R.id.editTextName);
 
 
@@ -189,66 +186,9 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 				backPress();
 			}
 		});
+		getActivity().getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-    }
-
-    /**
-     * Method to load the Image
-     *
-     * @param image
-     */
-    private void loadImage(final String image) {
-
-        Log.e(TAG, "loadImage: " + image);
-
-        this.image = image;
-
-        if (image == null) return;
-
-        Callback callback = new Callback() {
-
-            @Override
-            public void onSuccess() {
-
-                Log.e("Loading Image", "Successful");
-
-                // Avoid Error: Fragment not attached to Activity
-                if (isAdded())
-                    lockControls(false, R.string.update);
-            }
-
-            @Override
-            public void onError() {
-
-                // Avoid Error: Fragment not attached to Activity
-                if (isAdded()) {
-                    lockControls(false, R.string.update);
-                    tvInformation.setText(R.string.image_upload_failed);
-                }
-                Log.e("Loading Image", "Failed");
-            }
-        };
-
-        if (image.startsWith("http://") || image.startsWith("https://")) {
-
-            lockControls(true, R.string.update);
-            Log.e("Web Image", image);
-
-            Picasso.with(activity).load(image).memoryPolicy(MemoryPolicy.NO_CACHE)
-                    .into(imgSignaturePreview, callback);
-        } else {
-
-            Log.e("Local Image", image);
-
-            File file = new File(image);
-
-            if (file.exists())
-                Picasso.with(activity).load(acknowledgementImage = file)
-                        .memoryPolicy(MemoryPolicy.NO_CACHE)
-                        .into(imgSignaturePreview, callback);
-        }
-
-        toggleView(true);
     }
 
     /**
@@ -261,7 +201,12 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         rlSignaturePreview.setVisibility(isPreview ? View.VISIBLE : View.GONE);
 
         rlSignaturePadHolder.setVisibility(isPreview ? View.GONE : View.VISIBLE);
-        vSignaturePadPlaceholder.setVisibility(isPreview ? View.GONE : View.VISIBLE);
+        vSignaturePadPlaceholder.setVisibility(isPreview ? vSignaturePadPlaceholder.GONE : vSignaturePadPlaceholder.VISIBLE);
+		if(isPreview){
+			btnReset.setVisibility(View.VISIBLE);
+		} else {
+			btnReset.setVisibility(View.GONE);
+		}
     }
 
     @Override
@@ -283,16 +228,12 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
      * Method to clear the SignaturePad
      */
     private void clearSignaturePad() {
-
         try {
             // Clear the Signature Pad
             spSignaturePad.clear();
         } catch (Throwable e) {
             // Print the Error Stack
             e.printStackTrace();
-
-            // Display the Error to User
-//            Utils.toast(activity, activity.getString(R.string.an_error_occured_while_clearing_signature));
         }
     }
 
@@ -451,35 +392,6 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 		uploadPicToServer(activity, acknowledgementImage);
     }
 
-//    @Override
-//    public void onHiddenChanged(boolean hidden) {
-//        super.onHiddenChanged(hidden);
-//
-//        if (!hidden) {
-//
-//            int subtitle;
-//            int visibility;
-//
-//
-//            if (isCompleted) {
-//                subtitle = R.string.view_signature_text;
-//                visibility = View.INVISIBLE;
-//                toggleView(true);
-//
-//                rlPlaceholder.setVisibility(image == null ? View.VISIBLE : View.GONE);
-//                rlSignaturePreview.setVisibility(image == null ? View.GONE : View.VISIBLE);
-//            } else {
-//                subtitle = R.string.add_signature;
-//                visibility = View.VISIBLE;
-//            }
-//// Check whether the Signature has already been added
-//            clearSignaturePad();
-//            activity.setSubTitle(subtitle);
-//
-//            btnAction.setVisibility(visibility);
-//            btnReset.setVisibility(visibility);
-//        }
-//    }
 
     @Override
     public void onStartSigning() {
@@ -505,7 +417,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
         if (event.getAction() == MotionEvent.ACTION_DOWN)
             vSignaturePadPlaceholder.setVisibility(View.GONE);
-
+			btnReset.setVisibility(View.VISIBLE);
         return false;
     }
 
@@ -517,6 +429,14 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     public String getSignatureId() {
         return signatureInsertedId;
     }
+
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().getWindow().setSoftInputMode(
+				WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	}
 
 
     public boolean isUploading() {
