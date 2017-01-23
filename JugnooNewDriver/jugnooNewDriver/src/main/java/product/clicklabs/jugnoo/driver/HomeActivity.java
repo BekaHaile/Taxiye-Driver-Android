@@ -428,7 +428,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private PlaceSearchListFragment placeSearchListFragment;
 
-	private RelativeLayout relativeLayoutContainer;
+	public RelativeLayout relativeLayoutContainer;
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
 	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
@@ -1839,7 +1839,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				@Override
 				public void run() {
 
-					if(Prefs.with(HomeActivity.this).getInt(SPLabels.DIGITAL_SIGNATURE_POPUP_STATUS,1) == 0){
+					if(Prefs.with(HomeActivity.this).getInt(SPLabels.DIGITAL_SIGNATURE_POPUP_STATUS,0) == 1){
 						DialogPopup.alertPopupWithListener(HomeActivity.this, "",
 								Prefs.with(HomeActivity.this).getString(SPLabels.SET_DIGITAL_SIGNATURE_POPUP_STRING,""), new OnClickListener() {
 									@Override

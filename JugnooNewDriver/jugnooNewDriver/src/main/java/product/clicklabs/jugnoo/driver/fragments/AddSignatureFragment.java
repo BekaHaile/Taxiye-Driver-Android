@@ -321,10 +321,9 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     }
 
 
-    private void uploadPicToServer(final Activity activity, File photoFile) {
+    private void uploadPicToServer(final HomeActivity activity, File photoFile) {
         try {
             if (AppStatus.getInstance(activity).isOnline(activity)) {
-				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
                 DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
                 HashMap<String, String> params = new HashMap<String, String>();
                 params.put("access_token", Data.userData.accessToken);
@@ -346,7 +345,13 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
                                 if (!SplashNewActivity.checkIfTrivialAPIErrors(activity, jObj, flag)) {
 
                                     if (ApiResponseFlags.ACTION_COMPLETE.getOrdinal() == flag) {
-                                        DialogPopup.alertPopup(activity, "", message);
+										DialogPopup.alertPopupWithListener(activity, "", message, new View.OnClickListener() {
+											@Override
+											public void onClick(View v) {
+												activity.relativeLayoutContainer.setVisibility(View.GONE);
+												activity.getSupportFragmentManager().popBackStack(PlaceSearchListFragment.class.getName(), getFragmentManager().POP_BACK_STACK_INCLUSIVE);
+											}
+										});
 
                                     } else if (ApiResponseFlags.ACTION_FAILED.getOrdinal() == flag) {
                                         DialogPopup.alertPopup(activity, "", message);
