@@ -1437,11 +1437,32 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 								}
 								else if(ApiResponseFlags.AUTH_LOGIN_SUCCESSFUL.getOrdinal() == flag){
 									if(!SplashNewActivity.checkIfUpdate(jObj.getJSONObject("login"), activity)){
-										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+//										new AccessTokenDataParseAsync(activity, jsonString, message).execute();
+										String resp;
+										try {
+											resp = new JSONParser().parseAccessTokenLoginData(activity, jsonString);
+										} catch (Exception e) {
+											e.printStackTrace();
+											resp = Constants.SERVER_TIMEOUT;
+										}
+
+										if(resp.contains(Constants.SERVER_TIMEOUT)){
+											loginDataFetched = false;
+											DialogPopup.alertPopup(activity, "", message);
+										}
+										else{
+											noNetFirstTime = false;
+											noNetSecondTime = false;
+											loginDataFetched = true;
+											DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
+										}
+
 										JSONParser.parsePushyInterval(activity, jObj);
 										Utils.deleteMFile();
 										Utils.clearApplicationData(SplashNewActivity.this);
 										FlurryEventLogger.logResponseTime(activity, System.currentTimeMillis() - responseTime, FlurryEventNames.LOGIN_ACCESSTOKEN_RESPONSE);
+
+										DialogPopup.dismissLoadingDialog();
 									}
 									else{
 										DialogPopup.dismissLoadingDialog();
