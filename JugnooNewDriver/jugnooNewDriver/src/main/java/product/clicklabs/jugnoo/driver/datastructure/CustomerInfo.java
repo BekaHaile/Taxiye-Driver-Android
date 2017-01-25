@@ -45,6 +45,7 @@ public class CustomerInfo {
 	private int isPooled;
 
 	private int isDelivery;
+	private int isDeliveryPool;
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private int totalDeliveries;
 	private double estimatedFare, dryDistance;
@@ -58,7 +59,7 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, int referenceId, String name, String phoneNumber, LatLng requestlLatLng, int cachedApiEnabled,
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
-						int status, int isPooled, int isDelivery, String address, int totalDeliveries, double estimatedFare,
+						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
 						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery){
 		this.engagementId = engagementId;
 		this.userId = userId;
@@ -86,6 +87,7 @@ public class CustomerInfo {
 		this.setStatus(status);
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
+		this.isDeliveryPool = isDeliveryPool;
 		this.address = address;
 
 		if(this.isDelivery == 1){
@@ -104,7 +106,7 @@ public class CustomerInfo {
 	}
 
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
-						int referenceId, double fareFactor, int status, int isPooled, int isDelivery,
+						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
 						LatLng currentLatLng){
 		this.engagementId = engagementId;
@@ -118,6 +120,7 @@ public class CustomerInfo {
 		this.status = status;
 		this.isPooled = isPooled;
 		this.isDelivery = isDelivery;
+		this.isDeliveryPool = isDeliveryPool;
 		this.totalDeliveries = totalDeliveries;
 		this.estimatedFare = estimatedFare;
 		this.name = userName;
@@ -356,6 +359,14 @@ public class CustomerInfo {
 
 	public void setIsDelivery(int isDelivery) {
 		this.isDelivery = isDelivery;
+	}
+
+	public int getIsDeliveryPool() {
+		return isDeliveryPool;
+	}
+
+	public void setIsDeliveryPool(int isDeliveryPool) {
+		this.isDeliveryPool = isDeliveryPool;
 	}
 
 	public ArrayList<DeliveryInfo> getDeliveryInfos() {

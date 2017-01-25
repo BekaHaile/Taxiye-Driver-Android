@@ -108,5 +108,8 @@ public class SPLabels {
     public static final String START_RIDE_ALERT_RADIUS = "start_ride_alert_radius";
     public static final String START_RIDE_ALERT_RADIUS_FINAL = "start_ride_alert_radius_final";
     public static final String CHAT_ENABLED = "chat_enabled";
+    public static final String DELIVERY_IN_PROGRESS = "delivery_in_progress";
+	public static final String CHAT_SIZE = "chat_size";
+
 
 }

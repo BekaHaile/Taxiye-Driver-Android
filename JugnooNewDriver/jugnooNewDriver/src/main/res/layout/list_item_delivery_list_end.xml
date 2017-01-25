@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/relativeLayoutEnd"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/imageViewDeliveryline2"
+        android:layout_width="6px"
+        android:layout_height="40px"
+        android:layout_marginLeft="42px"
+        android:background="@color/grey_light_delivery"/>
+
+    <ImageView
+        android:id="@+id/imageViewDeliverycircle2"
+        android:layout_width="22px"
+        android:layout_height="22px"
+        android:layout_marginLeft="34px"
+        android:layout_marginBottom="20px"
+        android:layout_below="@+id/imageViewDeliveryline2"
+        android:src="@drawable/delivery_list_icon"/>
+
+    <TextView
+        android:id="@+id/textViewDeliveryStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_30"
+        android:text="@string/delivery_end"
+        android:textColor="@color/text_color_light"
+        android:layout_marginTop="34px"
+        android:layout_marginLeft="10px"
+        android:layout_toRightOf="@+id/imageViewDeliverycircle2"
+        android:visibility="visible"/>
+
+</RelativeLayout>

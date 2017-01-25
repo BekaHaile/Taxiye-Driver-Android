@@ -6,8 +6,8 @@
     android:layout_height="1134px"
     android:animateLayoutChanges="true"
     android:background="@drawable/splash_new_background"
-    android:orientation="vertical"
-    android:splitMotionEvents="false">
+    android:splitMotionEvents="false" android:orientation="vertical"
+    android:baselineAligned="false">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -21,6 +21,18 @@
             android:background="@drawable/back_btn_selector"
             android:textColor="@drawable/blue_alpha_color_selector"
             android:textSize="@dimen/button_text_size"/>
+
+
+        <TextView
+            android:id="@+id/textViewRegDriver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginLeft="162px"
+            android:layout_centerVertical="true"
+            android:textSize="46px"
+            android:visibility="gone"
+            android:text="@string/register_as_driver"/>
 
         <RelativeLayout
             android:id="@+id/selectLanguageLl"
@@ -74,53 +86,66 @@
         android:id="@+id/viewInitJugnoo"
         android:layout_width="match_parent"
         android:layout_height="40px"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/viewInitSplashJugnoo"
         android:layout_width="match_parent"
         android:layout_height="200px"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 
     <RelativeLayout
         android:id="@+id/relativeLayoutJugnooLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100px"
+        android:layout_marginTop="140px"
         android:splitMotionEvents="false">
 
         <ImageView
             android:id="@+id/imageViewJugnooLogo"
-            android:layout_width="340px"
-            android:layout_height="270px"
+            android:layout_width="250px"
+            android:layout_height="264px"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/jugnoo_white_logo"
+            android:background="@drawable/new_jugnoo_spalsh_logo"
             android:tag="mwar"
             android:visibility="visible"/>
 
         <RelativeLayout
             android:id="@+id/jugnooTextImgRl"
-            android:layout_width="390px"
+            android:layout_width="290px"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="140px"
+            android:layout_marginTop="190px"
             android:tag="mwar">
 
             <ImageView
                 android:id="@+id/jugnooTextImg"
-                android:layout_width="379px"
-                android:layout_height="136px"
+                android:layout_width="279px"
+                android:layout_height="86px"
                 android:tag="mwar"/>
 
             <ImageView
                 android:id="@+id/jugnooTextImg2"
-                android:layout_width="90px"
+                android:layout_width="70px"
                 android:layout_height="90px"
                 android:src="@drawable/transparent"
                 />
 
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewDriver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_below="@+id/imageViewJugnooLogo"
+            android:layout_marginTop="18px"
+            android:text="@string/driver_app"
+            android:textColor="@color/white"
+            android:textSize="32px"/>
+
 
         <ProgressBar
         android:id="@+id/progressBar1"
@@ -139,14 +164,14 @@
         android:id="@+id/viewInitLS"
         android:layout_width="match_parent"
         android:layout_height="300px"
-        android:visibility="visible"/>
+        android:visibility="gone"/>
 
 
     <RelativeLayout
         android:id="@+id/relativeLayoutLS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144px"
+        android:layout_marginTop="186px"
         android:animateLayoutChanges="true"
         android:visibility="visible">
 
@@ -160,19 +185,6 @@
             android:splitMotionEvents="false"
             android:visibility="visible">
 
-
-            <TextView
-                android:id="@+id/textViewDriver"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/imageViewHorizontal3"
-                android:paddingLeft="10px"
-                android:paddingRight="10px"
-                android:text="@string/driver"
-                android:textColor="@color/white"
-                android:textSize="30px"/>
 
             <Button
                 android:id="@+id/buttonLogin"
@@ -189,8 +201,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="54px"
-                android:layout_marginBottom="32px"
                 android:layout_marginTop="32px"
+                android:visibility="visible"
                 android:gravity="center">
 
                 <ImageView
@@ -224,15 +236,14 @@
             </RelativeLayout>
 
 
-            <Button
+            <TextView
                 android:id="@+id/buttonRegister"
-                android:layout_width="473px"
-                android:layout_height="100px"
-                android:background="@drawable/button_theme_alpha_white_stroke_selector"
-                android:text="@string/register"
-                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/reg_as_driver"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_34"/>
+                android:layout_marginTop="32px"
+                android:textSize="32px"/>
 
             <Button
                 android:id="@+id/buttonRegisterTookan"

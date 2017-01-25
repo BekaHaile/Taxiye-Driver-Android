@@ -10,13 +10,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.json.JSONObject;
 
@@ -28,13 +31,17 @@ import java.util.HashMap;
 
 import product.clicklabs.jugnoo.driver.Constants;
 import product.clicklabs.jugnoo.driver.Data;
+import product.clicklabs.jugnoo.driver.HomeActivity;
 import product.clicklabs.jugnoo.driver.R;
 import product.clicklabs.jugnoo.driver.RideDetailsNewActivity;
+import product.clicklabs.jugnoo.driver.SplashNewActivity;
 import product.clicklabs.jugnoo.driver.adapters.DriverRideHistoryAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatAdapter;
 import product.clicklabs.jugnoo.driver.chat.adapter.ChatSuggestionAdapter;
 import product.clicklabs.jugnoo.driver.datastructure.ApiResponseFlags;
 import product.clicklabs.jugnoo.driver.datastructure.CustomerInfo;
+import product.clicklabs.jugnoo.driver.datastructure.DriverScreenMode;
+import product.clicklabs.jugnoo.driver.datastructure.SPLabels;
 import product.clicklabs.jugnoo.driver.retrofit.RestClient;
 import product.clicklabs.jugnoo.driver.retrofit.model.FetchChatResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
@@ -45,6 +52,7 @@ import product.clicklabs.jugnoo.driver.utils.DialogPopup;
 import product.clicklabs.jugnoo.driver.utils.Fonts;
 import product.clicklabs.jugnoo.driver.utils.Log;
 import product.clicklabs.jugnoo.driver.utils.Prefs;
+import product.clicklabs.jugnoo.driver.utils.SoundMediaPlayer;
 import product.clicklabs.jugnoo.driver.utils.Utils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -67,10 +75,12 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	private String userImage;
 	RecyclerView recyclerViewChat, recyclerViewChatOptions;
 	ChatAdapter chatAdapter;
+	boolean appOpen = true;
 	ChatSuggestionAdapter chatSuggestionAdapter;
 	private FetchChatResponse fetchChatResponse;
 	private SimpleDateFormat sdf;
 	private final String LOGIN_TYPE = "1";
+	public static String CHAT_SCREEN_OPEN = null;
 	private Handler handler = new Handler();
 	private Handler myHandler=new Handler();
 	ArrayList<FetchChatResponse.ChatHistory> chatResponse = new ArrayList<>();
@@ -87,6 +97,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		if(getIntent().hasExtra(Constants.KEY_ENGAGEMENT_ID)){
 			engagementId = getIntent().getIntExtra(Constants.KEY_ENGAGEMENT_ID, Integer.parseInt(Data.getCurrentEngagementId()));
 			userImage = getIntent().getStringExtra("user_image");
+		} else{
+			try {
+				appOpen =false;
+				engagementId = Integer.parseInt(Data.getCurrentEngagementId());
+				userImage = Data.getCurrentCustomerInfo().image;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		sdf = new SimpleDateFormat("hh:mm a");
@@ -144,7 +162,30 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		if(Data.getCurrentCustomerInfo() != null) {
 			textViewTitle.setText(Data.getCurrentCustomerInfo().getName());
 		}
-    }
+
+		if(Data.getCurrentCustomerInfo() == null){
+			if(HomeActivity.activity == null){
+				Intent homeScreen = new Intent(this, SplashNewActivity.class);
+				homeScreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(homeScreen);
+			}
+
+			performBackPressed();
+		}
+
+
+		CHAT_SCREEN_OPEN = "yes";
+		new Handler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					hideSoftKeyboard();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}, 100);
+	}
 
 	Runnable loadDiscussion=new Runnable() {
 		@Override
@@ -170,6 +211,13 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 		}
 	}
 
+	public void hideSoftKeyboard() {
+		if(getCurrentFocus()!=null) {
+			InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+			inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+		}
+	}
+
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
@@ -188,8 +236,14 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	public void onResume(){
 		super.onResume();
+		CHAT_SCREEN_OPEN = "yes";
 		Data.context = ChatActivity.this;
+	}
 
+	@Override
+	public void onPause(){
+		CHAT_SCREEN_OPEN = null;
+		super.onPause();
 	}
 
     public void performBackPressed() {
@@ -200,7 +254,7 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-
+		CHAT_SCREEN_OPEN = null;
 		Data.context = null;
 		try {
 			if(handler != null){
@@ -293,7 +347,10 @@ public class ChatActivity extends BaseActivity implements View.OnClickListener{
 								chatSuggestions.clear();
 								chatResponse.addAll(fetchChat.getChatHistory());
 								Collections.reverse(chatResponse);
-
+								if(fetchChat.getChatHistory().size() > Prefs.with(activity).getInt(SPLabels.CHAT_SIZE,0) && CHAT_SCREEN_OPEN != null){
+									SoundMediaPlayer.startSound(activity, R.raw.whats_app_shat_sound, 1, true);
+								}
+								Prefs.with(activity).save(SPLabels.CHAT_SIZE, fetchChat.getChatHistory().size());
 								chatSuggestions.addAll(fetchChat.getSuggestions());
 								if(fetchChat.getSuggestions().size() > 0){
 									recyclerViewChatOptions.setVisibility(View.VISIBLE);

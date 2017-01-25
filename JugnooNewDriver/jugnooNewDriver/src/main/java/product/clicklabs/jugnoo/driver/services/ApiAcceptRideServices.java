@@ -44,10 +44,12 @@ public class ApiAcceptRideServices extends IntentService {
 			int referenceId = intent.getIntExtra("referrence_id", 0);
 			int isPooled = intent.getIntExtra(Constants.KEY_IS_POOLED, 0);
 			int isDelivery = intent.getIntExtra(Constants.KEY_IS_DELIVERY, 0);
+			int isDeliveryPool = intent.getIntExtra(Constants.KEY_IS_DELIVERY_POOL, 0);
+
 			Log.i("accceptRide Logs",""+location+" "+accessToken+" "+engagementId+" "+customerId+" "+referenceId);
 			if (!"".equalsIgnoreCase(accessToken)) {
 				acceptRide(accessToken, customerId, engagementId, referenceId, location.getLatitude(), location.getLongitude(),
-						isPooled, isDelivery);
+						isPooled, isDelivery, isDeliveryPool);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -57,7 +59,7 @@ public class ApiAcceptRideServices extends IntentService {
 
 	public void acceptRide(String accessToken, final String customerId, final String engagementId,
 						   final int referenceId, final double latitude, final double longitude,
-						   final int isPooled, final int isDelivery) {
+						   final int isPooled, final int isDelivery, final int isDeliveryPool) {
 		try {
 			if (AppStatus.getInstance(ApiAcceptRideServices.this).isOnline(ApiAcceptRideServices.this)) {
 				if (Utils.getBatteryPercentage(ApiAcceptRideServices.this) >= 20) {
@@ -80,7 +82,9 @@ public class ApiAcceptRideServices extends IntentService {
 					params.put(Constants.KEY_REFERENCE_ID, String.valueOf(referenceId));
 					params.put(Constants.KEY_IS_POOLED, String.valueOf(isPooled));
 					params.put(Constants.KEY_IS_DELIVERY, String.valueOf(isDelivery));
-
+					if(isDeliveryPool ==1){
+						params.put(Constants.KEY_RIDE_TYPE,"4");
+					}
 					Log.i("request", String.valueOf(params));
 					Response response = RestClient.getApiServices().driverAcceptRideSync(params);
 					try {
