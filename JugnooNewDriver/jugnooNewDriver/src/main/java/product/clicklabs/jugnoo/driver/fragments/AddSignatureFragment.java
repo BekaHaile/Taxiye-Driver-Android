@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,9 +81,11 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 
     private RelativeLayout rlSignaturePreview, relativeLayoutRoot;
     private RelativeLayout rlSignaturePadHolder;
+	private ScrollView scrollView;
+	private ImageView imageViewScroll;
 
     private String image;
-    private View rlPlaceholder;
+//    private View rlPlaceholder;
 
     EditText editTextName;
 	boolean tandc;
@@ -109,7 +114,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
      *
      * @param parentView
      */
-    private void init(View parentView) {
+    private void init(final View parentView) {
 
 //        Log.e(TAG, "init");
 
@@ -143,7 +148,10 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 		textViewTandC = (TextView) parentView.findViewById(R.id.textViewTandC);
 		textViewTandC.setTypeface(Data.latoRegular(activity));
 
+		scrollView = (ScrollView) parentView.findViewById(R.id.scrollView);
+		imageViewScroll = (ImageView) parentView.findViewById(R.id.imageViewScroll);
         imgSignaturePreview = (ImageView) parentView.findViewById(R.id.imgSignaturePreview);
+
 		imageViewTandC = (ImageView) parentView.findViewById(R.id.imageViewTandC);
         vSignaturePadPlaceholder = (TextView) parentView.findViewById(R.id.vSignaturePadPlaceholder);
 		editTextName = (EditText) parentView.findViewById(R.id.editTextName);
@@ -156,14 +164,21 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         rlSignaturePreview = (RelativeLayout) parentView.findViewById(R.id.rlSignaturePreview);
         rlSignaturePadHolder = (RelativeLayout) parentView.findViewById(R.id.rlSignaturePadHolder);
 
-        rlPlaceholder = parentView.findViewById(R.id.rlPlaceholder);
-        TextView tvPlaceholder = (TextView) parentView.findViewById(R.id.tvPlaceholder);
-        tvPlaceholder.setTypeface(Data.latoRegular(activity));
+//        rlPlaceholder = parentView.findViewById(R.id.rlPlaceholder);
+//        TextView tvPlaceholder = (TextView) parentView.findViewById(R.id.tvPlaceholder);
+//        tvPlaceholder.setTypeface(Data.latoRegular(activity));
 
 		textViewTandC.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(activity, HelpActivity.class));
+			}
+		});
+
+		relativeLayoutRoot.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+
 			}
 		});
 
@@ -188,6 +203,31 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
 		});
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+
+		parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+
+				Rect r = new Rect();
+				parentView.getWindowVisibleDisplayFrame(r);
+				int screenHeight = parentView.getRootView().getHeight();
+
+				// r.bottom is the position above soft keypad or device button.
+				// if keypad is shown, the r.bottom is smaller than that before.
+				int keypadHeight = screenHeight - r.bottom;
+
+				Log.d(TAG, "keypadHeight = " + keypadHeight);
+
+				if (keypadHeight > screenHeight * 0.15) { // 0.15 ratio is perhaps enough to determine keypad height.
+					imageViewScroll.setVisibility(View.VISIBLE);
+					scrollView.fullScroll(View.FOCUS_DOWN);
+				}
+				else {
+					imageViewScroll.setVisibility(View.GONE);
+				}
+			}
+		});
 
     }
 

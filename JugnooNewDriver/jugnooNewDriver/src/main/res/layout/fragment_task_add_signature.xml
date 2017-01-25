@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="90px"
         android:background="@color/black_top_bar_bg"
-        android:splitMotionEvents="false" >
+        android:splitMotionEvents="false">
 
         <Button
             android:id="@+id/backBtn"
@@ -20,7 +20,7 @@
             android:layout_height="82px"
             android:layout_centerVertical="true"
             android:background="@drawable/back_btn_selector"
-            android:tag="mwar" />
+            android:tag="mwar"/>
 
         <TextView
             android:id="@+id/title"
@@ -30,179 +30,198 @@
             android:gravity="center"
             android:text="@string/i_accept_abv"
             android:textColor="@color/white"
-            android:textSize="48px" />
+            android:textSize="48px"/>
     </RelativeLayout>
 
-
-    <LinearLayout
-        android:id="@+id/llControls"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="35px"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/editTextName"
-            android:layout_width="572px"
-            android:layout_height="78px"
-            android:layout_gravity="center_horizontal"
-            android:hint="@string/type_your_name"
-            android:inputType="textCapCharacters"
-            android:paddingLeft="12px"
-            android:background="@drawable/background_white_red_v2_bordered"/>
-
-
-        <RelativeLayout
-            android:layout_width="572px"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10px"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="38px">
-
-            <TextView
-                android:id="@+id/textViewTandC"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="@string/i_accept"
-                android:textColor="@color/black"
-                android:layout_marginRight="4px"
-                android:layout_toRightOf="@+id/imageViewTandC"
-                android:textSize="34px"/>
-
-
-            <ImageView
-                android:id="@+id/imageViewTandC"
-                android:layout_width="36px"
-                android:layout_height="36px"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="32px"
-                android:src="@drawable/option_unchecked"
-                android:tag="mwar"
-            />
-
-        </RelativeLayout>
-
-
-        <Button
-            android:id="@+id/btnAction"
-            android:layout_width="300px"
-            android:layout_height="78px"
-            android:background="@drawable/orange_btn_selector"
-            android:text="@string/submit"
-            android:textAllCaps="false"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="48px"
-            android:textColor="@color/white"
-            android:textSize="32px"/>
-
-
-    </LinearLayout>
-
-
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/llControls"
-        android:layout_margin="32px"
-        android:layout_below="@+id/topRl"
-        android:background="@color/white"
-        android:elevation="16px"
-        card_view:cardCornerRadius="2px">
+        android:layout_height="1300px"
+        android:layout_below="@+id/topRl">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/rlSignaturePadHolder"
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="600px"
+                android:layout_margin="32px"
+                android:background="@color/white"
+                android:elevation="16px"
+                card_view:cardCornerRadius="2px">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:id="@+id/rlSignaturePadHolder"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:id="@+id/vSignaturePadPlaceholder"
+                            android:layout_width="550px"
+                            android:layout_height="150px"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="@string/your_sig_here"
+                            android:textColor="@color/grey_dark_less"
+                            android:textSize="64px"/>
+
+                        <com.github.gcacace.signaturepad.views.SignaturePad
+                            android:id="@+id/spSignaturePad"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:penColor="@android:color/black"/>
+
+
+                        <Button
+                            android:id="@+id/btnReset"
+                            android:layout_width="104px"
+                            android:layout_height="49px"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/background_white_red_v2_bordered"
+                            android:text="@string/clear"
+                            android:textColor="@color/red_v2"
+                            android:textSize="32px"
+                            android:visibility="gone"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rlSignaturePreview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="true"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/tvInformation"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:text="@string/loading"
+                            android:textColor="@color/red_v2"
+                            android:textSize="28px"/>
+
+                        <ImageView
+                            android:id="@+id/imgSignaturePreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    </RelativeLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/llControls"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:layout_marginTop="35px"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/editTextName"
+                    android:layout_width="572px"
+                    android:layout_height="78px"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/background_white_red_v2_bordered"
+                    android:hint="@string/type_your_name"
+                    android:inputType="textCapCharacters"
+                    android:paddingLeft="12px"/>
 
 
+                <RelativeLayout
+                    android:layout_width="572px"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10px"
+                    android:layout_marginTop="38px">
 
-                <TextView
-                    android:id="@+id/vSignaturePadPlaceholder"
-                    android:layout_width="550px"
-                    android:layout_height="150px"
-                    android:layout_centerInParent="true"
-                    android:textSize="64px"
-                    android:gravity="center"
-                    android:textColor="@color/grey_dark_less"
-                    android:text="@string/your_sig_here"/>
+                    <TextView
+                        android:id="@+id/textViewTandC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="4px"
+                        android:layout_marginTop="10px"
+                        android:layout_toRightOf="@+id/imageViewTandC"
+                        android:gravity="center_vertical"
+                        android:text="@string/i_accept"
+                        android:textColor="@color/black"
+                        android:textSize="34px"/>
 
-                <com.github.gcacace.signaturepad.views.SignaturePad
-                    android:id="@+id/spSignaturePad"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:penColor="@android:color/black"/>
+
+                    <ImageView
+                        android:id="@+id/imageViewTandC"
+                        android:layout_width="56px"
+                        android:layout_height="56px"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="24px"
+                        android:padding="10px"
+                        android:src="@drawable/option_unchecked"
+                        android:tag="mwar"
+                    />
+
+                </RelativeLayout>
 
 
                 <Button
-                    android:id="@+id/btnReset"
-                    android:layout_width="104px"
-                    android:layout_height="49px"
-                    android:background="@drawable/background_white_red_v2_bordered"
-                    android:layout_alignParentRight="true"
-                    android:textColor="@color/red_v2"
-                    android:text="@string/clear"
-                    android:visibility="gone"
+                    android:id="@+id/btnAction"
+                    android:layout_width="300px"
+                    android:layout_height="78px"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="48px"
+                    android:background="@drawable/orange_btn_selector"
+                    android:text="@string/submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
                     android:textSize="32px"/>
 
-            </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rlSignaturePreview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:visibility="gone">
+            </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tvInformation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/loading"
-                    android:textColor="@color/red_v2"
-                    android:textSize="28px"/>
 
-                <ImageView
-                    android:id="@+id/imgSignaturePreview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+            <ImageView
+                android:id="@+id/imageViewScroll"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="320px"/>
 
-            </RelativeLayout>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+            <!--<LinearLayout-->
+                <!--android:id="@+id/rlPlaceholder"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="vertical"-->
+                <!--android:visibility="gone">-->
 
-    <LinearLayout
-        android:id="@+id/rlPlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+                <!--<View-->
+                    <!--android:layout_width="48px"-->
+                    <!--android:layout_height="48px"-->
+                    <!--android:background="@drawable/pen_icon"/>-->
 
-        <View
-            android:layout_width="48px"
-            android:layout_height="48px"
-            android:background="@drawable/pen_icon"/>
+                <!--<TextView-->
+                    <!--android:id="@+id/tvPlaceholder"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="10px"-->
+                    <!--android:text="@string/NA"-->
+                    <!--android:textColor="@color/black_text_alpha"-->
+                    <!--android:textSize="28px"/>-->
 
-        <TextView
-            android:id="@+id/tvPlaceholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10px"
-            android:text="@string/NA"
-            android:textColor="@color/black_text_alpha"
-            android:textSize="28px"/>
+            <!--</LinearLayout>-->
 
-    </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
