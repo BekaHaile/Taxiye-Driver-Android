@@ -6050,7 +6050,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										&& Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1){
 									setDeliveryMarkers();
 								} else if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
-									setAttachedDeliveryPoolMarkers(true);
+									setAttachedDeliveryPoolMarkers(false);
 								}else {
 									setAttachedCustomerMarkers(false);
 								}
@@ -8509,10 +8509,19 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 					}
 					if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-						if (customerInfo.getDeliveryInfos().size() > 1) {
-							addCustomerMarker(addDropPinMarker(map, latLng, "R", 2));
+
+						if(customerInfo.engagementId == Integer.parseInt(Data.getCurrentEngagementId())){
+							if (customerInfo.getDeliveryInfos().size() > 1) {
+								addCustomerMarker(addDropPinMarker(map, latLng, "R", 2));
+							} else {
+								addCustomerMarker(addDropPinMarker(map, latLng, "D", 2));
+							}
 						} else {
-							addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "1", 2));
+							if (customerInfo.getDeliveryInfos().size() > 1) {
+								addCustomerMarker(addDropPinMarker(map, latLng, "R", 1));
+							} else {
+								addCustomerMarker(addDropPinMarker(map, latLng, "D", 1));
+							}
 						}
 					} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
