@@ -722,6 +722,8 @@
     <string name="please_start_customer_delivery">Start %s\'s delivery</string>
     <string name="please_reach_customer_delivery">Pickup %s\'s delivery</string>
     <string name="select_merchant">Select Merchant</string>
+    <string name="provide_sign_msg">Please provide signature before submit</string>
+    <string name="pls_type_name">Please type your name before submit</string>
 
     <string-array name="CountryCodes" >
         <item>93,AF</item>

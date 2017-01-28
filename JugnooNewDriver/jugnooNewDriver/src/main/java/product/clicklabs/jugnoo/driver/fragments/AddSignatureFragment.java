@@ -79,6 +79,8 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
     private SignaturePad spSignaturePad;
     private TextView vSignaturePadPlaceholder;
 
+	private boolean isSigned =false;
+
     private RelativeLayout rlSignaturePreview, relativeLayoutRoot;
     private RelativeLayout rlSignaturePadHolder;
 	private ScrollView scrollView;
@@ -244,8 +246,10 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         vSignaturePadPlaceholder.setVisibility(isPreview ? vSignaturePadPlaceholder.GONE : vSignaturePadPlaceholder.VISIBLE);
 		if(isPreview){
 			btnReset.setVisibility(View.VISIBLE);
+			isSigned = true;
 		} else {
 			btnReset.setVisibility(View.GONE);
+			isSigned = false;
 		}
     }
 
@@ -281,10 +285,21 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
      * Method to verify whether the User has signed
      */
     private void verifyAndSendUserSignature() {
-        if (!tandc) {
-            Toast.makeText(activity, R.string.select_tandc, Toast.LENGTH_LONG).show();
-            return;
-        }
+
+		if(!isSigned){
+			Toast.makeText(activity, R.string.provide_sign_msg, Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		if(editTextName.getText().toString().trim().equalsIgnoreCase("")){
+			Toast.makeText(activity, R.string.pls_type_name, Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		if (!tandc) {
+			Toast.makeText(activity, R.string.select_tandc, Toast.LENGTH_LONG).show();
+			return;
+		}
 
         lockControls(true, R.string.update);
 
@@ -458,6 +473,7 @@ public class AddSignatureFragment extends Fragment implements View.OnClickListen
         if (event.getAction() == MotionEvent.ACTION_DOWN)
             vSignaturePadPlaceholder.setVisibility(View.GONE);
 			btnReset.setVisibility(View.VISIBLE);
+			isSigned = true;
         return false;
     }
 

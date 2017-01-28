@@ -1148,13 +1148,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
-					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
+//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//					FlurryEventLogger.event(CALL_US);
+//					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
 
 					drawerLayout.closeDrawer(GravityCompat.START);
-//					relativeLayoutContainer.setVisibility(View.VISIBLE);
-//					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
+					relativeLayoutContainer.setVisibility(View.VISIBLE);
+					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
 					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
