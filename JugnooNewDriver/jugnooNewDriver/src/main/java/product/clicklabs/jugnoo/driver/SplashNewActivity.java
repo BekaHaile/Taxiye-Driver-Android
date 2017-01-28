@@ -133,14 +133,14 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 	private State state = State.SPLASH_LS;
 
 	ImageView viewInitJugnoo, viewInitSplashJugnoo, viewInitLS;
-	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn;
+	Button buttonLogin, buttonRegisterTookan, btnGenerateOtp, signUpBtn, backBtn, buttonRegister;
 
 	static boolean loginDataFetched = false;
 
 	EditText nameEt, phoneNoEt, referralCodeEt, phoneNoOPTEt, alternatePhoneNoEt, vehicleNumEt;
 	Spinner selectCitySp, autoNumEt, VehicleType;
 
-	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, buttonRegister, textViewRegDriver;
+	TextView textViewLoginRegister, textViewTandC, textViewRegLogin, textViewRegDriver, textViewCustomerApp;
 
 	String name = "", emailId = "", phoneNo = "", password = "", accessToken = "", autoNum = "", vehicleStatus="";
 	Integer cityposition, vehiclePosition;
@@ -232,8 +232,11 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 		relativeLayoutScrollStop = (RelativeLayout) findViewById(R.id.relativeLayoutScrollStop);
 		relativeLayoutJugnooLogo = (RelativeLayout) findViewById(R.id.relativeLayoutJugnooLogo);
-		buttonRegister = (TextView) findViewById(R.id.buttonRegister);
+		buttonRegister = (Button) findViewById(R.id.buttonRegister);
 		buttonRegister.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
+
+		textViewCustomerApp= (TextView) findViewById(R.id.textViewCustomerApp);
+		textViewCustomerApp.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 
 		textViewRegDriver = (TextView) findViewById(R.id.textViewRegDriver);
 		textViewRegDriver.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
@@ -377,6 +380,18 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					changeUIState(State.SIGNUP);
 				}  else {
 					DialogPopup.alertPopup(SplashNewActivity.this, "", Data.CHECK_INTERNET_MSG);
+				}
+			}
+		});
+
+		textViewCustomerApp.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final String appPackageName = "product.clicklabs.jugnoo"; // getPackageName() from Context or Activity object
+				try {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+				} catch (android.content.ActivityNotFoundException anfe) {
+					startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
 				}
 			}
 		});
@@ -529,7 +544,7 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 					nameEt.requestFocus();
 					nameEt.setError("Please enter name");
 				} else {
-					if ("".equalsIgnoreCase(autoNum)) {
+					if (!"".equalsIgnoreCase(autoNum)) {
 						vehicleNumEt.requestFocus();
 						vehicleNumEt.setError("Please enter vehicle number");
 					} else {

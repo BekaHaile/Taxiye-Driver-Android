@@ -171,13 +171,13 @@
         android:id="@+id/relativeLayoutLS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="186px"
+        android:layout_marginTop="256px"
         android:animateLayoutChanges="true"
         android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/linearLayoutLoginSignupButtons"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center_horizontal"
@@ -186,16 +186,38 @@
             android:visibility="visible">
 
 
-            <Button
-                android:id="@+id/buttonLogin"
-                android:layout_width="473px"
-                android:layout_height="100px"
-                android:layout_marginTop="32px"
-                android:background="@drawable/button_white_selector"
-                android:text="@string/login"
-                android:textAllCaps="true"
-                android:textColor="@color/red_v2"
-                android:textSize="@dimen/text_size_34"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="273px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="32px"
+                    android:background="@drawable/background_translucent_white_rounded_orange_bordered"
+                    android:text="@string/login"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_34"/>
+
+                <Button
+                    android:id="@+id/buttonRegister"
+                    android:layout_width="273px"
+                    android:layout_height="100px"
+                    android:layout_marginTop="32px"
+                    android:layout_marginLeft="32px"
+                    android:background="@drawable/button_white_selector"
+                    android:text="@string/register"
+                    android:textAllCaps="true"
+                    android:textColor="@color/red_v2"
+                    android:textSize="@dimen/text_size_34"/>
+
+
+
+            </LinearLayout>
 
 
             <RelativeLayout
@@ -207,10 +229,10 @@
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal3"
-                    android:layout_width="200px"
-                    android:layout_height="2px"
+                    android:layout_width="330px"
+                    android:layout_height="3px"
                     android:layout_centerVertical="true"
-                    android:background="@color/grey_light"/>
+                    android:background="@color/white"/>
 
                 <TextView
                     android:id="@+id/textViewName"
@@ -223,27 +245,28 @@
                     android:paddingRight="10px"
                     android:text="@string/or"
                     android:textColor="@color/white"
+                    android:visibility="gone"
                     android:textSize="30px"/>
 
                 <ImageView
                     android:id="@+id/imageViewHorizontal4"
-                    android:layout_width="200px"
-                    android:layout_height="2px"
+                    android:layout_width="330px"
+                    android:layout_height="3px"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/textViewName"
-                    android:background="@color/grey_light"/>
+                    android:background="@color/white"/>
 
             </RelativeLayout>
 
 
             <TextView
-                android:id="@+id/buttonRegister"
+                android:id="@+id/textViewCustomerApp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/reg_as_driver"
+                android:text="@string/looking_for_customer_app"
                 android:textColor="@color/white"
                 android:layout_marginTop="32px"
-                android:textSize="32px"/>
+                android:textSize="36px"/>
 
             <Button
                 android:id="@+id/buttonRegisterTookan"
@@ -263,6 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="60px"
                 android:text=""
+                android:visibility="gone"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_26"/>
 
