@@ -102,7 +102,8 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 				((ViewHolderRide)holder).textViewInfoValue.setText(Utils.getAbsAmount(activity, item.getEarning()));
 
 
-				if(item.getStatus()!= null && item.getStatus().equalsIgnoreCase("Ride Cancelled")){
+				if(item.getStatus()!= null && (item.getStatus().equalsIgnoreCase("Ride Cancelled")
+						|| item.getStatus().equalsIgnoreCase("Delivery Cancelled"))){
 					((ViewHolderRide)holder).textViewStatus.setVisibility(View.VISIBLE);
 					((ViewHolderRide)holder).textViewStatus.setText(activity.getResources().getString(R.string.cancelled));
 					((ViewHolderRide)holder).textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
@@ -113,7 +114,7 @@ public class DailyRideDetailsAdapter extends RecyclerView.Adapter<RecyclerView.V
 					((ViewHolderRide)holder).textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
 				}
 
-				if(item.getType() ==3){
+				if(item.getType() ==3 || item.getType() == 4){
 					((ViewHolderRide)holder).textViewType.setVisibility(View.VISIBLE);
 					((ViewHolderRide)holder).textViewType.setText(activity.getResources().getString(R.string.delivery));
 				} else if(item.getType() ==2){

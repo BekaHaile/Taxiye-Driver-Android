@@ -1521,7 +1521,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public void onClick(View v) {
 					relativeLayoutContainer.setVisibility(View.VISIBLE);
 					CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
-					if(customerInfo.getIsPooled() ==1){
+					if(customerInfo.getIsPooled() ==1 || customerInfo.getIsDeliveryPool() ==1){
 						getTransactionUtils().openSwitchCustomerFragment(HomeActivity.this, getRelativeLayoutContainer());
 					} else if(customerInfo.getIsDelivery() ==1){
 						if(anyDeliveriesUnchecked(customerInfo)){
@@ -2388,6 +2388,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 		try {
 			if (1 != customerInfo.getIsPooled()
 					&& 1 != customerInfo.getIsDelivery()
+					&& 1 != customerInfo.getIsDeliveryPool()
 					&& DriverScreenMode.D_IN_RIDE == driverScreenMode) {
 				new ApiAcceptRide(this, new ApiAcceptRide.Callback() {
 					@Override
@@ -3004,12 +3005,25 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					|| mode == DriverScreenMode.D_IN_RIDE)) {
 				map.clear();
 				ArrayList<CustomerInfo> customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
-				if (customerInfosList.size() > 0 && sortCustomerState) {
+				if (customerInfosList.size() > 0 && sortCustomerState && Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1) {
 					Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
 				} else {
 					sortCustomerState = true;
 				}
+
+				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+					ArrayList<CustomerInfo> customerInfosListPool = Data.getAssignedCustomerInfosListForEngagedStatus();
+					if(mode == DriverScreenMode.D_IN_RIDE && customerInfosListPool.size() >1){
+						for(int i=0; i < customerInfosListPool.size();i++){
+							if(customerInfosListPool.get(i).getStatus() == EngagementStatus.ACCEPTED.getOrdinal() ||
+									customerInfosListPool.get(i).getStatus() == EngagementStatus.ARRIVED.getOrdinal() ){
+								Data.setCurrentEngagementId(String.valueOf(customerInfosListPool.get(i).getEngagementId()));
+							}
+						}
+					}
+				}
 			}
+
 			driverScreenMode = Data.getCurrentState();
 			mode = driverScreenMode;
 
@@ -3021,7 +3035,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				if (endRideData != null) {
 					mapLayout.setVisibility(View.GONE);
 					endRideReviewRl.setVisibility(View.VISIBLE);
-
+					scrollViewEndRide.smoothScrollTo(0, 0);
 
 					double totalDistanceInKm = Math.abs(customerInfo.getTotalDistance(customerRideDataGlobal
 							.getDistance(HomeActivity.this), HomeActivity.this) / 1000.0);
@@ -3137,7 +3151,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			} else if (mode == DriverScreenMode.D_BEFORE_END_OPTIONS) {
 				mapLayout.setVisibility(View.GONE);
 				endRideReviewRl.setVisibility(View.VISIBLE);
-
+				scrollViewEndRide.smoothScrollTo(0, 0);
 				editTextEnterMeterFare.setText("");
 
 				endRideInfoRl.setVisibility(View.GONE);
@@ -3187,7 +3201,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 			try {
 				ArrayList<CustomerInfo> customerEngCount = Data.getAssignedCustomerInfosListForEngagedStatus();
-				if (customerEngCount.size() > 1 && customerInfo.getIsPooled() ==1) {
+				if (customerEngCount.size() > 1 ) {
 					changeButton.setVisibility(View.VISIBLE);
 				} else {
 					changeButton.setVisibility(View.GONE);
@@ -3521,9 +3535,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 					if (map != null) {
 						if(customerInfo.getIsDelivery() == 1) {
-							double slatitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LATITUDE, "0"));
-							double slongitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
-							addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
+							if(customerInfo.getIsDeliveryPool() != 1){
+								double slatitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LATITUDE, "0"));
+								double slongitude = Double.parseDouble(Prefs.with(this).getString(Constants.SP_START_LONGITUDE, "0"));
+								addDropPinMarker(map, new LatLng(slatitude, slongitude), "P", 2);
+							}
 						} else {
 							if(customerInfo.getIsPooled() != 1) {
 								addStartMarker();
@@ -3562,6 +3578,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					if(customerInfo.getIsDelivery() == 1 && customerInfo.getDeliveryInfos().size() > 1){
 						linearLayoutRideValues.setVisibility(View.GONE);
 						changeButton.setVisibility(View.VISIBLE);
+						if(customerInfo.getIsDeliveryPool() == 1
+								&& Data.getAssignedCustomerInfosListForEngagedStatus().size() < 2){
+							changeButton.setVisibility(View.GONE);
+						}
 					} else{
 						linearLayoutRideValues.setVisibility(View.VISIBLE);
 					}
@@ -4336,7 +4356,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
 				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
-				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
 				holder.buttonAcceptRide.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.buttonCancelRide = (Button) convertView.findViewById(R.id.buttonCancelRide);
@@ -4392,7 +4412,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			holder.textViewRequestName.setVisibility(View.GONE);
 			holder.textViewRequestDetails.setVisibility(View.GONE);
 			holder.linearLayoutDeliveryFare.setVisibility(View.GONE);
-			if(customerInfo.getIsDelivery() == 1){
+			if(customerInfo.getIsDelivery() == 1 ){
 				if(customerInfo.getTotalDeliveries() > 0) {
 					holder.textViewRequestDetails.setVisibility(View.VISIBLE);
 					holder.textViewRequestDetails.setText(getResources().getString(R.string.delivery_numbers)
@@ -4511,6 +4531,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
 
+			if(customerInfo.getIsDeliveryPool() ==1){
+				params.put(KEY_RIDE_TYPE,"4");
+			} else if(customerInfo.getIsDelivery() ==1){
+				params.put(KEY_RIDE_TYPE,"3");
+			} else if(customerInfo.getIsPooled() ==1){
+				params.put(KEY_RIDE_TYPE,"2");
+			} else {
+				params.put(KEY_RIDE_TYPE,"0");
+			}
+
 			Log.i("request", String.valueOf(params));
 
 			GCMIntentService.cancelUploadPathAlarm(HomeActivity.this);
@@ -4570,6 +4600,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					int referenceId = jObj.optInt(KEY_REFERENCE_ID, 0);
 
 					int isDelivery = jObj.optInt(KEY_IS_DELIVERY, 0);
+					int isDeliveryPool = 0;
+					if(jObj.optInt(KEY_RIDE_TYPE,0)==4){
+						isDeliveryPool =1;
+					}
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
 							vendorMessage = "";
@@ -4632,7 +4666,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							userImage, rating, couponInfo, promoInfo, jugnooBalance,
 							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
 							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
+							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -4711,6 +4745,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			params.put(KEY_REFERENCE_ID, String.valueOf(customerInfo.getReferenceId()));
 			params.put(KEY_IS_POOLED, String.valueOf(customerInfo.getIsPooled()));
 			params.put(KEY_IS_DELIVERY, String.valueOf(customerInfo.getIsDelivery()));
+			if(customerInfo.getIsDeliveryPool() ==1){
+				params.put(KEY_RIDE_TYPE,"4");
+			}
 
 			RestClient.getApiServices().driverRejectRequestRetro(params, new Callback<RegisterScreenResponse>() {
 				@Override
@@ -5134,6 +5171,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					totalDistanceFromLogInMeter, rideTimeInMillisFromDB);
 		} else {
 			if(customerInfo.getIsDelivery() == 1) {
+				if(customerInfo.getIsDeliveryPool() ==1){
+					params.put(KEY_RIDE_TYPE, "4");
+				} else {
+					params.put(KEY_RIDE_TYPE, "3");
+				}
 				RestClient.getApiServices().endDelivery(params, getCallbackEndDelivery(customerInfo, totalHaversineDistanceInKm, dropLatitude, dropLongitude, params,
 						eoRideTimeInMillis, eoWaitTimeInMillis, url, totalDistanceFromLogInMeter, rideTimeInMillisFromDB));
 			} else{
@@ -6490,11 +6532,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 	@Override
-	public void onNewRideRequest(int perfectRide, int isPooled) {
+	public void onNewRideRequest(int perfectRide, int isPooled, int isDelivery) {
 		if (driverScreenMode == DriverScreenMode.D_INITIAL
 				|| driverScreenMode == DriverScreenMode.D_RIDE_END
 				|| perfectRide == 1
-				|| isPooled == 1) {
+				|| isPooled == 1
+				|| isDelivery == 1) {
 			runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
@@ -8514,6 +8557,21 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
 					deliveryInfoTabs.notifyDatasetchange(true);
 					setDeliveryMarkers();
+
+					if(customerInfo.getIsDeliveryPool()==1) {
+						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
+						if (customerEnfagementInfos1.size() > 1) {
+							if (customerInfo.engagementId == customerEnfagementInfos1.get(0).getEngagementId()) {
+								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(1).getEngagementId()));
+							} else {
+								Data.setCurrentEngagementId(String.valueOf(customerEnfagementInfos1.get(0).getEngagementId()));
+							}
+							changeCustomerState(false);
+							driverScreenMode = DriverScreenMode.D_IN_RIDE;
+							switchDriverScreen(driverScreenMode);
+						}
+					}
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

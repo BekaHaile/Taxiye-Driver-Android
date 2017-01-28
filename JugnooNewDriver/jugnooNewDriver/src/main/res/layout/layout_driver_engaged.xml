@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:layout_below="@+id/topRlOuter"
     android:splitMotionEvents="false"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <!-- customer info layout -->
     <RelativeLayout

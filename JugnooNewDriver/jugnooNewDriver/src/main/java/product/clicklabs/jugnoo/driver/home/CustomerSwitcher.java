@@ -235,7 +235,7 @@ public class CustomerSwitcher {
 						textViewCustomerPickupAddress.setText(customerInfo.getAddress());
 					}
 					updateDistanceOnLocationChanged();
-					if (customerInfo.getIsDelivery() == 1) {
+					if (customerInfo.getIsDelivery() == 1 && customerInfo.getIsDeliveryPool() != 1) {
 						textViewDeliveryCount.setVisibility(View.VISIBLE);
 						textViewDeliveryCount.setText(activity.getResources().getString(R.string.deliveries)
 								+ " " + customerInfo.getTotalDeliveries());

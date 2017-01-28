@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/chathead_img"
-        android:layout_width="136px"
-        android:layout_height="136px"
+        android:layout_width="116px"
+        android:layout_height="116px"
         android:src="@drawable/jugnoo_fab"
         android:tag="mwar"/>
 

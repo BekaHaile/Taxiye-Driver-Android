@@ -106,7 +106,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 			}
 
 
-			if (itr.getStatus().equalsIgnoreCase("Ride Cancelled")) {
+			if (itr.getStatus().equalsIgnoreCase("Ride Cancelled") || itr.getStatus().equalsIgnoreCase("Delivery Cancelled")) {
 				holder.textViewStatus.setVisibility(View.VISIBLE);
 				holder.textViewStatus.setText(activity.getResources().getString(R.string.cancelled));
 				holder.textViewStatus.setTextColor(activity.getResources().getColor(R.color.red_status_v2));
@@ -117,7 +117,7 @@ public class DriverRideHistoryAdapter extends RecyclerView.Adapter<RecyclerView.
 				holder.textViewInfoValue.setTextColor(activity.getResources().getColor(R.color.black_text_v2));
 			}
 
-			if (itr.getType() == 3) {
+			if (itr.getType() == 3 || itr.getType() == 4) {
 				holder.textViewType.setVisibility(View.VISIBLE);
 				holder.textViewType.setText(activity.getResources().getString(R.string.delivery));
 			} else if (itr.getType() == 2) {

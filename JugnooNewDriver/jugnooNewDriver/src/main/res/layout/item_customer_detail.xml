@@ -60,6 +60,16 @@
 
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/textViewDeliveryName"
+                    android:layout_width="525px"
+                    android:layout_height="wrap_content"
+                    android:textSize="32px"
+                    android:layout_marginLeft="48px"
+                    android:layout_marginTop="28px"
+                    android:layout_toRightOf="@+id/imageViewDote1"
+                    android:text="@string/NA"/>
+
 
                 <TextView
                     android:id="@+id/textViewCustomer1Address"
@@ -67,7 +77,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="27px"
                     android:layout_marginLeft="48px"
-                    android:layout_marginTop="28px"
+                    android:layout_marginTop="16px"
                     android:layout_marginBottom="32px"
                     android:layout_toRightOf="@+id/imageViewDote1"
                     android:text="@string/NA"/>

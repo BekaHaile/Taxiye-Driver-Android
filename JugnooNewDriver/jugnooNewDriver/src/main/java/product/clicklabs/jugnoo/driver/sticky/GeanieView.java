@@ -454,7 +454,6 @@ public class GeanieView extends Service {
 	}
 
 	private void moveToLeft(int x_cord_now) {
-
 		try {
 			final int x = x_cord_now;
 			product.clicklabs.jugnoo.driver.utils.Log.e("xcordleft", String.valueOf(x));
