@@ -4247,7 +4247,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	class ViewHolderDriverRequest {
 		TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
 				textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare, textViewDeliveryApprox,
-				textViewRequestDistance;
+				textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare;
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType;
 		LinearLayout relative, linearLayoutDeliveryFare;
@@ -4364,6 +4364,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
 				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFareValue = (TextView) convertView.findViewById(R.id.textViewEstimatedFareValue);
+				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
+				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
 				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
@@ -4435,6 +4439,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						+""+customerInfo.getCashOnDelivery());
 			}
 
+			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
+				holder.textViewEstimatedFareValue.setText(customerInfo.getEstimatedDriverFare());
+				holder.textViewEstimatedFare.setVisibility(View.VISIBLE);
+			} else {
+				holder.textViewEstimatedFare.setVisibility(View.GONE);
+				holder.textViewEstimatedFareValue.setVisibility(View.GONE);
+			}
 
 			if (customerInfo.getFareFactor() > 1 || customerInfo.getFareFactor() < 1) {
 				holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
@@ -4615,7 +4626,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-							vendorMessage = "";
+							vendorMessage = "", estimatedDriverFare ="";
 					int ForceEndDelivery = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
@@ -4634,6 +4645,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
+						estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -4670,12 +4682,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					initializeStartRideVariables();
 
 					CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-							Integer.parseInt(customerId), referenceId,
-							userName, phoneNo, pickuplLatLng, cachedApiEnabled,
-							userImage, rating, couponInfo, promoInfo, jugnooBalance,
-							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
-							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
+							Integer.parseInt(customerId), referenceId, userName, phoneNo, pickuplLatLng, cachedApiEnabled,
+							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
+							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
+							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
+							currentLatLng, ForceEndDelivery, estimatedDriverFare);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 

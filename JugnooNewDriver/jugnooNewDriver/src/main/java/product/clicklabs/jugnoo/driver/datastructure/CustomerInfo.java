@@ -49,7 +49,7 @@ public class CustomerInfo {
 	private ArrayList<DeliveryInfo> deliveryInfos;
 	private int totalDeliveries;
 	private double estimatedFare, dryDistance;
-	private String vendorMessage;
+	private String vendorMessage, estimatedDriverFare;
 
 	private String color;
 	private PoolFare poolFare;
@@ -60,7 +60,7 @@ public class CustomerInfo {
 						String image, String rating, CouponInfo couponInfo, PromoInfo promoInfo, double jugnooBalance,
 						int meterFareApplicable, int jugnooFareButton, int luggageChargesApplicable, int waitTimeApplicable,
 						int status, int isPooled, int isDelivery, int isDeliveryPool, String address, int totalDeliveries, double estimatedFare,
-						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery){
+						String vendorMessage, double cashOnDelivery, LatLng currentLatLng, int forceEndDelivery, String estimatedDriverFare){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.referenceId = referenceId;
@@ -98,6 +98,7 @@ public class CustomerInfo {
 		this.vendorMessage = vendorMessage;
 		this.cashOnDelivery = cashOnDelivery;
 		this.forceEndDelivery = forceEndDelivery;
+		this.estimatedDriverFare = estimatedDriverFare;
 	}
 
 
@@ -108,7 +109,7 @@ public class CustomerInfo {
 	public CustomerInfo(int engagementId, int userId, LatLng requestlLatLng, String startTime, String address,
 						int referenceId, double fareFactor, int status, int isPooled, int isDelivery, int isDeliveryPool,
 						int totalDeliveries, double estimatedFare, String userName, double dryDistance, double cashOnDelivery,
-						LatLng currentLatLng){
+						LatLng currentLatLng, String estimatedDriverFare){
 		this.engagementId = engagementId;
 		this.userId = userId;
 		this.requestlLatLng = requestlLatLng;
@@ -126,6 +127,7 @@ public class CustomerInfo {
 		this.name = userName;
 		this.dryDistance =dryDistance;
 		this.cashOnDelivery = cashOnDelivery;
+		this.estimatedDriverFare = estimatedDriverFare;
 	}
 
 	public double getDryDistance() {
@@ -407,6 +409,14 @@ public class CustomerInfo {
 
 	public void setCashOnDelivery(double cashOnDelivery) {
 		this.cashOnDelivery = cashOnDelivery;
+	}
+
+	public String getEstimatedDriverFare() {
+		return estimatedDriverFare;
+	}
+
+	public void setEstimatedDriverFare(String estimatedDriverFare) {
+		this.estimatedDriverFare = estimatedDriverFare;
 	}
 
 	public String getVendorMessage() {

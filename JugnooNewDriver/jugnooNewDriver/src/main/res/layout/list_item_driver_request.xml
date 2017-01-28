@@ -114,7 +114,7 @@
                         android:id="@+id/textViewDeliveryFare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Rs. 200"
+                        android:text="Rs. 0"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/text_size_30"
 
@@ -127,6 +127,23 @@
                         android:textSize="@dimen/text_size_18"
                         android:textColor="@color/text_color"
                         android:text="@string/approx"/>
+
+                    <TextView
+                        android:id="@+id/textViewEstimatedFareValue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_30"
+                        android:layout_marginTop="8px"
+                        android:textColor="@color/text_color"
+                        android:text="Rs. 0"/>
+
+                    <TextView
+                        android:id="@+id/textViewEstimatedFare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/text_color"
+                        android:text="@string/estimated_fare"/>
 
                 </LinearLayout>
 
