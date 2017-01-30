@@ -218,12 +218,9 @@ public class RideCancellationActivity extends BaseActivity implements ActivityCl
 									nudgeCancelRide(reason);
 
 									if (HomeActivity.appInterruptHandler != null) {
-										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId);
+										HomeActivity.appInterruptHandler.handleCancelRideSuccess(engagementId, message);
 									}
-
-									DialogPopup.alertPopup(activity, "", message);
-
-								} else{
+							} else{
 									performBackPressed();
 									if (HomeActivity.appInterruptHandler != null) {
 										HomeActivity.appInterruptHandler.handleCancelRideFailure(message);

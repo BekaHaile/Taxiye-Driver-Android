@@ -4392,7 +4392,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
 				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewEstimatedFareValue = (TextView) convertView.findViewById(R.id.textViewEstimatedFareValue);
-				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
 				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
@@ -4734,7 +4734,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								DialogPopup.dismissAlertPopup();
 							}
 						}, 3000);
-						reduceRideRequest(engagementId, EngagementStatus.REQUESTED.getOrdinal());
+						reduceRideRequest(engagementId, EngagementStatus.REQUESTED.getOrdinal(),"");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -4743,7 +4743,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				DialogPopup.dismissLoadingDialog();
 
 			} else{
-				reduceRideRequest(engagementId, EngagementStatus.REQUESTED.getOrdinal());
+				reduceRideRequest(engagementId, EngagementStatus.REQUESTED.getOrdinal(),"");
 			}
 		} catch (Exception exception) {
 			exception.printStackTrace();
@@ -4773,10 +4773,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	}
 
 
-	public void reduceRideRequest(String engagementId, int status) {
+	public void reduceRideRequest(String engagementId, int status, String message) {
 		Data.removeCustomerInfo(Integer.parseInt(engagementId), status);
 		driverScreenMode = DriverScreenMode.D_INITIAL;
 		switchDriverScreen(driverScreenMode);
+		if(!message.equalsIgnoreCase("")) {
+			DialogPopup.alertPopup(HomeActivity.this, "", message);
+		}
 	}
 
 
@@ -4815,7 +4818,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								}
 								stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
-								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal());
+								reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(),"");
 								nudgeRequestCancel(customerInfo);
 								new DriverTimeoutCheck().timeoutBuffer(activity, 0);
 							}
@@ -4831,7 +4834,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					DialogPopup.alertPopup(activity, "", Data.SERVER_NOT_RESOPNDING_MSG);
 				}
 			});
-			reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal());
+			reduceRideRequest(String.valueOf(customerInfo.getEngagementId()), EngagementStatus.REQUESTED.getOrdinal(),"");
 
 
 		} else {
@@ -7339,7 +7342,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 
 	@Override
-	public void handleCancelRideSuccess(final String engagementId) {
+	public void handleCancelRideSuccess(final String engagementId, final String message) {
 		runOnUiThread(new Runnable() {
 						  @Override
 						  public void run() {
@@ -7348,8 +7351,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							  }
 							  stopService(new Intent(HomeActivity.this, DriverLocationUpdateService.class));
 
-							  reduceRideRequest(engagementId, EngagementStatus.ACCEPTED.getOrdinal());
-							  reduceRideRequest(engagementId, EngagementStatus.ARRIVED.getOrdinal());
+							  reduceRideRequest(engagementId, EngagementStatus.ACCEPTED.getOrdinal(), message);
+							  reduceRideRequest(engagementId, EngagementStatus.ARRIVED.getOrdinal(), message);
 						  }
 					  }
 		);

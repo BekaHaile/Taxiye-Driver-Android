@@ -391,7 +391,7 @@ public class CustomerInfo {
 		if(estimatedFare > 0){
 			return Utils.getDecimalFormatForMoney().format(estimatedFare);
 		} else{
-			return "-";
+			return "0";
 		}
 	}
 
@@ -403,7 +403,7 @@ public class CustomerInfo {
 		if(cashOnDelivery > 0){
 			return Utils.getDecimalFormatForMoney().format(cashOnDelivery);
 		} else{
-			return "-";
+			return "0";
 		}
 	}
 
