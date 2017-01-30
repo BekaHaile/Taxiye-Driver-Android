@@ -138,6 +138,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryInfo;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.datastructure.EndDeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfoTabs;
+import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.PlaceSearchListFragment;
 import product.clicklabs.jugnoo.driver.home.BlockedAppsUninstallIntent;
 import product.clicklabs.jugnoo.driver.home.CustomerSwitcher;
@@ -148,6 +149,7 @@ import product.clicklabs.jugnoo.driver.retrofit.model.HeatMapResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.InfoTileResponse;
 import product.clicklabs.jugnoo.driver.retrofit.model.RegisterScreenResponse;
 import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditActivity;
+import product.clicklabs.jugnoo.driver.selfAudit.SelfAuditCameraFragment;
 import product.clicklabs.jugnoo.driver.services.FetchDataUsageService;
 import product.clicklabs.jugnoo.driver.sticky.GeanieView;
 import product.clicklabs.jugnoo.driver.utils.AGPSRefresh;
@@ -426,7 +428,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	private PlaceSearchListFragment placeSearchListFragment;
 
-	private RelativeLayout relativeLayoutContainer;
+	public RelativeLayout relativeLayoutContainer;
 	private ArrayList<Marker> requestMarkers = new ArrayList<>();
 	ArrayList<InfoTileResponse.Tile> infoTileResponses = new ArrayList<>();
 	private final double FIX_ZOOM_DIAGONAL = 200;
@@ -1146,11 +1148,14 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			callUsRl.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
-					FlurryEventLogger.event(CALL_US);
-					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
-//					startActivity(new Intent(HomeActivity.this, ChatActivity.class));
-//					overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//					Utils.openCallIntent(HomeActivity.this, Data.userData.driverSupportNumber);
+//					FlurryEventLogger.event(CALL_US);
+//					Log.i("completeRingData", Database2.getInstance(HomeActivity.this).getRingCompleteData());
+
+					drawerLayout.closeDrawer(GravityCompat.START);
+					relativeLayoutContainer.setVisibility(View.VISIBLE);
+					getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
+					overridePendingTransition(R.anim.right_in, R.anim.right_out);
 				}
 			});
 
@@ -1851,6 +1856,27 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 										startActivity(intent);
 										finish();
 										overridePendingTransition(R.anim.left_in, R.anim.left_out);
+									}
+								});
+					}
+
+				}
+			}, 300);
+
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+
+					if(Prefs.with(HomeActivity.this).getInt(SPLabels.DIGITAL_SIGNATURE_POPUP_STATUS,0) == 1){
+						DialogPopup.alertPopupWithListener(HomeActivity.this, "",
+								Prefs.with(HomeActivity.this).getString(SPLabels.SET_DIGITAL_SIGNATURE_POPUP_STRING,""), new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										drawerLayout.closeDrawer(GravityCompat.START);
+										relativeLayoutContainer.setVisibility(View.VISIBLE);
+										getTransactionUtils().openAddSignatureFragment(HomeActivity.this, getRelativeLayoutContainer());
+										overridePendingTransition(R.anim.right_in, R.anim.right_out);
+//										overridePendingTransition(R.anim.left_in, R.anim.left_out);
 									}
 								});
 					}
@@ -4055,7 +4081,8 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	@Override
 	public void onBackPressed() {
 		try {
-			if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+			if (getSupportFragmentManager().getBackStackEntryCount() > 0 &&
+					!getSupportFragmentManager().findFragmentByTag(AddSignatureFragment.class.getName()).isVisible()) {
 				if(getSupportFragmentManager().getBackStackEntryCount() == 1){
 					relativeLayoutContainer.setVisibility(View.GONE);
 				}

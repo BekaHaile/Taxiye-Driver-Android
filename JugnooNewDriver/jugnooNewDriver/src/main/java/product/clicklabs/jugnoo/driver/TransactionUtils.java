@@ -7,6 +7,7 @@ import product.clicklabs.jugnoo.driver.dodo.datastructure.DeliveryStatus;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryInfosListFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.DeliveryReturnFragment;
 import product.clicklabs.jugnoo.driver.dodo.fragments.MarkDeliveryFragment;
+import product.clicklabs.jugnoo.driver.fragments.AddSignatureFragment;
 import product.clicklabs.jugnoo.driver.fragments.SwitchCustomerFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.NonJugnooAuditFragment;
 import product.clicklabs.jugnoo.driver.selfAudit.SelectAuditFragment;
@@ -111,6 +112,14 @@ public class TransactionUtils {
 				.replace(container.getId(), new SwitchCustomerFragment(),
 						SwitchCustomerFragment.class.getName())
 				.addToBackStack(SwitchCustomerFragment.class.getName())
+				.commitAllowingStateLoss();
+	}
+
+	public void openAddSignatureFragment(FragmentActivity activity, View container) {
+		activity.getSupportFragmentManager().beginTransaction()
+				.replace(container.getId(), new AddSignatureFragment(),
+						AddSignatureFragment.class.getName())
+				.addToBackStack(AddSignatureFragment.class.getName())
 				.commitAllowingStateLoss();
 	}
 
