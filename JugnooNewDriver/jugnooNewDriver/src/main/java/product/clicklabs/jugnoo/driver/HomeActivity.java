@@ -3004,24 +3004,31 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					|| mode == DriverScreenMode.D_START_RIDE
 					|| mode == DriverScreenMode.D_IN_RIDE)) {
 				map.clear();
-				ArrayList<CustomerInfo> customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
-				if (customerInfosList.size() > 0 && sortCustomerState && Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1) {
+				ArrayList<CustomerInfo> customerInfosList;
+
+				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1) {
+					customerInfosList = setAttachedDeliveryPoolMarkers(sortCustomerState);
+				} else {
+					customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
+				}
+
+				if (customerInfosList.size() > 0 && sortCustomerState ) {
 					Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
 				} else {
 					sortCustomerState = true;
 				}
 
-				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
-					ArrayList<CustomerInfo> customerInfosListPool = Data.getAssignedCustomerInfosListForEngagedStatus();
-					if(mode == DriverScreenMode.D_IN_RIDE && customerInfosListPool.size() >1){
-						for(int i=0; i < customerInfosListPool.size();i++){
-							if(customerInfosListPool.get(i).getStatus() == EngagementStatus.ACCEPTED.getOrdinal() ||
-									customerInfosListPool.get(i).getStatus() == EngagementStatus.ARRIVED.getOrdinal() ){
-								Data.setCurrentEngagementId(String.valueOf(customerInfosListPool.get(i).getEngagementId()));
-							}
-						}
-					}
-				}
+//				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+//					ArrayList<CustomerInfo> customerInfosListPool = Data.getAssignedCustomerInfosListForEngagedStatus();
+//					if(mode == DriverScreenMode.D_IN_RIDE && customerInfosListPool.size() >1){
+//						for(int i=0; i < customerInfosListPool.size();i++){
+//							if(customerInfosListPool.get(i).getStatus() == EngagementStatus.ACCEPTED.getOrdinal() ||
+//									customerInfosListPool.get(i).getStatus() == EngagementStatus.ARRIVED.getOrdinal() ){
+//								Data.setCurrentEngagementId(String.valueOf(customerInfosListPool.get(i).getEngagementId()));
+//							}
+//						}
+//					}
+//				}
 			}
 
 			driverScreenMode = Data.getCurrentState();
@@ -3613,7 +3620,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 
 					setMakeDeliveryButtonVisibility();
-					setDeliveryMarkers();
+					if(customerInfo.getIsDeliveryPool() !=1) {
+						setDeliveryMarkers();
+					}
 					setTextViewRideInstructions();
 
 
@@ -4238,7 +4247,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 	class ViewHolderDriverRequest {
 		TextView textViewRequestName, textViewRequestAddress, textViewRequestDetails,
 				textViewRequestTime, textViewRequestFareFactor, textViewDeliveryFare, textViewDeliveryApprox,
-				textViewRequestDistance;
+				textViewRequestDistance, textViewEstimatedFareValue, textViewEstimatedFare;
 		Button buttonAcceptRide, buttonCancelRide;
 		ImageView imageViewRequestType;
 		LinearLayout relative, linearLayoutDeliveryFare;
@@ -4355,6 +4364,10 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewDeliveryFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewDeliveryApprox = (TextView) convertView.findViewById(R.id.textViewDeliveryApprox);
 				holder.textViewDeliveryApprox.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFareValue = (TextView) convertView.findViewById(R.id.textViewEstimatedFareValue);
+				holder.textViewEstimatedFareValue.setTypeface(Data.latoRegular(getApplicationContext()));
+				holder.textViewEstimatedFare  = (TextView) convertView.findViewById(R.id.textViewEstimatedFare);
+				holder.textViewEstimatedFare.setTypeface(Data.latoRegular(getApplicationContext()));
 				holder.textViewRequestDistance = (TextView) convertView.findViewById(R.id.textViewRequestDistance);
 				holder.textViewRequestDistance.setTypeface(Data.latoRegular(getApplicationContext()), Typeface.BOLD);
 				holder.buttonAcceptRide = (Button) convertView.findViewById(R.id.buttonAcceptRide);
@@ -4426,6 +4439,13 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						+""+customerInfo.getCashOnDelivery());
 			}
 
+			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
+				holder.textViewEstimatedFareValue.setText(customerInfo.getEstimatedDriverFare());
+				holder.textViewEstimatedFare.setVisibility(View.VISIBLE);
+			} else {
+				holder.textViewEstimatedFare.setVisibility(View.GONE);
+				holder.textViewEstimatedFareValue.setVisibility(View.GONE);
+			}
 
 			if (customerInfo.getFareFactor() > 1 || customerInfo.getFareFactor() < 1) {
 				holder.textViewRequestFareFactor.setVisibility(View.VISIBLE);
@@ -4606,7 +4626,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					}
 					JSONObject userData = jObj.optJSONObject(KEY_USER_DATA);
 					String userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-							vendorMessage = "";
+							vendorMessage = "", estimatedDriverFare ="";
 					int ForceEndDelivery = 0;
 					double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery = 0,
 							currrentLatitude=0, currrentLongitude=0;
@@ -4625,6 +4645,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 						cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
 						vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 						ForceEndDelivery = userData.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
+						estimatedDriverFare = userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 					} else{
 						userName = userData.optString(KEY_USER_NAME, "");
 						userImage = userData.optString(KEY_USER_IMAGE, "");
@@ -4661,12 +4682,11 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					initializeStartRideVariables();
 
 					CustomerInfo customerInfo = new CustomerInfo(Integer.parseInt(engagementId),
-							Integer.parseInt(customerId), referenceId,
-							userName, phoneNo, pickuplLatLng, cachedApiEnabled,
-							userImage, rating, couponInfo, promoInfo, jugnooBalance,
-							meterFareApplicable, getJugnooFareEnabled, luggageChargesApplicable,
-							waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
-							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery, currentLatLng, ForceEndDelivery);
+							Integer.parseInt(customerId), referenceId, userName, phoneNo, pickuplLatLng, cachedApiEnabled,
+							userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
+							luggageChargesApplicable, waitingChargesApplicable, EngagementStatus.ACCEPTED.getOrdinal(), isPooled,
+							isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
+							currentLatLng, ForceEndDelivery, estimatedDriverFare);
 
 					JSONParser.parsePoolFare(jObj, customerInfo);
 
@@ -6026,9 +6046,12 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							@Override
 							public void run() {
 								if(driverScreenMode == DriverScreenMode.D_IN_RIDE
-										&& Data.getCurrentCustomerInfo().getIsDelivery() == 1){
+										&& Data.getCurrentCustomerInfo().getIsDelivery() == 1
+										&& Data.getCurrentCustomerInfo().getIsDeliveryPool() != 1){
 									setDeliveryMarkers();
-								} else {
+								} else if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
+									setAttachedDeliveryPoolMarkers(false);
+								}else {
 									setAttachedCustomerMarkers(false);
 								}
 							}
@@ -8000,6 +8023,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			clearDeliveryMarkers();
 			CustomerInfo customerInfo = Data.getCurrentCustomerInfo();
 			if(customerInfo.getIsDelivery() == 1
+					&& customerInfo.getIsDeliveryPool() != 1
 					&& customerInfo.getDeliveryInfos() != null
 					&& customerInfo.getDeliveryInfos().size() > 0){
 				final String engagementId = String.valueOf(customerInfo.getEngagementId());
@@ -8021,9 +8045,6 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				} catch (Exception e){
 
 				}
-
-//				latLngs.add(customerInfo.getRequestlLatLng());
-//				builder.include(customerInfo.getRequestlLatLng());
 
 				for(int i=0; i<customerInfo.getDeliveryInfos().size(); i++){
 					DeliveryInfo deliveryInfo = customerInfo.getDeliveryInfos().get(i);
@@ -8274,28 +8295,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				public int compare(CustomerInfo lhs, CustomerInfo rhs) {
 					try {
 						LatLng lhsLatLng = null;
-						if (lhs.getStatus() == EngagementStatus.STARTED.getOrdinal()
-								&& lhs.getIsDelivery() != 1
-								&& lhs.getDropLatLng() != null) {
-							lhsLatLng = lhs.getDropLatLng();
+						if (lhs.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+							if(lhs.getIsDelivery() != 1  && lhs.getDropLatLng() != null) {
+								lhsLatLng = lhs.getDropLatLng();
+							}
 						} else if (lhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 								|| lhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
 							lhsLatLng = lhs.getRequestlLatLng();
 						}
 						LatLng rhsLatLng = null;
-						if (rhs.getStatus() == EngagementStatus.STARTED.getOrdinal()
-								&& rhs.getIsDelivery() != 1
-								&& rhs.getDropLatLng() != null) {
-							rhsLatLng = rhs.getDropLatLng();
+						if (rhs.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+							if (rhs.getIsDelivery() != 1 && rhs.getDropLatLng() != null) {
+								rhsLatLng = rhs.getDropLatLng();
+							}
 						} else if (rhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 								|| rhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
 							rhsLatLng = rhs.getRequestlLatLng();
 						}
 
-						if(!sortList && (lhs.getStatus() == rhs.getStatus())){
-							if(lhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())){
+						if (!sortList && (lhs.getStatus() == rhs.getStatus())) {
+							if (lhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())) {
 								return -1;
-							} else if(rhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())){
+							} else if (rhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())) {
 								return 1;
 							}
 						}
@@ -8311,38 +8332,18 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				}
 			});
 
-
-
-//			textViewRideInstructions.setVisibility(View.GONE);
-//			textViewRideInstructionsInRide.setVisibility(View.GONE);
 			for(int i=0; i<customerInfos.size(); i++){
 				CustomerInfo customerInfo = customerInfos.get(i);
 				LatLng latLng = null;
-				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
-						&& customerInfo.getIsDelivery() != 1
-						&& customerInfo.getDropLatLng() != null){
-					latLng = customerInfo.getDropLatLng();
+
+				if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+					if(customerInfo.getIsDelivery() != 1  && customerInfo.getDropLatLng() != null) {
+						latLng = customerInfo.getDropLatLng();
+					}
 				} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
 					latLng = customerInfo.getRequestlLatLng();
 				}
-
-//				if (i == 0) {
-//					String text = "";
-//					if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
-//						text = getResources().getString(R.string.please_drop_customer,
-//								customerInfo.getName());
-//					} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()) {
-//						text = getResources().getString(R.string.please_reach_customer_location,
-//								customerInfo.getName());
-//					} else if (customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
-//						text = getResources().getString(R.string.please_start_customer_ride,
-//								customerInfo.getName());
-//					}
-//					textViewRideInstructions.setVisibility(View.VISIBLE);
-//					textViewRideInstructions.setText(text);
-//				}
-
 
 				if(latLng != null
 						&& Utils.compareDouble(latLng.latitude, 0) != 0
@@ -8358,21 +8359,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 					} else {
 						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
 					}
-					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()
-							&& customerInfo.getIsDelivery() != 1
-							&& customerInfo.getDropLatLng() != null){
-						addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "", 0));
+					if(customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()){
+						if(customerInfo.getIsDelivery() != 1  && customerInfo.getDropLatLng() != null) {
+							addCustomerMarker(addDropPinMarker(map, latLng, customerInfos.size() > 1 ? String.valueOf(i + 1) : "", 2));
+						}
 					} else if(customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
 							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()){
 						addCustomerMarker(addCustomerPickupMarker(map, customerInfo, latLng));
 					}
 				}
 			}
-
-//			map.animateCamera(CameraUpdateFactory.newLatLngBounds(MyApplication.getInstance()
-//							.getMapLatLngBoundsCreator().createBoundsWithMinDiagonal(builder, FIX_ZOOM_DIAGONAL),
-//					(int) (630f * ASSL.Xscale()), (int) (630f * ASSL.Xscale()),
-//					(int) (50f * ASSL.Xscale())), MAP_ANIMATION_TIME, null);
 
 			if(latLngs.size() > 1) {
 				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
@@ -8398,6 +8394,166 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 								if(DriverScreenMode.D_START_RIDE != driverScreenMode
 										&& polylineOptionsCustomersPath != null){
 									if(polylineCustomersPath != null){
+										polylineCustomersPath.remove();
+									}
+									polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
+									arrivedOrStartStateZoom();
+								}
+							}
+						}).execute();
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return customerInfos;
+	}
+
+	private ArrayList<CustomerInfo> setAttachedDeliveryPoolMarkers(final boolean sortList) {
+		ArrayList<CustomerInfo> customerInfos = Data.getAssignedCustomerInfosListForEngagedStatus();
+		try {
+			clearCustomerMarkers();
+			ArrayList<LatLng> latLngs = new ArrayList<>();
+			LatLngBounds.Builder builder = new LatLngBounds.Builder();
+			HashMap<LatLng, Integer> counterMap = new HashMap<>();
+			LatLng driverLatLng = null;
+			try {
+				if (myLocation != null) {
+					driverLatLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
+				} else if (Utils.compareDouble(Data.latitude, 0) != 0 && Utils.compareDouble(Data.longitude, 0) != 0) {
+					driverLatLng = new LatLng(Data.latitude, Data.longitude);
+				}
+				if (driverLatLng != null) {
+					builder.include(driverLatLng);
+					latLngs.add(driverLatLng);
+				}
+			} catch (Exception e) {
+			}
+
+
+			final LatLng driverLatLngFinal = driverLatLng;
+			Collections.sort(customerInfos, new Comparator<CustomerInfo>() {
+
+				@Override
+				public int compare(CustomerInfo lhs, CustomerInfo rhs) {
+					try {
+						LatLng lhsLatLng = null;
+						if (lhs.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+							if (lhs.getDeliveryInfos().size() > 1) {
+								lhsLatLng = lhs.getDeliveryInfos().get(1).getLatLng();
+							} else {
+								lhsLatLng = lhs.getDeliveryInfos().get(0).getLatLng();
+							}
+						} else if (lhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+								|| lhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+							lhsLatLng = lhs.getRequestlLatLng();
+						}
+						LatLng rhsLatLng = null;
+						if (rhs.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+							if (rhs.getDeliveryInfos().size() > 1) {
+								rhsLatLng = rhs.getDeliveryInfos().get(1).getLatLng();
+							} else {
+								rhsLatLng = rhs.getDeliveryInfos().get(0).getLatLng();
+							}
+						} else if (rhs.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+								|| rhs.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+							rhsLatLng = rhs.getRequestlLatLng();
+						}
+
+						if (!sortList && (lhs.getStatus() == rhs.getStatus())) {
+							if (lhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())) {
+								return -1;
+							} else if (rhs.getEngagementId() == Integer.parseInt(Data.getCurrentEngagementId())) {
+								return 1;
+							}
+						}
+						if (driverLatLngFinal != null && lhsLatLng != null && rhsLatLng != null) {
+							double distanceLhs = MapUtils.distance(driverLatLngFinal, lhsLatLng);
+							double distanceRhs = MapUtils.distance(driverLatLngFinal, rhsLatLng);
+							return (int) (distanceLhs - distanceRhs);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					return 0;
+				}
+			});
+
+			for (int i = 0; i < customerInfos.size(); i++) {
+				CustomerInfo customerInfo = customerInfos.get(i);
+				LatLng latLng = null;
+
+				if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+					if (customerInfo.getDeliveryInfos().size() > 1) {
+						latLng = customerInfo.getDeliveryInfos().get(1).getLatLng();
+					} else {
+						latLng = customerInfo.getDeliveryInfos().get(0).getLatLng();
+					}
+				} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+						|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+					latLng = customerInfo.getRequestlLatLng();
+				}
+
+				if (latLng != null
+						&& Utils.compareDouble(latLng.latitude, 0) != 0
+						&& Utils.compareDouble(latLng.longitude, 0) != 0) {
+					if (counterMap.containsKey(latLng)) {
+						counterMap.put(latLng, counterMap.get(latLng) + 1);
+					} else {
+						counterMap.put(latLng, 1);
+					}
+					if (!latLngs.contains(latLng)) {
+						latLngs.add(latLng);
+						builder.include(latLng);
+					} else {
+						latLng = new LatLng(latLng.latitude, latLng.longitude + 0.0004d * (double) (counterMap.get(latLng)));
+					}
+					if (customerInfo.getStatus() == EngagementStatus.STARTED.getOrdinal()) {
+
+						if(customerInfo.engagementId == Integer.parseInt(Data.getCurrentEngagementId())){
+							if (customerInfo.getDeliveryInfos().size() > 1) {
+								addCustomerMarker(addDropPinMarker(map, latLng, "R", 2));
+							} else {
+								addCustomerMarker(addDropPinMarker(map, latLng, "D", 2));
+							}
+						} else {
+							if (customerInfo.getDeliveryInfos().size() > 1) {
+								addCustomerMarker(addDropPinMarker(map, latLng, "R", 1));
+							} else {
+								addCustomerMarker(addDropPinMarker(map, latLng, "D", 1));
+							}
+						}
+					} else if (customerInfo.getStatus() == EngagementStatus.ACCEPTED.getOrdinal()
+							|| customerInfo.getStatus() == EngagementStatus.ARRIVED.getOrdinal()) {
+						addCustomerMarker(addCustomerPickupMarker(map, customerInfo, latLng));
+					}
+				}
+			}
+
+			if (latLngs.size() > 1) {
+				new ApiGoogleDirectionWaypoints(latLngs, getResources().getColor(R.color.blue_polyline), false,
+						new ApiGoogleDirectionWaypoints.Callback() {
+							@Override
+							public void onPre() {
+
+							}
+
+							@Override
+							public boolean showPath() {
+								return Data.getAssignedCustomerInfosListForEngagedStatus().size() > 0;
+							}
+
+							@Override
+							public void polylineOptionGenerated(PolylineOptions polylineOptions) {
+								polylineOptionsCustomersPath = polylineOptions;
+
+							}
+
+							@Override
+							public void onFinish() {
+								if (DriverScreenMode.D_START_RIDE != driverScreenMode
+										&& polylineOptionsCustomersPath != null) {
+									if (polylineCustomersPath != null) {
 										polylineCustomersPath.remove();
 									}
 									polylineCustomersPath = map.addPolyline(polylineOptionsCustomersPath);
@@ -8556,7 +8712,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				try {
 					JSONParser.parseReturnDeliveryInfos(jsonObject, customerInfo);
 					deliveryInfoTabs.notifyDatasetchange(true);
-					setDeliveryMarkers();
+
 
 					if(customerInfo.getIsDeliveryPool()==1) {
 						ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForEngagedStatus();
@@ -8570,6 +8726,9 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 							driverScreenMode = DriverScreenMode.D_IN_RIDE;
 							switchDriverScreen(driverScreenMode);
 						}
+						setAttachedDeliveryPoolMarkers(true);
+					} else {
+						setDeliveryMarkers();
 					}
 
 				} catch (Exception e) {

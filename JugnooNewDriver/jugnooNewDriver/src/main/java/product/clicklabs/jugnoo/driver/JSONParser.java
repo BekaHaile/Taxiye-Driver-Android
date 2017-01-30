@@ -405,7 +405,7 @@ public class JSONParser implements Constants {
 							}
 
 							String userId = "", userName = "", userImage = "", phoneNo = "", rating = "", address = "",
-									vendorMessage = "";
+									vendorMessage = "", estimatedDriverFare = "";
 							int forceEndDelivery =0;
 							double jugnooBalance = 0, pickupLatitude = 0, pickupLongitude = 0, estimatedFare = 0, cashOnDelivery=0,
 									currrentLatitude =0, currrentLongitude =0;
@@ -426,6 +426,7 @@ public class JSONParser implements Constants {
 								vendorMessage = userData.optString(Constants.KEY_VENDOR_MESSAGE, "");
 								forceEndDelivery = jObjCustomer.optInt(Constants.KEY_END_DELIVERY_FORCED, 0);
 								cashOnDelivery = userData.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
+								estimatedDriverFare= userData.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 
 							} else {
 								userId = jObjCustomer.optString(KEY_USER_ID, "0");
@@ -470,7 +471,7 @@ public class JSONParser implements Constants {
 									userImage, rating, couponInfo, promoInfo, jugnooBalance, meterFareApplicable, getJugnooFareEnabled,
 									luggageChargesApplicable, waitingChargesApplicable, engagementStatus, isPooled,
 									isDelivery, isDeliveryPool, address, totalDeliveries, estimatedFare, vendorMessage, cashOnDelivery,
-									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery);
+									new LatLng(currrentLatitude, currrentLongitude), forceEndDelivery, estimatedDriverFare);
 
 							if(customerInfo.getIsDelivery() == 1){
 								customerInfo.setDeliveryInfos(JSONParser.parseDeliveryInfos(jObjCustomer));
@@ -621,6 +622,7 @@ public class JSONParser implements Constants {
 				double estimatedFare = jActiveRequest.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 				String userName = jActiveRequest.optString(Constants.KEY_NAME, "");
 				double cashOnDelivery = jActiveRequest.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0);
+				String estimatedDriverFare = jActiveRequest.optString(KEY_ESTIMATED_DRIVER_FARE, "");
 				int isDeliveryPool = 0;
 				if(jActiveRequest.optInt(KEY_RIDE_TYPE,0)==4){
 					isDeliveryPool =1;
@@ -631,7 +633,7 @@ public class JSONParser implements Constants {
 						startTime, requestAddress, referenceId, fareFactor,
 						EngagementStatus.REQUESTED.getOrdinal(), isPooled, isDelivery, isDeliveryPool,
 						totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-						new LatLng(currrentLatitude, currrentLongitude));
+						new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
 
 				Data.addCustomerInfo(customerInfo);
 

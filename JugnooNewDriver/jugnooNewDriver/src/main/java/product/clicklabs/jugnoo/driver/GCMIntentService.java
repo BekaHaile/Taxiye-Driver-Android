@@ -517,6 +517,7 @@ public class GCMIntentService extends IntentService {
 									int totalDeliveries = jObj.optInt(Constants.KEY_TOTAL_DELIVERIES, 0);
 									double estimatedFare = jObj.optDouble(Constants.KEY_ESTIMATED_FARE, 0d);
 									double cashOnDelivery = jObj.optDouble(Constants.KEY_TOTAL_CASH_TO_COLLECT_DELIVERY, 0d);
+									String estimatedDriverFare = jObj.optString(Constants.KEY_ESTIMATED_DRIVER_FARE, "");
 
 									String userName = jObj.optString(Constants.KEY_NAME, "");
 									int referenceId = jObj.optInt(Constants.KEY_REFERENCE_ID, 0);
@@ -563,7 +564,7 @@ public class GCMIntentService extends IntentService {
 												Integer.parseInt(userId), new LatLng(latitude, longitude), startTime, address,
 												referenceId, fareFactor, EngagementStatus.REQUESTED.getOrdinal(),
 												isPooled, isDelivery, isDeliveryPool, totalDeliveries, estimatedFare, userName, dryDistance, cashOnDelivery,
-												new LatLng(currrentLatitude, currrentLongitude));
+												new LatLng(currrentLatitude, currrentLongitude), estimatedDriverFare);
 										Data.addCustomerInfo(customerInfo);
 
 										startRing(this, engagementId, changeRing);
