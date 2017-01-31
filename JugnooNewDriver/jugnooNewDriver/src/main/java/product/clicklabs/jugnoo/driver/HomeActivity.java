@@ -3025,36 +3025,28 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 
 	public void switchDriverScreen(DriverScreenMode mode) {
 		if (userMode == UserMode.DRIVER) {
-			if(map != null &&
-					(mode == DriverScreenMode.D_ARRIVED
-					|| mode == DriverScreenMode.D_START_RIDE
-					|| mode == DriverScreenMode.D_IN_RIDE)) {
-				map.clear();
-				ArrayList<CustomerInfo> customerInfosList;
+			try {
+				if(map != null &&
+						(mode == DriverScreenMode.D_ARRIVED
+						|| mode == DriverScreenMode.D_START_RIDE
+						|| mode == DriverScreenMode.D_IN_RIDE)) {
+					map.clear();
+					ArrayList<CustomerInfo> customerInfosList;
 
-				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1) {
-					customerInfosList = setAttachedDeliveryPoolMarkers(sortCustomerState);
-				} else {
-					customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
+					if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1) {
+						customerInfosList = setAttachedDeliveryPoolMarkers(sortCustomerState);
+					} else {
+						customerInfosList = setAttachedCustomerMarkers(sortCustomerState);
+					}
+
+					if (customerInfosList.size() > 0 && sortCustomerState ) {
+						Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
+					} else {
+						sortCustomerState = true;
+					}
 				}
-
-				if (customerInfosList.size() > 0 && sortCustomerState ) {
-					Data.setCurrentEngagementId(String.valueOf(customerInfosList.get(0).getEngagementId()));
-				} else {
-					sortCustomerState = true;
-				}
-
-//				if(Data.getCurrentCustomerInfo().getIsDeliveryPool() == 1){
-//					ArrayList<CustomerInfo> customerInfosListPool = Data.getAssignedCustomerInfosListForEngagedStatus();
-//					if(mode == DriverScreenMode.D_IN_RIDE && customerInfosListPool.size() >1){
-//						for(int i=0; i < customerInfosListPool.size();i++){
-//							if(customerInfosListPool.get(i).getStatus() == EngagementStatus.ACCEPTED.getOrdinal() ||
-//									customerInfosListPool.get(i).getStatus() == EngagementStatus.ARRIVED.getOrdinal() ){
-//								Data.setCurrentEngagementId(String.valueOf(customerInfosListPool.get(i).getEngagementId()));
-//							}
-//						}
-//					}
-//				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 
 			driverScreenMode = Data.getCurrentState();

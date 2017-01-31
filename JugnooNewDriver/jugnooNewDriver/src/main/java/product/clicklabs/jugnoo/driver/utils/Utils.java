@@ -278,13 +278,18 @@ public class Utils {
 	}
 
 	public static boolean validPhoneNumber(String phoneNo) {
-		if (phoneNo.length() >= 10) {
-			if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
-				return false;
+		try {
+			if (phoneNo.length() >= 10) {
+				if (phoneNo.charAt(0) == '0' || phoneNo.charAt(0) == '1' || phoneNo.contains("+")) {
+					return false;
+				} else {
+					return isPhoneValid(phoneNo);
+				}
 			} else {
-				return isPhoneValid(phoneNo);
+				return false;
 			}
-		} else {
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
