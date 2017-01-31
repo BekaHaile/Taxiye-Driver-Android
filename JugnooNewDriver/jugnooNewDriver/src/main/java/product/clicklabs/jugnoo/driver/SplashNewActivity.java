@@ -293,7 +293,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 		try {
 			Pair<String, String> accPair = JSONParser.getAccessTokenPair(this);
 			if ("".equalsIgnoreCase(accPair.first)) {
-				getCityAsync();
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getCityAsync();
+					}
+				}, 1000);
+
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
 				viewInitLS.setVisibility(View.GONE);
@@ -2356,7 +2362,17 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 
 	private void getCityAsync(){
 		DialogPopup.showLoadingDialog(SplashNewActivity.this, getResources().getString(R.string.loading));
-		RestClient.getApiServices().getCityRetro("auyq38yr9fsdjfw38", new Callback<CityResponse>() {
+
+		if (Data.locationFetcher != null) {
+			Data.latitude = Data.locationFetcher.getLatitude();
+			Data.longitude = Data.locationFetcher.getLongitude();
+		}
+
+		HashMap<String, String> params = new HashMap<String, String>();
+		params.put("latitude", "" + Data.latitude);
+		params.put("longitude", "" + Data.longitude);
+
+		RestClient.getApiServices().getCityRetro(params, "auyq38yr9fsdjfw38", new Callback<CityResponse>() {
 			@Override
 			public void success(CityResponse cityResponse, Response response) {
 				try {
@@ -2372,6 +2388,13 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 						newCities.clear();
 						vehicleTypes.addAll(res.getVehicleTypes());
 						newCities.addAll(res.getCities());
+						for(int i=0; i< res.getCities().size(); i++){
+							if(res.getCities().get(i).getCityName().equalsIgnoreCase(res.getCurrentCity())){
+								selectCitySp.setSelection(i);
+								break;
+							}
+						}
+
 //						Intent intent = new Intent(SplashNewActivity.this, RegisterScreen.class);
 //						intent.putExtra("cityResponse", cityResponse);
 //						startActivity(intent);
@@ -2564,7 +2587,12 @@ public class SplashNewActivity extends BaseActivity implements LocationUpdate, F
 				break;
 
 			case SIGNUP:
-				getCityAsync();
+				new Handler().postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						getCityAsync();
+					}
+				}, 1000);
 				selectLanguageLl.setVisibility(View.GONE);
 				viewInitJugnoo.setVisibility(View.GONE);
 				viewInitSplashJugnoo.setVisibility(View.GONE);
