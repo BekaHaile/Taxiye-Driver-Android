@@ -78,13 +78,17 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 				chatViewHolder.chatTextYou.setText(chatHistory.getMessage());
 				chatViewHolder.chatTimeYou.setText(DateOperations.utcToLocalTZAMPM(chatHistory.getCreatedAt()));
 				if(!"".equalsIgnoreCase(Data.userData.userImage)) {
-					float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
-					Picasso.with(context).
-							load(image)
-							.placeholder(R.drawable.ring)
-							.transform(new CircleTransform())
-							.resize((int) (130f * minRatio), (int) (130f * minRatio)).centerCrop()
-							.into(chatViewHolder.userIconYou);
+					try {
+						float minRatio = Math.min(ASSL.Xscale(), ASSL.Yscale());
+						Picasso.with(context).
+								load(image)
+								.placeholder(R.drawable.ring)
+								.transform(new CircleTransform())
+								.resize((int) (130f * minRatio), (int) (130f * minRatio)).centerCrop()
+								.into(chatViewHolder.userIconYou);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
