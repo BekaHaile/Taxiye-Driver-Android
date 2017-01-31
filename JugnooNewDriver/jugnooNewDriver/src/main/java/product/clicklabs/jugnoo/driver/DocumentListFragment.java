@@ -145,7 +145,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 	static class ViewHolderDriverDoc {
 		TextView docType, docRequirement, docStatus, docRejected;
-		RelativeLayout addImageLayout, addImageLayout2;
+		RelativeLayout addImageLayout, addImageLayout2, relativeLayoutSelectPicture;
 		RelativeLayout relative, relativeLayoutImageStatus;
 		ImageView setCapturedImage, setCapturedImage2, imageViewUploadDoc, imageViewDocStatus, deleteImage2, deleteImage1;
 		int id;
@@ -204,6 +204,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout.setTag(holder);
 
 				holder.imageViewUploadDoc = (ImageView) convertView.findViewById(R.id.imageViewUploadDoc);
+				holder.relativeLayoutSelectPicture = (RelativeLayout) convertView.findViewById(R.id.relativeLayoutSelectPicture);
 
 				holder.addImageLayout2 = (RelativeLayout) convertView.findViewById(R.id.addImageLayout2);
 
@@ -215,6 +216,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 				holder.relative.setTag(holder);
 				holder.imageViewUploadDoc.setTag(holder);
+				holder.relativeLayoutSelectPicture.setTag(holder);
 				holder.addImageLayout.setTag(holder);
 				holder.addImageLayout2.setTag(holder);
 
@@ -278,10 +280,12 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				holder.addImageLayout.setEnabled(false);
 				holder.addImageLayout2.setEnabled(false);
 				holder.imageViewUploadDoc.setEnabled(false);
+				holder.relativeLayoutSelectPicture.setEnabled(false);
 			}else {
 				holder.addImageLayout.setEnabled(true);
 				holder.addImageLayout2.setEnabled(true);
 				holder.imageViewUploadDoc.setEnabled(true);
+				holder.relativeLayoutSelectPicture.setEnabled(true);
 			}
 
 			if (docInfo.getFile() != null) {
@@ -414,7 +418,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				docInfo.isExpended = false;
 			}
 
-			holder.imageViewUploadDoc.setOnClickListener(new View.OnClickListener() {
+			holder.relativeLayoutSelectPicture.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					ViewHolderDriverDoc holder = (ViewHolderDriverDoc) v.getTag();

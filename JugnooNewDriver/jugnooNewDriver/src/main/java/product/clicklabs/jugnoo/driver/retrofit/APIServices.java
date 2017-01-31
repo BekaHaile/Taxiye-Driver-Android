@@ -481,7 +481,8 @@ public interface APIServices {
 
 	@FormUrlEncoded
 	@POST("/get_all_cities")
-	void getCityRetro(@Field("password") String password,
+	void getCityRetro(@FieldMap Map<String, String> params,
+					  @Field("password") String password,
 					  Callback<CityResponse> callback);
 
 	@FormUrlEncoded
