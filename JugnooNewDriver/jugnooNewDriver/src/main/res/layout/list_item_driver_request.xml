@@ -111,31 +111,12 @@
                     >
 
                     <TextView
-                        android:id="@+id/textViewDeliveryFare"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Rs. 0"
-                        android:textColor="@color/text_color"
-                        android:textSize="@dimen/text_size_30"
-
-                        />
-
-                    <TextView
-                        android:id="@+id/textViewDeliveryApprox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_18"
-                        android:textColor="@color/text_color"
-                        android:text="@string/approx"/>
-
-                    <TextView
                         android:id="@+id/textViewEstimatedFareValue"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_30"
-                        android:layout_marginTop="10px"
+                        android:textSize="@dimen/text_size_34"
                         android:textColor="@color/text_color"
-                        android:text="Rs. 0"/>
+                        android:text="Rs. 000 - 000"/>
 
                     <TextView
                         android:id="@+id/textViewEstimatedFare"
@@ -144,6 +125,23 @@
                         android:textSize="@dimen/text_size_18"
                         android:textColor="@color/text_color"
                         android:text="@string/estimated_fare"/>
+
+                    <TextView
+                        android:id="@+id/textViewDeliveryFare"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rs. 0"
+                        android:layout_marginTop="10px"
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/text_size_30"/>
+
+                    <TextView
+                        android:id="@+id/textViewDeliveryApprox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_18"
+                        android:textColor="@color/text_color"
+                        android:text="@string/approx"/>
 
                 </LinearLayout>
 

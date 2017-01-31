@@ -4471,9 +4471,17 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				holder.textViewRequestName.setVisibility(View.VISIBLE);
 				holder.textViewRequestName.setText(customerInfo.getName());
 				holder.linearLayoutDeliveryFare.setVisibility(View.VISIBLE);
-				holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
-						+": "+getResources().getString(R.string.rupee)
-						+""+customerInfo.getCashOnDelivery());
+
+				if(!customerInfo.getCashOnDelivery().equalsIgnoreCase("0")){
+					holder.textViewDeliveryFare.setVisibility(View.VISIBLE);
+					holder.textViewDeliveryApprox.setVisibility(View.VISIBLE);
+					holder.textViewDeliveryFare.setText(getResources().getString(R.string.COD)
+							+": "+getResources().getString(R.string.rupee)
+							+""+customerInfo.getCashOnDelivery());
+				} else {
+					holder.textViewDeliveryFare.setVisibility(View.GONE);
+					holder.textViewDeliveryApprox.setVisibility(View.GONE);
+				}
 			}
 
 			if(!customerInfo.getEstimatedDriverFare().equalsIgnoreCase("")){
