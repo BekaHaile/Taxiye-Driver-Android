@@ -18,7 +18,7 @@ public class SPLabels {
             START_TIME = "start_time",
     		WAIT_TIME = "wait_time",
             TRACKING = "tracking",
-    DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
+    		DRIVER_SCREEN_MODE_METERING = "driver_screen_mode_metering",
             TOTAL_HAVERSINE_DISTANCE = "total_haversine_distance";
 
     public static final String

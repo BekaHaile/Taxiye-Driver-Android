@@ -3753,7 +3753,16 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 				e.printStackTrace();
 			} finally {
 			}
-			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, mode);
+			try {
+				ArrayList<CustomerInfo> customerEnfagementInfos1 = Data.getAssignedCustomerInfosListForStatus(EngagementStatus.STARTED.getOrdinal());
+				if(customerEnfagementInfos1.size() > 0){
+					MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, DriverScreenMode.D_IN_RIDE);
+				} else{
+					MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, mode);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -4954,6 +4963,7 @@ public class HomeActivity extends BaseFragmentActivity implements AppInterruptHa
 			customerRideDataGlobal.setDistance(-1);
 
 			MeteringService.gpsInstance(this).saveDriverScreenModeMetering(this, driverScreenMode);
+
 			MeteringService.gpsInstance(this).stop();
 			Prefs.with(HomeActivity.this).save(SPLabels.DISTANCE_RESET_LOG_ID, "" + 0);
 		}
