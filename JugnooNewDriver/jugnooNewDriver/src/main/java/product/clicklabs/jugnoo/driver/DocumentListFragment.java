@@ -671,19 +671,25 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 	private void chooseImageFromCamera() {
-		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
-		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
-		imageChooserManager.setImageChooserListener(this);
-		imageChooserManager.clearOldFiles();
-		try {
-			String filePath = imageChooserManager.choose();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
+		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
+				activity.getRelativeLayoutContainer(), "top", "bottom");
+
+
+//		int chooserType = ChooserType.REQUEST_CAPTURE_PICTURE;
+//		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_CAPTURE_PICTURE, "myfolder", true);
+//		imageChooserManager.setImageChooserListener(this);
+//		imageChooserManager.clearOldFiles();
+//		try {
+//			String filePath = imageChooserManager.choose();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 	}
 
 
-	private void chooseImageFromGallery() {
+	public void chooseImageFromGallery() {
 		int chooserType = ChooserType.REQUEST_PICK_PICTURE;
 		imageChooserManager = new ImageChooserManager(this, ChooserType.REQUEST_PICK_PICTURE, "myfolder", true);
 		imageChooserManager.setImageChooserListener(this);
@@ -761,7 +767,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 							f = compressToFile(getActivity(), newBitmap, Bitmap.CompressFormat.JPEG, 100, index);
 							docs.get(index).isExpended = true;
 							driverDocumentListAdapter.notifyDataSetChanged();
-							uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum, image);
+							uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum);
 						}
 					}
 				} catch (Exception e) {
@@ -780,6 +786,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 				Toast.makeText(getActivity(), reason, Toast.LENGTH_LONG).show();
 			}
 		});
+	}
+
+	public void uploadToServer(File f){
+		uploadPicToServer(getActivity(), f, docs.get(index).docTypeNum);
 	}
 
 
@@ -813,7 +823,7 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 	}
 
 
-	private void uploadPicToServer(final Activity activity, File photoFile, Integer docNumType, final ChosenImage image) {
+	private void uploadPicToServer(final Activity activity, final File photoFile, Integer docNumType) {
 		try {
 			if (AppStatus.getInstance(activity).isOnline(activity)) {
 				DialogPopup.showLoadingDialog(activity, getResources().getString(R.string.loading));
@@ -843,10 +853,10 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 										DialogPopup.alertPopup(activity, "", message);
 										docs.get(index).status = jObj.getString("status");
 										if (coloum == 0) {
-											docs.get(index).setFile(new File(image.getFileThumbnail()));
+											docs.get(index).setFile(photoFile);
 
 										} else {
-											docs.get(index).setFile1(new File(image.getFileThumbnail()));
+											docs.get(index).setFile1(photoFile);
 										}
 										driverDocumentListAdapter.notifyDataSetChanged();
 
