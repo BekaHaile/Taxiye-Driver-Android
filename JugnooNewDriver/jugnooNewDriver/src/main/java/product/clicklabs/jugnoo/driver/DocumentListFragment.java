@@ -614,12 +614,11 @@ public class DocumentListFragment extends Fragment implements ImageChooserListen
 
 		DocumentListFragment.this.index = index;
 		String cameraText = getResources().getString(R.string.upload)+" "+docs.get(index).docType
-				+""+getResources().getString(R.string.image);
+				+" "+getResources().getString(R.string.image);
 
 		Log.i("count", "= "+activity.getSupportFragmentManager().getBackStackEntryCount());
 		activity.getTransactionUtils().openSelfEnrollmentCameraFragment1(activity,
 				activity.getRelativeLayoutContainer(), cameraText, "bottom");
-
 
 //		try {
 //			final Dialog dialog = new Dialog(activity, android.R.style.Theme_Translucent_NoTitleBar);

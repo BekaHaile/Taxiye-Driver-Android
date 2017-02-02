@@ -64,13 +64,12 @@
 
             <Button
                 android:id="@+id/buttonGallery"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25px"
-                android:layout_marginRight="50px"
-                android:text="@string/skip"
+                android:layout_width="72px"
+                android:layout_height="72px"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="50px"
                 android:textSize="40px"
-                android:background="@color/black"
+                android:background="@drawable/photogallery_icon"
                 android:textColor="@color/white"
                 android:visibility="visible"/>
 

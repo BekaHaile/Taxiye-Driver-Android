@@ -154,6 +154,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	public void refreshCamera() {
 
 		captureImage.setVisibility(View.VISIBLE);
+		buttonGallery.setVisibility(View.VISIBLE);
 		relativeLayoutConfirmImage.setVisibility(View.GONE);
 
 		if (surfaceHolder.getSurface() == null) {
@@ -399,6 +400,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 								capturedImage = rotatedBitmap.copy(rotatedBitmap.getConfig(), true);
 								rotatedBitmap.recycle();
 								captureImage.setVisibility(View.GONE);
+								buttonGallery.setVisibility(View.GONE);
 								relativeLayoutConfirmImage.setVisibility(View.VISIBLE);
 								DialogPopup.dismissLoadingDialog();
 							} catch (Exception e) {
@@ -464,6 +466,7 @@ public class SelfEnrollmentCameraFragment extends android.support.v4.app.Fragmen
 	public void rejectImage(){
 		capturedImage = null;
 		refreshCamera();
+
 	}
 
 	private void uploadPicToServer(File photoFile, final Integer auditType, final Integer imageType) {
